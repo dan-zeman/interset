@@ -109,7 +109,10 @@ sub test
             my \$tag1 = tagset::${driver}::encode(\$f);
             if(\$tag1 ne \$tag)
             {
-                print("Error: \\"\$tag\\" => decode() => encode() => \\"\$tag1\\"\n");
+                print("Error: encode(decode(x)) != x\n");
+                print(" src = \\"\$tag\\"\n");
+                print(" tgt = \\"\$tag1\\"\n");
+                print("\n");
                 \$n_errors++;
             }
         }

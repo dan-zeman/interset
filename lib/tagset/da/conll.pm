@@ -100,6 +100,10 @@ sub decode
         #     - deponent verb
         #     - reciprocal verb
         #     (medial verbs are passive in form and active in meaning)
+        if($subpos eq "VE")
+        {
+            $f{other} = "medial";
+        }
     }
     elsif($pos eq "RG")
     {
@@ -141,7 +145,6 @@ sub decode
     elsif($pos eq "X")
     {
         # X = residual
-        $f{pos} = "punc";
         if($subpos eq "XA")
         {
             $f{abbr} = "abbr";
@@ -158,11 +161,13 @@ sub decode
         {
             # symbol, e.g. "+"
             $f{pos} = "punc";
+            $f{other} = "symbol";
         }
         elsif($subpos eq "XR")
         {
             # formulae, e.g. "U-21"
             # nothing to do - same as other
+            $f{other} = "formula";
         }
         elsif($subpos eq "XX")
         {
@@ -179,14 +184,15 @@ sub decode
             $feature = $1;
             $value = $2;
         }
-        # transcat = adject|adject/adverb/unmarked|adverbial|unmarked
+        # transcat = adject|adject/adverb/unmarked|adverb|adverbial|unmarked
+        # Transcat applies to adjectives and verbs.
         if($feature eq "transcat")
         {
             if($value eq "adject")
             {
                 $f{synpos} = "attr";
             }
-            elsif($value eq "adverbial")
+            elsif($value =~ m/^adverb(ial)?$/)
             {
                 $f{synpos} = "adv";
             }
@@ -465,7 +471,14 @@ sub encode
     {
         # VA = main verb
         # VE = medial verb
-        $tag = "V\tVA";
+        if($f{tagset} eq "daconll" && $f{other} eq "medial")
+        {
+            $tag = "V\tVE";
+        }
+        else
+        {
+            $tag = "V\tVA";
+        }
     }
     elsif($f{pos} eq "adv")
     {
@@ -506,12 +519,279 @@ sub encode
         # XS = symbol ("+", "$")
         # XP = punctuation
         # XX = other
-        $tag = "XP"; # we cannot currently generate the alternatives FI, FP
+        if($f{tagset} eq "daconll" && $f{other} eq "symbol")
+        {
+            $tag = "X\tXS";
+        }
+        else
+        {
+            $tag = "X\tXP";
+        }
     }
     else
     {
-        $tag = "XX";
+        if($f{tagset} eq "daconll" && $f{other} eq "formula")
+        {
+            $tag = "X\tXR";
+        }
+        else
+        {
+            $tag = "X\tXX";
+        }
     }
+    # Encode features.
+    my @features;
+    if($f{pos} eq "verb")
+    {
+        # mood
+        if($f{verbform} eq "inf")
+        {
+            push(@features, "mood=infin");
+        }
+        elsif($f{mood} eq "ind")
+        {
+            push(@features, "mood=indic");
+        }
+        elsif($f{mood} eq "imp")
+        {
+            push(@features, "mood=imper");
+        }
+        elsif($f{verbform} eq "part")
+        {
+            push(@features, "mood=partic");
+        }
+        elsif($f{verbform} eq "ger")
+        {
+            push(@features, "mood=gerund");
+        }
+        # tense
+        if($f{tense} eq "pres")
+        {
+            push(@features, "tense=present");
+        }
+        elsif($f{tense} eq "past")
+        {
+            push(@features, "tense=past");
+        }
+        # voice
+        if($f{voice} eq "act")
+        {
+            push(@features, "voice=active");
+        }
+        elsif($f{voice} eq "pass")
+        {
+            push(@features, "voice=passive");
+        }
+    }
+    # number: some tags have it before gender
+    if($f{pos} eq "verb")
+    {
+        if($f{number} eq "sing")
+        {
+            push(@features, "number=sing");
+        }
+        elsif($f{number} eq "plu")
+        {
+            push(@features, "number=plur");
+        }
+        elsif($f{pos} eq "verb" && $f{verbform} eq "part" && $f{synpos} ne "adv")
+        {
+            push(@features, "number=sing/plur");
+        }
+    }
+    # person
+    if($f{person} =~ m/^[123]$/)
+    {
+        push(@features, "person=$f{person}");
+    }
+    # degree
+    if($f{compdeg} eq "norm")
+    {
+        push(@features, "degree=pos");
+    }
+    elsif($f{compdeg} eq "comp")
+    {
+        push(@features, "degree=comp");
+    }
+    elsif($f{compdeg} eq "sup")
+    {
+        push(@features, "degree=sup");
+    }
+    elsif($f{compdeg} eq "abs")
+    {
+        push(@features, "degree=abs");
+    }
+    elsif($f{pos} eq "adv")
+    {
+        push(@features, "degree=unmarked");
+    }
+    # gender
+    if($f{gender} eq "com")
+    {
+        push(@features, "gender=common");
+    }
+    elsif($f{gender} eq "neut")
+    {
+        push(@features, "gender=neuter");
+    }
+    elsif($f{pos} eq "verb" && $f{verbform} eq "part" && $f{synpos} ne "adv" ||
+          $f{pos} eq "pron" && $f{subpos} ne "recip" ||
+          $f{pos} eq "noun" && $f{subpos} ne "prop" ||
+          $f{pos} eq "adj" && $f{synpos} ne "adv")
+    {
+        push(@features, "gender=common/neuter");
+    }
+    # number: some tags have it after gender
+    if($f{pos} ne "verb")
+    {
+        if($f{number} eq "sing")
+        {
+            push(@features, "number=sing");
+        }
+        elsif($f{number} eq "plu")
+        {
+            push(@features, "number=plur");
+        }
+        elsif($f{pos} eq "verb" && $f{verbform} eq "part" && $f{synpos} ne "adv" ||
+              $f{pos} eq "pron" ||
+              $f{pos} eq "noun" && $f{subpos} ne "prop" ||
+              $f{pos} eq "adj" && $f{synpos} ne "adv")
+        {
+            push(@features, "number=sing/plur");
+        }
+    }
+    # definiteness of verbs
+    unless($f{pos} =~ m/^(noun|adj|pron)$/)
+    {
+        if($f{definiteness} eq "ind")
+        {
+            push(@features, "definiteness=indef");
+        }
+        elsif($f{definiteness} eq "def")
+        {
+            push(@features, "definiteness=def");
+        }
+        elsif($f{pos} eq "verb" && $f{verbform} eq "part" && $f{synpos} ne "adv")
+        {
+            push(@features, "definiteness=def/indef");
+        }
+    }
+    # transcat of verbs
+    if($f{pos} eq "verb")
+    {
+        if($f{synpos} eq "attr")
+        {
+            push(@features, "transcat=adject");
+        }
+        elsif($f{synpos} eq "adv")
+        {
+            push(@features, "transcat=adverb");
+        }
+        elsif($f{pos} eq "verb" && $f{verbform} eq "part")
+        {
+            push(@features, "transcat=adject/adverb/unmarked");
+        }
+    }
+    # case
+    if($f{case} eq "nom")
+    {
+        push(@features, "case=nom");
+    }
+    elsif($f{case} eq "gen")
+    {
+        push(@features, "case=gen");
+    }
+    elsif($f{pos} eq "verb" && $f{verbform} eq "part" && $f{synpos} ne "adv" || $f{verbform} eq "ger" ||
+          $f{pos} =~ m/^(pron|noun|num)$/ ||
+          $f{pos} eq "adj" && $f{synpos} ne "adv")
+    {
+        push(@features, "case=unmarked");
+    }
+    # definiteness of nouns and adjectives
+    if($f{pos} =~ m/^(noun|adj)$/)
+    {
+        if($f{definiteness} eq "ind")
+        {
+            push(@features, "def=indef");
+        }
+        elsif($f{definiteness} eq "def")
+        {
+            push(@features, "def=def");
+        }
+        elsif($f{subpos} ne "prop" && $f{synpos} ne "adv")
+        {
+            push(@features, "def=def/indef");
+        }
+    }
+    # possessor
+    if($f{possnumber} eq "sing")
+    {
+        push(@features, "possessor=sing");
+    }
+    elsif($f{possnumber} eq "plu")
+    {
+        push(@features, "possessor=plur");
+    }
+    elsif($f{pos} eq "pron" && $f{poss} eq "poss")
+    {
+        push(@features, "possessor=sing/plur");
+    }
+    # reflexive
+    if($f{pos} eq "pron" && ($f{subpos} eq "pers" || $f{poss} eq "poss"))
+    {
+        if($f{reflex} eq "reflex")
+        {
+            push(@features, "reflexive=yes");
+        }
+        elsif($f{person}<3 && $f{case} ne "nom" && $f{poss} ne "poss")
+        {
+            push(@features, "reflexive=yes/no");
+        }
+        else
+        {
+            push(@features, "reflexive=no");
+        }
+    }
+    # register
+    if($f{politeness} eq "pol")
+    {
+        push(@features, "register=polite");
+    }
+    elsif($f{style} eq "form")
+    {
+        push(@features, "register=formal");
+    }
+    elsif($f{style} eq "arch")
+    {
+        push(@features, "register=obsolete");
+    }
+    elsif($f{pos} eq "pron" && $f{subpos} ne "recip")
+    {
+        push(@features, "register=unmarked");
+    }
+    # transcat of adjectives
+    if($f{pos} eq "adj")
+    {
+        if($f{synpos} eq "attr")
+        {
+            push(@features, "transcat=adject");
+        }
+        elsif($f{synpos} eq "adv")
+        {
+            push(@features, "transcat=adverbial");
+        }
+        else
+        {
+            push(@features, "transcat=unmarked");
+        }
+    }
+    # Add the features to the part of speech.
+    my $features = join("|", @features);
+    if($features eq "")
+    {
+        $features = "_";
+    }
+    $tag .= "\t$features";
     return $tag;
 }
 
@@ -672,6 +952,8 @@ X       XS      _
 X       XX      _
 end_of_list
     ;
+    # Protect from editors that replace tabs by spaces.
+    $list =~ s/ \s+/\t/sg;
     my @list = split(/\r?\n/, $list);
     pop(@list) if($list[$#list] eq "");
     return \@list;

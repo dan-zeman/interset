@@ -22,9 +22,17 @@ sub decode
     my $tag = shift;
     my %f; # features
     $f{tagset} = "bgconll";
-    $f{other} = $tag;
     # three components: coarse-grained pos, fine-grained pos, features
     # example: N\tNC\tgender=neuter|number=sing|case=unmarked|def=indef
+    # This tag set is really a damn masterpiece. The "gen" feature can occur twice
+    # in a tag for possessive pronouns! If that happens, the first occurrence
+    # denotes the gender of the owned, the second one denotes the gender of the
+    # owner. We start with renaming the second to avoid later confusion.
+    $tag =~ s/\|gen=(.\|.*)\|gen=/\|gen=$1\|possgen=/;
+    # Also, if number is plural, there is only one gender but it is the possessor's.
+    $tag =~ s/\|num=p\|(.*)\|gen=/\|num=p\|$1\|possgen=/;
+    # Also, all indefinite pronouns start with def=i and there can (but need not) be another def at the end.
+    $tag =~ s/Pf\tdef=i\|/Pf\t/;
     my ($pos, $subpos, $features) = split(/\s+/, $tag);
     # pos: N H A P M V D R C T I
     # N = noun
@@ -32,37 +40,58 @@ sub decode
     {
         $f{pos} = "noun";
         # subpos: N Nc Nm Np
+        # N  = indeclinable foreign noun
         # Nc = common noun
         # Np = proper noun
-        if($subpos eq "Np")
+        if($subpos eq "N")
+        {
+            $f{foreign} = "foreign";
+        }
+        elsif($subpos eq "Np")
         {
             $f{subpos} = "prop";
         }
         # Nm = typo? (The only example is "lv." ("leva"). There are other abbreviations tagged as Nc. Even "lv." occurs many other times tagged as Nc!)
+        elsif($subpos eq "Nm")
+        {
+            $f{other}{subpos} = "Nm";
+        }
     }
     # H = hybrid between noun and adjective (surnames, names of villages - Ivanov, Ivanovo)
     elsif($pos eq "H")
     {
         $f{pos} = "noun";
-        $f{other} = "hybrid";
+        $f{other}{pos} = "hybrid";
         # subpos: H Hf Hm Hn - duplicity! The second character actually encodes gender!
+        if($subpos eq "H")
+        {
+            $f{other}{subpos} = "H";
+        }
     }
     # A = adjective
     elsif($pos eq "A")
     {
         $f{pos} = "adj";
-        # subpos: A Af Am An - The second character encodes gender, which may or may not be also encoded in features.
-        if($subpos eq "Am")
+        # subpos: A Af Am An
+        # The second character encodes gender.
+        # If there is no second character, it is plural, which is genderless.
+        # We do not decode the gender/number here, we are waiting for the features.
+        # We have to preserve tags like "A Am _" where the gender is not in the features.
+        if($subpos eq "A")
         {
-            $f{gender} = "masc";
+            $f{other}{subpos} = "A";
+        }
+        elsif($subpos eq "Am")
+        {
+            $f{other}{subpos} = "Am";
         }
         elsif($subpos eq "Af")
         {
-            $f{gender} = "fem";
+            $f{other}{subpos} = "Af";
         }
         elsif($subpos eq "An")
         {
-            $f{gender} = "neut";
+            $f{other}{subpos} = "An";
         }
     }
     # P = pronoun
@@ -70,45 +99,56 @@ sub decode
     {
         $f{pos} = "pron";
         # subpos: P Pc Pd Pf Pi Pn Pp Pr Ps
+        # P = probably error; the only example is "za_razlika_ot" ("in contrast to")
+        if($subpos eq "P")
+        {
+            $f{other}{subpos} = "P";
+        }
         # Pp = personal pronoun
-        if($subpos eq "Pp")
+        elsif($subpos eq "Pp")
         {
             $f{subpos} = "pers";
+            $f{prontype} = "prs";
         }
         # Ps = possessive pronoun
         elsif($subpos eq "Ps")
         {
+            $f{prontype} = "prs";
             $f{poss} = "poss";
         }
         # Pd = demonstrative pronoun
         elsif($subpos eq "Pd")
         {
-            $f{definiteness} = "def";
+            $f{prontype} = "dem";
         }
         # Pi = interrogative pronoun
         elsif($subpos eq "Pi")
         {
+            $f{prontype} = "int";
             $f{definiteness} = "int";
         }
         # Pr = relative pronoun
         elsif($subpos eq "Pr")
         {
+            $f{prontype} = "rel";
             $f{definiteness} = "rel";
         }
         # Pc = collective pronoun
         elsif($subpos eq "Pc")
         {
+            $f{prontype} = "tot";
             $f{definiteness} = "col";
         }
         # Pf = indefinite pronoun
         elsif($subpos eq "Pf")
         {
-            $f{definiteness} = "ind";
+            $f{prontype} = "ind";
         }
         # Pn = negative pronoun
         elsif($subpos eq "Pn")
         {
-            $f{definiteness} = "neg";
+            $f{prontype} = "neg";
+            $f{negativeness} = "neg";
         }
     }
     # M = number
@@ -129,11 +169,13 @@ sub decode
         }
         # Md = adverbial numerals
         # not what interset calls synpos=adv!
+        # This does not mean that there are no "P Pf ref=q". There are. Examples: "nekolcina", "njakolko".
         elsif($subpos eq "Md")
         {
             # poveče, malko, mnogo, măničko
             $f{subpos} = "card";
-            $f{definiteness} = "ind";
+            $f{prontype} = "ind";
+            $f{other}{subpos} = "Md";
         }
         # My = fuzzy numerals about people
         elsif($subpos eq "My")
@@ -141,7 +183,7 @@ sub decode
             # malcina = few people, mnozina = many people
             # seems more like a noun (noun phrase) than a numeral
             $f{pos} = "noun";
-            $f{other} = "My";
+            $f{other}{subpos} = "My";
         }
     }
     # V = verb
@@ -152,43 +194,46 @@ sub decode
         # Vni = non-personal (has 3rd person only) imperfective verb
         if($subpos eq "Vni")
         {
-            $f{other} = "nonpers";
+            $f{other}{subpos} = "nonpers";
             $f{aspect} = "imp";
         }
         # Vnp = non-personal perfective
         elsif($subpos eq "Vnp")
         {
-            $f{other} = "nonpers";
+            $f{other}{subpos} = "nonpers";
             $f{aspect} = "perf";
         }
         # Vpi = personal imperfective
         elsif($subpos eq "Vpi")
         {
-            $f{other} = "pers";
+            $f{other}{subpos} = "pers";
             $f{aspect} = "imp";
         }
         # Vpp = personal perfective
         elsif($subpos eq "Vpp")
         {
-            $f{other} = "pers";
+            $f{other}{subpos} = "pers";
             $f{aspect} = "perf";
         }
         # Vxi = "săm" imperfective
         elsif($subpos eq "Vxi")
         {
-            $f{other} = "săm";
+            $f{subpos} = "aux";
+            $f{other}{subpos} = "săm";
             $f{aspect} = "imp";
         }
         # Vyp = "băda" perfective
         elsif($subpos eq "Vyp")
         {
-            $f{other} = "băda";
+            $f{subpos} = "aux";
+            $f{other}{subpos} = "băda";
             $f{aspect} = "perf";
         }
         # Vii = "bivam" imperfective
         elsif($subpos eq "Vii")
         {
-            $f{other} = "bivam";
+            $f{subpos} = "aux";
+            $f{other}{subpos} = "bivam";
             $f{aspect} = "imp";
         }
     }
@@ -248,14 +293,14 @@ sub decode
         elsif($subpos eq "Cr")
         {
             $f{subpos} = "coor";
-            $f{other} = "rep";
+            $f{other}{subpos} = "rep";
         }
         # Cp = single and repetitive coordinative conjunction
         # i = and
         elsif($subpos eq "Cp")
         {
             $f{subpos} = "coor";
-            $f{other} = "srep";
+            $f{other}{subpos} = "srep";
         }
     }
     # T = particle
@@ -299,13 +344,19 @@ sub decode
         elsif($subpos eq "Tv")
         {
             $f{subpos} = "mod";
-            $f{other} = "verb";
+            $f{other}{subpos} = "verb";
         }
         # Te = emphasis particle
         # daže = even
         elsif($subpos eq "Te")
         {
             $f{subpos} = "emp";
+        }
+        # Tg = gradable particle
+        # naj = most
+        elsif($subpos eq "Tg")
+        {
+            $f{other}{subpos} = "naj";
         }
     }
     # I = interjection
@@ -381,13 +432,15 @@ sub decode
             {
                 # full definite article of masculines
                 $f{definiteness} = "def";
-                $f{variant} = "0";
+                # We cannot use $f{variant} = "short" because it would collide with the form feature of pronouns.
+                $f{other}{definiteness} = "f";
             }
             elsif($value eq "h")
             {
                 # short definite article of masculines
                 $f{definiteness} = "def";
-                $f{variant} = "short";
+                # We cannot use $f{variant} = "short" because it would collide with the form feature of pronouns.
+                $f{other}{definiteness} = "h";
             }
             elsif($value eq "i")
             {
@@ -435,11 +488,11 @@ sub decode
         {
             if($value eq "i")
             {
-                $f{subpos} = "intr";
+                $f{subcat} = "intr";
             }
             elsif($value eq "t")
             {
-                $f{subpos} = "tran";
+                $f{subcat} = "tran";
             }
         }
         # mood = i|u|z
@@ -474,17 +527,17 @@ sub decode
             }
             # t = count form
             # special ending for plural of inanimate nouns in counted noun phrases
-            # corresponds to the singular genitive ussage in Russian ("tri časa"), so we encode it as plural+genitive
+            # corresponds to the singular genitive ussage in Russian ("tri časa")
+            # we encode it as dual
             elsif($value eq "t")
             {
-                $f{number} = "plu";
-                $f{case} = "gen";
+                $f{number} = "dual";
             }
             # pia_tantum = pluralia tantum (nouns that only appear in plural: "The Alps")
             elsif($value eq "pia_tantum")
             {
                 $f{number} = "plu";
-                $f{other} = "pluralia tantum";
+                $f{other}{number} = "pluralia tantum";
             }
         }
         # past
@@ -498,6 +551,23 @@ sub decode
             if($value =~ m/^[123]$/)
             {
                 $f{person} = $value;
+            }
+        }
+        # possgen = m|f
+        # This was originally called "gen". We do not like two "gen"s in one tag, so we renamed it in the beginning of decoding.
+        elsif($feature eq "possgen")
+        {
+            if($value eq "m")
+            {
+                $f{possgender} = "masc";
+            }
+            elsif($value eq "f")
+            {
+                $f{possgender} = "fem";
+            }
+            elsif($value eq "n")
+            {
+                $f{possgender} = "neut";
             }
         }
         # ref = e|r|a|p|op|mp|q|l|t|m ... some pronouns are in fact numerals or adverbs
@@ -519,6 +589,7 @@ sub decode
                 $f{synpos} = "attr";
             }
             # p = possessor
+            # not normal possessive pronouns (my, his, our) but relative/indefinite/negative (whose, someone's, nobody's)
             elsif($value eq "p")
             {
                 $f{poss} = "poss";
@@ -571,8 +642,14 @@ sub decode
             elsif($value eq "o")
             {
                 $f{tense} = "past";
+                $f{subtense} = "aor";
             }
             # m = imperfect; PROBLEM: verbs classified as perfect occur (although rarely) in the imperfect past tense
+            # Bulgarian has lexical aspect and grammatical aspect.
+            # Lexical aspect is inherent in verb lemma.
+            # Grammatical: imperfect tenses, perfect tenses, and aorist (aspect-neutral).
+            # Main clause: perfective verb with perfect tense or aorist; imperfective with imperfect or aorist.
+            # Relative clause: perfective verb can occur in imperfect tense, and vice versa.
             # triple specification of aspect:
             # detailed part of speech = Vpp (verb personal perfective)
             # aspect = p (perfective)
@@ -580,11 +657,7 @@ sub decode
             elsif($value eq "m")
             {
                 $f{tense} = "past";
-                if($f{aspect} eq "perf")
-                {
-                    $f{other} = "aspect=p|tense=m";
-                }
-                $f{aspect} = "imp";
+                $f{subtense} = "imp";
             }
         }
         # trans = i|t
@@ -593,12 +666,12 @@ sub decode
             # i = intransitive verb
             if($value eq "i")
             {
-                $f{subpos} = "intr";
+                $f{subcat} = "intr";
             }
             # t = transitive verb
             elsif($value eq "t")
             {
-                $f{subpos} = "tran";
+                $f{subcat} = "tran";
             }
         }
         # type = aux
@@ -674,91 +747,382 @@ sub encode
     $strict = !$nonstrict;
     my $tag;
     # pos and subpos
-    if($f{abbr} eq "abbr")
+    if($f{foreign} eq "foreign")
     {
-        $tag = "Y\tY";
+        $tag = "N\tN";
     }
     elsif($f{pos} eq "noun")
     {
-        # N = common noun
-        # Z = proper noun
-        if($f{subpos} eq "prop")
+        # N = normal noun
+        # H = hybrid adjectival noun (Ivanov, Ivanovo)
+        if($f{tagset} eq "bgconll" && $f{other}{pos} eq "hybrid")
         {
-            $tag = "Z\tZ";
+            # Hm = masculine
+            # Hf = feminine
+            # Hn = neuter
+            if($f{tagset} eq "bgconll" && $f{other}{subpos} eq "H")
+            {
+                $tag = "H\tH";
+            }
+            elsif($f{gender} eq "masc")
+            {
+                $tag = "H\tHm";
+            }
+            elsif($f{gender} eq "fem")
+            {
+                $tag = "H\tHf";
+            }
+            else
+            {
+                $tag = "H\tHn";
+            }
         }
         else
         {
-            $tag = "N\tN";
+            # N  = indeclinable, usually foreign noun ("bug", "US_Oupăn", "Bi_Bi_Si", "Partido_popular")
+            # Nc = common noun
+            # Np = proper noun
+            # Nm ... typo, nonsensical tag?
+            # My ... "melcina" (Czech: "menšina")
+            if($f{tagset} eq "bgconll" && $f{other}{subpos} eq "Nm")
+            {
+                $tag = "N\tNm";
+            }
+            elsif($f{tagset} eq "bgconll" && $f{other}{subpos} eq "My")
+            {
+                $tag = "M\tMy";
+            }
+            elsif($f{subpos} eq "prop")
+            {
+                $tag = "N\tNp";
+            }
+            else
+            {
+                $tag = "N\tNc";
+            }
         }
     }
     elsif($f{pos} =~ m/^(adj|det)$/)
     {
-        $tag = "A\tA";
-    }
-    elsif($f{pos} eq "pron")
-    {
-        # SD = demonstrative pronoun
-        # SR = relative pronoun
-        # S = other pronoun
-        if($f{definiteness} eq "def")
+        # A  = plural
+        # Am = masculine
+        # Af = feminine
+        # An = neuter
+        if($f{gender} eq "masc" || $f{tagset} eq "bgconll" && $f{other}{subpos} eq "Am")
         {
-            $tag = "S\tSD";
+            $tag = "A\tAm";
         }
-        elsif($f{definiteness} =~ m/^(wh|int|rel)$/)
+        elsif($f{gender} eq "fem" || $f{tagset} eq "bgconll" && $f{other}{subpos} eq "Af")
         {
-            $tag = "S\tSR";
+            $tag = "A\tAf";
+        }
+        elsif($f{gender} eq "neut" || $f{tagset} eq "bgconll" && $f{other}{subpos} eq "An")
+        {
+            $tag = "A\tAn";
         }
         else
         {
-            $tag = "S\tS";
+            $tag = "A\tA";
+        }
+    }
+    elsif($f{pos} eq "pron" || $f{prontype} ne "")
+    {
+        # P  = "za_razlika_ot"
+        # Pp = personal pronoun
+        # Ps = possessive pronoun
+        # Pd = demonstrative pronoun
+        # Pi = interrogative pronoun
+        # Pr = relative pronoun
+        # Pc = collective pronoun
+        # Pf = indefinite pronoun
+        # Pn = negative pronoun
+        if($f{tagset} eq "bgconll" && $f{other}{subpos} eq "P")
+        {
+            $tag = "P\tP";
+        }
+        elsif($f{prontype} eq "prs")
+        {
+            if($f{poss} eq "poss")
+            {
+                $tag = "P\tPs";
+            }
+            else
+            {
+                $tag = "P\tPp";
+            }
+        }
+        elsif($f{prontype} eq "int")
+        {
+            $tag = "P\tPi";
+        }
+        elsif($f{prontype} eq "rel")
+        {
+            $tag = "P\tPr";
+        }
+        elsif($f{prontype} eq "neg")
+        {
+            $tag = "P\tPn";
+        }
+        elsif($f{prontype} eq "ind")
+        {
+            if($f{subpos} eq "card")
+            {
+                $tag = "M\tMd";
+            }
+            else
+            {
+                $tag = "P\tPf";
+            }
+        }
+        elsif($f{prontype} eq "dem")
+        {
+            $tag = "P\tPd";
+        }
+        elsif($f{prontype} eq "tot")
+        {
+            $tag = "P\tPc";
+        }
+        elsif($f{definiteness} =~ m/^(wh|rel)$/)
+        {
+            $tag = "P\tPr";
+        }
+        elsif($f{definiteness} eq "int")
+        {
+            $tag = "P\tPi";
+        }
+        elsif($f{negativeness} eq "neg")
+        {
+            $tag = "P\tPn";
+        }
+        elsif($f{poss} eq "poss" && ($f{possnumber} ne "" || $f{reflex} eq "reflex"))
+        {
+            $tag = "P\tPs";
+        }
+        elsif($f{definiteness} eq "def")
+        {
+            $tag = "P\tPd";
+        }
+        elsif($f{definiteness} eq "col")
+        {
+            $tag = "P\tPc";
+        }
+        else
+        {
+            $tag = "P\tPp";
         }
     }
     elsif($f{pos} eq "num")
     {
-        # Q = numeral
-        $tag = "Q\tQ";
-    }
-    elsif($f{pos} eq "verb")
-    {
-        # VI = imperfect verb
-        # VP = perfect verb
-        if($f{aspect} eq "perf")
+        # Mc = cardinal number
+        # Mo = ordinal number
+        # Md = adverbial numeral (poveče, malko, mnogo, măničko)
+        # My = fuzzy numerals about people (malcina, mnozina)
+        if($f{definiteness} eq "rel")
         {
-            $tag = "V\tVP";
+            $tag = "P\tPr";
+        }
+        elsif($f{definiteness} eq "int")
+        {
+            $tag = "P\tPi";
+        }
+        elsif($f{tagset} eq "bgconll" && $f{other}{subpos} eq "My")
+        {
+            $tag = "M\tMy";
+        }
+        elsif($f{subpos} eq "card" && $f{prontype} eq "ind")
+        {
+            $tag = "M\tMd";
+        }
+        elsif($f{subpos} eq "ord")
+        {
+            $tag = "M\tMo";
         }
         else
         {
-            $tag = "V\tVI";
+            $tag = "M\tMc";
+        }
+    }
+    elsif($f{pos} eq "verb")
+    {
+        # V   = ? (but aspect is not set)
+        # Vpi = personal imperfect verb
+        # Vpp = personal perfect verb
+        # Vni = nonpersonal imperfect verb
+        # Vnp = nonpersonal perfect verb
+        # Vii = imperfect auxiliary verb bivam
+        # Vxi = imperfect auxiliary verb săm
+        # Vyp = perfect auxiliary verb băda
+        if($f{aspect} eq "")
+        {
+            $tag = "V\tV";
+        }
+        elsif($f{subpos} eq "aux")
+        {
+            if($f{tagset} eq "bgconll" && $f{other}{subpos} eq "băda")
+            {
+                $tag = "V\tVyp";
+            }
+            elsif($f{tagset} eq "bgconll" && $f{other}{subpos} eq "bivam")
+            {
+                $tag = "V\tVii";
+            }
+            else
+            {
+                $tag = "V\tVxi";
+            }
+        }
+        elsif($f{tagset} eq "bgconll" && $f{other}{subpos} eq "nonpers")
+        {
+            if($f{aspect} eq "perf")
+            {
+                $tag = "V\tVnp";
+            }
+            else
+            {
+                $tag = "V\tVni";
+            }
+        }
+        else
+        {
+            if($f{aspect} eq "perf")
+            {
+                $tag = "V\tVpp";
+            }
+            else
+            {
+                $tag = "V\tVpi";
+            }
         }
     }
     elsif($f{pos} eq "adv")
     {
-        $tag = "D\tD";
-    }
-    elsif($f{pos} eq "prep")
-    {
-        $tag = "P\tP";
-    }
-    elsif($f{pos} eq "conj")
-    {
-        $tag = "C\tC";
-    }
-    elsif($f{pos} =~ m/^(inf|part)$/)
-    {
-        # FI = interrogative particle
-        # FN = negative particle
-        # F = function word or particle
-        if($f{negativeness} eq "neg")
+        # Dm = adverb of manner
+        # Dl = adverb of location
+        # Dt = adverb of time
+        # Dq = adverb of quantity or degree
+        # Dd = adverb of modal nature
+        if($f{definiteness} eq "rel")
         {
-            $tag = "F\tFN";
+            $tag = "P\tPr";
         }
-        elsif($f{definiteness} =~ m/^(wh|int|rel)$/)
+        elsif($f{definiteness} eq "int")
         {
-            $tag = "F\tFI";
+            $tag = "P\tPi";
+        }
+        elsif($f{definiteness} eq "ind")
+        {
+            $tag = "P\tPf";
+        }
+        elsif($f{negativeness} eq "neg")
+        {
+            $tag = "P\tPn";
+        }
+        elsif($f{subpos} eq "man")
+        {
+            $tag = "D\tDm";
+        }
+        elsif($f{subpos} eq "loc")
+        {
+            $tag = "D\tDl";
+        }
+        elsif($f{subpos} eq "tim")
+        {
+            $tag = "D\tDt";
+        }
+        elsif($f{subpos} eq "deg")
+        {
+            $tag = "D\tDq";
+        }
+        elsif($f{subpos} eq "mod")
+        {
+            $tag = "D\tDd";
         }
         else
         {
-            $tag = "F\tF";
+            $tag = "D\tD";
+        }
+    }
+    elsif($f{pos} eq "prep")
+    {
+        $tag = "R\tR";
+    }
+    elsif($f{pos} eq "conj")
+    {
+        # Cc = coordinative conjunction
+        # Cs = subordinative conjunction
+        # Cr = repetitive coordinative conjunction
+        # Cp = single and repetitive coordinative conjunction
+        if($f{subpos} eq "sub")
+        {
+            $tag = "C\tCs";
+        }
+        else
+        {
+            if($f{tagset} eq "bgconll" && $f{other}{subpos} eq "rep")
+            {
+                $tag = "C\tCr";
+            }
+            elsif($f{tagset} eq "bgconll" && $f{other}{subpos} eq "srep")
+            {
+                $tag = "C\tCp";
+            }
+            else
+            {
+                $tag = "C\tCc";
+            }
+        }
+    }
+    elsif($f{pos} eq "inf")
+    {
+        # Note that this occurs only in values from foreign tagsets.
+        # Bulgarian "da/Tx" is not decoded as "inf" because "Tx" is also used for non-infinitival particle "šte".
+        # auxiliary particle
+        $tag = "T\tTx";
+    }
+    elsif($f{pos} eq "part")
+    {
+        # Ta = affirmative particle
+        if($f{negativeness} eq "pos")
+        {
+            $tag = "T\tTa";
+        }
+        # Tn = negative particle
+        elsif($f{negativeness} eq "neg")
+        {
+            $tag = "T\tTn";
+        }
+        # Ti = interrogative particle
+        elsif($f{definiteness} =~ m/^(wh|int|rel)$/)
+        {
+            $tag = "T\tTi";
+        }
+        # Tx = auxiliary particle
+        elsif($f{subpos} eq "aux")
+        {
+            $tag = "T\tTx";
+        }
+        # Tm = modal particle
+        # Tv = verbal particle
+        elsif($f{subpos} eq "mod")
+        {
+            if($f{tagset} eq "bgconll" && $f{other}{subpos} eq "verb")
+            {
+                $tag = "T\tTv";
+            }
+            else
+            {
+                $tag = "T\tTm";
+            }
+        }
+        # Tg = gradable particle
+        elsif($f{tagset} eq "bgconll" && $f{other}{subpos} eq "naj")
+        {
+            $tag = "T\tTg";
+        }
+        # Te = emphasis particle
+        else
+        {
+            $tag = "T\tTe";
         }
     }
     elsif($f{pos} eq "int")
@@ -766,113 +1130,332 @@ sub encode
         # I = interjection
         $tag = "I\tI";
     }
-    elsif($f{pos} eq "punc")
-    {
-        # T = typo
-        # G = punctuation
-        # X = non-alphabetic
-        $tag = "G\tG";
-    }
     else
     {
-        if($f{tagset} eq "arconll" && $f{other} eq "-")
-        {
-            $tag = "-\t-";
-        }
-        else
-        {
-            $tag = "X\tX";
-        }
+        # Punct = punctuation
+        $tag = "Punct\tPunct";
     }
     # Encode features.
     my @features;
-    # Only finite imperfect verbs have mood.
-    if($f{pos} eq "verb" && $f{aspect} eq "imp" && $f{verbform} eq "fin")
+    # type of verbs
+    if($f{pos} eq "verb")
     {
-        if($f{mood} eq "jus")
+        if($f{subpos} eq "aux")
         {
-            push(@features, "mood=D");
+            push(@features, "type=aux");
+        }
+        # aspect
+        if($f{subpos} eq "aux" && !($f{tagset} eq "bgconll" && $f{other}{subpos} =~ m/^(săm|bivam)$/) ||
+           $f{aspect} eq "perf" && !($f{tagset} eq "bgconll" && $f{other}{subpos} eq "nonpers") && $f{subcat} ne "")
+        {
+            if($f{aspect} eq "imp")
+            {
+                push(@features, "aspect=i");
+            }
+            elsif($f{aspect} eq "perf")
+            {
+                push(@features, "aspect=p");
+            }
+        }
+        # transitivity of verbs
+        my $prefix;
+        if($f{tagset} eq "bgconll" && $f{other}{subpos} eq "nonpers" && $f{aspect} eq "imp")
+        {
+            $prefix = "im";
+        }
+        if($f{subcat} eq "intr")
+        {
+            push(@features, "${prefix}trans=i");
+        }
+        elsif($f{subcat} eq "tran")
+        {
+            push(@features, "${prefix}trans=t");
+        }
+        # vform
+        if($f{verbform} eq "part")
+        {
+            push(@features, "vform=c");
+        }
+        elsif($f{verbform} eq "trans")
+        {
+            push(@features, "vform=g");
+        }
+        # mood
+        if($f{mood} eq "ind")
+        {
+            push(@features, "mood=i");
+        }
+        elsif($f{mood} eq "imp")
+        {
+            push(@features, "mood=z");
         }
         elsif($f{mood} eq "sub")
         {
-            push(@features, "mood=S");
+            push(@features, "mood=u");
         }
-        else
+        # voice
+        if($f{voice} eq "act")
         {
-            push(@features, "mood=I");
+            push(@features, "voice=a");
+        }
+        elsif($f{voice} eq "pass")
+        {
+            push(@features, "voice=v");
+        }
+        # tense
+        if($f{tense} eq "pres")
+        {
+            push(@features, "tense=r");
+        }
+        elsif($f{tense} eq "past")
+        {
+            if($f{subtense} eq "imp")
+            {
+                push(@features, "tense=m");
+            }
+            elsif($f{tagset} eq "bgconll" && $f{other}{subpos} eq "săm" && $f{mood} ne "sub")
+            {
+                push(@features, "past");
+            }
+            else
+            {
+                push(@features, "tense=o");
+            }
         }
     }
-    # Only verbs have voice and only passive voice is explicitely encoded.
-    if($f{pos} eq "verb")
+    # def1
+    # The features of indefinite pronouns (Pf) always begin with "def=i".
+    # Another definiteness can occur at the end, this time not necessarily indefinite!
+    # Examples: edin i i, edinja i h, edinjat i f, ednata i d, nekolcina i i, nešta i i, neštata i d, njakolko i i.
+    if($f{prontype} eq "ind" && !($f{tagset} eq "bgconll" && $f{other}{subpos} eq "Md"))
     {
-        if($f{voice} eq "pass")
+        push(@features, "def=i");
+    }
+    # ref
+    if($f{reflex} eq "reflex")
+    {
+        push(@features, "ref=r");
+    }
+    elsif($f{poss} eq "poss")
+    {
+        if($f{possnumber} eq "sing")
         {
-            push(@features, "voice=P");
+            push(@features, "ref=op");
+        }
+        elsif($f{possnumber} eq "plu")
+        {
+            push(@features, "ref=mp");
+        }
+        elsif($f{prontype} ne "prs")
+        {
+            push(@features, "ref=p");
         }
     }
-    # Non-demonstrative non-relative pronouns and verbs have person.
-    if($f{pos} =~ m/^(pron|verb)$/)
+    elsif($f{pos} eq "num" && $f{prontype} ne "" && !($f{tagset} eq "bgconll" && $f{other}{subpos} eq "Md"))
+    {
+        push(@features, "ref=q");
+    }
+    elsif($f{subpos} eq "loc" && $f{prontype} ne "")
+    {
+        push(@features, "ref=l");
+    }
+    elsif($f{subpos} eq "tim" && $f{prontype} ne "")
+    {
+        push(@features, "ref=t");
+    }
+    elsif($f{subpos} eq "man" && $f{prontype} ne "")
+    {
+        push(@features, "ref=m");
+    }
+    elsif($f{subpos} eq "cau")
+    {
+        push(@features, "cause");
+    }
+    elsif($f{synpos} eq "subst")
+    {
+        push(@features, "ref=e");
+    }
+    elsif($f{synpos} eq "attr" && $f{prontype} ne "")
+    {
+        push(@features, "ref=a");
+    }
+    # form of pronouns
+    if($f{pos} eq "pron")
+    {
+        if($f{variant} eq "long")
+        {
+            if($f{style} eq "arch")
+            {
+                push(@features, "form=ext");
+            }
+            else
+            {
+                push(@features, "form=f");
+            }
+        }
+        elsif($f{variant} eq "short")
+        {
+            push(@features, "form=s");
+        }
+    }
+    # person of verbs comes here
+    if($f{pos} eq "verb")
     {
         if($f{person} =~ m/^[123]$/)
         {
             push(@features, "pers=$f{person}");
         }
     }
-    # Gender.
-    if($f{gender} eq "masc")
+    # case of pronouns
+    unless($f{pos} eq "noun")
     {
-        push(@features, "gen=M");
+        if($f{case} eq "nom")
+        {
+            push(@features, "case=n");
+        }
+        elsif($f{case} eq "gen")
+        {
+            push(@features, "case=dp");
+        }
+        elsif($f{case} eq "dat")
+        {
+            push(@features, "case=d");
+        }
+        elsif($f{case} eq "acc")
+        {
+            push(@features, "case=a");
+        }
     }
-    elsif($f{gender} eq "fem")
+    # gender of nouns, adjectives and numerals
+    if($f{pos} =~ m/^(noun|adj|num)$/ && $f{prontype} eq "")
     {
-        push(@features, "gen=F");
+        if($f{gender} eq "masc")
+        {
+            push(@features, "gen=m");
+        }
+        elsif($f{gender} eq "fem")
+        {
+            push(@features, "gen=f");
+        }
+        elsif($f{gender} eq "neut")
+        {
+            push(@features, "gen=n");
+        }
     }
-    # Number.
+    # number
     if($f{number} eq "sing")
     {
-        push(@features, "num=S");
+        push(@features, "num=s");
     }
     elsif($f{number} eq "dual")
     {
-        push(@features, "num=D");
+        push(@features, "num=t");
     }
     elsif($f{number} eq "plu")
     {
-        push(@features, "num=P");
-    }
-    # Case.
-    if($f{case} eq "nom")
-    {
-        push(@features, "case=1");
-    }
-    elsif($f{case} eq "gen")
-    {
-        push(@features, "case=2");
-    }
-    elsif($f{case} eq "acc")
-    {
-        push(@features, "case=4");
-    }
-    # Definiteness.
-    # Do not show explicitly for demonstrative pronouns.
-    if($f{definiteness} eq "def" && $f{pos} ne "pron")
-    {
-        if($f{tagset} eq "arconll" && $f{other} eq "def=C")
+        if($f{tagset} eq "bgconll" && $f{other}{number} eq "pluralia tantum")
         {
-            push(@features, "def=C");
+            push(@features, "num=pia_tantum");
         }
         else
         {
-            push(@features, "def=D");
+            push(@features, "num=p");
         }
     }
-    elsif($f{definiteness} eq "ind")
+    # case of nouns
+    if($f{pos} eq "noun")
     {
-        push(@features, "def=I");
+        if($f{case} eq "nom")
+        {
+            push(@features, "case=n");
+        }
+        elsif($f{case} eq "gen")
+        {
+            push(@features, "case=dp");
+        }
+        elsif($f{case} eq "dat")
+        {
+            push(@features, "case=d");
+        }
+        elsif($f{case} eq "acc")
+        {
+            push(@features, "case=a");
+        }
+        elsif($f{case} eq "voc")
+        {
+            push(@features, "case=v");
+        }
     }
-    elsif($f{definiteness} eq "red")
+    # form of adjectives
+    if($f{pos} eq "adj")
     {
-        push(@features, "def=R");
+        if($f{style} eq "arch")
+        {
+            push(@features, "form=ext");
+        }
+    }
+    # person of pronouns comes here
+    if($f{pos} eq "pron")
+    {
+        if($f{person} =~ m/^[123]$/)
+        {
+            push(@features, "pers=$f{person}");
+        }
+    }
+    # gender of pronouns
+    unless($f{pos} =~ m/^(noun|adj|num)$/ && $f{prontype} eq "")
+    {
+        if($f{gender} eq "masc")
+        {
+            push(@features, "gen=m");
+        }
+        elsif($f{gender} eq "fem")
+        {
+            push(@features, "gen=f");
+        }
+        elsif($f{gender} eq "neut")
+        {
+            push(@features, "gen=n");
+        }
+    }
+    # definiteness
+    unless($f{pos} eq "adv")
+    {
+        if($f{definiteness} eq "ind")
+        {
+            push(@features, "def=i");
+        }
+        elsif($f{definiteness} eq "def")
+        {
+            if($f{tagset} eq "bgconll" && $f{other}{definiteness} eq "f")
+            {
+                push(@features, "def=f");
+            }
+            elsif($f{tagset} eq "bgconll" && $f{other}{definiteness} eq "h")
+            {
+                # shoft definite article
+                # We cannot use $f{variant} = "short" because it would collide with the form feature of pronouns.
+                push(@features, "def=h");
+            }
+            else
+            {
+                push(@features, "def=d");
+            }
+        }
+    }
+    # possgender
+    # Due to the endless wisdom of the creators of this tag set, the possessor's gender is encoded as a second "gen" at the end of the tag.
+    if($f{possgender} eq "masc")
+    {
+        push(@features, "gen=m");
+    }
+    elsif($f{possgender} eq "fem")
+    {
+        push(@features, "gen=f");
+    }
+    elsif($f{possgender} eq "neut")
+    {
+        push(@features, "gen=n");
     }
     # Add the features to the part of speech.
     my $features = join("|", @features);
@@ -896,538 +1479,536 @@ sub encode
 sub list
 {
     my $list = <<end_of_list
-A   A   _
-A   Af  _
-A   Af  gen=f|num=s|def=d
-A   Af  gen=f|num=s|def=i
-A   Am  _
-A   Am  gen=m|num=s|def=f
-A   Am  gen=m|num=s|def=h
-A   Am  gen=m|num=s|def=i
-A   Am  gen=m|num=s|form=ext
-A   An  gen=n|num=s|def=d
-A   An  gen=n|num=s|def=i
-A   A   num=p|def=d
-A   A   num=p|def=i
-C   Cc  _
-C   Cp  _
-C   Cr  _
-C   Cs  _
-D   D   _
-D   Dd  _
-D   Dl  _
-D   Dm  _
-D   Dq  _
-D   Dt  _
-H   Hf  gen=f|num=s|def=i
-H   Hm  gen=m|num=s|def=f
-H   Hm  gen=m|num=s|def=i
-H   Hn  gen=n|num=s|def=i
-H   H   num=p|def=i
-I   I   _
-M   Mc  _
-M   Mc  def=d
-M   Mc  def=i
-M   Mc  gen=f|def=d
-M   Mc  gen=f|def=i
-M   Mc  gen=f|num=s|def=d
-M   Mc  gen=f|num=s|def=i
-M   Mc  gen=m|def=d
-M   Mc  gen=m|def=i
-M   Mc  gen=m|num=s|def=f
-M   Mc  gen=m|num=s|def=i
-M   Mc  gen=n|def=d
-M   Mc  gen=n|def=i
-M   Mc  gen=n|num=s|def=d
-M   Mc  gen=n|num=s|def=i
-M   Md  _
-M   Md  def=d
-M   Md  def=i
-M   Mo  gen=f|num=s|def=d
-M   Mo  gen=f|num=s|def=i
-M   Mo  gen=m|num=s|def=f
-M   Mo  gen=m|num=s|def=h
-M   Mo  gen=m|num=s|def=i
-M   Mo  gen=n|num=s|def=d
-M   Mo  gen=n|num=s|def=i
-M   Mo  num=p|def=d
-M   Mo  num=p|def=i
-M   My  _
-M   My  def=i
-N   N   _
-N   Nc  _
-N   Nc  gen=f|num=p|def=d
-N   Nc  gen=f|num=p|def=i
-N   Nc  gen=f|num=s|case=v
-N   Nc  gen=f|num=s|def=d
-N   Nc  gen=m|num=p|def=d
-N   Nc  gen=m|num=p|def=i
-N   Nc  gen=m|num=s|case=v
-N   Nc  gen=m|num=s|def=d
-N   Nc  gen=m|num=s|def=f
-N   Nc  gen=m|num=s|def=h
-N   Nc  gen=m|num=s|def=i
-N   Nc  gen=m|num=t
-N   Nc  gen=n|num=p|def=d
-N   Nc  gen=n|num=p|def=i
-N   Nc  gen=n|num=s|def=d
-N   Nc  gen=n|num=s|def=i
-N   Nc  num=pia_tantum|def=d
-N   Nc  num=pia_tantum|def=i
-N   Nm  _
-N   Np  _
-N   Np  gen=f|num=p|def=d
-N   Np  gen=f|num=p|def=i
-N   Np  gen=f|num=s|case=v
-N   Np  gen=f|num=s|def=i
-N   Np  gen=m|num=p|def=d
-N   Np  gen=m|num=p|def=i
-N   Np  gen=m|num=s|case=a
-N   Np  gen=m|num=s|case=v
-N   Np  gen=m|num=s|def=f
-N   Np  gen=m|num=s|def=h
-N   Np  gen=m|num=s|def=i
-N   Np  gen=n|num=p|def=d
-N   Np  gen=n|num=p|def=i
-N   Np  gen=n|num=s|def=d
-N   Np  gen=n|num=s|def=i
-N   Np  num=pia_tantum|def=i
-P   P   _
-P   Pc  ref=a|num=p
-P   Pc  ref=a|num=s|gen=f
-P   Pc  ref=a|num=s|gen=m
-P   Pc  ref=a|num=s|gen=n
-P   Pc  ref=e|case=a|num=s|gen=m
-P   Pc  ref=e|case=n|num=p
-P   Pc  ref=e|case=n|num=s|gen=f
-P   Pc  ref=e|case=n|num=s|gen=m
-P   Pc  ref=e|case=n|num=s|gen=n
-P   Pc  ref=l
-P   Pc  ref=q|num=p|def=d
-P   Pc  ref=q|num=s|gen=n|def=d
-P   Pc  ref=t
-P   Pd  _
-P   Pd  ref=a|num=p
-P   Pd  ref=a|num=s|gen=f
-P   Pd  ref=a|num=s|gen=n
-P   Pd  ref=e|case=n|num=p
-P   Pd  ref=e|case=n|num=s|gen=f
-P   Pd  ref=e|case=n|num=s|gen=m
-P   Pd  ref=e|case=n|num=s|gen=n
-P   Pd  ref=l
-P   Pd  ref=m
-P   Pd  ref=q
-P   Pd  ref=t
-P   Pf  def=i|ref=a|num=p
-P   Pf  def=i|ref=a|num=s|gen=f
-P   Pf  def=i|ref=a|num=s|gen=m
-P   Pf  def=i|ref=a|num=s|gen=n
-P   Pf  def=i|ref=e|case=a|num=s|gen=m
-P   Pf  def=i|ref=e|case=d|num=s|gen=m
-P   Pf  def=i|ref=e|case=n|num=p
-P   Pf  def=i|ref=e|case=n|num=p|def=d
-P   Pf  def=i|ref=e|case=n|num=p|def=i
-P   Pf  def=i|ref=e|case=n|num=s|gen=f
-P   Pf  def=i|ref=e|case=n|num=s|gen=f|def=d
-P   Pf  def=i|ref=e|case=n|num=s|gen=f|def=i
-P   Pf  def=i|ref=e|case=n|num=s|gen=m
-P   Pf  def=i|ref=e|case=n|num=s|gen=m|def=f
-P   Pf  def=i|ref=e|case=n|num=s|gen=m|def=h
-P   Pf  def=i|ref=e|case=n|num=s|gen=m|def=i
-P   Pf  def=i|ref=e|case=n|num=s|gen=n
-P   Pf  def=i|ref=e|case=n|num=s|gen=n|def=d
-P   Pf  def=i|ref=e|case=n|num=s|gen=n|def=i
-P   Pf  def=i|ref=l
-P   Pf  def=i|ref=m
-P   Pf  def=i|ref=p|num=p
-P   Pf  def=i|ref=q|def=i
-P   Pf  def=i|ref=t
-P   Pi  cause
-P   Pi  ref=a|num=p
-P   Pi  ref=a|num=s|gen=f
-P   Pi  ref=a|num=s|gen=m
-P   Pi  ref=a|num=s|gen=n
-P   Pi  ref=e|case=a|num=s|gen=m
-P   Pi  ref=e|case=n|num=p
-P   Pi  ref=e|case=n|num=s|gen=f
-P   Pi  ref=e|case=n|num=s|gen=m
-P   Pi  ref=e|case=n|num=s|gen=n
-P   Pi  ref=l
-P   Pi  ref=m
-P   Pi  ref=p|num=s|gen=f
-P   Pi  ref=p|num=s|gen=m
-P   Pi  ref=q
-P   Pi  ref=t
-P   Pn  _
-P   Pn  ref=a|num=p
-P   Pn  ref=a|num=s|gen=f
-P   Pn  ref=a|num=s|gen=m
-P   Pn  ref=a|num=s|gen=n
-P   Pn  ref=e|case=a|num=s|gen=m
-P   Pn  ref=e|case=d|num=s|gen=m
-P   Pn  ref=e|case=n|num=s|gen=f
-P   Pn  ref=e|case=n|num=s|gen=m
-P   Pn  ref=e|case=n|num=s|gen=n
-P   Pn  ref=e|case=n|num=s|gen=n|def=d
-P   Pn  ref=l
-P   Pn  ref=m
-P   Pn  ref=p|num=s|gen=f
-P   Pn  ref=t
-P   Pp  _
-P   Pp  ref=e|case=n|num=p|pers=1
-P   Pp  ref=e|case=n|num=p|pers=2
-P   Pp  ref=e|case=n|num=p|pers=3
-P   Pp  ref=e|case=n|num=s|pers=1
-P   Pp  ref=e|case=n|num=s|pers=2
-P   Pp  ref=e|case=n|num=s|pers=3|gen=f
-P   Pp  ref=e|case=n|num=s|pers=3|gen=m
-P   Pp  ref=e|case=n|num=s|pers=3|gen=n
-P   Pp  ref=e|form=f|case=a|num=p|pers=1
-P   Pp  ref=e|form=f|case=a|num=p|pers=2
-P   Pp  ref=e|form=f|case=a|num=p|pers=3
-P   Pp  ref=e|form=f|case=a|num=s|pers=1
-P   Pp  ref=e|form=f|case=a|num=s|pers=2
-P   Pp  ref=e|form=f|case=a|num=s|pers=3|gen=f
-P   Pp  ref=e|form=f|case=a|num=s|pers=3|gen=m
-P   Pp  ref=e|form=f|case=a|num=s|pers=3|gen=n
-P   Pp  ref=e|form=f|case=d|num=p|pers=1
-P   Pp  ref=e|form=f|case=d|num=s|pers=1
-P   Pp  ref=e|form=f|case=d|num=s|pers=2
-P   Pp  ref=e|form=f|case=d|num=s|pers=3|gen=m
-P   Pp  ref=e|form=s|case=a|num=p|pers=1
-P   Pp  ref=e|form=s|case=a|num=p|pers=2
-P   Pp  ref=e|form=s|case=a|num=p|pers=3
-P   Pp  ref=e|form=s|case=a|num=s|pers=1
-P   Pp  ref=e|form=s|case=a|num=s|pers=2
-P   Pp  ref=e|form=s|case=a|num=s|pers=3|gen=f
-P   Pp  ref=e|form=s|case=a|num=s|pers=3|gen=m
-P   Pp  ref=e|form=s|case=a|num=s|pers=3|gen=n
-P   Pp  ref=e|form=s|case=d|num=p|pers=1
-P   Pp  ref=e|form=s|case=d|num=p|pers=2
-P   Pp  ref=e|form=s|case=d|num=p|pers=3
-P   Pp  ref=e|form=s|case=d|num=s|pers=1
-P   Pp  ref=e|form=s|case=d|num=s|pers=2
-P   Pp  ref=e|form=s|case=d|num=s|pers=3|gen=f
-P   Pp  ref=e|form=s|case=d|num=s|pers=3|gen=m
-P   Pp  ref=e|form=s|case=d|num=s|pers=3|gen=n
-P   Pp  ref=e|form=s|case=dp|num=p|pers=1
-P   Pp  ref=e|form=s|case=dp|num=p|pers=2
-P   Pp  ref=e|form=s|case=dp|num=p|pers=3
-P   Pp  ref=e|form=s|case=dp|num=s|pers=1
-P   Pp  ref=e|form=s|case=dp|num=s|pers=2
-P   Pp  ref=e|form=s|case=dp|num=s|pers=3|gen=f
-P   Pp  ref=e|form=s|case=dp|num=s|pers=3|gen=m
-P   Pp  ref=r|form=f|case=a
-P   Pp  ref=r|form=s|case=a
-P   Pp  ref=r|form=s|case=d
-P   Pp  ref=r|form=s|case=dp
-P   Pr  _
-P   Pr  ref=a|num=p
-P   Pr  ref=a|num=s|gen=f
-P   Pr  ref=a|num=s|gen=m
-P   Pr  ref=a|num=s|gen=n
-P   Pr  ref=e|case=a|num=s|gen=m
-P   Pr  ref=e|case=d|num=s|gen=m
-P   Pr  ref=e|case=n|num=p
-P   Pr  ref=e|case=n|num=s|gen=f
-P   Pr  ref=e|case=n|num=s|gen=m
-P   Pr  ref=e|case=n|num=s|gen=n
-P   Pr  ref=e|num=s
-P   Pr  ref=l
-P   Pr  ref=m
-P   Pr  ref=p|num=p
-P   Pr  ref=p|num=s|gen=f
-P   Pr  ref=p|num=s|gen=m
-P   Pr  ref=p|num=s|gen=n
-P   Pr  ref=q
-P   Pr  ref=t
-P   Ps  _
-P   Ps  ref=mp|form=f|num=p|pers=1|def=d
-P   Ps  ref=mp|form=f|num=p|pers=1|def=i
-P   Ps  ref=mp|form=f|num=p|pers=2|def=d
-P   Ps  ref=mp|form=f|num=p|pers=3|def=d
-P   Ps  ref=mp|form=f|num=p|pers=3|def=i
-P   Ps  ref=mp|form=f|num=s|pers=1|gen=f|def=d
-P   Ps  ref=mp|form=f|num=s|pers=1|gen=f|def=i
-P   Ps  ref=mp|form=f|num=s|pers=1|gen=m|def=f
-P   Ps  ref=mp|form=f|num=s|pers=1|gen=m|def=h
-P   Ps  ref=mp|form=f|num=s|pers=1|gen=m|def=i
-P   Ps  ref=mp|form=f|num=s|pers=1|gen=n|def=d
-P   Ps  ref=mp|form=f|num=s|pers=1|gen=n|def=i
-P   Ps  ref=mp|form=f|num=s|pers=2|gen=f|def=d
-P   Ps  ref=mp|form=f|num=s|pers=2|gen=f|def=i
-P   Ps  ref=mp|form=f|num=s|pers=2|gen=m|def=h
-P   Ps  ref=mp|form=f|num=s|pers=2|gen=m|def=i
-P   Ps  ref=mp|form=f|num=s|pers=2|gen=n|def=d
-P   Ps  ref=mp|form=f|num=s|pers=2|gen=n|def=i
-P   Ps  ref=mp|form=f|num=s|pers=3|gen=f|def=d
-P   Ps  ref=mp|form=f|num=s|pers=3|gen=f|def=i
-P   Ps  ref=mp|form=f|num=s|pers=3|gen=m|def=f
-P   Ps  ref=mp|form=f|num=s|pers=3|gen=m|def=h
-P   Ps  ref=mp|form=f|num=s|pers=3|gen=m|def=i
-P   Ps  ref=mp|form=f|num=s|pers=3|gen=n|def=d
-P   Ps  ref=mp|form=f|num=s|pers=3|gen=n|def=i
-P   Ps  ref=mp|form=s|pers=1
-P   Ps  ref=mp|form=s|pers=2
-P   Ps  ref=mp|form=s|pers=3
-P   Ps  ref=op|form=f|num=p|pers=1|def=d
-P   Ps  ref=op|form=f|num=p|pers=1|def=i
-P   Ps  ref=op|form=f|num=p|pers=2|def=d
-P   Ps  ref=op|form=f|num=p|pers=3|def=d|gen=f
-P   Ps  ref=op|form=f|num=p|pers=3|def=d|gen=m
-P   Ps  ref=op|form=f|num=p|pers=3|def=d|gen=n
-P   Ps  ref=op|form=f|num=p|pers=3|def=i|gen=f
-P   Ps  ref=op|form=f|num=p|pers=3|def=i|gen=m
-P   Ps  ref=op|form=f|num=s|pers=1|gen=f|def=d
-P   Ps  ref=op|form=f|num=s|pers=1|gen=f|def=i
-P   Ps  ref=op|form=f|num=s|pers=1|gen=m|def=f
-P   Ps  ref=op|form=f|num=s|pers=1|gen=m|def=h
-P   Ps  ref=op|form=f|num=s|pers=1|gen=m|def=i
-P   Ps  ref=op|form=f|num=s|pers=1|gen=n|def=d
-P   Ps  ref=op|form=f|num=s|pers=1|gen=n|def=i
-P   Ps  ref=op|form=f|num=s|pers=2|gen=f|def=d
-P   Ps  ref=op|form=f|num=s|pers=2|gen=f|def=i
-P   Ps  ref=op|form=f|num=s|pers=2|gen=n|def=i
-P   Ps  ref=op|form=f|num=s|pers=3|gen=f|def=d|gen=f
-P   Ps  ref=op|form=f|num=s|pers=3|gen=f|def=d|gen=m
-P   Ps  ref=op|form=f|num=s|pers=3|gen=f|def=d|gen=n
-P   Ps  ref=op|form=f|num=s|pers=3|gen=f|def=i|gen=f
-P   Ps  ref=op|form=f|num=s|pers=3|gen=f|def=i|gen=m
-P   Ps  ref=op|form=f|num=s|pers=3|gen=m|def=f|gen=f
-P   Ps  ref=op|form=f|num=s|pers=3|gen=m|def=f|gen=m
-P   Ps  ref=op|form=f|num=s|pers=3|gen=m|def=h|gen=f
-P   Ps  ref=op|form=f|num=s|pers=3|gen=m|def=h|gen=m
-P   Ps  ref=op|form=f|num=s|pers=3|gen=m|def=h|gen=n
-P   Ps  ref=op|form=f|num=s|pers=3|gen=m|def=i|gen=f
-P   Ps  ref=op|form=f|num=s|pers=3|gen=m|def=i|gen=m
-P   Ps  ref=op|form=f|num=s|pers=3|gen=m|def=i|gen=n
-P   Ps  ref=op|form=f|num=s|pers=3|gen=n|def=d|gen=f
-P   Ps  ref=op|form=f|num=s|pers=3|gen=n|def=d|gen=m
-P   Ps  ref=op|form=f|num=s|pers=3|gen=n|def=d|gen=n
-P   Ps  ref=op|form=f|num=s|pers=3|gen=n|def=i|gen=f
-P   Ps  ref=op|form=f|num=s|pers=3|gen=n|def=i|gen=m
-P   Ps  ref=op|form=f|num=s|pers=3|gen=n|def=i|gen=n
-P   Ps  ref=op|form=s|pers=1
-P   Ps  ref=op|form=s|pers=2
-P   Ps  ref=op|form=s|pers=3|gen=f
-P   Ps  ref=op|form=s|pers=3|gen=m
-P   Ps  ref=op|form=s|pers=3|gen=n
-P   Ps  ref=r|form=f|case=n|num=p|def=d
-P   Ps  ref=r|form=f|case=n|num=p|def=i
-P   Ps  ref=r|form=f|case=n|num=s|gen=f|def=d
-P   Ps  ref=r|form=f|case=n|num=s|gen=m|def=h
-P   Ps  ref=r|form=f|case=n|num=s|gen=m|def=i
-P   Ps  ref=r|form=f|case=n|num=s|gen=n|def=d
-P   Ps  ref=r|form=f|case=n|num=s|gen=n|def=i
-P   Ps  ref=r|form=s|case=n
-Punct   Punct   _
-R   R   _
-T   Ta  _
-T   Te  _
-T   Tg  _
-T   Ti  _
-T   Tm  _
-T   Tn  _
-T   Tv  _
-T   Tx  _
-V   V   _
-V   Vii type=aux|trans=t|mood=i|tense=r|pers=3|num=p
-V   Vii type=aux|trans=t|mood=i|tense=r|pers=3|num=s
-V   Vni imtrans=i|mood=i|tense=m|pers=3|num=s
-V   Vni imtrans=i|mood=i|tense=o|pers=3|num=s
-V   Vni imtrans=i|mood=i|tense=r|pers=3|num=s
-V   Vni imtrans=i|vform=c|voice=a|tense=m|num=s|gen=n|def=i
-V   Vni imtrans=i|vform=c|voice=a|tense=o|num=s|gen=n|def=i
-V   Vni imtrans=t|mood=i|tense=m|pers=3|num=s
-V   Vni imtrans=t|mood=i|tense=o|pers=3|num=s
-V   Vni imtrans=t|mood=i|tense=r|pers=3|num=s
-V   Vni imtrans=t|vform=c|voice=a|tense=m|num=s|gen=n|def=i
-V   Vni imtrans=t|vform=c|voice=a|tense=o|num=s|gen=n|def=i
-V   Vnp trans=i|mood=i|tense=o|pers=3|num=s
-V   Vnp trans=i|mood=i|tense=r|pers=3|num=s
-V   Vnp trans=i|vform=c|voice=a|tense=o|num=s|gen=n|def=i
-V   Vnp trans=t|mood=i|tense=m|pers=3|num=s
-V   Vnp trans=t|vform=c|voice=a|tense=o|num=s|gen=n|def=i
-V   Vpi _
-V   Vpi trans=i|mood=i|tense=m|pers=1|num=p
-V   Vpi trans=i|mood=i|tense=m|pers=1|num=s
-V   Vpi trans=i|mood=i|tense=m|pers=2|num=s
-V   Vpi trans=i|mood=i|tense=m|pers=3|num=p
-V   Vpi trans=i|mood=i|tense=m|pers=3|num=s
-V   Vpi trans=i|mood=i|tense=o|pers=1|num=p
-V   Vpi trans=i|mood=i|tense=o|pers=1|num=s
-V   Vpi trans=i|mood=i|tense=o|pers=3|num=p
-V   Vpi trans=i|mood=i|tense=o|pers=3|num=s
-V   Vpi trans=i|mood=i|tense=r|pers=1|num=p
-V   Vpi trans=i|mood=i|tense=r|pers=1|num=s
-V   Vpi trans=i|mood=i|tense=r|pers=2|num=p
-V   Vpi trans=i|mood=i|tense=r|pers=2|num=s
-V   Vpi trans=i|mood=i|tense=r|pers=3|num=p
-V   Vpi trans=i|mood=i|tense=r|pers=3|num=s
-V   Vpi trans=i|mood=z|pers=2|num=p
-V   Vpi trans=i|mood=z|pers=2|num=s
-V   Vpi trans=i|vform=c|voice=a|tense=m|num=p|def=i
-V   Vpi trans=i|vform=c|voice=a|tense=m|num=s|gen=f|def=i
-V   Vpi trans=i|vform=c|voice=a|tense=m|num=s|gen=m|def=i
-V   Vpi trans=i|vform=c|voice=a|tense=m|num=s|gen=n|def=i
-V   Vpi trans=i|vform=c|voice=a|tense=o|num=p|def=d
-V   Vpi trans=i|vform=c|voice=a|tense=o|num=p|def=i
-V   Vpi trans=i|vform=c|voice=a|tense=o|num=s|gen=f|def=i
-V   Vpi trans=i|vform=c|voice=a|tense=o|num=s|gen=m|def=f
-V   Vpi trans=i|vform=c|voice=a|tense=o|num=s|gen=m|def=i
-V   Vpi trans=i|vform=c|voice=a|tense=o|num=s|gen=n|def=i
-V   Vpi trans=i|vform=c|voice=a|tense=r|num=p|def=d
-V   Vpi trans=i|vform=c|voice=a|tense=r|num=p|def=i
-V   Vpi trans=i|vform=c|voice=a|tense=r|num=s|gen=f|def=d
-V   Vpi trans=i|vform=c|voice=a|tense=r|num=s|gen=f|def=i
-V   Vpi trans=i|vform=c|voice=a|tense=r|num=s|gen=m|def=f
-V   Vpi trans=i|vform=c|voice=a|tense=r|num=s|gen=m|def=h
-V   Vpi trans=i|vform=c|voice=a|tense=r|num=s|gen=m|def=i
-V   Vpi trans=i|vform=c|voice=a|tense=r|num=s|gen=n|def=d
-V   Vpi trans=i|vform=c|voice=a|tense=r|num=s|gen=n|def=i
-V   Vpi trans=i|vform=g
-V   Vpi trans=t|mood=i|tense=m|pers=1|num=p
-V   Vpi trans=t|mood=i|tense=m|pers=1|num=s
-V   Vpi trans=t|mood=i|tense=m|pers=2|num=p
-V   Vpi trans=t|mood=i|tense=m|pers=2|num=s
-V   Vpi trans=t|mood=i|tense=m|pers=3|num=p
-V   Vpi trans=t|mood=i|tense=m|pers=3|num=s
-V   Vpi trans=t|mood=i|tense=o|pers=1|num=p
-V   Vpi trans=t|mood=i|tense=o|pers=1|num=s
-V   Vpi trans=t|mood=i|tense=o|pers=2|num=p
-V   Vpi trans=t|mood=i|tense=o|pers=2|num=s
-V   Vpi trans=t|mood=i|tense=o|pers=3|num=p
-V   Vpi trans=t|mood=i|tense=o|pers=3|num=s
-V   Vpi trans=t|mood=i|tense=r|pers=1|num=p
-V   Vpi trans=t|mood=i|tense=r|pers=1|num=s
-V   Vpi trans=t|mood=i|tense=r|pers=2|num=p
-V   Vpi trans=t|mood=i|tense=r|pers=2|num=s
-V   Vpi trans=t|mood=i|tense=r|pers=3|num=p
-V   Vpi trans=t|mood=i|tense=r|pers=3|num=s
-V   Vpi trans=t|mood=z|pers=2|num=p
-V   Vpi trans=t|mood=z|pers=2|num=s
-V   Vpi trans=t|vform=c|voice=a|tense=m|num=p|def=i
-V   Vpi trans=t|vform=c|voice=a|tense=m|num=s|gen=f|def=i
-V   Vpi trans=t|vform=c|voice=a|tense=m|num=s|gen=m|def=i
-V   Vpi trans=t|vform=c|voice=a|tense=m|num=s|gen=n|def=i
-V   Vpi trans=t|vform=c|voice=a|tense=o|num=p|def=i
-V   Vpi trans=t|vform=c|voice=a|tense=o|num=s|gen=f|def=i
-V   Vpi trans=t|vform=c|voice=a|tense=o|num=s|gen=m|def=i
-V   Vpi trans=t|vform=c|voice=a|tense=o|num=s|gen=n|def=i
-V   Vpi trans=t|vform=c|voice=a|tense=r|num=p|def=d
-V   Vpi trans=t|vform=c|voice=a|tense=r|num=p|def=i
-V   Vpi trans=t|vform=c|voice=a|tense=r|num=s|gen=f|def=d
-V   Vpi trans=t|vform=c|voice=a|tense=r|num=s|gen=f|def=i
-V   Vpi trans=t|vform=c|voice=a|tense=r|num=s|gen=m|def=f
-V   Vpi trans=t|vform=c|voice=a|tense=r|num=s|gen=m|def=h
-V   Vpi trans=t|vform=c|voice=a|tense=r|num=s|gen=n|def=d
-V   Vpi trans=t|vform=c|voice=a|tense=r|num=s|gen=n|def=i
-V   Vpi trans=t|vform=c|voice=v|num=p|def=d
-V   Vpi trans=t|vform=c|voice=v|num=p|def=i
-V   Vpi trans=t|vform=c|voice=v|num=s|gen=f|def=d
-V   Vpi trans=t|vform=c|voice=v|num=s|gen=f|def=i
-V   Vpi trans=t|vform=c|voice=v|num=s|gen=m|def=f
-V   Vpi trans=t|vform=c|voice=v|num=s|gen=m|def=h
-V   Vpi trans=t|vform=c|voice=v|num=s|gen=m|def=i
-V   Vpi trans=t|vform=c|voice=v|num=s|gen=n|def=d
-V   Vpi trans=t|vform=c|voice=v|num=s|gen=n|def=i
-V   Vpi trans=t|vform=g
-V   Vpp _
-V   Vpp aspect=p|trans=i|mood=i|tense=m|pers=3|num=p
-V   Vpp aspect=p|trans=i|mood=i|tense=m|pers=3|num=s
-V   Vpp aspect=p|trans=i|mood=i|tense=o|pers=1|num=p
-V   Vpp aspect=p|trans=i|mood=i|tense=o|pers=1|num=s
-V   Vpp aspect=p|trans=i|mood=i|tense=o|pers=2|num=p
-V   Vpp aspect=p|trans=i|mood=i|tense=o|pers=2|num=s
-V   Vpp aspect=p|trans=i|mood=i|tense=o|pers=3|num=p
-V   Vpp aspect=p|trans=i|mood=i|tense=o|pers=3|num=s
-V   Vpp aspect=p|trans=i|mood=i|tense=r|pers=1|num=p
-V   Vpp aspect=p|trans=i|mood=i|tense=r|pers=1|num=s
-V   Vpp aspect=p|trans=i|mood=i|tense=r|pers=2|num=p
-V   Vpp aspect=p|trans=i|mood=i|tense=r|pers=2|num=s
-V   Vpp aspect=p|trans=i|mood=i|tense=r|pers=3|num=p
-V   Vpp aspect=p|trans=i|mood=i|tense=r|pers=3|num=s
-V   Vpp aspect=p|trans=i|mood=z|pers=2|num=p
-V   Vpp aspect=p|trans=i|mood=z|pers=2|num=s
-V   Vpp aspect=p|trans=i|vform=c|voice=a|tense=m|num=s|gen=n|def=i
-V   Vpp aspect=p|trans=i|vform=c|voice=a|tense=o|num=p|def=d
-V   Vpp aspect=p|trans=i|vform=c|voice=a|tense=o|num=p|def=i
-V   Vpp aspect=p|trans=i|vform=c|voice=a|tense=o|num=s|gen=f|def=d
-V   Vpp aspect=p|trans=i|vform=c|voice=a|tense=o|num=s|gen=f|def=i
-V   Vpp aspect=p|trans=i|vform=c|voice=a|tense=o|num=s|gen=m|def=f
-V   Vpp aspect=p|trans=i|vform=c|voice=a|tense=o|num=s|gen=m|def=h
-V   Vpp aspect=p|trans=i|vform=c|voice=a|tense=o|num=s|gen=m|def=i
-V   Vpp aspect=p|trans=i|vform=c|voice=a|tense=o|num=s|gen=n|def=d
-V   Vpp aspect=p|trans=i|vform=c|voice=a|tense=o|num=s|gen=n|def=i
-V   Vpp aspect=p|trans=t|mood=i|tense=m|pers=1|num=p
-V   Vpp aspect=p|trans=t|mood=i|tense=m|pers=1|num=s
-V   Vpp aspect=p|trans=t|mood=i|tense=m|pers=3|num=p
-V   Vpp aspect=p|trans=t|mood=i|tense=m|pers=3|num=s
-V   Vpp aspect=p|trans=t|mood=i|tense=o|pers=1|num=p
-V   Vpp aspect=p|trans=t|mood=i|tense=o|pers=1|num=s
-V   Vpp aspect=p|trans=t|mood=i|tense=o|pers=2|num=p
-V   Vpp aspect=p|trans=t|mood=i|tense=o|pers=2|num=s
-V   Vpp aspect=p|trans=t|mood=i|tense=o|pers=3|num=p
-V   Vpp aspect=p|trans=t|mood=i|tense=o|pers=3|num=s
-V   Vpp aspect=p|trans=t|mood=i|tense=r|pers=1|num=p
-V   Vpp aspect=p|trans=t|mood=i|tense=r|pers=1|num=s
-V   Vpp aspect=p|trans=t|mood=i|tense=r|pers=2|num=p
-V   Vpp aspect=p|trans=t|mood=i|tense=r|pers=2|num=s
-V   Vpp aspect=p|trans=t|mood=i|tense=r|pers=3|num=p
-V   Vpp aspect=p|trans=t|mood=i|tense=r|pers=3|num=s
-V   Vpp aspect=p|trans=t|mood=z|pers=2|num=p
-V   Vpp aspect=p|trans=t|mood=z|pers=2|num=s
-V   Vpp aspect=p|trans=t|vform=c|voice=a|tense=m|num=s|gen=m|def=i
-V   Vpp aspect=p|trans=t|vform=c|voice=a|tense=o|num=p|def=d
-V   Vpp aspect=p|trans=t|vform=c|voice=a|tense=o|num=p|def=i
-V   Vpp aspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=f|def=d
-V   Vpp aspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=f|def=i
-V   Vpp aspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=m|def=h
-V   Vpp aspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=m|def=i
-V   Vpp aspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=n|def=d
-V   Vpp aspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=n|def=i
-V   Vpp aspect=p|trans=t|vform=c|voice=v|num=p|def=d
-V   Vpp aspect=p|trans=t|vform=c|voice=v|num=p|def=i
-V   Vpp aspect=p|trans=t|vform=c|voice=v|num=s|gen=f|def=d
-V   Vpp aspect=p|trans=t|vform=c|voice=v|num=s|gen=f|def=i
-V   Vpp aspect=p|trans=t|vform=c|voice=v|num=s|gen=m|def=h
-V   Vpp aspect=p|trans=t|vform=c|voice=v|num=s|gen=m|def=i
-V   Vpp aspect=p|trans=t|vform=c|voice=v|num=s|gen=n|def=d
-V   Vpp aspect=p|trans=t|vform=c|voice=v|num=s|gen=n|def=i
-V   Vxi type=aux|trans=t|mood=i|past|pers=1|num=p
-V   Vxi type=aux|trans=t|mood=i|past|pers=1|num=s
-V   Vxi type=aux|trans=t|mood=i|past|pers=2|num=p
-V   Vxi type=aux|trans=t|mood=i|past|pers=2|num=s
-V   Vxi type=aux|trans=t|mood=i|past|pers=3|num=p
-V   Vxi type=aux|trans=t|mood=i|past|pers=3|num=s
-V   Vxi type=aux|trans=t|mood=i|tense=r|pers=1|num=p
-V   Vxi type=aux|trans=t|mood=i|tense=r|pers=1|num=s
-V   Vxi type=aux|trans=t|mood=i|tense=r|pers=2|num=p
-V   Vxi type=aux|trans=t|mood=i|tense=r|pers=2|num=s
-V   Vxi type=aux|trans=t|mood=i|tense=r|pers=3|num=p
-V   Vxi type=aux|trans=t|mood=i|tense=r|pers=3|num=s
-V   Vxi type=aux|trans=t|mood=u|tense=o|pers=1|num=p
-V   Vxi type=aux|trans=t|mood=u|tense=o|pers=1|num=s
-V   Vxi type=aux|trans=t|mood=u|tense=o|pers=2|num=p
-V   Vxi type=aux|trans=t|mood=u|tense=o|pers=2|num=s
-V   Vxi type=aux|trans=t|mood=u|tense=o|pers=3|num=p
-V   Vxi type=aux|trans=t|mood=u|tense=o|pers=3|num=s
-V   Vxi type=aux|trans=t|vform=c|voice=a|past|num=p|def=i
-V   Vxi type=aux|trans=t|vform=c|voice=a|past|num=s|gen=f|def=i
-V   Vxi type=aux|trans=t|vform=c|voice=a|past|num=s|gen=m|def=i
-V   Vxi type=aux|trans=t|vform=c|voice=a|past|num=s|gen=n|def=i
-V   Vyp type=aux|aspect=p|trans=t|mood=i|tense=o|pers=3|num=s
-V   Vyp type=aux|aspect=p|trans=t|mood=i|tense=r|pers=1|num=p
-V   Vyp type=aux|aspect=p|trans=t|mood=i|tense=r|pers=1|num=s
-V   Vyp type=aux|aspect=p|trans=t|mood=i|tense=r|pers=2|num=p
-V   Vyp type=aux|aspect=p|trans=t|mood=i|tense=r|pers=2|num=s
-V   Vyp type=aux|aspect=p|trans=t|mood=i|tense=r|pers=3|num=p
-V   Vyp type=aux|aspect=p|trans=t|mood=i|tense=r|pers=3|num=s
-V   Vyp type=aux|aspect=p|trans=t|mood=z|pers=2|num=s
+A\tA\t_
+A\tAf\t_
+A\tAf\tgen=f|num=s|def=d
+A\tAf\tgen=f|num=s|def=i
+A\tAm\t_
+A\tAm\tgen=m|num=s|def=f
+A\tAm\tgen=m|num=s|def=h
+A\tAm\tgen=m|num=s|def=i
+A\tAm\tgen=m|num=s|form=ext
+A\tAn\tgen=n|num=s|def=d
+A\tAn\tgen=n|num=s|def=i
+A\tA\tnum=p|def=d
+A\tA\tnum=p|def=i
+C\tCc\t_
+C\tCp\t_
+C\tCr\t_
+C\tCs\t_
+D\tD\t_
+D\tDd\t_
+D\tDl\t_
+D\tDm\t_
+D\tDq\t_
+D\tDt\t_
+H\tHf\tgen=f|num=s|def=i
+H\tHm\tgen=m|num=s|def=f
+H\tHm\tgen=m|num=s|def=i
+H\tHn\tgen=n|num=s|def=i
+H\tH\tnum=p|def=i
+I\tI\t_
+M\tMc\t_
+M\tMc\tdef=d
+M\tMc\tdef=i
+M\tMc\tgen=f|def=d
+M\tMc\tgen=f|def=i
+M\tMc\tgen=f|num=s|def=d
+M\tMc\tgen=f|num=s|def=i
+M\tMc\tgen=m|def=d
+M\tMc\tgen=m|def=i
+M\tMc\tgen=m|num=s|def=f
+M\tMc\tgen=m|num=s|def=i
+M\tMc\tgen=n|def=d
+M\tMc\tgen=n|def=i
+M\tMc\tgen=n|num=s|def=d
+M\tMc\tgen=n|num=s|def=i
+M\tMd\t_
+M\tMd\tdef=d
+M\tMd\tdef=i
+M\tMo\tgen=f|num=s|def=d
+M\tMo\tgen=f|num=s|def=i
+M\tMo\tgen=m|num=s|def=f
+M\tMo\tgen=m|num=s|def=h
+M\tMo\tgen=m|num=s|def=i
+M\tMo\tgen=n|num=s|def=d
+M\tMo\tgen=n|num=s|def=i
+M\tMo\tnum=p|def=d
+M\tMo\tnum=p|def=i
+M\tMy\t_
+M\tMy\tdef=i
+N\tN\t_
+N\tNc\t_
+N\tNc\tgen=f|num=p|def=d
+N\tNc\tgen=f|num=p|def=i
+N\tNc\tgen=f|num=s|case=v
+N\tNc\tgen=f|num=s|def=d
+N\tNc\tgen=m|num=p|def=d
+N\tNc\tgen=m|num=p|def=i
+N\tNc\tgen=m|num=s|case=v
+N\tNc\tgen=m|num=s|def=d
+N\tNc\tgen=m|num=s|def=f
+N\tNc\tgen=m|num=s|def=h
+N\tNc\tgen=m|num=s|def=i
+N\tNc\tgen=m|num=t
+N\tNc\tgen=n|num=p|def=d
+N\tNc\tgen=n|num=p|def=i
+N\tNc\tgen=n|num=s|def=d
+N\tNc\tgen=n|num=s|def=i
+N\tNc\tnum=pia_tantum|def=d
+N\tNc\tnum=pia_tantum|def=i
+N\tNm\t_
+N\tNp\t_
+N\tNp\tgen=f|num=p|def=d
+N\tNp\tgen=f|num=p|def=i
+N\tNp\tgen=f|num=s|case=v
+N\tNp\tgen=f|num=s|def=i
+N\tNp\tgen=m|num=p|def=d
+N\tNp\tgen=m|num=p|def=i
+N\tNp\tgen=m|num=s|case=a
+N\tNp\tgen=m|num=s|case=v
+N\tNp\tgen=m|num=s|def=f
+N\tNp\tgen=m|num=s|def=h
+N\tNp\tgen=m|num=s|def=i
+N\tNp\tgen=n|num=p|def=d
+N\tNp\tgen=n|num=p|def=i
+N\tNp\tgen=n|num=s|def=d
+N\tNp\tgen=n|num=s|def=i
+N\tNp\tnum=pia_tantum|def=i
+P\tP\t_
+P\tPc\tref=a|num=p
+P\tPc\tref=a|num=s|gen=f
+P\tPc\tref=a|num=s|gen=m
+P\tPc\tref=a|num=s|gen=n
+P\tPc\tref=e|case=a|num=s|gen=m
+P\tPc\tref=e|case=n|num=p
+P\tPc\tref=e|case=n|num=s|gen=f
+P\tPc\tref=e|case=n|num=s|gen=m
+P\tPc\tref=e|case=n|num=s|gen=n
+P\tPc\tref=l
+P\tPc\tref=q|num=p|def=d
+P\tPc\tref=q|num=s|gen=n|def=d
+P\tPc\tref=t
+P\tPd\t_
+P\tPd\tref=a|num=p
+P\tPd\tref=a|num=s|gen=f
+P\tPd\tref=a|num=s|gen=n
+P\tPd\tref=e|case=n|num=p
+P\tPd\tref=e|case=n|num=s|gen=f
+P\tPd\tref=e|case=n|num=s|gen=m
+P\tPd\tref=e|case=n|num=s|gen=n
+P\tPd\tref=l
+P\tPd\tref=m
+P\tPd\tref=q
+P\tPd\tref=t
+P\tPf\tdef=i|ref=a|num=p
+P\tPf\tdef=i|ref=a|num=s|gen=f
+P\tPf\tdef=i|ref=a|num=s|gen=m
+P\tPf\tdef=i|ref=a|num=s|gen=n
+P\tPf\tdef=i|ref=e|case=a|num=s|gen=m
+P\tPf\tdef=i|ref=e|case=d|num=s|gen=m
+P\tPf\tdef=i|ref=e|case=n|num=p
+P\tPf\tdef=i|ref=e|case=n|num=p|def=d
+P\tPf\tdef=i|ref=e|case=n|num=p|def=i
+P\tPf\tdef=i|ref=e|case=n|num=s|gen=f
+P\tPf\tdef=i|ref=e|case=n|num=s|gen=f|def=d
+P\tPf\tdef=i|ref=e|case=n|num=s|gen=f|def=i
+P\tPf\tdef=i|ref=e|case=n|num=s|gen=m
+P\tPf\tdef=i|ref=e|case=n|num=s|gen=m|def=f
+P\tPf\tdef=i|ref=e|case=n|num=s|gen=m|def=h
+P\tPf\tdef=i|ref=e|case=n|num=s|gen=m|def=i
+P\tPf\tdef=i|ref=e|case=n|num=s|gen=n
+P\tPf\tdef=i|ref=e|case=n|num=s|gen=n|def=d
+P\tPf\tdef=i|ref=e|case=n|num=s|gen=n|def=i
+P\tPf\tdef=i|ref=l
+P\tPf\tdef=i|ref=m
+P\tPf\tdef=i|ref=p|num=p
+P\tPf\tdef=i|ref=q|def=i
+P\tPf\tdef=i|ref=t
+P\tPi\tcause
+P\tPi\tref=a|num=p
+P\tPi\tref=a|num=s|gen=f
+P\tPi\tref=a|num=s|gen=m
+P\tPi\tref=a|num=s|gen=n
+P\tPi\tref=e|case=a|num=s|gen=m
+P\tPi\tref=e|case=n|num=p
+P\tPi\tref=e|case=n|num=s|gen=f
+P\tPi\tref=e|case=n|num=s|gen=m
+P\tPi\tref=e|case=n|num=s|gen=n
+P\tPi\tref=l
+P\tPi\tref=m
+P\tPi\tref=p|num=s|gen=f
+P\tPi\tref=p|num=s|gen=m
+P\tPi\tref=q
+P\tPi\tref=t
+P\tPn\t_
+P\tPn\tref=a|num=p
+P\tPn\tref=a|num=s|gen=f
+P\tPn\tref=a|num=s|gen=m
+P\tPn\tref=a|num=s|gen=n
+P\tPn\tref=e|case=a|num=s|gen=m
+P\tPn\tref=e|case=d|num=s|gen=m
+P\tPn\tref=e|case=n|num=s|gen=f
+P\tPn\tref=e|case=n|num=s|gen=m
+P\tPn\tref=e|case=n|num=s|gen=n
+P\tPn\tref=e|case=n|num=s|gen=n|def=d
+P\tPn\tref=l
+P\tPn\tref=m
+P\tPn\tref=p|num=s|gen=f
+P\tPn\tref=t
+P\tPp\t_
+P\tPp\tref=e|case=n|num=p|pers=1
+P\tPp\tref=e|case=n|num=p|pers=2
+P\tPp\tref=e|case=n|num=p|pers=3
+P\tPp\tref=e|case=n|num=s|pers=1
+P\tPp\tref=e|case=n|num=s|pers=2
+P\tPp\tref=e|case=n|num=s|pers=3|gen=f
+P\tPp\tref=e|case=n|num=s|pers=3|gen=m
+P\tPp\tref=e|case=n|num=s|pers=3|gen=n
+P\tPp\tref=e|form=f|case=a|num=p|pers=1
+P\tPp\tref=e|form=f|case=a|num=p|pers=2
+P\tPp\tref=e|form=f|case=a|num=p|pers=3
+P\tPp\tref=e|form=f|case=a|num=s|pers=1
+P\tPp\tref=e|form=f|case=a|num=s|pers=2
+P\tPp\tref=e|form=f|case=a|num=s|pers=3|gen=f
+P\tPp\tref=e|form=f|case=a|num=s|pers=3|gen=m
+P\tPp\tref=e|form=f|case=a|num=s|pers=3|gen=n
+P\tPp\tref=e|form=f|case=d|num=p|pers=1
+P\tPp\tref=e|form=f|case=d|num=s|pers=1
+P\tPp\tref=e|form=f|case=d|num=s|pers=2
+P\tPp\tref=e|form=f|case=d|num=s|pers=3|gen=m
+P\tPp\tref=e|form=s|case=a|num=p|pers=1
+P\tPp\tref=e|form=s|case=a|num=p|pers=2
+P\tPp\tref=e|form=s|case=a|num=p|pers=3
+P\tPp\tref=e|form=s|case=a|num=s|pers=1
+P\tPp\tref=e|form=s|case=a|num=s|pers=2
+P\tPp\tref=e|form=s|case=a|num=s|pers=3|gen=f
+P\tPp\tref=e|form=s|case=a|num=s|pers=3|gen=m
+P\tPp\tref=e|form=s|case=a|num=s|pers=3|gen=n
+P\tPp\tref=e|form=s|case=d|num=p|pers=1
+P\tPp\tref=e|form=s|case=d|num=p|pers=2
+P\tPp\tref=e|form=s|case=d|num=p|pers=3
+P\tPp\tref=e|form=s|case=d|num=s|pers=1
+P\tPp\tref=e|form=s|case=d|num=s|pers=2
+P\tPp\tref=e|form=s|case=d|num=s|pers=3|gen=f
+P\tPp\tref=e|form=s|case=d|num=s|pers=3|gen=m
+P\tPp\tref=e|form=s|case=d|num=s|pers=3|gen=n
+P\tPp\tref=e|form=s|case=dp|num=p|pers=1
+P\tPp\tref=e|form=s|case=dp|num=p|pers=2
+P\tPp\tref=e|form=s|case=dp|num=p|pers=3
+P\tPp\tref=e|form=s|case=dp|num=s|pers=1
+P\tPp\tref=e|form=s|case=dp|num=s|pers=2
+P\tPp\tref=e|form=s|case=dp|num=s|pers=3|gen=f
+P\tPp\tref=e|form=s|case=dp|num=s|pers=3|gen=m
+P\tPp\tref=r|form=f|case=a
+P\tPp\tref=r|form=s|case=a
+P\tPp\tref=r|form=s|case=d
+P\tPp\tref=r|form=s|case=dp
+P\tPr\t_
+P\tPr\tref=a|num=p
+P\tPr\tref=a|num=s|gen=f
+P\tPr\tref=a|num=s|gen=m
+P\tPr\tref=a|num=s|gen=n
+P\tPr\tref=e|case=a|num=s|gen=m
+P\tPr\tref=e|case=d|num=s|gen=m
+P\tPr\tref=e|case=n|num=p
+P\tPr\tref=e|case=n|num=s|gen=f
+P\tPr\tref=e|case=n|num=s|gen=m
+P\tPr\tref=e|case=n|num=s|gen=n
+P\tPr\tref=e|num=s
+P\tPr\tref=l
+P\tPr\tref=m
+P\tPr\tref=p|num=p
+P\tPr\tref=p|num=s|gen=f
+P\tPr\tref=p|num=s|gen=m
+P\tPr\tref=p|num=s|gen=n
+P\tPr\tref=q
+P\tPr\tref=t
+P\tPs\t_
+P\tPs\tref=mp|form=f|num=p|pers=1|def=d
+P\tPs\tref=mp|form=f|num=p|pers=1|def=i
+P\tPs\tref=mp|form=f|num=p|pers=2|def=d
+P\tPs\tref=mp|form=f|num=p|pers=3|def=d
+P\tPs\tref=mp|form=f|num=p|pers=3|def=i
+P\tPs\tref=mp|form=f|num=s|pers=1|gen=f|def=d
+P\tPs\tref=mp|form=f|num=s|pers=1|gen=f|def=i
+P\tPs\tref=mp|form=f|num=s|pers=1|gen=m|def=f
+P\tPs\tref=mp|form=f|num=s|pers=1|gen=m|def=h
+P\tPs\tref=mp|form=f|num=s|pers=1|gen=m|def=i
+P\tPs\tref=mp|form=f|num=s|pers=1|gen=n|def=d
+P\tPs\tref=mp|form=f|num=s|pers=1|gen=n|def=i
+P\tPs\tref=mp|form=f|num=s|pers=2|gen=f|def=d
+P\tPs\tref=mp|form=f|num=s|pers=2|gen=f|def=i
+P\tPs\tref=mp|form=f|num=s|pers=2|gen=m|def=h
+P\tPs\tref=mp|form=f|num=s|pers=2|gen=m|def=i
+P\tPs\tref=mp|form=f|num=s|pers=2|gen=n|def=d
+P\tPs\tref=mp|form=f|num=s|pers=2|gen=n|def=i
+P\tPs\tref=mp|form=f|num=s|pers=3|gen=f|def=d
+P\tPs\tref=mp|form=f|num=s|pers=3|gen=f|def=i
+P\tPs\tref=mp|form=f|num=s|pers=3|gen=m|def=f
+P\tPs\tref=mp|form=f|num=s|pers=3|gen=m|def=h
+P\tPs\tref=mp|form=f|num=s|pers=3|gen=m|def=i
+P\tPs\tref=mp|form=f|num=s|pers=3|gen=n|def=d
+P\tPs\tref=mp|form=f|num=s|pers=3|gen=n|def=i
+P\tPs\tref=mp|form=s|pers=1
+P\tPs\tref=mp|form=s|pers=2
+P\tPs\tref=mp|form=s|pers=3
+P\tPs\tref=op|form=f|num=p|pers=1|def=d
+P\tPs\tref=op|form=f|num=p|pers=1|def=i
+P\tPs\tref=op|form=f|num=p|pers=2|def=d
+P\tPs\tref=op|form=f|num=p|pers=3|def=d|gen=f
+P\tPs\tref=op|form=f|num=p|pers=3|def=d|gen=m
+P\tPs\tref=op|form=f|num=p|pers=3|def=d|gen=n
+P\tPs\tref=op|form=f|num=p|pers=3|def=i|gen=f
+P\tPs\tref=op|form=f|num=p|pers=3|def=i|gen=m
+P\tPs\tref=op|form=f|num=s|pers=1|gen=f|def=d
+P\tPs\tref=op|form=f|num=s|pers=1|gen=f|def=i
+P\tPs\tref=op|form=f|num=s|pers=1|gen=m|def=f
+P\tPs\tref=op|form=f|num=s|pers=1|gen=m|def=h
+P\tPs\tref=op|form=f|num=s|pers=1|gen=m|def=i
+P\tPs\tref=op|form=f|num=s|pers=1|gen=n|def=d
+P\tPs\tref=op|form=f|num=s|pers=1|gen=n|def=i
+P\tPs\tref=op|form=f|num=s|pers=2|gen=f|def=d
+P\tPs\tref=op|form=f|num=s|pers=2|gen=f|def=i
+P\tPs\tref=op|form=f|num=s|pers=2|gen=n|def=i
+P\tPs\tref=op|form=f|num=s|pers=3|gen=f|def=d|gen=f
+P\tPs\tref=op|form=f|num=s|pers=3|gen=f|def=d|gen=m
+P\tPs\tref=op|form=f|num=s|pers=3|gen=f|def=d|gen=n
+P\tPs\tref=op|form=f|num=s|pers=3|gen=f|def=i|gen=f
+P\tPs\tref=op|form=f|num=s|pers=3|gen=f|def=i|gen=m
+P\tPs\tref=op|form=f|num=s|pers=3|gen=m|def=f|gen=f
+P\tPs\tref=op|form=f|num=s|pers=3|gen=m|def=f|gen=m
+P\tPs\tref=op|form=f|num=s|pers=3|gen=m|def=h|gen=f
+P\tPs\tref=op|form=f|num=s|pers=3|gen=m|def=h|gen=m
+P\tPs\tref=op|form=f|num=s|pers=3|gen=m|def=h|gen=n
+P\tPs\tref=op|form=f|num=s|pers=3|gen=m|def=i|gen=f
+P\tPs\tref=op|form=f|num=s|pers=3|gen=m|def=i|gen=m
+P\tPs\tref=op|form=f|num=s|pers=3|gen=m|def=i|gen=n
+P\tPs\tref=op|form=f|num=s|pers=3|gen=n|def=d|gen=f
+P\tPs\tref=op|form=f|num=s|pers=3|gen=n|def=d|gen=m
+P\tPs\tref=op|form=f|num=s|pers=3|gen=n|def=d|gen=n
+P\tPs\tref=op|form=f|num=s|pers=3|gen=n|def=i|gen=f
+P\tPs\tref=op|form=f|num=s|pers=3|gen=n|def=i|gen=m
+P\tPs\tref=op|form=f|num=s|pers=3|gen=n|def=i|gen=n
+P\tPs\tref=op|form=s|pers=1
+P\tPs\tref=op|form=s|pers=2
+P\tPs\tref=op|form=s|pers=3|gen=f
+P\tPs\tref=op|form=s|pers=3|gen=m
+P\tPs\tref=op|form=s|pers=3|gen=n
+P\tPs\tref=r|form=f|case=n|num=p|def=d
+P\tPs\tref=r|form=f|case=n|num=p|def=i
+P\tPs\tref=r|form=f|case=n|num=s|gen=f|def=d
+P\tPs\tref=r|form=f|case=n|num=s|gen=m|def=h
+P\tPs\tref=r|form=f|case=n|num=s|gen=m|def=i
+P\tPs\tref=r|form=f|case=n|num=s|gen=n|def=d
+P\tPs\tref=r|form=f|case=n|num=s|gen=n|def=i
+P\tPs\tref=r|form=s|case=n
+Punct\tPunct\t_
+R\tR\t_
+T\tTa\t_
+T\tTe\t_
+T\tTg\t_
+T\tTi\t_
+T\tTm\t_
+T\tTn\t_
+T\tTv\t_
+T\tTx\t_
+V\tV\t_
+V\tVii\ttype=aux|trans=t|mood=i|tense=r|pers=3|num=p
+V\tVii\ttype=aux|trans=t|mood=i|tense=r|pers=3|num=s
+V\tVni\timtrans=i|mood=i|tense=m|pers=3|num=s
+V\tVni\timtrans=i|mood=i|tense=o|pers=3|num=s
+V\tVni\timtrans=i|mood=i|tense=r|pers=3|num=s
+V\tVni\timtrans=i|vform=c|voice=a|tense=m|num=s|gen=n|def=i
+V\tVni\timtrans=i|vform=c|voice=a|tense=o|num=s|gen=n|def=i
+V\tVni\timtrans=t|mood=i|tense=m|pers=3|num=s
+V\tVni\timtrans=t|mood=i|tense=o|pers=3|num=s
+V\tVni\timtrans=t|mood=i|tense=r|pers=3|num=s
+V\tVni\timtrans=t|vform=c|voice=a|tense=m|num=s|gen=n|def=i
+V\tVni\timtrans=t|vform=c|voice=a|tense=o|num=s|gen=n|def=i
+V\tVnp\ttrans=i|mood=i|tense=o|pers=3|num=s
+V\tVnp\ttrans=i|mood=i|tense=r|pers=3|num=s
+V\tVnp\ttrans=i|vform=c|voice=a|tense=o|num=s|gen=n|def=i
+V\tVnp\ttrans=t|mood=i|tense=m|pers=3|num=s
+V\tVnp\ttrans=t|vform=c|voice=a|tense=o|num=s|gen=n|def=i
+V\tVpi\t_
+V\tVpi\ttrans=i|mood=i|tense=m|pers=1|num=p
+V\tVpi\ttrans=i|mood=i|tense=m|pers=1|num=s
+V\tVpi\ttrans=i|mood=i|tense=m|pers=2|num=s
+V\tVpi\ttrans=i|mood=i|tense=m|pers=3|num=p
+V\tVpi\ttrans=i|mood=i|tense=m|pers=3|num=s
+V\tVpi\ttrans=i|mood=i|tense=o|pers=1|num=p
+V\tVpi\ttrans=i|mood=i|tense=o|pers=1|num=s
+V\tVpi\ttrans=i|mood=i|tense=o|pers=3|num=p
+V\tVpi\ttrans=i|mood=i|tense=o|pers=3|num=s
+V\tVpi\ttrans=i|mood=i|tense=r|pers=1|num=p
+V\tVpi\ttrans=i|mood=i|tense=r|pers=1|num=s
+V\tVpi\ttrans=i|mood=i|tense=r|pers=2|num=p
+V\tVpi\ttrans=i|mood=i|tense=r|pers=2|num=s
+V\tVpi\ttrans=i|mood=i|tense=r|pers=3|num=p
+V\tVpi\ttrans=i|mood=i|tense=r|pers=3|num=s
+V\tVpi\ttrans=i|mood=z|pers=2|num=p
+V\tVpi\ttrans=i|mood=z|pers=2|num=s
+V\tVpi\ttrans=i|vform=c|voice=a|tense=m|num=p|def=i
+V\tVpi\ttrans=i|vform=c|voice=a|tense=m|num=s|gen=f|def=i
+V\tVpi\ttrans=i|vform=c|voice=a|tense=m|num=s|gen=m|def=i
+V\tVpi\ttrans=i|vform=c|voice=a|tense=m|num=s|gen=n|def=i
+V\tVpi\ttrans=i|vform=c|voice=a|tense=o|num=p|def=d
+V\tVpi\ttrans=i|vform=c|voice=a|tense=o|num=p|def=i
+V\tVpi\ttrans=i|vform=c|voice=a|tense=o|num=s|gen=f|def=i
+V\tVpi\ttrans=i|vform=c|voice=a|tense=o|num=s|gen=m|def=f
+V\tVpi\ttrans=i|vform=c|voice=a|tense=o|num=s|gen=m|def=i
+V\tVpi\ttrans=i|vform=c|voice=a|tense=o|num=s|gen=n|def=i
+V\tVpi\ttrans=i|vform=c|voice=a|tense=r|num=p|def=d
+V\tVpi\ttrans=i|vform=c|voice=a|tense=r|num=p|def=i
+V\tVpi\ttrans=i|vform=c|voice=a|tense=r|num=s|gen=f|def=d
+V\tVpi\ttrans=i|vform=c|voice=a|tense=r|num=s|gen=f|def=i
+V\tVpi\ttrans=i|vform=c|voice=a|tense=r|num=s|gen=m|def=f
+V\tVpi\ttrans=i|vform=c|voice=a|tense=r|num=s|gen=m|def=h
+V\tVpi\ttrans=i|vform=c|voice=a|tense=r|num=s|gen=m|def=i
+V\tVpi\ttrans=i|vform=c|voice=a|tense=r|num=s|gen=n|def=d
+V\tVpi\ttrans=i|vform=c|voice=a|tense=r|num=s|gen=n|def=i
+V\tVpi\ttrans=i|vform=g
+V\tVpi\ttrans=t|mood=i|tense=m|pers=1|num=p
+V\tVpi\ttrans=t|mood=i|tense=m|pers=1|num=s
+V\tVpi\ttrans=t|mood=i|tense=m|pers=2|num=p
+V\tVpi\ttrans=t|mood=i|tense=m|pers=2|num=s
+V\tVpi\ttrans=t|mood=i|tense=m|pers=3|num=p
+V\tVpi\ttrans=t|mood=i|tense=m|pers=3|num=s
+V\tVpi\ttrans=t|mood=i|tense=o|pers=1|num=p
+V\tVpi\ttrans=t|mood=i|tense=o|pers=1|num=s
+V\tVpi\ttrans=t|mood=i|tense=o|pers=2|num=p
+V\tVpi\ttrans=t|mood=i|tense=o|pers=2|num=s
+V\tVpi\ttrans=t|mood=i|tense=o|pers=3|num=p
+V\tVpi\ttrans=t|mood=i|tense=o|pers=3|num=s
+V\tVpi\ttrans=t|mood=i|tense=r|pers=1|num=p
+V\tVpi\ttrans=t|mood=i|tense=r|pers=1|num=s
+V\tVpi\ttrans=t|mood=i|tense=r|pers=2|num=p
+V\tVpi\ttrans=t|mood=i|tense=r|pers=2|num=s
+V\tVpi\ttrans=t|mood=i|tense=r|pers=3|num=p
+V\tVpi\ttrans=t|mood=i|tense=r|pers=3|num=s
+V\tVpi\ttrans=t|mood=z|pers=2|num=p
+V\tVpi\ttrans=t|mood=z|pers=2|num=s
+V\tVpi\ttrans=t|vform=c|voice=a|tense=m|num=p|def=i
+V\tVpi\ttrans=t|vform=c|voice=a|tense=m|num=s|gen=f|def=i
+V\tVpi\ttrans=t|vform=c|voice=a|tense=m|num=s|gen=m|def=i
+V\tVpi\ttrans=t|vform=c|voice=a|tense=m|num=s|gen=n|def=i
+V\tVpi\ttrans=t|vform=c|voice=a|tense=o|num=p|def=i
+V\tVpi\ttrans=t|vform=c|voice=a|tense=o|num=s|gen=f|def=i
+V\tVpi\ttrans=t|vform=c|voice=a|tense=o|num=s|gen=m|def=i
+V\tVpi\ttrans=t|vform=c|voice=a|tense=o|num=s|gen=n|def=i
+V\tVpi\ttrans=t|vform=c|voice=a|tense=r|num=p|def=d
+V\tVpi\ttrans=t|vform=c|voice=a|tense=r|num=p|def=i
+V\tVpi\ttrans=t|vform=c|voice=a|tense=r|num=s|gen=f|def=d
+V\tVpi\ttrans=t|vform=c|voice=a|tense=r|num=s|gen=f|def=i
+V\tVpi\ttrans=t|vform=c|voice=a|tense=r|num=s|gen=m|def=f
+V\tVpi\ttrans=t|vform=c|voice=a|tense=r|num=s|gen=m|def=h
+V\tVpi\ttrans=t|vform=c|voice=a|tense=r|num=s|gen=n|def=d
+V\tVpi\ttrans=t|vform=c|voice=a|tense=r|num=s|gen=n|def=i
+V\tVpi\ttrans=t|vform=c|voice=v|num=p|def=d
+V\tVpi\ttrans=t|vform=c|voice=v|num=p|def=i
+V\tVpi\ttrans=t|vform=c|voice=v|num=s|gen=f|def=d
+V\tVpi\ttrans=t|vform=c|voice=v|num=s|gen=f|def=i
+V\tVpi\ttrans=t|vform=c|voice=v|num=s|gen=m|def=f
+V\tVpi\ttrans=t|vform=c|voice=v|num=s|gen=m|def=h
+V\tVpi\ttrans=t|vform=c|voice=v|num=s|gen=m|def=i
+V\tVpi\ttrans=t|vform=c|voice=v|num=s|gen=n|def=d
+V\tVpi\ttrans=t|vform=c|voice=v|num=s|gen=n|def=i
+V\tVpi\ttrans=t|vform=g
+V\tVpp\t_
+V\tVpp\taspect=p|trans=i|mood=i|tense=m|pers=3|num=p
+V\tVpp\taspect=p|trans=i|mood=i|tense=m|pers=3|num=s
+V\tVpp\taspect=p|trans=i|mood=i|tense=o|pers=1|num=p
+V\tVpp\taspect=p|trans=i|mood=i|tense=o|pers=1|num=s
+V\tVpp\taspect=p|trans=i|mood=i|tense=o|pers=2|num=p
+V\tVpp\taspect=p|trans=i|mood=i|tense=o|pers=2|num=s
+V\tVpp\taspect=p|trans=i|mood=i|tense=o|pers=3|num=p
+V\tVpp\taspect=p|trans=i|mood=i|tense=o|pers=3|num=s
+V\tVpp\taspect=p|trans=i|mood=i|tense=r|pers=1|num=p
+V\tVpp\taspect=p|trans=i|mood=i|tense=r|pers=1|num=s
+V\tVpp\taspect=p|trans=i|mood=i|tense=r|pers=2|num=p
+V\tVpp\taspect=p|trans=i|mood=i|tense=r|pers=2|num=s
+V\tVpp\taspect=p|trans=i|mood=i|tense=r|pers=3|num=p
+V\tVpp\taspect=p|trans=i|mood=i|tense=r|pers=3|num=s
+V\tVpp\taspect=p|trans=i|mood=z|pers=2|num=p
+V\tVpp\taspect=p|trans=i|mood=z|pers=2|num=s
+V\tVpp\taspect=p|trans=i|vform=c|voice=a|tense=m|num=s|gen=n|def=i
+V\tVpp\taspect=p|trans=i|vform=c|voice=a|tense=o|num=p|def=d
+V\tVpp\taspect=p|trans=i|vform=c|voice=a|tense=o|num=p|def=i
+V\tVpp\taspect=p|trans=i|vform=c|voice=a|tense=o|num=s|gen=f|def=d
+V\tVpp\taspect=p|trans=i|vform=c|voice=a|tense=o|num=s|gen=f|def=i
+V\tVpp\taspect=p|trans=i|vform=c|voice=a|tense=o|num=s|gen=m|def=f
+V\tVpp\taspect=p|trans=i|vform=c|voice=a|tense=o|num=s|gen=m|def=h
+V\tVpp\taspect=p|trans=i|vform=c|voice=a|tense=o|num=s|gen=m|def=i
+V\tVpp\taspect=p|trans=i|vform=c|voice=a|tense=o|num=s|gen=n|def=d
+V\tVpp\taspect=p|trans=i|vform=c|voice=a|tense=o|num=s|gen=n|def=i
+V\tVpp\taspect=p|trans=t|mood=i|tense=m|pers=1|num=p
+V\tVpp\taspect=p|trans=t|mood=i|tense=m|pers=1|num=s
+V\tVpp\taspect=p|trans=t|mood=i|tense=m|pers=3|num=p
+V\tVpp\taspect=p|trans=t|mood=i|tense=m|pers=3|num=s
+V\tVpp\taspect=p|trans=t|mood=i|tense=o|pers=1|num=p
+V\tVpp\taspect=p|trans=t|mood=i|tense=o|pers=1|num=s
+V\tVpp\taspect=p|trans=t|mood=i|tense=o|pers=2|num=p
+V\tVpp\taspect=p|trans=t|mood=i|tense=o|pers=2|num=s
+V\tVpp\taspect=p|trans=t|mood=i|tense=o|pers=3|num=p
+V\tVpp\taspect=p|trans=t|mood=i|tense=o|pers=3|num=s
+V\tVpp\taspect=p|trans=t|mood=i|tense=r|pers=1|num=p
+V\tVpp\taspect=p|trans=t|mood=i|tense=r|pers=1|num=s
+V\tVpp\taspect=p|trans=t|mood=i|tense=r|pers=2|num=p
+V\tVpp\taspect=p|trans=t|mood=i|tense=r|pers=2|num=s
+V\tVpp\taspect=p|trans=t|mood=i|tense=r|pers=3|num=p
+V\tVpp\taspect=p|trans=t|mood=i|tense=r|pers=3|num=s
+V\tVpp\taspect=p|trans=t|mood=z|pers=2|num=p
+V\tVpp\taspect=p|trans=t|mood=z|pers=2|num=s
+V\tVpp\taspect=p|trans=t|vform=c|voice=a|tense=m|num=s|gen=m|def=i
+V\tVpp\taspect=p|trans=t|vform=c|voice=a|tense=o|num=p|def=d
+V\tVpp\taspect=p|trans=t|vform=c|voice=a|tense=o|num=p|def=i
+V\tVpp\taspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=f|def=d
+V\tVpp\taspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=f|def=i
+V\tVpp\taspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=m|def=h
+V\tVpp\taspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=m|def=i
+V\tVpp\taspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=n|def=d
+V\tVpp\taspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=n|def=i
+V\tVpp\taspect=p|trans=t|vform=c|voice=v|num=p|def=d
+V\tVpp\taspect=p|trans=t|vform=c|voice=v|num=p|def=i
+V\tVpp\taspect=p|trans=t|vform=c|voice=v|num=s|gen=f|def=d
+V\tVpp\taspect=p|trans=t|vform=c|voice=v|num=s|gen=f|def=i
+V\tVpp\taspect=p|trans=t|vform=c|voice=v|num=s|gen=m|def=h
+V\tVpp\taspect=p|trans=t|vform=c|voice=v|num=s|gen=m|def=i
+V\tVpp\taspect=p|trans=t|vform=c|voice=v|num=s|gen=n|def=d
+V\tVpp\taspect=p|trans=t|vform=c|voice=v|num=s|gen=n|def=i
+V\tVxi\ttype=aux|trans=t|mood=i|past|pers=1|num=p
+V\tVxi\ttype=aux|trans=t|mood=i|past|pers=1|num=s
+V\tVxi\ttype=aux|trans=t|mood=i|past|pers=2|num=p
+V\tVxi\ttype=aux|trans=t|mood=i|past|pers=2|num=s
+V\tVxi\ttype=aux|trans=t|mood=i|past|pers=3|num=p
+V\tVxi\ttype=aux|trans=t|mood=i|past|pers=3|num=s
+V\tVxi\ttype=aux|trans=t|mood=i|tense=r|pers=1|num=p
+V\tVxi\ttype=aux|trans=t|mood=i|tense=r|pers=1|num=s
+V\tVxi\ttype=aux|trans=t|mood=i|tense=r|pers=2|num=p
+V\tVxi\ttype=aux|trans=t|mood=i|tense=r|pers=2|num=s
+V\tVxi\ttype=aux|trans=t|mood=i|tense=r|pers=3|num=p
+V\tVxi\ttype=aux|trans=t|mood=i|tense=r|pers=3|num=s
+V\tVxi\ttype=aux|trans=t|mood=u|tense=o|pers=1|num=p
+V\tVxi\ttype=aux|trans=t|mood=u|tense=o|pers=1|num=s
+V\tVxi\ttype=aux|trans=t|mood=u|tense=o|pers=2|num=p
+V\tVxi\ttype=aux|trans=t|mood=u|tense=o|pers=2|num=s
+V\tVxi\ttype=aux|trans=t|mood=u|tense=o|pers=3|num=p
+V\tVxi\ttype=aux|trans=t|mood=u|tense=o|pers=3|num=s
+V\tVxi\ttype=aux|trans=t|vform=c|voice=a|past|num=p|def=i
+V\tVxi\ttype=aux|trans=t|vform=c|voice=a|past|num=s|gen=f|def=i
+V\tVxi\ttype=aux|trans=t|vform=c|voice=a|past|num=s|gen=m|def=i
+V\tVxi\ttype=aux|trans=t|vform=c|voice=a|past|num=s|gen=n|def=i
+V\tVyp\ttype=aux|aspect=p|trans=t|mood=i|tense=o|pers=3|num=s
+V\tVyp\ttype=aux|aspect=p|trans=t|mood=i|tense=r|pers=1|num=p
+V\tVyp\ttype=aux|aspect=p|trans=t|mood=i|tense=r|pers=1|num=s
+V\tVyp\ttype=aux|aspect=p|trans=t|mood=i|tense=r|pers=2|num=p
+V\tVyp\ttype=aux|aspect=p|trans=t|mood=i|tense=r|pers=2|num=s
+V\tVyp\ttype=aux|aspect=p|trans=t|mood=i|tense=r|pers=3|num=p
+V\tVyp\ttype=aux|aspect=p|trans=t|mood=i|tense=r|pers=3|num=s
+V\tVyp\ttype=aux|aspect=p|trans=t|mood=z|pers=2|num=s
 end_of_list
     ;
-    # Protect from editors that replace tabs by spaces.
-    $list =~ s/ \s+/\t/sg;
     my @list = split(/\r?\n/, $list);
     pop(@list) if($list[$#list] eq "");
     return \@list;

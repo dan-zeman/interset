@@ -5,7 +5,7 @@
 
 package tagset::cs::pdt;
 use utf8;
-use tagset;
+use tagset::common;
 
 
 
@@ -756,7 +756,7 @@ sub encode
 {
     my $f = shift;
     # Replace any array values by single values.
-    my $single = tagset::single_values($f, "gender", "animateness", "number", "possgender", "tense");
+    my $single = tagset::common::single_values($f, "gender", "animateness", "number", "possgender", "tense");
     my %f = %{$single}; # this is not a deep copy! We must not modify the contents!
     my $nonstrict = shift; # strict is default
     $strict = !$nonstrict;

@@ -81,13 +81,13 @@ sub decode
     elsif($tag eq "I?")
     {
         $f{pos} = "punc";
-        $f{other} = "question";
+        $f{punclass} = "qest";
     }
     # IC Quotation mark
     elsif($tag eq "IC")
     {
         $f{pos} = "punc";
-        $f{other} = "quotation";
+        $f{punclass} = "quot";
     }
     # ID Part of idiom (multi-word unit)
     elsif($tag eq "ID")
@@ -98,13 +98,12 @@ sub decode
     elsif($tag eq "IG")
     {
         $f{pos} = "punc";
-        $f{other} = "other";
     }
     # IK Comma
     elsif($tag eq "IK")
     {
         $f{pos} = "punc";
-        $f{other} = "comma";
+        $f{punclass} = "comm";
     }
     # IM Infinitive marker
     elsif($tag eq "IM")
@@ -116,37 +115,37 @@ sub decode
     elsif($tag eq "IP")
     {
         $f{pos} = "punc";
-        $f{other} = "period";
+        $f{punclass} = "peri";
     }
     # IQ Colon
     elsif($tag eq "IQ")
     {
         $f{pos} = "punc";
-        $f{other} = "colon";
+        $f{punclass} = "colo";
     }
     # IR Parenthesis
     elsif($tag eq "IR")
     {
         $f{pos} = "punc";
-        $f{other} = "parenthesis";
+        $f{punclass} = "brck";
     }
     # IS Semicolon
     elsif($tag eq "IS")
     {
         $f{pos} = "punc";
-        $f{other} = "semicolon";
+        $f{punclass} = "semi";
     }
     # IT Dash
     elsif($tag eq "IT")
     {
         $f{pos} = "punc";
-        $f{other} = "dash";
+        $f{punclass} = "dash";
     }
     # IU Exclamation mark
     elsif($tag eq "IU")
     {
         $f{pos} = "punc";
-        $f{other} = "exclamation";
+        $f{punclass} = "excl";
     }
     # KV The verb "komma att" (periphrastic future)
     elsif($tag eq "KV")
@@ -462,45 +461,45 @@ sub encode
     # Punctuation: I? IC IG IK IP IQ IR IS IT IU
     elsif($f{pos} eq "punc")
     {
-        $tag = "IG";
-        if($f{tagset} eq "svmamba")
+        if($f{punclass} eq "qest")
         {
-            if($f{other} eq "question")
-            {
-                $tag = "I?";
-            }
-            elsif($f{other} eq "quotation")
-            {
-                $tag = "IC";
-            }
-            elsif($f{other} eq "comma")
-            {
-                $tag = "IK";
-            }
-            elsif($f{other} eq "period")
-            {
-                $tag = "IP";
-            }
-            elsif($f{other} eq "colon")
-            {
-                $tag = "IQ";
-            }
-            elsif($f{other} eq "parenthesis")
-            {
-                $tag = "IR";
-            }
-            elsif($f{other} eq "semicolon")
-            {
-                $tag = "IS";
-            }
-            elsif($f{other} eq "dash")
-            {
-                $tag = "IT";
-            }
-            elsif($f{other} eq "exclamation")
-            {
-                $tag = "IU";
-            }
+            $tag = "I?";
+        }
+        elsif($f{punclass} eq "quot")
+        {
+            $tag = "IC";
+        }
+        elsif($f{punclass} eq "comm")
+        {
+            $tag = "IK";
+        }
+        elsif($f{punclass} eq "peri")
+        {
+            $tag = "IP";
+        }
+        elsif($f{punclass} eq "colo")
+        {
+            $tag = "IQ";
+        }
+        elsif($f{punclass} eq "brck")
+        {
+            $tag = "IR";
+        }
+        elsif($f{punclass} eq "semi")
+        {
+            $tag = "IS";
+        }
+        elsif($f{punclass} eq "dash")
+        {
+            $tag = "IT";
+        }
+        elsif($f{punclass} eq "excl")
+        {
+            $tag = "IU";
+        }
+        else
+        {
+            $tag = "IG";
         }
     }
     # Unknown: ID XX QQ UU TT

@@ -144,6 +144,23 @@ sub decode
                 $f{verbform} = "inf";
             }
         }
+        elsif($pos eq "F")
+        {
+            if($subpos eq "E")
+            {
+                # menningskiljande interpunktion
+                # (DZ: I don't understand Swedish but maybe: "meaning-containing punctuation"?)
+                # example: .
+                $f{punclass} = "peri";
+            }
+            elsif($subpos eq "P")
+            {
+                # interpunktion
+                # (DZ: the original legend does not tell the difference between FI and FP. Could FP be paired punctuation?)
+                # example: "
+                $f{punclass} = "quot";
+            }
+        }
     } # unless $pos =~ m/[QI]/
     # degree of comparison
     # [PD] have no compdeg but there is a dummy "W" char which we need to shift
@@ -161,6 +178,10 @@ sub decode
         elsif($compdeg eq "S")
         {
             $f{compdeg} = "sup";
+        }
+        elsif($compdeg eq "0")
+        {
+            $f{other} = "no degree";
         }
     }
     if($pos =~ m/[NADPM]/)
@@ -460,7 +481,18 @@ sub encode
     }
     elsif($f{pos} eq "punc")
     {
-        $tag = "FE"; # we cannot currently generate the alternatives FI, FP
+        if($f{punclass} eq "peri")
+        {
+            $tag = "FE";
+        }
+        elsif($f{punclass} eq "quot")
+        {
+            $tag = "FP";
+        }
+        else
+        {
+            $tag = "FI";
+        }
     }
     else
     {
@@ -469,7 +501,11 @@ sub encode
     # degree of comparison
     if($f{pos} =~ m/^(adj|adv)$/ && $f{verbform} ne "part")
     {
-        if($f{compdeg} eq "sup")
+        if($f{tagset} eq "hajic" && $f{other} eq "no degree")
+        {
+            $tag .= "0";
+        }
+        elsif($f{compdeg} eq "sup")
         {
             $tag .= "S";
         }
@@ -493,18 +529,26 @@ sub encode
         {
             $tag .= "U";
         }
-        else
+        elsif($f{gender} eq "neut")
         {
             $tag .= "N";
+        }
+        else
+        {
+            $tag .= "0";
         }
         # number
         if($f{number} eq "plu")
         {
             $tag .= "P";
         }
-        else
+        elsif($f{number} eq "sing")
         {
             $tag .= "S";
+        }
+        else
+        {
+            $tag .= "0";
         }
     }
     # case
@@ -514,9 +558,13 @@ sub encode
         {
             $tag .= "G";
         }
-        else
+        elsif($f{case} eq "nom")
         {
             $tag .= "N";
+        }
+        else
+        {
+            $tag .= "0";
         }
     }
     # subject / object form
@@ -526,9 +574,13 @@ sub encode
         {
             $tag .= "O";
         }
-        else
+        elsif($f{subjobj} eq "subj" || $f{case} eq "nom")
         {
             $tag .= "S";
+        }
+        else
+        {
+            $tag .= "0";
         }
     }
     # add the next dummy "W" char
@@ -543,16 +595,24 @@ sub encode
         {
             $tag .= "D";
         }
-        else
+        elsif($f{definiteness} eq "ind")
         {
             $tag .= "I";
+        }
+        else
+        {
+            $tag .= "0";
         }
     }
     # verb features
     if($f{pos} eq "verb" && $f{verbform} ne "part")
     {
         # verbform and mood
-        if($f{mood} eq "ind")
+        if($f{abbr} eq "abbr" || $f{hyph} eq "hyph")
+        {
+            $tag .= "0";
+        }
+        elsif($f{mood} eq "ind")
         {
             $tag .= "I";
         }
@@ -573,6 +633,10 @@ sub encode
         {
             $tag .= "U";
         }
+        elsif($f{verbform} eq "inf" || $f{mood} eq "imp" || $f{abbr} eq "abbr" || $f{hyph} eq "hyph")
+        {
+            $tag .= "0";
+        }
         elsif($f{tense} eq "past")
         {
             $tag .= "I";
@@ -582,7 +646,11 @@ sub encode
             $tag .= "P";
         }
         # voice
-        if($f{voice} eq "pass")
+        if($f{abbr} eq "abbr" || $f{hyph} eq "hyph")
+        {
+            $tag .= "0";
+        }
+        elsif($f{voice} eq "pass")
         {
             $tag .= "S";
         }
@@ -613,6 +681,186 @@ sub encode
         $tag .= "-";
     }
     return $tag;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Returns reference to list of known tags.
+# The source list is the Parole tag set of the Swedish SUC corpus.
+# http://spraakbanken.gu.se/parole/tags.phtml
+# Modifications by Jan Hajič:
+# - replace @ by W
+# - add trailing dashes so every tag has 9 characters
+# total tags:
+# 156
+#------------------------------------------------------------------------------
+sub list
+{
+    my $list = <<end_of_list
+NC000\@0A
+NC000\@0C
+NC000\@0S
+NCN00\@0C
+NCN00\@0S
+NCNPG\@DS
+NCNPG\@IS
+NCNPN\@DS
+NCNPN\@IS
+NCNSG\@DS
+NCNSG\@IS
+NCNSN\@DS
+NCNSN\@IS
+NCU00\@0C
+NCU00\@0S
+NCUPG\@DS
+NCUPG\@IS
+NCUPN\@DS
+NCUPN\@IS
+NCUSG\@DS
+NCUSG\@IS
+NCUSN\@DS
+NCUSN\@IS
+NP000\@0C
+NP00G\@0S
+NP00N\@0S
+AF00000A
+AF00PG0S
+AF00PN0S
+AF00SGDS
+AF00SNDS
+AF0MSGDS
+AF0MSNDS
+AF0NSNIS
+AF0USGIS
+AF0USNIS
+AP000G0S
+AP000N0S
+AQ00000A
+AQC0000C
+AQC00G0S
+AQC00N0S
+AQP0000C
+AQP00N0S
+AQP00NIS
+AQP0PG0S
+AQP0PN0S
+AQP0PNIS
+AQP0SGDS
+AQP0SNDS
+AQPMSGDS
+AQPMSNDS
+AQPNSGIS
+AQPNSN0S
+AQPNSNIS
+AQPU000C
+AQPUSGIS
+AQPUSN0S
+AQPUSNIS
+AQS00NDS
+AQS00NIS
+AQS0PNDS
+AQS0PNIS
+AQSMSGDS
+AQSMSNDS
+D0\@00\@A
+D0\@0P\@S
+D0\@NS\@S
+D0\@US\@S
+DF\@0P\@S
+DF\@0S\@S
+DF\@MS\@S
+DF\@NS\@S
+DF\@US\@S
+DH\@0P\@S
+DH\@NS\@S
+DH\@US\@S
+DI\@00\@S
+DI\@0P\@S
+DI\@0S\@S
+DI\@MS\@S
+DI\@NS\@S
+DI\@US\@S
+PF\@00O\@S
+PF\@0P0\@S
+PF\@0PO\@S
+PF\@0PS\@S
+PF\@MS0\@S
+PF\@NS0\@S
+PF\@UPO\@S
+PF\@UPS\@S
+PF\@US0\@S
+PF\@USO\@S
+PF\@USS\@S
+PE\@000\@S
+PH\@000\@S
+PH\@0P0\@S
+PH\@NS0\@C
+PH\@NS0\@S
+PH\@US0\@S
+PI\@0P0\@S
+PI\@NS0\@S
+PI\@US0\@S
+PI\@USS\@S
+PS\@000\@A
+PS\@000\@S
+PS\@0P0\@S
+PS\@NS0\@S
+PS\@US0\@S
+MC0000C
+MC00G0S
+MC00N0S
+MC0SNDS
+MCMSGDS
+MCMSNDS
+MCNSNIS
+MCUSNIS
+MO0000C
+MO00G0S
+MO00N0S
+MOMSNDS
+V\@000A
+V\@000C
+V\@IIAS
+V\@IISS
+V\@IPAS
+V\@IPSS
+V\@IUAS
+V\@IUSS
+V\@M0AS
+V\@M0SS
+V\@N0AS
+V\@N0SS
+V\@SIAS
+V\@SISS
+V\@SPAS
+RG0A
+RG0C
+RG0S
+RGCS
+RGPS
+RGSS
+RH0S
+SPC
+SPS
+CCA
+CCS
+CIS
+CSS
+QC
+QS
+I
+FE
+FI
+FP
+XF
+end_of_list
+    ;
+    my @list = split(/\r?\n/, $list);
+    pop(@list) if($list[$#list] eq "");
+    # Convert Parole tags to Hajič.
+    @list = map {s/\@/W/g; for(my $i = length($_)+1; $i<=9; $i++) {$_ .= "-"} $_} @list;
+    return \@list;
 }
 
 

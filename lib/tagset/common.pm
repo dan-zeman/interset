@@ -12,14 +12,6 @@ binmode(STDERR, ":utf8");
 
 
 
-BEGIN
-{
-    # Complete the table of default replacement feature values.
-    create_back_off();
-}
-
-
-
 #------------------------------------------------------------------------------
 # Makes sure that all features have single values (as opposed to arrays).
 # Should be called in the beginning of encode() of a driver that does not want
@@ -341,7 +333,7 @@ sub single_values
 # For each feature value, constructs the complete list of back-off replacements
 # Reads and writes to global variables.
 #------------------------------------------------------------------------------
-sub create_back_off
+BEGIN
 {
     # Loop over features.
     foreach my $feature (keys(%defaults))

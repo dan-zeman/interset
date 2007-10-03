@@ -18,7 +18,72 @@ sub decode
     my %f; # features
     $f{tagset} = "penn";
     $f{other} = $tag;
-    if($tag eq "CC")
+    if($tag eq ".")
+    {
+        # sentence-final punctuation
+        # examples: . ! ?
+        $f{pos} = "punc";
+        $f{punclass} = "peri";
+    }
+    elsif($tag eq ",")
+    {
+        # comma
+        # example: ,
+        $f{pos} = "punc";
+        $f{punclass} = "comm";
+    }
+    elsif($tag eq "-LRB-")
+    {
+        # left bracket
+        # example: -LRB- -LCB- [ {
+        $f{pos} = "punc";
+        $f{punclass} = "brck";
+        $f{puncside} = "ini";
+    }
+    elsif($tag eq "-RRB-")
+    {
+        # right bracket
+        # example: -RRB- -RCB- ] }
+        $f{pos} = "punc";
+        $f{punclass} = "brck";
+        $f{puncside} = "fin";
+    }
+    elsif($tag eq "``")
+    {
+        # left quotation mark
+        # example: ``
+        $f{pos} = "punc";
+        $f{punclass} = "quot";
+        $f{puncside} = "ini";
+    }
+    elsif($tag eq "''")
+    {
+        # right quotation mark
+        # example: ''
+        $f{pos} = "punc";
+        $f{punclass} = "quot";
+        $f{puncside} = "fin";
+    }
+    elsif($tag eq ":")
+    {
+        # generic other punctuation
+        # examples: : ; - ...
+        $f{pos} = "punc";
+    }
+    elsif($tag eq "\$")
+    {
+        # currency
+        # example: $ US$ C$ A$ NZ$
+        $f{other} = "currency";
+    }
+    elsif($tag eq "\#")
+    {
+        # channel
+        # example: #
+        $f{pos} = "punc";
+        $f{other} = "\#";
+    }
+    elsif($tag eq "CC")
     {
         # coordinating conjunction
         # examples: and, or
@@ -58,8 +123,8 @@ sub decode
     {
         # preposition or subordinating conjunction
         # examples: in, on, because
-        $f{pos} = ["prep", "conj"];
-        $f{subpos} = ["", "sub"];
+        $f{pos} = "prep";
+        # We could create array of "prep" and "conj/sub" but arrays generally complicate things and the benefit is uncertain.
     }
     elsif($tag eq "JJ")
     {
@@ -526,10 +591,55 @@ sub encode
     {
         $tag = "UH";
     }
-    # other: LS, SYM
-    elsif($f{pos} eq "punc" && $f{subpos} eq "ord")
+    # other: $, LS, SYM, #, ., ,
+    elsif($f{tagset} eq "penn" && $f{other} eq "currency")
     {
-        $tag = "LS";
+        $tag = "\$";
+    }
+    elsif($f{pos} eq "punc")
+    {
+        if($f{subpos} eq "ord")
+        {
+            $tag = "LS";
+        }
+        elsif($f{tagset} eq "penn" && $f{other} eq "\#")
+        {
+            $tag = "\#";
+        }
+        elsif($f{punclass} =~ m/^(peri|qest|excl)$/)
+        {
+            $tag = ".";
+        }
+        elsif($f{punclass} eq "comm")
+        {
+            $tag = ",";
+        }
+        elsif($f{punclass} eq "brck")
+        {
+            if($f{puncside} eq "fin")
+            {
+                $tag = "-RRB-";
+            }
+            else
+            {
+                $tag = "-LRB-";
+            }
+        }
+        elsif($f{punclass} eq "quot")
+        {
+            if($f{puncside} eq "fin")
+            {
+                $tag = "''";
+            }
+            else
+            {
+                $tag = "``";
+            }
+        }
+        else
+        {
+            $tag = ":";
+        }
     }
     # punctuation and unknown elements
     else
@@ -537,6 +647,72 @@ sub encode
         $tag = "SYM";
     }
     return $tag;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Returns reference to list of known tags.
+#
+# cd /net/data/LDC/PennTreebank3/parsed/mrg/wsj
+# foreach i (00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24)
+#   cat $i/*.mrg >> /tmp/all.mrg
+# end
+# cat /tmp/all.mrg | perl -pe 's/\(([-\w]+)\s+[^\(\)]+\)/ $1 /g; s/\([-\w\*]+//g; s/[\(\)]/ /g; s/^\s+//; s/\s+$/\n/; s/\s+/\n/g;' | sort -u | wc -l
+# rm /tmp/all.mrg
+# 43
+#------------------------------------------------------------------------------
+sub list
+{
+    my $list = <<end_of_list
+``
+-LRB-
+-RRB-
+,
+:
+.
+''
+\$
+#
+CC
+CD
+DT
+EX
+FW
+IN
+JJ
+JJR
+JJS
+LS
+MD
+NN
+NNP
+NNPS
+NNS
+PDT
+POS
+PRP
+RB
+RBR
+RBS
+RP
+SYM
+TO
+UH
+VB
+VBD
+VBG
+VBN
+VBP
+VBZ
+WDT
+WP
+WRB
+end_of_list
+    ;
+    my @list = split(/\r?\n/, $list);
+    pop(@list) if($list[$#list] eq "");
+    return \@list;
 }
 
 
