@@ -376,10 +376,13 @@ sub decode
 #------------------------------------------------------------------------------
 sub encode
 {
-    my $f = shift;
-    my %f = %{$f}; # this is not a deep copy! We must not modify the contents!
+    my $f0 = shift;
     my $nonstrict = shift; # strict is default
     $strict = !$nonstrict;
+    # Modify the feature structure so that it contains values expected by this
+    # driver.
+    my $f = tagset::common::enforce_permitted_joint($f0, $permitted);
+    my %f = %{$f}; # This is not a deep copy but $f already refers to a deep copy of the original %{$f0}.
     my $tag;
     # pos and subpos
     if($f{foreign} eq "foreign")
@@ -471,7 +474,8 @@ sub encode
     {
         # VA = main verb
         # VE = medial verb
-        if($f{tagset} eq "daconll" && $f{other} eq "medial")
+        if($f{tagset} eq "daconll" && $f{other} eq "medial" ||
+           $f{verbform} eq "part" && $f{tense} eq "past" && $f{number} !~ m/^(sing|plu)$/)
         {
             $tag = "V\tVE";
         }
@@ -957,6 +961,19 @@ end_of_list
     my @list = split(/\r?\n/, $list);
     pop(@list) if($list[$#list] eq "");
     return \@list;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Create trie of permitted feature structures. This will be needed for strict
+# encoding. This BEGIN block cannot appear before the definition of the list()
+# function.
+#------------------------------------------------------------------------------
+BEGIN
+{
+    # Store the hash reference in a global variable. 
+    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode); 
 }
 
 

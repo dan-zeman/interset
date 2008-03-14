@@ -88,7 +88,7 @@ sub decode
         # coordinating conjunction
         # examples: and, or
         $f{pos} = "conj";
-        $f{subpos} = "coord";
+        $f{subpos} = "coor";
     }
     elsif($tag eq "CD")
     {
@@ -131,6 +131,7 @@ sub decode
         # adjective
         # examples: good
         $f{pos} = "adj";
+        $f{compdeg} = "norm";
     }
     elsif($tag eq "JJR")
     {
@@ -249,7 +250,8 @@ sub decode
     elsif($tag eq "SYM")
     {
         # symbol
-        $f{pos} = "punct";
+        $f{pos} = "punc";
+        $f{punclass} = "symb";
     }
     elsif($tag eq "TO")
     {
@@ -636,6 +638,10 @@ sub encode
                 $tag = "``";
             }
         }
+        elsif($f{punclass} eq "symb")
+        {
+            $tag = "SYM";
+        }
         else
         {
             $tag = ":";
@@ -692,6 +698,7 @@ NNS
 PDT
 POS
 PRP
+PRP\$
 RB
 RBR
 RBS
@@ -707,6 +714,7 @@ VBP
 VBZ
 WDT
 WP
+WP\$
 WRB
 end_of_list
     ;

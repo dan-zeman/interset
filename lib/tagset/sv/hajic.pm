@@ -328,10 +328,13 @@ sub decode
 #------------------------------------------------------------------------------
 sub encode
 {
-    my $f = shift;
-    my %f = %{$f}; # this is not a deep copy! We must not modify the contents!
+    my $f0 = shift;
     my $nonstrict = shift; # strict is default
     $strict = !$nonstrict;
+    # Modify the feature structure so that it contains values expected by this
+    # driver.
+    my $f = tagset::common::enforce_permitted_joint($f0, $permitted);
+    my %f = %{$f}; # This is not a deep copy but $f already refers to a deep copy of the original %{$f0}.
     my $tag;
     # pos and subpos
     if($f{foreign} eq "foreign")
@@ -501,7 +504,9 @@ sub encode
     # degree of comparison
     if($f{pos} =~ m/^(adj|adv)$/ && $f{verbform} ne "part")
     {
-        if($f{tagset} eq "hajic" && $f{other} eq "no degree")
+        if($f{tagset} eq "hajic" && $f{other} eq "no degree" ||
+           $f{abbr} eq "abbr" ||
+           $f{pos} eq "adv" && $f{definiteness} =~ m/^(wh|int|rel)$/)
         {
             $tag .= "0";
         }
@@ -861,6 +866,19 @@ end_of_list
     # Convert Parole tags to Hajič.
     @list = map {s/\@/W/g; for(my $i = length($_)+1; $i<=9; $i++) {$_ .= "-"} $_} @list;
     return \@list;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Create trie of permitted feature structures. This will be needed for strict
+# encoding. This BEGIN block cannot appear before the definition of the list()
+# function.
+#------------------------------------------------------------------------------
+BEGIN
+{
+    # Store the hash reference in a global variable. 
+    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode); 
 }
 
 

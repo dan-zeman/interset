@@ -754,10 +754,11 @@ sub decode
 #------------------------------------------------------------------------------
 sub encode
 {
-    my $f = shift;
-    # Replace any array values by single values.
-    my $single = tagset::common::single_values($f, "gender", "animateness", "number", "possgender", "tense");
-    my %f = %{$single}; # this is not a deep copy! We must not modify the contents!
+    my $f0 = shift;
+    # Modify the feature structure so that it contains values expected by this
+    # driver.
+    my $f = tagset::common::enforce_permitted_joint($f0, $permitted);
+    my %f = %{$f}; # This is not a deep copy but $f already refers to a deep copy of the original %{$f0}.
     my $nonstrict = shift; # strict is default
     $strict = !$nonstrict;
     my @tag = split(//, "---------------");
@@ -801,7 +802,8 @@ sub encode
         {
             $tag[1] = "2";
         }
-        elsif($f{tagset} eq "cspdt" && $f{other} eq "O")
+        elsif($f{tagset} eq "cspdt" && $f{other} eq "O" ||
+              $f{case} eq "" && $f{negativeness} eq "")
         {
             $tag[1] = "O";
         }
@@ -1138,17 +1140,17 @@ sub encode
     elsif($f{pos} eq "conj")
     {
         $tag[0] = "J";
-        if($f{subpos} eq "coor")
-        {
-            $tag[1] = "^";
-        }
-        elsif($f{subpos} eq "sub")
+        if($f{subpos} eq "sub")
         {
             $tag[1] = ",";
         }
         elsif($f{tagset} eq "cspdt" && $f{other} eq "*")
         {
             $tag[1] = "*";
+        }
+        else # $f{subpos} eq "coor" is default
+        {
+            $tag[1] = "^";
         }
     }
     elsif($f{pos} eq "part")
@@ -5823,6 +5825,19 @@ end_of_list
     my @list = split(/\r?\n/, $list);
     pop(@list) if($list[$#list] eq "");
     return \@list;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Create trie of permitted feature structures. This will be needed for strict
+# encoding. This BEGIN block cannot appear before the definition of the list()
+# function.
+#------------------------------------------------------------------------------
+BEGIN
+{
+    # Store the hash reference in a global variable. 
+    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode); 
 }
 
 

@@ -178,6 +178,10 @@ sub decode
             $f{other}{subpos} = "Md";
         }
         # My = fuzzy numerals about people
+        # Only two varieties:
+        # M\tMy\t_
+        # M\tMy\tdef=i
+        # This is unlike N\tNc which either has "_" features, or always at least number, mostly also gender, in addition to definiteness.
         elsif($subpos eq "My")
         {
             # malcina = few people, mnozina = many people
@@ -741,10 +745,13 @@ sub decode
 #------------------------------------------------------------------------------
 sub encode
 {
-    my $f = shift;
-    my %f = %{$f}; # this is not a deep copy! We must not modify the contents!
+    my $f0 = shift;
     my $nonstrict = shift; # strict is default
     $strict = !$nonstrict;
+    # Modify the feature structure so that it contains values expected by this
+    # driver.
+    my $f = tagset::common::enforce_permitted_joint($f0, $permitted);
+    my %f = %{$f}; # This is not a deep copy but $f already refers to a deep copy of the original %{$f0}.
     my $tag;
     # pos and subpos
     if($f{foreign} eq "foreign")
@@ -755,7 +762,8 @@ sub encode
     {
         # N = normal noun
         # H = hybrid adjectival noun (Ivanov, Ivanovo)
-        if($f{tagset} eq "bgconll" && $f{other}{pos} eq "hybrid")
+        if($f{tagset} eq "bgconll" && $f{other}{pos} eq "hybrid" ||
+           $f{tagset} ne "bgconll" && $f{gender} eq "fem" && $f{number} eq "sing" && $f{definiteness} eq "ind")
         {
             # Hm = masculine
             # Hf = feminine
@@ -788,7 +796,8 @@ sub encode
             {
                 $tag = "N\tNm";
             }
-            elsif($f{tagset} eq "bgconll" && $f{other}{subpos} eq "My")
+            elsif($f{tagset} eq "bgconll" && $f{other}{subpos} eq "My" ||
+                  $f{definiteness} ne "" && $f{number} eq "")
             {
                 $tag = "M\tMy";
             }
@@ -1353,7 +1362,8 @@ sub encode
     }
     elsif($f{number} eq "plu")
     {
-        if($f{tagset} eq "bgconll" && $f{other}{number} eq "pluralia tantum")
+        if($f{tagset} eq "bgconll" && $f{other}{number} eq "pluralia tantum" ||
+           $f{tagset} ne "bgconll" && $f{pos} eq "noun" && $f{gender} eq "")
         {
             push(@features, "num=pia_tantum");
         }
@@ -1427,7 +1437,8 @@ sub encode
         }
         elsif($f{definiteness} eq "def")
         {
-            if($f{tagset} eq "bgconll" && $f{other}{definiteness} eq "f")
+            if($f{tagset} eq "bgconll" && $f{other}{definiteness} eq "f" ||
+               $f{tagset} ne "bgconll" && $f{gender} eq "masc" && $f{number} eq "sing")
             {
                 push(@features, "def=f");
             }
@@ -2012,6 +2023,19 @@ end_of_list
     my @list = split(/\r?\n/, $list);
     pop(@list) if($list[$#list] eq "");
     return \@list;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Create trie of permitted feature structures. This will be needed for strict
+# encoding. This BEGIN block cannot appear before the definition of the list()
+# function.
+#------------------------------------------------------------------------------
+BEGIN
+{
+    # Store the hash reference in a global variable. 
+    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode); 
 }
 
 

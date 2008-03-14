@@ -601,4 +601,16 @@ sub encode
 
 
 
+#------------------------------------------------------------------------------
+# Should return reference to list of known tags.
+# However, for this tagset we only return an empty list, merely to ensure that
+# driver testing will not crash.
+#------------------------------------------------------------------------------
+sub list
+{
+    return [];
+}
+
+
+
 1;
