@@ -254,11 +254,13 @@ sub test_conversion
             my $fs1 = correct($driver2, $fs);
             print("\n\n") if($n_errors==0);
             print("Source tag = $src\n");
+            print("Features   = ", structure_to_string($fs), "\n");
             print("Features   = ", tagset::common::feature_structure_to_text($fs), "\n");
             print("Corrected  = ", tagset::common::feature_structure_to_text($fs1), "\n");
             print("Example    = ", get_tag_example($driver2, $fs1), "\n");
             print("Target tag = $tgt\n");
             print("The target tag is not known in the target tagset.\n\n");
+#            die();
             $n_errors++;
         }
         $n_tags++;
@@ -286,7 +288,7 @@ sub test_conversion
         if($src_inf)
         {
             my $inf_loss = ($src_inf-$tgt_inf)/$src_inf;
-            printf("Information loss %d %%.\n", $inf_loss*100);
+            printf("Information loss %d %%.\n", $inf_loss*100+0.5);
         }
         # For each used target tag, show how many source tags have been mapped to it.
         if($n_hits<=20)
@@ -377,16 +379,7 @@ sub encode
 {
     my $driver = shift; # e.g. "cs::pdt"
     my $fs = shift;
-    my @fassigns = map
-    {
-        my $key = $_;
-        my $val = $fs->{$_};
-        $key =~ s/([\\"\$\@])/\\$1/g;
-        $val =~ s/([\\"\$\@])/\\$1/g;
-        "\"$key\" => \"$val\"";
-    }
-    (keys(%{$fs}));
-    my $fstring = "{".join(", ", @fassigns)."}";
+    my $fstring = structure_to_string($fs);
     my $eval = <<_end_of_eval_
     {
         use tagset::${driver};
@@ -402,6 +395,34 @@ _end_of_eval_
         confess("$@\nEval failed");
     }
     return $tag;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Recursively converts a structure to string describing a Perl constant.
+# Useful for using eval.
+#------------------------------------------------------------------------------
+sub structure_to_string
+{
+    my $source = shift;
+    my $string;
+    my $ref = ref($source);
+    if($ref eq "ARRAY")
+    {
+        $string = "[".join(", ", map{structure_to_string($_)}(@{$source}))."]";
+    }
+    elsif($ref eq "HASH")
+    {
+        $string = "{".join(", ", map{structure_to_string($_)." => ".structure_to_string($source->{$_})}(keys(%{$source})))."}";
+    }
+    else
+    {
+        $string = $source;
+        $string =~ s/([\\"\$\@])/\\$1/g;
+        $string = "\"$string\"";
+    }
+    return $string;
 }
 
 

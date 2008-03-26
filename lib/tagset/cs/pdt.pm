@@ -977,7 +977,8 @@ sub encode
                 # několik, mnoho, málo, tolik
                 $tag[1] = "a";
             }
-            elsif($f{tagset} eq "cspdt" && $f{other} eq "l")
+            elsif($f{tagset} eq "cspdt" && $f{other} eq "l" ||
+                  $f{number} eq "plu" && $f{case} eq "")
             {
                 $tag[1] = "l";
             }

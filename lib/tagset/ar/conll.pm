@@ -21,7 +21,6 @@ sub decode
     my $tag = shift;
     my %f; # features
     $f{tagset} = "arconll";
-    $f{other} = $tag;
     # three components: coarse-grained pos, fine-grained pos, features
     # example: N\tNC\tgender=neuter|number=sing|case=unmarked|def=indef
     my ($pos, $subpos, $features) = split(/\s+/, $tag);
@@ -412,7 +411,8 @@ sub encode
         {
             push(@features, "mood=S");
         }
-        elsif(!($f{tagset} eq "arconll" && $f{other} eq "empty-mood"))
+        elsif(!($f{tagset} eq "arconll" && $f{other} eq "empty-mood" ||
+                $f{person} eq "3" && $f{gender} eq "fem" && $f{number} eq "plu"))
         {
             push(@features, "mood=I");
         }
