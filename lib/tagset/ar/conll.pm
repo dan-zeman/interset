@@ -20,7 +20,7 @@ sub decode
 {
     my $tag = shift;
     my %f; # features
-    $f{tagset} = "arconll";
+    $f{tagset} = "ar::conll";
     # three components: coarse-grained pos, fine-grained pos, features
     # example: N\tNC\tgender=neuter|number=sing|case=unmarked|def=indef
     my ($pos, $subpos, $features) = split(/\s+/, $tag);
@@ -50,11 +50,12 @@ sub decode
         {
             $f{synpos} = "attr";
             $f{definiteness} = "def";
+            $f{prontype} = "dem";
         }
         # SR = relative
         elsif($subpos eq "SR")
         {
-            $f{definiteness} = "wh";
+            $f{prontype} = "rel";
         }
     }
     # Q = number
@@ -99,7 +100,7 @@ sub decode
         # FI = interrogative particle
         if($subpos eq "FI")
         {
-            $f{definiteness} = "int";
+            $f{prontype} = "int";
         }
         # FN = negative particle
         elsif($subpos eq "FN")
@@ -314,11 +315,11 @@ sub encode
         # SD = demonstrative pronoun
         # SR = relative pronoun
         # S = other pronoun
-        if($f{definiteness} eq "def")
+        if($f{prontype} eq "dem" || $f{definiteness} eq "def")
         {
             $tag = "S\tSD";
         }
-        elsif($f{definiteness} =~ m/^(wh|int|rel)$/)
+        elsif($f{prontype} =~ m/^(int|rel)$/)
         {
             $tag = "S\tSR";
         }
@@ -366,7 +367,7 @@ sub encode
         {
             $tag = "F\tFN";
         }
-        elsif($f{definiteness} =~ m/^(wh|int|rel)$/)
+        elsif($f{prontype} =~ m/^(int|rel)$/)
         {
             $tag = "F\tFI";
         }
@@ -389,7 +390,7 @@ sub encode
     }
     else
     {
-        if($f{tagset} eq "arconll" && $f{other} eq "-")
+        if($f{tagset} eq "ar::conll" && $f{other} eq "-")
         {
             $tag = "-\t-";
         }
@@ -411,7 +412,7 @@ sub encode
         {
             push(@features, "mood=S");
         }
-        elsif(!($f{tagset} eq "arconll" && $f{other} eq "empty-mood" ||
+        elsif(!($f{tagset} eq "ar::conll" && $f{other} eq "empty-mood" ||
                 $f{person} eq "3" && $f{gender} eq "fem" && $f{number} eq "plu"))
         {
             push(@features, "mood=I");
@@ -472,7 +473,7 @@ sub encode
     # Do not show explicitly for demonstrative pronouns.
     if($f{definiteness} eq "def" && $f{pos} ne "pron")
     {
-        if($f{tagset} eq "arconll" && $f{other} eq "def=C")
+        if($f{tagset} eq "ar::conll" && $f{other} eq "def=C")
         {
             push(@features, "def=C");
         }

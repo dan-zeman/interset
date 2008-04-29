@@ -16,8 +16,7 @@ sub decode
 {
     my $tag = shift;
     my %f; # features
-    $f{tagset} = "hajic";
-    $f{other} = $tag;
+    $f{tagset} = "sv::hajic";
     my @chars = split(//, $tag);
     # pos
     my $pos = shift(@chars);
@@ -31,7 +30,8 @@ sub decode
     }
     elsif($pos eq "D")
     {
-        $f{pos} = "det";
+        $f{pos} = "adj";
+        $f{subpos} = "det";
     }
     elsif($pos eq "P")
     {
@@ -110,7 +110,7 @@ sub decode
             }
             elsif($subpos =~ m/[HE]/)
             {
-                $f{definiteness} = "wh";
+                $f{prontype} = "int";
             }
             if($subpos =~ m/[ES]/)
             {
@@ -140,7 +140,8 @@ sub decode
             }
             elsif($subpos eq "I")
             {
-                $f{pos} = "inf";
+                $f{pos} = "part";
+                $f{subpos} = "inf";
                 $f{verbform} = "inf";
             }
         }
@@ -151,35 +152,35 @@ sub decode
                 # menningskiljande interpunktion
                 # (DZ: I don't understand Swedish but maybe: "meaning-containing punctuation"?)
                 # example: .
-                $f{punclass} = "peri";
+                $f{punctype} = "peri";
             }
             elsif($subpos eq "P")
             {
                 # interpunktion
                 # (DZ: the original legend does not tell the difference between FI and FP. Could FP be paired punctuation?)
                 # example: "
-                $f{punclass} = "quot";
+                $f{punctype} = "quot";
             }
         }
     } # unless $pos =~ m/[QI]/
     # degree of comparison
-    # [PD] have no compdeg but there is a dummy "W" char which we need to shift
+    # [PD] have no degree but there is a dummy "W" char which we need to shift
     if($pos =~ m/[ARPD]/)
     {
-        my $compdeg = shift(@chars);
-        if($compdeg eq "P")
+        my $degree = shift(@chars);
+        if($degree eq "P")
         {
-            $f{compdeg} = "norm";
+            $f{degree} = "pos";
         }
-        elsif($compdeg eq "C")
+        elsif($degree eq "C")
         {
-            $f{compdeg} = "comp";
+            $f{degree} = "comp";
         }
-        elsif($compdeg eq "S")
+        elsif($degree eq "S")
         {
-            $f{compdeg} = "sup";
+            $f{degree} = "sup";
         }
-        elsif($compdeg eq "0")
+        elsif($degree eq "0")
         {
             $f{other} = "no degree";
         }
@@ -230,11 +231,11 @@ sub decode
         my $so = shift(@chars);
         if($so eq "S")
         {
-            $f{subjobj} = "subj";
+            $f{case} = "nom";
         }
         elsif($so eq "O")
         {
-            $f{subjobj} = "obj";
+            $f{case} = "acc";
         }
     }
     # eat the next dummy "W" char
@@ -365,10 +366,31 @@ sub encode
     }
     elsif($f{pos} eq "adj")
     {
-        $tag = "AQ";
+        if($f{subpos} eq "det")
+        {
+            if($f{definiteness} eq "def")
+            {
+                $tag = "DFW";
+            }
+            elsif($f{definiteness} eq "ind")
+            {
+                $tag = "DIW";
+            }
+            elsif($f{prontype} =~ m/^(int|rel)$/)
+            {
+                $tag = "DHW";
+            }
+            else
+            {
+                $tag = "D0W";
+            }
+        }
+        else
+        {
+            $tag = "AQ";
+        }
     }
-    elsif($f{pos} eq "det" ||
-          $f{pos} eq "pron" && $f{synpos} eq "attr" && $f{definiteness} eq "def" && $f{poss} ne "poss")
+    elsif($f{pos} eq "pron" && $f{synpos} eq "attr" && $f{definiteness} eq "def" && $f{poss} ne "poss")
     {
         if($f{definiteness} eq "def")
         {
@@ -378,7 +400,7 @@ sub encode
         {
             $tag = "DIW";
         }
-        elsif($f{definiteness} =~ m/^(wh|int|rel)$/)
+        elsif($f{prontype} =~ m/^(int|rel)$/)
         {
             $tag = "DHW";
         }
@@ -391,7 +413,7 @@ sub encode
     {
         if($f{poss} eq "poss")
         {
-            if($f{definiteness} =~ m/^(wh|int|rel)$/)
+            if($f{prontype} =~ m/^(int|rel)$/)
             {
                 $tag = "PEW";
             }
@@ -400,7 +422,7 @@ sub encode
                 $tag = "PSW";
             }
         }
-        elsif($f{definiteness} =~ m/^(wh|int|rel)$/)
+        elsif($f{prontype} =~ m/^(int|rel)$/)
         {
             $tag = "PHW";
         }
@@ -442,7 +464,7 @@ sub encode
     }
     elsif($f{pos} eq "adv")
     {
-        if($f{definiteness} =~ m/^(wh|int|rel)$/)
+        if($f{prontype} =~ m/^(int|rel)$/)
         {
             $tag = "RH";
         }
@@ -454,10 +476,6 @@ sub encode
     elsif($f{pos} eq "prep")
     {
         $tag = "SP";
-    }
-    elsif($f{pos} eq "inf")
-    {
-        $tag = "CI";
     }
     elsif($f{pos} eq "conj")
     {
@@ -476,7 +494,14 @@ sub encode
     }
     elsif($f{pos} eq "part")
     {
-        $tag = "Q";
+        if($f{subpos} eq "inf" || $f{verbform} eq "inf")
+        {
+            $tag = "CI";
+        }
+        else
+        {
+            $tag = "Q";
+        }
     }
     elsif($f{pos} eq "int")
     {
@@ -484,11 +509,11 @@ sub encode
     }
     elsif($f{pos} eq "punc")
     {
-        if($f{punclass} eq "peri")
+        if($f{punctype} eq "peri")
         {
             $tag = "FE";
         }
-        elsif($f{punclass} eq "quot")
+        elsif($f{punctype} eq "quot")
         {
             $tag = "FP";
         }
@@ -502,19 +527,19 @@ sub encode
         $tag = "XF";
     }
     # degree of comparison
-    if($f{pos} =~ m/^(adj|adv)$/ && $f{verbform} ne "part")
+    if($f{pos} =~ m/^(adj|adv)$/ && $f{verbform} ne "part" && $f{subpos} ne "det")
     {
-        if($f{tagset} eq "hajic" && $f{other} eq "no degree" ||
+        if($f{tagset} eq "sv::hajic" && $f{other} eq "no degree" ||
            $f{abbr} eq "abbr" ||
-           $f{pos} eq "adv" && $f{definiteness} =~ m/^(wh|int|rel)$/)
+           $f{pos} eq "adv" && $f{prontype} =~ m/^(int|rel)$/)
         {
             $tag .= "0";
         }
-        elsif($f{compdeg} eq "sup")
+        elsif($f{degree} eq "sup")
         {
             $tag .= "S";
         }
-        elsif($f{compdeg} eq "comp")
+        elsif($f{degree} eq "comp")
         {
             $tag .= "C";
         }
@@ -523,7 +548,7 @@ sub encode
             $tag .= "P";
         }
     }
-    if($f{pos} =~ m/^(noun|adj|det|pron|num)$/ || $f{verbform} eq "part")
+    if($f{pos} =~ m/^(noun|adj|pron|num)$/ || $f{verbform} eq "part")
     {
         # gender
         if($f{gender} eq "masc")
@@ -557,7 +582,7 @@ sub encode
         }
     }
     # case
-    if($f{pos} =~ m/^(noun|adj|num)$/ || $f{verbform} eq "part")
+    if($f{pos} =~ m/^(noun|adj|num)$/ && $f{subpos} ne "det" || $f{verbform} eq "part")
     {
         if($f{case} eq "gen")
         {
@@ -575,11 +600,11 @@ sub encode
     # subject / object form
     if($f{pos} eq "pron" && !($f{synpos} eq "attr" && $f{definiteness} eq "def" && $f{poss} ne "poss"))
     {
-        if($f{subjobj} eq "obj" || $f{case} eq "acc")
+        if($f{case} eq "acc")
         {
             $tag .= "O";
         }
-        elsif($f{subjobj} eq "subj" || $f{case} eq "nom")
+        elsif($f{case} eq "nom")
         {
             $tag .= "S";
         }
@@ -589,12 +614,12 @@ sub encode
         }
     }
     # add the next dummy "W" char
-    if($f{pos} =~ m/^(noun|det|pron)$/)
+    if($f{pos} =~ m/^(noun|pron)$/ || $f{pos} eq "adj" && $f{subpos} eq "det")
     {
         $tag .= "W";
     }
     # definiteness
-    if($f{pos} =~ m/^(noun|adj|num)$/ || $f{verbform} eq "part")
+    if($f{pos} =~ m/^(noun|adj|num)$/ && $f{subpos} ne "det" || $f{verbform} eq "part")
     {
         if($f{definiteness} eq "def")
         {
@@ -665,7 +690,7 @@ sub encode
         }
     } # verb features
     # form
-    if($f{pos} =~ m/^(noun|adj|det|pron|num|verb|adv|prep|inf|conj|part)$/)
+    if($f{pos} =~ m/^(noun|adj|pron|num|verb|adv|prep|conj|part)$/)
     {
         if($f{abbr} eq "abbr")
         {

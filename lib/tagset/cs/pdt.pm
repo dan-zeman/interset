@@ -17,8 +17,7 @@ sub decode
 {
     my $tag = shift;
     my %f; # features
-    $f{tagset} = "cspdt";
-    $f{other} = $tag;
+    $f{tagset} = "cs::pdt";
     my @chars = split(//, $tag);
     # pos
     my $pos = shift(@chars);
@@ -181,69 +180,72 @@ sub decode
     elsif($subpos eq "D")
     {
         # ten, tento, tenhle, onen, takový, týž, tentýž, sám
+        $f{prontype} = "dem";
         $f{synpos} = "attr";
         $f{definiteness} = "def";
     }
     elsif($subpos eq "K")
     {
         # kdo, kdož, kdos
+        $f{prontype} = ["int", "rel"];
         $f{synpos} = "subst";
-        $f{definiteness} = "wh";
     }
     elsif($subpos eq "Q")
     {
         # co, copak, cožpak
+        $f{prontype} = ["int", "rel"];
         $f{synpos} = "subst";
-        $f{definiteness} = "wh";
     }
     elsif($subpos eq "Y")
     {
         # oč, nač, zač
+        $f{prontype} = ["int", "rel"];
         $f{subpos} = "preppron";
         $f{synpos} = "adv";
-        $f{definiteness} = "wh";
     }
     elsif($subpos eq "4")
     {
         # jaký, který, čí
+        $f{prontype} = ["int", "rel"];
         $f{synpos} = "attr";
-        $f{definiteness} = "wh";
     }
     elsif($subpos eq "J")
     {
         # jenž, jež, již
+        $f{prontype} = "rel";
         $f{synpos} = "attr";
-        $f{definiteness} = "rel";
     }
     elsif($subpos eq "9")
     {
         # něhož, němuž, nějž, němž, nímž
+        $f{prontype} = "rel";
         $f{synpos} = "attr";
-        $f{definiteness} = "rel";
         $f{other} = "9";
     }
     elsif($subpos eq "E")
     {
         # což
+        $f{prontype} = "rel";
         $f{synpos} = "subst";
-        $f{definiteness} = "rel";
     }
     elsif($subpos eq "1")
     {
         # jehož, jejíž
+        $f{prontype} = "rel";
         $f{synpos} = "attr";
         $f{poss} = "poss";
-        $f{definiteness} = "rel";
     }
     elsif($subpos eq "Z")
     {
         # někdo, něco, nějaký, některý, něčí, ..., kdokoli, ..., kdosi...
         # synpos unknown, it could be subst or attr
+        $f{prontype} = "ind";
         $f{definiteness} = "ind";
     }
     elsif($subpos eq "L")
     {
         # všechen, sám
+        $f{prontype} = "tot";
         $f{synpos} = "attr";
         $f{definiteness} = "ind";
         $f{other} = "L";
@@ -252,26 +254,23 @@ sub decode
     {
         # nikdo, nic, nijaký, ničí, žádný
         # synpos unknown, it could be subst or attr
-        $f{definiteness} = "def";
+        $f{prontype} = "neg";
         $f{negativeness} = "neg";
     }
     elsif($subpos eq "=")
     {
         $f{subpos} = "digit";
-        $f{definiteness} = "def";
     }
     elsif($subpos eq "}")
     {
         # MCMLXXI
         $f{subpos} = "roman";
-        $f{definiteness} = "def";
     }
     elsif($subpos eq "l")
     {
         # jeden, dva, tři, čtyři
         $f{subpos} = "card";
         $f{synpos} = "attr";
-        $f{definiteness} = "def";
         $f{other} = "l";
     }
     elsif($subpos eq "n")
@@ -289,40 +288,36 @@ sub decode
         {
             $f{synpos} = "attr";
         }
-        $f{definiteness} = "def";
     }
     elsif($subpos eq "?")
     {
         # kolik
         $f{subpos} = "card";
         $f{synpos} = "subst";
-        $f{definiteness} = "wh";
+        $f{prontype} = ["int", "rel"];
     }
     elsif($subpos eq "a")
     {
         # několik, mnoho, málo, kdovíkolik, tolik...
         $f{subpos} = "card";
         $f{synpos} = "subst";
-        $f{definiteness} = "ind";
+        $f{prontype} = "ind";
     }
     elsif($subpos eq "y")
     {
         # polovina, třetina, čtvrtina, pětina, setina, tisícina...
         $f{subpos} = "frac";
         $f{synpos} = "subst";
-        $f{definiteness} = "def";
     }
     elsif($subpos eq "j")
     {
         # čtvero, patero, desatero...
         $f{synpos} = "subst";
-        $f{definiteness} = "def";
     }
     elsif($subpos eq "k")
     {
         # čtvery, patery, desatery...
         $f{synpos} = "attr";
-        $f{definiteness} = "def";
         $f{other} = "k";
     }
     elsif($subpos eq "r")
@@ -330,14 +325,13 @@ sub decode
         # první, druhý, třetí, čtvrtý, pátý, stý, tisící...
         $f{subpos} = "ord";
         $f{synpos} = "attr";
-        $f{definiteness} = "def";
     }
     elsif($subpos eq "z")
     {
         # kolikátý
         $f{subpos} = "ord";
         $f{synpos} = "attr";
-        $f{definiteness} = "wh";
+        $f{prontype} = ["int", "rel"];
     }
     elsif($subpos eq "d")
     {
@@ -355,28 +349,27 @@ sub decode
         # nejeden, tolikátý...
         $f{subpos} = "ord";
         $f{synpos} = "attr";
-        $f{definiteness} = "ind";
+        $f{prontype} = "ind";
     }
     elsif($subpos eq "v")
     {
         # jedenkrát, dvakrát, třikrát, čtyřikrát, pětkrát, stokrát, tisíckrát...
         $f{subpos} = "mult";
         $f{synpos} = "adv";
-        $f{definiteness} = "def";
     }
     elsif($subpos eq "u")
     {
         # kolikrát
         $f{subpos} = "mult";
         $f{synpos} = "adv";
-        $f{definiteness} = "wh";
+        $f{prontype} = ["int", "rel"];
     }
     elsif($subpos eq "o")
     {
         # několikrát, mnohokrát, tolikrát...
         $f{subpos} = "mult";
         $f{synpos} = "adv";
-        $f{definiteness} = "ind";
+        $f{prontype} = "ind";
     }
     elsif($subpos eq "3")
     {
@@ -523,7 +516,7 @@ sub decode
     elsif($subpos eq "#")
     {
         $f{pos} = "punc";
-        $f{subpos} = "sent";
+        $f{punctype} = "root";
     }
     # unknown main part of speech
     # subposes "X", "@" and "-" will only be distinguished in $f{other}
@@ -659,18 +652,18 @@ sub decode
         $f{tense} = "fut";
     }
     # degree of comparison
-    my $compdeg = shift(@chars);
-    if($compdeg eq "1")
+    my $degree = shift(@chars);
+    if($degree eq "1")
     {
-        $f{compdeg} = "norm";
+        $f{degree} = "pos";
     }
-    elsif($compdeg eq "2")
+    elsif($degree eq "2")
     {
-        $f{compdeg} = "comp";
+        $f{degree} = "comp";
     }
-    elsif($compdeg eq "3")
+    elsif($degree eq "3")
     {
-        $f{compdeg} = "sup";
+        $f{degree} = "sup";
     }
     # negativeness
     my $negativeness = shift(@chars);
@@ -802,7 +795,7 @@ sub encode
         {
             $tag[1] = "2";
         }
-        elsif($f{tagset} eq "cspdt" && $f{other} eq "O" ||
+        elsif($f{tagset} eq "cs::pdt" && $f{other} eq "O" ||
               $f{case} eq "" && $f{negativeness} eq "")
         {
             $tag[1] = "O";
@@ -833,7 +826,7 @@ sub encode
         {
             if($f{reflex} ne "reflex")
             {
-                if($f{tagset} eq "cspdt" && $f{other} eq "5")
+                if($f{tagset} eq "cs::pdt" && $f{other} eq "5")
                 {
                     # něj, němu, něho, něm, ním, ní, ni, nich, nim, ně, nich, nimi
                     $tag[1] = "5";
@@ -861,7 +854,7 @@ sub encode
         }
         elsif($f{subpos} eq "preppron")
         {
-            if($f{definiteness} eq "wh")
+            if($f{prontype} =~ m/^(int|rel)$/ || ref($f{prontype}) eq "ARRAY" && grep {m/^(int|rel)$/} (@{$f{prontype}}))
             {
                 $tag[1] = "Y"; # oč, nač
             }
@@ -873,7 +866,7 @@ sub encode
         # possessive pronoun
         elsif($f{poss} eq "poss")
         {
-            if($f{definiteness} =~ m/^(int|rel|wh)$/)
+            if($f{prontype} =~ m/^(int|rel)$/)
             {
                 $tag[1] = "1";
             }
@@ -892,19 +885,19 @@ sub encode
             $tag[1] = "W";
         }
         # demonstrative pronoun
-        elsif($f{definiteness} eq "def")
+        elsif($f{prontype} eq "dem")
         {
             $tag[1] = "D";
         }
         # interrogative or relative pronoun
-        elsif($f{definiteness} eq "rel")
+        elsif($f{prontype} eq "rel")
         {
             if($f{synpos} eq "subst")
             {
                 # což
                 $tag[1] = "E";
             }
-            elsif($f{tagset} eq "cspdt" && $f{other} eq "9")
+            elsif($f{tagset} eq "cs::pdt" && $f{other} eq "9")
             {
                 # něhož, němuž, nějž, němž, nímž, níž, niž
                 $tag[1] = "9";
@@ -915,7 +908,7 @@ sub encode
                 $tag[1] = "J";
             }
         }
-        elsif($f{definiteness} eq "wh")
+        elsif($f{prontype} =~ m/^(int|rel)$/ || ref($f{prontype}) eq "ARRAY" && grep {m/^(int|rel)$/} (@{$f{prontype}}))
         {
             if($f{synpos} eq "subst")
             {
@@ -936,9 +929,9 @@ sub encode
             }
         }
         # indefinite pronoun
-        elsif($f{definiteness} eq "ind")
+        elsif($f{prontype} eq "ind")
         {
-            if($f{tagset} eq "cspdt" && $f{other} eq "L")
+            if($f{tagset} eq "cs::pdt" && $f{other} eq "L")
             {
                 $tag[1] = "L";
             }
@@ -947,6 +940,11 @@ sub encode
                 $tag[1] = "Z";
             }
         }
+        # totality (collective) pronoun
+        elsif($f{prontype} eq "tot")
+	{
+            $tag[1] = "L";
+	}
     }
     elsif($f{pos} eq "num")
     {
@@ -967,17 +965,17 @@ sub encode
         }
         elsif($f{subpos} eq "card")
         {
-            if($f{definiteness} eq "wh")
+            if($f{prontype} =~ m/^(int|rel)$/ || ref($f{prontype}) eq "ARRAY" && grep {m/^(int|rel)$/} (@{$f{prontype}}))
             {
                 # kolik
                 $tag[1] = "?";
             }
-            elsif($f{definiteness} eq "ind")
+            elsif($f{prontype} eq "ind")
             {
                 # několik, mnoho, málo, tolik
                 $tag[1] = "a";
             }
-            elsif($f{tagset} eq "cspdt" && $f{other} eq "l" ||
+            elsif($f{tagset} eq "cs::pdt" && $f{other} eq "l" ||
                   $f{number} eq "plu" && $f{case} eq "")
             {
                 $tag[1] = "l";
@@ -989,12 +987,12 @@ sub encode
         }
         elsif($f{subpos} eq "ord")
         {
-            if($f{definiteness} eq "wh")
+            if($f{prontype} =~ m/^(int|rel)$/ || ref($f{prontype}) eq "ARRAY" && grep {m/^(int|rel)$/} (@{$f{prontype}}))
             {
                 # kolikátý
                 $tag[1] = "z";
             }
-            elsif($f{definiteness} eq "ind")
+            elsif($f{prontype} eq "ind")
             {
                 # několikátý, mnohý, tolikátý
                 $tag[1] = "w";
@@ -1006,12 +1004,12 @@ sub encode
         }
         elsif($f{subpos} eq "mult")
         {
-            if($f{definiteness} eq "wh")
+            if($f{prontype} =~ m/^(int|rel)$/ || ref($f{prontype}) eq "ARRAY" && grep {m/^(int|rel)$/} (@{$f{prontype}}))
             {
                 # kolikrát
                 $tag[1] = "u";
             }
-            elsif($f{definiteness} eq "ind")
+            elsif($f{prontype} eq "ind")
             {
                 # několikrát, mnohokrát, tolikrát
                 $tag[1] = "o";
@@ -1029,11 +1027,11 @@ sub encode
         {
             $tag[1] = "j";
         }
-        elsif($f{tagset} eq "cspdt" && $f{other} eq "h")
+        elsif($f{tagset} eq "cs::pdt" && $f{other} eq "h")
         {
             $tag[1] = "h";
         }
-        elsif($f{tagset} eq "cspdt" && $f{other} eq "k")
+        elsif($f{tagset} eq "cs::pdt" && $f{other} eq "k")
         {
             $tag[1] = "k";
         }
@@ -1109,7 +1107,7 @@ sub encode
     elsif($f{pos} eq "adv")
     {
         $tag[0] = "D";
-        if($f{negativeness} ne "" || $f{compdeg} ne "")
+        if($f{negativeness} ne "" || $f{degree} ne "")
         {
             $tag[1] = "g";
         }
@@ -1145,7 +1143,7 @@ sub encode
         {
             $tag[1] = ",";
         }
-        elsif($f{tagset} eq "cspdt" && $f{other} eq "*")
+        elsif($f{tagset} eq "cs::pdt" && $f{other} eq "*")
         {
             $tag[1] = "*";
         }
@@ -1167,7 +1165,7 @@ sub encode
     elsif($f{pos} eq "punc")
     {
         $tag[0] = "Z";
-        if($f{subpos} eq "sent")
+        if($f{punctype} eq "root")
         {
             $tag[1] = "#";
         }
@@ -1179,7 +1177,7 @@ sub encode
     else
     {
         $tag[0] = "X";
-        if($f{tagset} eq "cspdt" && $f{other} =~ m/^[-X\@]$/)
+        if($f{tagset} eq "cs::pdt" && $f{other} =~ m/^[-X\@]$/)
         {
             $tag[1] = $f{other};
         }
@@ -1475,15 +1473,15 @@ sub encode
         }
     }
     # degree of comparison
-    if($f{compdeg} eq "norm")
+    if($f{degree} eq "pos")
     {
         $tag[9] = "1";
     }
-    elsif($f{compdeg} eq "comp")
+    elsif($f{degree} eq "comp")
     {
         $tag[9] = "2";
     }
-    elsif($f{compdeg} eq "sup")
+    elsif($f{degree} eq "sup")
     {
         $tag[9] = "3";
     }

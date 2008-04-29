@@ -16,8 +16,7 @@ sub decode
 {
     my $tag = shift;
     my %f; # features
-    $f{tagset} = "svmamba";
-    $f{other} = $tag;
+    $f{tagset} = "sv::mamba";
     # ++ Coordinating conjunction
     if($tag eq "++")
     {
@@ -55,7 +54,8 @@ sub decode
     # EN Indefinite article or numeral "en", "ett" (one)
     elsif($tag eq "EN")
     {
-        $f{pos} = "det";
+        $f{pos} = "adj";
+        $f{subpos} = "det";
         $f{synpos} = "attr";
         $f{definiteness} = "ind";
     }
@@ -81,13 +81,13 @@ sub decode
     elsif($tag eq "I?")
     {
         $f{pos} = "punc";
-        $f{punclass} = "qest";
+        $f{punctype} = "qest";
     }
     # IC Quotation mark
     elsif($tag eq "IC")
     {
         $f{pos} = "punc";
-        $f{punclass} = "quot";
+        $f{punctype} = "quot";
     }
     # ID Part of idiom (multi-word unit)
     elsif($tag eq "ID")
@@ -103,7 +103,7 @@ sub decode
     elsif($tag eq "IK")
     {
         $f{pos} = "punc";
-        $f{punclass} = "comm";
+        $f{punctype} = "comm";
     }
     # IM Infinitive marker
     elsif($tag eq "IM")
@@ -115,37 +115,37 @@ sub decode
     elsif($tag eq "IP")
     {
         $f{pos} = "punc";
-        $f{punclass} = "peri";
+        $f{punctype} = "peri";
     }
     # IQ Colon
     elsif($tag eq "IQ")
     {
         $f{pos} = "punc";
-        $f{punclass} = "colo";
+        $f{punctype} = "colo";
     }
     # IR Parenthesis
     elsif($tag eq "IR")
     {
         $f{pos} = "punc";
-        $f{punclass} = "brck";
+        $f{punctype} = "brck";
     }
     # IS Semicolon
     elsif($tag eq "IS")
     {
         $f{pos} = "punc";
-        $f{punclass} = "semi";
+        $f{punctype} = "semi";
     }
     # IT Dash
     elsif($tag eq "IT")
     {
         $f{pos} = "punc";
-        $f{punclass} = "dash";
+        $f{punctype} = "dash";
     }
     # IU Exclamation mark
     elsif($tag eq "IU")
     {
         $f{pos} = "punc";
-        $f{punclass} = "excl";
+        $f{punctype} = "excl";
     }
     # KV The verb "komma att" (periphrastic future)
     elsif($tag eq "KV")
@@ -221,7 +221,7 @@ sub decode
     elsif($tag eq "TP")
     {
         $f{pos} = "pron";
-        $f{definiteness} = "col";
+        $f{prontype} = "tot";
     }
     # UK Subordinating conjunction
     elsif($tag eq "UK")
@@ -330,11 +330,6 @@ sub encode
     # Adjective: AJ
     elsif($f{pos} eq "adj")
     {
-        $tag = "AJ";
-    }
-    # Determiner: EN
-    elsif($f{pos} eq "det")
-    {
         if($f{definiteness} eq "ind")
         {
             $tag = "EN";
@@ -347,7 +342,7 @@ sub encode
     # Pronoun: PO TP
     elsif($f{pos} eq "pron")
     {
-        if($f{definiteness} eq "col")
+        if($f{prontype} eq "tot")
         {
             $tag = "TP";
         }
@@ -372,7 +367,7 @@ sub encode
         {
             $tag = "VV";
         }
-        if($f{tagset} eq "svmamba")
+        if($f{tagset} eq "sv::mamba")
         {
             if($f{other} eq "vara")
             {
@@ -440,7 +435,7 @@ sub encode
         else
         {
             $tag = "++";
-            if($f{tagset} eq "svmamba" && $f{other} eq "adversative")
+            if($f{tagset} eq "sv::mamba" && $f{other} eq "adversative")
             {
                 $tag = "MN";
             }
@@ -450,7 +445,7 @@ sub encode
     elsif($f{pos} eq "int")
     {
         $tag = "YY";
-        if($f{tagset} eq "svmamba")
+        if($f{tagset} eq "sv::mamba")
         {
             if($f{other} eq "pause")
             {
@@ -461,39 +456,39 @@ sub encode
     # Punctuation: I? IC IG IK IP IQ IR IS IT IU
     elsif($f{pos} eq "punc")
     {
-        if($f{punclass} eq "qest")
+        if($f{punctype} eq "qest")
         {
             $tag = "I?";
         }
-        elsif($f{punclass} eq "quot")
+        elsif($f{punctype} eq "quot")
         {
             $tag = "IC";
         }
-        elsif($f{punclass} eq "comm")
+        elsif($f{punctype} eq "comm")
         {
             $tag = "IK";
         }
-        elsif($f{punclass} eq "peri")
+        elsif($f{punctype} eq "peri")
         {
             $tag = "IP";
         }
-        elsif($f{punclass} eq "colo")
+        elsif($f{punctype} eq "colo")
         {
             $tag = "IQ";
         }
-        elsif($f{punclass} eq "brck")
+        elsif($f{punctype} eq "brck")
         {
             $tag = "IR";
         }
-        elsif($f{punclass} eq "semi")
+        elsif($f{punctype} eq "semi")
         {
             $tag = "IS";
         }
-        elsif($f{punclass} eq "dash")
+        elsif($f{punctype} eq "dash")
         {
             $tag = "IT";
         }
-        elsif($f{punclass} eq "excl")
+        elsif($f{punctype} eq "excl")
         {
             $tag = "IU";
         }

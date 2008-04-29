@@ -16,28 +16,27 @@ sub decode
 {
     my $tag = shift;
     my %f; # features
-    $f{tagset} = "penn";
-    $f{other} = $tag;
+    $f{tagset} = "en::penn";
     if($tag eq ".")
     {
         # sentence-final punctuation
         # examples: . ! ?
         $f{pos} = "punc";
-        $f{punclass} = "peri";
+        $f{punctype} = "peri";
     }
     elsif($tag eq ",")
     {
         # comma
         # example: ,
         $f{pos} = "punc";
-        $f{punclass} = "comm";
+        $f{punctype} = "comm";
     }
     elsif($tag eq "-LRB-")
     {
         # left bracket
         # example: -LRB- -LCB- [ {
         $f{pos} = "punc";
-        $f{punclass} = "brck";
+        $f{punctype} = "brck";
         $f{puncside} = "ini";
     }
     elsif($tag eq "-RRB-")
@@ -45,7 +44,7 @@ sub decode
         # right bracket
         # example: -RRB- -RCB- ] }
         $f{pos} = "punc";
-        $f{punclass} = "brck";
+        $f{punctype} = "brck";
         $f{puncside} = "fin";
     }
     elsif($tag eq "``")
@@ -53,7 +52,7 @@ sub decode
         # left quotation mark
         # example: ``
         $f{pos} = "punc";
-        $f{punclass} = "quot";
+        $f{punctype} = "quot";
         $f{puncside} = "ini";
     }
     elsif($tag eq "''")
@@ -61,7 +60,7 @@ sub decode
         # right quotation mark
         # example: ''
         $f{pos} = "punc";
-        $f{punclass} = "quot";
+        $f{punctype} = "quot";
         $f{puncside} = "fin";
     }
     elsif($tag eq ":")
@@ -103,7 +102,8 @@ sub decode
     {
         # determiner
         # examples: a, the, some
-        $f{pos} = "det";
+        $f{pos} = "adj";
+        $f{subpos} = "det";
         $f{synpos} = "attr";
     }
     elsif($tag eq "EX")
@@ -131,21 +131,21 @@ sub decode
         # adjective
         # examples: good
         $f{pos} = "adj";
-        $f{compdeg} = "norm";
+        $f{degree} = "pos";
     }
     elsif($tag eq "JJR")
     {
         # adjective, comparative
         # examples: better
         $f{pos} = "adj";
-        $f{compdeg} = "comp";
+        $f{degree} = "comp";
     }
     elsif($tag eq "JJS")
     {
         # adjective, superlative
         # examples: best
         $f{pos} = "adj";
-        $f{compdeg} = "sup";
+        $f{degree} = "sup";
     }
     elsif($tag eq "LS")
     {
@@ -232,14 +232,14 @@ sub decode
         # adverb, comparative
         # examples: more, less
         $f{pos} = "adv";
-        $f{compdeg} = "comp";
+        $f{degree} = "comp";
     }
     elsif($tag eq "RBS")
     {
         # adverb, superlative
         # examples: most, least
         $f{pos} = "adv";
-        $f{compdeg} = "sup";
+        $f{degree} = "sup";
     }
     elsif($tag eq "RP")
     {
@@ -251,13 +251,14 @@ sub decode
     {
         # symbol
         $f{pos} = "punc";
-        $f{punclass} = "symb";
+        $f{punctype} = "symb";
     }
     elsif($tag eq "TO")
     {
         # to
         # examples: to
-        $f{pos} = "inf";
+        $f{pos} = "part";
+        $f{subpos} = "inf";
         $f{verbform} = "inf";
     }
     elsif($tag eq "UH")
@@ -323,9 +324,10 @@ sub decode
     {
         # wh-determiner
         # examples: which
-        $f{pos} = "det";
+        $f{pos} = "adj";
+        $f{subpos} = "det";
         $f{synpos} = "attr";
-        $f{definiteness} = "wh";
+        $f{prontype} = "int";
     }
     elsif($tag eq "WP")
     {
@@ -333,7 +335,7 @@ sub decode
         # examples: who
         $f{pos} = "pron";
         $f{synpos} = "subst";
-        $f{definiteness} = "wh";
+        $f{prontype} = "int";
     }
     elsif($tag eq "WP\$")
     {
@@ -342,14 +344,14 @@ sub decode
         $f{pos} = "pron";
         $f{poss} = "poss";
         $f{synpos} = "attr";
-        $f{definiteness} = "wh";
+        $f{prontype} = "int";
     }
     elsif($tag eq "WRB")
     {
         # wh-adverb
         # examples: where, when, how
         $f{pos} = "adv";
-        $f{definiteness} = "wh";
+        $f{prontype} = "int";
     }
     return \%f;
 }
@@ -407,11 +409,19 @@ sub encode
         {
             $tag = "PDT";
         }
-        elsif($f{compdeg} eq "comp")
+        elsif($f{subpos} eq "det" && $f{prontype} !~ m/^(int|rel)$/)
+        {
+            $tag = "DT";
+        }
+        elsif($f{prontype} =~ m/^(int|rel)$/)
+        {
+            $tag = "WDT";
+        }
+        elsif($f{degree} eq "comp")
         {
             $tag = "JJR";
         }
-        elsif($f{compdeg} eq "sup")
+        elsif($f{degree} eq "sup")
         {
             $tag = "JJS";
         }
@@ -420,25 +430,11 @@ sub encode
             $tag = "JJ";
         }
     }
-    # det:  DT, WDT
-    elsif($f{pos} eq "det" ||
-          $f{pos} eq "pron" && $f{subpos} ne "pers" && $f{poss} ne "poss" && $f{definiteness} !~ m/^(wh|rel|int)$/)
-    {
-        # special cases first, defaults last
-        if($f{definiteness} =~ m/^(wh|rel|int)$/)
-        {
-            $tag = "WDT";
-        }
-        else
-        {
-            $tag = "DT";
-        }
-    }
     # pron: PRP, PRP$, WP, WP$
     elsif($f{pos} eq "pron")
     {
         # special cases first, defaults last
-        if($f{definiteness} =~ m/^(wh|rel|int)$/)
+        if($f{prontype} =~ m/^(rel|int)$/)
         {
             if($f{poss} eq "poss")
             {
@@ -468,7 +464,7 @@ sub encode
         {
             $tag = "CD";
         }
-        elsif($f{definiteness} =~ m/^(wh|rel|int)$/)
+        elsif($f{prontype} =~ m/^(rel|int)$/)
         {
             if($f{subpos} eq "mult")
             {
@@ -531,15 +527,15 @@ sub encode
         {
             $tag = "EX";
         }
-        elsif($f{definiteness} =~ m/^(wh|int|rel)$/)
+        elsif($f{prontype} =~ m/^(int|rel)$/)
         {
             $tag = "WRB";
         }
-        elsif($f{compdeg} eq "comp")
+        elsif($f{degree} eq "comp")
         {
             $tag = "RBR";
         }
-        elsif($f{compdeg} eq "sup")
+        elsif($f{degree} eq "sup")
         {
             $tag = "RBS";
         }
@@ -552,11 +548,6 @@ sub encode
     elsif($f{pos} eq "prep")
     {
         $tag = "IN";
-    }
-    # inf: TO
-    elsif($f{pos} eq "inf")
-    {
-        $tag = "TO";
     }
     # conj: CC, (IN)
     elsif($f{pos} eq "conj")
@@ -579,7 +570,7 @@ sub encode
         {
             $tag = "POS";
         }
-        elsif($f{verbform} eq "inf")
+        elsif($f{verbform} eq "inf" || $f{subpos} eq "inf")
         {
             $tag = "TO";
         }
@@ -594,7 +585,7 @@ sub encode
         $tag = "UH";
     }
     # other: $, LS, SYM, #, ., ,
-    elsif($f{tagset} eq "penn" && $f{other} eq "currency")
+    elsif($f{tagset} eq "en::penn" && $f{other} eq "currency")
     {
         $tag = "\$";
     }
@@ -604,19 +595,19 @@ sub encode
         {
             $tag = "LS";
         }
-        elsif($f{tagset} eq "penn" && $f{other} eq "\#")
+        elsif($f{tagset} eq "en::penn" && $f{other} eq "\#")
         {
             $tag = "\#";
         }
-        elsif($f{punclass} =~ m/^(peri|qest|excl)$/)
+        elsif($f{punctype} =~ m/^(peri|qest|excl)$/)
         {
             $tag = ".";
         }
-        elsif($f{punclass} eq "comm")
+        elsif($f{punctype} eq "comm")
         {
             $tag = ",";
         }
-        elsif($f{punclass} eq "brck")
+        elsif($f{punctype} eq "brck")
         {
             if($f{puncside} eq "fin")
             {
@@ -627,7 +618,7 @@ sub encode
                 $tag = "-LRB-";
             }
         }
-        elsif($f{punclass} eq "quot")
+        elsif($f{punctype} eq "quot")
         {
             if($f{puncside} eq "fin")
             {
@@ -638,7 +629,7 @@ sub encode
                 $tag = "``";
             }
         }
-        elsif($f{punclass} eq "symb")
+        elsif($f{punctype} eq "symb")
         {
             $tag = "SYM";
         }

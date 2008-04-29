@@ -73,7 +73,7 @@ sub decode
         # R = product (Tatra (the car))
         # K = company (Tatra (the company))
         # m = other, default (mines, stadiums, guerilla bases etc.; also used for functional words in names)
-        $fs->{tagset} = "csconll";
+        $fs->{tagset} = "cs::conll";
         $fs->{other} = {"cspdt" => $fs->{other}, "sem" => $features_conll{Sem}};
         $fs->{subpos} = "prop" unless($fs->{subpos});
     }
@@ -91,9 +91,9 @@ sub encode
     my $fs = shift;
     # The Sem feature cannot be encoded in PDT tags (instead, it is encoded in lemma suffixes in PDT).
     my $sem;
-    if($fs->{tagset} eq "csconll")
+    if($fs->{tagset} eq "cs::conll")
     {
-        $fs->{tagset} = "cspdt";
+        $fs->{tagset} = "cs::pdt";
         $sem = $fs->{other}{sem};
         $fs->{other} = $fs->{other}{cspdt};
     }

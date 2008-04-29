@@ -20,48 +20,49 @@ BEGIN
 {
     @known_features =
     (
-        "pos", "subpos", "prontype", "punclass", "puncside", "synpos", "poss", "reflex", "negativeness", "definiteness",
-        "gender", "animateness", "number", "case", "subjobj", "compdeg",
+        "pos", "subpos", "prontype", "punctype", "puncside", "synpos", "poss", "reflex", "negativeness", "definiteness",
+        "gender", "animateness", "number", "case", "prepcase", "degree",
         "person", "politeness", "possgender", "possnumber",
         "subcat", "verbform", "mood", "tense", "subtense", "voice", "aspect",
-        "foreign", "abbr", "hyph", "style", "variant",
+        "foreign", "abbr", "hyph", "style", "typo", "variant",
         "tagset", "other"
     );
     %known_values =
     (
-        "pos"          => ["noun", "adj", "det", "pron", "num", "verb", "adv", "prep", "inf", "conj", "part", "int", "punc"],
-        "subpos"       => ["prop", "class", "pdt", "pers", "clit", "recip", "digit", "roman", "card", "ord", "mult", "frac",
-                           "aux", "mod", "verbconj", "man", "loc", "tim", "deg", "cau", "mod", "ex", "voc", "preppron", "comprep",
-                           "coor", "sub", "emp", "sent"],
+        "pos"          => ["noun", "adj", "pron", "num", "verb", "adv", "prep", "conj", "part", "int", "punc"],
+        "subpos"       => ["prop", "class", "pdt", "det", "art", "pers", "clit", "recip", "digit", "roman", "card", "ord", "mult", "frac",
+                           "aux", "mod", "verbconj", "man", "loc", "tim", "deg", "cau", "mod", "ex", "voc", "post", "circ", "preppron", "comprep",
+                           "coor", "sub", "comp", "emp", "res", "inf", "vbp"],
         "prontype"     => ["prs", "rcp", "int", "rel", "dem", "neg", "ind", "tot"],
-        "punclass"     => ["peri", "qest", "excl", "quot", "brck", "comm", "colo", "semi", "dash", "symb"],
+        "punctype"     => ["peri", "qest", "excl", "quot", "brck", "comm", "colo", "semi", "dash", "symb", "root"],
         "puncside"     => ["ini", "fin"],
-        "synpos"       => ["subst", "attr", "adv"],
+        "synpos"       => ["subst", "attr", "adv", "pred"],
         "poss"         => ["poss"],
         "reflex"       => ["reflex"],
         "negativeness" => ["pos", "neg"],
-        "definiteness" => ["col", "ind", "def", "red", "wh", "int", "rel"],
+        "definiteness" => ["ind", "def", "red"],
         "gender"       => ["masc", "fem", "com", "neut"],
         "animateness"  => ["anim", "inan"],
         "number"       => ["sing", "dual", "plu"],
         "case"         => ["nom", "gen", "dat", "acc", "voc", "loc", "ins"],
-        "subjobj"      => ["subj", "obj"],
-        "compdeg"      => ["norm", "comp", "sup", "abs"],
+        "prepcase"     => ["npr", "pre"],
+        "degree"       => ["pos", "comp", "sup", "abs"],
         "person"       => [1, 2, 3],
         "politeness"   => ["inf", "pol"],
         "possgender"   => ["masc", "fem", "com", "neut"],
         "possnumber"   => ["sing", "dual", "plu"],
         "subcat"       => ["intr", "tran"],
         "verbform"     => ["fin", "inf", "sup", "part", "trans", "ger"],
-        "mood"         => ["ind", "imp", "sub", "jus"],
+        "mood"         => ["ind", "imp", "cnd", "sub", "jus"],
         "tense"        => ["past", "pres", "fut"],
-        "subtense"     => ["aor", "imp"],
+        "subtense"     => ["aor", "imp", "ppq"],
         "aspect"       => ["imp", "perf"],
         "voice"        => ["act", "pass"],
         "foreign"      => ["foreign"],
         "abbr"         => ["abbr"],
         "hyph"         => ["hyph"],
         "style"        => ["arch", "form", "norm", "coll"],
+        "typo"         => ["typo"],
         "variant"      => ["short", "long", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
         "tagset"       => [""],
         "other"        => [""],
@@ -96,12 +97,12 @@ BEGIN
     # features.
     @features =
     (
-        "pos", "abbr", "hyph", "subcat", "verbform", "mood", "prontype", "punclass", "puncside", "subpos", "synpos",
-        "poss", "reflex", "compdeg", "negativeness", "definiteness",
+        "pos", "abbr", "hyph", "subcat", "verbform", "mood", "prontype", "punctype", "puncside", "subpos", "synpos",
+        "poss", "reflex", "degree", "negativeness", "definiteness",
         "person", "tense", "voice", "aspect", "subtense",
-        "gender", "animateness", "number", "case", "subjobj",
+        "gender", "animateness", "number", "case", "prepcase",
         "politeness", "possgender", "possnumber",
-        "foreign", "style", "variant", "tagset", "other"
+        "foreign", "style", "typo", "variant", "tagset", "other"
     );
     # Security check: all known features should be on the priority list, and
     # all features on the priority list should be known.
@@ -180,12 +181,10 @@ BEGIN
             ["punc"        ],
             ["pron", "noun"],
             ["adj",  "noun"],
-            ["det",  "adj" ],
             ["num",  "adj" ],
             ["adv"         ],
             ["prep", "adv" ],
             ["conj", "prep"],
-            ["inf",  "part"],
             ["int"         ]
         ],
         # No general back-off system can be defined for subpos because there are subpos values for various pos values.
@@ -197,6 +196,8 @@ BEGIN
         [
             ["prop"],
             ["pdt"],
+            ["det"],
+            ["art", "det"],
             ["pers"],
             ["clit"],
             ["recip"],
@@ -218,14 +219,19 @@ BEGIN
             ["cau"],
             ["ex"],
             ["voc"],
+            ["post"],
+            ["circ"],
             ["preppron"],
             ["comprep"],
             ["coor"],
             ["sub"],
+            ["comp"],
             ["emp"],
-            ["sent"]
+            ["res"],
+            ["inf"],
+            ["vbp"]
         ],
-        "punclass" =>
+        "punctype" =>
         [
             ["colo"],
             ["comm", "colo"],
@@ -236,7 +242,8 @@ BEGIN
             ["brck", "quot"],
             ["semi", "comm"],
             ["dash", "colo"],
-            ["symb"]
+            ["symb"],
+            ["root"]
         ],
         "puncside" =>
         [
@@ -247,7 +254,8 @@ BEGIN
         [
             ["subst"],
             ["attr"],
-            ["adv"]
+            ["adv"],
+            ["pred"]
         ],
         "poss" =>
         [
@@ -266,16 +274,7 @@ BEGIN
         [
             ["ind"],
             ["def"],
-            ["wh",  "int", "rel"],
-            ["int", "wh",  "rel"],
-            ["rel", "wh",  "int"],
-            ["col"],
-            ["red"]
-        ],
-        "subjobj" =>
-        [
-            ["subj"],
-            ["obj"]
+            ["red", "def"]
         ],
         "foreign" =>
         [
@@ -322,9 +321,14 @@ BEGIN
             ["ins"],
             ["voc"]
         ],
-        "compdeg" =>
+        "prepcase" =>
         [
-            ["norm"],
+            ["npr"],
+            ["pre"]
+        ],
+        "degree" =>
+        [
+            ["pos"],
             ["comp"],
             ["sup"],
             ["abs"]
@@ -353,7 +357,8 @@ BEGIN
         [
             ["ind"],
             ["imp"],
-            ["sub", "jus"],
+            ["cnd", "sub"],
+            ["sub", "cnd", "jus"],
             ["jus", "sub"]
         ],
         "tense" =>
@@ -365,7 +370,8 @@ BEGIN
         "subtense" =>
         [
             ["aor"],
-            ["imp"]
+            ["imp"],
+            ["ppq"]
         ],
         "aspect" =>
         [
@@ -391,6 +397,10 @@ BEGIN
             ["form"],
             ["arch"],
             ["coll"]
+        ],
+        "typo" =>
+        [
+            ["typo"]
         ],
         "variant" =>
         [
@@ -1234,6 +1244,29 @@ sub advance_trie_pointer
 
 
 #------------------------------------------------------------------------------
+# Compares two values, scalars or arrays, whether they are equal or not.
+#------------------------------------------------------------------------------
+sub iseq
+{
+    my $a = shift;
+    my $b = shift;
+    if(ref($a) ne ref($b))
+    {
+        return 0;
+    }
+    elsif(ref($a) eq "ARRAY")
+    {
+        return array_to_scalar_value($a) eq array_to_scalar_value($b);
+    }
+    else
+    {
+        return $a eq $b;
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
 # Converts array values to scalars. Sorts the array and combines all elements
 # in one string, using the vertical bar as delimiter. Does not care about
 # occurrences of vertical bars inside the elements (there should be none
@@ -1510,6 +1543,134 @@ sub merge_values
 
 
 ###############################################################################
+# DRIVER FUNCTIONS WITH PARAMETERIZED DRIVERS
+###############################################################################
+
+
+
+#------------------------------------------------------------------------------
+# Tries to enumerate existing tagset drivers. Searches for the "tagset" folder
+# in @INC paths. Once found, it searches its subfolders and lists all modules.
+#------------------------------------------------------------------------------
+sub find_drivers
+{
+    my @drivers;
+    foreach my $path (@INC)
+    {
+        my $tpath = "$path/tagset";
+        if(-d $tpath)
+        {
+            opendir(DIR, $tpath) or die("Cannot read folder $tpath: $!\n");
+            my @subdirs = readdir(DIR);
+            closedir(DIR);
+            foreach my $sd (@subdirs)
+            {
+                my $sdpath = "$tpath/$sd";
+                if(-d $sdpath && $sd !~ m/^\.\.?$/)
+                {
+                    opendir(DIR, $sdpath) or die("Cannot read folder $sdpath: $!\n");
+                    my @files = readdir(DIR);
+                    closedir(DIR);
+                    foreach my $file (@files)
+                    {
+                        my $fpath = "$sdpath/$file";
+                        my $driver = $file;
+                        if(-f $fpath && $driver =~ s/\.pm$//)
+                        {
+                            $driver = $sd."::".$driver;
+                            push(@drivers, $driver);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @drivers = sort(@drivers);
+    return \@drivers;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Decodes a tag using a particular driver.
+#------------------------------------------------------------------------------
+sub decode
+{
+    my $driver = shift; # e.g. "cs::pdt"
+    my $tag = shift;
+    $tag =~ s/([\\"\$\@])/\\$1/g;
+    my $eval = <<_end_of_eval_
+    {
+        use tagset::${driver};
+        my \$fs = tagset::${driver}::decode("$tag");
+        return \%{\$fs};
+    }
+_end_of_eval_
+    ;
+    print("$eval\n") if($debug && 0);
+    my %fs = eval($eval);
+    if($@)
+    {
+        confess("$@\nEval failed");
+    }
+    return \%fs;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Encodes a tag using a particular driver.
+#------------------------------------------------------------------------------
+sub encode
+{
+    my $driver = shift; # e.g. "cs::pdt"
+    my $fs = shift;
+    my $fstring = structure_to_string($fs);
+    my $eval = <<_end_of_eval_
+    {
+        use tagset::${driver};
+        my \$tag = tagset::${driver}::encode($fstring);
+        return \$tag;
+    }
+_end_of_eval_
+    ;
+    print("$eval\n") if($debug && 0);
+    my $tag = eval($eval);
+    if($@)
+    {
+        confess("$@\nEval failed");
+    }
+    return $tag;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Lists all tags of a tag set.
+#------------------------------------------------------------------------------
+sub list
+{
+    my $driver = shift; # e.g. "cs::pdt"
+    my $eval = <<_end_of_eval_
+    {
+        use tagset::${driver};
+        my \$list_eval = tagset::${driver}::list();
+        return \@{\$list_eval};
+    }
+_end_of_eval_
+    ;
+    print("$eval\n") if($debug && 0);
+    my @list = eval($eval);
+    if($@)
+    {
+        confess("$@\nEval failed");
+    }
+    return \@list;
+}
+
+
+
+###############################################################################
 # TEXT REPRESENTATION OF STRUCTURES FOR PRINTING AND DEBUGGING
 ###############################################################################
 
@@ -1565,11 +1726,10 @@ sub print_permitted_values
 #------------------------------------------------------------------------------
 # Debugging function. Prints permitted feature value combinations to STDERR.
 #------------------------------------------------------------------------------
-sub print_permitted_combinations
+sub get_permitted_combinations_as_text
 {
     my $permitcombs = shift;
-    print STDERR ("The following feature value combinations are permitted:\n");
-    print_permitted_combinations_recursion({}, 0, $permitcombs);
+    return get_permitted_combinations_as_text_recursion({}, 0, $permitcombs);
 }
 
 
@@ -1577,12 +1737,13 @@ sub print_permitted_combinations
 #------------------------------------------------------------------------------
 # Recursive part of printing permitted feature value combinations.
 #------------------------------------------------------------------------------
-sub print_permitted_combinations_recursion
+sub get_permitted_combinations_as_text_recursion
 {
     my $fs0 = shift; # partially filled feature structure (hash reference)
     my $i = shift; # index to the global list of @features of the next feature to process
     my $trie = shift; # pointer to the trie (hash reference)
     return if($i>$#features);
+    my $string;
     # Loop through permitted values of the next feature.
     my @values = sort(keys(%{$trie}));
     foreach my $value (@values)
@@ -1593,16 +1754,17 @@ sub print_permitted_combinations_recursion
         # If this is the last feature, print the feature structure.
         if($i==$#features)
         {
-            print STDERR ("[");
-            print STDERR (join(",", map{"$_=\"$fs1{$_}\""}(grep{$fs1{$_} ne ""}(@features))));
-            print STDERR ("]\n");
+            $string .= "[";
+            $string .= join(",", map{"$_=\"$fs1{$_}\""}(grep{$fs1{$_} ne ""}(@features)));
+            $string .= "]\n";
         }
         # Otherwise, go to the next feature.
         else
         {
-            print_permitted_combinations_recursion(\%fs1, $i+1, $trie->{$value});
+            $string .= get_permitted_combinations_as_text_recursion(\%fs1, $i+1, $trie->{$value});
         }
     }
+    return $string;
 }
 
 
@@ -1629,6 +1791,34 @@ sub feature_structure_to_text
     }
     (grep{$fs->{$_} ne ""}(@known_features));
     return "[".join(",", @assignments)."]";
+}
+
+
+
+#------------------------------------------------------------------------------
+# Recursively converts a structure to string describing a Perl constant.
+# Useful for using eval.
+#------------------------------------------------------------------------------
+sub structure_to_string
+{
+    my $source = shift;
+    my $string;
+    my $ref = ref($source);
+    if($ref eq "ARRAY")
+    {
+        $string = "[".join(", ", map{structure_to_string($_)}(@{$source}))."]";
+    }
+    elsif($ref eq "HASH")
+    {
+        $string = "{".join(", ", map{structure_to_string($_)." => ".structure_to_string($source->{$_})}(keys(%{$source})))."}";
+    }
+    else
+    {
+        $string = $source;
+        $string =~ s/([\\"\$\@])/\\$1/g;
+        $string = "\"$string\"";
+    }
+    return $string;
 }
 
 

@@ -124,6 +124,7 @@ sub find_drivers
             }
         }
     }
+    @drivers = sort(@drivers);
     return \@drivers;
 }
 
@@ -139,6 +140,7 @@ sub test
     print("Testing $driver ...");
     my $n_tags = 0;
     my $n_errors = 0;
+    my $n_other = 0;
     # Note: We could also eval() just the "use" statement (and possibly the list(), decode() and encode() calls).
     # Enclosing the eval code in single quotes would prevent any "$" and "@" from being interpreted.
     # However, we still want the ${driver} to be interpreted.
@@ -153,6 +155,7 @@ sub test
                 print STDERR ("Now testing tag \$tag\n");
             }
             my \$f = tagset::${driver}::decode(\$tag);
+            \$n_other++ if(\$f->{other} ne "");
             my \$errors = is_known(\$f);
             if(scalar(\@{\$errors}))
             {
@@ -171,6 +174,7 @@ sub test
                 print("Error: encode(decode(x)) != x\n");
                 print(" src = \\"\$tag\\"\n");
                 print(" tgt = \\"\$tag1\\"\n");
+                print(" sfs = ", tagset::common::feature_structure_to_text(\$f), "\n");
                 print("\n");
                 \$n_errors++;
             }
@@ -195,6 +199,7 @@ _end_of_eval_
     else
     {
         print(" $n_tags tags OK\n");
+        print("$n_other tags use the 'other' feature.\n");
     }
     print("Duration ", duration($starttime), ".\n");
     return $n_errors;
@@ -214,8 +219,8 @@ sub test_conversion
     print("Testing conversion from $driver1 to $driver2.\n");
     my $n_tags = 0;
     my $n_errors = 0;
-    my $list1 = list($driver1);
-    my $list2 = list($driver2);
+    my $list1 = tagset::common::list($driver1);
+    my $list2 = tagset::common::list($driver2);
     if(scalar(@{$list1})==0)
     {
         print("List of known tags of $driver1 is empty. Nothing to test.\n");
@@ -237,8 +242,8 @@ sub test_conversion
     # Convert all tagset 1 tags to tagset 2 and check whether the result is permitted.
     foreach my $src (@{$list1})
     {
-        my $fs = decode($driver1, $src);
-        my $tgt = encode($driver2, $fs);
+        my $fs = tagset::common::decode($driver1, $src);
+        my $tgt = tagset::common::encode($driver2, $fs);
         $t2hits{$tgt}++;
         if($debug)
         {
@@ -254,7 +259,7 @@ sub test_conversion
             my $fs1 = correct($driver2, $fs);
             print("\n\n") if($n_errors==0);
             print("Source tag = $src\n");
-            print("Features   = ", structure_to_string($fs), "\n");
+            print("Features   = ", tagset::common::structure_to_string($fs), "\n");
             print("Features   = ", tagset::common::feature_structure_to_text($fs), "\n");
             print("Corrected  = ", tagset::common::feature_structure_to_text($fs1), "\n");
             print("Example    = ", get_tag_example($driver2, $fs1), "\n");
@@ -341,113 +346,6 @@ sub is_known
         }
     }
     return \@errors;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Decodes a tag using a particular driver.
-#------------------------------------------------------------------------------
-sub decode
-{
-    my $driver = shift; # e.g. "cs::pdt"
-    my $tag = shift;
-    $tag =~ s/([\\"\$\@])/\\$1/g;
-    my $eval = <<_end_of_eval_
-    {
-        use tagset::${driver};
-        my \$fs = tagset::${driver}::decode("$tag");
-        return \%{\$fs};
-    }
-_end_of_eval_
-    ;
-    print("$eval\n") if($debug && 0);
-    my %fs = eval($eval);
-    if($@)
-    {
-        confess("$@\nEval failed");
-    }
-    return \%fs;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Encodes a tag using a particular driver.
-#------------------------------------------------------------------------------
-sub encode
-{
-    my $driver = shift; # e.g. "cs::pdt"
-    my $fs = shift;
-    my $fstring = structure_to_string($fs);
-    my $eval = <<_end_of_eval_
-    {
-        use tagset::${driver};
-        my \$tag = tagset::${driver}::encode($fstring);
-        return \$tag;
-    }
-_end_of_eval_
-    ;
-    print("$eval\n") if($debug && 0);
-    my $tag = eval($eval);
-    if($@)
-    {
-        confess("$@\nEval failed");
-    }
-    return $tag;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Recursively converts a structure to string describing a Perl constant.
-# Useful for using eval.
-#------------------------------------------------------------------------------
-sub structure_to_string
-{
-    my $source = shift;
-    my $string;
-    my $ref = ref($source);
-    if($ref eq "ARRAY")
-    {
-        $string = "[".join(", ", map{structure_to_string($_)}(@{$source}))."]";
-    }
-    elsif($ref eq "HASH")
-    {
-        $string = "{".join(", ", map{structure_to_string($_)." => ".structure_to_string($source->{$_})}(keys(%{$source})))."}";
-    }
-    else
-    {
-        $string = $source;
-        $string =~ s/([\\"\$\@])/\\$1/g;
-        $string = "\"$string\"";
-    }
-    return $string;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Lists all tags of a tag set.
-#------------------------------------------------------------------------------
-sub list
-{
-    my $driver = shift; # e.g. "cs::pdt"
-    my $eval = <<_end_of_eval_
-    {
-        use tagset::${driver};
-        my \$list_eval = tagset::${driver}::list();
-        return \@{\$list_eval};
-    }
-_end_of_eval_
-    ;
-    print("$eval\n") if($debug && 0);
-    my @list = eval($eval);
-    if($@)
-    {
-        confess("$@\nEval failed");
-    }
-    return \@list;
 }
 
 

@@ -21,7 +21,7 @@ sub decode
 {
     my $tag = shift;
     my %f; # features
-    $f{tagset} = "zhconll";
+    $f{tagset} = "zh::conll";
     # three components: coarse-grained pos, fine-grained pos, features
     # features always "_" for Chinese
     # example: N\tNhaa\t_
@@ -210,7 +210,7 @@ sub encode
         $tag = "Str";
     }
     # Encode the detailed part of speech. Only if the original tag set was Chinese CoNLL as well.
-    if($f{tagset} eq "zhconll")
+    if($f{tagset} eq "zh::conll")
     {
         # Some detailed parts of speech imply a different main part of speech.
         if($f{other} eq "Head")

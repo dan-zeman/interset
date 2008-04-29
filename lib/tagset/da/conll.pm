@@ -16,8 +16,7 @@ sub decode
 {
     my $tag = shift;
     my %f; # features
-    $f{tagset} = "daconll";
-    $f{other} = $tag;
+    $f{tagset} = "da::conll";
     # three components: coarse-grained pos, fine-grained pos, features
     # example: N\tNC\tgender=neuter|number=sing|case=unmarked|def=indef
     my ($pos, $subpos, $features) = split(/\s+/, $tag);
@@ -56,40 +55,42 @@ sub decode
         # PP = personal
         if($subpos eq "PP")
         {
+            $f{prontype} = "prs";
             $f{subpos} = "pers";
             $f{synpos} = "subst";
-            $f{definiteness} = "def";
         }
         # PO = possessive
         elsif($subpos eq "PO")
         {
+            $f{prontype} = "prs";
             $f{poss} = "poss";
             $f{synpos} = "attr";
-            $f{definiteness} = "def";
         }
         # PC = reciprocal
         elsif($subpos eq "PC")
         {
+            $f{prontype} = "rcp";
             $f{subpos} = "recip";
             $f{synpos} = "subst";
-            $f{definiteness} = "def";
         }
         # PD = demonstrative
         elsif($subpos eq "PD")
         {
+            $f{prontype} = "dem";
             $f{synpos} = "attr";
             $f{definiteness} = "def";
         }
         # PI = indefinite
         elsif($subpos eq "PI")
         {
+            $f{prontype} = "ind";
             $f{synpos} = "attr";
             $f{definiteness} = "ind";
         }
         # PT = interrogative / relative
         elsif($subpos eq "PT")
         {
-            $f{definiteness} = "wh";
+            $f{prontype} = "int";
         }
     }
     elsif($pos eq "V")
@@ -136,7 +137,8 @@ sub decode
         # We cannot distinguish those three without seeing the actual word.
         # Since infinitive is the most important and most frequent of them, we
         # will choose infinitive.
-        $f{pos} = "inf";
+        $f{pos} = "part";
+        $f{subpos} = "inf";
     }
     elsif($pos eq "I")
     {
@@ -251,19 +253,19 @@ sub decode
         {
             if($value eq "pos")
             {
-                $f{compdeg} = "norm";
+                $f{degree} = "pos";
             }
             elsif($value eq "comp")
             {
-                $f{compdeg} = "comp";
+                $f{degree} = "comp";
             }
             elsif($value eq "sup")
             {
-                $f{compdeg} = "sup";
+                $f{degree} = "sup";
             }
             elsif($value eq "abs")
             {
-                $f{compdeg} = "abs";
+                $f{degree} = "abs";
             }
         }
         # reflexive = no|yes|yes/no
@@ -425,19 +427,19 @@ sub encode
         {
             $tag = "P\tPO";
         }
-        elsif($f{subpos} eq "pers")
+        elsif($f{prontype} eq "prs")
         {
             $tag = "P\tPP";
         }
-        elsif($f{subpos} eq "recip")
+        elsif($f{prontype} eq "rcp")
         {
             $tag = "P\tPC";
         }
-        elsif($f{definiteness} =~ m/^(wh|int|rel)$/)
+        elsif($f{prontype} =~ m/^(int|rel)$/)
         {
             $tag = "P\tPT";
         }
-        elsif($f{definiteness} eq "def")
+        elsif($f{prontype} eq "dem")
         {
             $tag = "P\tPD";
         }
@@ -474,7 +476,7 @@ sub encode
     {
         # VA = main verb
         # VE = medial verb
-        if($f{tagset} eq "daconll" && $f{other} eq "medial" ||
+        if($f{tagset} eq "da::conll" && $f{other} eq "medial" ||
            $f{verbform} eq "part" && $f{tense} eq "past" && $f{number} !~ m/^(sing|plu)$/)
         {
             $tag = "V\tVE";
@@ -505,7 +507,7 @@ sub encode
             $tag = "C\tCC";
         }
     }
-    elsif($f{pos} =~ m/^(inf|part)$/)
+    elsif($f{pos} eq "part")
     {
         # U = unique
         $tag = "U\tU";
@@ -523,7 +525,7 @@ sub encode
         # XS = symbol ("+", "$")
         # XP = punctuation
         # XX = other
-        if($f{tagset} eq "daconll" && $f{other} eq "symbol")
+        if($f{tagset} eq "da::conll" && $f{other} eq "symbol")
         {
             $tag = "X\tXS";
         }
@@ -534,7 +536,7 @@ sub encode
     }
     else
     {
-        if($f{tagset} eq "daconll" && $f{other} eq "formula")
+        if($f{tagset} eq "da::conll" && $f{other} eq "formula")
         {
             $tag = "X\tXR";
         }
@@ -609,19 +611,19 @@ sub encode
         push(@features, "person=$f{person}");
     }
     # degree
-    if($f{compdeg} eq "norm")
+    if($f{degree} eq "pos")
     {
         push(@features, "degree=pos");
     }
-    elsif($f{compdeg} eq "comp")
+    elsif($f{degree} eq "comp")
     {
         push(@features, "degree=comp");
     }
-    elsif($f{compdeg} eq "sup")
+    elsif($f{degree} eq "sup")
     {
         push(@features, "degree=sup");
     }
-    elsif($f{compdeg} eq "abs")
+    elsif($f{degree} eq "abs")
     {
         push(@features, "degree=abs");
     }

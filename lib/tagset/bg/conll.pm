@@ -21,7 +21,7 @@ sub decode
 {
     my $tag = shift;
     my %f; # features
-    $f{tagset} = "bgconll";
+    $f{tagset} = "bg::conll";
     # three components: coarse-grained pos, fine-grained pos, features
     # example: N\tNC\tgender=neuter|number=sing|case=unmarked|def=indef
     # This tag set is really a damn masterpiece. The "gen" feature can occur twice
@@ -125,19 +125,16 @@ sub decode
         elsif($subpos eq "Pi")
         {
             $f{prontype} = "int";
-            $f{definiteness} = "int";
         }
         # Pr = relative pronoun
         elsif($subpos eq "Pr")
         {
             $f{prontype} = "rel";
-            $f{definiteness} = "rel";
         }
         # Pc = collective pronoun
         elsif($subpos eq "Pc")
         {
             $f{prontype} = "tot";
-            $f{definiteness} = "col";
         }
         # Pf = indefinite pronoun
         elsif($subpos eq "Pf")
@@ -328,7 +325,7 @@ sub decode
         # li = question particle
         elsif($subpos eq "Ti")
         {
-            $f{definiteness} = "int";
+            $f{prontype} = "int";
         }
         # Tx = auxiliary particle
         # da = to
@@ -762,13 +759,13 @@ sub encode
     {
         # N = normal noun
         # H = hybrid adjectival noun (Ivanov, Ivanovo)
-        if($f{tagset} eq "bgconll" && $f{other}{pos} eq "hybrid" ||
-           $f{tagset} ne "bgconll" && $f{gender} eq "fem" && $f{number} eq "sing" && $f{definiteness} eq "ind")
+        if($f{tagset} eq "bg::conll" && $f{other}{pos} eq "hybrid" ||
+           $f{tagset} ne "bg::conll" && $f{gender} eq "fem" && $f{number} eq "sing" && $f{definiteness} eq "ind")
         {
             # Hm = masculine
             # Hf = feminine
             # Hn = neuter
-            if($f{tagset} eq "bgconll" && $f{other}{subpos} eq "H")
+            if($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "H")
             {
                 $tag = "H\tH";
             }
@@ -792,11 +789,11 @@ sub encode
             # Np = proper noun
             # Nm ... typo, nonsensical tag?
             # My ... "melcina" (Czech: "menšina")
-            if($f{tagset} eq "bgconll" && $f{other}{subpos} eq "Nm")
+            if($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "Nm")
             {
                 $tag = "N\tNm";
             }
-            elsif($f{tagset} eq "bgconll" && $f{other}{subpos} eq "My" ||
+            elsif($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "My" ||
                   $f{definiteness} ne "" && $f{number} eq "")
             {
                 $tag = "M\tMy";
@@ -817,15 +814,15 @@ sub encode
         # Am = masculine
         # Af = feminine
         # An = neuter
-        if($f{gender} eq "masc" || $f{tagset} eq "bgconll" && $f{other}{subpos} eq "Am")
+        if($f{gender} eq "masc" || $f{tagset} eq "bg::conll" && $f{other}{subpos} eq "Am")
         {
             $tag = "A\tAm";
         }
-        elsif($f{gender} eq "fem" || $f{tagset} eq "bgconll" && $f{other}{subpos} eq "Af")
+        elsif($f{gender} eq "fem" || $f{tagset} eq "bg::conll" && $f{other}{subpos} eq "Af")
         {
             $tag = "A\tAf";
         }
-        elsif($f{gender} eq "neut" || $f{tagset} eq "bgconll" && $f{other}{subpos} eq "An")
+        elsif($f{gender} eq "neut" || $f{tagset} eq "bg::conll" && $f{other}{subpos} eq "An")
         {
             $tag = "A\tAn";
         }
@@ -834,7 +831,7 @@ sub encode
             $tag = "A\tA";
         }
     }
-    elsif($f{pos} eq "pron" || $f{prontype} ne "")
+    elsif($f{pos} eq "pron" || $f{prontype} ne "" && $f{pos} ne "part")
     {
         # P  = "za_razlika_ot"
         # Pp = personal pronoun
@@ -845,7 +842,7 @@ sub encode
         # Pc = collective pronoun
         # Pf = indefinite pronoun
         # Pn = negative pronoun
-        if($f{tagset} eq "bgconll" && $f{other}{subpos} eq "P")
+        if($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "P")
         {
             $tag = "P\tP";
         }
@@ -891,14 +888,6 @@ sub encode
         {
             $tag = "P\tPc";
         }
-        elsif($f{definiteness} =~ m/^(wh|rel)$/)
-        {
-            $tag = "P\tPr";
-        }
-        elsif($f{definiteness} eq "int")
-        {
-            $tag = "P\tPi";
-        }
         elsif($f{negativeness} eq "neg")
         {
             $tag = "P\tPn";
@@ -911,10 +900,6 @@ sub encode
         {
             $tag = "P\tPd";
         }
-        elsif($f{definiteness} eq "col")
-        {
-            $tag = "P\tPc";
-        }
         else
         {
             $tag = "P\tPp";
@@ -926,15 +911,15 @@ sub encode
         # Mo = ordinal number
         # Md = adverbial numeral (poveče, malko, mnogo, măničko)
         # My = fuzzy numerals about people (malcina, mnozina)
-        if($f{definiteness} eq "rel")
+        if($f{prontype} eq "rel")
         {
             $tag = "P\tPr";
         }
-        elsif($f{definiteness} eq "int")
+        elsif($f{prontype} eq "int")
         {
             $tag = "P\tPi";
         }
-        elsif($f{tagset} eq "bgconll" && $f{other}{subpos} eq "My")
+        elsif($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "My")
         {
             $tag = "M\tMy";
         }
@@ -967,11 +952,11 @@ sub encode
         }
         elsif($f{subpos} eq "aux")
         {
-            if($f{tagset} eq "bgconll" && $f{other}{subpos} eq "băda")
+            if($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "băda")
             {
                 $tag = "V\tVyp";
             }
-            elsif($f{tagset} eq "bgconll" && $f{other}{subpos} eq "bivam")
+            elsif($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "bivam")
             {
                 $tag = "V\tVii";
             }
@@ -980,7 +965,7 @@ sub encode
                 $tag = "V\tVxi";
             }
         }
-        elsif($f{tagset} eq "bgconll" && $f{other}{subpos} eq "nonpers")
+        elsif($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "nonpers")
         {
             if($f{aspect} eq "perf")
             {
@@ -1010,19 +995,19 @@ sub encode
         # Dt = adverb of time
         # Dq = adverb of quantity or degree
         # Dd = adverb of modal nature
-        if($f{definiteness} eq "rel")
+        if($f{prontype} eq "rel")
         {
             $tag = "P\tPr";
         }
-        elsif($f{definiteness} eq "int")
+        elsif($f{prontype} eq "int")
         {
             $tag = "P\tPi";
         }
-        elsif($f{definiteness} eq "ind")
+        elsif($f{prontype} eq "ind")
         {
             $tag = "P\tPf";
         }
-        elsif($f{negativeness} eq "neg")
+        elsif($f{prontype} eq "neg" || $f{negativeness} eq "neg")
         {
             $tag = "P\tPn";
         }
@@ -1067,11 +1052,11 @@ sub encode
         }
         else
         {
-            if($f{tagset} eq "bgconll" && $f{other}{subpos} eq "rep")
+            if($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "rep")
             {
                 $tag = "C\tCr";
             }
-            elsif($f{tagset} eq "bgconll" && $f{other}{subpos} eq "srep")
+            elsif($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "srep")
             {
                 $tag = "C\tCp";
             }
@@ -1101,7 +1086,7 @@ sub encode
             $tag = "T\tTn";
         }
         # Ti = interrogative particle
-        elsif($f{definiteness} =~ m/^(wh|int|rel)$/)
+        elsif($f{prontype} =~ m/^(int|rel)$/)
         {
             $tag = "T\tTi";
         }
@@ -1114,7 +1099,7 @@ sub encode
         # Tv = verbal particle
         elsif($f{subpos} eq "mod")
         {
-            if($f{tagset} eq "bgconll" && $f{other}{subpos} eq "verb")
+            if($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "verb")
             {
                 $tag = "T\tTv";
             }
@@ -1124,7 +1109,7 @@ sub encode
             }
         }
         # Tg = gradable particle
-        elsif($f{tagset} eq "bgconll" && $f{other}{subpos} eq "naj")
+        elsif($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "naj")
         {
             $tag = "T\tTg";
         }
@@ -1154,8 +1139,8 @@ sub encode
             push(@features, "type=aux");
         }
         # aspect
-        if($f{subpos} eq "aux" && !($f{tagset} eq "bgconll" && $f{other}{subpos} =~ m/^(săm|bivam)$/) ||
-           $f{aspect} eq "perf" && !($f{tagset} eq "bgconll" && $f{other}{subpos} eq "nonpers") && $f{subcat} ne "")
+        if($f{subpos} eq "aux" && !($f{tagset} eq "bg::conll" && $f{other}{subpos} =~ m/^(săm|bivam)$/) ||
+           $f{aspect} eq "perf" && !($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "nonpers") && $f{subcat} ne "")
         {
             if($f{aspect} eq "imp")
             {
@@ -1168,7 +1153,7 @@ sub encode
         }
         # transitivity of verbs
         my $prefix;
-        if($f{tagset} eq "bgconll" && $f{other}{subpos} eq "nonpers" && $f{aspect} eq "imp")
+        if($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "nonpers" && $f{aspect} eq "imp")
         {
             $prefix = "im";
         }
@@ -1222,7 +1207,7 @@ sub encode
             {
                 push(@features, "tense=m");
             }
-            elsif($f{tagset} eq "bgconll" && $f{other}{subpos} eq "săm" && $f{mood} ne "sub")
+            elsif($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "săm" && $f{mood} ne "sub")
             {
                 push(@features, "past");
             }
@@ -1236,7 +1221,7 @@ sub encode
     # The features of indefinite pronouns (Pf) always begin with "def=i".
     # Another definiteness can occur at the end, this time not necessarily indefinite!
     # Examples: edin i i, edinja i h, edinjat i f, ednata i d, nekolcina i i, nešta i i, neštata i d, njakolko i i.
-    if($f{prontype} eq "ind" && !($f{tagset} eq "bgconll" && $f{other}{subpos} eq "Md"))
+    if($f{prontype} eq "ind" && !($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "Md"))
     {
         push(@features, "def=i");
     }
@@ -1260,7 +1245,9 @@ sub encode
             push(@features, "ref=p");
         }
     }
-    elsif($f{pos} eq "num" && $f{prontype} ne "" && !($f{tagset} eq "bgconll" && $f{other}{subpos} eq "Md"))
+    elsif($f{pos} eq "num" && $f{prontype} ne "" &&
+          !($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "Md") &&
+          !($f{subpos} eq "card" && $f{prontype} eq "ind"))
     {
         push(@features, "ref=q");
     }
@@ -1362,8 +1349,8 @@ sub encode
     }
     elsif($f{number} eq "plu")
     {
-        if($f{tagset} eq "bgconll" && $f{other}{number} eq "pluralia tantum" ||
-           $f{tagset} ne "bgconll" && $f{pos} eq "noun" && $f{gender} eq "")
+        if($f{tagset} eq "bg::conll" && $f{other}{number} eq "pluralia tantum" ||
+           $f{tagset} ne "bg::conll" && $f{pos} eq "noun" && $f{gender} eq "")
         {
             push(@features, "num=pia_tantum");
         }
@@ -1437,12 +1424,12 @@ sub encode
         }
         elsif($f{definiteness} eq "def")
         {
-            if($f{tagset} eq "bgconll" && $f{other}{definiteness} eq "f" ||
-               $f{tagset} ne "bgconll" && $f{gender} eq "masc" && $f{number} eq "sing")
+            if($f{tagset} eq "bg::conll" && $f{other}{definiteness} eq "f" ||
+               $f{tagset} ne "bg::conll" && $f{gender} eq "masc" && $f{number} eq "sing")
             {
                 push(@features, "def=f");
             }
-            elsif($f{tagset} eq "bgconll" && $f{other}{definiteness} eq "h")
+            elsif($f{tagset} eq "bg::conll" && $f{other}{definiteness} eq "h")
             {
                 # shoft definite article
                 # We cannot use $f{variant} = "short" because it would collide with the form feature of pronouns.
