@@ -97,17 +97,17 @@ sub decode
     # P = pronoun
     elsif($pos eq "P")
     {
-        $f{pos} = "pron";
+        $f{pos} = "noun";
         # subpos: P Pc Pd Pf Pi Pn Pp Pr Ps
         # P = probably error; the only example is "za_razlika_ot" ("in contrast to")
         if($subpos eq "P")
         {
+            $f{prontype} = "prs"; # just because it is default and we cannot leave it empty
             $f{other}{subpos} = "P";
         }
         # Pp = personal pronoun
         elsif($subpos eq "Pp")
         {
-            $f{subpos} = "pers";
             $f{prontype} = "prs";
         }
         # Ps = possessive pronoun
@@ -755,83 +755,7 @@ sub encode
     {
         $tag = "N\tN";
     }
-    elsif($f{pos} eq "noun")
-    {
-        # N = normal noun
-        # H = hybrid adjectival noun (Ivanov, Ivanovo)
-        if($f{tagset} eq "bg::conll" && $f{other}{pos} eq "hybrid" ||
-           $f{tagset} ne "bg::conll" && $f{gender} eq "fem" && $f{number} eq "sing" && $f{definiteness} eq "ind")
-        {
-            # Hm = masculine
-            # Hf = feminine
-            # Hn = neuter
-            if($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "H")
-            {
-                $tag = "H\tH";
-            }
-            elsif($f{gender} eq "masc")
-            {
-                $tag = "H\tHm";
-            }
-            elsif($f{gender} eq "fem")
-            {
-                $tag = "H\tHf";
-            }
-            else
-            {
-                $tag = "H\tHn";
-            }
-        }
-        else
-        {
-            # N  = indeclinable, usually foreign noun ("bug", "US_Oupăn", "Bi_Bi_Si", "Partido_popular")
-            # Nc = common noun
-            # Np = proper noun
-            # Nm ... typo, nonsensical tag?
-            # My ... "melcina" (Czech: "menšina")
-            if($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "Nm")
-            {
-                $tag = "N\tNm";
-            }
-            elsif($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "My" ||
-                  $f{definiteness} ne "" && $f{number} eq "")
-            {
-                $tag = "M\tMy";
-            }
-            elsif($f{subpos} eq "prop")
-            {
-                $tag = "N\tNp";
-            }
-            else
-            {
-                $tag = "N\tNc";
-            }
-        }
-    }
-    elsif($f{pos} =~ m/^(adj|det)$/)
-    {
-        # A  = plural
-        # Am = masculine
-        # Af = feminine
-        # An = neuter
-        if($f{gender} eq "masc" || $f{tagset} eq "bg::conll" && $f{other}{subpos} eq "Am")
-        {
-            $tag = "A\tAm";
-        }
-        elsif($f{gender} eq "fem" || $f{tagset} eq "bg::conll" && $f{other}{subpos} eq "Af")
-        {
-            $tag = "A\tAf";
-        }
-        elsif($f{gender} eq "neut" || $f{tagset} eq "bg::conll" && $f{other}{subpos} eq "An")
-        {
-            $tag = "A\tAn";
-        }
-        else
-        {
-            $tag = "A\tA";
-        }
-    }
-    elsif($f{pos} eq "pron" || $f{prontype} ne "" && $f{pos} ne "part")
+    elsif($f{prontype} ne "" && $f{pos} ne "part")
     {
         # P  = "za_razlika_ot"
         # Pp = personal pronoun
@@ -903,6 +827,82 @@ sub encode
         else
         {
             $tag = "P\tPp";
+        }
+    }
+    elsif($f{pos} eq "noun")
+    {
+        # N = normal noun
+        # H = hybrid adjectival noun (Ivanov, Ivanovo)
+        if($f{tagset} eq "bg::conll" && $f{other}{pos} eq "hybrid" ||
+           $f{tagset} ne "bg::conll" && $f{gender} eq "fem" && $f{number} eq "sing" && $f{definiteness} eq "ind")
+        {
+            # Hm = masculine
+            # Hf = feminine
+            # Hn = neuter
+            if($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "H")
+            {
+                $tag = "H\tH";
+            }
+            elsif($f{gender} eq "masc")
+            {
+                $tag = "H\tHm";
+            }
+            elsif($f{gender} eq "fem")
+            {
+                $tag = "H\tHf";
+            }
+            else
+            {
+                $tag = "H\tHn";
+            }
+        }
+        else
+        {
+            # N  = indeclinable, usually foreign noun ("bug", "US_Oupăn", "Bi_Bi_Si", "Partido_popular")
+            # Nc = common noun
+            # Np = proper noun
+            # Nm ... typo, nonsensical tag?
+            # My ... "melcina" (Czech: "menšina")
+            if($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "Nm")
+            {
+                $tag = "N\tNm";
+            }
+            elsif($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "My" ||
+                  $f{definiteness} ne "" && $f{number} eq "")
+            {
+                $tag = "M\tMy";
+            }
+            elsif($f{subpos} eq "prop")
+            {
+                $tag = "N\tNp";
+            }
+            else
+            {
+                $tag = "N\tNc";
+            }
+        }
+    }
+    elsif($f{pos} eq "adj")
+    {
+        # A  = plural
+        # Am = masculine
+        # Af = feminine
+        # An = neuter
+        if($f{gender} eq "masc" || $f{tagset} eq "bg::conll" && $f{other}{subpos} eq "Am")
+        {
+            $tag = "A\tAm";
+        }
+        elsif($f{gender} eq "fem" || $f{tagset} eq "bg::conll" && $f{other}{subpos} eq "Af")
+        {
+            $tag = "A\tAf";
+        }
+        elsif($f{gender} eq "neut" || $f{tagset} eq "bg::conll" && $f{other}{subpos} eq "An")
+        {
+            $tag = "A\tAn";
+        }
+        else
+        {
+            $tag = "A\tA";
         }
     }
     elsif($f{pos} eq "num")
@@ -1276,7 +1276,7 @@ sub encode
         push(@features, "ref=a");
     }
     # form of pronouns
-    if($f{pos} eq "pron")
+    if($f{prontype} ne "" && $f{pos} ne "part")
     {
         if($f{variant} eq "long")
         {
@@ -1303,7 +1303,7 @@ sub encode
         }
     }
     # case of pronouns
-    unless($f{pos} eq "noun")
+    if($f{prontype} ne "")
     {
         if($f{case} eq "nom")
         {
@@ -1350,7 +1350,7 @@ sub encode
     elsif($f{number} eq "plu")
     {
         if($f{tagset} eq "bg::conll" && $f{other}{number} eq "pluralia tantum" ||
-           $f{tagset} ne "bg::conll" && $f{pos} eq "noun" && $f{gender} eq "")
+           $f{tagset} ne "bg::conll" && $f{pos} eq "noun" && $f{prontype} eq "" && $f{gender} eq "")
         {
             push(@features, "num=pia_tantum");
         }
@@ -1360,7 +1360,7 @@ sub encode
         }
     }
     # case of nouns
-    if($f{pos} eq "noun")
+    if($f{pos} eq "noun" && $f{prontype} eq "")
     {
         if($f{case} eq "nom")
         {
@@ -1392,7 +1392,7 @@ sub encode
         }
     }
     # person of pronouns comes here
-    if($f{pos} eq "pron")
+    if($f{prontype} eq "prs")
     {
         if($f{person} =~ m/^[123]$/)
         {

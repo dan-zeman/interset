@@ -180,7 +180,8 @@ sub decode
     # PO Pronoun
     elsif($tag eq "PO")
     {
-        $f{pos} = "pron";
+        $f{pos} = "noun";
+        $f{prontype} = "prs";
     }
     # PR Preposition
     elsif($tag eq "PR")
@@ -220,7 +221,7 @@ sub decode
     # TP Totality pronoun
     elsif($tag eq "TP")
     {
-        $f{pos} = "pron";
+        $f{pos} = "noun";
         $f{prontype} = "tot";
     }
     # UK Subordinating conjunction
@@ -308,7 +309,7 @@ sub encode
     $strict = !$nonstrict;
     my $tag;
     # Noun: AN NN PN VN
-    if($f{pos} eq "noun")
+    if($f{pos} eq "noun" && $f{prontype} eq "")
     {
         if($f{synpos} eq "attr")
         {
@@ -340,7 +341,7 @@ sub encode
         }
     }
     # Pronoun: PO TP
-    elsif($f{pos} eq "pron")
+    elsif($f{pos} eq "noun" && $f{prontype} ne "")
     {
         if($f{prontype} eq "tot")
         {

@@ -51,10 +51,10 @@ sub decode
     }
     elsif($pos eq "P")
     {
-        $f{pos} = "pron";
         # PP = personal
         if($subpos eq "PP")
         {
+            $f{pos} = "noun";
             $f{prontype} = "prs";
             $f{subpos} = "pers";
             $f{synpos} = "subst";
@@ -62,6 +62,7 @@ sub decode
         # PO = possessive
         elsif($subpos eq "PO")
         {
+            $f{pos} = "adj";
             $f{prontype} = "prs";
             $f{poss} = "poss";
             $f{synpos} = "attr";
@@ -69,6 +70,7 @@ sub decode
         # PC = reciprocal
         elsif($subpos eq "PC")
         {
+            $f{pos} = "noun";
             $f{prontype} = "rcp";
             $f{subpos} = "recip";
             $f{synpos} = "subst";
@@ -76,6 +78,7 @@ sub decode
         # PD = demonstrative
         elsif($subpos eq "PD")
         {
+            $f{pos} = "adj";
             $f{prontype} = "dem";
             $f{synpos} = "attr";
             $f{definiteness} = "def";
@@ -83,6 +86,7 @@ sub decode
         # PI = indefinite
         elsif($subpos eq "PI")
         {
+            $f{pos} = "noun";
             $f{prontype} = "ind";
             $f{synpos} = "attr";
             $f{definiteness} = "ind";
@@ -90,6 +94,7 @@ sub decode
         # PT = interrogative / relative
         elsif($subpos eq "PT")
         {
+            $f{pos} = "noun";
             $f{prontype} = "int";
         }
     }
@@ -385,6 +390,12 @@ sub encode
     # driver.
     my $f = tagset::common::enforce_permitted_joint($f0, $permitted);
     my %f = %{$f}; # This is not a deep copy but $f already refers to a deep copy of the original %{$f0}.
+    # Map Interset word classes to Danish Parole word classes (in particular, test pronouns only once - here).
+    my $pos = $f{pos};
+    if($pos =~ m/^(noun|adj)$/ && $f{prontype} ne "")
+    {
+        $pos = "pron";
+    }
     my $tag;
     # pos and subpos
     if($f{foreign} eq "foreign")
@@ -395,7 +406,7 @@ sub encode
     {
         $tag = "X\tXA";
     }
-    elsif($f{pos} eq "noun")
+    elsif($pos eq "noun")
     {
         # NC = common noun
         # NP = proper noun
@@ -408,14 +419,14 @@ sub encode
             $tag = "N\tNC";
         }
     }
-    elsif($f{pos} =~ m/^(adj|det)$/)
+    elsif($pos eq "adj")
     {
         # AN = normal adjective
         # AC = cardinal number
         # AO = ordinal number
         $tag = "A\tAN";
     }
-    elsif($f{pos} eq "pron")
+    elsif($pos eq "pron")
     {
         # PP = personal pronoun
         # PO = possessive pronoun
@@ -640,10 +651,10 @@ sub encode
     {
         push(@features, "gender=neuter");
     }
-    elsif($f{pos} eq "verb" && $f{verbform} eq "part" && $f{synpos} ne "adv" ||
-          $f{pos} eq "pron" && $f{subpos} ne "recip" ||
-          $f{pos} eq "noun" && $f{subpos} ne "prop" ||
-          $f{pos} eq "adj" && $f{synpos} ne "adv")
+    elsif($pos eq "verb" && $f{verbform} eq "part" && $f{synpos} ne "adv" ||
+          $pos eq "pron" && $f{subpos} ne "recip" ||
+          $pos eq "noun" && $f{subpos} ne "prop" ||
+          $pos eq "adj" && $f{synpos} ne "adv")
     {
         push(@features, "gender=common/neuter");
     }
@@ -658,16 +669,16 @@ sub encode
         {
             push(@features, "number=plur");
         }
-        elsif($f{pos} eq "verb" && $f{verbform} eq "part" && $f{synpos} ne "adv" ||
-              $f{pos} eq "pron" ||
-              $f{pos} eq "noun" && $f{subpos} ne "prop" ||
-              $f{pos} eq "adj" && $f{synpos} ne "adv")
+        elsif($pos eq "verb" && $f{verbform} eq "part" && $f{synpos} ne "adv" ||
+              $pos eq "pron" ||
+              $pos eq "noun" && $f{subpos} ne "prop" ||
+              $pos eq "adj" && $f{synpos} ne "adv")
         {
             push(@features, "number=sing/plur");
         }
     }
     # definiteness of verbs
-    unless($f{pos} =~ m/^(noun|adj|pron)$/)
+    unless($pos =~ m/^(noun|adj|pron)$/)
     {
         if($f{definiteness} eq "ind")
         {
@@ -707,14 +718,14 @@ sub encode
     {
         push(@features, "case=gen");
     }
-    elsif($f{pos} eq "verb" && $f{verbform} eq "part" && $f{synpos} ne "adv" || $f{verbform} eq "ger" ||
-          $f{pos} =~ m/^(pron|noun|num)$/ ||
-          $f{pos} eq "adj" && $f{synpos} ne "adv")
+    elsif($pos eq "verb" && $f{verbform} eq "part" && $f{synpos} ne "adv" || $f{verbform} eq "ger" ||
+          $pos =~ m/^(pron|noun|num)$/ ||
+          $pos eq "adj" && $f{synpos} ne "adv")
     {
         push(@features, "case=unmarked");
     }
     # definiteness of nouns and adjectives
-    if($f{pos} =~ m/^(noun|adj)$/)
+    if($pos =~ m/^(noun|adj)$/)
     {
         if($f{definiteness} eq "ind")
         {
@@ -738,12 +749,12 @@ sub encode
     {
         push(@features, "possessor=plur");
     }
-    elsif($f{pos} eq "pron" && $f{poss} eq "poss")
+    elsif($pos eq "pron" && $f{poss} eq "poss")
     {
         push(@features, "possessor=sing/plur");
     }
     # reflexive
-    if($f{pos} eq "pron" && ($f{subpos} eq "pers" || $f{poss} eq "poss"))
+    if($pos eq "pron" && ($f{subpos} eq "pers" || $f{poss} eq "poss"))
     {
         if($f{reflex} eq "reflex")
         {
@@ -771,12 +782,12 @@ sub encode
     {
         push(@features, "register=obsolete");
     }
-    elsif($f{pos} eq "pron" && $f{subpos} ne "recip")
+    elsif($pos eq "pron" && $f{subpos} ne "recip")
     {
         push(@features, "register=unmarked");
     }
     # transcat of adjectives
-    if($f{pos} eq "adj")
+    if($pos eq "adj")
     {
         if($f{synpos} eq "attr")
         {

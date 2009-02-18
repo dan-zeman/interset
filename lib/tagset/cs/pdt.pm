@@ -31,7 +31,7 @@ sub decode
     }
     elsif($pos eq "P")
     {
-        $f{pos} = "pron";
+        $f{prontype} = "prs";
     }
     elsif($pos eq "C")
     {
@@ -128,30 +128,40 @@ sub decode
     elsif($subpos eq "P")
     {
         # já, ty, tys, on, ona, ono, my, vy, oni, ony, ona
+        $f{pos} = "noun";
+        $f{prontype} = "prs";
         $f{subpos} = "pers";
         $f{synpos} = "subst";
     }
     elsif($subpos eq "H")
     {
         # mě, mi, ti, mu
+        $f{pos} = "noun";
+        $f{prontype} = "prs";
         $f{subpos} = "clit";
         $f{synpos} = "subst";
     }
     elsif($subpos eq "5")
     {
         # něj, němu, něho, něm, ním, ní, ni, nich, nim, ně, nich, nimi
+        $f{pos} = "noun";
+        $f{prontype} = "prs";
         $f{subpos} = "pers";
         $f{synpos} = "subst";
-        $f{other} = "5";
+        $f{prepcase} = "pre";
     }
     elsif($subpos eq "0")
     {
+        $f{pos} = "noun";
+        $f{prontype} = "prs";
         $f{subpos} = "preppron"; # naň
         $f{synpos} = "adv";
     }
     elsif($subpos eq "6")
     {
         # sebe, sobě, sebou
+        $f{pos} = "noun";
+        $f{prontype} = "prs";
         $f{subpos} = "pers";
         $f{synpos} = "subst";
         $f{reflex} = "reflex";
@@ -159,6 +169,8 @@ sub decode
     elsif($subpos eq "7")
     {
         # se, si, ses, sis
+        $f{pos} = "noun";
+        $f{prontype} = "prs";
         $f{subpos} = "clit";
         $f{synpos} = "subst";
         $f{reflex} = "reflex";
@@ -167,12 +179,16 @@ sub decode
     elsif($subpos eq "S")
     {
         # můj, tvůj, jeho, její, náš, váš, jejich
+        $f{pos} = "adj";
+        $f{prontype} = "prs";
         $f{synpos} = "attr";
         $f{poss} = "poss";
     }
     elsif($subpos eq "8")
     {
         # svůj
+        $f{pos} = "adj";
+        $f{prontype} = "prs";
         $f{synpos} = "attr";
         $f{poss} = "poss";
         $f{reflex} = "reflex";
@@ -180,6 +196,7 @@ sub decode
     elsif($subpos eq "D")
     {
         # ten, tento, tenhle, onen, takový, týž, tentýž, sám
+        $f{pos} = "adj";
         $f{prontype} = "dem";
         $f{synpos} = "attr";
         $f{definiteness} = "def";
@@ -187,18 +204,21 @@ sub decode
     elsif($subpos eq "K")
     {
         # kdo, kdož, kdos
+        $f{pos} = "noun";
         $f{prontype} = ["int", "rel"];
         $f{synpos} = "subst";
     }
     elsif($subpos eq "Q")
     {
         # co, copak, cožpak
+        $f{pos} = "noun";
         $f{prontype} = ["int", "rel"];
         $f{synpos} = "subst";
     }
     elsif($subpos eq "Y")
     {
         # oč, nač, zač
+        $f{pos} = "noun";
         $f{prontype} = ["int", "rel"];
         $f{subpos} = "preppron";
         $f{synpos} = "adv";
@@ -206,31 +226,37 @@ sub decode
     elsif($subpos eq "4")
     {
         # jaký, který, čí
+        $f{pos} = "adj";
         $f{prontype} = ["int", "rel"];
         $f{synpos} = "attr";
     }
     elsif($subpos eq "J")
     {
         # jenž, jež, již
+        $f{pos} = "noun";
         $f{prontype} = "rel";
         $f{synpos} = "attr";
+        $f{prepcase} = "npr";
     }
     elsif($subpos eq "9")
     {
         # něhož, němuž, nějž, němž, nímž
+        $f{pos} = "noun";
         $f{prontype} = "rel";
         $f{synpos} = "attr";
-        $f{other} = "9";
+        $f{prepcase} = "pre";
     }
     elsif($subpos eq "E")
     {
         # což
+        $f{pos} = "noun";
         $f{prontype} = "rel";
         $f{synpos} = "subst";
     }
     elsif($subpos eq "1")
     {
         # jehož, jejíž
+        $f{pos} = "adj";
         $f{prontype} = "rel";
         $f{synpos} = "attr";
         $f{poss} = "poss";
@@ -239,12 +265,14 @@ sub decode
     {
         # někdo, něco, nějaký, některý, něčí, ..., kdokoli, ..., kdosi...
         # synpos unknown, it could be subst or attr
+        $f{pos} = "noun";
         $f{prontype} = "ind";
         $f{definiteness} = "ind";
     }
     elsif($subpos eq "L")
     {
         # všechen, sám
+        $f{pos} = "noun";
         $f{prontype} = "tot";
         $f{synpos} = "attr";
         $f{definiteness} = "ind";
@@ -254,17 +282,18 @@ sub decode
     {
         # nikdo, nic, nijaký, ničí, žádný
         # synpos unknown, it could be subst or attr
+        $f{pos} = "noun";
         $f{prontype} = "neg";
         $f{negativeness} = "neg";
     }
     elsif($subpos eq "=")
     {
-        $f{subpos} = "digit";
+        $f{numform} = "digit";
     }
     elsif($subpos eq "}")
     {
         # MCMLXXI
-        $f{subpos} = "roman";
+        $f{numform} = "roman";
     }
     elsif($subpos eq "l")
     {
@@ -755,8 +784,14 @@ sub encode
     my $nonstrict = shift; # strict is default
     $strict = !$nonstrict;
     my @tag = split(//, "---------------");
+    # Map Interset word classes to PDT word classes (in particular, test pronouns only once - here).
+    my $pos = $f{pos};
+    if($pos =~ m/^(noun|adj)$/ && $f{prontype} ne "")
+    {
+        $pos = "pron";
+    }
     # pos and subpos
-    if($f{pos} eq "noun")
+    if($pos eq "noun")
     {
         $tag[0] = "N";
         if($f{abbr} eq "abbr" && $f{variant} ne "8")
@@ -768,7 +803,7 @@ sub encode
             $tag[1] = "N";
         }
     }
-    elsif($f{pos} eq "adj")
+    elsif($pos eq "adj")
     {
         $tag[0] = "A";
         if($f{abbr} eq "abbr" && $f{variant} ne "8")
@@ -805,19 +840,7 @@ sub encode
             $tag[1] = "A";
         }
     }
-    elsif($f{pos} eq "det")
-    {
-        $tag[0] = "P";
-        if($f{definiteness} eq "def")
-        {
-            $tag[1] = "D";
-        }
-        else
-        {
-            $tag[1] = "Z";
-        }
-    }
-    elsif($f{pos} eq "pron")
+    elsif($pos eq "pron")
     {
         $tag[0] = "P";
         # subposes: 01456789DEHJKLOPQSWYZ
@@ -826,7 +849,7 @@ sub encode
         {
             if($f{reflex} ne "reflex")
             {
-                if($f{tagset} eq "cs::pdt" && $f{other} eq "5")
+                if($f{prepcase} eq "pre")
                 {
                     # něj, němu, něho, něm, ním, ní, ni, nich, nim, ně, nich, nimi
                     $tag[1] = "5";
@@ -897,7 +920,7 @@ sub encode
                 # což
                 $tag[1] = "E";
             }
-            elsif($f{tagset} eq "cs::pdt" && $f{other} eq "9")
+            elsif($f{prepcase} eq "pre")
             {
                 # něhož, němuž, nějž, němž, nímž, níž, niž
                 $tag[1] = "9";
@@ -942,9 +965,9 @@ sub encode
         }
         # totality (collective) pronoun
         elsif($f{prontype} eq "tot")
-	{
+        {
             $tag[1] = "L";
-	}
+        }
     }
     elsif($f{pos} eq "num")
     {
@@ -955,11 +978,11 @@ sub encode
             $tag[1] = "3";
         }
         # digits
-        elsif($f{subpos} eq "digit")
+        elsif($f{numform} eq "digit")
         {
             $tag[1] = "=";
         }
-        elsif($f{subpos} eq "roman")
+        elsif($f{numform} eq "roman")
         { ###{
             $tag[1] = "}";
         }
@@ -1027,13 +1050,14 @@ sub encode
         {
             $tag[1] = "j";
         }
-        elsif($f{tagset} eq "cs::pdt" && $f{other} eq "h")
-        {
-            $tag[1] = "h";
-        }
         elsif($f{tagset} eq "cs::pdt" && $f{other} eq "k")
         {
             $tag[1] = "k";
+        }
+        elsif($f{tagset} eq "cs::pdt" && $f{other} eq "h" ||
+              $f{gender} eq 'masc' && $f{animateness} eq '' && $f{number} eq 'plu' && $f{case} eq 'acc')
+        {
+            $tag[1] = "h";
         }
         elsif($f{synpos} eq "attr")
         {
@@ -1260,17 +1284,17 @@ sub encode
         # X versus -
         elsif
         (
-            $f{pos} eq "noun" && !($f{abbr} eq "abbr" && $f{variant} ne "8") ||
-            $f{pos} eq "adj" && $tag[1] !~ m/^[2\.]$/ ||
-            $f{pos} eq "pron" &&
+            $pos eq "noun" && !($f{abbr} eq "abbr" && $f{variant} ne "8") ||
+            $pos eq "adj" && $tag[1] !~ m/^[2\.]$/ ||
+            $pos eq "pron" &&
             (
                 $tag[1] eq "P" && $f{person} eq "3" || # personal pronoun
                 $tag[1] =~ m/^[SDJ98541]$/ ||
                 $tag[1] eq "W" &&  $f{number} eq "plu" || # negative pronoun
                 $tag[1] =~ m/^[ZL]$/ && ($f{number} eq "plu" || $f{case} eq "") # indefinite pronoun
             ) ||
-            $f{pos} eq "num" && $tag[1] =~ m/^[dhlrwz]$/ ||
-            $f{pos} eq "verb" && $f{verbform} =~ m/^(part|trans)$/
+            $pos eq "num" && $tag[1] =~ m/^[dhlrwz]$/ ||
+            $pos eq "verb" && $f{verbform} =~ m/^(part|trans)$/
         )
         {
             $tag[2] = "X";
@@ -1308,17 +1332,17 @@ sub encode
         # X versus -
         elsif
         (
-            $f{pos} eq "noun" && !($f{abbr} eq "abbr" && $f{variant} ne "8") ||
-            $f{pos} eq "adj" && $tag[1] !~ m/^[2\.]$/ ||
-            $f{pos} eq "pron" &&
+            $pos eq "noun" && !($f{abbr} eq "abbr" && $f{variant} ne "8") ||
+            $pos eq "adj" && $tag[1] !~ m/^[2\.]$/ ||
+            $pos eq "pron" &&
             (
                 $tag[1] =~ m/^[P67SD41]$/ ||
                 $tag[1] eq "W" &&  $f{number} eq "plu" || # negative pronoun
                 $tag[1] =~ m/^[ZL]$/ && ($f{number} eq "plu" || $f{case} eq "") # indefinite pronoun
             ) ||
-            $f{pos} eq "verb" && ($f{verbform} eq "part" || $f{mood} =~ m/^(ind|imp|sub)$/) ||
-            $f{pos} eq "num" && $tag[1] =~ m/^[nrwz]$/ ||
-            $f{pos} eq "conj" && $f{subpos} eq "sub" && $f{person} eq "3"
+            $pos eq "verb" && ($f{verbform} eq "part" || $f{mood} =~ m/^(ind|imp|sub)$/) ||
+            $pos eq "num" && $tag[1] =~ m/^[nrwz]$/ ||
+            $pos eq "conj" && $f{subpos} eq "sub" && $f{person} eq "3"
         )
         {
             $tag[3] = "X";
@@ -1356,11 +1380,11 @@ sub encode
     # X versus -
     elsif
     (
-        $f{pos} eq "noun" && !($f{abbr} eq "abbr" && $f{variant} ne "8") ||
-        $f{pos} eq "adj" && $tag[1] !~ m/^[OC2\.]$/ ||
-        $f{pos} eq "pron" && $f{subpos} ne "preppron" ||
-        $f{pos} eq "num" && $tag[1] =~ m/^[alnrwz]$/ ||
-        $f{pos} eq "prep" && $f{subpos} ne "comprep"
+        $pos eq "noun" && !($f{abbr} eq "abbr" && $f{variant} ne "8") ||
+        $pos eq "adj" && $tag[1] !~ m/^[OC2\.]$/ ||
+        $pos eq "pron" && $f{subpos} ne "preppron" ||
+        $pos eq "num" && $tag[1] =~ m/^[alnrwz]$/ ||
+        $pos eq "prep" && $f{subpos} ne "comprep"
     )
     {
         $tag[4] = "X";
@@ -1385,7 +1409,7 @@ sub encode
     {
         if($f{possgender} eq "masc")
         {
-            if($f{pos} eq "adj")
+            if($pos eq "adj")
             {
                 $tag[5] = "M";
             }
@@ -1403,7 +1427,7 @@ sub encode
             $tag[5] = "N";
         }
         # X versus -
-        elsif($f{pos} eq "pron" && $tag[1] =~ m/^[S1]$/ && $f{person} eq "3")
+        elsif($f{pos} =~ m/^(noun|adj)$/ && $f{prontype} ne "" && $tag[1] =~ m/^[S1]$/ && $f{person} eq "3")
         {
             $tag[5] = "X";
         }
@@ -1421,7 +1445,7 @@ sub encode
     {
         $tag[6] = "P";
     }
-    elsif($f{pos} eq "pron" && $tag[1] eq "S")
+    elsif($f{pos} =~ m/^(noun|adj)$/ && $f{prontype} ne "" && $tag[1] eq "S")
     {
         $tag[6] = "X";
     }
@@ -1486,7 +1510,7 @@ sub encode
         $tag[9] = "3";
     }
     # negativeness
-    if($f{pos} ne "pron" || $f{tense} eq "pres")
+    if(!($f{pos} =~ m/^(noun|adj)$/ && $f{prontype} ne "") || $f{tense} eq "pres")
     {
         if($f{negativeness} eq "pos")
         {

@@ -359,8 +359,11 @@ sub decode
 #------------------------------------------------------------------------------
 sub encode
 {
-    my $f = shift;
-    my %f = %{$f}; # this is not a deep copy! We must not modify the contents!
+    my $f0 = shift;
+    # Modify the feature structure so that it contains values expected by this
+    # driver.
+    my $f = tagset::common::enforce_permitted_joint($f0, $permitted);
+    my %f = %{$f}; # This is not a deep copy but $f already refers to a deep copy of the original %{$f0}.
     my $nonstrict = shift; # strict is default
     $strict = !$nonstrict;
     my $tag;
@@ -723,6 +726,19 @@ end_of_list
     my @list = split(/\r?\n/, $list);
     pop(@list) if($list[$#list] eq "");
     return \@list;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Create trie of permitted feature structures. This will be needed for strict
+# encoding. This BEGIN block cannot appear before the definition of the list()
+# function.
+#------------------------------------------------------------------------------
+BEGIN
+{
+    # Store the hash reference in a global variable.
+    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode);
 }
 
 

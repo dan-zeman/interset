@@ -2420,6 +2420,7 @@ N\tN\tGen=F|Num=P|Cas=4|Neg=N|Var=4
 N\tN\tGen=F|Num=P|Cas=4|Neg=N|Var=6
 N\tN\tGen=F|Num=P|Cas=4|Neg=N|Var=8
 N\tN\tGen=F|Num=P|Cas=5|Neg=A
+N\tN\tGen=F|Num=P|Cas=5|Neg=A|Sem=m
 N\tN\tGen=F|Num=P|Cas=5|Neg=A|Var=1
 N\tN\tGen=F|Num=P|Cas=5|Neg=A|Var=4
 N\tN\tGen=F|Num=P|Cas=5|Neg=A|Var=6
@@ -2510,6 +2511,7 @@ N\tN\tGen=F|Num=S|Cas=3|Neg=A|Sem=K
 N\tN\tGen=F|Num=S|Cas=3|Neg=A|Sem=R
 N\tN\tGen=F|Num=S|Cas=3|Neg=A|Sem=S
 N\tN\tGen=F|Num=S|Cas=3|Neg=A|Sem=Y
+N\tN\tGen=F|Num=S|Cas=3|Neg=A|Sem=m
 N\tN\tGen=F|Num=S|Cas=3|Neg=A|Var=1
 N\tN\tGen=F|Num=S|Cas=3|Neg=A|Var=1|Sem=G
 N\tN\tGen=F|Num=S|Cas=3|Neg=A|Var=2
@@ -3059,6 +3061,7 @@ N\tN\tGen=M|Num=S|Cas=3|Neg=A|Sem=E
 N\tN\tGen=M|Num=S|Cas=3|Neg=A|Sem=G
 N\tN\tGen=M|Num=S|Cas=3|Neg=A|Sem=S
 N\tN\tGen=M|Num=S|Cas=3|Neg=A|Sem=Y
+N\tN\tGen=M|Num=S|Cas=3|Neg=A|Sem=m
 N\tN\tGen=M|Num=S|Cas=3|Neg=A|Var=1
 N\tN\tGen=M|Num=S|Cas=3|Neg=A|Var=1|Sem=E
 N\tN\tGen=M|Num=S|Cas=3|Neg=A|Var=1|Sem=S
@@ -3117,6 +3120,7 @@ N\tN\tGen=M|Num=S|Cas=6|Neg=A
 N\tN\tGen=M|Num=S|Cas=6|Neg=A|Sem=E
 N\tN\tGen=M|Num=S|Cas=6|Neg=A|Sem=S
 N\tN\tGen=M|Num=S|Cas=6|Neg=A|Sem=Y
+N\tN\tGen=M|Num=S|Cas=6|Neg=A|Sem=m
 N\tN\tGen=M|Num=S|Cas=6|Neg=A|Var=1
 N\tN\tGen=M|Num=S|Cas=6|Neg=A|Var=1|Sem=G
 N\tN\tGen=M|Num=S|Cas=6|Neg=A|Var=1|Sem=S
@@ -3140,6 +3144,7 @@ N\tN\tGen=M|Num=S|Cas=7|Neg=A|Sem=K
 N\tN\tGen=M|Num=S|Cas=7|Neg=A|Sem=R
 N\tN\tGen=M|Num=S|Cas=7|Neg=A|Sem=S
 N\tN\tGen=M|Num=S|Cas=7|Neg=A|Sem=Y
+N\tN\tGen=M|Num=S|Cas=7|Neg=A|Sem=m
 N\tN\tGen=M|Num=S|Cas=7|Neg=A|Var=1
 N\tN\tGen=M|Num=S|Cas=7|Neg=A|Var=2
 N\tN\tGen=M|Num=S|Cas=7|Neg=A|Var=6
@@ -3181,6 +3186,7 @@ N\tN\tGen=N|Num=P|Cas=1|Neg=A
 N\tN\tGen=N|Num=P|Cas=1|Neg=A|Sem=G
 N\tN\tGen=N|Num=P|Cas=1|Neg=A|Sem=K
 N\tN\tGen=N|Num=P|Cas=1|Neg=A|Sem=R
+N\tN\tGen=N|Num=P|Cas=1|Neg=A|Sem=m
 N\tN\tGen=N|Num=P|Cas=1|Neg=A|Var=1
 N\tN\tGen=N|Num=P|Cas=1|Neg=A|Var=2
 N\tN\tGen=N|Num=P|Cas=1|Neg=A|Var=3
@@ -3196,6 +3202,7 @@ N\tN\tGen=N|Num=P|Cas=2|Neg=A
 N\tN\tGen=N|Num=P|Cas=2|Neg=A|Sem=G
 N\tN\tGen=N|Num=P|Cas=2|Neg=A|Sem=K
 N\tN\tGen=N|Num=P|Cas=2|Neg=A|Sem=R
+N\tN\tGen=N|Num=P|Cas=2|Neg=A|Sem=m
 N\tN\tGen=N|Num=P|Cas=2|Neg=A|Var=1
 N\tN\tGen=N|Num=P|Cas=2|Neg=A|Var=2
 N\tN\tGen=N|Num=P|Cas=2|Neg=A|Var=3
@@ -3208,6 +3215,7 @@ N\tN\tGen=N|Num=P|Cas=2|Neg=N|Var=3
 N\tN\tGen=N|Num=P|Cas=2|Neg=N|Var=6
 N\tN\tGen=N|Num=P|Cas=2|Neg=N|Var=8
 N\tN\tGen=N|Num=P|Cas=3|Neg=A
+N\tN\tGen=N|Num=P|Cas=3|Neg=A|Sem=m
 N\tN\tGen=N|Num=P|Cas=3|Neg=A|Var=1
 N\tN\tGen=N|Num=P|Cas=3|Neg=A|Var=2
 N\tN\tGen=N|Num=P|Cas=3|Neg=A|Var=3
@@ -3222,6 +3230,7 @@ N\tN\tGen=N|Num=P|Cas=3|Neg=N|Var=6
 N\tN\tGen=N|Num=P|Cas=3|Neg=N|Var=7
 N\tN\tGen=N|Num=P|Cas=3|Neg=N|Var=8
 N\tN\tGen=N|Num=P|Cas=4|Neg=A
+N\tN\tGen=N|Num=P|Cas=4|Neg=A|Sem=m
 N\tN\tGen=N|Num=P|Cas=4|Neg=A|Var=1
 N\tN\tGen=N|Num=P|Cas=4|Neg=A|Var=2
 N\tN\tGen=N|Num=P|Cas=4|Neg=A|Var=3
@@ -3234,6 +3243,7 @@ N\tN\tGen=N|Num=P|Cas=4|Neg=N|Var=3
 N\tN\tGen=N|Num=P|Cas=4|Neg=N|Var=6
 N\tN\tGen=N|Num=P|Cas=4|Neg=N|Var=8
 N\tN\tGen=N|Num=P|Cas=5|Neg=A
+N\tN\tGen=N|Num=P|Cas=5|Neg=A|Sem=m
 N\tN\tGen=N|Num=P|Cas=5|Neg=A|Var=1
 N\tN\tGen=N|Num=P|Cas=5|Neg=A|Var=2
 N\tN\tGen=N|Num=P|Cas=5|Neg=A|Var=3
@@ -3246,6 +3256,7 @@ N\tN\tGen=N|Num=P|Cas=5|Neg=N|Var=3
 N\tN\tGen=N|Num=P|Cas=5|Neg=N|Var=6
 N\tN\tGen=N|Num=P|Cas=5|Neg=N|Var=8
 N\tN\tGen=N|Num=P|Cas=6|Neg=A
+N\tN\tGen=N|Num=P|Cas=6|Neg=A|Sem=m
 N\tN\tGen=N|Num=P|Cas=6|Neg=A|Var=1
 N\tN\tGen=N|Num=P|Cas=6|Neg=A|Var=2
 N\tN\tGen=N|Num=P|Cas=6|Neg=A|Var=3
@@ -3259,6 +3270,7 @@ N\tN\tGen=N|Num=P|Cas=6|Neg=N|Var=6
 N\tN\tGen=N|Num=P|Cas=6|Neg=N|Var=8
 N\tN\tGen=N|Num=P|Cas=7|Neg=A
 N\tN\tGen=N|Num=P|Cas=7|Neg=A|Sem=G
+N\tN\tGen=N|Num=P|Cas=7|Neg=A|Sem=m
 N\tN\tGen=N|Num=P|Cas=7|Neg=A|Var=1
 N\tN\tGen=N|Num=P|Cas=7|Neg=A|Var=2
 N\tN\tGen=N|Num=P|Cas=7|Neg=A|Var=3
@@ -3302,6 +3314,7 @@ N\tN\tGen=N|Num=S|Cas=2|Neg=A|Sem=G
 N\tN\tGen=N|Num=S|Cas=2|Neg=A|Sem=K
 N\tN\tGen=N|Num=S|Cas=2|Neg=A|Sem=R
 N\tN\tGen=N|Num=S|Cas=2|Neg=A|Sem=Y
+N\tN\tGen=N|Num=S|Cas=2|Neg=A|Sem=m
 N\tN\tGen=N|Num=S|Cas=2|Neg=A|Var=1
 N\tN\tGen=N|Num=S|Cas=2|Neg=A|Var=2
 N\tN\tGen=N|Num=S|Cas=2|Neg=A|Var=3
@@ -3317,6 +3330,7 @@ N\tN\tGen=N|Num=S|Cas=3|Neg=A
 N\tN\tGen=N|Num=S|Cas=3|Neg=A|Sem=G
 N\tN\tGen=N|Num=S|Cas=3|Neg=A|Sem=K
 N\tN\tGen=N|Num=S|Cas=3|Neg=A|Sem=Y
+N\tN\tGen=N|Num=S|Cas=3|Neg=A|Sem=m
 N\tN\tGen=N|Num=S|Cas=3|Neg=A|Var=1
 N\tN\tGen=N|Num=S|Cas=3|Neg=A|Var=2
 N\tN\tGen=N|Num=S|Cas=3|Neg=A|Var=3
@@ -3344,6 +3358,7 @@ N\tN\tGen=N|Num=S|Cas=4|Neg=N|Var=6
 N\tN\tGen=N|Num=S|Cas=4|Neg=N|Var=8
 N\tN\tGen=N|Num=S|Cas=5|Neg=A
 N\tN\tGen=N|Num=S|Cas=5|Neg=A|Sem=G
+N\tN\tGen=N|Num=S|Cas=5|Neg=A|Sem=m
 N\tN\tGen=N|Num=S|Cas=5|Neg=A|Var=1
 N\tN\tGen=N|Num=S|Cas=5|Neg=A|Var=2
 N\tN\tGen=N|Num=S|Cas=5|Neg=A|Var=6
@@ -3359,6 +3374,7 @@ N\tN\tGen=N|Num=S|Cas=6|Neg=A|Sem=K
 N\tN\tGen=N|Num=S|Cas=6|Neg=A|Sem=R
 N\tN\tGen=N|Num=S|Cas=6|Neg=A|Sem=S
 N\tN\tGen=N|Num=S|Cas=6|Neg=A|Sem=Y
+N\tN\tGen=N|Num=S|Cas=6|Neg=A|Sem=m
 N\tN\tGen=N|Num=S|Cas=6|Neg=A|Var=1
 N\tN\tGen=N|Num=S|Cas=6|Neg=A|Var=1|Sem=G
 N\tN\tGen=N|Num=S|Cas=6|Neg=A|Var=2
@@ -3375,6 +3391,7 @@ N\tN\tGen=N|Num=S|Cas=7|Neg=A
 N\tN\tGen=N|Num=S|Cas=7|Neg=A|Sem=G
 N\tN\tGen=N|Num=S|Cas=7|Neg=A|Sem=K
 N\tN\tGen=N|Num=S|Cas=7|Neg=A|Sem=S
+N\tN\tGen=N|Num=S|Cas=7|Neg=A|Sem=m
 N\tN\tGen=N|Num=S|Cas=7|Neg=A|Var=1
 N\tN\tGen=N|Num=S|Cas=7|Neg=A|Var=2
 N\tN\tGen=N|Num=S|Cas=7|Neg=A|Var=6
@@ -5011,8 +5028,8 @@ end_of_list
 #------------------------------------------------------------------------------
 BEGIN
 {
-    # Store the hash reference in a global variable. 
-    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode); 
+    # Store the hash reference in a global variable.
+    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode);
 }
 
 

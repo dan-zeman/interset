@@ -20,7 +20,7 @@ BEGIN
 {
     @known_features =
     (
-        "pos", "subpos", "prontype", "punctype", "puncside", "synpos", "poss", "reflex", "negativeness", "definiteness",
+        "pos", "subpos", "prontype", "numform", "punctype", "puncside", "synpos", "poss", "reflex", "negativeness", "definiteness",
         "gender", "animateness", "number", "case", "prepcase", "degree",
         "person", "politeness", "possgender", "possnumber",
         "subcat", "verbform", "mood", "tense", "subtense", "voice", "aspect",
@@ -29,11 +29,12 @@ BEGIN
     );
     %known_values =
     (
-        "pos"          => ["noun", "adj", "pron", "num", "verb", "adv", "prep", "conj", "part", "int", "punc"],
-        "subpos"       => ["prop", "class", "pdt", "det", "art", "pers", "clit", "recip", "digit", "roman", "card", "ord", "mult", "frac",
-                           "aux", "mod", "verbconj", "man", "loc", "tim", "deg", "cau", "mod", "ex", "voc", "post", "circ", "preppron", "comprep",
+        "pos"          => ["noun", "adj", "num", "verb", "adv", "prep", "conj", "part", "int", "punc"],
+        "subpos"       => ["prop", "class", "pdt", "det", "art", "pers", "clit", "recip", "card", "ord", "mult", "frac",
+                           "aux", "cop", "mod", "verbconj", "man", "loc", "tim", "deg", "cau", "mod", "ex", "voc", "post", "circ", "preppron", "comprep",
                            "coor", "sub", "comp", "emp", "res", "inf", "vbp"],
         "prontype"     => ["prs", "rcp", "int", "rel", "dem", "neg", "ind", "tot"],
+        "numform"      => ["word", "digit", "roman"],
         "punctype"     => ["peri", "qest", "excl", "quot", "brck", "comm", "colo", "semi", "dash", "symb", "root"],
         "puncside"     => ["ini", "fin"],
         "synpos"       => ["subst", "attr", "adv", "pred"],
@@ -97,7 +98,7 @@ BEGIN
     # features.
     @features =
     (
-        "pos", "abbr", "hyph", "subcat", "verbform", "mood", "prontype", "punctype", "puncside", "subpos", "synpos",
+        "pos", "abbr", "hyph", "subcat", "verbform", "mood", "prontype", "numform", "punctype", "puncside", "subpos", "synpos",
         "poss", "reflex", "degree", "negativeness", "definiteness",
         "person", "tense", "voice", "aspect", "subtense",
         "gender", "animateness", "number", "case", "prepcase",
@@ -179,7 +180,6 @@ BEGIN
             ["noun", "verb"],
             ["verb"        ],
             ["punc"        ],
-            ["pron", "noun"],
             ["adj",  "noun"],
             ["num",  "adj" ],
             ["adv"         ],
@@ -201,13 +201,12 @@ BEGIN
             ["pers"],
             ["clit"],
             ["recip"],
-            ["digit", "card"],
-            ["roman", "digit"],
             ["card", "", "ord"],
             ["ord", "", "card"],
             ["mult", "card"],
             ["frac", "card"],
             ["aux"],
+            ["cop", "aux"],
             ["mod", "aux"],
             ["intr"],
             ["tran"],
@@ -230,6 +229,12 @@ BEGIN
             ["res"],
             ["inf"],
             ["vbp"]
+        ],
+        "numform" =>
+        [
+            ["word"],
+            ["digit", "roman"],
+            ["roman", "digit"]
         ],
         "punctype" =>
         [

@@ -35,7 +35,7 @@ sub decode
     }
     elsif($pos eq "P")
     {
-        $f{pos} = "pron";
+        $f{pos} = "noun";
     }
     elsif($pos eq "M")
     {
@@ -100,12 +100,14 @@ sub decode
         }
         elsif($pos =~ m/[DPR]/)
         {
-            if($subpos eq "F")
+            if($subpos =~ m/[FS]/)
             {
+                $f{prontype} = "prs";
                 $f{definiteness} = "def";
             }
             elsif($subpos eq "I")
             {
+                $f{prontype} = "ind";
                 $f{definiteness} = "ind";
             }
             elsif($subpos =~ m/[HE]/)
@@ -336,13 +338,34 @@ sub encode
     # driver.
     my $f = tagset::common::enforce_permitted_joint($f0, $permitted);
     my %f = %{$f}; # This is not a deep copy but $f already refers to a deep copy of the original %{$f0}.
+    # Map Interset word classes to Swedish Parole word classes (in particular, test pronouns only once - here).
+    my $pos = $f{pos};
+    if($f{prontype} ne "")
+    {
+        if($f{pos} eq "noun")
+        {
+            $pos = "pron";
+        }
+        elsif($f{pos} eq "adj" && $f{poss} eq "poss")
+        {
+            $pos = "pron";
+        }
+        elsif($f{pos} eq "adj")
+        {
+            $pos = "det";
+        }
+    }
+    if($f{pos} eq "adj" && $f{subpos} eq "det")
+    {
+        $pos = "det";
+    }
     my $tag;
     # pos and subpos
     if($f{foreign} eq "foreign")
     {
         $tag = "XF";
     }
-    elsif($f{pos} eq "noun")
+    elsif($pos eq "noun")
     {
         if($f{subpos} eq "prop")
         {
@@ -364,33 +387,11 @@ sub encode
             $tag = "AF0";
         }
     }
-    elsif($f{pos} eq "adj")
+    elsif($pos eq "adj")
     {
-        if($f{subpos} eq "det")
-        {
-            if($f{definiteness} eq "def")
-            {
-                $tag = "DFW";
-            }
-            elsif($f{definiteness} eq "ind")
-            {
-                $tag = "DIW";
-            }
-            elsif($f{prontype} =~ m/^(int|rel)$/)
-            {
-                $tag = "DHW";
-            }
-            else
-            {
-                $tag = "D0W";
-            }
-        }
-        else
-        {
-            $tag = "AQ";
-        }
+        $tag = "AQ";
     }
-    elsif($f{pos} eq "pron" && $f{synpos} eq "attr" && $f{definiteness} eq "def" && $f{poss} ne "poss")
+    elsif($pos eq "det")
     {
         if($f{definiteness} eq "def")
         {
@@ -409,7 +410,7 @@ sub encode
             $tag = "D0W";
         }
     }
-    elsif($f{pos} eq "pron")
+    elsif($pos eq "pron")
     {
         if($f{poss} eq "poss")
         {
@@ -527,7 +528,7 @@ sub encode
         $tag = "XF";
     }
     # degree of comparison
-    if($f{pos} =~ m/^(adj|adv)$/ && $f{verbform} ne "part" && $f{subpos} ne "det")
+    if($pos =~ m/^(adj|adv)$/ && $f{verbform} ne "part" && $f{subpos} ne "det")
     {
         if($f{tagset} eq "sv::hajic" && $f{other} eq "no degree" ||
            $f{abbr} eq "abbr" ||
@@ -548,7 +549,7 @@ sub encode
             $tag .= "P";
         }
     }
-    if($f{pos} =~ m/^(noun|adj|pron|num)$/ || $f{verbform} eq "part")
+    if($pos =~ m/^(noun|adj|pron|det|num)$/ || $f{verbform} eq "part")
     {
         # gender
         if($f{gender} eq "masc")
@@ -582,7 +583,7 @@ sub encode
         }
     }
     # case
-    if($f{pos} =~ m/^(noun|adj|num)$/ && $f{subpos} ne "det" || $f{verbform} eq "part")
+    if($pos =~ m/^(noun|adj|num)$/ && $f{subpos} ne "det" || $f{verbform} eq "part")
     {
         if($f{case} eq "gen")
         {
@@ -598,7 +599,7 @@ sub encode
         }
     }
     # subject / object form
-    if($f{pos} eq "pron" && !($f{synpos} eq "attr" && $f{definiteness} eq "def" && $f{poss} ne "poss"))
+    if($pos eq "pron" && !($f{synpos} eq "attr" && $f{definiteness} eq "def" && $f{poss} ne "poss"))
     {
         if($f{case} eq "acc")
         {
@@ -614,12 +615,12 @@ sub encode
         }
     }
     # add the next dummy "W" char
-    if($f{pos} =~ m/^(noun|pron)$/ || $f{pos} eq "adj" && $f{subpos} eq "det")
+    if($pos =~ m/^(noun|pron)$/ || $f{pos} eq "adj" && $f{subpos} eq "det")
     {
         $tag .= "W";
     }
     # definiteness
-    if($f{pos} =~ m/^(noun|adj|num)$/ && $f{subpos} ne "det" || $f{verbform} eq "part")
+    if($pos =~ m/^(noun|adj|num)$/ && $f{subpos} ne "det" || $f{verbform} eq "part")
     {
         if($f{definiteness} eq "def")
         {
@@ -635,7 +636,7 @@ sub encode
         }
     }
     # verb features
-    if($f{pos} eq "verb" && $f{verbform} ne "part")
+    if($pos eq "verb" && $f{verbform} ne "part")
     {
         # verbform and mood
         if($f{abbr} eq "abbr" || $f{hyph} eq "hyph")
@@ -690,7 +691,7 @@ sub encode
         }
     } # verb features
     # form
-    if($f{pos} =~ m/^(noun|adj|pron|num|verb|adv|prep|conj|part)$/)
+    if($pos =~ m/^(noun|adj|pron|det|num|verb|adv|prep|conj|part)$/)
     {
         if($f{abbr} eq "abbr")
         {

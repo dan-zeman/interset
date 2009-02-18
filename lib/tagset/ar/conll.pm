@@ -44,7 +44,7 @@ sub decode
     # S = pronoun
     elsif($pos eq "S")
     {
-        $f{pos} = "pron";
+        $f{pos} = "noun";
         # SD = demonstrative
         if($subpos eq "SD")
         {
@@ -56,6 +56,11 @@ sub decode
         elsif($subpos eq "SR")
         {
             $f{prontype} = "rel";
+        }
+        # S = personal or possessive
+        else
+        {
+            $f{prontype} = "prs";
         }
     }
     # Q = number
@@ -293,6 +298,21 @@ sub encode
     {
         $tag = "Y\tY";
     }
+    elsif($f{prontype} eq "dem")
+    {
+        # SD = demonstrative pronoun
+        $tag = "S\tSD";
+    }
+    elsif($f{prontype} =~ m/^(int|rel)$/ && $f{pos} ne "part")
+    {
+        # SR = relative pronoun
+        $tag = "S\tSR";
+    }
+    elsif($f{prontype} ne "" && $f{pos} ne "part")
+    {
+        # S = pronoun
+        $tag = "S\tS";
+    }
     elsif($f{pos} eq "noun")
     {
         # N = common noun
@@ -306,27 +326,9 @@ sub encode
             $tag = "N\tN";
         }
     }
-    elsif($f{pos} =~ m/^(adj|det)$/)
+    elsif($f{pos} eq "adj")
     {
         $tag = "A\tA";
-    }
-    elsif($f{pos} eq "pron")
-    {
-        # SD = demonstrative pronoun
-        # SR = relative pronoun
-        # S = other pronoun
-        if($f{prontype} eq "dem" || $f{definiteness} eq "def")
-        {
-            $tag = "S\tSD";
-        }
-        elsif($f{prontype} =~ m/^(int|rel)$/)
-        {
-            $tag = "S\tSR";
-        }
-        else
-        {
-            $tag = "S\tS";
-        }
     }
     elsif($f{pos} eq "num")
     {
@@ -427,7 +429,7 @@ sub encode
         }
     }
     # Non-demonstrative non-relative pronouns and verbs have person.
-    if($f{pos} =~ m/^(pron|verb)$/)
+    if($f{pos} eq "verb" || $f{prontype} eq "prs")
     {
         if($f{person} =~ m/^[123]$/)
         {
@@ -471,7 +473,7 @@ sub encode
     }
     # Definiteness.
     # Do not show explicitly for demonstrative pronouns.
-    if($f{definiteness} eq "def" && $f{pos} ne "pron")
+    if($f{definiteness} eq "def" && $f{prontype} ne "dem")
     {
         if($f{tagset} eq "ar::conll" && $f{other} eq "def=C")
         {

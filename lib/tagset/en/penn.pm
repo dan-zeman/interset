@@ -209,7 +209,8 @@ sub decode
     {
         # personal pronoun
         # examples: I, you, he, she, it, we, they
-        $f{pos} = "pron";
+        $f{pos} = "noun";
+        $f{prontype} = "prs";
         $f{subpos} = "pers";
         $f{synpos} = "subst";
     }
@@ -217,7 +218,8 @@ sub decode
     {
         # possessive pronoun
         # examples: my, your, his, her, its, our, their
-        $f{pos} = "pron";
+        $f{pos} = "adj";
+        $f{prontype} = "prs";
         $f{poss} = "poss";
         $f{synpos} = "attr";
     }
@@ -333,7 +335,7 @@ sub decode
     {
         # wh-pronoun
         # examples: who
-        $f{pos} = "pron";
+        $f{pos} = "noun";
         $f{synpos} = "subst";
         $f{prontype} = "int";
     }
@@ -341,7 +343,7 @@ sub decode
     {
         # possessive wh-pronoun
         # examples: whose
-        $f{pos} = "pron";
+        $f{pos} = "adj";
         $f{poss} = "poss";
         $f{synpos} = "attr";
         $f{prontype} = "int";
@@ -368,6 +370,12 @@ sub encode
     my %f = %{$f}; # this is not a deep copy! We must not modify the contents!
     my $nonstrict = shift; # strict is default
     $strict = !$nonstrict;
+    # Map Interset word classes to Penn word classes (in particular, test pronouns only once - here).
+    my $pos = $f{pos};
+    if($pos =~ m/^(noun|adj)$/ && $f{prontype} ne "")
+    {
+        $pos = "pron";
+    }
     my $tag;
     # foreign words without respect to part of speech
     if($f{foreign} eq "foreign")
@@ -375,7 +383,7 @@ sub encode
         $tag = "FW";
     }
     # noun: NN, NNS, NNP, NNPS
-    elsif($f{pos} eq "noun")
+    elsif($pos eq "noun")
     {
         # special cases first, defaults last
         if($f{subpos} eq "prop")
@@ -402,7 +410,7 @@ sub encode
         }
     }
     # adj:  JJ, JJR, JJS, PDT
-    elsif($f{pos} eq "adj")
+    elsif($pos eq "adj")
     {
         # special cases first, defaults last
         if($f{subpos} eq "pdt")
@@ -412,10 +420,6 @@ sub encode
         elsif($f{subpos} eq "det" && $f{prontype} !~ m/^(int|rel)$/)
         {
             $tag = "DT";
-        }
-        elsif($f{prontype} =~ m/^(int|rel)$/)
-        {
-            $tag = "WDT";
         }
         elsif($f{degree} eq "comp")
         {
@@ -430,8 +434,8 @@ sub encode
             $tag = "JJ";
         }
     }
-    # pron: PRP, PRP$, WP, WP$
-    elsif($f{pos} eq "pron")
+    # pron: PRP, PRP$, WP, WP$, WDT
+    elsif($pos eq "pron")
     {
         # special cases first, defaults last
         if($f{prontype} =~ m/^(rel|int)$/)
@@ -439,6 +443,10 @@ sub encode
             if($f{poss} eq "poss")
             {
                 $tag = "WP\$";
+            }
+            elsif($f{pos} eq "adj")
+            {
+                $tag = "WDT";
             }
             else
             {

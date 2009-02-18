@@ -60,4 +60,17 @@ sub list
 
 
 
+#------------------------------------------------------------------------------
+# Create trie of permitted feature structures. This will be needed for strict
+# encoding. This BEGIN block cannot appear before the definition of the list()
+# function.
+#------------------------------------------------------------------------------
+BEGIN
+{
+    # Store the hash reference in a global variable.
+    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode);
+}
+
+
+
 1;
