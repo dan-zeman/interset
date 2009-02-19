@@ -1,0 +1,249 @@
+====== Brainstorming ======
+
+===== Dělení členů, zájmen, číslovek a příslovcí =====
+
+Zájmena, číslovky a příslovce (a také determiners v sadách, které je rozlišují) mají v některých případech podobné podskupiny, které se ale mohou dělit podle různých kritérií.
+
+==== Druhy zájmen ====
+
+  * osobní (personal)
+  * reciproční (reciprocal) //(aufeinander)//
+  * přivlastňovací (possessive)
+  * ukazovací (demonstrative)
+  * tázací (interrogative)
+  * vztažné (relative)
+  * neurčité (indefinite)
+  * hromadné (collective) //(každý, všechen)//
+  * záporné (negative)
+
+==== Druhy číslovek ====
+
+  * základní (cardinal)
+    * druhová základní substantivní //(čtvero, patero)//
+    * druhová základní atributivní //(dvoje, troje, čtvery, patery)//
+    * základní - jmenovatel zlomku //(polovina, třetina, čtvrtina)//
+  * řadová (ordinal)
+  * druhová vyjadřující různost (generic) //(dvojí, trojí, čtverý, paterý)//
+  * násobná (multiplicative) //(jedenkrát, dvakrát, třikrát)//
+  * řadová adverbiální //(poprvé, podruhé, potřetí)//
+
+Kategorie osobních, recipročních a přivlastňovacích zájmen jsou specifické pro zájmena a mezi číslovkami a příslovci nemají protějšek. Přivlastňovací jsou ovšem zase i přídavná jména. Záporné je kdeco, přídavná jména, slovesa, příslovce a dokonce i podstatná jména (např. //šikovnost// vs. //nešikovnost//).
+
+určitý
+neurčitý
+záporný
+tázací
+vztažný
+hromadný (collective, např. "všechno")
+
+Mnohá slova (ale ne všechna) jsou současně tázací a vztažná. Jinak se ale uvedené vlastnosti většinou nepřekrývají. Zato se překrývají s jinými vlastnostmi, které někdy označujeme jako druhy zájmen:
+
+zvratný
+přivlastňovací
+
+(Osobní i přivlastňovací zájmeno může být zvratné. Přivlastňovací může být nejen přivlastňovací zájmeno, ale také vztažné zájmeno ("jehož") a přídavné jméno.)
+
+Kategorii určitosti a negace asi nemůžeme sloučit, pokud má negace současně sloužit i podstatným jménům, přídavným jménům a slovesům, protože podstatná a přídavná jména mohou být současně určitá i neurčitá. Nanejvýš bychom mohli informaci o záporu zdvojit (byla by u určitosti i ve zvláštní kategorii), ale to je asi blbost.
+
+Kategorii určitosti a vztažnosti už jsem sloučil a zatím to nevadí.
+
+Co s dalšími druhy zájmen?
+
+ukazovací
+reciproční
+
+Zájmena ukazovací (demonstrativa) jsem zatím poznával podle toho, že jsou určitá, ale není to příliš zakuklená informace? Neurčitá být nemohou už z logiky věci, s tím problém nebude.
+
+Pak se ještě objevují zájmena reciproční ("aufeinander") a různá //klitika//, což jsou většinou zkrácené tvary osobních zájmen. (Toto by určitě neměla být samostatná kategorie zájmen, protože pak se při zjišťování, zda je zájmeno osobní, musíme ptát na "clit" a "pers" současně. Možná by stačilo varian="short". A možná by to nestačilo, protože někdy je zájmeno - příklonka (klitikum) přilepené ke slovesu a budeme chtít, aby i toto sloveso mohlo mít nastavenou vlastnost clit="yes": //бориться//, //despiértate//.
+
+==== Druhy příslovcí podle významu ====
+
+U příslovcí by zase stálo za to odlišovat jejich sémantické kategorie. Česká sada značek to sice nakonec nedělá, ale stejně je asi jen otázkou času, než narazím na značky, které to dělají.
+
+místo
+- kde, tady, tam, někde, nikde
+- odkud, odsud, odtamtud, odněkud, odnikud
+- kudy, tudy, tamtudy, někudy, nikudy
+- kam, sem, tam, někam, nikam
+čas
+- kdy, teď, potom, včera..., někdy, nikdy
+- odkdy, odteď
+- dokdy, doteď, dosud
+způsob
+- jak, tak, takhle, nějak, nijak
+příčina
+- proč, proto
+účel
+- nač
+Ještě existují příslovečná určení podmínky a přípustky, ale zatím neznám jazyk, ve kterém by k nim spadaly jednoslovné výrazy.
+
+==== Dělení ukazovacích zájmen podle vzdálenosti ====
+
+Některá ukazovací slova (demonstrativa) se ještě dělí podle toho, zda odkazují na něco, co je blízko, nebo naopak daleko: //tento// vs. //tamten//, //tady// vs. //tam//, //teď// vs. //tehdy//. Některá demonstrativa zůstávají vzdálenostně neutrální (např. //ten//). V některých jazycích (např. ve španělštině) je vzdálenostní dělení i vícestupňové: //aquí// - //ahí// - //allí//.
+
+==== Dělení neurčitých zájmen ====
+
+Neurčitá zájmena a příslovce lze rozdělit podle míry neurčitosti, tj. podle velikosti podmnožiny, do které označovaný objekt může spadat:
+
+  * velikost není známá: někdo, něco
+  * malá podmnožina: málokdo, máloco
+  * velká podmnožina: leckdo, lecos, kdekdo, kdeco
+  * podmnožina vyplňuje celý definiční obor: kdokoli, cokoli
+
+==== Dělení podle syntaktického chování ====
+
+Současně se chovají jako různé slovní druhy:
+
+  * substantivní = jako podstatné jméno = popisuje entitu (//já//, popř. //to//, //kdo//, //někdo//, //nikdo//)
+  * atributivní nebo kvalitativní = jako přídavné jméno = popisuje vlastnost (//můj//, //tento//, //který//, //některý//, //nijaký//, //kolikátý//, //kolikerý//)
+  * kvantitativní = jako přídavné jméno = popisuje množství (//kolik//, //několik//, //nic//)
+  * adverbiální = jako příslovce = popisuje místo, čas, způsob (//kolikrát//, //pokolikáté//, //kde//, //kam//, //odkud//, //kudy//, //kdy//, //odkdy//, //dokdy//, //jak//, //proč//, //proto//)
+
+Pozor, kvantitativní množina se překrývá s adverbiální ve slově //kolikrát//. Slova //kolikátý//, //kolikerý// a //pokolikáté// jsou sice taky číslovky, ale tam už tu kvantitativnost necítím tak silně, aby měla převážit.
+
+==== Tabulka ====
+
+| **druh**  | **substantivní zájmeno** | **atributivní zájmeno** | **kardinální číslovka** | **ordinální číslovka** | **jiná atributivní číslovka** | **jiná substantivní číslovka** | **násobná číslovka** | **řadová adverbiální číslovka** | **příslovce místa** | **příslovce času** | **příslovce způsobu** | **příslovce příčiny** | **další tázací příslovce** |
+| **tázací**    | kdo, co | jaký, který, čí | kolik | kolikátý | kolikerý | kolikero | kolikrát | pokolikáté | kde, odkud, kudy, kam | kdy, odkdy, dokdy | jak | proč | nač, oč |
+| **vztažný**   | jenž, což | jehož, jejíž, jejichž | | | | | | | | | | | |
+| **ukazovací** | to, tohle | ten, tento, tenhle, onen, takový, týž, tentýž, sám | tolik | tolikátý | tolikerý | tolikero | tolikrát | potolikáté | tady, tam, odtud, odsud, odtamtud, tudy, tamtudy, sem | teď, tehdy, odteď, odtehdy, doteď, dosud | tak, takto, takhle, onak | proto | |
+| **neurčitý**  | někdo, něco, kdekdo, kdeco, leckdo, lecco, kdokoli, cokoli, málokdo, máloco | nějaký, některý, něčí, kdejaký, kdekterý, kdečí, lecjaký, leckterý, jakýkoli, kterýkoli, číkoli, málokterý | několik, mnoho, málo | několikátý | několikerý, mnohý | několikero | několikrát, mnohokrát | poněkolikáté | někde, odněkud, někudy, někam, leckde, leckudy, kdekoli, odkudkoli, kamkoli, málokde | někdy, leckdy, kdykoli, málokdy | nějak, kdejak, lecjak, jakkoli | | |
+| **hromadný** | všichni, všechno | každý, všechen | | | veškerý | | | pokaždé | všude, odevšud, všudy | vždy, odjakživa | všelijak | | |
+| **záporný**   | nikdo, nic | nijaký, žádný, ničí | nula | nultý | | | nulakrát | | nikde, odnikud, nikudy, nikam | nikdy | nijak | | |
+
+===== Articles, Determiners and Predeterminers =====
+
+Article je člen, např. //a// nebo //the//. Determiner je širší pojem než člen. Kromě členů zahrnuje i výrazy, které mohou člen nahradit, např. //some//. Neznám rozumný český pojem pro determiner. Buď prostě determinátor, nebo určovač, nebo určovací výraz.
+
+Predeterminer je výraz, který může v angličtině stát ještě před členem, např. //all the men//, //both the girls// nebo //such a mess//.
+
+
+===== Shrnutí =====
+
+Vlastnosti tázací - vztažný - ukazovací - neurčitý - hromadný - záporný mohou mít zájmena, číslovky, příslovce i (pokud jim přiznáme právo na existenci) determinery.
+
+Jsou zájmena, která nemají žádnou tuto vlastnost (osobní, reciproční, přivlastňovací).
+
+Většina číslovek nemá žádnou tuto vlastnost, ale jejich dělení je ortogonální k uvedeným určovacím vlastnostem (např. existují základní tázací, základní neurčité, řadové tázací, řadové neurčité a mnohé jiné číslovky). Rovněž sémantické dělení příslovcí je ortogonální k určovacím vlastnostem.
+
+Určovací výrazy (determiners and predeterminers) se v podstatě kryjí se zájmeny nebo číslovkami, které mají některou určovací vlastnost a jsou syntakticky atributivní. (Příslovcům, která mají tytéž vlastnosti, se determiners neříká, protože determiner se vždy chová jako přídavné jméno.) Zatím se mi zdá jako nejlepší řešení kategorii //Determiners// úplně zrušit a určovací vlastnosti běžně nastavovat u zájmen, číslovek a příslovcí; zájmena dále dělit na substantivní a atributivní; číslovky dělit na substantivní, atributivní a adverbiální (u nich to většinou vyplývá ze subpos, ale ne vždy - např. v češtině //pět pánů// vs. //s pěti pány//). Zájmena dělit po jedné linii na osobní, reciproční, přivlastňovací a determinativní; po druhé linii na substantivní a atributivní. Přivlastňovací budou identifikována zvláštní vlastností, viz níže (pak je ale zbytečné vymezovat kategorii determinativních zájmen?) Další zvláštní vlastnosti budou reflexivita (týká se osobních a přivlastňovacích zájmen), příklonkovitost (týká se osobních zájmen).
+
+Vlastnost definiteness nadále nebude mít hodnotu neg (přestože zápor je výše uveden jako jedna z možností), protože tu lze vyjádřit samostatnou vlastností negativeness. Tyto dvě vlastnosti nemůžeme slít, protože některá přídavná jména mohou být současně záporná i určitá/neurčitá. Vlastnost definiteness také nemůžeme slít se subpos, protože každá subpos číslovky může nabývat různých hodnot definiteness (včetně nedefinované hodnoty).
+
+Zvážit, zda by vlastnost definiteness neměla mít k hodnotě definite ještě nadřazenou hodnotu demonstrative. Asi by to ale přineslo další problém podobný tomu, jak se tázací zájmena míchají se vztažnými. Mimochodem, pokud jde o tázací a vztažná zájmena: víme, že v češtině existují zájmena, která jsou vztažná, ale nejsou tázací //(jenž, jehož)//. Platí to ale i naopak? Existuje vůbec zájmeno, které je tázací a není vztažné? Pokud to tak není, mohla by interrogativnost být jenom podvlastností vztažných zájmen. Existuje! V bulharštině jsou množiny tázacích a vztažných zájmen prakticky oddělené! Vztažná zájmena mají většinou příponu „-to“.
+
+Přivlastňovací musí zůstat samostatnou vlastností (nemůžeme ji slít se subpos), protože
+
+
+
+
+===== Další úvaha o zájmenech a spol. inspirovaná bulharštinou =====
+
+Přístup použitý v BulTreeBanku je inspirující, i když to asi není úplně přesně to, co bych chtěl. Říkat např. tázacím příslovcím zájmena je totiž zavádějící, alespoň z mého českého pohledu. Možná bych ale mohl naopak kategorii zájmen úplně zrušit a rozložit mezi podstatná jména, přídavná jména a příslovce (výchozí by bylo podstatné jméno, to pro případ, že některá sada neumožní zájmena rozčlenit). Ta by pak měla vlastnost "zájmennost", která by rovnou částečně kódovala druh zájmena. Kdyby byla prázdná, znamenalo by to, že nejde o zástupce, ale o opravdové podstatné jméno, přídavné jméno nebo příslovce. Tohle by možná časem umožnilo úplně skoncovat s vlastností synpos, pokud dokážu podobně zaútočit i na číslovky.
+
+Possessiveness is not a separate prontype. It is a property of the superior category (adjective). Classical possessive pronouns have prontype=pers. There are also relative possessive pronouns, interrogative possessive pronouns etc.
+
+Prontype mostly encodes what we previously called definiteness. The definiteness feature would be retained. However, now it would be used only for definite/indefinite articles attached to nouns, adjectives etc. Similarly, lexical negativeness could be separated from prontype, although I am not sure about it. However, if negativeness of negative pronouns is encoded separately, I cannot think of any suitable prontype for these pronouns.
+
+==== pos and subpos ====
+  * noun (personal pronouns, some demonstrative pronouns (alternating with adjectives))
+  * possessive adjective (possessive pronouns)
+  * cardinal number (how many)
+  * ordinal number/adjective
+  * location adverb (where)
+  * time adverb (when)
+  * manner adverb (how)
+  * other adverb (why)
+
+==== (pre)determiners ====
+
+Now de-facto subposes of adjectives. Cannot collide with possessiveness; in fact, possessive pronouns (and possibly adjectives, too) replace determiners, which makes the system of adjectival subposes more coherent. It is not clear whether their definiteness should be shown by the definiteness feature, or the prontype (demonstrative vs. indefinite). Definiteness seems more suitable but the best would be to set both.
+
+  * det ... determiner
+  * pdt ... predeterminer
+
+==== poss ====
+  * Now de-facto subpos of adjectives (normal or referencing).
+
+
+==== reflex ====
+  * Attribute of referencing (pronomial) nouns and adjectives. Means reflexive reference to itself. Does not apply to numerals and adverbs. Czech examples: sebe, se, sobě, si, sebou (personal), svůj (possessive), sám (demonstrative - as in "sám velký šéf", not in "zůstal tam sám").
+
+
+
+
+
+==== definiteness ====
+
+Bulgarian seems to be the reason why we need to separate the lexical definiteness (or demonstrativeness) from the morphological one. Most Bulgarian nouns, adjectives and pronouns allow for suffixes (-at, -ta, -to, -te) that change the default indefinite word forms to definite ones. Even indefinite pronouns (lexical definiteness = indefinite) can distinguish the two states. Thus, we have lexically indefinite morphologically indefinite word forms (нещо, едно), and lexically indefinite morphologically definite word forms (едната, едното, едните, нещата). We also cannot use the morphological indefiniteness to recognize indefinite pronouns. There are morphologically indefinite possessive pronouns (i.e., they can have the definite suffix but they do not have it in these particular cases) мое, твое, свое, негово, нейно, наше, ваше, тяхно... Hence the (morphological) definiteness feature does not remain unset and cannot be used to distinguish possessives from indefinite pronouns. If we take the opposite approach and query the poss feature first, we will not successfully encode the tag "P Pf def=i|ref=p|num=p" of нечии (něčí, someone's). Similarly, indefinite numerals cannot be recognized by the value of definiteness because normal numerals can have this feature set. Example: any numeral expressed using ciphers ("1886", tag "M Mo gen=f|num=s|def=i").
+
+On the other hand, definiteness is not the same as demonstrativeness. Although I currently do not have an example of a demonstrative that is clearly morphologically indefinite, and although most demonstratives are semantically definite, there are demonstratives that describe the referee without necessarily having one particular (definite) in mind. Example: Czech demonstrative pronouns takový (such), týž, tentýž (same as).
+
+Since having two definitenesses creates room for confusion, we ought to set both in decoders of all "normal" tag sets (i.e. in those where lexical definiteness always matches the morphological one).
+
+==== numtype ====
+  * <empty> ... non-numeral adjective or adverb
+  * card ... cardinal numbers (most special of all; resemble adjectives; but might deserve their own pos class)
+    * digit ... arabic numbers, not words (special case of cardinals or ordinals)
+    * roman ... roman numbers, not words (special case of ordinals, very rarely cardinals)
+  * ord ... ordinal numbers (adjectives)
+  * mult ... multiplicative numbers (adverbs: kolikrát, pokolikáté)
+  * gen ... generic cardinals (kolikero) or adjectives (kolikerý)
+  * frac ... fractions (nouns: polovina, čtvrtina, sedmina)
+
+
+
+==== prontype ====
+
+  * <empty> ... not a pronoun but a real noun, adjective etc.
+  * pers ... personal pronoun (only under nouns)
+  * recip ... reciprocal pronoun (einander - same as personal pronouns but used in special cases as objects)
+  * int ... interrogative pronoun for person (who), other noun (what), adjective (which), possessive adjective (whose), adverb (where, when, how, why)
+  * rel ... relative word (English examples same as for interrogatives but in some languages there are relative pronouns that cannot be used interrogatively)
+  * dem ... demonstrative pronoun (this, that) or adverb (here, there, now)
+    * two to three levels of distance, similar to persons 1/2/3 (this/that, aqui/ahi/alli). Na rozdíl od neurčitých zájmen neumíme rozlišit (v češtině) mezi odpovědí na jaký, který a čí. Resp. ještě lze říct, že "takový" je odpověď na "jaký", zatímco "tenhle" je odpověď na "který" a odpověď na čí by musela znít "tohohle", což ale není samostatné přivlastňovací zájmeno, nýbrž pouhý genitiv od "tenhle". Je otázka, zda mám vůbec rozlišovat úrovně vzdálenosti, protože pro časová příslovce bych zase musel rozlišit minulost, přítomnost a budoucnost.
+      * 0: distance neutral (?, to, takový, ten/onen, toho, tolik, ?, ?, ?, ?, tehdy/předtím/teď/potom/pak, odtehdy/odteď, dotehdy/doteď, tak/jinak)
+      * 1: close to me (?, ?, takovýto/takovýhle, tento/tenhle, tohoto/tohohle, ?, tady, odtud/odsud, tudy, sem, ?, ?, ?, takto/takhle)
+      * 2: close to you
+      * 3: close to none of us (?, ?, ?, tamten, tamtoho, ?, tam, tamodtud/tamodsud, tamtudy, tam, ?, ?, ?, ?)
+      * 4: distance neutral, same as something (?, ?, tentýž/totéž/týž/stejný?, ?, ?, tamtéž, ?, ?, ?, ve stejnou dobu, od stejné doby, do stejné doby, taktéž?/taky?/též?/rovněž?)
+  * ind ... indefinite pronoun (somebody, something), selective adjective (některý), quality adjective (nějaký), possessive adjective (něčí), quantity adjective/cardinal number (několik, some), adverb (somewhere, sometimes, somehow)
+    * couple of levels of how many out of the total are included (few, a few, some, several, many)
+      * none:  NEGATIVE PRONOUNS: no quantity (nikdo, nic, nijaký, žádný, ničí, nula, nikde, odnikud, nikudy, nikam, nikdy, ?, ?, nijak)
+      * few:   suggesting small quantity (málokdo, máloco, málojaký, málokterý, máločí, málo, málokde, ?, málokudy, málokam, málokdy, ?, ?, málojak/sotva)
+      * some:  quantitatively neutral (někdo, něco, nějaký, některý, něčí, několik, někde, odněkud, někudy, někam, někdy, odněkdy, doněkdy, nějak)
+      * many:  suggesting large quantity (leckdo, lecco, lecjaký, leckterý, lecčí, hodně/mnoho, leckde, lecodkud, leckudy, leckam, leckdy, ?, ?, lecjak)
+      * any:   any (arbitrary) you pick (not necessarily all at once, although the distinction is fuzzy) (kdokoli, cokoli, jakýkoli, kterýkoli, číkoli, kolik si vzpomenete, kdekoli, odkudkoli, kudykoli, kamkoli, kdykoli, ?, ?, jakkoli)
+      * all:   TOTALITY PRONOUNS: maximal quantity (všichni, všechno, všichni/každý, všichni/každý, všichni/každý, všichni?/oba?, všude, odevšad, všudy, všude, vždy, odevždy/odjakživa, ?, všemi způsoby)
+  * col/tot ... collective/totality pronoun (everybody, everything), adjective (every), numeral (all), adverb (everywhere, every time)
+
+Do toho všeho by šlo zapustit i další druhy číslovek: kolik, kolikátý, kolikerý, kolikero, kolikrát, pokolikáté...
+
+Zásadní otázka, když takhle rozpouštím synpos, je: co s mezními slovesnými tvary? Gerundium by mělo být na prvním místě podstatné jméno a až pak sloveso? (V češtině tomu tak je, v některých jiných jazycích ne.) Příčestí by mělo být na prvním místě přídavné jméno a až pak sloveso? (V češtině tomu tak je z menší části, z větší zůstávají pod slovesy.) Přechodník by měl být na prvním místě příslovce a až pak sloveso? Nebo by pro tyto mezní kategorie měly vzniknout samostatné slovní druhy na nejvyšší úrovni? Problém je, že u většiny z nich lze přímo vystopovat původní slovesné lemma. Takže by to mělo zůstat pod slovesy a správné syntaktické zapojení se parsery naučí pro každý slovesný tvar zvlášť. Synpos je tak jako tak zbytečný, protože jeho hodnota by vždy vyplývala z hodnoty verbformu.
+
+===== Žádné duplicity =====
+
+Žádná informace by neměla být uložena duplicitně na dvou místech. Jinými slovy, hodnota žádného rysu by neměla automaticky vyplývat z hodnoty jiného rysu. Pokud tomu tak bude, hrozí, že decode() nastaví jen jednu z obou vlastností a encode() se pak zeptá na tu druhou.
+
+Příklady:
+
+  * U rysu //definiteness// by se hodila hodnota ''neg'', protože často koresponduje s hodnotami ''def'', ''ind'' a ''int''. Přesto jsme ji tam nedali, protože totéž už se dá zachytit rysem //negativeness//.
+  * Není jisté, zda také hodnota //synpos// u číslovek vždy vyplývá ze //subpos//. Zatím u číslovek rozlišujeme obojí.
+
+===== Zájmena a příslovce míry, resp. neurčité aj. číslovky =====
+
+Portugalština:
+
+        # (Indefinite) quantifier pronoun or adverb.
+        # independent pronouns: algo, tudo, nada
+        # independent relative pronouns: todo_o_que
+        # determiners (pronouns): algum, alguma, alguns, algumas, uns, umas, vários, várias,
+        #    qualquer, pouco, poucos, muitos, mais,
+        #    todo, todo_o, todos, todas, ambos, ambas
+        # adverbs: pouco, menos, muito, mais, mais_de, quase, tanto, mesmo, demais, bastante, suficiente, bem
+        # demonstrative adverbs: t~ao
+        # This is not the class of indefinite pronouns. This class contains pronouns and adverbs of quantity.
+        # The pronouns and adverbs in this class can be indefinite (algo), total (todo), negative (nada), demonstrative (tanto, tao),
+        # interrogative (quanto), relative (todo_o_que). Many are indefinite, but not all.
+
+Tohle celé by mohlo být zachyceno v nějakém rysu numtype (analogie k prontype), kde by bylo card, ord, mult atd. Přijde mi ale trochu divné označovat neurčité číslovky za kardinální čísla. Další možnost je advtype (popř. reftype), kde by bylo vedle loc, tim a man taky qnt (quantity). Problém s pojmenováním rysu tkví v tom, že v češtině máme druhové číslovky kolikerý apod., které moc nepoužíváme, zatímco v portugalštině se číslovka kolik často používá jako determinátor, který se shoduje s počítaným podstatným jménem v rodě a čísle (quantos, quantas). Zatím tedy budu podobná slova odlišovat pomocí subpos = card, ale výhledově vymyslím něco lepšího.

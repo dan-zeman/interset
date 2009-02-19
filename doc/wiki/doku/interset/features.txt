@@ -1,0 +1,341 @@
+====== DZ Interset Features and Values ======
+
+===== pos =====
+
+Part of speech. Pronouns, determiners, predeterminers and articles are roofed by nouns and adjectives, and distinguished by values of other features.
+
+| **Value** | **Description** |	
+| noun | noun |
+| adj | adjective |
+| num | numeral, number	|
+| verb | verb |
+| adv | adverb |
+| prep | preposition, postposition or circumposition (together also: adposition) |
+| conj | conjunction |
+| part | particle |
+| int | interjection |
+| punc | punctuation or symbol |
+
+===== subpos =====
+
+Detailed part of speech.
+
+| **Value** | **Main pos** | **Description** |
+| prop | noun | proper noun ("George", "Bush", "Paris") |
+| class | noun | classifier (measure word) between number and counted noun, e.g. Chinese "個 gè" |
+| pdt | adj | predeterminer (adjectival word that can stand before an article, such as "all" in "all the flowers") |
+| det | adj | determiner (function word modifying a noun phrase: English "this", "that"); regarded indefinite/demonstrative pronoun in some tagsets; includes articles (see below) in some tagsets |
+| art | adj | article, i.e. determiner bearing only the feature of definiteness or indefinitess and nothing more (English "a", "an", "the", German "der", "die", "das", Portuguese "um", "uma", "o", "a", "os", "as") |
+| pers | pron | personal pronoun |
+| clit | pron | clitic personal pronoun (Czech "mě", "ti", "mu", "se", "si"…) |
+| recip | pron | reciprocal pronoun (Danish "hinanden") |
+| card | num | cardinal number |
+| ord | num | ordinal number |
+| mult | num | multiplier number ("five times") |
+| frac | num | fraction ("one fifth") |
+| aux | verb, part | auxiliary verb used to construct complex verb forms (Czech "být", English "have", "will") |
+| cop | verb | copula verb (Czech "být") |
+| mod | verb | modal verb (German "dürfen", "können", "mögen", "müssen", "sollen", "wollen", "wissen"; Czech "muset", "mít", "moci", "smět", "umět", "chtít"; English "must", "can", "shall"); note that adverbs and particles have their own ''mod'' subpos |
+| verbconj | verb | finite verb with the enclitic "-ť" (Czech "neboť" = "because") |
+| man | adv | adverb of manner |
+| loc | adv | adverb of location |
+| tim | adv | adverb of time |
+| deg | adv | adverb of quantity or degree |
+| cau | adv | adverb of cause ("why") |
+| mod | adv, part | modal particle (Bulgarian "май" = "possibly", "нека" = "let"; Czech "ať", "kéž", "nechť") or adverb of modal nature (Bulgarian "апропо"); note that verbs have their own ''mod'' subpos |
+| ex | adv | existential "there" in English |
+| voc | prep | vocalized preposition (Czech "ve" as opposed to base form "v") |
+| post | prep | postposition (German "entlang" in "der Strasse entlang") |
+| circ | prep | circumposition (German "von ... an" in "von dieser Stelle an") |
+| preppron | prep | preposition and pronoun in one word (Czech "proň" = "pro něj", "nač" = "na co") |
+| comprep | prep | first part of compound preposition (Czech "nehledě na", "vzhledem k") |
+| coor | conj | coordinating conjunction |
+| sub | conj | subordinating conjunction |
+| comp | conj | comparing conjunction (German "wie", "als") |
+| emp | part | particle of emphasis (Bulgarian "даже" = "even") |
+| res | part | particle of response ("yes", "no") |
+| inf | part | infinitive marker (English "to", German "zu", Danish "at", Swedish "att"). Sometimes tagged as particle, sometimes as conjunction, sometimes has its own part of speech. |
+| vbp | part | separated verb prefix (German "vor" in "stellen Sie sich vor"); analogical verbal particles in English? |
+
+===== prontype =====
+
+This is a new (September 2007) feature applied first to the Bulgarian CoNLL tag set. It takes over the pronoun classification that has been so far kept in the definiteness feature. See the [[brainstorming]] section for further details on lexical and morphological definiteness.
+
+Although it reads as "pronoun type" (and we use the word "pronoun" for simplicity), it is also applied to words that are usually not considered pronouns, such as interrogative/indefinite adverbs (where, there, when, then, how, why).
+
+| **Value** | **Description** |
+| | Empty value means that this is not a pronoun but a real noun, adjective, adverb etc. This will be more useful once we completely remove the pronoun part of speech, distribute the pronouns to other syntactically similar parts of speech and set their prontype. |
+| prs | Personal or possessive pronoun. Possessives are recognizable by the value of their poss feature. |
+| rcp | Reciprocal pronoun (German "einander", Danish "hinanden"). Similar to personal pronouns but occurs as special case in object position. |
+| int | Interrogative pronoun ("who", "what", "which"). |
+| rel | Relative pronoun. Many interrogative pronouns in many languages can also be used as relative pronouns. However, in some languages there are pronouns that fall in one of the categories but not both (Czech "jenž" is only relative; in Bulgarian, relatives are completely separated from interrogatives). For words that can be both interrogative and relative, "int" is the default value. |
+| dem | Demonstrative pronoun ("this", "that"). Being a demonstrative pronoun is not the same as being definite (definiteness=def), although the two feature-values are similar. |
+| neg | Negative pronoun ("nobody, nothing, none"). This is not the same as the negativeness feature. Unlike e.g. negative and positive adjectives or verbs, negative pronouns are not complements of some "positive" pronouns. Instead, they usually correspond to zero, nothing. |
+| ind | Indefinite pronoun ("somebody", "something", "anybody", "anything"). Being an indefinite pronoun is not the same as being morphologically indefinite (definiteness=ind). For instance, in Bulgarian there are morphologically definite lexically indefinite pronouns ("едната", "едното", "едните", "нещата"). In some languages, we could subclassify the indefinite pronouns into "few" ("málokdo"), "ind" ("někdo"), "mny" ("leckdo"), "any" ("kdokoli" - anybody you pick but you pick only one, not all at once; this is the difference from the totality pronouns) |
+| tot | Totality pronoun ("everybody", "everything") |
+
+===== numform =====
+
+Is a number expressed by a word or by digits? Depending on tokenization and tagging scheme, this feature may be orthogonal to the distinction between cardinals and ordinals.
+
+| **Value** | **Description** |
+| word | numeral word ("fourteen") |
+| digit | number written using digits ("14") |
+| roman | number written using Roman numerals ("XIV") |
+
+===== punctype =====
+
+Punctuation type.
+
+| **Value** | **Description** |
+| peri | period at the end of sentence; in Penn tagset, includes question and exclamation |
+| qest | question mark |
+| excl | exclamation mark |
+| quot | quotation marks |
+| brck | bracket |
+| comm | comma |
+| colo | colon; in Penn tagset, ":" is in fact tag for generic other punctuation |
+| semi | semicolon |
+| dash | dash |
+| symb | symbol |
+| root | artificial sentence root node, beginning of sentence |
+
+===== puncside =====
+
+Distinguishes between initial and final form of pairwise punctuation (brackets, quotation marks). Note that "initial" and "final" are better terms than "left" and "right". The latter would be confusing in languages writing from right to left, like Arabic.
+
+| **Value** | **Description** |
+| ini | initial (left bracket in English texts) |
+| fin | final (right bracket in English texts) |
+
+===== synpos =====
+
+Does the pronoun or numeral behave syntactically as a noun, adjective, or adverb?
+
+| **Value** | **Description** |
+| subst | substantive (like a noun) |
+| attr | attributive (like an adjective) |
+| adv | adverbial (like an adverb) |
+| pred | predicative adjective |
+
+===== poss =====
+
+Is this a possessive adjective or pronoun?
+
+| **Value** | **Description** |
+| poss | possessive |
+
+===== reflex =====
+
+Is this a reflexive pronoun?
+
+| **Value** | **Description** |
+| reflex | reflexive |
+
+===== negativeness =====
+
+Distinguishes also negative pronouns like "nothing."
+
+| **Value** | **Description** |
+| pos | positive, affirmative |
+| neg | negative |
+
+===== definiteness =====
+
+See also the ''prontype'' feature.
+
+| **Value** | **Description** |
+| ind | indefinite |
+| def | definite |
+| red | reduced: used in [[http://en.wikipedia.org/wiki/Status_constructus|construct state]] in Arabic. If two nouns are in genitive relation, the first one has "reduced definiteness," the second is the genitive. |
+
+===== foreign =====
+
+| **Value** | **Description** |
+| foreign | foreign word (not a loan word but a citation in a foreign language — e.g., the title of a foreign book) |
+
+===== gender, possgender =====
+
+Possgender is possessor's gender.
+
+| **Value** | **Description** |
+| masc | masculine |
+| fem | feminine |
+| com | common, utrum |
+| neut | neuter |
+
+===== animateness =====
+
+| **Value** | **Description** |
+| anim | animate |
+| inan | inanimate |
+
+===== number, possnumber =====
+
+Possnumber is possessor's number.
+
+| **Value** | **Description** |
+| sing | singular |
+| dual | dual |
+| plu | plural |
+
+===== case =====
+
+| **Value** | **Description** |
+| nom | nominative |
+| gen | genitive |
+| dat | dative |
+| acc | accusative or oblique |
+| voc | vocative |
+| loc | locative |
+| ins | instrumental |
+
+===== prepcase =====
+
+Personal pronouns in some languages have different forms depending on whether they are objects of prepositions or not. For instance, Czech "on" (he) without prepositions has the forms jemu/DAT, jeho/ACC, jím/INS, while with a preposition it is němu/DAT, něho/ACC, ním/INS. Similarly, Portuguese pronouns in prepositional oblique case take forms different from oblique pronouns serving as direct objects of verbs: eu/NOM (I), me/ACC (give me that), mim/PREP-ACC (come to me).
+
+Default empty value means that the word form is neutral w.r.t. a prepositional head.
+
+| **Value** | **Description** |
+| npr | this form must not be used after a preposition (Czech "jemu") |
+| pre | this form must be used after a preposition (Czech "němu") |
+
+===== degree =====
+
+Degree of comparison.
+
+| **Value** | **Description** |
+| pos | positive, first degree (note that although this degree is traditionally called "positive", negative properties can be compared, too) |
+| comp | comparative, second degree |
+| sup | superlative, third degree |
+| abs | absolute superlative |
+
+===== person =====
+
+| **Value** | **Description** |
+| 1 | first (I, we) |
+| 2 | second (you) |
+| 3 | third (he, she, it, they) |
+
+===== politeness =====
+
+| **Value** | **Description** |
+| inf | informal (Czech "ty/vy", German "du/ihr", Spanish "tú/vosotros") |
+| pol | polite (Czech "vy", German "Sie", Spanish "usted") |
+
+===== subcat =====
+
+There are tag sets (e.g. Bulgarian CoNLL) that classify verbs as intransitive or transitive. It turns out that a Bulgarian verb can have set both features type=aux && trans=t. That is why we cannot mix transitivity and auxiliarity in subpos.
+
+| **Value** | **Description** |
+| intr | intransitive verb |
+| tran | transitive verb |
+
+===== verbform =====
+
+| **Value** | **Description** |
+| fin | finite |
+| inf | infinitive |
+| sup | supine (with motion verbs: "go do something"; infinitive used in languages where there is no supine) |
+| part | participle (present ("doing"), past ("done"), passive (Czech "udělán" distinguished from adjective "udělaný" by variant=short)), gerundive |
+| trans | transgressive, adverbial participle (modifies other verbs, behaves like adverb; Czech present "dělaje", past "udělav") |
+| ger | [[http://en.wikipedia.org/wiki/Gerund|gerund]] ([[http://en.wikipedia.org/wiki/Verbal_noun|verbal noun]]) |
+
+
+===== mood =====
+
+| **Value** | **Description** |
+| ind | indicative |
+| imp | imperative |
+| cnd | conditional |
+| sub | subjunctive (conjunctive) (spojovací) |
+| jus | jussive (přací) |
+
+===== tense =====
+
+| **Value** | **Description** |
+| past | past |
+| pres | present |
+| fut | future |
+
+
+===== subtense =====
+
+Finer classification of tenses, may not be available in all languages. (And in many languages, these tenses are built using auxiliaries, rather than special morphemes.) Having these separated from the main past-present-future distinction allows that drivers need not check for aorist/imperfect, if they know just one past tense.
+
+Note that, unfortunately, imperfect tense is not always the same as past tense + imperfective aspect. For instance, in Bulgarian, there is lexical aspect, inherent in verb meaning, and grammatical aspect, which does not necessarily always match the lexical one. In main clauses, imperfective verbs can have imperfect tense and perfective verbs have perfect tense. However, both rules can be violated in embedded clauses. Aorist is aspect-neutral and can freely appear with both imperfective and perfective verbs.
+
+| **Value** | **Description** |
+| aor | aorist |
+| imp | imperfect |
+| pqp | pluperfect |
+
+===== aspect =====
+
+| **Value** | **Description** |
+| imp | imperfect |
+| perf | perfect |
+
+===== voice =====
+
+| **Value** | **Description** |
+| act | active |
+| pass | passive |
+
+===== abbr =====
+
+Is this an abbreviation?
+
+| **Value** | **Description** |
+| abbr | abbreviation |
+
+===== hyph =====
+
+Is this a part of a hyphenated compound?
+
+| **Value** | **Description** |
+| hyph | hyphenated prefix ("anglo-" in "anglo-saxon") |
+
+
+
+===== style =====
+
+| **Value** | **Description** |
+| arch | archaic, obsolete, rare |
+| form | formal, literary |
+| norm | normal, neutral |
+| coll | colloquial |
+
+===== typo =====
+
+Indicates bad spelling, grammatical error etc. Does not say how the correct form looks like. Must be separated from the ''style'' feature because there can be typo in archaic as well as colloquial form.
+
+| **Value** | **Description** |
+| typo | typo, bad spelling, error |
+
+===== variant =====
+
+Allows for distinguishing between word forms that otherwise would share values of all features.
+
+| **Value** | **Description** |
+| short | short form |
+| long  | long form  |
+| 0 | variant form 0 |
+| 1 | variant form 1 |
+| 2 | variant form 2 |
+| 3 | variant form 3 |
+| 4 | variant form 4 |
+| 5 | variant form 5 |
+| 6 | variant form 6 |
+| 7 | variant form 7 |
+| 8 | variant form 8 |
+| 9 | variant form 9 |
+
+===== tagset, other =====
+
+The tagset feature identifies the source tag set driver. Value should be identical to the name of the driver that filled the feature values. (The recommended format is same as in the ''use'' statement, without the ''tagset::'' prefix, e.g. ''"de::stts"''. Works together with the "other" feature.	
+
+Feature "other"	
+Any value or reference to array or hash is allowed. Serves to preserve information if the decoding driver happens to be the one who did the encoding. No other driver should expect anything meaningful here.	
+Only information that cannot be stored in other features should be stored here.	
+The apparently easiest approach — to store the complete original tag — will not work if the user needs to change feature values between decode() and encode().

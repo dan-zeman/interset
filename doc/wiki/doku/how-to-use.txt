@@ -1,0 +1,101 @@
+===== Manual =====
+
+==== Installation ====
+
+If you exist on the ÚFAL network, you can use directly Dan's version here. Otherwise, you need to [[mailto:zeman@ufal.mff.cuni.cz|ask Dan]] for a zipped package of the currently existing drivers. (I intend to maintain it here for download some time later.) Unzip it to a convenient place; below, we assume it is in ''/home/zeman/interset''.
+
+**Contributions welcome!** If you write your own driver, please share it with others! If you send it to me, I will add it to the package for download here.
+
+=== Existing drivers ===
+
+Note: This list may not be up-to-date. To see what drivers are currently available on your system, call ''driver-test.pl'' without arguments.
+
+  - tagset::ar::conll - Arabic CoNLL treebank (coarse, fine and feat fields in one string, delimited by tabs)
+  - tagset::bg::conll - Bulgarian CoNLL treebank
+  - tagset::cs::conll - Czech CoNLL treebank, based on the Prague Dependency Treebank
+  - tagset::cs::multext - Czech subset of the tagset from the Multext East project
+  - tagset::cs::pdt - Czech positional tags of the Prague Dependency Treebank
+  - tagset::da::conll - Danish CoNLL treebank
+  - tagset::de::conll - German CoNLL treebank (one-to-one mapping to de::stts)
+  - tagset::de::stts - German: Stuttgart-Tübingen Tagset (Tiger treebank)
+  - tagset::en::conll - English CoNLL treebank (one-to-one mapping to en::penn)
+  - tagset::en::penn - English Penn Treebank
+  - tagset::pt::conll - Portuguese CoNLL treebank (based on the Floresta treebank)
+  - tagset::sv::conll - Swedish CoNLL treebank (one-to-one mapping to sv::mamba)
+  - tagset::sv::hajic - Tags output by Swedish tagger by Jan Hajič
+  - tagset::sv::mamba - Swedish Mamba tags from Talbanken05 (CoNLL treebank)
+  - tagset::sv::svdahybrid - Dan's tagset, aiming at making distribution of tags from sv::hajic and da::conll as close as possible
+  - tagset::zh::conll - Chinese CoNLL treebank
+
+=== Directory Structure ===
+
+The drivers are Perl modules and must be somewhere under ''$PERLLIB'' (''@INC''). Their root folder is ''tagset'' (this is what separates the tag set drivers from other Perl libraries). Subfolders of ''tagset'' are two-letter codes of languages ([[http://en.wikipedia.org/wiki/ISO_639-1|ISO 639-1]]). Some tagsets may be designed for more than one language but most are language-specific. PM files in language folders are drivers. Drivers are called xxx.pm, where xxx is the code name of the tagset. The driver xxx.pm for language ll should be accessible from Perl via
+
+<code perl>
+use tagset::ll::xxx;
+</code>
+
+Besides drivers, there is a library of useful functions that can be called from within drivers: ''tagset/common.pm''.
+
+There is also the driver testing script, ''bin/driver-test.pl''. The distribution may contain some sample conversion scripts as well; however, these depend much more on the file format than on the tagset drivers, and thus you'll probably need to write your own anyway.
+
+
+
+
+
+
+==== How to use the Interset ====
+
+You can write your own tag conversion Perl script, and use the Interset driver library. You have to tell Perl where to find the drivers (the following commands work in ''csh''; you have to use different syntax under ''bash'' or in Windows command line):
+
+<code>setenv PERLLIB /home/zeman/projekty/interset/lib:$PERLLIB
+setenv PATH /home/zeman/projekty/interset/bin:$PATH</code>
+
+Once the variable is set, writing a conversion script is very easy. For instance, my ''csts-cs-pdt-en-penn.pl'' script (meaning "read and write [[:Formát CSTS|CSTS format]], read Czech PDT tags, write English Penn tags) essentially looks like this:
+
+<code perl>
+use tagset::cs::pdt;
+use tagset::en::penn;
+
+while(<>)
+{
+    if(s/<t>([^<]+)/<_tag_to_convert_>/)
+    {
+        my $tag0 = $1;
+        my $features = tagset::cs::pdt::decode($tag0);
+        my $tag1 = tagset::en::penn::encode($features);
+        s/<_tag_to_convert_>/<t>$tag1/;
+    }
+    print;
+}
+</code>
+
+Note the two-step replacement of the original tag. I do not dare to use the original tag in a regular expression because there could be special characters in the tag.
+
+Some operations performed by the drivers (especially when encoding) are not trivial. While you may not observe long processing times for toy runs, it might matter once you start converting millions of tags in a big corpus. Then you may want to use up the fact that there are tens to thousands of tags, and cache their translations like in the following example:
+
+<code perl>
+use tagset::cs::pdt;
+use tagset::en::penn;
+
+while(<>)
+{
+    if(s/<t>([^<]+)/<_tag_to_convert_>/)
+    {
+        my $tag0 = $1;
+        my $tag1;
+        if(exists($cache{$tag0}))
+        {
+            $tag1 = $cache{$tag0};
+        }
+        else
+        {
+            my $features = tagset::cs::pdt::decode($tag0);
+            $tag1 = tagset::en::penn::encode($features);
+            $cache{$tag0} = $tag1;
+        }
+        s/<_tag_to_convert_>/<t>$tag1/;
+    }
+    print;
+}
+</code>
