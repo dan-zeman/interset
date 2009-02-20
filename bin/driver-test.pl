@@ -37,7 +37,7 @@ GetOptions('a' => \$all, 'A' => \$all_conversions, 'debug' => \$debug);
 # Get the list of all drivers if needed.
 if($all || $all_conversions)
 {
-    $drivers = find_drivers();
+    $drivers = tagset::common::find_drivers();
     $conversions = $all_conversions;
 }
 else
@@ -49,7 +49,7 @@ else
 if(scalar(@{$drivers})==0)
 {
     usage();
-    my $drivers = find_drivers();
+    my $drivers = tagset::common::find_drivers();
     if(scalar(@{$drivers}))
     {
         print STDERR ("\nThe following tagset drivers are available on this system:\n");
@@ -83,49 +83,6 @@ else
         }
     }
     print("Total duration ", duration($starttime), ".\n");
-}
-
-
-
-#------------------------------------------------------------------------------
-# Tries to enumerate existing tagset drivers. Searches for the "tagset" folder
-# in @INC paths. Once found, it searches its subfolders and lists all modules.
-#------------------------------------------------------------------------------
-sub find_drivers
-{
-    my @drivers;
-    foreach my $path (@INC)
-    {
-        my $tpath = "$path/tagset";
-        if(-d $tpath)
-        {
-            opendir(DIR, $tpath) or die("Cannot read folder $tpath: $!\n");
-            my @subdirs = readdir(DIR);
-            closedir(DIR);
-            foreach my $sd (@subdirs)
-            {
-                my $sdpath = "$tpath/$sd";
-                if(-d $sdpath && $sd !~ m/^\.\.?$/)
-                {
-                    opendir(DIR, $sdpath) or die("Cannot read folder $sdpath: $!\n");
-                    my @files = readdir(DIR);
-                    closedir(DIR);
-                    foreach my $file (@files)
-                    {
-                        my $fpath = "$sdpath/$file";
-                        my $driver = $file;
-                        if(-f $fpath && $driver =~ s/\.pm$//)
-                        {
-                            $driver = $sd."::".$driver;
-                            push(@drivers, $driver);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    @drivers = sort(@drivers);
-    return \@drivers;
 }
 
 
