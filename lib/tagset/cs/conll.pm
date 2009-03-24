@@ -24,43 +24,8 @@ binmode(STDERR, ":utf8");
 sub decode
 {
     my $tag = shift;
-    # three components: coarse-grained pos, fine-grained pos, features
-    # example: N\tNC\tgender=neuter|number=sing|case=unmarked|def=indef
-    my ($pos, $subpos, $features) = split(/\s+/, $tag);
-    # The CoNLL tagset is derived from the PDT tagset.
-    # Coarse-grained POS is the first character of the PDT tag.
-    # Fine-grained POS is the second character of the PDT tag.
-    # Features are the rest: Gen Num Cas PGe PNu Per Ten Gra Neg Voi Rs1 Rs2 Var
-    # The Sem feature comes from PDT lemma, not tag.
-    my $pdttag;
     my %features_conll;
-    if($features eq "_")
-    {
-        $pdttag = $pos.$subpos."-------------";
-    }
-    else
-    {
-        $pdttag = $pos.$subpos;
-        my @features_conll = split(/\|/, $features);
-        foreach my $f (@features_conll)
-        {
-            if($f =~ m/^(\w+)=(.)$/)
-            {
-                $features_conll{$1} = $2;
-            }
-        }
-        foreach my $name qw(Gen Num Cas PGe PNu Per Ten Gra Neg Voi Rs1 Rs2 Var)
-        {
-            if($features_conll{$name} ne "")
-            {
-                $pdttag .= $features_conll{$name};
-            }
-            else
-            {
-                $pdttag .= "-";
-            }
-        }
-    }
+    my $pdttag = conll_to_pdt($tag, \%features_conll);
     my $fs = tagset::cs::pdt::decode($pdttag);
     # The Sem feature cannot be encoded in PDT tags (instead, it is encoded in lemma suffixes in PDT).
     if($features_conll{Sem} ne "")
@@ -106,7 +71,79 @@ sub encode
     # Fine-grained POS is the second character of the PDT tag.
     # Features are the rest: Gen Num Cas PGe PNu Per Ten Gra Neg Voi Rs1 Rs2 Var
     # The Sem feature comes from PDT lemma, not tag.
-    my $tag = tagset::cs::pdt::encode($fs);
+    my $pdttag = tagset::cs::pdt::encode($fs);
+    my $tag = pdt_to_conll($pdttag);
+    if($sem ne '')
+    {
+        unless($tag =~ s/\t_$/\tSem=$sem/)
+        {
+            $tag .= "|Sem=$sem";
+        }
+    }
+    return $tag;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Converts a CoNLL 2006 Czech tag (without the Sem feature) into the PDT format.
+#------------------------------------------------------------------------------
+sub conll_to_pdt
+{
+    my $tag = shift;
+    my $features_conll = shift; # output parameter: hash reference
+    my %storage;
+    if(ref($features_conll) ne 'HASH')
+    {
+        $features_conll = \%storage;
+    }
+    # three components: coarse-grained pos, fine-grained pos, features
+    # example: N\tNC\tgender=neuter|number=sing|case=unmarked|def=indef
+    my ($pos, $subpos, $features) = split(/\s+/, $tag);
+    # The CoNLL tagset is derived from the PDT tagset.
+    # Coarse-grained POS is the first character of the PDT tag.
+    # Fine-grained POS is the second character of the PDT tag.
+    # Features are the rest: Gen Num Cas PGe PNu Per Ten Gra Neg Voi Rs1 Rs2 Var
+    # The Sem feature comes from PDT lemma, not tag.
+    my $pdttag;
+    if($features eq "_")
+    {
+        $pdttag = $pos.$subpos."-------------";
+    }
+    else
+    {
+        $pdttag = $pos.$subpos;
+        my @features_conll = split(/\|/, $features);
+        foreach my $f (@features_conll)
+        {
+            if($f =~ m/^(\w+)=(.)$/)
+            {
+                $features_conll->{$1} = $2;
+            }
+        }
+        foreach my $name qw(Gen Num Cas PGe PNu Per Ten Gra Neg Voi Rs1 Rs2 Var)
+        {
+            if($features_conll->{$name} ne "")
+            {
+                $pdttag .= $features_conll->{$name};
+            }
+            else
+            {
+                $pdttag .= "-";
+            }
+        }
+    }
+    return $pdttag;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Converts a PDT tag into the CoNLL 2006 format.
+#------------------------------------------------------------------------------
+sub pdt_to_conll
+{
+    my $tag = shift;
     $tag =~ s/^(.)(.)//;
     my ($pos, $subpos) = ($1, $2);
     my @features_conll;
@@ -117,10 +154,6 @@ sub encode
         {
             push(@features_conll, "$name=$1");
         }
-    }
-    if($sem ne "")
-    {
-        push(@features_conll, "Sem=$sem");
     }
     my $features = (@features_conll) ? join("|", @features_conll) : "_";
     $tag = "$pos\t$subpos\t$features";
@@ -165,6 +198,7 @@ A\tA\tGen=F|Num=D|Cas=7|Gra=3|Neg=N|Var=6
 A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=A
 A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=G
 A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=K
+A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=U
 A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=A|Var=6
 A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=N
 A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=N|Var=6
@@ -877,6 +911,7 @@ A\tA\tGen=N|Num=S|Cas=1|Gra=3|Neg=N|Var=6
 A\tA\tGen=N|Num=S|Cas=2|Gra=1|Neg=A
 A\tA\tGen=N|Num=S|Cas=2|Gra=1|Neg=A|Sem=G
 A\tA\tGen=N|Num=S|Cas=2|Gra=1|Neg=A|Sem=S
+A\tA\tGen=N|Num=S|Cas=2|Gra=1|Neg=A|Sem=o
 A\tA\tGen=N|Num=S|Cas=2|Gra=1|Neg=A|Var=6
 A\tA\tGen=N|Num=S|Cas=2|Gra=1|Neg=N
 A\tA\tGen=N|Num=S|Cas=2|Gra=1|Neg=N|Var=6
@@ -968,6 +1003,7 @@ A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=R
 A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=S
 A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=Y
 A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=m
+A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=w
 A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=1
 A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=8
 A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=8|Sem=G
@@ -1613,6 +1649,7 @@ A\tU\tGen=I|Num=P|Cas=5|PGe=M|Var=6
 A\tU\tGen=I|Num=P|Cas=6|PGe=F
 A\tU\tGen=I|Num=P|Cas=6|PGe=F|Var=6
 A\tU\tGen=I|Num=P|Cas=6|PGe=M
+A\tU\tGen=I|Num=P|Cas=6|PGe=M|Sem=G
 A\tU\tGen=I|Num=P|Cas=6|PGe=M|Sem=S
 A\tU\tGen=I|Num=P|Cas=6|PGe=M|Sem=Y
 A\tU\tGen=I|Num=P|Cas=6|PGe=M|Var=6
@@ -1840,7 +1877,37 @@ A\tU\tGen=N|Num=S|Cas=7|PGe=M|Sem=Y
 A\tU\tGen=N|Num=S|Cas=7|PGe=M|Var=6
 A\tU\tGen=X|Num=X|Cas=X|PGe=F|Var=8
 A\tU\tGen=X|Num=X|Cas=X|PGe=M
+A\tU\tGen=X|Num=X|Cas=X|PGe=M|Var=6
 A\tU\tGen=X|Num=X|Cas=X|PGe=M|Var=8
+A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=o
+A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=R
+A\tA\tGen=F|Num=P|Cas=2|Gra=1|Neg=A|Sem=G
+A\tA\tGen=F|Num=P|Cas=6|Gra=1|Neg=A|Sem=o
+A\tA\tGen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=L
+A\tA\tGen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=o
+A\tA\tGen=F|Num=S|Cas=2|Gra=1|Neg=A|Sem=o
+A\tA\tGen=F|Num=S|Cas=4|Gra=1|Neg=A|Sem=o
+A\tA\tGen=F|Num=S|Cas=4|Gra=1|Neg=A|Sem=S
+A\tA\tGen=F|Num=S|Cas=6|Gra=1|Neg=A|Sem=o
+A\tA\tGen=I|Num=P|Cas=1|Gra=1|Neg=A|Sem=R
+A\tA\tGen=I|Num=P|Cas=6|Gra=1|Neg=A|Sem=R
+A\tA\tGen=I|Num=P|Cas=7|Gra=1|Neg=A|Sem=o
+A\tA\tGen=I|Num=S|Cas=1|Gra=1|Neg=A|Sem=H
+A\tA\tGen=I|Num=S|Cas=1|Gra=1|Neg=A|Sem=o
+A\tA\tGen=I|Num=S|Cas=2|Gra=1|Neg=A|Sem=H
+A\tA\tGen=I|Num=S|Cas=2|Gra=1|Neg=A|Sem=o
+A\tA\tGen=I|Num=S|Cas=6|Gra=1|Neg=A|Sem=o
+A\tA\tGen=I|Num=S|Cas=7|Gra=1|Neg=A|Sem=H
+A\tA\tGen=I|Num=S|Cas=7|Gra=1|Neg=A|Sem=o
+A\tA\tGen=M|Num=S|Cas=1|Gra=1|Neg=A|Sem=U
+A\tA\tGen=N|Num=P|Cas=3|Gra=1|Neg=A|Sem=o
+A\tU\tGen=I|Num=P|Cas=3|PGe=M|Sem=Y
+A\tU\tGen=I|Num=S|Cas=1|PGe=M|Sem=E
+A\tU\tGen=M|Num=S|Cas=4|PGe=F|Sem=Y
+A\tU\tGen=N|Num=S|Cas=1|PGe=M|Sem=E
+A\tU\tGen=N|Num=S|Cas=4|PGe=M|Sem=E
+A\tU\tGen=X|Num=X|Cas=X|PGe=M|Sem=S
+A\tU\tGen=X|Num=X|Cas=X|PGe=M|Var=6|Sem=S
 C\t3\t_
 C\t=\t_
 C\t?\tCas=1
@@ -1858,6 +1925,7 @@ C\ta\tCas=5
 C\ta\tCas=6
 C\ta\tCas=7
 C\ta\tCas=X
+C\ta\tCas=X|Var=8
 C\td\tGen=F|Num=D|Cas=7
 C\td\tGen=F|Num=D|Cas=7|Var=6
 C\td\tGen=F|Num=P|Cas=1
@@ -2092,6 +2160,7 @@ C\tn\tNum=P|Cas=6|Var=1
 C\tn\tNum=P|Cas=7
 C\tn\tNum=P|Cas=7|Var=1
 C\tn\tNum=S|Cas=1
+C\tn\tNum=S|Cas=1|Sem=K
 C\tn\tNum=S|Cas=1|Var=1
 C\tn\tNum=S|Cas=4
 C\tn\tNum=S|Cas=4|Var=1
@@ -2305,7 +2374,10 @@ C\t}\tVar=1
 C\t}\tVar=2
 C\t}\t_
 D\t!\t_
+D\tb\tNeg=A
+D\tb\tNeg=N
 D\tb\tSem=R
+D\tb\tSem=m
 D\tb\tVar=1
 D\tb\tVar=2
 D\tb\tVar=4
@@ -2355,6 +2427,7 @@ J\t,\tNum=X|Per=3
 J\t,\tVar=1
 J\t,\tVar=8
 J\t,\t_
+J\t^\tSem=K
 J\t^\tVar=1
 J\t^\tVar=2
 J\t^\tVar=8
@@ -2408,6 +2481,7 @@ N\tN\tGen=F|Num=P|Cas=3|Neg=N|Var=8
 N\tN\tGen=F|Num=P|Cas=4|Neg=A
 N\tN\tGen=F|Num=P|Cas=4|Neg=A|Sem=E
 N\tN\tGen=F|Num=P|Cas=4|Neg=A|Sem=G
+N\tN\tGen=F|Num=P|Cas=4|Neg=A|Sem=K
 N\tN\tGen=F|Num=P|Cas=4|Neg=A|Sem=R
 N\tN\tGen=F|Num=P|Cas=4|Neg=A|Sem=m
 N\tN\tGen=F|Num=P|Cas=4|Neg=A|Var=1
@@ -2466,6 +2540,7 @@ N\tN\tGen=F|Num=P|Cas=X|Neg=A|Sem=m
 N\tN\tGen=F|Num=P|Cas=X|Neg=A|Var=8
 N\tN\tGen=F|Num=P|Cas=X|Neg=A|Var=8|Sem=K
 N\tN\tGen=F|Num=P|Cas=X|Neg=A|Var=8|Sem=R
+N\tN\tGen=F|Num=P|Cas=X|Neg=A|Var=8|Sem=w
 N\tN\tGen=F|Num=P|Cas=X|Neg=N
 N\tN\tGen=F|Num=P|Cas=X|Neg=N|Var=8
 N\tN\tGen=F|Num=S|Cas=1|Neg=A
@@ -2551,6 +2626,7 @@ N\tN\tGen=F|Num=S|Cas=6|Neg=A|Sem=K
 N\tN\tGen=F|Num=S|Cas=6|Neg=A|Sem=R
 N\tN\tGen=F|Num=S|Cas=6|Neg=A|Sem=S
 N\tN\tGen=F|Num=S|Cas=6|Neg=A|Sem=Y
+N\tN\tGen=F|Num=S|Cas=6|Neg=A|Sem=j
 N\tN\tGen=F|Num=S|Cas=6|Neg=A|Sem=m
 N\tN\tGen=F|Num=S|Cas=6|Neg=A|Var=1
 N\tN\tGen=F|Num=S|Cas=6|Neg=A|Var=1|Sem=G
@@ -2604,6 +2680,8 @@ N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=K
 N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=R
 N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=S
 N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=Y
+N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=b
+N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=j
 N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=m
 N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=9
 N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=9|Sem=m
@@ -2634,6 +2712,7 @@ N\tN\tGen=I|Num=P|Cas=2|Neg=A
 N\tN\tGen=I|Num=P|Cas=2|Neg=A|Sem=G
 N\tN\tGen=I|Num=P|Cas=2|Neg=A|Sem=K
 N\tN\tGen=I|Num=P|Cas=2|Neg=A|Sem=R
+N\tN\tGen=I|Num=P|Cas=2|Neg=A|Sem=b
 N\tN\tGen=I|Num=P|Cas=2|Neg=A|Var=1
 N\tN\tGen=I|Num=P|Cas=2|Neg=A|Var=2
 N\tN\tGen=I|Num=P|Cas=2|Neg=A|Var=3
@@ -2666,6 +2745,7 @@ N\tN\tGen=I|Num=P|Cas=3|Neg=N|Var=9
 N\tN\tGen=I|Num=P|Cas=4|Neg=A
 N\tN\tGen=I|Num=P|Cas=4|Neg=A|Sem=G
 N\tN\tGen=I|Num=P|Cas=4|Neg=A|Sem=R
+N\tN\tGen=I|Num=P|Cas=4|Neg=A|Sem=b
 N\tN\tGen=I|Num=P|Cas=4|Neg=A|Var=1
 N\tN\tGen=I|Num=P|Cas=4|Neg=A|Var=2
 N\tN\tGen=I|Num=P|Cas=4|Neg=A|Var=3
@@ -2742,6 +2822,7 @@ N\tN\tGen=I|Num=P|Cas=X|Neg=N|Var=1
 N\tN\tGen=I|Num=P|Cas=X|Neg=N|Var=8
 N\tN\tGen=I|Num=S|Cas=1|Neg=A
 N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=G
+N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=E
 N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=K
 N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=R
 N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=S
@@ -2781,6 +2862,7 @@ N\tN\tGen=I|Num=S|Cas=2|Neg=N|Var=8
 N\tN\tGen=I|Num=S|Cas=2|Neg=N|Var=9
 N\tN\tGen=I|Num=S|Cas=3|Neg=A
 N\tN\tGen=I|Num=S|Cas=3|Neg=A|Sem=G
+N\tN\tGen=I|Num=S|Cas=3|Neg=A|Sem=E
 N\tN\tGen=I|Num=S|Cas=3|Neg=A|Sem=K
 N\tN\tGen=I|Num=S|Cas=3|Neg=A|Sem=R
 N\tN\tGen=I|Num=S|Cas=3|Neg=A|Sem=Y
@@ -2832,8 +2914,10 @@ N\tN\tGen=I|Num=S|Cas=6|Neg=A|Sem=Y
 N\tN\tGen=I|Num=S|Cas=6|Neg=A|Sem=m
 N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=1
 N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=G
+N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=E
 N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=K
 N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=R
+N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=S
 N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=2
 N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=2|Sem=G
 N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=6
@@ -2883,7 +2967,9 @@ N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=1
 N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8
 N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=G
 N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=K
+N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=L
 N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=R
+N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=U
 N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=m
 N\tN\tGen=I|Num=X|Cas=X|Neg=N
 N\tN\tGen=I|Num=X|Cas=X|Neg=N|Var=1
@@ -3425,6 +3511,7 @@ N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=G
 N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=K
 N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=R
 N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=m
+N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=w
 N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=9
 N\tN\tGen=N|Num=X|Cas=X|Neg=N
 N\tN\tGen=N|Num=X|Cas=X|Neg=N|Var=1
@@ -3454,6 +3541,64 @@ N\tN\tGen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=S
 N\tN\tGen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=m
 N\tN\tGen=X|Num=X|Cas=X|Neg=N
 N\tN\tGen=X|Num=X|Cas=X|Neg=N|Var=8
+N\tN\tGen=F|Num=P|Cas=3|Neg=A|Sem=E
+N\tN\tGen=F|Num=S|Cas=1|Neg=A|Sem=j
+N\tN\tGen=F|Num=S|Cas=1|Neg=A|Sem=L
+N\tN\tGen=F|Num=S|Cas=1|Neg=A|Sem=U
+N\tN\tGen=F|Num=S|Cas=2|Neg=A|Sem=j
+N\tN\tGen=F|Num=S|Cas=2|Neg=A|Sem=L
+N\tN\tGen=F|Num=S|Cas=2|Neg=A|Sem=U
+N\tN\tGen=F|Num=S|Cas=4|Neg=A|Sem=j
+N\tN\tGen=F|Num=S|Cas=6|Neg=A|Var=1|Sem=K
+N\tN\tGen=F|Num=S|Cas=7|Neg=A|Sem=L
+N\tN\tGen=F|Num=S|Cas=7|Neg=A|Var=1|Sem=Y
+N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=p
+N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=w
+N\tN\tGen=I|Num=P|Cas=1|Neg=A|Sem=b
+N\tN\tGen=I|Num=P|Cas=2|Neg=A|Sem=H
+N\tN\tGen=I|Num=P|Cas=2|Neg=A|Var=1|Sem=G
+N\tN\tGen=I|Num=P|Cas=4|Neg=A|Sem=L
+N\tN\tGen=I|Num=P|Cas=6|Neg=A|Sem=b
+N\tN\tGen=I|Num=P|Cas=7|Neg=A|Sem=b
+N\tN\tGen=I|Num=P|Cas=X|Neg=A|Var=8|Sem=G
+N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=b
+N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=H
+N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=L
+N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=U
+N\tN\tGen=I|Num=S|Cas=2|Neg=A|Sem=b
+N\tN\tGen=I|Num=S|Cas=2|Neg=A|Sem=H
+N\tN\tGen=I|Num=S|Cas=2|Neg=A|Sem=L
+N\tN\tGen=I|Num=S|Cas=2|Neg=A|Sem=u
+N\tN\tGen=I|Num=S|Cas=2|Neg=A|Sem=w
+N\tN\tGen=I|Num=S|Cas=3|Neg=A|Sem=b
+N\tN\tGen=I|Num=S|Cas=4|Neg=A|Sem=b
+N\tN\tGen=I|Num=S|Cas=4|Neg=A|Sem=L
+N\tN\tGen=I|Num=S|Cas=4|Neg=A|Sem=U
+N\tN\tGen=I|Num=S|Cas=4|Neg=A|Sem=w
+N\tN\tGen=I|Num=S|Cas=4|Neg=A|Var=6|Sem=R
+N\tN\tGen=I|Num=S|Cas=6|Neg=A|Sem=w
+N\tN\tGen=I|Num=S|Cas=7|Neg=A|Sem=b
+N\tN\tGen=I|Num=X|Cas=X|Neg=A|Sem=H
+N\tN\tGen=I|Num=X|Cas=X|Neg=A|Sem=S
+N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=b
+N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=c
+N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=g
+N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=H
+N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=p
+N\tN\tGen=M|Num=P|Cas=2|Neg=A|Sem=K
+N\tN\tGen=M|Num=S|Cas=1|Neg=A|Sem=y
+N\tN\tGen=M|Num=S|Cas=4|Neg=A|Var=1|Sem=Y
+N\tN\tGen=N|Num=P|Cas=1|Neg=A|Sem=U
+N\tN\tGen=N|Num=P|Cas=2|Neg=A|Sem=U
+N\tN\tGen=N|Num=S|Cas=1|Neg=A|Sem=U
+N\tN\tGen=N|Num=S|Cas=2|Neg=A|Sem=H
+N\tN\tGen=N|Num=S|Cas=4|Neg=A|Sem=o
+N\tN\tGen=N|Num=S|Cas=6|Neg=A|Sem=U
+N\tN\tGen=N|Num=X|Cas=X|Neg=A|Sem=w
+N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=g
+N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=y
+N\tN\tGen=X|Num=S|Cas=X|Neg=A|Sem=R
+N\tN\tGen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=Y
 P\t0\t_
 P\t1\tGen=F|Num=D|Cas=7|PGe=F|PNu=S|Per=3
 P\t1\tGen=F|Num=D|Cas=7|PGe=F|PNu=S|Per=3|Var=2
@@ -3554,6 +3699,7 @@ P\t4\tGen=Z|Num=S|Cas=7|Var=6
 P\t5\tGen=F|Num=S|Cas=2|Per=3
 P\t5\tGen=F|Num=S|Cas=3|Per=3
 P\t5\tGen=F|Num=S|Cas=4|Per=3
+P\t5\tGen=F|Num=S|Cas=4|Per=3|Var=6
 P\t5\tGen=F|Num=S|Cas=6|Per=3
 P\t5\tGen=F|Num=S|Cas=7|Per=3
 P\t5\tGen=N|Num=S|Cas=4|Per=3
@@ -3781,6 +3927,7 @@ P\tD\tGen=N|Num=P|Cas=4|Var=6
 P\tD\tGen=N|Num=P|Cas=6
 P\tD\tGen=N|Num=P|Cas=7
 P\tD\tGen=N|Num=S|Cas=1
+P\tD\tGen=N|Num=S|Cas=1|Sem=m
 P\tD\tGen=N|Num=S|Cas=1|Var=2
 P\tD\tGen=N|Num=S|Cas=1|Var=5
 P\tD\tGen=N|Num=S|Cas=1|Var=6
@@ -3853,6 +4000,7 @@ P\tE\tCas=3
 P\tE\tCas=4
 P\tE\tCas=6
 P\tE\tCas=7
+P\tH\tGen=Z|Num=S|Cas=2|Per=3
 P\tH\tGen=Z|Num=S|Cas=3|Per=3
 P\tH\tGen=Z|Num=S|Cas=4|Per=3
 P\tH\tNum=S|Cas=2|Per=1
@@ -3963,6 +4111,7 @@ P\tL\tGen=N|Num=S|Cas=1|Var=6
 P\tL\tGen=N|Num=S|Cas=4
 P\tL\tGen=N|Num=S|Cas=4|Var=1
 P\tL\tGen=N|Num=S|Cas=4|Var=6
+P\tL\tGen=N|Num=S|Cas=4|Sem=m
 P\tL\tGen=N|Num=S|Cas=5
 P\tL\tGen=N|Num=S|Cas=5|Var=1
 P\tL\tGen=X|Num=P|Cas=2
@@ -3972,6 +4121,7 @@ P\tL\tGen=X|Num=P|Cas=7
 P\tL\tGen=X|Num=P|Cas=7|Var=6
 P\tL\tGen=X|Num=X|Cas=X
 P\tL\tGen=X|Num=X|Cas=X|Sem=K
+P\tL\tGen=X|Num=X|Cas=X|Sem=m
 P\tL\tGen=X|Num=X|Cas=X|Var=8
 P\tL\tGen=Y|Num=P|Cas=4
 P\tL\tGen=Y|Num=S|Cas=1
@@ -4076,6 +4226,7 @@ P\tP\tNum=S|Cas=3|Per=1
 P\tP\tNum=S|Cas=3|Per=2
 P\tP\tNum=S|Cas=4|Per=1
 P\tP\tNum=S|Cas=4|Per=2
+P\tP\tNum=S|Cas=4|Per=2|Sem=m
 P\tP\tNum=S|Cas=5|Per=1
 P\tP\tNum=S|Cas=5|Per=2
 P\tP\tNum=S|Cas=5|Per=2|Sem=R
@@ -4662,6 +4813,7 @@ V\tB\tNum=P|Per=3|Ten=F|Neg=N|Voi=A
 V\tB\tNum=P|Per=3|Ten=F|Neg=N|Voi=A|Var=1
 V\tB\tNum=P|Per=3|Ten=F|Neg=N|Voi=A|Var=7
 V\tB\tNum=P|Per=3|Ten=P|Neg=A|Voi=A
+V\tB\tNum=P|Per=3|Ten=P|Neg=A|Voi=A|Sem=m
 V\tB\tNum=P|Per=3|Ten=P|Neg=A|Voi=A|Var=1
 V\tB\tNum=P|Per=3|Ten=P|Neg=A|Voi=A|Var=2
 V\tB\tNum=P|Per=3|Ten=P|Neg=A|Voi=A|Var=3
@@ -4684,6 +4836,7 @@ V\tB\tNum=S|Per=1|Ten=F|Neg=N|Voi=A
 V\tB\tNum=S|Per=1|Ten=F|Neg=N|Voi=A|Var=1
 V\tB\tNum=S|Per=1|Ten=F|Neg=N|Voi=A|Var=7
 V\tB\tNum=S|Per=1|Ten=P|Neg=A|Voi=A
+V\tB\tNum=S|Per=1|Ten=P|Neg=A|Voi=A|Sem=m
 V\tB\tNum=S|Per=1|Ten=P|Neg=A|Voi=A|Var=1
 V\tB\tNum=S|Per=1|Ten=P|Neg=A|Voi=A|Var=2
 V\tB\tNum=S|Per=1|Ten=P|Neg=A|Voi=A|Var=3
@@ -4716,6 +4869,7 @@ V\tB\tNum=S|Per=3|Ten=F|Neg=A|Voi=A|Var=7
 V\tB\tNum=S|Per=3|Ten=F|Neg=N|Voi=A
 V\tB\tNum=S|Per=3|Ten=F|Neg=N|Voi=A|Var=7
 V\tB\tNum=S|Per=3|Ten=P|Neg=A|Voi=A
+V\tB\tNum=S|Per=3|Ten=P|Neg=A|Voi=A|Sem=m
 V\tB\tNum=S|Per=3|Ten=P|Neg=A|Voi=A|Var=1
 V\tB\tNum=S|Per=3|Ten=P|Neg=A|Voi=A|Var=2
 V\tB\tNum=S|Per=3|Ten=P|Neg=A|Voi=A|Var=3
@@ -4735,6 +4889,7 @@ V\tB\tNum=S|Per=3|Ten=P|Neg=N|Voi=A|Var=7
 V\tB\tNum=X|Per=X|Ten=F|Neg=A|Voi=A
 V\tB\tNum=X|Per=X|Ten=F|Neg=N|Voi=A
 V\tB\tNum=X|Per=X|Ten=P|Neg=A|Voi=A
+V\tB\tNum=X|Per=X|Ten=P|Neg=A|Voi=A|Sem=m
 V\tB\tNum=X|Per=X|Ten=P|Neg=N|Voi=A
 V\tc\tNum=P|Per=1
 V\tc\tNum=P|Per=1|Var=6
@@ -4884,6 +5039,7 @@ V\tp\tGen=X|Num=P|Per=X|Ten=R|Neg=N|Voi=A
 V\tp\tGen=X|Num=S|Per=X|Ten=R|Neg=A|Voi=A
 V\tp\tGen=X|Num=S|Per=X|Ten=R|Neg=N|Voi=A
 V\tp\tGen=X|Num=X|Per=X|Ten=R|Neg=A|Voi=A
+V\tp\tGen=X|Num=X|Per=X|Ten=R|Neg=A|Voi=A|Sem=m
 V\tp\tGen=X|Num=X|Per=X|Ten=R|Neg=N|Voi=A
 V\tp\tGen=Y|Num=S|Per=2|Ten=R|Neg=A|Voi=A
 V\tp\tGen=Y|Num=S|Per=2|Ten=R|Neg=A|Voi=A|Var=1
@@ -5028,8 +5184,30 @@ end_of_list
 #------------------------------------------------------------------------------
 BEGIN
 {
+    # Consistency check: every CoNLL tag, after stripping the Sem feature and
+    # converting it to PDT, should be permitted by the PDT driver.
+    # NOTE: This check should only be run during debugging and driver testing.
+    # It is ineffective and unnecessary to run it every time the driver is used.
+    my $list = list();
+    if(0)
+    {
+        my $pdtlist = tagset::cs::pdt::list();
+        my %pdthash;
+        map {$pdthash{$_}++} @{$pdtlist};
+        foreach my $tag (@{$list})
+        {
+            my $pdttag = conll_to_pdt($tag);
+            if(!exists($pdthash{$pdttag}))
+            {
+                print STDERR ("WARNING: cs::conll tags maps to unknown cs::pdt tag.\n");
+                print STDERR ("WARNING: cs::conll $tag\n");
+                print STDERR ("WARNING: cs::pdt   $pdttag\n");
+                print STDERR ("\n");
+            }
+        }
+    }
     # Store the hash reference in a global variable.
-    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode);
+    $permitted = tagset::common::get_permitted_structures_joint($list, \&decode);
 }
 
 

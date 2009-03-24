@@ -51,6 +51,14 @@ sub conll_2006_to_2009
     # CoNLL 2006 contains tab-delimited values of the columns CPOS, POS and FEATS.
     # CoNLL 2009 contains tab-delimited values of the columns POS and FEAT (or, possibly of PPOS and PFEAT).
     $tag =~ s/^(\S+)\t(\S+)\t(.*)$/$1\tSubPOS=$2|$3/;
+    $tag =~ s/\|_$//;
+    # For some reason, CoNLL 2009 data do not set number and person of the word "by" while older data did so.
+    # In fact, PDT 2.0 morphology returns "Vc-------------" for this word, and only CoNLL 2006 data had "Num=X|Per=3".
+    # CoNLL 2007 data did not have person for "by" but otherwise they can be decoded using the old cs::conll driver.
+    if($tag eq "V\tSubPOS=c|Num=X|Per=3")
+    {
+        $tag = "V\tSubPOS=c";
+    }
     return $tag;
 }
 
@@ -64,7 +72,17 @@ sub conll_2009_to_2006
     my $tag = shift;
     # CoNLL 2006 contains tab-delimited values of the columns CPOS, POS and FEATS.
     # CoNLL 2009 contains tab-delimited values of the columns POS and FEAT (or, possibly of PPOS and PFEAT).
-    $tag =~ s/^(\S+)\tSubPOS=([^\|]+)|(.*)$/$1\t$2\t$3/;
+    unless($tag =~ s/^(\S+)\tSubPOS=([^\|]+)|(.*)$/$1\t$2\t$3/)
+    {
+        $tag =~ s/^(\S+)\tSubPOS=(.*)$/$1\t$2\t_/;
+    }
+    # For some reason, CoNLL 2009 data do not set number and person of the word "by" while older data did so.
+    # In fact, PDT 2.0 morphology returns "Vc-------------" for this word, and only CoNLL 2006 data had "Num=X|Per=3".
+    # CoNLL 2007 data did not have person for "by" but otherwise they can be decoded using the old cs::conll driver.
+    if($tag eq "V\tc\t_")
+    {
+        $tag = "V\tc\tNum=X|Per=3";
+    }
     return $tag;
 }
 
