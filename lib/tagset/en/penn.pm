@@ -1,7 +1,9 @@
 #!/usr/bin/perl
 # Driver for the tagset of the Penn Treebank.
-# (c) 2006 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2006, 2009 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
+# 25.3.2009: added new tags HYPH, AFX from PennBioIE, 2005 (HYPH appears in the CoNLL 2009 data)
+# 25.3.2009: new tag NIL appears in CoNLL 2009 English data for tokens &, $, %
 
 package tagset::en::penn;
 use utf8;
@@ -66,7 +68,7 @@ sub decode
     elsif($tag eq ":")
     {
         # generic other punctuation
-        # examples: : ; - ...
+        # examples: : ; ...
         $f{pos} = "punc";
     }
     elsif($tag eq "\$")
@@ -81,6 +83,14 @@ sub decode
         # example: #
         $f{pos} = "punc";
         $f{other} = "\#";
+    }
+    elsif($tag eq "AFX")
+    {
+        # "common postmodifiers of biomedical entities such as genes" (Blitzer, MdDonald, Pereira, Proc of EMNLP 2006, Sydney)
+        # Example 1: "anti-CYP2E1-IgG" is tokenized and tagged as "anti/AFX -/HYPH CYP2E1-IgG/NN".
+        # Example 2: "mono- and diglycerides" is tokenized and tagged as "mono/AFX -/HYPH and/CC di/AFX glycerides/NNS".
+        $f{pos} = "adj";
+        $f{hyph} = "hyph";
     }
     elsif($tag eq "CC")
     {
@@ -118,6 +128,14 @@ sub decode
         # foreign word
         # examples: kašpárek
         $f{foreign} = "foreign";
+    }
+    elsif($tag eq "HYPH")
+    {
+        # This tag is new in PennBioIE. In older data hyphens are tagged ":".
+        # hyphen
+        # example: -
+        $f{pos} = "punc";
+        $f{punctype} = "dash";
     }
     elsif($tag eq "IN")
     {
@@ -252,6 +270,12 @@ sub decode
     elsif($tag eq "SYM")
     {
         # symbol
+        # Penn Treebank definition (Santorini 1990):
+        # This tag should be used for mathematical, scientific and technical symbols
+        # or expressions that aren't words of English. It should not be used for any
+        # and all technical expressions. For instance, the names of chemicals, units
+        # of measurements (including abbreviations thereof) and the like should be
+        # tagged as nouns.
         $f{pos} = "punc";
         $f{punctype} = "symb";
     }
@@ -381,6 +405,11 @@ sub encode
     if($f{foreign} eq "foreign")
     {
         $tag = "FW";
+    }
+    # separated affixes
+    elsif($f{hyph} eq "hyph")
+    {
+        $tag = "AFX";
     }
     # noun: NN, NNS, NNP, NNPS
     elsif($pos eq "noun")
@@ -637,6 +666,11 @@ sub encode
                 $tag = "``";
             }
         }
+        elsif($f{punctype} eq "dash")
+        {
+            # This tag is new in PennBioIE. In older data hyphens are tagged ":".
+            $tag = "HYPH";
+        }
         elsif($f{punctype} eq "symb")
         {
             $tag = "SYM";
@@ -649,7 +683,7 @@ sub encode
     # punctuation and unknown elements
     else
     {
-        $tag = "SYM";
+        $tag = "NIL";
     }
     return $tag;
 }
@@ -658,6 +692,7 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
+# 25.3.2009: added new tags HYPH, AFX from PennBioIE, 2005 (HYPH appears in the CoNLL 2009 data)
 #
 # cd /net/data/LDC/PennTreebank3/parsed/mrg/wsj
 # foreach i (00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24)
@@ -679,17 +714,20 @@ sub list
 ''
 \$
 #
+AFX
 CC
 CD
 DT
 EX
 FW
+HYPH
 IN
 JJ
 JJR
 JJS
 LS
 MD
+NIL
 NN
 NNP
 NNPS
