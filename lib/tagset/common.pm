@@ -30,7 +30,7 @@ BEGIN
     %known_values =
     (
         "pos"          => ["noun", "adj", "num", "verb", "adv", "prep", "conj", "part", "int", "punc"],
-        "subpos"       => ["prop", "class", "pdt", "det", "art", "clit", "card", "ord", "mult", "frac",
+        "subpos"       => ["prop", "class", "pdt", "det", "art", "card", "ord", "mult", "frac",
                            "aux", "cop", "mod", "verbconj", "man", "loc", "tim", "deg", "cau", "mod", "ex", "voc", "post", "circ", "preppron", "comprep",
                            "coor", "sub", "comp", "emp", "res", "inf", "vbp"],
         "prontype"     => ["prs", "rcp", "int", "rel", "dem", "neg", "ind", "tot"],
@@ -198,7 +198,6 @@ BEGIN
             ["pdt"],
             ["det"],
             ["art", "det"],
-            ["clit"],
             ["card", "", "ord"],
             ["ord", "", "card"],
             ["mult", "card"],
