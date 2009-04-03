@@ -137,7 +137,7 @@ sub decode
         # mě, mi, ti, mu
         $f{pos} = "noun";
         $f{prontype} = "prs";
-        $f{subpos} = "clit";
+        $f{variant} = "short";
         $f{synpos} = "subst";
     }
     elsif($subpos eq "5")
@@ -168,7 +168,6 @@ sub decode
         # se, si, ses, sis
         $f{pos} = "noun";
         $f{prontype} = "prs";
-        $f{subpos} = "clit";
         $f{synpos} = "subst";
         $f{reflex} = "reflex";
         $f{variant} = "short";
@@ -858,17 +857,6 @@ sub encode
             }
         }
         # personal pronoun
-        elsif($f{subpos} eq "clit")
-        {
-            if($f{reflex} ne "reflex")
-            {
-                $tag[1] = "H";
-            }
-            else
-            {
-                $tag[1] = "7";
-            }
-        }
         elsif($f{subpos} eq "preppron")
         {
             if($f{prontype} =~ m/^(int|rel)$/ || ref($f{prontype}) eq "ARRAY" && grep {m/^(int|rel)$/} (@{$f{prontype}}))
@@ -889,6 +877,11 @@ sub encode
                     # něj, němu, něho, něm, ním, ní, ni, nich, nim, ně, nich, nimi
                     $tag[1] = "5";
                 }
+                elsif($f{variant} eq "short")
+                {
+                    # mi, mě, ti, tě, mu
+                    $tag[1] = "H";
+                }
                 else
                 {
                     $tag[1] = "P";
@@ -896,7 +889,16 @@ sub encode
             }
             else
             {
-                $tag[1] = "6";
+                if($f{variant} eq "short")
+                {
+                    # si, sis, se, ses
+                    $tag[1] = "7";
+                }
+                else
+                {
+                    # sebe, sobě, sebou
+                    $tag[1] = "6";
+                }
             }
         }
         # negative pronoun - must come before demonstratives because it also has $f{definiteness} eq "def"

@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # Driver for the Danish tagset from CoNLL-06 shared task (derived from Danish Parole tagset).
-# Copyright © 2006-2009 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright Â© 2006-2009 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
 package tagset::da::conll;
