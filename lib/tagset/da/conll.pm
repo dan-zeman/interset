@@ -72,7 +72,6 @@ sub decode
         {
             $f{pos} = "noun";
             $f{prontype} = "rcp";
-            $f{subpos} = "recip";
             $f{synpos} = "subst";
         }
         # PD = demonstrative
@@ -652,7 +651,7 @@ sub encode
         push(@features, "gender=neuter");
     }
     elsif($pos eq "verb" && $f{verbform} eq "part" && $f{synpos} ne "adv" ||
-          $pos eq "pron" && $f{subpos} ne "recip" ||
+          $pos eq "pron" && $f{prontype} ne "rcp" ||
           $pos eq "noun" && $f{subpos} ne "prop" ||
           $pos eq "adj" && $f{synpos} ne "adv")
     {
@@ -782,7 +781,7 @@ sub encode
     {
         push(@features, "register=obsolete");
     }
-    elsif($pos eq "pron" && $f{subpos} ne "recip")
+    elsif($pos eq "pron" && $f{prontype} ne "rcp")
     {
         push(@features, "register=unmarked");
     }
@@ -985,8 +984,8 @@ end_of_list
 #------------------------------------------------------------------------------
 BEGIN
 {
-    # Store the hash reference in a global variable. 
-    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode); 
+    # Store the hash reference in a global variable.
+    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode);
 }
 
 
