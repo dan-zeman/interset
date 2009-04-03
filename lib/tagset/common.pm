@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # Module with service functions for tagset drivers.
-# (c) 2007-2008 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2007-2009 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
 package tagset::common;
@@ -30,7 +30,7 @@ BEGIN
     %known_values =
     (
         "pos"          => ["noun", "adj", "num", "verb", "adv", "prep", "conj", "part", "int", "punc"],
-        "subpos"       => ["prop", "class", "pdt", "det", "art", "pers", "clit", "card", "ord", "mult", "frac",
+        "subpos"       => ["prop", "class", "pdt", "det", "art", "clit", "card", "ord", "mult", "frac",
                            "aux", "cop", "mod", "verbconj", "man", "loc", "tim", "deg", "cau", "mod", "ex", "voc", "post", "circ", "preppron", "comprep",
                            "coor", "sub", "comp", "emp", "res", "inf", "vbp"],
         "prontype"     => ["prs", "rcp", "int", "rel", "dem", "neg", "ind", "tot"],
@@ -198,7 +198,6 @@ BEGIN
             ["pdt"],
             ["det"],
             ["art", "det"],
-            ["pers"],
             ["clit"],
             ["card", "", "ord"],
             ["ord", "", "card"],

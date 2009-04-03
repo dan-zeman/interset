@@ -229,7 +229,6 @@ sub decode
         # examples: I, you, he, she, it, we, they
         $f{pos} = "noun";
         $f{prontype} = "prs";
-        $f{subpos} = "pers";
         $f{synpos} = "subst";
     }
     elsif($tag eq "PRP\$")

@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # Driver for the positional tagset of the Prague Dependency Treebank.
-# (c) 2006 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2006-2009 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
 package tagset::cs::pdt;
@@ -130,7 +130,6 @@ sub decode
         # já, ty, tys, on, ona, ono, my, vy, oni, ony, ona
         $f{pos} = "noun";
         $f{prontype} = "prs";
-        $f{subpos} = "pers";
         $f{synpos} = "subst";
     }
     elsif($subpos eq "H")
@@ -146,7 +145,6 @@ sub decode
         # něj, němu, něho, něm, ním, ní, ni, nich, nim, ně, nich, nimi
         $f{pos} = "noun";
         $f{prontype} = "prs";
-        $f{subpos} = "pers";
         $f{synpos} = "subst";
         $f{prepcase} = "pre";
     }
@@ -162,7 +160,6 @@ sub decode
         # sebe, sobě, sebou
         $f{pos} = "noun";
         $f{prontype} = "prs";
-        $f{subpos} = "pers";
         $f{synpos} = "subst";
         $f{reflex} = "reflex";
     }
@@ -844,26 +841,23 @@ sub encode
     {
         $tag[0] = "P";
         # subposes: 01456789DEHJKLOPQSWYZ
-        # personal pronoun
-        if($f{subpos} eq "pers")
+        # possessive pronoun
+        if($f{poss} eq "poss")
         {
-            if($f{reflex} ne "reflex")
+            if($f{prontype} =~ m/^(int|rel)$/)
             {
-                if($f{prepcase} eq "pre")
-                {
-                    # něj, němu, něho, něm, ním, ní, ni, nich, nim, ně, nich, nimi
-                    $tag[1] = "5";
-                }
-                else
-                {
-                    $tag[1] = "P";
-                }
+                $tag[1] = "1";
+            }
+            elsif($f{reflex} eq "reflex")
+            {
+                $tag[1] = "8";
             }
             else
             {
-                $tag[1] = "6";
+                $tag[1] = "S"; # special cases: O (we cannot currently generate them; but isn't this adjective?)
             }
         }
+        # personal pronoun
         elsif($f{subpos} eq "clit")
         {
             if($f{reflex} ne "reflex")
@@ -886,20 +880,23 @@ sub encode
                 $tag[1] = "0"; # oň, naň
             }
         }
-        # possessive pronoun
-        elsif($f{poss} eq "poss")
+        elsif($f{prontype} eq "prs")
         {
-            if($f{prontype} =~ m/^(int|rel)$/)
+            if($f{reflex} ne "reflex")
             {
-                $tag[1] = "1";
-            }
-            elsif($f{reflex} eq "reflex")
-            {
-                $tag[1] = "8";
+                if($f{prepcase} eq "pre")
+                {
+                    # něj, němu, něho, něm, ním, ní, ni, nich, nim, ně, nich, nimi
+                    $tag[1] = "5";
+                }
+                else
+                {
+                    $tag[1] = "P";
+                }
             }
             else
             {
-                $tag[1] = "S"; # special cases: O (we cannot currently generate them; but isn't this adjective?)
+                $tag[1] = "6";
             }
         }
         # negative pronoun - must come before demonstratives because it also has $f{definiteness} eq "def"
