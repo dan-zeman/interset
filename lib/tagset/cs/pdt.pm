@@ -284,24 +284,26 @@ sub decode
     }
     elsif($subpos eq "=")
     {
+        $f{numtype} = "card";
         $f{numform} = "digit";
     }
     elsif($subpos eq "}")
     {
         # MCMLXXI
+        $f{numtype} = "card";
         $f{numform} = "roman";
     }
     elsif($subpos eq "l")
     {
         # jeden, dva, tři, čtyři
-        $f{subpos} = "card";
+        $f{numtype} = "card";
         $f{synpos} = "attr";
         $f{other} = "l";
     }
     elsif($subpos eq "n")
     {
         # pět, šest, sedm...
-        $f{subpos} = "card";
+        $f{numtype} = "card";
         # in nominative, accusative and vocative behaves like noun
         # in genitive, dative, locative and instrumental behaves like adjective
         # at this moment, case is at position 2
@@ -317,82 +319,86 @@ sub decode
     elsif($subpos eq "?")
     {
         # kolik
-        $f{subpos} = "card";
+        $f{numtype} = "card";
         $f{synpos} = "subst";
         $f{prontype} = ["int", "rel"];
     }
     elsif($subpos eq "a")
     {
         # několik, mnoho, málo, kdovíkolik, tolik...
-        $f{subpos} = "card";
+        $f{numtype} = "card";
         $f{synpos} = "subst";
         $f{prontype} = "ind";
     }
     elsif($subpos eq "y")
     {
         # polovina, třetina, čtvrtina, pětina, setina, tisícina...
-        $f{subpos} = "frac";
+        $f{numtype} = "frac";
         $f{synpos} = "subst";
     }
     elsif($subpos eq "j")
     {
         # čtvero, patero, desatero...
+        $f{numtype} = "gen";
         $f{synpos} = "subst";
     }
     elsif($subpos eq "k")
     {
         # čtvery, patery, desatery...
+        $f{numtype} = "gen";
         $f{synpos} = "attr";
         $f{other} = "k";
     }
     elsif($subpos eq "r")
     {
         # první, druhý, třetí, čtvrtý, pátý, stý, tisící...
-        $f{subpos} = "ord";
+        $f{numtype} = "ord";
         $f{synpos} = "attr";
     }
     elsif($subpos eq "z")
     {
         # kolikátý
-        $f{subpos} = "ord";
+        $f{numtype} = "ord";
         $f{synpos} = "attr";
         $f{prontype} = ["int", "rel"];
     }
     elsif($subpos eq "d")
     {
         # jedny, dvojí, desaterý
+        $f{numtype} = "gen";
         $f{synpos} = "attr";
     }
     elsif($subpos eq "h")
     {
         # jedny, nejedny
+        $f{numtype} = "gen";
         $f{synpos} = "attr";
         $f{other} = "h";
     }
     elsif($subpos eq "w")
     {
         # nejeden, tolikátý...
-        $f{subpos} = "ord";
+        $f{numtype} = "ord";
         $f{synpos} = "attr";
         $f{prontype} = "ind";
     }
     elsif($subpos eq "v")
     {
         # jedenkrát, dvakrát, třikrát, čtyřikrát, pětkrát, stokrát, tisíckrát...
-        $f{subpos} = "mult";
+        $f{numtype} = "mult";
         $f{synpos} = "adv";
     }
     elsif($subpos eq "u")
     {
         # kolikrát
-        $f{subpos} = "mult";
+        $f{numtype} = "mult";
         $f{synpos} = "adv";
         $f{prontype} = ["int", "rel"];
     }
     elsif($subpos eq "o")
     {
         # několikrát, mnohokrát, tolikrát...
-        $f{subpos} = "mult";
+        $f{numtype} = "mult";
         $f{synpos} = "adv";
         $f{prontype} = "ind";
     }
@@ -985,7 +991,7 @@ sub encode
         { ###{
             $tag[1] = "}";
         }
-        elsif($f{subpos} eq "card")
+        elsif($f{numtype} eq "card")
         {
             if($f{prontype} =~ m/^(int|rel)$/ || ref($f{prontype}) eq "ARRAY" && grep {m/^(int|rel)$/} (@{$f{prontype}}))
             {
@@ -1007,7 +1013,7 @@ sub encode
                 $tag[1] = "n";
             }
         }
-        elsif($f{subpos} eq "ord")
+        elsif($f{numtype} eq "ord")
         {
             if($f{prontype} =~ m/^(int|rel)$/ || ref($f{prontype}) eq "ARRAY" && grep {m/^(int|rel)$/} (@{$f{prontype}}))
             {
@@ -1024,7 +1030,7 @@ sub encode
                 $tag[1] = "r";
             }
         }
-        elsif($f{subpos} eq "mult")
+        elsif($f{numtype} eq "mult")
         {
             if($f{prontype} =~ m/^(int|rel)$/ || ref($f{prontype}) eq "ARRAY" && grep {m/^(int|rel)$/} (@{$f{prontype}}))
             {
@@ -1041,7 +1047,7 @@ sub encode
                 $tag[1] = "v";
             }
         }
-        elsif($f{subpos} eq "frac")
+        elsif($f{numtype} eq "frac")
         {
             $tag[1] = "y";
         }

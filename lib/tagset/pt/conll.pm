@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # Driver for the CoNLL 2006 Portuguese tagset.
-# (c) 2007 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2007-2009 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
 package tagset::pt::conll;
@@ -408,7 +408,7 @@ sub decode
         # Ordinal number (subclass of adjectives).
         elsif($feature eq "<NUM-ord>")
         {
-            $f{subpos} = "ord";
+            $f{numtype} = "ord";
         }
         # Cardinal number.
         elsif($feature eq "<card>")
@@ -417,7 +417,7 @@ sub decode
             # If it is the case, keep "prop" and discard "card".
             unless($f{subpos} eq "prop")
             {
-                $f{subpos} = "card";
+                $f{numtype} = "card";
             }
         }
         # Definite article.
@@ -481,7 +481,7 @@ sub decode
         elsif($feature eq "<quant>")
         {
             $f{prontype} = "ind" unless($f{prontype});
-            $f{subpos} = "card";
+            $f{numtype} = "card";
         }
         # Reciprocal reflexive (amar-se).
         elsif($feature eq "<reci>")
@@ -754,7 +754,7 @@ sub encode
     {
         push(@features, "<dem>");
     }
-    if($f{prontype} && $f{subpos} eq "card")
+    if($f{prontype} && $f{numtype} eq "card")
     {
         push(@features, "<quant>");
     }
@@ -774,11 +774,11 @@ sub encode
     {
         push(@features, "<SUP>");
     }
-    if($f{pos} eq "num" && $f{subpos} eq "card")
+    if($f{pos} eq "num" && $f{numtype} eq "card")
     {
         push(@features, "<card>");
     }
-    elsif($f{subpos} eq "ord")
+    elsif($f{numtype} eq "ord")
     {
         push(@features, "<NUM-ord>");
     }
@@ -1645,8 +1645,8 @@ end_of_list
 #------------------------------------------------------------------------------
 BEGIN
 {
-    # Store the hash reference in a global variable. 
-    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode); 
+    # Store the hash reference in a global variable.
+    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode);
 }
 
 

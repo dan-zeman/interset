@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # Driver for the tagset of Jan Hajič's Swedish tagger (slightly modified Parole tagset).
-# (c) 2006 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2006-2009 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
 package tagset::sv::hajic;
@@ -123,11 +123,11 @@ sub decode
         {
             if($subpos eq "C")
             {
-                $f{subpos} = "card";
+                $f{numtype} = "card";
             }
             elsif($subpos eq "O")
             {
-                $f{subpos} = "ord";
+                $f{numtype} = "ord";
             }
         }
         elsif($pos eq "C")
@@ -438,11 +438,11 @@ sub encode
     }
     elsif($f{pos} eq "num")
     {
-        if($f{subpos} =~ m/^(digit|roman|card)$/)
+        if($f{numtype} eq "card")
         {
             $tag = "MC";
         }
-        elsif($f{subpos} eq "ord")
+        elsif($f{numtype} eq "ord")
         {
             $tag = "MO";
         }
@@ -903,8 +903,8 @@ end_of_list
 #------------------------------------------------------------------------------
 BEGIN
 {
-    # Store the hash reference in a global variable. 
-    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode); 
+    # Store the hash reference in a global variable.
+    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode);
 }
 
 

@@ -35,13 +35,13 @@ sub decode
         if($subpos eq "AC")
         {
             $f{pos} = "num";
-            $f{subpos} = "card";
+            $f{numtype} = "card";
             $f{synpos} = "attr";
         }
         elsif($subpos eq "AO")
         {
             $f{pos} = "num";
-            $f{subpos} = "ord";
+            $f{numtype} = "ord";
             $f{synpos} = "attr";
         }
         else
@@ -460,11 +460,11 @@ sub encode
     elsif($f{pos} eq "num")
     {
         # numerals do not have their own code
-        if($f{subpos} =~ m/^(digit|roman|card)$/)
+        if($f{numtype} eq "card")
         {
             $tag = "A\tAC";
         }
-        elsif($f{subpos} eq "ord")
+        elsif($f{numtype} eq "ord")
         {
             $tag = "A\tAO";
         }

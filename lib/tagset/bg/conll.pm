@@ -156,12 +156,12 @@ sub decode
         # Mc = cardinals
         if($subpos eq "Mc")
         {
-            $f{subpos} = "card";
+            $f{numtype} = "card";
         }
         # Mo = ordinals
         elsif($subpos eq "Mo")
         {
-            $f{subpos} = "ord";
+            $f{numtype} = "ord";
             $f{synpos} = "attr";
         }
         # Md = adverbial numerals
@@ -170,7 +170,7 @@ sub decode
         elsif($subpos eq "Md")
         {
             # poveče, malko, mnogo, măničko
-            $f{subpos} = "card";
+            $f{numtype} = "card";
             $f{prontype} = "ind";
             $f{other}{subpos} = "Md";
         }
@@ -795,7 +795,7 @@ sub encode
         }
         elsif($f{prontype} eq "ind")
         {
-            if($f{subpos} eq "card")
+            if($f{numtype} eq "card")
             {
                 $tag = "M\tMd";
             }
@@ -923,11 +923,11 @@ sub encode
         {
             $tag = "M\tMy";
         }
-        elsif($f{subpos} eq "card" && $f{prontype} eq "ind")
+        elsif($f{numtype} eq "card" && $f{prontype} eq "ind")
         {
             $tag = "M\tMd";
         }
-        elsif($f{subpos} eq "ord")
+        elsif($f{numtype} eq "ord")
         {
             $tag = "M\tMo";
         }
@@ -1247,7 +1247,7 @@ sub encode
     }
     elsif($f{pos} eq "num" && $f{prontype} ne "" &&
           !($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "Md") &&
-          !($f{subpos} eq "card" && $f{prontype} eq "ind"))
+          !($f{numtype} eq "card" && $f{prontype} eq "ind"))
     {
         push(@features, "ref=q");
     }
@@ -2021,8 +2021,8 @@ end_of_list
 #------------------------------------------------------------------------------
 BEGIN
 {
-    # Store the hash reference in a global variable. 
-    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode); 
+    # Store the hash reference in a global variable.
+    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode);
 }
 
 

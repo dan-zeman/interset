@@ -162,7 +162,7 @@ sub decode
     {
         # cardinal number / Kardinalzahl
         $f{pos} = "num";
-        $f{subpos} = "card";
+        $f{numtype} = "card";
     }
     elsif($tag =~ m/^V(.)(.*)/)
     {
@@ -504,7 +504,7 @@ sub encode
     # num:  CARD (, ADJA)
     elsif($f{pos} eq "num")
     {
-        if($f{subpos} =~ m/^(digit|roman|card)$/)
+        if($f{numtype} eq "card")
         {
             $tag = "CARD";
         }

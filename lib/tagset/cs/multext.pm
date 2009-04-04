@@ -238,35 +238,7 @@ sub decode
         # clitic not used in Czech
         splice(@chars, 0, 2);
         # class: 8 classes only for Czech (including prontype)
-        my $class = shift(@chars);
-        # 1 = definite1 ("jeden", "první")
-        # 2 = definite2 ("druhý", "dvojí", "dvojnásob", "dva", "nadvakrát", "oba", "obojí")
-        # 3 = definite34 ("čtvrtý", "čtyři", "potřetí", "tři", "třetí", "třikrát")
-        # f = definite ("1929", "čtrnáctý", "čtyřiapadesát", "dvoustý", "tucet"...)
-        if($class =~ m/^[123f]$/)
-        {
-            $f{other}{numclass} = $class;
-        }
-        # d = demonstrative ("tolik", "tolikrát")
-        elsif($class eq 'd')
-        {
-            $f{prontype} = 'dem';
-        }
-        # i = indefinite ("bezpočet", "bezpočtukrát", "bůhvíkolik", "hodně", "málo", "mnohý", "mockrát", "několik", "několikerý", "několikrát", "nejeden", "pár", "vícekrát")
-        elsif($class eq 'i')
-        {
-            $f{prontype} = 'ind';
-        }
-        # q = interrogative ("kolik", "kolikrát")
-        elsif($class eq 'q')
-        {
-            $f{prontype} = 'int';
-        }
-        # r = relative ("kolik", "kolikrát")
-        elsif($class eq 'r')
-        {
-            $f{prontype} = 'rel';
-        }
+        decode_numeral_class(shift(@chars), \%f);
         decode_animateness(shift(@chars), \%f);
     }
     elsif($pos eq 'V')
@@ -1252,18 +1224,18 @@ sub decode_numeral_type
     # cardinal number
     if($c eq 'c')
     {
-        $f->{subpos} = 'card';
+        $f->{numtype} = 'card';
     }
     # ordinal number
     elsif($c eq 'o')
     {
-        $f->{subpos} = 'ord';
+        $f->{numtype} = 'ord';
         $f->{synpos} = 'attr';
     }
     # multiplier number
     elsif($c eq 'm')
     {
-        $f->{subpos} = 'mult';
+        $f->{numtype} = 'mult';
         $f->{synpos} = 'adv';
     }
     # special (generic) number
@@ -1272,6 +1244,7 @@ sub decode_numeral_type
     # "desaterý", "dvojí", "jeden", "několikerý", "několikery", "obojí"
     elsif($c eq 's')
     {
+        $f->{numtype} = 'gen';
         $f->{synpos} = 'attr';
     }
     return $f->{subpos};
@@ -1286,15 +1259,15 @@ sub encode_numeral_type
 {
     my $f = shift; # reference to hash
     my $c;
-    if($f->{subpos} eq 'card')
+    if($f->{numtype} eq 'card')
     {
         $c = 'c';
     }
-    elsif($f->{subpos} eq 'ord')
+    elsif($f->{numtype} eq 'ord')
     {
         $c = 'o';
     }
-    elsif($f->{subpos} eq 'mult')
+    elsif($f->{numtype} eq 'mult')
     {
         $c = 'm';
     }
@@ -1356,6 +1329,55 @@ sub encode_numeral_form
 
 
 #------------------------------------------------------------------------------
+# Decodes numeral class and stores it in a feature structure.
+#------------------------------------------------------------------------------
+sub decode_numeral_class
+{
+    my $c = shift; # one character
+    my $f = shift; # reference to hash
+    # f = definite other than 1, 2, 3, 4 ("1929", "čtrnáctý", "čtyřiapadesát", "dvoustý", "tucet"...)
+    # nothing to do: this is default class of numerals
+    # 1 = definite1 ("jeden", "první")
+    if($c eq '1')
+    {
+        $f->{numvalue} = '1';
+    }
+    # 2 = definite2 ("druhý", "dvojí", "dvojnásob", "dva", "nadvakrát", "oba", "obojí")
+    elsif($c eq '2')
+    {
+        $f->{numvalue} = '2';
+    }
+    # 3 = definite34 ("čtvrtý", "čtyři", "potřetí", "tři", "třetí", "třikrát")
+    elsif($c eq '3')
+    {
+        $f->{numvalue} = '3';
+    }
+    # d = demonstrative ("tolik", "tolikrát")
+    elsif($c eq 'd')
+    {
+        $f->{prontype} = 'dem';
+    }
+    # i = indefinite ("bezpočet", "bezpočtukrát", "bůhvíkolik", "hodně", "málo", "mnohý", "mockrát", "několik", "několikerý", "několikrát", "nejeden", "pár", "vícekrát")
+    elsif($c eq 'i')
+    {
+        $f->{prontype} = 'ind';
+    }
+    # q = interrogative ("kolik", "kolikrát")
+    elsif($c eq 'q')
+    {
+        $f->{prontype} = 'int';
+    }
+    # r = relative ("kolik", "kolikrát")
+    elsif($c eq 'r')
+    {
+        $f->{prontype} = 'rel';
+    }
+    return $f->{numvalue};
+}
+
+
+
+#------------------------------------------------------------------------------
 # Encodes numeral class as one character.
 #------------------------------------------------------------------------------
 sub encode_numeral_class
@@ -1378,14 +1400,17 @@ sub encode_numeral_class
     {
         $c = 'r';
     }
-    elsif($f->{tagset} eq 'cs::multext')
+    elsif($f->{numvalue} eq '1')
     {
-        $c = $f->{other}{numclass};
+        $c = '1';
     }
-    # Default for cardinal numbers in singular is '1'; it is 'f' for others.
-    elsif($f->{subpos} eq 'card' && $f->{number} eq 'sing' && $f->{gender})
+    elsif($f->{numvalue} eq '2')
     {
-        $c = '1'; # definite, numeric value 1
+        $c = '2';
+    }
+    elsif($f->{numvalue} eq '3')
+    {
+        $c = '3';
     }
     else
     {

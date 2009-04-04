@@ -104,7 +104,7 @@ sub decode
         # cardinal number
         # examples: one, two, three
         $f{pos} = "num";
-        $f{subpos} = "card";
+        $f{numtype} = "card";
         $f{synpos} = "attr";
         $f{definiteness} = "def";
     }
@@ -170,7 +170,7 @@ sub decode
         # list item marker
         # examples: 1., a), *
         $f{pos} = "punc";
-        $f{subpos} = "ord";
+        $f{numtype} = "ord";
     }
     elsif($tag eq "MD")
     {
@@ -496,7 +496,7 @@ sub encode
     # num:  CD, (WDT), (WRB), (JJ)
     elsif($f{pos} eq "num")
     {
-        if($f{subpos} =~ m/^(digit|roman|card)$/)
+        if($f{numtype} eq "card")
         {
             $tag = "CD";
         }
@@ -627,7 +627,7 @@ sub encode
     }
     elsif($f{pos} eq "punc")
     {
-        if($f{subpos} eq "ord")
+        if($f{numtype} eq "ord")
         {
             $tag = "LS";
         }
