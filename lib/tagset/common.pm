@@ -2,6 +2,8 @@
 # Module with service functions for tagset drivers.
 # Copyright © 2007-2009 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
+# 4.4.2009: numtype and numvalue separated from subpos, new generic numerals
+# 5.4.2009: advtype separated from subpos
 
 package tagset::common;
 use utf8;
@@ -20,7 +22,7 @@ BEGIN
 {
     @known_features =
     (
-        "pos", "subpos", "prontype", "numtype", "numform", "numvalue", "punctype", "puncside", "synpos",
+        "pos", "subpos", "prontype", "numtype", "numform", "numvalue", "advtype", "punctype", "puncside", "synpos",
         "poss", "reflex", "negativeness", "definiteness",
         "gender", "animateness", "number", "case", "prepcase", "degree",
         "person", "politeness", "possgender", "possnumber",
@@ -32,12 +34,13 @@ BEGIN
     (
         "pos"          => ["noun", "adj", "num", "verb", "adv", "prep", "conj", "part", "int", "punc"],
         "subpos"       => ["prop", "class", "pdt", "det", "art",
-                           "aux", "cop", "mod", "verbconj", "man", "loc", "tim", "deg", "cau", "mod", "ex", "voc", "post", "circ", "preppron", "comprep",
+                           "aux", "cop", "mod", "verbconj", "mod", "ex", "voc", "post", "circ", "preppron", "comprep",
                            "coor", "sub", "comp", "emp", "res", "inf", "vbp"],
         "prontype"     => ["prs", "rcp", "int", "rel", "dem", "neg", "ind", "tot"],
         "numtype"      => ["card", "ord", "mult", "frac", "gen"],
         "numform"      => ["word", "digit", "roman"],
         "numvalue"     => ["1", "2", "3"],
+        "advtype"      => ["man", "loc", "tim", "deg", "cau"],
         "punctype"     => ["peri", "qest", "excl", "quot", "brck", "comm", "colo", "semi", "dash", "symb", "root"],
         "puncside"     => ["ini", "fin"],
         "synpos"       => ["subst", "attr", "adv", "pred"],
@@ -102,7 +105,7 @@ BEGIN
     @features =
     (
         "pos", "abbr", "hyph", "subcat", "verbform", "mood",
-        "prontype", "numtype", "numform", "numvalue", "punctype", "puncside", "subpos", "synpos",
+        "prontype", "numtype", "numform", "numvalue", "advtype", "punctype", "puncside", "subpos", "synpos",
         "poss", "reflex", "degree", "negativeness", "definiteness",
         "person", "tense", "voice", "aspect", "subtense",
         "gender", "animateness", "number", "case", "prepcase",
@@ -208,11 +211,6 @@ BEGIN
             ["intr"],
             ["tran"],
             ["verbconj"],
-            ["man"],
-            ["loc"],
-            ["tim"],
-            ["deg"],
-            ["cau"],
             ["ex"],
             ["voc"],
             ["post"],
@@ -246,6 +244,14 @@ BEGIN
             ["1"],
             ["2", "3"],
             ["3", "2"]
+        ],
+        "advtype" =>
+        [
+            ["man"],
+            ["loc"],
+            ["tim"],
+            ["deg"],
+            ["cau"]
         ],
         "punctype" =>
         [

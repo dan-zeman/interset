@@ -1,8 +1,10 @@
 #!/usr/bin/perl
 # Driver for the CoNLL 2006 Bulgarian tagset.
 # (Documentation at http://www.bultreebank.org/TechRep/BTB-TR03.pdf)
-# (c) 2007 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2007, 2009 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
+# 4.4.2009: numtype and numvalue separated from subpos, new generic numerals
+# 5.4.2009: advtype separated from subpos
 
 package tagset::bg::conll;
 use utf8;
@@ -246,22 +248,22 @@ sub decode
         # Dm = adverb of manner
         if($subpos eq "Dm")
         {
-            $f{subpos} = "man";
+            $f{advtype} = "man";
         }
         # Dl = adverb of location
         elsif($subpos eq "Dl")
         {
-            $f{subpos} = "loc";
+            $f{advtype} = "loc";
         }
         # Dt = adverb of time
         elsif($subpos eq "Dt")
         {
-            $f{subpos} = "tim";
+            $f{advtype} = "tim";
         }
         # Dq = adverb of quantity or degree
         elsif($subpos eq "Dq")
         {
-            $f{subpos} = "deg";
+            $f{advtype} = "deg";
         }
         # Dd = adverb of modal nature
         elsif($subpos eq "Dd")
@@ -420,7 +422,7 @@ sub decode
         elsif($feature eq "cause")
         {
             $f{pos} = "adv";
-            $f{subpos} = "cau";
+            $f{advtype} = "cau";
         }
         # def = d|f|h|i
         elsif($feature eq "def")
@@ -616,19 +618,19 @@ sub decode
             elsif($value eq "l")
             {
                 $f{pos} = "adv";
-                $f{subpos} = "loc";
+                $f{advtype} = "loc";
             }
             # t = time
             elsif($value eq "t")
             {
                 $f{pos} = "adv";
-                $f{subpos} = "tim";
+                $f{advtype} = "tim";
             }
             # m = manner
             elsif($value eq "m")
             {
                 $f{pos} = "adv";
-                $f{subpos} = "man";
+                $f{advtype} = "man";
             }
         }
         # tense = m|o|r
@@ -1011,19 +1013,19 @@ sub encode
         {
             $tag = "P\tPn";
         }
-        elsif($f{subpos} eq "man")
+        elsif($f{advtype} eq "man")
         {
             $tag = "D\tDm";
         }
-        elsif($f{subpos} eq "loc")
+        elsif($f{advtype} eq "loc")
         {
             $tag = "D\tDl";
         }
-        elsif($f{subpos} eq "tim")
+        elsif($f{advtype} eq "tim")
         {
             $tag = "D\tDt";
         }
-        elsif($f{subpos} eq "deg")
+        elsif($f{advtype} eq "deg")
         {
             $tag = "D\tDq";
         }
@@ -1251,19 +1253,19 @@ sub encode
     {
         push(@features, "ref=q");
     }
-    elsif($f{subpos} eq "loc" && $f{prontype} ne "")
+    elsif($f{advtype} eq "loc" && $f{prontype} ne "")
     {
         push(@features, "ref=l");
     }
-    elsif($f{subpos} eq "tim" && $f{prontype} ne "")
+    elsif($f{advtype} eq "tim" && $f{prontype} ne "")
     {
         push(@features, "ref=t");
     }
-    elsif($f{subpos} eq "man" && $f{prontype} ne "")
+    elsif($f{advtype} eq "man" && $f{prontype} ne "")
     {
         push(@features, "ref=m");
     }
-    elsif($f{subpos} eq "cau")
+    elsif($f{advtype} eq "cau")
     {
         push(@features, "cause");
     }
