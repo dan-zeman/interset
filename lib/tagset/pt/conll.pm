@@ -1452,6 +1452,7 @@ pron	pron-pers	<refl>|M/F|3S/P|DAT
 pron	pron-pers	<refl>|M/F|3S|PIV
 pron	pron-pers	<refl>|M/F|3S/P|PIV
 pron	pron-pers	<-sam>|F|1P|PIV
+pron    pron-pers   F|1P|PIV
 pron	pron-pers	<-sam>|F|1S|PIV
 pron	pron-pers	<-sam>|F|3P|NOM
 pron	pron-pers	<-sam>|F|3P|NOM/PIV
