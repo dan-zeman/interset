@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # Driver for the CoNLL/STTS German tagset.
-# (c) 2008 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2008 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
 package tagset::de::conll;

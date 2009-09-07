@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # Driver for the Stuttgart-Tübingen Tagset.
-# (c) 2008 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2008 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
 package tagset::de::stts;

@@ -49,7 +49,7 @@ BEGIN
         "negativeness" => ["pos", "neg"],
         "definiteness" => ["ind", "def", "red"],
         "gender"       => ["masc", "fem", "com", "neut"],
-        "animateness"  => ["anim", "inan"],
+        "animateness"  => ["anim", "nhum", "inan"],
         "number"       => ["sing", "dual", "plu"],
         "case"         => ["nom", "gen", "dat", "acc", "voc", "loc", "ins"],
         "prepcase"     => ["npr", "pre"],
@@ -319,6 +319,7 @@ BEGIN
         "animateness" =>
         [
             ["anim"],
+            ["nhum", "anim"],
             ["inan"]
         ],
         "number" =>
