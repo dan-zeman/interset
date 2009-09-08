@@ -1,0 +1,28 @@
+====== Download DZ Interset ======
+
+Before downloading, please make sure you understand the [[License]]. The [[Versions|Version History]] may help you identify changes since your last download. If you use DZ Interset in your research, check [[References]] on how to cite it.
+
+
+===== Please consider registering =====
+
+DZ Interset is a result of my research and my research is funded by public money. Of course I have to report to the funding agencies and I want to be able to demonstrate that other people use my software. So registering is not mandatory but I ask you to do it anyway.
+
+Do not worry, I **will not** give away your e-mail, neither to the funding agencies, nor to anyone else. I do not even need your e-mail address (but I am ready to take it in case you wish to be informed about major future changes to DZ Interset).
+
+<html>
+<form method=get action="http://ufal.mff.cuni.cz/cgi-bin/zeman/interset/register.pl">
+  <table>
+  <tr><td>Name:</td><td><input type=text name="jmeno"/></td></tr>
+  <tr><td>Institution:</td><td><input type=text name="inst"/></td><td>(if you anticipate using DZ Interset in your research or student project, indicate your university / research institute; if you are going to use it professionally but out of academia, indicate your company; if you want to use it privately, leave the field empty)</td></tr>
+  <tr><td>City:</td><td><input type=text name="obec"/></td></tr>
+  <tr><td>Country:</td><td><input type=text name="zeme"/></td></tr>
+  <tr><td>E-mail:</td><td><input type=text name="info"/></td><td>(only if you wish to be informed about DZ Interset)</td></tr>
+  </table>
+  <input type=submit name=odeslat value="Submit"/>
+</form>
+<p><br/></p>
+</html>
+
+**The latest release, packed using ''zip'', is available [[http://ufal.mff.cuni.cz/~zeman/soubory/interset.zip|here]].**
+
+The DZ Interset project uses the [[http://trac.edgewall.org/|Trac]] web interface for project management. It provides access (via //Browse Source//) to the subversion repository of various revisions of the code. The structure is more fine-grained (not all revisions constitute new releases) and diffs between revisions are available. The Trac server requires authentication, so anonymous read-only access is currently not available. For authorized users, the entry point is [[http://svn.ms.mff.cuni.cz/projects/interset|here]].

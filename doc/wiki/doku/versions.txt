@@ -1,0 +1,19 @@
+====== Version History of DZ Interset ======
+
+As many other projects, DZ Interset has gone through its “Dark Age” when it was not yet clear whether it would eventually be published. There was no distinction between versions and releases, and versions were not numbered anyway. However, there were some milestones and I am now going to number them for convenience.
+
+? 0.1
+! Summer 2006. My first unified approach to conversions among the Prague Dependency Treebank tagset, Penn TreeBank tagset, Swedish Mamba tagset (CoNLL 2006 treebank), Danish Parole tagset (CoNLL 2006 treebank), and the tagset of the Swedish adaptation of Jan Hajič's tagger. Tag conversions were crucial part of my experiments with cross-language parser adaptation (see [[References]]). My thanks go to Philip Resnik for the early comments during our discussions at the University of Maryland.
+
+? 0.2
+! Spring 2007. I struggled to convert tagsets of several CoNLL shared task treebanks in order to improve the accuracy of a parser that relied on understanding the information in the tags. It became apparent how big the differences between various tagging approaches are. Also, some corpora contained tags that were noisy or not very well defined. Arabic, Bulgarian, Chinese, Czech and English CoNLL tagsets were added (Czech and English are just reformatted PDT and Penn tags, respectively).
+
+? 0.5
+! May 2008. DZ Interset was first presented at the Language Resoruces and Evaluation Conference (LREC) in Marrakech, Morocco (see [[References]]). At that time, new drivers for the German Stuttgart-Tübingen Tagset and the Portuguese Floresta/CoNLL tagset (extremly noisy, huh!) were present.
+
+! At the time around LREC, a major change in the feature pool started to crystallize. The diametrically different approaches to tagging of pronouns and determiners led me to remove these categories from the top-level part-of-speech set and transform them to special cases of nouns and adjectives. Such approach had already been taken a year before for Bulgarian but now I wanted to unify it across languages. In the end of 2008, all drivers already reflected the changed policy. The state of pronouns may further change in future, as this is a rather controversial issue. On the other hand, a similar change may be needed for numerals, too.
+
+? 1.0
+! February 2009. Petr Pořízka and Markus Schäfer use DZ Interset in MorphCon, a GUI tool for conversion of Czech morphological tags. They wrote a driver for the Czech ajka tagset (a morphological analyzer from Masaryk University, Brno). MorphCon has been presented at a bohemistic conference in Brno (see [[References]]). Dan added a driver for the Czech tags of the Multext East multilingual corpus.
+
+! Various maintenance changes took place, too. Version control has been migrated to network-accessible (though not publicly accessible) SVN repository, together with Trac project management interface. Website now includes information on [[License|licensing]], [[references]] and this version history. From now on, I intend to distinguish revisions from numbered releases.

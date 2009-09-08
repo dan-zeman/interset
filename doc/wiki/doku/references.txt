@@ -1,0 +1,15 @@
+====== References for DZ Interset ======
+
+If you report on something interesting you did with DZ Interset, please cite the following paper:
+
+  * Daniel Zeman: Reusable Tagset Conversion Using Tagset Drivers. In: Proceedings of the Language Resources and Evaluation Conference, LREC 2008. CD full edition + printed Conference Abstracts (ISBN 2-9517408-4-0). Marrakech, Morocco, 2008. (Available [[http://ufal.mff.cuni.cz/~zeman/publikace/2008-02/tagdrivers-marrakech-styl-lrec.pdf|here]].)
+
+
+===== Used in / cited by =====
+
+Also, if you do something relevant to DZ Interset, I can include a pointer to your work here:
+
+  * First used to convert Danish, Swedish and English tags in experiments with cross-language parser adaptation.
+    * Daniel Zeman, Philip Resnik: //Cross-Language Parser Adaptation between Related Languages//. In: Proceedings of IJCNLP 2008 Workshop on NLP for Less Privileged Languages, pp. 35-42. Hyderabad, India, 2008. (Available [[http://ufal.mff.cuni.cz/~zeman/publikace/2008-01/padapt-hyderabad-05c-postfinal.pdf|here]].)
+  * [[http://www.morphcon.webnode.cz/|MorphCon]] (cs) is a tool for conversion of various tagsets for Czech. It is based on Interset. It has been presented here:
+    * Petr Pořízka (UP Olomouc) & Markus Schäfer (Universität Bonn): //MorphCon – program pro konverzi českých morfologických tagsetů//. In: [[http://www.phil.muni.cz/jazyk/cfg/?cfg-2009,1|Čeština ve formální gramatice 2009]], Brno, Filozofická fakulta Masarykovy univerzity, February 2009
