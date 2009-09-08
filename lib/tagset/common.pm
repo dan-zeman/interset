@@ -545,6 +545,8 @@ sub get_permitted_structures_joint
 {
     my $list = shift; # reference to array
     my $decode = shift; # reference to driver-specific decoding function
+    # Can we consider tags that require setting the 'other' feature?
+    my $no_other = shift;
     my %trie;
     # Make sure that the list of possible tags is not empty.
     # If it is, the driver's list() function is probably not implemented.
@@ -555,6 +557,8 @@ sub get_permitted_structures_joint
     foreach my $tag (@{$list})
     {
         my $fs = &{$decode}($tag);
+        # If required, skip tags that set the 'other' feature.
+        next if($no_other && exists($fs->{other}));
         # Loop over known features (in the order of feature priority).
         my $pointer = \%trie;
         foreach my $f (@features)
@@ -1802,7 +1806,11 @@ sub feature_structure_to_text
     {
         my $f = $_;
         my $v = $fs->{$f};
-        if(ref($v) eq "ARRAY")
+        if($f eq 'other')
+        {
+            $v = structure_to_string($v);
+        }
+        elsif(ref($v) eq "ARRAY")
         {
             $v = join("|", map {"\"$_\""} @{$v});
         }

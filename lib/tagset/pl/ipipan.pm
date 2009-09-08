@@ -181,6 +181,10 @@ sub decode
         $f{pos} = 'verb';
         $f{verbform} = 'part';
         $f{voice} = 'pass';
+        $f{number} = 'sing';
+        $f{gender} = 'neut';
+        $f{case} = 'nom';
+        $f{negativeness} = 'pos';
         $f{other}{pos} = 'imps';
         decode_aspect(shift(@values), \%f);
     }
@@ -318,9 +322,20 @@ sub encode
 {
     my $f0 = shift;
     # Modify the feature structure so that it contains values expected by this
-    # driver.
-    my $f = tagset::common::enforce_permitted_joint($f0, $permitted);
-    my %f = %{$f}; # This is not a deep copy but $f already refers to a deep copy of the original %{$f0}.
+    # driver. Do not do that if this was also the source tagset (because the
+    # modification would damage tags using 'other'). However, in any case
+    # create a deep copy of the original feature structure so that it is
+    # protected from changes during encoding.
+    my $f;
+    if($f0->{tagset} eq 'pl::ipipan')
+    {
+        $f = tagset::common::duplicate($f0);
+    }
+    else
+    {
+        $f = tagset::common::enforce_permitted_joint($f0, $permitted);
+    }
+    my %f = %{$f};
     my $nonstrict = shift; # strict is default
     $strict = !$nonstrict;
     my $tag;
@@ -2502,8 +2517,11 @@ end_of_list
 #------------------------------------------------------------------------------
 BEGIN
 {
+    # When scanning tags for permitted feature structures, do not consider tags
+    # that require setting the 'other' feature.
+    my $no_other = 1;
     # Store the hash reference in a global variable.
-    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode);
+    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode, $no_other);
 }
 
 
