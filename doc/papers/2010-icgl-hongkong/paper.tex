@@ -20,11 +20,13 @@
 \usepackage{color} %pro korektury
 \usepackage{paralist} % for better itemize and enumerate
 
-% a footer required for the first page
+% a footer required for the first page (ICON but not ICGL)
 \usepackage{fancyhdr}
 \fancyhead{} % clear all header fields
 \renewcommand{\headrulewidth}{0pt}
-\fancyfoot[C]{Proceedings of ICON-2009: 7th International Conference on Natural Language Processing, Macmillan Publishers, India. Also accessible from http://ltrc.iiit.ac.in/proceedings/ICON-2009}
+\fancyfoot[C]{
+%Proceedings of ICON-2009: 7th International Conference on Natural Language Processing, Macmillan Publishers, India. Also accessible from http://ltrc.iiit.ac.in/proceedings/ICON-2009
+}
 
 % xelatex
 \usepackage{fontspec, xunicode, xltxtra}
@@ -61,16 +63,17 @@
 
 
 
-\title{Maximum Spanning Malt: Hiring World's Leading Dependency Parsers to Plant Indian Trees%
+\title{Hard Problems of Tagset Conversion%
 % Tohle nechat zakomentované, je to jen tahák, jak udělat acknowledgement grantu při nedostatku místa. Jinak ale mám momentálně na konci opravdovou sekci Acknowledgements.
 %\thanks{ \hspace{.6em}The research has been supported by the grant 
 %MSM0021620838 (Czech Ministry of Education).}
 }
 
-\author{Daniel Zeman\\
-Univerzita Karlova v Praze, Ústav formální a aplikované lingvistiky\\
-Malostranské náměstí 25, CZ-11800, Praha, Czechia\\ 
-\texttt{zeman@ufal.mff.cuni.cz}
+% Až to přestane být anonymní, tak také odkomentovat Acknowledgements a autoreference XXXX.
+\author{%Daniel Zeman\\
+%Univerzita Karlova v Praze, Ústav formální a aplikované lingvistiky\\
+%Malostranské náměstí 25, CZ-11800, Praha, Czechia\\ 
+%\texttt{zeman@ufal.mff.cuni.cz}
 }
 
 %\title{Instructions for ACL-IJCNLP 2009 Proceedings}
@@ -91,223 +94,43 @@ Malostranské náměstí 25, CZ-11800, Praha, Czechia\\
 \thispagestyle{fancy}
 
 \begin{abstract}
-We present our system used for participation in the ICON 2009 NLP Tools Contest: dependency parsing of Hindi, Bangla and Telugu. The system consists of three existing, freely available dependency parsers, two of which (MST and Malt) have been known to produce state-of-the-art structures on data sets for other languages. Various settings of the parsers are explored in order to adjust them for the three Indian languages, and a voting approach is used to combine them into a superparser. Since there is nothing novel about the approach used, substantial part of the paper is devoted to the analysis of errors the system makes on the given data sets.
+Part-of-speech or morphological tags are important means of annotation in a vast number of corpora. However, different sets of tags are used in different corpora, even for the same language. Tagset conversion is difficult, and solutions tend to be tailored to a particular pair of tagsets. We propose a universal approach that makes the conversion tools reusable. \XXX We also provide an indirect evaluation in the context of a parsing task.
 \end{abstract}
 
 \section{Introduction}
 \label{sec:intro}
 
-Dependency parsing, i.e. sentence analysis that outputs tree of word-on-word dependencies (as opposed to constituent trees of context-free derivations), gained growing attention and popularity recently. There are data-driven dependency parsers that can be trained on syntactically annotated corpora (treebanks) and new, previously unseen material can be parsed very efficiently \citep{nivre:2009:ACLIJCNLP}.
+Most annotated corpora use various types of tags to encode additional information on words. In some cases this information is merely the part of speech (“noun”, “verb” etc.—hence the term \textit{part-of-speech} or \textit{POS tags}). In many cases, however, the string of characters comprising the tag is a compressed representation of a feature-value structure. Most of the features encoded this way are morphosyntactic (e.g. “gender = masculine”, “number = singular”), hence the term \textit{morphological tags}.
 
-Most of the successful parsers employ discriminative learning techniques to sort out vast sets of potentially useful features observed in the input text. Thus, for every new training treebank, smart feature engineering is the key to getting the most out of the existing parsers, regardless how well they performed on other data sets and languages. Now that there are new treebanks available for two Indo-Aryan and one Dravidian language, we took three existing dependency parsers and explored the possibilities of tuning them for the new training data. Both parser configuration and data preprocessing are relevant approaches to the tuning. In addition, we used parser combination to further improve the results.
+Unfortunately, it is very rare to see two corpora sharing a common set of tags. Language differences are only partially responsible—it is the corpus designers, their diverse views, theories and intended uses of the corpora, what matters most. Even two corpora of the same language may define two completely incompatible tagsets.
 
-Throughout the paper we focus mainly on the unlabeled attachment score. Although the parsers produce labeled dependencies, we do not optimize the system towards label accuracy.
+Such diversity proves disadvantageous for both human users and NLP software. A human user (linguist) typically wants to submit queries such as “show me all occurrences of a noun in plural, preceded by a preposition”. Tags however rarely contain statements like “number = plural” literally. That would be prohibitively space-consuming. Instead we have to know that e.g. the fourth character of the tag being “P” means “plural”. For instance, the tag \texttt{NNIS7-{}-{}-{}-{}-A-{}-{}-{}-}\footnote{This example is taken from the Prague Dependency Treebank \citep{pdt}.} may read as “part of speech = noun, detailed part of speech = common noun, gender = masculine inanimate, number = singular, case = 7th (instrumental), negativeness = affirmative”. To work with the corpus efficiently, a linguist either needs to interpret the tags using specialized software, or to memorize the particular tag scheme. Obviously, if the same linguist has to switch to a different corpus, he/she must memorize more schemes or replace the tag interpretation software.
 
-The rest of the paper is organized as follows: In \Sref{sec:system}, we describe the respective parsers and the combined parsing system. In \Sref{sec:experiments}, we report on the experiments we performed, discuss various results on the development set and analyze the errors. In \Sref{sec:evaluation} we present the official results on the test data. We conclude by summarizing the best configuration we were able to find, and future implications.
+Similarly, various NLP tools may depend on particular tagsets. While some tools indeed treat tags as atomic strings, others could exploit the tag structure to dig more information about the word—no matter whether they use the features in machine learning, or in human-designed rules. If the tagset changes, manual rules become useless and statistical models have to be retrained at least; even that may not be possible in case the training procedure works with selected subsets of the feature pool. Applicability of NLP software to multiple corpora is exactly the reason why one would want to convert tags from one tagset to another.
 
-\section{System Description}
-\label{sec:system}
+For many tagset pairs, designing the conversion procedure is not easy. On one hand, there are rare tagsets (e.g. MULTEXT-EAST, \citet{multext-east}) fitting at the same time languages as distant as Czech and Estonian; on the other hand, tagsets of two closely related languages (e.g. Danish and Swedish) or even two tagsets of the same language may differ substantially (for instance, the Mamba tagset of Swedish \citep{talbanken} contains detailed classification of auxiliary verbs and punctuation but lacks features like number, mood, tense etc.; this is in sharp contrast to another Swedish tagset, Parole \citep{parolesv}, which in turn is not compatible with the Danish Parole \citep{paroleda} tagset (the former classifies participles as verb forms, the latter as adjective forms; the former has separate tags for numerals, the latter classifies both cardinal and ordinal numbers as adjectives; etc.)
 
-Several good trainable dependency parsers have emerged during the past five years. The CoNLL-X \citep{buchholz-marsi:2006:CoNLL-X} and CoNLL 2007 \citep{nivre-EtAl:2007:EMNLP-CoNLL2007} shared tasks in multilingual dependency parsing have greatly contributed to the development of the parsers. Some of the parsers are now freely available on the web, some are even open-source. We selected three of the publicly available parsers for our experiments:
+From the above said it follows that the typical tag conversion is an information-losing process. Though it is often desirable to perform it anyway and preserve as much information as possible. Creation of a conversion procedure between two tagsets requires hours of tedious work, consisting mostly of reading the tagging guidelines and translating them into a programming language. A universal description, to which all tagsets map, could make this process easier, and its results reusable. One attempt to find such description and deploy it in the conversion task is DZ Interset \citep{biblio:ZeReusableTagset2008}. In the present paper we discuss the development of the universal description and focus on selected hard problems that arise when comparing various existing tagsets.
 
-%\microsection{MST Parser}
-\subsection{MST Parser}
-\label{sec:mst}
-The Maximum Spanning Tree (MST) parser \citep{mst} views the sentence as an directed complete graph with edges weighted by a feature scoring function. It finds for the graph the spanning tree that maximizes the weights of the edges. A multi-class classification algorithm called MIRA is used to compute the scoring function.
+The rest of the paper is organized as follows: In \XXX we describe Interset and how it works [\XXX including encoding algorithm] [\XXX including applications: Petr Pořízka, Saša Rosen, můj parsing]. In \XXX we describe our universal set of features. Then, \XXX lists decisions that are difficult w.r.t. universality, and propose solutions. Finally, we demonstrate the implications on real tagsets, and provide illustrative statistics.
 
-MST Parser achieved the best unlabeled attachment scores (UAS) for 9 out of the 13 languages of CoNLL-X, and second best scores in two others. Parsing is fast but training the parser takes many hours on large treebanks. On small data however, multiple quick experiments with different settings are still doable. The parser is implemented in Java and freely available for download.\footnote{\url{http://sourceforge.net/projects/mstparser/}}
-
-%\microsection{Malt Parser}
-\subsection{Malt Parser}
-\label{sec:malt}
-The Malt Parser  \citep{malt} is a deterministic shift-reduce parser where input words can be either put to the stack or taken from the stack and combined to form a dependency. The decision which operation to perform is made by an oracle based on various features of the words in the input buffer and the stack. The default machine learning algorithm used to train the oracle is a sort of SVN (support vector machine) classifier \citep{svm}.
-
-Malt Parser has participated in both CoNLL-X and CoNLL 2007 shared tasks, and although it achieved the best UAS in three languages only, it usually scored among the five best parsers, sometimes with statistically insignificant difference from the winner. Malt Parser is really fast and its new Java implementation is open-source, freely available for download.\footnote{\url{http://maltparser.org/}}
-
-%\microsection{DZ Parser}
-\subsection{DZ Parser}
-\label{sec:dz}
-In order to combine the two above parsers, we needed a third parser. We picked DZ Parser \citep{dzparser}, which is also reasonably fast and freely available.\footnote{\url{http://ufal.mff.cuni.cz/~zeman/projekty/parser/}} Although its accuracy, if compared to MST or Malt, is worse by a wide margin, this parser proved useful because its only role was to help to form a majority whenever MST and Malt disagreed.
-
-DZ Parser builds a model of bigrams of words that occur together in a dependency; most of the time, words are identified by their part of speech tags and morphological features. The parser was originally developed for Czech but it can be re-trained for any other language.\footnote{Of course there are other dependency parsers that successfully participated in the CoNLL shared tasks and are available for download. One alternative worth mentioning is the ISBN Parser \citep{titov-henderson:2007:EMNLP-CoNLL2007} at \url{http://flake.cs.uiuc.edu/~titov/}.}
-
-\subsection{Voting Superparser}
-\label{sec:voting}
-The three parsers are combined using a simple weighted-voting approach similar to \citet{biblio:ZeZaImprovingParsing2005}, except that the output is guaranteed to be cycle-free. We start by evaluating every parser separately on the development data. The UAS of each parser is subsequently used as the weight of that parser's vote. Dependencies are parent-child relations, and for every node there are up to three candidates for its parent (if all three parsers disagree). Candidates get weighted votes -- e.g., if parsers with weights $w_1 = 0.8$ and $w_2 = 0.7$ agree on the candidate, the candidate gets 1.5 votes. Since we have only three parsers, in practice this means that the candidate of the best parser looses only if 1. the other two parsers agree on someone else, or 2. if attaching the child to this candidate would create a cycle.
-
-The tree is constructed from the root down. We repeatedly add nodes whose winning parent candidates are already in the tree. If none of the remaining nodes meet this condition, we have to break a cycle. We do so by examining all unattached nodes. At each node we notice the votes of its current winning parent. Then we remove the least-scoring winner and go on with adding nodes until all nodes are attached or there is another cycle to break.
-
-\section{Experiments}
-\label{sec:experiments}
-
-The final test data are blind, any error analysis is therefore impossible. That is why all scores given in this section were measured on the development data. All three treebanks follow the same annotation scheme and each of them is available in two flavors:
+\section{What Is Interset and What It Is Not}
+\label{sec:whatisit}
 
 \begin{compactitem}
-\item \textit{nomorph} variety contains word forms, chunk labels, dependency links and dependency labels
-\item \textit{morph} variety is augmented by automatically assigned lemmas, part of speech tags and values of morphological features (gender, number, person, case, postposition and tam -- tense+aspect+modality)
+\item it is not a standard like eagles, parole, gold ontology and that sort of crap
+\item it is not a physical tagset (not intended to be used so - nemusim se ridit tim, co by radi lingvisti, aby jim to bylo bliz)
+\item it looses information but it never adds information. If source tagset does not encode something, it simply won't be in Interset.
+\item Specificaly, we do not retag words (say, we are converting from Brown to Penn, and hey, the word abc is tagged adverb in Brown and as conjunction in Penn... No! Unless we map all Brown adverbs on Interset conjunctions, which we probably don't want to, we will not change the tag of word abc. In fact, we NEVER look at the word the tag is assigned to. We work with the tag ONLY.
 \end{compactitem}
-
-\subsection{Morphology}
-\label{sec:morphology}
-
-\Tref{tab:baseline} shows baseline results on the \textit{nomorph} data. Both MST and Malt parsers were invoked in projective mode, Malt with the default Nivre arc-eager algorithm.
-
-\begin{table}[ht]
-\begin{centering}
-%\small
-\begin{tabular}{l|l|l|l|l}
-& \textbf{MST} & \textbf{Malt} & \textbf{DZ} & \textbf{Vote} \\
-\hline
-hi & 80.32 & 81.84 & 62.00 & \textbf{82.48}\\
-bn & 82.00 & \textbf{84.71} & 71.02 & 83.11\\
-te & 77.63 & \textbf{80.89} & 70.52 & 80.59\\
-\end{tabular}
-\caption{Baseline UAS of the four parsers on \textit{nomorph} development data. Language codes follow ISO 639: hi = Hindi, bn = Bangla, te = Telugu.}
-\label{tab:baseline}
-\end{centering}
-\end{table}
-
-There are several ways how to use the additional information from the \textit{morph} data. The easiest way, exploitable by all three parsers, is to combine the chunk label, the POS tag and the features into one tag string. The results (not presented here) are very poor. Although there may be tagging errors, the most likely cause is data sparseness. In \Tref{tab:corpus} we illustrate this by showing the numbers of unique values in the various attributes of treebank words.
-
-\begin{table}[ht]
-\begin{centering}
-%\small
-\begin{tabular}{l|r|r|r|r|r|r}
-& \textbf{occ} & \textbf{frm} & \textbf{lem} & \textbf{cl} & \textbf{pos} & \textbf{feat} \\
-\hline
-hi & 13779 & 3973 & 3134 & 10 & 33 & 714\\
-bn & 6449 & 2997 & 2336 & 14 & 30 & 367\\
-te & 5494 & 2462 & 1403 & 12 & 31 & 453\\
-\end{tabular}
-\caption{Size of the training corpora: occ -- word occurrences, frm -- distinct forms, lem -- lemmas, cl -- chunk labels, pos -- part of speech tags, feat -- feature value combinations.}
-\label{tab:corpus}
-\end{centering}
-\end{table}
-
-To fight sparseness, we could either restrict the tag to selected information, or split the information into multiple features learnt separately, or both. We first restricted the tag string to selected information. Parsing on other treebanks showed that POS with case is especially useful \citep{dzparser}. The other feature we selected is called \textit{vibhakti}, which partially corresponds to case suffix and partially to postposition.\footnote{The Indian treebanks at hand are unusual in that nodes do not always map to words. They represent chunks, with function words such as postpositions hidden in node attributes.}
-
-\Tref{tab:poscasevib} presents the results of restricting the tag string to POS+case+vibhakti. This move especially improves the MST Parser, which now outperforms Malt on Hindi and Bangla. Malt improves on Hindi but drops behind on Bangla and Telugu. DZ Parser also improves on Hindi and deteriorates elsewhere but there is an interesting observation: even though its own scores are worse, the worsened output actually improves the voting results (provided the configurations of MST and Malt are fixed). So it seems that the newly introduced errors are less important (because taken care of by the more powerful parsers) while some difficult parts of the data are now covered better.
-
-\begin{table}[ht]
-\begin{centering}
-%\small
-\begin{tabular}{l|l|l|l|l}
-& \textbf{MST} & \textbf{Malt} & \textbf{DZ} & \textbf{Vote}\\
-\hline
-hi & 86.16 & 82.96 & 75.12 & \XXX 86.64\\
-bn & 85.70 & 80.02 & 54.38 & \XXX 78.79\\
-te & 79.85 & 78.37 & 45.78 & \XXX 78.81\\
-\end{tabular}
-\caption{UAS on refined \textit{morph} data (POS tag, case and vibhakti concatenated). \XXX voting se pocitalo, kdyz jeste MST pracoval jen s nomorph, takze to musime prepocitat}
-\label{tab:poscasevib}
-\end{centering}
-% Když se ke značce POS přilepí pád, ale ne vibhakti, a s tím se přetrénuje Malt parser (ostatní parsery jsme nechali beze změny, tj. MST byl natrénovaný na nomorph a DZ naopak i na vibhakti), tak Malt sám má na všech třech jazycích pořád stejné výsledky (jako v této tabulce), ale výsledky Vote se na hindštině zhorší a na zbývajících dvou jazycích zlepší: hi=85.36, bn=83.35, te=80.89.
-\end{table}
-
-Finally, ve returned to \textit{nomorph} with Malt on Bangla and Telugu, where the POS+case+vibhakti tags did not help. The results are given in \Tref{tab:posmix2}. This is also the configuration we used to parse the test set for the official evaluation round 1.
-
-\begin{table}[ht]
-\begin{centering}
-%\small
-\begin{tabular}{l|l|l|l|l}
-& \textbf{MST} & \textbf{Malt} & \textbf{DZ} & \textbf{Vote}\\
-\hline
-hi & 86.16 & 85.84 & 75.12 & \textbf{87.12}\\
-bn & 85.70 & 84.71 & 54.38 & \textbf{86.19}\\
-te & 79.85 & 80.89 & 45.78 & \textbf{82.37}\\
-\end{tabular}
-\caption{UAS on mixed data: MST and DZ use POS+case+vibhakti for all languages, Malt uses that for Hindi and POS only elsewhere. MST is now the best parser for hi and bn, which changes the voting weights.}
-\label{tab:posmix2}
-\end{centering}
-\end{table}
-
-%\begin{compactitem}
-%\item \hi{स्टैंडर्डज} \textit{(sṭaiṁḍarḍaja)} \translit{(sṭaiṁḍarḍaja)}
-%\item \hi{स्टैंडर्डस} \textit{(sṭaiṁḍarḍasa)}
-%\item \hi{स्टैंडर्ड्स} \textit{(sṭaiṁḍarḍsa)}
-%\item \bn{সরিয়ে} Tohle je bengálsky.
-%\item \te{వాడుతున్నాం} Tohle je telugsky.
-%\end{compactitem}
-
-\subsection{Nonprojectivity}
-\label{sec:nonprojectivity}
-
-Nonprojectivity is a property of the dependency structure and the word order \citep{neproj} that makes parsing more difficult. All three parsers can produce nonprojective structures and all three treebanks are nonprojective. However, except for Hindi, the proportion of nonprojective dependencies is so small that one can hardly imagine that running the parsers in nonprojective mode would bring any improvement. A quick experiment with Malt Parser switched to the nonprojective Stack Eager algorithm revealed that it actually hurts the results even for Hindi.
-
-\begin{table}[ht]
-\begin{centering}
-%\small
-\begin{tabular}{l|ll}
-& \textbf{Edges} & \textbf{Sentences} \\
-\hline
-hi & 01.83 & 13.93\\
-bn & 00.96 & 05.49\\
-te & 00.45 & 01.31\\
-\end{tabular}
-\caption{Percentage of nonprojective dependencies, and of sentences containing at least one nonprojectivity.}
-\label{tab:nonprojectivity}
-\end{centering}
-\end{table}
-
-\subsection{Error Patterns}
-\label{sec:errors}
-
-The accuracy of the dependencies is relatively high and it is difficult to trace repetitive error patterns. In Hindi, many wrong attachments seem to be long-distance, and verbs, conjunctions, root and NULL nodes are frequently involved. Frequent words should perhaps be available to the parsers as parts of tag strings: for instance, Hindi \hi{कि} \translit{ki} ``that'' or \hi{तो} \translit{to} are wrongly attached because the parser only sees the general CC tag. On a similar note, problems with coordination, also observed e.g. by \citet{dzparser}, occur here, too: \hi{भाई और भाभी} \translit{bhāī aura bhābhī} ``brother and his wife'' is correctly recognized as coordination rooted by the conjunction \hi{और}, however, the conjunction node lacks the information about its noun children and fails to attach as the subject of the verb.
-
-The tag string should contain both the chunk label and the POS tag. So far we wrongly assumed that POS always determins the chunk label. It is often so but not always, as exemplified in the Bangla chunk sequence \bn{তবে সুদীপ ওকে একদিন আড়ালে ডেকে বলেছিল কৌতূহল দেখালে তুমি উঁচুতে উঠতে অনিমেষ} \translit{tabe sudīpa oke ekadina āṛāle ḍeke balechila kautūhala dekhāle tumi um̃cute uṭhate animeša}. The words \bn{ডেকে} and \bn{দেখালে} are tagged VGNF|VM while \bn{বলেছিল} and \bn{উঠতে} are VGF|VM. The parser gets them wrong and it could be caused by it seeing only VM in the tag.
-
-In Telugu, extraordinal number of sentences follow the SOV order so strongly that the last node (verb) is almost always attached to the root and most other nodes are attached directly to the last node. An example chunk sequence where this rule would lead to 100~\% accuracy follows: \te{రాష్ట్రంలొ రంగారెడ్డి మెదక్ నిజామాబాద్ జిల్లాలలొ పంటను గొప్పొ పండిస్తున్నారు} \translit{rāšṭraṁlo raṁgāreḍḍi medak nijāmābād jillālalo paṁṭanu goppo paṁḍistunnāru}. In the light of such examples it seems reasonable to provide the parsers with an additional feature telling whether a particular dependency observes the ``naïve Telugu'' structure. Note however that this will not help with the other two languages. While 73.75~\% of Telugu dependncies follow this rule, it is only 39.52~\% in Bangla and 35.71~\% in Hindi.
-
-\subsection{\XXX To Do}
-\begin{compactitem}
-\item \XXX Parser unique errors (oracle accuracy)
-\item \XXX How many times a candidate lost due to cycle prevention, and how many times this introduced an error?
-\item \XXX Learning curve
-\item \XXX Spočítat, kolik je ve kterém jazyce uzlů NULL.
-\item \XXX znacka chunku, priklad z bengalstiny
-\item \XXX casta slova, priklad z hindstiny
-\item \XXX koordinace, priklad z hindstiny
-\end{compactitem}
-
-\section{Official Evaluation}
-\label{sec:evaluation}
-
-Finally, we present the official evaluation of our voting superparser, as measured by the organizers on the test data. For this purpose, the parsing system has been retrained on both the training data and the development data. The results are shown in \Tref{tab:evaluation}.
-
-\begin{table}[ht]
-\begin{centering}
-\small
-\begin{tabular}{l|l|l|l}
-& \textbf{UAS} & \textbf{LAA} & \textbf{LAS} \\
-\hline
-hi & 88.58 (3:90.31) & 72.66 (4:76.38) & 68.60 (4:74.48)\\
-bn & 86.06 (4:90.32) & 71.28 (4:81.27) & 66.70 (5:79.81)\\
-te & 80.27 (4:86.28) & 54.20 (4:61.58) & 49.91 (4:60.55)\\
-\end{tabular}
-\caption{Official scores on the test data: unlabeled attachment score (UAS), label assignment accuracy (LAA) and labeled attachment score (LAS). The numbers in parentheses are the rank of our system and the score of the best system w.r.t. the given metric.}
-\label{tab:evaluation}
-\end{centering}
-\end{table}
-
-\section{Related and Future Work}
-\label{sec:related}
-
-There is a large body of work on parser combination. A summary can be found in \citet{nivre-mcdonald:2008:ACLMain}, whose approach is also related to ours w.r.t. the selection of parsers. However, their feature-based integration of MST and Malt parsers is much more sophisticated than our lightweight voting. Further improvement of accuracy can be expected if MST-Malt integration is applied to the Indian treebanks.
-
-Future work, at the time of writing, includes experiments that can be run before the evaluation round 2, and thus their results will appear in the final version of this paper. We definitely intend to test other algorithms of the Malt parser, as well as to reconfigure its feature pool and let it work with POS, case and vibhakti separately.
-
-Labeling of the dependencies is another problem that deserves more attention. We have concentrated on the unlabeled attachment score so far and for the sake of the official evaluation, we simply pushed the MST labels through. A separate postprocessing classifier would probably produce better results.
 
 \section{Conclusion}
-\label{sec:concl}
-
-We have described our system of voting parsers, as applied to the ICON 2009 NLP Tools Contest task. We showed that case and vibhakti are important features at least for parsing Hindi while their usability in Bangla and Telugu is limited by data sparseness. We also discussed several error patterns that could lead to further improvements of the parsing system in future.
+\label{sec:conclusion}
 
 \section*{Acknowledgements}
 
-We are enormously grateful to the developers of MST and Malt parsers for making their software available to the research community.
-The research has been supported by the grant 
-MSM0021620838 (Czech Ministry of Education).
+%The research has been supported by the grant 
+%MSM0021620838 (Czech Ministry of Education).
 
 \begin{small}
 \bibliography{paper}
