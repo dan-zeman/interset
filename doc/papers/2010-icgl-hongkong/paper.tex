@@ -119,32 +119,36 @@ For many tagset pairs, designing the conversion procedure is not easy. On one ha
 
 From the above said it follows that the typical tag conversion is an information-losing process. Though it is often desirable to perform it anyway and preserve as much information as possible. Creation of a conversion procedure between two tagsets requires hours of tedious work, consisting mostly of reading the tagging guidelines and translating them into a programming language. A universal description, to which all tagsets map, could make this process easier, and its results reusable. One attempt to find such description and deploy it in the conversion task is DZ Interset \citep{biblio:ZeReusableTagset2008}. In the present paper we discuss the development of the universal description and focus on selected hard problems that arise when comparing various existing tagsets.
 
-%The rest of the paper is organized as follows: In \XXX we describe Interset and how it works [\XXX including encoding algorithm] [\XXX including applications: Petr Pořízka, Saša Rosen, můj parsing]. In \XXX we describe our universal set of features. Then, \XXX lists decisions that are difficult w.r.t. universality, and propose solutions. Finally, we demonstrate the implications on real tagsets, and provide illustrative statistics.
-
-The rest of the paper is organized as follows: In \Sref{sec:interset} we describe Interset and how it works. In \Sref{sec:features} we describe our universal set of features. Then, \Sref{sec:hard} lists decisions that are difficult w.r.t. universality, and proposes solutions. Finally, we demonstrate the implications on real tagsets, and provide illustrative statistics.
+The rest of the paper is organized as follows: In \Sref{sec:interset} we describe Interset and how it works. In \Sref{sec:features} we describe our universal set of features. \Sref{sec:drivers} gives some implementation details of Interset-based conversion. Then, \Sref{sec:hard} lists decisions that are difficult w.r.t. universality, demonstrates them on real tagsets, and proposes solutions.
 
 \section{Interset}
 \label{sec:interset}
 
-Interset is a universal set of features and their values. It shall be able to store all features that are usually encoded in tags. The role of this universal set \textit{(“Interset”)} is similar to the role of Interlingua in Interlingua-based machine translation \citep{interlingua} or the role of Unicode among character sets. The Interset serves as an intermediate step on the way from tagset A to tagset B. The interaction between the Interset and tagsets A and B, respectively, is described in \textit{tagset drivers}. Once the drivers have been implemented, we can do the two-way conversion A to B and B to A, plus the conversion between one of these tagsets and any other tagset that has been defined so far.
+Interset is a universal set of features and their values. It shall be able to store all features that are usually encoded in tags. The role of this universal set is similar to the role of Interlingua in Interlingua-based machine translation \citep{interlingua} or the role of Unicode among character sets. The Interset serves as an intermediate step on the way from tagset A to tagset B. The interaction between the Interset and tagsets A and B, respectively, is described in \textit{tagset drivers}. Once the drivers have been implemented, we can do the two-way conversion A to B and B to A, plus the conversion between one of these tagsets and any other tagset that has been defined so far.
 
 % Tenhle odstavec se případně může vypustit.
-We are not likely to spare much effort during the initial phase, if compared to just writing a targeted A-to-B conversion procedure. Actually, covering two completely new tagsets requires more work and care: we should describe both encoding and decoding of each tagset, we may have to think about features that are present in neither of them, and we will probably want to be more careful about aspects that may not matter to our current application. However, the reusability of the resulting code should compensate for the effort more than adequately. Plus we provide some algorithms to make adding new tagsets easier, and it is also possible that the required tagset has been covered by someone else who is sharing the code on the web.
+We are not likely to spare much effort during the initial phase, if compared to just writing a targeted A-to-B conversion procedure. Actually, covering two completely new tagsets requires more work and care: we should describe both encoding and decoding of each tagset, we may have to think about features that are present in neither of them, and we will probably want to be more careful about aspects that may not matter to our current application. However, the reusability of the resulting code should compensate for the effort more than adequately; it is even possible that the required tagset has been covered by someone else who is sharing the code on the web.
+
+Besides abstract concept definitions, Interset also comprises some real software---supporting procedures that make adding new tagsets easier. Thanks to the encoding algorithm implemented in the support library, developers adding new tagsets need not (not necessarily) consider all features that are irrelevant to the tagset being added (but which may become relevant during conversion to a particular other tagset).
 
 \subsection{A New Standard?}
 \label{sec:notastandard}
 
 \textbf{Interset is not a new annotation standard.} There have been attempts to standardize morphosyntactic tagging and it is not Interset's mission to compete with them. Instead, the goal is to cover as many existing tagsets as possible whether they conform to a standard or not. The set of Interset features and values could of course be compared to those defined in standards. There have been several European projects concerning tagset standardization. The EAGLES project \citep{eagles, LeechWilson1999} produced a set of recommendations for tagsets. Output of the LE-PAROLE project \citep{parole} was a multilingual corpus of 14 European languages, morphosyntactically annotated according to a common core PAROLE tagset, extended with a set of language specific features. Another multilingual corpus with common tagset is MULTEXT \citep{multext} for six European languages (English, French, Spanish, German, Italian and Dutch), and later its spin-off MULTEXT-EAST \citep{multext-east} for 12 languages (English, Bulgarian, Czech, Estonian, Hungarian, Romanian, Slovene, and in later versions also Croatian, Lithuanian, Resian, Russian and Serbian); the tagsets used in MULTEXT corpora comply with EAGLES. Various EAGLES-compliant tagsets can be added to our system and their mutual similarity will probably make adding them all easier. Weakly related is also the Gold Ontology project \citep{gold-ontology} that defines various linguistic concepts, some of which serve as feature names and feature values in Interset. Similarly, morphosyntactic and other terms are included in IsoCat.\footnote{\url{http://www.isocat.org/}}
 
+Interset has been used in cross-language parser adaptation \citep{ZemanResnik2008}, and in MorphCon, a GUI program that brings tag conversion to corpus users \citep{morphcon}. Currently, it is being deployed as a means of unified access to morphosyntactic annotation for the users of the parallel multilingual corpus Intercorp.\footnote{\url{http://www.korpus.cz/intercorp/?req=doc:uvod}}
+
 \subsection{A New Tagset?}
 \label{sec:notatagset}
 
-\textbf{Interset is not primarily meant as a new \textit{physical} tagset for annotation.} Although it obviously could be used that way (possibly after compressing the feature values), it is better thought of as a set of concepts that physical tagsets can map to. Design of physical tagsets is often guided by various needs such as conforming to linguistic tradition and terminology of the given language, minimizing errors of automatic disambiguation etc. In contrast, the most important design constraint for Interset is the portability of information from one tagset to the others. If a feature value X, encoded in tagset A, is not defined in tagset B but it is still probable that users of tagset B would tag the same set of words with feature value Y, then it is desirable that the Interset algorithms are able to change X to Y, when converting from A to B. At the same time, converting to tagset C might require changing X to Z, converting to tagset D would keep X (because D has X, too) and converting to other tagsets would result in resetting X to empty value because there is no better choice available.
+\textbf{Interset is not primarily meant as a new \textit{physical} tagset for annotation.} Although it obviously could be used that way (possibly after compressing the feature values), it is better thought of as a set of concepts that physical tagsets map to. Design of physical tagsets is often guided by various needs such as conforming to linguistic tradition and terminology of the given language, minimizing errors of automatic disambiguation etc. In contrast, the most important design constraint for Interset is the portability of information from one tagset to the others. If a feature value X, encoded in tagset A, is not available in tagset B but it is still probable that users of tagset B would tag the same set of words with feature value Y, then it is desirable that the Interset algorithms are able to change X to Y, when converting from A to B. At the same time, converting to tagset C might require changing X to Z, converting to tagset D would keep X (because D has X, too) and converting to other tagsets would result in resetting X to empty value because there is no better choice available.
 
-Conversion via Interset often looses information but never adds new information. Interset may define feature value X but it just won't be set unless the source tagset defines it, too. Specifically, the conversion procedure does not retag words. For instance, the source tagset may define one tag \texttt{IN} for both prepositions and subordinating conjunctions. The target tagset may have separate tags for each of those categories. So will Interset sort out the words tagged \texttt{IN} into prepositions and conjunctions? No! In fact, the procedure \textit{never} looks at the word the tag is assigned to. It only works with the tag itself.
+Conversion via Interset often looses information but never adds new information. Interset may define feature value X but it just won't be set unless the source tagset defines it, too. Specifically, the conversion procedure does not retag words. For instance, the source tagset may define one tag \texttt{IN} for both prepositions and subordinating conjunctions. The target tagset may have separate tags for each of those categories. Will then Interset sort out the words tagged \texttt{IN} into prepositions and conjunctions? No! In fact, the procedure \textit{never} looks at the word the tag is assigned to. It only works with the tag itself.
 
 \subsection{Features}
 \label{sec:features}
+
+The current version of Interset defines the following features and values. Besides the values listed, every feature is also allowed to have an empty value.
 
 \begin{compactitem}
 \item \texttt{\textbf{pos} = noun|adj|num|verb|adv|prep| conj|part|int|punc}
@@ -187,10 +191,10 @@ Conversion via Interset often looses information but never adds new information.
 \item \texttt{\textbf{tagset} = }\textit{where does the other info come from?}
 \end{compactitem}
 
-%\XXX
-The only reason of saving really everything is that converting a tagset to itself should not lose information. For that purpose we use the “other” feature. It contains arbitrary information that does not fit in other features and distinguishes tags. Since the information is not understood by any other tagset, we need to know which tagset the value comes from. Thus the identifier of the tagset should be stored in the “tagset” feature.
+The \texttt{other} feature can store arbitrary information that did not fit elsewhere. Typically, that sort of information is unique to the given tagset (not just unique to the language!), and goes too far from what tagsets usually encode. We do not believe that there will ever be another tagset encoding such information---if we did, we would update Interset to provide corresponding feature/value. However, it still makes sense to store the information so that a tagset can be converted to itself and no information is lost. Since the value of \texttt{other} is not understood by any other tagset, we need to know which tagset the value comes from. Thus the identifier of the tagset should be stored in the \texttt{tagset} feature.
 
-Except for “tagset” and “other”, there is a predefined list of possible values for each feature. Every feature also allows the empty value. While several feature-based tagsets distinguish between unknown values and irrelevant features, we do not find it wise in Interset. For instance, the fifth character in the PDT Czech tagset identifies grammatical case. Its normal values are 1 to 7. For parts of speech that do not have case (e.g. interjections) the fifth character is \texttt{-} (dash). Adjectives generally do have case, yet there are borrowed words without Czech case suffixes whose case value is unknown (\texttt{X}). An example is the tag \texttt{AAIPX-{}-{}-{}-1A-{}-{}-{}-} for “Buenos” in Buenos Aires. The benefit of making this distinction explicit in a tagset is unclear. What is clear, however, is that we must not reflect it in the universal feature set. Who can say that a feature will be irrelevant—given the context of the values of the other features—in any tagset whatsoever? It is quite easy to find features that are relevant in one tagset and not the other: e.g. Czech past participles distinguish gender, English don’t.
+%\XXX Tenhle odstavec asi vyhodit.
+While several feature-based tagsets distinguish between unknown values and irrelevant features, we do not find it wise in Interset. For instance, the fifth character in the PDT Czech tagset identifies grammatical case. Its normal values are 1 to 7. For parts of speech that do not have case (e.g. interjections) the fifth character is \texttt{-} (dash). Adjectives generally do have case, yet there are borrowed words without Czech case suffixes whose case value is unknown (\texttt{X}). An example is the tag \texttt{AAIPX-{}-{}-{}-1A-{}-{}-{}-} for “Buenos” in Buenos Aires. The benefit of making this distinction explicit in a tagset is unclear. What is clear, however, is that we must not reflect it in the universal feature set. Who can say that a feature will be irrelevant—given the context of the values of the other features—in any tagset whatsoever? It is quite easy to find features that are relevant in one tagset and not the other: e.g. Czech past participles distinguish gender, English don’t.
 
 \section{Tagset Drivers}
 \label{sec:drivers}
@@ -222,7 +226,7 @@ while(<>)
 }
 \end{lstlisting}
 
-We have implemented and tested drivers for several tagsets of the CoNLL 2006 (Buchholz and Marsi 2006) and 2007 (Nivre et al. 2007) shared task treebanks, for the Penn Treebank (Marcus et al. 1993), the Prague Dependency Treebank (Böhmová et al. 2003) and others, totaling 20 drivers. Those drivers are freely available on the web.\footnote{\url{http://xxx.com/}}
+At the time of writing there are drivers for 20 tagsets of 10 languages (Arabic, Bulgarian, Chinese, Czech, Danish, English, German, Polish, Portuguese and Swedish). Those drivers are freely available on the web.\footnote{\url{http://xxxxx.xx/}}
 We believe that the reusability will only be truly exploited if the drivers are shared in the community and we encourage everyone to contribute with drivers they need to write for themselves.
 
 \section{The Hard Problems}
@@ -230,17 +234,52 @@ We believe that the reusability will only be truly exploited if the drivers are 
 
 Working with various tagsets, we identified several fields that were difficult to capture and unify.
 
+%\XXX Pokud zbude místo, tak taky ukázat tu čínskou sadu značek a proč jsme z ní dokázali převzít pouze zlomek informace.
+
+\subsection{Pronouns, Determiners, Articles and Wh-Adverbs}
+\label{sec:pronouns}
+
+Most languages and tagsets have personal pronouns, i.e. words like ``I'', ``you'', ``he'', ``she'', ``it''. Various interrogative and relative function words (wh-words in English) are often also considered pronouns. In addition, grammars of some languages distinguish \textit{determiners} while others prefer to categorize the same thing as a sort of pronouns. According to the definition of EAGLES, \textbf{pronoun} is a function word that \textit{replaces} a noun phrase, while \textbf{determiner} is a function word that \textit{modifies} a noun phrase. As a result, proper EAGLES-pronouns behave like nouns and determiners behave like adjectives. Note that possessive pronouns (i.e. ``my'', ``your'', ``his'', ``her'', ``its''), also found in many languages, are personal possessive determiners in the sense of the EAGLES definition.
+
+% Následující odstavec by se dal doplnit z wiki a podobný by se dal z wiki přepsat i pro číslovky. Když ale jenom odkomentuju tenhle kus bez doplňování, tak zcela naplním 8 stran, a to jsou momentálně prázdné Acknowledgements. Takže po odanonymizování by to referencema přeteklo na 9. stranu, což je sice povoleno, ale jen malinko, což by nebylo hezké. Tak snad raději teď půjdu spát a počkám, jestli to vůbec přijmou a nebudou to chtít třeba zkrátit na poster. Abych teď pracně nepřidal něco, co pak stejně budu muset vyhodit.
+
+%\XXX In the BulTreeBank \citep{bultreebank}, anything interrogative is a pronoun, although it could be considered numeral \textit{(how much?)} or adverb \textit{(where? when? how?)} elsewhere. Some tagsets address the variable syntactic behavior of pronouns (\textit{he} substitutes a noun, \textit{his} functions as an adjective). Some tagsets and languages do not have determiners but they have pronouns (demonstrative, indefinite) instead. All that lead us to remove pronouns and determiners as independent parts of speech. Instead, nouns, adjectives and adverbs have the feature “prontype” to distinguish the various types (personal, demonstrative, interrogative…) Empty value of this feature signals a normal noun (adjective, adverb).
+
+Because tagsets often disagree in what is pronoun, what is determiner etc., it is difficult to find a unifying approach. We decided to limit the number of the major parts of speech in order to minimize the cases where a word would end up with an empty part of speech. If there were a part of speech called \textit{determiner}, drivers of tagsets not having determiners would either have to check whether \texttt{\textbf{pos} = det} during encoding, or they would fall back into a residual word class. On the other hand, if we tag determiners as special cases of adjectives (which is what Interset does), such drivers will simply encode determiners as adjectives (provided they have adjectives—but these are much more common).
+
+We also followed this solution with pronouns because of the following reasons:
 \begin{compactitem}
-\item Pronouns, determiners, articles, wh-adverbs.
-\item Numerals.
-\item Indefinite verb form, especially participles. % Možná už na začátku se zmínit o tom, jak přistupujeme k chybějícím kategoriím a že někdy kategorie schválně rozdělujeme hierarchicky. Pokud zbude místo, tak taky ukázat tu čínskou sadu značek a proč jsme z ní dokázali převzít pouze zlomek informace.
-\item Particles and exotic small word categories.
-\item Different tokenizations, tags spanning multiple or joint tokens with incompatible categories. %stazene tvary, arab
+\item Although pronouns are found in most tagsets, there is much controversy about the precise extent of that category.
+\item Some tagsets allow for distinguishing between \textit{substantive} and \textit{attributive} pronouns (roughly those that behave like nouns and those that behave like adjectives). Assigning pronouns to nouns and adjectives respectively helps preserve that distinction.
+\item Some of the features that distinguish pronouns from real nouns and adjectives (interrogativeness, for instance) are found with adverbs and numerals as well and thus it makes sense to separate them.
 \end{compactitem}
 
-Endemic word classes were one example. Whenever seen fit, we tried to roof them with some more common parts of speech, instead of introducing a new high-level class. We wanted to reduce the necessity of encoders’ taking care of parts of speech unknown in their home tagsets. Roofed word classes are usually distinguishable by one of the detailed-part-of-speech features.
+Pronouns are recognized by nonempty value of the \texttt{prontype} feature; default type is \texttt{prs}, which denotes personal pronouns under nouns, and possessive pronouns under adjectives. The drawback of this approach is that the encoding procedure of a driver that recognizes pronouns must define its own method of asking the question \textit{``Does the current feature-value structure correspond to a pronoun?''}
 
-Determiners, predeterminers and articles are one group of word classes missing in a substantial number of tagsets. We chose adjectives to serve as the roof class here. To pick another set of examples, here is an overview of various sorts of particles found in our tagsets:
+\subsection{Numerals}
+\label{sec:numerals}
+
+Numerals form an analogy to the pronoun-determiner problem. Most tagsets recognize cardinal numbers as a separate category. However, the rest is less obvious. Some tagsets recognize ordinal numbers while others classify them as adjectives because of their syntactic behavior. An extreme case is the Danish Parole tagset where all numbers including cardinals are adjectives; however, they form a distinguished subclass of adjectives and can thus be recognized. Tagsets of Czech and other Slavic languages define complex systems of numerals, according to traditional local grammars: besides cardinals and ordinals, there are separate tags for fractions (``one fifth''), multiplications (``five times''),\footnote{Note that in these languages such numerals can be expressed in one token, which justifies devising a tag for them.} adverbial ordinals (``for the first time''), various types of generic ordinals (``twofold'', ``four kinds of''), interrogative or relative numerals (``how many'', ``what'',\footnote{Here, the expected answer is ``first'', ``second'' etc. The ``what'' corresponds to different Slavic word than in e.g. ``What do you do for living?'' An example from Czech is \textit{kolikátý}.} ``how many times''), demonstrative numerals (``that many'', ``that many times''), indefinite numerals (``few'', ``much'') etc.
+
+For the sake of consistency, the solution for numerals should be parallel to that of pronouns. Cardinal numbers, as the most specific and most widely recognized category, should retain their independence. The rest will be split among nouns (fractions), adjectives (ordinals and some generics) and adverbs (multiplications and ordinal points in time). Non-empty \texttt{numtype} feature will distinguish them from real nouns, adjectives and adverbs. Parallelly, \texttt{prontype} could be set, too, for interrogative, demonstrative and indefinite numerals.
+
+%\subsection{Counted Nouns in Slavic Languages}
+%\XXX Co s počítanými podstatnými jmény ve slovanských jazycích? To je ještě samostatný problém.
+
+\subsection{Non-Finite Verb Forms}
+\label{sec:participles}
+
+Non-finite verb forms often constitute mixed categories from the syntactic point of view. The syntactic properties of participles overlap with adjectives. Similarly, gerunds resemble nouns and transgressives function as adverbs. At the same time however, they retain their verbal arguments.
+
+Usually, these words are tagged as forms of verbs. However, there are exceptions. In the Swedish Parole tagset, participles are tagged as adjectives. Czech equivalent of gerunds is considered a deverbative noun; Czech participles have long and short forms, the former being tagged as adjectives, the latter as verbs. Some tagsets could even delimit participles as a separate part of speech, without clearly marking their affinity to adjectives or verbs. The Interset guidelines prefer marking all three categories (participles, gerunds and transgressives) as verbs.
+Note however that any guidelines are only to ensure unified approach to different presentations of the same information. It does not apply to information that simply is not there. If participles were tagged as \textit{normal} adjectives without sub-dividing adjectives into ``normal ones'' and participles, they would remain so in Interset and also in the target tagset.
+
+\subsection{Particles and Other Minor Parts of Speech}
+\label{sec:particles}
+
+Every tagset contains a number of specialized tags for small groups of words. They encode endemic phenomena that do not occur in other corpora/languages or simply are not distinguished there (because they are covered by other, broader-scope tags). Sometimes such tags are grouped as \textit{particles} or various ``residual'' classes. The approach of Interset is to roof them with some more common parts of speech, instead of introducing a new high-level class. We wanted to reduce the necessity of encoders’ taking care of parts of speech unknown in their home tagsets. Roofed word classes are usually distinguishable by one of the detailed-part-of-speech features.
+
+An overview of various sorts of particles follows:
 
 \begin{compactitem}
 \item unclassified particle (Czech \texttt{TT}, English \texttt{RP}, Swedish \texttt{Q})
@@ -267,18 +306,54 @@ Determiners, predeterminers and articles are one group of word classes missing i
 \item Chinese particles \zh{嗎} \translit{ma}, \zh{否} \translit{fǒu} (\texttt{Td})
 \end{compactitem}
 
-As mentioned earlier, some tagsets consider participles forms of verbs, others classify them as adjectives; some tagsets make numerals special cases of adjectives, others have separate POS tags for cardinals, ordinals and various other numeral classes, yet others separate cardinal numbers and put the rest under other POSes. Differences in approaches taken by different tagsets might result in different feature values; for instance, we could decode verbform = “participle” without regard to whether pos = “verb” or pos = “adj”. Naturally it is desirable to decode the same thing into the same set of features each time. Although we could ban particular feature-value combinations in Interset, effectively forcing the driver authors to seek the permitted decoding, we prefer to leave it as a recommendation, since we do not want to predict, which feature combinations will never ever be needed to distinguish two different words.
-%\XXX The recommending guidelines (part of Interset documentation) are another output of our study.
+\subsection{Alternate Values}
+\label{sec:valuearrays}
 
-Probably the broadest source of problems is pronouns, determiners and various WH-words. Somewhere pronouns are only personal or possessive; somewhere there is a diversity of interrogative, relative, demonstrative, indefinite and negative pronouns. In the BulTreeBank \citep{bultreebank}, anything interrogative is a pronoun, although it could be considered numeral \textit{(how much?)} or adverb \textit{(where? when? how?)} elsewhere. Some tagsets address the variable syntactic behavior of pronouns (\textit{he} substitutes a noun, \textit{his} functions as an adjective). Some tagsets and languages do not have determiners but they have pronouns (demonstrative, indefinite) instead. All that lead us to remove pronouns and determiners as independent parts of speech. Instead, nouns, adjectives and adverbs have the feature “prontype” to distinguish the various types (personal, demonstrative, interrogative…) Empty value of this feature signals a normal noun (adjective, adverb).
+Some tagsets contain tags that encode two or more values of the same feature at the same time. For instance, the Czech PDT tags define 11 values for the third character of the tag, which denotes gender and animateness. Four are more or less independent values: \texttt{M} = ``masculine animate'', \texttt{I} = ``masculine inanimate'', \texttt{F} = ``feminine'' and \texttt{N} = ``neuter''. The rest are various combinations: \texttt{Y=(M|I)}, \texttt{T=(I|F)}, \texttt{W=(I|N)}, \texttt{H} and \texttt{Q=(F|N)}, \texttt{Z=(M|I|N)}, \texttt{X=(M|I|F|N)}. The obvious goal here is to make life easier for taggers because some word forms are systematically identical for two or more genders.
 
-Note however, that any guidelines are only to ensure unified approach to different presentations of the same information. It does not apply to information that simply is not there. If cardinals were tagged as \textit{normal} adjectives (without sub-classing adjectives to numeral and others) they would remain so in Interset and also in the target tagset. We cannot add information, we only can lose it.
+Interset does not define separate feature values for all combinations. However, it does allow for storing alternate values if necessary. Since the feature structure is implemented as a Perl hash, a reference to an array of values can be assigned to any feature in the decoder:
+
+\begin{lstlisting}
+elsif($gender eq "H") 
+{ 
+    $f{gender} = ["fem", "neut"]; 
+}
+\end{lstlisting}
+
+At the first glance, such option poses a serious obstacle for encoder design. Before, the encoder was a nice sequence of \texttt{if} statements, merely saying ``if gender is \texttt{fem}, output character \texttt{F}''. Do we now need to check whether gender is array first? Even if we are writing driver for a tagset that never works with alternate values? Fortunately, no. Once again, the support library provides a procedure that can convert arrays to single values in all features except those that we acutally expect to contain arrays.
+
+There is nonetheless one open question about alternate values. Interset cannot express permissible combinations of multiple features. In the Czech example above, \texttt{Q} actually means more than just ``feminine or neuter''. It means ``feminine singular or neuter plural''. Interset can store both genders and both numbers but by that it will also cover feminine plurals and neuter singulars.
+
+\subsection{Joint Categories}
+\label{sec:joint}
+
+Every tagset assumes a certain tokenization of the tagged text. The tokenization guidelines may leave unsplit tokens that evolved historically from two words with separate categories. Examples include German \textit{zum = zu dem} ``to the'', Czech \textit{proň = pro něj} ``for him'' or \textit{žes = že jsi} ``that you have''. So in the German example, we have a token corresponding to two other tokens also occurring in the corpus, one tagged as preposition and the other as article.
+
+Much more difficult is Arabic where orthographic rules dictate not to space-separate certain sequences of words. So for instance, the conjunction \ar{و} \translit{wa} ``and'', often thrown in at the sentence beginnings, is connected to the following word, as are prepositions. Tokenization cannot be finished before morphological analysis because word segmentation may have ambiguous solutions. Thus, in the following example, we'll end up with long tags \texttt{CONJ+PREP+NOUN\_PROP} and \texttt{NOUN+CASE\_DEF\_NOM}, respectively.
+
+\lstset{language=XML}
+\begin{lstlisting}[escapechar=\%]
+<token_Arabic>%\ar{وبالفالوجة}%
+  <voc>wabiAlfAlwjp</voc>
+  <pos>wa/CONJ + bi/PREP +
+       AlfAlwjp/NOUN_PROP</pos>
+</token_Arabic>
+<token_Arabic>%\ar{مثال}%
+  <voc>mivAlu</voc>
+  <pos>mivAl/NOUN + u/CASE_DEF_NOM</pos>
+</token_Arabic>
+\end{lstlisting}
+
+Note that the first of the two examples corresponds to a sequence of three words (at least from the English perspective) while the second example describes just one noun (stem + suffix). The latter could be perfectly described in Interset; the former is the problem.
+
+Interset currently covers Arabic tagset of the Prague Arabic Dependency Treebank \citep{padt}, which is already tokenized. For the more moderate examples from Czech and German, it pretends that one of the joint categories is a special feature of the other. Thus for \textit{zum}, Interset would note that it's a preposition with a special property \textit{attached article}. It would not express any relation to how independent articles are tagged. Alternatively, we could use the array approach described in \Sref{sec:valuearrays} and assign two values to the \texttt{pos} feature. Neither solution is optimal because both are far from universal. In theory any part of speech could combine with any other and there could be more than two concatenated tokens, each with its own features that should not be mixed all together. Future versions of Interset might introduce a concept of arrays of sequential features structures (to solve the Arabic puzzle above) and arrays of parallel feature structures (to cover the \textit{permissible feature combinations} discussed in \Sref{sec:valuearrays}). In the meantime, the conversion program using Interset has to split joint tags using its own means.
+
+%\XXX Nějaká tabulka se statistikami?
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-%\XXX (Tohle je zatím opsáno z LRECu, náš závěr by měl znít trochu jinak.)
-We have proposed a method for tagset conversion that is reusable and, to a reasonable extent, universal. Our interlingua-inspired approach enables to interpret part-of-speech and morphological tags in a uniform way, and to convert information that is shared by two tagsets. Besides the obvious advantage of being able to use tools that expect a particular tagset, we also observed improvements in performance of a statistical parser.
+We have described Interset, a reusable and universal method for tagset conversion via common set of features and their values. We have shown how tags from a source tagset are \textit{decoded} into this intermediate feature space, and how their \textit{encoding} into target tagset can automatically replace unavailable feature values by carefully selected defaults that minimize possible damage. We also briefly compared Interset to tagset standardization efforts and pointed out the differences in goals between standards and Interset. Finally, we presented numerous examples from real tagsets to illustrate the most difficult parts of tagset conversion. The solutions we proposed pursue the ultimate goal that information loss is minimized and similar information is encoded similarly, across tagsets and languages.
 
 \section*{Acknowledgements}
 
