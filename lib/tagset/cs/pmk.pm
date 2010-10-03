@@ -2756,8 +2756,8 @@ sub decode_valency
             $f->{other}{valency} = 'oth';
         }
     }
-    # verbs
-    elsif($pos eq '5')
+    # verbs and verbal idioms
+    elsif($pos eq '5' || $pos eq 'F1')
     {
         if($c eq '1') # (nerealizovaná subjektová valence, zřejmě hlavně u infinitivů: vzdělávat se, dejchat, nehýřit, rozšířit, stihnout)
         {
@@ -2845,7 +2845,7 @@ sub decode_valency
             }
             elsif($d eq '9') # (nominativ včetně adjektiv: řídit (sama), bejt (podmínka), bejt (vohodnocená), bejt (hrdá))
             {
-                $f->{other}{valency} = 'nom';
+                $f->{other}{valency} = 'nom-nsb';
             }
             elsif($d eq '0') # (jiné smíšené/trojmístné: bejt (mně šedesát), vyrovnat se (způsobem sami ze sebou s tim))
             {
@@ -2893,6 +2893,143 @@ sub decode_valency
             elsif($d eq '0') # (jiné: říct (spousta), říct (já dělám...) [unquoted direct speech])
             {
                 $f->{other}{valency} = 'oth';
+            }
+        }
+        elsif($c eq '5') # (subjektová valence bez nesubjektové)
+        {
+            $f->{other}{valency} = 'nom';
+        }
+        elsif($c eq '6') # (subjektová a nesubjektová s akuzativem)
+        {
+            if($d eq '-') # (jen akuzativ)
+            {
+                $f->{other}{valency} = 'nom+acc';
+            }
+            elsif($d eq '1') # (a genitiv)
+            {
+                $f->{other}{valency} = 'nom+acc+gen';
+            }
+            elsif($d eq '2') # (a instrumentál)
+            {
+                $f->{other}{valency} = 'nom+acc+ins';
+            }
+            elsif($d eq '3') # (a lokativ)
+            {
+                $f->{other}{valency} = 'nom+acc+loc';
+            }
+            elsif($d eq '4') # (a akuzativ)
+            {
+                $f->{other}{valency} = 'nom+acc+acc';
+            }
+            elsif($d eq '5') # (a dativ)
+            {
+                $f->{other}{valency} = 'nom+acc+dat';
+            }
+            elsif($d eq '6') # (a adverbiále (včetně předložek))
+            {
+                $f->{other}{valency} = 'nom+acc+adv';
+            }
+            elsif($d eq '7') # (a infinitiv)
+            {
+                $f->{other}{valency} = 'nom+acc+inf';
+            }
+            elsif($d eq '8') # (a spojka)
+            {
+                $f->{other}{valency} = 'nom+acc+con';
+            }
+            elsif($d eq '9') # (a další 2 pády)
+            {
+                $f->{other}{valency} = 'nom+acc+2';
+            }
+            elsif($d eq '0') # (jiná (smíšená / trojmístná))
+            {
+                $f->{other}{valency} = 'nom+acc+oth';
+            }
+        }
+        elsif($c eq '7') # (subjektová a nesubjektová s neakuzativem)
+        {
+            if($d eq '1') # (genitiv)
+            {
+                $f->{other}{valency} = 'nom+gen';
+            }
+            elsif($d eq '2') # (instrumentál (včetně adjektiv))
+            {
+                $f->{other}{valency} = 'nom+ins';
+            }
+            elsif($d eq '3') # (lokativ)
+            {
+                $f->{other}{valency} = 'nom+loc';
+            }
+            elsif($d eq '4') # (dativ)
+            {
+                $f->{other}{valency} = 'nom+dat';
+            }
+            elsif($d eq '5') # (genitiv a neakuzativ)
+            {
+                $f->{other}{valency} = 'nom+gen+nac';
+            }
+            elsif($d eq '6') # (instrumentál a neakuzativ)
+            {
+                $f->{other}{valency} = 'nom+ins+nac';
+            }
+            elsif($d eq '7') # (lokativ a neakuzativ)
+            {
+                $f->{other}{valency} = 'nom+loc+nac';
+            }
+            elsif($d eq '8') # (dativ a neakuzativ)
+            {
+                $f->{other}{valency} = 'nom+dat+nac';
+            }
+            elsif($d eq '9') # (nominativ (včetně adj. ap.))
+            {
+                $f->{other}{valency} = 'nom+nom';
+            }
+            elsif($d eq '0') # (jiné pády (smíšená, trojmístná))
+            {
+                $f->{other}{valency} = 'nom+othercase';
+            }
+        }
+        elsif($c eq '8') # (subjektová a nesubjektová jiná)
+        {
+            if($d eq '1') # (adverbiále včetně předložkových frází)
+            {
+                $f->{other}{valency} = 'nom+adv';
+            }
+            elsif($d eq '2') # (infinitiv)
+            {
+                $f->{other}{valency} = 'nom+inf';
+            }
+            elsif($d eq '3') # (spojka)
+            {
+                $f->{other}{valency} = 'nom+con';
+            }
+            elsif($d eq '4') # (2 adverbiále)
+            {
+                $f->{other}{valency} = 'nom+adv+adv';
+            }
+            elsif($d eq '5') # (adverbiále a neakuzativ)
+            {
+                $f->{other}{valency} = 'nom+adv+nac';
+            }
+            elsif($d eq '6') # (adverbiále a infinitiv)
+            {
+                $f->{other}{valency} = 'nom+adv+inf';
+            }
+            elsif($d eq '7') # (adverbiále a spojka)
+            {
+                $f->{other}{valency} = 'nom+adv+con';
+            }
+            elsif($d eq '8') # (infinitiv a neakuzativ)
+            {
+                $f->{other}{valency} = 'nom+inf+nac';
+            }
+            elsif($d eq '9') # (spojka a neakuzativ)
+            {
+                $f->{other}{valency} = 'nom+con+nac';
+            }
+            elsif($d eq '0') # (jiné i přímá řeč)
+            {
+                $f->{other}{valency} = 'nom+oth';
             }
         }
     }
@@ -3284,8 +3421,8 @@ sub encode_valency
             $c = '0';
         }
     }
-    # verbs
-    elsif($pos eq '5')
+    # verbs and verbal idioms
+    elsif($pos eq '5' || $pos eq 'F1')
     {
         if($f->{tagset} eq 'cs::pmk' && exists($f->{other}{valency}))
         {
@@ -3365,7 +3502,7 @@ sub encode_valency
             {
                 $c = '38';
             }
-            elsif($f->{other}{valency} eq 'nom') # (nominativ včetně adjektiv: řídit (sama), bejt (podmínka), bejt (vohodnocená), bejt (hrdá))
+            elsif($f->{other}{valency} eq 'nom-nsb') # (nominativ včetně adjektiv: řídit (sama), bejt (podmínka), bejt (vohodnocená), bejt (hrdá))
             {
                 $c = '39';
             }
@@ -3413,10 +3550,138 @@ sub encode_valency
             {
                 $c = '40';
             }
+            elsif($f->{other}{valency} eq 'nom') # (subjektová valence bez nesubjektové)
+            {
+                $c = '5-';
+            }
+            elsif($f->{other}{valency} eq 'nom+acc') # (subjektová a nesubjektová s akuzativem)
+            {
+                $c = '6-';
+            }
+            elsif($f->{other}{valency} eq 'nom+acc+gen') # (subjekt, akuzativ a genitiv)
+            {
+                $c = '61';
+            }
+            elsif($f->{other}{valency} eq 'nom+acc+ins') # (subjekt, akuzativ a instrumentál)
+            {
+                $c = '62';
+            }
+            elsif($f->{other}{valency} eq 'nom+acc+loc') # (subjekt, akuzativ a lokativ)
+            {
+                $c = '63';
+            }
+            elsif($f->{other}{valency} eq 'nom+acc+acc') # (subjekt, akuzativ a akuzativ)
+            {
+                $c = '64';
+            }
+            elsif($f->{other}{valency} eq 'nom+acc+dat') # (subjekt, akuzativ a dativ)
+            {
+                $c = '65';
+            }
+            elsif($f->{other}{valency} eq 'nom+acc+adv') # (subjekt, akuzativ a adverbiále)
+            {
+                $c = '66';
+            }
+            elsif($f->{other}{valency} eq 'nom+acc+inf') # (subjekt, akuzativ a infinitiv)
+            {
+                $c = '67';
+            }
+            elsif($f->{other}{valency} eq 'nom+acc+con') # (subjekt, akuzativ a spojka)
+            {
+                $c = '68';
+            }
+            elsif($f->{other}{valency} eq 'nom+acc+2') # (subjekt, akuzativ a další 2 pády)
+            {
+                $c = '69';
+            }
+            elsif($f->{other}{valency} eq 'nom+acc+oth') # (subjekt, akuzativ a jiná, smíšená nebo trojmístná)
+            {
+                $c = '60';
+            }
+            elsif($f->{other}{valency} eq 'nom+gen') # (subjekt a genitiv)
+            {
+                $c = '71';
+            }
+            elsif($f->{other}{valency} eq 'nom+ins') # (subjekt a instrumentál)
+            {
+                $c = '72';
+            }
+            elsif($f->{other}{valency} eq 'nom+loc') # (subjekt a lokativ)
+            {
+                $c = '73';
+            }
+            elsif($f->{other}{valency} eq 'nom+dat') # (subjekt a dativ)
+            {
+                $c = '74';
+            }
+            elsif($f->{other}{valency} eq 'nom+gen+nac') # (subjekt, genitiv a neakuzativ)
+            {
+                $c = '75';
+            }
+            elsif($f->{other}{valency} eq 'nom+ins+nac') # (subjekt, instrumentál a neakuzativ)
+            {
+                $c = '76';
+            }
+            elsif($f->{other}{valency} eq 'nom+loc+nac') # (subjekt, lokativ a neakuzativ)
+            {
+                $c = '77';
+            }
+            elsif($f->{other}{valency} eq 'nom+dat+nac') # (subjekt, dativ a neakuzativ)
+            {
+                $c = '78';
+            }
+            elsif($f->{other}{valency} eq 'nom+nom') # (subjekt a nominativ)
+            {
+                $c = '79';
+            }
+            elsif($f->{other}{valency} eq 'nom+othercase') # (subjekt a jiné pády)
+            {
+                $c = '70';
+            }
+            elsif($f->{other}{valency} eq 'nom+adv') # (subjekt a adverbiále)
+            {
+                $c = '81';
+            }
+            elsif($f->{other}{valency} eq 'nom+inf') # (subjekt a infinitiv)
+            {
+                $c = '82';
+            }
+            elsif($f->{other}{valency} eq 'nom+con') # (subjekt a spojka)
+            {
+                $c = '83';
+            }
+            elsif($f->{other}{valency} eq 'nom+adv+adv') # (subjekt a 2 adverbiále)
+            {
+                $c = '84';
+            }
+            elsif($f->{other}{valency} eq 'nom+adv+nac') # (subjekt, adverbiále a neakuzativ)
+            {
+                $c = '85';
+            }
+            elsif($f->{other}{valency} eq 'nom+adv+inf') # (subjekt, adverbiále a infinitiv)
+            {
+                $c = '86';
+            }
+            elsif($f->{other}{valency} eq 'nom+adv+con') # (subjekt, adverbiále a spojka)
+            {
+                $c = '87';
+            }
+            elsif($f->{other}{valency} eq 'nom+inf+nac') # (subjekt, infinitiv a neakuzativ)
+            {
+                $c = '88';
+            }
+            elsif($f->{other}{valency} eq 'nom+con+nac') # (subjekt, spojka a neakuzativ)
+            {
+                $c = '89';
+            }
+            elsif($f->{other}{valency} eq 'nom+oth') # (subjekt a jiné, i přímá řeč)
+            {
+                $c = '80';
+            }
         }
         else # (nerealizovaná subjektová valence, zřejmě hlavně u infinitivů: vzdělávat se, dejchat, nehýřit, rozšířit, stihnout)
         {
-            $c = '1';
+            $c = '1-';
         }
     }
     # adverbs
@@ -3532,6 +3797,8 @@ sub encode_valency
             $c = '7';
         }
     }
+    # verbal idioms
+    # (same as verbs, see above)
     # substantival idioms
     elsif($pos eq 'F2')
     {
@@ -3578,6 +3845,7 @@ sub encode_valency
         {
             $c = '0';
         }
+        $c .= '_';
     }
     # adjectival idioms
     elsif($pos eq 'F3')
@@ -3613,6 +3881,7 @@ sub encode_valency
                 $c = '8';
             }
         }
+        $c .= '_';
     }
     # adverbial idioms
     elsif($pos eq 'F4')
@@ -3664,6 +3933,7 @@ sub encode_valency
         {
             $c = '-';
         }
+        $c .= '_';
     }
     # propositional idioms
     elsif($pos eq 'F5')
@@ -3679,6 +3949,7 @@ sub encode_valency
         {
             $c = '1';
         }
+        $c .= '_';
     }
     return $c;
 }

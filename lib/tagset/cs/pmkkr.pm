@@ -210,202 +210,119 @@ sub encode
     # substantivum = noun
     if($pos eq 'noun')
     {
-        # zájmeno = pronoun
-        if($f{prontype} ne '')
-        {
-            $values[1] = 3;
-            # 2! druh
-            $values[2] = tagset::cs::pmk::encode_pronoun_type($f);
-            # 3. valence
-            $values[3] = tagset::cs::pmk::encode_valency(3, $f);
-            # 4. rod
-            $values[4] = tagset::cs::pmk::encode_gender(3, $f);
-            # 5. číslo
-            $values[5] = tagset::cs::pmk::encode_number(3, $f);
-            # 6. pád
-            $values[6] = tagset::cs::pmk::encode_case($f);
-            # 7. funkce
-            $values[7] = tagset::cs::pmk::encode_function(3, $f);
-            # 8. styl
-            $values[8] = tagset::cs::pmk::encode_style($f);
-        }
         # substantivum = noun
-        else
+        if($f{prontype} eq '')
         {
             $values[1] = 1;
-            # 2! druh
+            # 2. druh
             $values[2] = tagset::cs::pmk::encode_noun_type($f);
-            # 3. třída
-            $values[3] = tagset::cs::pmk::encode_noun_class($f);
-            # 4. valence
-            $values[4] = tagset::cs::pmk::encode_valency(1, $f);
-            # 5! rod
-            $values[5] = tagset::cs::pmk::encode_gender(1, $f);
-            # 6. číslo
-            $values[6] = tagset::cs::pmk::encode_number(1, $f);
-            # 7. pád
-            $values[7] = tagset::cs::pmk::encode_case($f);
-            # 8. funkce
-            $values[8] = tagset::cs::pmk::encode_function(1, $f);
-            # 9! styl
-            $values[9] = tagset::cs::pmk::encode_style($f);
+            # 3. rod
+            $values[3] = tagset::cs::pmk::encode_gender(1, $f);
+            # 4. styl
+            $values[4] = tagset::cs::pmk::encode_style($f);
+        }
+        # zájmeno = pronoun
+        else
+        {
+            $values[1] = 3;
+            # 2. druh
+            $values[2] = tagset::cs::pmk::encode_pronoun_type($f);
+            $values[3] = '_';
+            # 4. styl
+            $values[4] = tagset::cs::pmk::encode_style($f);
         }
     }
     # adjektivum = adjective
     elsif($pos eq 'adj')
     {
         $values[1] = 2;
-        # 2! druh
+        # 2. druh
         $values[2] = tagset::cs::pmk::encode_adjective_type($f);
-        # 3! poddruh
+        # 3. poddruh
         $values[3] = tagset::cs::pmk::encode_adjective_subtype($f);
-        # 4. třída
-        $values[4] = tagset::cs::pmk::encode_adjective_class($f);
-        # 5. valence
-        $values[5] = tagset::cs::pmk::encode_valency(2, $f);
-        # 6. rod
-        $values[6] = tagset::cs::pmk::encode_gender(2, $f);
-        # 7. číslo
-        $values[7] = tagset::cs::pmk::encode_number(2, $f);
-        # 8. pád
-        $values[8] = tagset::cs::pmk::encode_case($f);
-        # 9. stupeň
-        $values[9] = tagset::cs::pmk::encode_degree($f);
-        # 10. funkce
-        $values[10] = tagset::cs::pmk::encode_function(2, $f);
-        # 11! styl
-        $values[11] = tagset::cs::pmk::encode_style($f);
+        # 4. styl
+        $values[4] = tagset::cs::pmk::encode_style($f);
     }
     # číslovka = numeral
     elsif($pos eq 'num')
     {
         $values[1] = 4;
-        # 2! druh
+        # 2. druh
         $values[2] = tagset::cs::pmk::encode_numeral_type($f);
-        # 3. valence
-        $values[3] = tagset::cs::pmk::encode_valency(4, $f);
-        # 4. rod
-        $values[4] = tagset::cs::pmk::encode_gender(4, $f);
-        # 5. číslo
-        $values[5] = tagset::cs::pmk::encode_number(4, $f);
-        # 6. pád
-        $values[6] = tagset::cs::pmk::encode_case($f);
-        # 7. pád subst./pron.
-        ###!!! Hodnoty jsou stejné jako u pádu, ale je potřeba to uložit jinam, takže nemůžeme použít stejnou funkci tagset::cs::pmk::decode_case()!
-        ###!!! tagset::cs::pmk::decode_case($values[7], \%f);
-        # 8. funkce
-        $values[8] = tagset::cs::pmk::encode_function(4, $f);
-        # 9. styl
-        $values[9] = tagset::cs::pmk::encode_style($f);
+        $values[3] = '_';
+        # 4. styl
+        $values[4] = tagset::cs::pmk::encode_style($f);
     }
     # sloveso = verb
     elsif($pos eq 'verb')
     {
         $values[1] = 5;
-        # 2. druh
-        $values[2] = tagset::cs::pmk::encode_aspect($f);
-        # 3. valence subjektová
-        # 4. valence
-        my @cd = split(//, tagset::cs::pmk::encode_valency(5, $f));
-        $values[3] = $cd[0];
-        $values[4] = $cd[1];
-        # 5. osoba/číslo
-        $values[5] = tagset::cs::pmk::encode_person_number($f);
-        # 6. způsob/čas/slovesný rod
-        $values[6] = tagset::cs::pmk::encode_mood_tense_voice($f);
-        # 7. imper./neurč. tvary
-        $values[7] = tagset::cs::pmk::encode_nonfinite_verb_form($f);
-        # 8! víceslovnost a rezultativnost
-        $values[8] = tagset::cs::pmk::encode_multiwordness_and_resultativeness($f);
-        # 9. jmenný rod
-        $values[9] = tagset::cs::pmk::encode_participle_gender_number($f);
-        # 10! zápor
-        $values[10] = tagset::cs::pmk::encode_negativeness($f);
-        # 11! styl
-        $values[11] = tagset::cs::pmk::encode_style($f);
+        # 2. víceslovnost a rezultativnost
+        $values[2] = tagset::cs::pmk::encode_multiwordness_and_resultativeness($f);
+        # 3. zápor
+        $values[3] = tagset::cs::pmk::encode_negativeness($f);
+        # 4. styl
+        $values[4] = tagset::cs::pmk::encode_style($f);
     }
     # adverbium = adverb
     elsif($pos eq 'adv')
     {
         $values[1] = 6;
-        # 2! druh
+        # 2. druh
         $values[2] = tagset::cs::pmk::encode_adverb_type($f);
-        # 3. třída
-        $values[3] = tagset::cs::pmk::encode_adverb_class($f);
-        # 4. valence/funkce
-        $values[4] = tagset::cs::pmk::encode_valency(6, $f);
-        # 5. stupeň
-        $values[5] = tagset::cs::pmk::encode_degree($f);
-        # 6! styl
-        $values[6] = tagset::cs::pmk::encode_style($f);
+        $values[3] = '_';
+        # 4. styl
+        $values[4] = tagset::cs::pmk::encode_style($f);
     }
     # předložka = preposition
     elsif($pos eq 'prep')
     {
         $values[1] = 7;
-        # 2! druh
+        # 2. druh
         $values[2] = tagset::cs::pmk::encode_preposition_type($f);
-        # 3. třída
-        $values[3] = tagset::cs::pmk::encode_preposition_class($f);
-        # 4. valenční pád
-        $values[4] = tagset::cs::pmk::encode_case($f);
-        # 5. funkční závislost levá
-        $values[5] = tagset::cs::pmk::encode_function(7, $f);
-        # 6! styl
-        $values[6] = tagset::cs::pmk::encode_style($f);
+        $values[3] = '_';
+        # 4. styl
+        $values[4] = tagset::cs::pmk::encode_style($f);
     }
     # spojka = conjunction
     elsif($pos eq 'conj')
     {
         $values[1] = 8;
-        # 2! druh
+        # 2. druh
         $values[2] = tagset::cs::pmk::encode_conjunction_type($f);
-        # 3. třída
-        $values[3] = tagset::cs::pmk::encode_conjunction_class($f);
-        # 4. valence
-        $values[4] = tagset::cs::pmk::encode_valency(8, $f);
-        # 5! styl
-        $values[5] = tagset::cs::pmk::encode_style($f);
+        $values[3] = '_';
+        # 4. styl
+        $values[4] = tagset::cs::pmk::encode_style($f);
     }
     # citoslovce = interjection
     elsif($pos eq 'int')
     {
         $values[1] = 9;
-        # 2! druh
+        # 2. druh
         $values[2] = tagset::cs::pmk::encode_interjection_type($f);
-        # 3. třída
-        $values[3] = tagset::cs::pmk::encode_interjection_class($f);
-        # 4! styl
+        $values[3] = '_';
+        # 4. styl
         $values[4] = tagset::cs::pmk::encode_style($f);
     }
     # částice = particle
     elsif($pos eq 'part')
     {
         $values[1] = 0;
-        # 2! druh
+        # 2. druh
         $values[2] = tagset::cs::pmk::encode_particle_type($f);
-        # 3. třída
-        $values[3] = tagset::cs::pmk::encode_particle_class($f);
-        # 4. valence
-        $values[4] = tagset::cs::pmk::encode_valency($f);
-        # 5. modus věty
-        $values[5] = tagset::cs::pmk::encode_sentmod($f);
-        # 6! styl
-        $values[6] = tagset::cs::pmk::encode_style($f);
+        $values[3] = '_';
+        # 4. styl
+        $values[4] = tagset::cs::pmk::encode_style($f);
     }
     # idiom a frazém = idiom and set phrase
     elsif($f{tagset} eq 'cs::pmk' && $f{other}{pos} eq 'F')
     {
         $values[1] = 'F';
-        # 2! druh
+        # 2. druh
         $values[2] = tagset::cs::pmk::encode_idiom_type($f);
-        # 3. valence substantivní
-        # 4. valence
-        my @cd = split(//, tagset::cs::pmk::encode_valency('F'.$values[2], $f));
-        $values[3] = $cd[0];
-        $values[4] = $cd[1];
-        # 6! styl
-        $values[6] = tagset::cs::pmk::encode_style($f);
+        $values[3] = '_';
+        # 4. styl
+        $values[4] = tagset::cs::pmk::encode_style($f);
     }
     # untagged tokens in multi-word expressions have empty tags like this:
     # <i1></i1><i2></i2><i3></i3><i4></i4>
@@ -431,45 +348,11 @@ sub encode
         # 4. styl
         $values[4] = tagset::cs::pmk::encode_style($f);
     }
-    # Mapping of long descriptions to short descriptions (value of 1st number => indices of numbers to be output).
-    my %long_to_short =
-    (
-        1 => [1, 2, 5, 9], # nouns
-        2 => [1, 2, 3, 11], # adjectives
-        3 => [1, 2, 0, 8], # pronouns
-        4 => [1, 2, 0, 9], # numerals
-        5 => [1, 8, 10, 11], # verbs
-        6 => [1, 2, 0, 6], # adverbs
-        7 => [1, 2, 0, 6], # prepositions
-        8 => [1, 2, 0, 5], # conjunctions
-        9 => [1, 2, 0, 4], # interjections
-        0 => [1, 2, 0, 6], # particles
-        'F' => [1, 2, 0, 6], # idioms
-        'J' => [1, 2, 3, 4], # other
-        '' => [1, 1, 1, 1], # untagged
-    );
     # Convert the array of values to a tag in the XML format.
     my $tag;
-    # We have to decide whether we want the long or the short version of the tagset.
-    # We could not make the decision above because we were writing directly to absolutely indexed members of @values.
-    # So now we would have to select the members to be printed again anyway.
-    # Currently we only test the short one.
-    if(1)
+    for(my $i = 1; $i<=4; $i++)
     {
-        my @indices = @{$long_to_short{$values[1]}};
-        for(my $i = 0; $i<=$#indices; $i++)
-        {
-            my $j = $i+1;
-            my $value = $indices[$i]>0 ? $values[$indices[$i]] : '_';
-            $tag .= "<i$j>$value</i$j>";
-        }
-    }
-    else # long tags
-    {
-        for(my $i = 1; $i<=$#values; $i++)
-        {
-            $tag .= "<i$i>$values[$i]</i$i>";
-        }
+        $tag .= "<i$i>$values[$i]</i$i>";
     }
     return $tag;
 }
@@ -478,7 +361,7 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
-# 236 (pmk_kr.xml)
+# 236 (pmk_kr.xml), after cleaning: 212
 # 10900 (pmk_dl.xml)
 #------------------------------------------------------------------------------
 sub list
