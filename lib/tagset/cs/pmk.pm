@@ -278,6 +278,10 @@ sub decode_participle_gender_number
     {
         $f->{other}{gender} = '-';
     }
+    elsif($number eq '9')
+    {
+        $f->{other}{gender} = '9';
+    }
     return $f->{number};
 }
 
@@ -290,7 +294,17 @@ sub encode_participle_gender_number
 {
     my $f = shift; # reference to hash
     my $c;
-    if($f->{number} eq 'sing')
+    # If this is not a participle number may still be specified but will be encoded elsewhere; gender will be '-'.
+    if($f->{tagset} eq 'cs::pmk' && $f->{other}{gender} eq '-')
+    {
+        $c = '-';
+    }
+    # It can also happen that person+number is 3rd+singular (5=3) and gender+number is unknown (9=9). Example: "nařízíno"
+    elsif($f->{tagset} eq 'cs::pmk' && $f->{other}{gender} eq '9')
+    {
+        $c = '9';
+    }
+    elsif($f->{number} eq 'sing')
     {
         if($f->{gender} eq 'masc')
         {
@@ -333,10 +347,6 @@ sub encode_participle_gender_number
         {
             $c = '8';
         }
-    }
-    elsif($f->{tagset} eq 'cs::pmk' && $f->{other}{gender} eq '-')
-    {
-        $c = '-';
     }
     else
     {
@@ -411,6 +421,12 @@ sub decode_person_number
         $f->{number} = 'plu';
         $f->{other}{nonpers} = 1;
     }
+    # - -> neurčuje se / not specified => empty value
+    # can conflict with participle gender+number
+    elsif($person eq '-')
+    {
+        $f->{other}{person} = '-';
+    }
     return $f->{person};
 }
 
@@ -423,7 +439,13 @@ sub encode_person_number
 {
     my $f = shift; # reference to hash
     my $c;
-    if($f->{verbform} eq 'inf')
+    # - -> neurčuje se / not specified => empty value
+    # can conflict with participle gender+number
+    if($f->{tagset} eq 'cs::pmk' && $f->{other}{person} eq '-')
+    {
+        $c = '-';
+    }
+    elsif($f->{verbform} eq 'inf')
     {
         if($f->{voice} eq 'pass')
         {
@@ -453,7 +475,7 @@ sub encode_person_number
             $c = '6';
         }
     }
-    else
+    elsif($f->{number} eq 'sing')
     {
         if($f->{person} == 1)
         {
@@ -471,6 +493,10 @@ sub encode_person_number
         {
             $c = '3';
         }
+    }
+    else
+    {
+        $c = '-';
     }
     return $c;
 }
@@ -705,7 +731,11 @@ sub encode_mood_tense_voice
 {
     my $f = shift; # reference to hash
     my $c;
-    if($f->{mood} eq 'cnd')
+    if($f->{verbform} eq 'trans')
+    {
+        $c = '-';
+    }
+    elsif($f->{mood} eq 'cnd')
     {
         if($f->{tense} eq 'past')
         {
@@ -3701,7 +3731,7 @@ sub encode_valency
             {
                 $c = '3';
             }
-            elsif($f->{other}{valency} eq 'npr-np4') # (nekvantifikační u substantiv bez předložky: akorát (akorát párek sme dostali), přesně (neseženeš přesně ty lidi))
+            elsif($f->{other}{valency} eq 'npr-nq4') # (nekvantifikační u substantiv bez předložky: akorát (akorát párek sme dostali), přesně (neseženeš přesně ty lidi))
             {
                 $c = '4';
             }
@@ -4411,7 +4441,7 @@ sub encode_function
     # prepositions (left functional dependency)
     elsif($pos eq '7')
     {
-        if($f->{tagset} eq 'cs::pmk' && exists($f->{other}{function}))
+        if($f->{tagset} eq 'cs::pmk' && exists($f->{other}{dependency}))
         {
             if($f->{other}{dependency} eq 'sep') # bez řídícího výrazu: u (můžeš u toho žehlit)
             {
