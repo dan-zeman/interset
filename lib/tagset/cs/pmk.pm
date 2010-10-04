@@ -29,6 +29,7 @@ sub decode_gender
         '1' => {'1'=>'M', '2'=>'I', '3'=>'F', '4'=>'N', '9'=>'X'},
         '2' => {'1'=>'M', '2'=>'I', '3'=>'F', '4'=>'N', '9'=>'X'},
         '3' => {'1'=>'M', '2'=>'I', '3'=>'F', '4'=>'N', '5'=>'B', '9'=>'X'},
+        '4' => {'1'=>'M', '2'=>'I', '3'=>'F', '4'=>'N', '5'=>'B', '9'=>'X'},
         'P' => {'1'=>'M', '2'=>'I', '3'=>'F', '4'=>'N', '5'=>'X'}
     );
     $gender = $map{$pos}{$gender};
@@ -103,6 +104,7 @@ sub encode_gender
         '1' => {'M'=>'1', 'I'=>'2', 'F'=>'3', 'N'=>'4', 'X'=>'9'},
         '2' => {'M'=>'1', 'I'=>'2', 'F'=>'3', 'N'=>'4', 'X'=>'9'},
         '3' => {'M'=>'1', 'I'=>'2', 'F'=>'3', 'N'=>'4', 'B'=>'5', 'X'=>'9'},
+        '4' => {'M'=>'1', 'I'=>'2', 'F'=>'3', 'N'=>'4', 'B'=>'5', 'X'=>'9'},
         'P' => {'M'=>'1', 'I'=>'2', 'F'=>'3', 'N'=>'4', 'X'=>'5'}
     );
     $c = $map{$pos}{$c};
@@ -128,7 +130,7 @@ sub decode_number
     my %map =
     (
         '1' => {'1'=>'S', '2'=>'P', '3'=>'T', '4'=>'D', '5'=>'C', '9'=>'X'},
-        '2' => {'1'=>'S', '2'=>'P', '3'=>'D', '4'=>'C'},
+        '2' => {'1'=>'S', '2'=>'P', '3'=>'D', '4'=>'C', '9'=>'X'},
         '3' => {'1'=>'S', '2'=>'P', '3'=>'D', '4'=>'V', '9'=>'X'},
         '4' => {'1'=>'S', '2'=>'P', '3'=>'D', '4'=>'C', '9'=>'X'},
         'P' => {'1'=>'S', '2'=>'P', '3'=>'T', '4'=>'X'}
@@ -208,7 +210,7 @@ sub encode_number
     my %map =
     (
         '1' => {'S'=>'1', 'P'=>'2', 'T'=>'3', 'D'=>'4', 'C'=>'5', 'X'=>'9'},
-        '2' => {'S'=>'1', 'P'=>'2', 'D'=>'3', 'C'=>'4'},
+        '2' => {'S'=>'1', 'P'=>'2', 'D'=>'3', 'C'=>'4', 'X'=>'9'},
         '3' => {'S'=>'1', 'P'=>'2', 'D'=>'3', 'V'=>'4', 'X'=>'9'},
         '4' => {'S'=>'1', 'P'=>'2', 'D'=>'3', 'C'=>'4', 'X'=>'9'},
         'P' => {'S'=>'1', 'P'=>'2', 'T'=>'3', 'X'=>'4'}
@@ -584,6 +586,93 @@ sub encode_case
         $c = '8';
     }
     # case of nouns, adjectives etc.: "cannot specify or indeclinable" = 9
+    else
+    {
+        $c = '9';
+    }
+    return $c;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Decodes case of the counted noun phrase (pád počítané jmenné fráze) and
+# stores it in a feature structure.
+#------------------------------------------------------------------------------
+sub decode_counted_case
+{
+    my $case = shift; # string
+    my $f = shift; # reference to hash
+    if($case eq '1')
+    {
+        $f->{other}{ccase} = 'nom';
+    }
+    elsif($case eq '2')
+    {
+        $f->{other}{ccase} = 'gen';
+    }
+    elsif($case eq '3')
+    {
+        $f->{other}{ccase} = 'dat';
+    }
+    elsif($case eq '4')
+    {
+        $f->{other}{ccase} = 'acc';
+    }
+    elsif($case eq '5')
+    {
+        $f->{other}{ccase} = 'voc';
+    }
+    elsif($case eq '6')
+    {
+        $f->{other}{ccase} = 'loc';
+    }
+    elsif($case eq '7')
+    {
+        $f->{other}{ccase} = 'ins';
+    }
+    return $f->{other}{ccase};
+}
+
+
+
+#------------------------------------------------------------------------------
+# Encodes  case of the counted noun phrase (pád počítané jmenné fráze) as a
+# string.
+#------------------------------------------------------------------------------
+sub encode_counted_case
+{
+    my $f = shift; # reference to hash
+    my $c;
+    if($f->{other}{ccase} eq 'nom')
+    {
+        $c = '1';
+    }
+    elsif($f->{other}{ccase} eq 'gen')
+    {
+        $c = '2';
+    }
+    elsif($f->{other}{ccase} eq 'dat')
+    {
+        $c = '3';
+    }
+    elsif($f->{other}{ccase} eq 'acc')
+    {
+        $c = '4';
+    }
+    elsif($f->{other}{ccase} eq 'voc')
+    {
+        $c = '5';
+    }
+    elsif($f->{other}{ccase} eq 'loc')
+    {
+        $c = '6';
+    }
+    elsif($f->{other}{ccase} eq 'ins')
+    {
+        $c = '7';
+    }
+    # "cannot specify or indeclinable" = 9
     else
     {
         $c = '9';

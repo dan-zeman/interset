@@ -83,8 +83,9 @@ sub decode
         tagset::cs::pmk::decode_degree($values[9], \%f);
         # 10. funkce
         tagset::cs::pmk::decode_function($pos, $values[10], \%f);
+        # According to documentation the next attribute should be style but it does not occur in the data.
         # 11! styl
-        tagset::cs::pmk::decode_style($values[11], \%f);
+        #tagset::cs::pmk::decode_style($values[11], \%f);
     }
     # zájmeno = pronoun
     elsif($pos==3)
@@ -103,8 +104,9 @@ sub decode
         tagset::cs::pmk::decode_case($values[6], \%f);
         # 7. funkce
         tagset::cs::pmk::decode_function($pos, $values[7], \%f);
+        # According to documentation the next attribute should be style but it does not occur in the data.
         # 8. styl
-        tagset::cs::pmk::decode_style($values[8], \%f);
+        #tagset::cs::pmk::decode_style($values[8], \%f);
     }
     # číslovka = numeral
     elsif($pos==4)
@@ -121,12 +123,12 @@ sub decode
         # 6. pád
         tagset::cs::pmk::decode_case($values[6], \%f);
         # 7. pád subst./pron.
-        ###!!! Hodnoty jsou stejné jako u pádu, ale je potřeba to uložit jinam, takže nemůžeme použít stejnou funkci tagset::cs::pmk::decode_case()!
-        ###!!! tagset::cs::pmk::decode_case($values[7], \%f);
+        tagset::cs::pmk::decode_counted_case($values[7], \%f);
         # 8. funkce
         tagset::cs::pmk::decode_function($pos, $values[8], \%f);
+        # According to documentation the next attribute should be style but it does not occur in the data.
         # 9. styl
-        tagset::cs::pmk::decode_style($values[9], \%f);
+        #tagset::cs::pmk::decode_style($values[9], \%f);
     }
     # sloveso = verb
     elsif($pos==5)
@@ -304,27 +306,8 @@ sub encode
     # substantivum = noun
     if($pos eq 'noun')
     {
-        # zájmeno = pronoun
-        if($f{prontype} ne '')
-        {
-            $values[1] = 3;
-            # 2! druh
-            $values[2] = tagset::cs::pmk::encode_pronoun_type($f);
-            # 3. valence
-            $values[3] = tagset::cs::pmk::encode_valency(3, $f);
-            # 4. rod
-            $values[4] = tagset::cs::pmk::encode_gender(3, $f);
-            # 5. číslo
-            $values[5] = tagset::cs::pmk::encode_number(3, $f);
-            # 6. pád
-            $values[6] = tagset::cs::pmk::encode_case($f);
-            # 7. funkce
-            $values[7] = tagset::cs::pmk::encode_function(3, $f);
-            # 8. styl
-            $values[8] = tagset::cs::pmk::encode_style($f);
-        }
         # substantivum = noun
-        else
+        if($f{prontype} eq '')
         {
             $values[1] = 1;
             # 2! druh
@@ -343,6 +326,26 @@ sub encode
             $values[8] = tagset::cs::pmk::encode_function(1, $f);
             # 9! styl
             $values[9] = tagset::cs::pmk::encode_style($f);
+        }
+        # zájmeno = pronoun
+        else
+        {
+            $values[1] = 3;
+            # 2! druh
+            $values[2] = tagset::cs::pmk::encode_pronoun_type($f);
+            # 3. valence
+            $values[3] = tagset::cs::pmk::encode_valency(3, $f);
+            # 4. rod
+            $values[4] = tagset::cs::pmk::encode_gender(3, $f);
+            # 5. číslo
+            $values[5] = tagset::cs::pmk::encode_number(3, $f);
+            # 6. pád
+            $values[6] = tagset::cs::pmk::encode_case($f);
+            # 7. funkce
+            $values[7] = tagset::cs::pmk::encode_function(3, $f);
+            # According to documentation the next attribute should be style but it does not occur in the data.
+            # 8. styl
+            #$values[8] = tagset::cs::pmk::encode_style($f);
         }
     }
     # adjektivum = adjective
@@ -367,8 +370,9 @@ sub encode
         $values[9] = tagset::cs::pmk::encode_degree($f);
         # 10. funkce
         $values[10] = tagset::cs::pmk::encode_function(2, $f);
+        # According to documentation the next attribute should be style but it does not occur in the data.
         # 11! styl
-        $values[11] = tagset::cs::pmk::encode_style($f);
+        #$values[11] = tagset::cs::pmk::encode_style($f);
     }
     # číslovka = numeral
     elsif($pos eq 'num')
@@ -385,12 +389,12 @@ sub encode
         # 6. pád
         $values[6] = tagset::cs::pmk::encode_case($f);
         # 7. pád subst./pron.
-        ###!!! Hodnoty jsou stejné jako u pádu, ale je potřeba to uložit jinam, takže nemůžeme použít stejnou funkci tagset::cs::pmk::decode_case()!
-        ###!!! tagset::cs::pmk::decode_case($values[7], \%f);
+        $values[7] = tagset::cs::pmk::encode_counted_case($f);
         # 8. funkce
         $values[8] = tagset::cs::pmk::encode_function(4, $f);
+        # According to documentation the next attribute should be style but it does not occur in the data.
         # 9. styl
-        $values[9] = tagset::cs::pmk::encode_style($f);
+        #$values[9] = tagset::cs::pmk::encode_style($f);
     }
     # sloveso = verb
     elsif($pos eq 'verb')
@@ -3489,7 +3493,6 @@ sub list
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>2</i6><i7>1</i7><i8>4</i8><i9>-</i9><i10>2</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>2</i6><i7>1</i7><i8>4</i8><i9>2</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>2</i6><i7>1</i7><i8>6</i8><i9>-</i9><i10>1</i10><i11></i11>
-<i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>2</i6><i7>1</i7><i8>6</i8><i9>1</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>2</i6><i7>1</i7><i8>6</i8><i9>2</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>2</i6><i7>1</i7><i8>7</i8><i9>-</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>2</i6><i7>1</i7><i8>9</i8><i9>-</i9><i10>1</i10><i11></i11>
@@ -3522,7 +3525,6 @@ sub list
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>3</i6><i7>1</i7><i8>7</i8><i9>2</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>3</i6><i7>1</i7><i8>9</i8><i9>-</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>3</i6><i7>2</i7><i8>1</i8><i9>-</i9><i10>1</i10><i11></i11>
-<i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>3</i6><i7>2</i7><i8>1</i8><i9>1</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>3</i6><i7>2</i7><i8>1</i8><i9>2</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>3</i6><i7>2</i7><i8>1</i8><i9>3</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>3</i6><i7>2</i7><i8>2</i8><i9>-</i9><i10>1</i10><i11></i11>
@@ -3533,7 +3535,6 @@ sub list
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>3</i6><i7>2</i7><i8>4</i8><i9>-</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>3</i6><i7>2</i7><i8>4</i8><i9>-</i9><i10>2</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>3</i6><i7>2</i7><i8>6</i8><i9>-</i9><i10>1</i10><i11></i11>
-<i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>3</i6><i7>2</i7><i8>6</i8><i9>1</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>3</i6><i7>2</i7><i8>6</i8><i9>2</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>3</i6><i7>2</i7><i8>7</i8><i9>-</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>1</i4><i5>0</i5><i6>3</i6><i7>2</i7><i8>9</i8><i9>-</i9><i10>1</i10><i11></i11>
@@ -4295,7 +4296,6 @@ sub list
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>4</i4><i5>8</i5><i6>4</i6><i7>1</i7><i8>6</i8><i9>-</i9><i10>5</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>4</i4><i5>8</i5><i6>9</i6><i7>1</i7><i8>2</i8><i9>3</i9><i10>3</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>4</i4><i5>8</i5><i6>9</i6><i7>1</i7><i8>2</i8><i9>3</i9><i10>5</i10><i11></i11>
-<i1>2</i1><i2>1</i2><i3>0</i3><i4>4</i4><i5>8</i5><i6>9</i6><i7>1</i7><i8>6</i8><i9>_</i9><i10>5</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>4</i4><i5>8</i5><i6>9</i6><i7>2</i7><i8>4</i8><i9>-</i9><i10>3</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>4</i4><i5>8</i5><i6>9</i6><i7>9</i7><i8>9</i8><i9>3</i9><i10>5</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>5</i4><i5>0</i5><i6>1</i6><i7>1</i7><i8>1</i8><i9>-</i9><i10>1</i10><i11></i11>
@@ -4394,7 +4394,6 @@ sub list
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>5</i4><i5>3</i5><i6>4</i6><i7>2</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>5</i4><i5>4</i5><i6>1</i6><i7>1</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>5</i4><i5>4</i5><i6>1</i6><i7>2</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
-<i1>2</i1><i2>1</i2><i3>0</i3><i4>5</i4><i5>4</i5><i6>1</i6><i7>2</i7><i8>2</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>5</i4><i5>4</i5><i6>1</i6><i7>2</i7><i8>9</i8><i9>-</i9><i10>3</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>5</i4><i5>4</i5><i6>2</i6><i7>1</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>0</i3><i4>5</i4><i5>4</i5><i6>2</i6><i7>1</i7><i8>4</i8><i9>-</i9><i10>1</i10><i11></i11>
@@ -4491,11 +4490,8 @@ sub list
 <i1>2</i1><i2>1</i2><i3>1</i3><i4>1</i4><i5>1</i5><i6>3</i6><i7>1</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>1</i3><i4>3</i4><i5>1</i5><i6>3</i6><i7>2</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>1</i3><i4>3</i4><i5>3</i5><i6>1</i6><i7>2</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
-<i1>2</i1><i2>1</i2><i3>3</i3><i4>1</i4><i5>0</i5><i6>2</i6><i7>2</i7><i8>4</i8><i9>-</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>3</i3><i4>1</i4><i5>0</i5><i6>4</i6><i7>1</i7><i8>1</i8><i9>-</i9><i10>1</i10><i11></i11>
-<i1>2</i1><i2>1</i2><i3>3</i3><i4>1</i4><i5>1</i5><i6>3</i6><i7>2</i7><i8>4</i8><i9>-</i9><i10>2</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>3</i3><i4>1</i4><i5>1</i5><i6>4</i6><i7>1</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
-<i1>2</i1><i2>1</i2><i3>3</i3><i4>1</i4><i5>3</i5><i6>1</i6><i7>2</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>3</i3><i4>1</i4><i5>3</i5><i6>4</i6><i7>1</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>3</i3><i4>1</i4><i5>4</i5><i6>4</i6><i7>1</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
 <i1>2</i1><i2>1</i2><i3>3</i3><i4>3</i4><i5>5</i5><i6>4</i6><i7>1</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
@@ -4834,10 +4830,6 @@ sub list
 <i1>2</i1><i2>2</i2><i3>2</i3><i4>1</i4><i5>0</i5><i6>4</i6><i7>1</i7><i8>7</i8><i9>-</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>2</i2><i3>2</i3><i4>1</i4><i5>8</i5><i6>9</i6><i7>1</i7><i8>6</i8><i9>-</i9><i10>5</i10><i11></i11>
 <i1>2</i1><i2>2</i2><i3>2</i3><i4>3</i4><i5>0</i5><i6>2</i6><i7>2</i7><i8>1</i8><i9>-</i9><i10>1</i10><i11></i11>
-<i1>2</i1><i2>2</i2><i3>3</i3><i4>1</i4><i5>1</i5><i6>1</i6><i7>2</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
-<i1>2</i1><i2>2</i2><i3>3</i3><i4>1</i4><i5>1</i5><i6>3</i6><i7>1</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
-<i1>2</i1><i2>2</i2><i3>3</i3><i4>1</i4><i5>3</i5><i6>3</i6><i7>1</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
-<i1>2</i1><i2>2</i2><i3>3</i3><i4>1</i4><i5>8</i5><i6>3</i6><i7>2</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
 <i1>2</i1><i2>2</i2><i3>4</i3><i4>1</i4><i5>1</i5><i6>1</i6><i7>1</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
 <i1>2</i1><i2>2</i2><i3>4</i3><i4>1</i4><i5>3</i5><i6>1</i6><i7>1</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
 <i1>2</i1><i2>2</i2><i3>4</i3><i4>3</i4><i5>1</i5><i6>1</i6><i7>1</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
@@ -4860,18 +4852,15 @@ sub list
 <i1>2</i1><i2>3</i2><i3>4</i3><i4>1</i4><i5>0</i5><i6>3</i6><i7>1</i7><i8>4</i8><i9>-</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>3</i2><i3>4</i3><i4>1</i4><i5>0</i5><i6>3</i6><i7>1</i7><i8>6</i8><i9>-</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>3</i2><i3>4</i3><i4>1</i4><i5>0</i5><i6>3</i6><i7>2</i7><i8>1</i8><i9>-</i9><i10>1</i10><i11></i11>
-<i1>2</i1><i2>3</i2><i3>4</i3><i4>1</i4><i5>1</i5><i6>4</i6><i7>1</i7><i8>1</i8><i9>-</i9><i10>2</i10><i11></i11>
 <i1>2</i1><i2>3</i2><i3>4</i3><i4>1</i4><i5>8</i5><i6>2</i6><i7>2</i7><i8>4</i8><i9>-</i9><i10>3</i10><i11></i11>
 <i1>2</i1><i2>3</i2><i3>4</i3><i4>2</i4><i5>0</i5><i6>1</i6><i7>1</i7><i8>3</i8><i9>-</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>3</i2><i3>4</i3><i4>2</i4><i5>0</i5><i6>1</i6><i7>2</i7><i8>1</i8><i9>-</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>3</i2><i3>4</i3><i4>2</i4><i5>0</i5><i6>3</i6><i7>1</i7><i8>3</i8><i9>-</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>3</i2><i3>4</i3><i4>2</i4><i5>0</i5><i6>3</i6><i7>1</i7><i8>4</i8><i9>-</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>3</i2><i3>4</i3><i4>2</i4><i5>0</i5><i6>3</i6><i7>2</i7><i8>4</i8><i9>-</i9><i10>1</i10><i11></i11>
-<i1>2</i1><i2>3</i2><i3>4</i3><i4>2</i4><i5>0</i5><i6>4</i6><i7>1</i7><i8>7</i8><i9>-</i9><i10>1</i10><i11></i11>
 <i1>2</i1><i2>3</i2><i3>4</i3><i4>2</i4><i5>8</i5><i6>1</i6><i7>1</i7><i8>1</i8><i9>-</i9><i10>3</i10><i11></i11>
 <i1>2</i1><i2>3</i2><i3>4</i3><i4>2</i4><i5>8</i5><i6>3</i6><i7>1</i7><i8>1</i8><i9>-</i9><i10>3</i10><i11></i11>
 <i1>2</i1><i2>3</i2><i3>4</i3><i4>2</i4><i5>8</i5><i6>3</i6><i7>1</i7><i8>4</i8><i9>-</i9><i10>3</i10><i11></i11>
-<i1>2</i1><i2>3</i2><i3>4</i3><i4>2</i4><i5>8</i5><i6>4</i6><i7>1</i7><i8>7</i8><i9>-</i9><i10>3</i10><i11></i11>
 <i1>3</i1><i2>-</i2><i3>0</i3><i4>1</i4><i5>1</i5><i6>1</i6><i7>1</i7><i8>_</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>3</i1><i2>-</i2><i3>0</i3><i4>1</i4><i5>2</i5><i6>1</i6><i7>1</i7><i8>_</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>3</i1><i2>-</i2><i3>0</i3><i4>1</i4><i5>2</i5><i6>9</i6><i7>1</i7><i8>_</i8><i9>_</i9><i10>_</i10><i11></i11>
@@ -5109,7 +5098,6 @@ sub list
 <i1>3</i1><i2>1</i2><i3>0</i3><i4>5</i4><i5>4</i5><i6>2</i6><i7>1</i7><i8>_</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>3</i1><i2>1</i2><i3>0</i3><i4>5</i4><i5>4</i5><i6>3</i6><i7>1</i7><i8>_</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>3</i1><i2>1</i2><i3>0</i3><i4>5</i4><i5>4</i5><i6>4</i6><i7>1</i7><i8>_</i8><i9>_</i9><i10>_</i10><i11></i11>
-<i1>3</i1><i2>1</i2><i3>0</i3><i4>5</i4><i5>5</i5><i6>1</i6><i7>1</i7><i8>_</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>3</i1><i2>1</i2><i3>0</i3><i4>9</i4><i5>2</i5><i6>1</i6><i7>1</i7><i8>_</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>3</i1><i2>1</i2><i3>0</i3><i4>9</i4><i5>2</i5><i6>3</i6><i7>1</i7><i8>_</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>3</i1><i2>1</i2><i3>0</i3><i4>9</i4><i5>2</i5><i6>4</i6><i7>1</i7><i8>_</i8><i9>_</i9><i10>_</i10><i11></i11>
@@ -5922,7 +5910,6 @@ sub list
 <i1>3</i1><i2>7</i2><i3>3</i3><i4>5</i4><i5>9</i5><i6>4</i6><i7>4</i7><i8>_</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>3</i1><i2>7</i2><i3>3</i3><i4>5</i4><i5>9</i5><i6>7</i6><i7>1</i7><i8>_</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>3</i1><i2>7</i2><i3>4</i3><i4>5</i4><i5>9</i5><i6>1</i6><i7>4</i7><i8>_</i8><i9>_</i9><i10>_</i10><i11></i11>
-<i1>3</i1><i2>7</i2><i3>_</i3><i4>1</i4><i5>_</i5><i6>_</i6><i7>_</i7><i8>_</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>3</i1><i2>8</i2><i3>0</i3><i4>1</i4><i5>1</i5><i6>1</i6><i7>1</i7><i8>_</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>3</i1><i2>8</i2><i3>0</i3><i4>1</i4><i5>1</i5><i6>1</i6><i7>4</i7><i8>_</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>3</i1><i2>8</i2><i3>0</i3><i4>2</i4><i5>1</i5><i6>1</i6><i7>1</i7><i8>_</i8><i9>_</i9><i10>_</i10><i11></i11>
@@ -6417,7 +6404,6 @@ sub list
 <i1>4</i1><i2>4</i2><i3>2</i3><i4>5</i4><i5>9</i5><i6>9</i6><i7>9</i7><i8>6</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>4</i1><i2>4</i2><i3>3</i3><i4>5</i4><i5>9</i5><i6>9</i6><i7>9</i7><i8>3</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>4</i1><i2>5</i2><i3>0</i3><i4>4</i4><i5>1</i5><i6>6</i6><i7>9</i7><i8>1</i8><i9>_</i9><i10>_</i10><i11></i11>
-<i1>4</i1><i2>5</i2><i3>0</i3><i4>5</i4><i5>-</i5><i6>9</i6><i7>9</i7><i8>3</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>4</i1><i2>5</i2><i3>0</i3><i4>5</i4><i5>9</i5><i6>1</i6><i7>1</i7><i8>1</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>4</i1><i2>5</i2><i3>0</i3><i4>5</i4><i5>9</i5><i6>1</i6><i7>1</i7><i8>3</i8><i9>_</i9><i10>_</i10><i11></i11>
 <i1>4</i1><i2>5</i2><i3>0</i3><i4>5</i4><i5>9</i5><i6>1</i6><i7>9</i7><i8>1</i8><i9>_</i9><i10>_</i10><i11></i11>
