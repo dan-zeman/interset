@@ -4445,6 +4445,11 @@ sub encode_function
                 $c = '-';
             }
         }
+        else
+        {
+            # default
+            $c = '-';
+        }
     }
     # adjectives
     elsif($pos eq '2')

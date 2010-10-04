@@ -58,8 +58,9 @@ sub decode
         tagset::cs::pmk::decode_case($values[7], \%f);
         # 8. funkce
         tagset::cs::pmk::decode_function($pos, $values[8], \%f);
+        # According to documentation the next attribute should be style but it does not occur in the data.
         # 9! styl
-        tagset::cs::pmk::decode_style($values[9], \%f);
+        #tagset::cs::pmk::decode_style($values[9], \%f);
     }
     # adjektivum = adjective
     elsif($pos==2)
@@ -225,8 +226,9 @@ sub decode
         tagset::cs::pmk::decode_valency($pos, $values[4], '', \%f);
         # 5. modus věty
         tagset::cs::pmk::decode_sentmod($values[5], \%f);
+        # According to documentation the next attribute should be style but it does not occur in the data.
         # 6! styl
-        tagset::cs::pmk::decode_style($values[6], \%f);
+        #tagset::cs::pmk::decode_style($values[6], \%f);
     }
     # idiom a frazém = idiom and set phrase
     elsif($pos eq 'F')
@@ -324,8 +326,9 @@ sub encode
             $values[7] = tagset::cs::pmk::encode_case($f);
             # 8. funkce
             $values[8] = tagset::cs::pmk::encode_function(1, $f);
+            # According to documentation the next attribute should be style but it does not occur in the data.
             # 9! styl
-            $values[9] = tagset::cs::pmk::encode_style($f);
+            #$values[9] = tagset::cs::pmk::encode_style($f);
         }
         # zájmeno = pronoun
         else
@@ -490,11 +493,12 @@ sub encode
         # 3. třída
         $values[3] = tagset::cs::pmk::encode_particle_class($f);
         # 4. valence
-        $values[4] = tagset::cs::pmk::encode_valency($f);
+        $values[4] = tagset::cs::pmk::encode_valency(0, $f);
         # 5. modus věty
         $values[5] = tagset::cs::pmk::encode_sentmod($f);
+        # According to documentation the next attribute should be style but it does not occur in the data.
         # 6! styl
-        $values[6] = tagset::cs::pmk::encode_style($f);
+        #$values[6] = tagset::cs::pmk::encode_style($f);
     }
     # idiom a frazém = idiom and set phrase
     elsif($f{tagset} eq 'cs::pmk' && $f{other}{pos} eq 'F')
@@ -563,8 +567,8 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
-# 236 (pmk_kr.xml)
-# 10900 (pmk_dl.xml)
+# 236 (pmk_kr.xml), after cleaning: 212
+# 10900 (pmk_dl.xml), after cleaning: 10813
 #------------------------------------------------------------------------------
 sub list
 {

@@ -362,7 +362,7 @@ sub encode
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
 # 236 (pmk_kr.xml), after cleaning: 212
-# 10900 (pmk_dl.xml)
+# 10900 (pmk_dl.xml), after cleaning: 10813
 #------------------------------------------------------------------------------
 sub list
 {
