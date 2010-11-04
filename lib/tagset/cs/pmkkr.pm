@@ -597,7 +597,8 @@ BEGIN
 {
     # When scanning tags for permitted feature structures, do not consider tags
     # that require setting the 'other' feature.
-    my $no_other = 1;
+    # We cannot turn this feature on because the present tagset heavily uses the 'other' feature.
+    my $no_other = 0;
     # Store the hash reference in a global variable.
     $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode, $no_other);
 }

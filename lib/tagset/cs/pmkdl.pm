@@ -304,9 +304,10 @@ sub encode
     # Features are numbered from 1; the 0th element of the array will remain empty.
     my @values;
     # Part of speech (the first letter of the tag) specifies which features follow.
-    my $pos = $f{pos};
+    my $pos = $f->{pos};
     # substantivum = noun
-    if($pos eq 'noun')
+    # except for proper nouns, which are coded as 'J'
+    if($pos eq 'noun' && $f->{subpos} ne 'prop')
     {
         # substantivum = noun
         if($f{prontype} eq '')
@@ -539,17 +540,22 @@ sub encode
             # P6. pád
             $values[6] = tagset::cs::pmk::encode_case($f);
         }
-        else
+        elsif($values[2] eq 'C' || $values[2] eq 'Z')
         {
             $values[3] = '_';
             $values[4] = '_';
             $values[5] = '_';
             $values[6] = '_';
         }
+        # other types than J[CZP] can occur when converting from alien tagsets
+        else
+        {
+            @values = map {''} (0..11);
+        }
         # 7! styl
         # According to the documentation in FSMC-celek.pdf, there should be the style attribute as with all other parts of speech.
         # However, in the data, it is never set.
-        $values[7] = '_';
+        #$values[7] = '_';
     }
     # Convert the array of values to a tag in the XML format.
     my $tag;
@@ -11404,7 +11410,8 @@ BEGIN
 {
     # When scanning tags for permitted feature structures, do not consider tags
     # that require setting the 'other' feature.
-    my $no_other = 1;
+    # We cannot turn this feature on because the present tagset heavily uses the 'other' feature.
+    my $no_other = 0;
     # Store the hash reference in a global variable.
     $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode, $no_other);
 }

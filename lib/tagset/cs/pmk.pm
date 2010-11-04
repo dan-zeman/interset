@@ -2105,6 +2105,7 @@ sub decode_other_real_type
     }
     elsif($c eq 'P') # (propria: Kunratickou, Hrádek, Mirek, Roháčích, Vinnetou)
     {
+        $f->{pos} = 'noun';
         $f->{subpos} = 'prop';
     }
 }
@@ -4563,6 +4564,20 @@ sub encode_function
             }
         }
     }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Should return reference to list of known tags.
+# The function is defined in order to prevent failures of automatic tools that
+# assume this is a normal driver. However, since this is in fact a library of
+# common functions for pmkkr and pmkdl, the returned list will be empty.
+# 236 (pmk_kr.xml), after cleaning: 212
+# 10900 (pmk_dl.xml), after cleaning: 10813
+#------------------------------------------------------------------------------
+sub list
+{
 }
 
 
