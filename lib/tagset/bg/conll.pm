@@ -748,10 +748,19 @@ sub encode
     my $f0 = shift;
     my $nonstrict = shift; # strict is default
     $strict = !$nonstrict;
-    # Modify the feature structure so that it contains values expected by this
-    # driver.
-    my $f = tagset::common::enforce_permitted_joint($f0, $permitted);
-    my %f = %{$f}; # This is not a deep copy but $f already refers to a deep copy of the original %{$f0}.
+    my $f;
+    if($strict)
+    {
+        # Modify the feature structure so that it contains values expected by this driver.
+        # (Creates a deep copy of the feature structure first.)
+        $f = tagset::common::enforce_permitted_joint($f0, $permitted);
+    }
+    else
+    {
+        # Create a deep copy of the feature structure so we can modify it without affecting the caller.
+        $f = tagset::common::duplicate($f0);
+    }
+    my %f = %{$f};
     my $tag;
     # pos and subpos
     if($f{foreign} eq "foreign")

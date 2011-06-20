@@ -92,6 +92,59 @@ BEGIN
 
 
 #------------------------------------------------------------------------------
+# Generates Treex XML schema for the current list of Interset features and
+# values. To use Interset within Treex, we must ensure that the Treex PML
+# schema defines all our features and values. This function helps us to update
+# the schema after changing Interset.
+#
+# cp /home/zeman/projekty/interset/lib/tagset/common.pm /net/work/people/zeman/tectomt/libs/other/tagset
+# perl -e 'use tagset::common; tagset::common::generate_treex_xml_schema();' > /net/work/people/zeman/tectomt/treex/lib/Treex/Core/share/tred_extension/treex/resources/treex_subschema_interset.xml
+#------------------------------------------------------------------------------
+sub generate_treex_xml_schema
+{
+    # The node attribute that contains the whole Interset feature structure should be declared as follows:
+    # <member name="iset" type="iset.type"/>
+    # We generate the definition of the iset.type only.
+    print("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+    print("\n");
+    print("<pml_schema xmlns=\"http://ufal.mff.cuni.cz/pdt/pml/schema/\" version=\"1.1\">\n");
+    print("  <revision>1.0.0</revision>\n");
+    print("  <description>DZ Interset features and values</description>\n");
+    print("\n");
+    print("  <type name=\"iset.type\">\n");
+    print("    <structure>\n");
+    foreach my $feature (@known_features)
+    {
+        unless($feature =~ m/^(tagset|other)$/)
+        {
+            print("      <member name=\"$feature\" type=\"iset-$feature.type\"/>\n");
+        }
+    }
+    print("    </structure>\n");
+    print("  </type>\n");
+    # Enumerate permitted values for every feature.
+    foreach my $feature (@known_features)
+    {
+        unless($feature =~ m/^(tagset|other)$/)
+        {
+            print("\n");
+            print("  <type name=\"iset-$feature.type\">\n");
+            print("    <choice>\n");
+            foreach my $value (@{$known_values{$feature}})
+            {
+                print("      <value>$value</value>\n");
+            }
+            print("    </choice>\n");
+            print("  </type>\n");
+        }
+    }
+    print("\n");
+    print("</pml_schema>\n");
+}
+
+
+
+#------------------------------------------------------------------------------
 # This other list of features specifies their priority. Features earlier in the
 # list have higher priority. If there is a conflict of feature values during
 # strict encoding, the feature with higher priority will retain its value.
