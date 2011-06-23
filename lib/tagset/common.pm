@@ -87,6 +87,22 @@ BEGIN
             $known{$f}{$v} = 1;
         }
     }
+    # Create a hash of ordering values to assist sorting feature values "intuitively".
+    # For example, singular is intuitively before but alphabetically after plural.
+    # Intuitive sorting will be useful when displaying a list of values.
+    # Intuitive order is defined by the order of the values in the arrays in %known_values.
+    %order_values;
+    for(my $i = 0; $i<=$#known_features; $i++)
+    {
+        my $feature = $known_features[$i];
+        $order_values{$feature}{''} = ($i+1)*1000;
+        my @values = @{$known_values{$feature}};
+        for(my $j = 0; $j<=$#values; $j++)
+        {
+            my $value = $values[$j];
+            $order_values{$feature}{$value} = ($i+1)*1000+($j+1);
+        }
+    }
 }
 
 
