@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 # Driver for the CoNLL 2006 Bulgarian tagset.
 # (Documentation at http://www.bultreebank.org/TechRep/BTB-TR03.pdf)
-# Copyright © 2007, 2009 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2007, 2009, 2011 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 # 4.4.2009: numtype and numvalue separated from subpos, new generic numerals
 # 5.4.2009: advtype separated from subpos
@@ -61,15 +61,17 @@ sub decode
         }
     }
     # H = hybrid between noun and adjective (surnames, names of villages - Ivanov, Ivanovo)
+    # Historically these words are possessive adjectives.
+    # Most word forms in this class can have two meanings:
+    # Ivanov = Ivanov (family name, noun)
+    # Ivanov = Ivan's (possessive adjective)
     elsif($pos eq "H")
     {
-        $f{pos} = "noun";
-        $f{other}{pos} = "hybrid";
-        # subpos: H Hf Hm Hn - duplicity! The second character actually encodes gender!
-        if($subpos eq "H")
-        {
-            $f{other}{subpos} = "H";
-        }
+        $f{pos} = 'noun'; # or better ['noun', 'adj']?
+        $f{subpos} = 'prop';
+        $f{poss} = 'poss';
+        # subpos: H Hf Hm Hn - duplicity! The second character actually encodes gender (which is also specified as a feature).
+        # Gender is distinguished in singular only. No second character means plural.
     }
     # A = adjective
     elsif($pos eq "A")
@@ -436,7 +438,7 @@ sub decode
             {
                 # full definite article of masculines
                 $f{definiteness} = "def";
-                # We cannot use $f{variant} = "short" because it would collide with the form feature of pronouns.
+                # We cannot use $f{variant} = "long" because it would collide with the form feature of pronouns.
                 $f{other}{definiteness} = "f";
             }
             elsif($value eq "h")
@@ -538,10 +540,9 @@ sub decode
                 $f{number} = "dual";
             }
             # pia_tantum = pluralia tantum (nouns that only appear in plural: "The Alps")
-            elsif($value eq "pia_tantum")
+            elsif($value eq 'pia_tantum')
             {
-                $f{number} = "plu";
-                $f{other}{number} = "pluralia tantum";
+                $f{number} = 'ptan';
             }
         }
         # past
@@ -845,13 +846,12 @@ sub encode
     {
         # N = normal noun
         # H = hybrid adjectival noun (Ivanov, Ivanovo)
-        if($f{tagset} eq "bg::conll" && $f{other}{pos} eq "hybrid" ||
-           $f{tagset} ne "bg::conll" && $f{gender} eq "fem" && $f{number} eq "sing" && $f{definiteness} eq "ind")
+        if($f{subpos} eq 'prop' && $f{poss} eq 'poss')
         {
             # Hm = masculine
             # Hf = feminine
             # Hn = neuter
-            if($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "H")
+            if($f{number} eq 'plu')
             {
                 $tag = "H\tH";
             }
@@ -964,7 +964,9 @@ sub encode
         }
         elsif($f{subpos} eq "aux")
         {
-            if($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "băda")
+            # In fact, all the auxiliary verbs are groups of forms of the verb "to be".
+            # One of the three can be distinguished by the perfect aspect. Both the other are imperfect.
+            if($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "băda" || $f{aspect} eq 'perf')
             {
                 $tag = "V\tVyp";
             }
@@ -1151,17 +1153,11 @@ sub encode
             push(@features, "type=aux");
         }
         # aspect
-        if($f{subpos} eq "aux" && !($f{tagset} eq "bg::conll" && $f{other}{subpos} =~ m/^(săm|bivam)$/) ||
-           $f{aspect} eq "perf" && !($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "nonpers") && $f{subcat} ne "")
+        # Verbs explicitly specify only perfect aspect as feature (and it is superfluous because part of speech reflects aspect).
+        if($f{aspect} eq 'perf' &&
+           ($f{subpos} eq 'aux' || !($f{tagset} eq 'bg::conll' && $f{other}{subpos} eq 'nonpers') && $f{subcat} ne ''))
         {
-            if($f{aspect} eq "imp")
-            {
-                push(@features, "aspect=i");
-            }
-            elsif($f{aspect} eq "perf")
-            {
-                push(@features, "aspect=p");
-            }
+            push(@features, "aspect=p");
         }
         # transitivity of verbs
         my $prefix;
@@ -1219,7 +1215,8 @@ sub encode
             {
                 push(@features, "tense=m");
             }
-            elsif($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "săm" && $f{mood} ne "sub")
+            elsif($f{subpos} eq 'aux' && $f{aspect} ne 'perf' && $f{mood} ne 'sub')
+            #elsif($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "săm" && $f{mood} ne "sub")
             {
                 push(@features, "past");
             }
@@ -1233,7 +1230,9 @@ sub encode
     # The features of indefinite pronouns (Pf) always begin with "def=i".
     # Another definiteness can occur at the end, this time not necessarily indefinite!
     # Examples: edin i i, edinja i h, edinjat i f, ednata i d, nekolcina i i, nešta i i, neštata i d, njakolko i i.
-    if($f{prontype} eq "ind" && !($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "Md"))
+    #if($f{prontype} eq "ind" && !($f{tagset} eq "bg::conll" && $f{other}{subpos} eq "Md"))
+    if($tag =~ m/^P/ && # to distinguish from Md numerals
+       $f{prontype} eq 'ind')
     {
         push(@features, "def=i");
     }
@@ -1252,7 +1251,7 @@ sub encode
         {
             push(@features, "ref=mp");
         }
-        elsif($f{prontype} ne "prs")
+        elsif($f{prontype} ne "prs" && $f{prontype} ne '')
         {
             push(@features, "ref=p");
         }
@@ -1359,17 +1358,13 @@ sub encode
     {
         push(@features, "num=t");
     }
-    elsif($f{number} eq "plu")
+    elsif($f{number} eq 'plu')
     {
-        if($f{tagset} eq "bg::conll" && $f{other}{number} eq "pluralia tantum" ||
-           $f{tagset} ne "bg::conll" && $f{pos} eq "noun" && $f{prontype} eq "" && $f{gender} eq "")
-        {
-            push(@features, "num=pia_tantum");
-        }
-        else
-        {
-            push(@features, "num=p");
-        }
+        push(@features, 'num=p');
+    }
+    elsif($f{number} eq 'ptan')
+    {
+        push(@features, 'num=pia_tantum');
     }
     # case of nouns
     if($f{pos} eq "noun" && $f{prontype} eq "")
@@ -1436,20 +1431,24 @@ sub encode
         }
         elsif($f{definiteness} eq "def")
         {
-            if($f{tagset} eq "bg::conll" && $f{other}{definiteness} eq "f" ||
-               $f{tagset} ne "bg::conll" && $f{gender} eq "masc" && $f{number} eq "sing")
+            # Masculine definite morpheme can be either full ('f') or short ('s').
+            # Other genders have just one definite value ('d').
+            if($f{gender} eq 'masc' && $f{number} eq 'sing')
             {
-                push(@features, "def=f");
-            }
-            elsif($f{tagset} eq "bg::conll" && $f{other}{definiteness} eq "h")
-            {
-                # shoft definite article
-                # We cannot use $f{variant} = "short" because it would collide with the form feature of pronouns.
-                push(@features, "def=h");
+                # We will make the full form default.
+                # Only the 'other' feature can toggle the short form.
+                if($f{tagset} eq 'bg::conll' && $f{other}{definiteness} eq 'h')
+                {
+                    push(@features, 'def=h');
+                }
+                else
+                {
+                    push(@features, 'def=f');
+                }
             }
             else
             {
-                push(@features, "def=d");
+                push(@features, 'def=d');
             }
         }
     }
@@ -1556,7 +1555,6 @@ N\tNc\tgen=f|num=s|def=d
 N\tNc\tgen=m|num=p|def=d
 N\tNc\tgen=m|num=p|def=i
 N\tNc\tgen=m|num=s|case=v
-N\tNc\tgen=m|num=s|def=d
 N\tNc\tgen=m|num=s|def=f
 N\tNc\tgen=m|num=s|def=h
 N\tNc\tgen=m|num=s|def=i
@@ -1749,6 +1747,7 @@ P\tPs\tref=mp|form=f|num=s|pers=1|gen=n|def=d
 P\tPs\tref=mp|form=f|num=s|pers=1|gen=n|def=i
 P\tPs\tref=mp|form=f|num=s|pers=2|gen=f|def=d
 P\tPs\tref=mp|form=f|num=s|pers=2|gen=f|def=i
+P\tPs\tref=mp|form=f|num=s|pers=2|gen=m|def=f
 P\tPs\tref=mp|form=f|num=s|pers=2|gen=m|def=h
 P\tPs\tref=mp|form=f|num=s|pers=2|gen=m|def=i
 P\tPs\tref=mp|form=f|num=s|pers=2|gen=n|def=d
@@ -1790,6 +1789,7 @@ P\tPs\tref=op|form=f|num=s|pers=3|gen=m|def=f|gen=f
 P\tPs\tref=op|form=f|num=s|pers=3|gen=m|def=f|gen=m
 P\tPs\tref=op|form=f|num=s|pers=3|gen=m|def=h|gen=f
 P\tPs\tref=op|form=f|num=s|pers=3|gen=m|def=h|gen=m
+P\tPs\tref=op|form=f|num=s|pers=3|gen=m|def=f|gen=n
 P\tPs\tref=op|form=f|num=s|pers=3|gen=m|def=h|gen=n
 P\tPs\tref=op|form=f|num=s|pers=3|gen=m|def=i|gen=f
 P\tPs\tref=op|form=f|num=s|pers=3|gen=m|def=i|gen=m
@@ -1808,6 +1808,7 @@ P\tPs\tref=op|form=s|pers=3|gen=n
 P\tPs\tref=r|form=f|case=n|num=p|def=d
 P\tPs\tref=r|form=f|case=n|num=p|def=i
 P\tPs\tref=r|form=f|case=n|num=s|gen=f|def=d
+P\tPs\tref=r|form=f|case=n|num=s|gen=m|def=f
 P\tPs\tref=r|form=f|case=n|num=s|gen=m|def=h
 P\tPs\tref=r|form=f|case=n|num=s|gen=m|def=i
 P\tPs\tref=r|form=f|case=n|num=s|gen=n|def=d
@@ -1975,6 +1976,7 @@ V\tVpp\taspect=p|trans=t|vform=c|voice=a|tense=o|num=p|def=d
 V\tVpp\taspect=p|trans=t|vform=c|voice=a|tense=o|num=p|def=i
 V\tVpp\taspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=f|def=d
 V\tVpp\taspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=f|def=i
+V\tVpp\taspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=m|def=f
 V\tVpp\taspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=m|def=h
 V\tVpp\taspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=m|def=i
 V\tVpp\taspect=p|trans=t|vform=c|voice=a|tense=o|num=s|gen=n|def=d
@@ -1983,6 +1985,7 @@ V\tVpp\taspect=p|trans=t|vform=c|voice=v|num=p|def=d
 V\tVpp\taspect=p|trans=t|vform=c|voice=v|num=p|def=i
 V\tVpp\taspect=p|trans=t|vform=c|voice=v|num=s|gen=f|def=d
 V\tVpp\taspect=p|trans=t|vform=c|voice=v|num=s|gen=f|def=i
+V\tVpp\taspect=p|trans=t|vform=c|voice=v|num=s|gen=m|def=f
 V\tVpp\taspect=p|trans=t|vform=c|voice=v|num=s|gen=m|def=h
 V\tVpp\taspect=p|trans=t|vform=c|voice=v|num=s|gen=m|def=i
 V\tVpp\taspect=p|trans=t|vform=c|voice=v|num=s|gen=n|def=d

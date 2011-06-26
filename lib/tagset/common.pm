@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # Module with service functions for tagset drivers.
-# Copyright © 2007-2009 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2007-2011 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 # 4.4.2009: numtype and numvalue separated from subpos, new generic numerals
 # 5.4.2009: advtype separated from subpos
@@ -47,7 +47,7 @@ BEGIN
         "poss"         => ["poss"],
         "reflex"       => ["reflex"],
         "negativeness" => ["pos", "neg"],
-        "definiteness" => ["ind", "def", "red"],
+        "definiteness" => ["ind", "def", "red", "com"],
         "gender"       => ["masc", "fem", "com", "neut"],
         "animateness"  => ["anim", "nhum", "inan"],
         "number"       => ["sing", "dual", "plu", "ptan", "coll"],
@@ -365,7 +365,8 @@ BEGIN
         [
             ["ind"],
             ["def"],
-            ["red", "def"]
+            ["red", "def"],
+            ["com", "red", "def"]
         ],
         "foreign" =>
         [
@@ -609,6 +610,67 @@ BEGIN
 
 
 #------------------------------------------------------------------------------
+# Filters a list of tags so that the resulting list contains only tags that
+# can result from conversion from a different tagset. These tags do not depend
+# on the 'other' feature. It is not to say that decoding them necessarily
+# leaves the feature empty. However, these tags are default with respect to the
+# feature, so if the feature is not available, encoder picks the default tag.
+#
+# Note that it is not guaranteed that the resulting list is a subset of the
+# original list. It is possible, though undesirable, that decode -> strip other
+# -> encode creates an unknown tag.
+#------------------------------------------------------------------------------
+sub list_other_resistant_tags
+{
+    my $list0 = shift; # reference to array
+    my $decode = shift; # reference to driver-specific decoding function
+    my $encode = shift; # reference to driver-specific encoding function
+    my %result;
+    foreach my $tag0 (@{$list0})
+    {
+        my $fs = &{$decode}($tag0);
+        delete($fs->{other});
+        my $tag1 = &{$encode}($fs);
+        $result{$tag1}++;
+    }
+    my @list1 = sort(keys(%result));
+    return \@list1;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Same as list_other_resistant_tags() (see above) but returns only those tags
+# that result from stripping the 'other' feature and are not on the original
+# list. If the original list of valid tags was merely collected from corpus
+# occurrences, this function could identify other tags that are possibly valid
+# although they do not occur in the corpus.
+#------------------------------------------------------------------------------
+sub list_unknown_other_resistant_tags
+{
+    my $list0 = shift; # reference to array
+    my $decode = shift; # reference to driver-specific decoding function
+    my $encode = shift; # reference to driver-specific encoding function
+    my $list1 = list_other_resistant_tags($list0, $decode, $encode);
+    my %hash0;
+    foreach my $tag (@{$list0})
+    {
+        $hash0{$tag}++;
+    }
+    my @unknown;
+    foreach my $tag (@{$list1})
+    {
+        if(!exists($hash0{$tag}))
+        {
+            push(@unknown, $tag);
+        }
+    }
+    return \@unknown;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Reads a list of tags, decodes each tag, converts all array values to scalars
 # (by sorting and joining them), remembers permitted feature structures in a
 # trie. Returns a reference to the trie.
@@ -630,6 +692,9 @@ sub get_permitted_structures_joint
     {
         my $fs = &{$decode}($tag);
         # If required, skip tags that set the 'other' feature.
+        ###!!! Alternatively, we need not skip the tag.
+        ###!!! Instead, strip the 'other' information, make sure that we have a valid tag (by encoding and decoding once more),
+        ###!!! then add feature values to the tree.
         next if($no_other && exists($fs->{other}));
         # Loop over known features (in the order of feature priority).
         my $pointer = \%trie;
@@ -1765,6 +1830,69 @@ _end_of_eval_
         confess("$@\nEval failed");
     }
     return \@list;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Returns the reference to the decode(), encode() and list() functions of a
+# particular driver.
+#------------------------------------------------------------------------------
+sub get_driver_functions
+{
+    my $driver = shift; # e.g. "cs::pdt"
+    my $eval = <<_end_of_eval_
+    {
+        use tagset::${driver};
+        my \$decode = \\&tagset::${driver}::decode;
+        my \$encode = \\&tagset::${driver}::encode;
+        my \$list = \\&tagset::${driver}::list;
+        return (\$decode, \$encode, \$list);
+    }
+_end_of_eval_
+    ;
+    my ($decode, $encode, $list) = eval($eval);
+    if($@)
+    {
+        confess("$@\nEval failed");
+    }
+    return ($decode, $encode, $list);
+}
+
+
+
+#------------------------------------------------------------------------------
+# Returns the reference to the decode() function of a particular driver.
+#------------------------------------------------------------------------------
+sub get_decode_function
+{
+    my $driver = shift; # e.g. "cs::pdt"
+    my ($decode, $encode, $list) = get_driver_functions($driver);
+    return $decode;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Returns the reference to the encode() function of a particular driver.
+#------------------------------------------------------------------------------
+sub get_encode_function
+{
+    my $driver = shift; # e.g. "cs::pdt"
+    my ($decode, $encode, $list) = get_driver_functions($driver);
+    return $encode;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Returns the reference to the list() function of a particular driver.
+#------------------------------------------------------------------------------
+sub get_list_function
+{
+    my $driver = shift; # e.g. "cs::pdt"
+    my ($decode, $encode, $list) = get_driver_functions($driver);
+    return $list;
 }
 
 

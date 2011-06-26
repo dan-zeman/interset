@@ -149,6 +149,7 @@ _end_of_eval_
     {
         confess("$@\nEval failed");
     }
+    $n_errors += test_other_survival($driver);
     if($n_errors)
     {
         confess("Tested $n_tags tags, found $n_errors errors.\n");
@@ -160,6 +161,98 @@ _end_of_eval_
     }
     print("Duration ", duration($starttime), ".\n");
     return $n_errors;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Decoding a tag, removing information stored in the 'other' feature and
+# encoding should render a known tag (a default one if the original tag cannot
+# be completely restored because of the missing information). This is important
+# for figuring out the permitted feature combinations when converting from a
+# different tagset.
+#------------------------------------------------------------------------------
+sub test_other_survival
+{
+    my $driver = shift; # e.g. 'cs::pdt'
+    my ($decode, $encode, $list) = tagset::common::get_driver_functions($driver);
+    my $known = &{$list}();
+    my %known;
+    foreach my $tag (@{$known})
+    {
+        $known{$tag}++;
+    }
+    my $n_errors = 0;
+    foreach my $tag0 (@{$known})
+    {
+        my $f = &{$decode}($tag0);
+        my $sfs = tagset::common::feature_structure_to_text($f);
+        delete($f->{other});
+        my $tag1 = &{$encode}($f);
+        # Is the resulting tag known?
+        if(!exists($known{$tag1}))
+        {
+            print("\n\n") if($n_errors==0);
+            print("Error: encode(decode(x)-other) gives an unknown tag\n");
+            print(" src = $tag0\n");
+            print(" tgt = $tag1\n");
+            print(" sfs = $sfs\n");
+            print("\n");
+            $n_errors++;
+        }
+    }
+    # We can print the list of all tags including the unknown ones but normally we do not want to.
+    if(0)
+    {
+        # Tohle volání je tu z historických důvodů, ale teď je zbytečné, stačilo by nahoře posbírat značky, u kterých nastala chyba.
+        my $unknown = tagset::common::list_unknown_other_resistant_tags($known, $decode, $encode);
+        my $plain = 0;
+        list_known_and_unknown_tags($known, $unknown, $plain);
+    }
+    return $n_errors;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Takes a list of known tags and a list of unknown tags, merges them and prints
+# the resulting list with explanatory feature structures. If the known tags
+# have just been collected from a corpus (which probably means that other tags
+# may exist and be valid), the joint list helps decide whether the unknown tags
+# seem reasonable and may be added to the list of known tags.
+#------------------------------------------------------------------------------
+sub list_known_and_unknown_tags
+{
+    my $known = shift; # reference to array
+    my $unknown = shift; # reference to array
+    # Plain list means without UNK flags and feature structures.
+    # Plain list is suitable for directly copying to the list() function in the driver.
+    my $plain = shift; # boolean
+    # Merge known and unknown tags into one list but remember the knownness.
+    my @all = sort(@{$known}, @{$unknown});
+    my %unknown;
+    unless($plain)
+    {
+        foreach my $tag (@{$unknown})
+        {
+            $unknown{$tag}++;
+        }
+    }
+    foreach my $tag (@all)
+    {
+        if($plain)
+        {
+            print("$tag\n");
+        }
+        else
+        {
+            print(exists($unknown{$tag}) ? 'UNK   ' : '      ');
+            print($tag);
+            my $f = &{$decode}($tag);
+            print('   ', tagset::common::feature_structure_to_text($f));
+            print("\n");
+        }
+    }
 }
 
 

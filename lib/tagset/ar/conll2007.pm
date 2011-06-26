@@ -20,11 +20,11 @@ sub decode
 {
     my $tag = shift;
     my %f; # features
-    $f{tagset} = "ar::conll";
+    $f{tagset} = "ar::conll2007";
     # three components: coarse-grained pos, fine-grained pos, features
     # example: N\tNC\tgender=neuter|number=sing|case=unmarked|def=indef
     my ($pos, $subpos, $features) = split(/\s+/, $tag);
-    # pos: N Z A S Q V D P C F I G T Y X
+    # pos: N Z A S Q V D P C F I G T Y _
     # N = common noun
     if($pos eq "N")
     {
@@ -82,6 +82,12 @@ sub decode
         {
             $f{aspect} = "perf";
         }
+        # VC = imperative
+        elsif($subpos eq 'VC')
+        {
+            $f{verbform} = 'fin';
+            $f{mood} = 'imp';
+        }
     }
     # D = adverb
     elsif($pos eq "D")
@@ -126,17 +132,23 @@ sub decode
     # T = typo
     # there is no special feature encoding typos
     # G = punctuation (not used in UMH subcorpus)
-    # X = non-alphabetic (also used for punctuation in UMH subcorpus)
-    # We decode "G" as "punc" and "X" as "" (residual class).
+    # _ = former X? Unknown tokens etc.
+    # We decode "G" as "punc" and "_" as "" (residual class).
     elsif($pos eq "G")
     {
         $f{pos} = "punc";
     }
-    # Although not documented, the data contain the tag "-\t-\tdef=D".
-    # We will preserve it for the case we encode our own decoded tag.
-    elsif($pos eq "-")
+    # Although not documented, the data contain the tag "-\t--\tdef=D".
+    # It is always assigned to the definite article 'al' if separated from its noun or adjective.
+    # Normally the article is not tokenized off and makes the definiteness feature of the noun.
+    elsif($pos eq '-')
     {
-        $f{other} = "-";
+        $f{pos} = 'adj';
+        $f{subpos} = 'art';
+    }
+    elsif($features eq '11')
+    {
+        $f{other} = '11';
     }
     my @features = split(/\|/, $features);
     foreach my $feature (@features)
@@ -194,24 +206,21 @@ sub decode
         # def = D|I|R|C
         elsif($feature eq "Defin")
         {
-            if($value eq "D")
+            if($value eq "D") # definite
             {
                 $f{definiteness} = "def";
             }
-            elsif($value eq "I")
+            elsif($value eq "I") # indefinite
             {
                 $f{definiteness} = "ind";
             }
-            elsif($value eq "R")
+            elsif($value eq "R") # reduced
             {
                 $f{definiteness} = "red";
             }
-            # The fourth value is C = complex. DZ Interset does not support it.
-            # It has occurred only once in the CoNLL 2006 data.
-            elsif($value eq "C")
+            elsif($value eq "C") # complex
             {
-                $f{other} = "def=C";
-                $f{definiteness} = "def";
+                $f{definiteness} = "com";
             }
         }
         # person = 1|2|3
@@ -234,11 +243,17 @@ sub decode
                 $f{verbform} = "fin";
                 $f{mood} = "sub";
             }
-            # D = undecided between subjunctive and jussive
-            elsif($value =~ m/^[JD]$/)
+            # J = jussive
+            elsif($value eq 'J')
             {
-                $f{verbform} = "fin";
-                $f{mood} = "jus";
+                $f{verbform} = 'fin';
+                $f{mood} = 'jus';
+            }
+            # D = undecided between subjunctive and jussive
+            elsif($value eq 'D')
+            {
+                $f{verbform} = 'fin';
+                $f{mood} = ['sub', 'jus'];
             }
         }
         # voice = A|P
@@ -300,7 +315,7 @@ sub encode
     # pos and subpos
     if($f{abbr} eq "abbr")
     {
-        $tag = "Y\tY";
+        $tag = "Y\tY-";
     }
     elsif($f{prontype} eq "dem")
     {
@@ -315,7 +330,7 @@ sub encode
     elsif($f{prontype} ne "" && $f{pos} ne "part")
     {
         # S = pronoun
-        $tag = "S\tS";
+        $tag = "S\tS-";
     }
     elsif($f{pos} eq "noun")
     {
@@ -323,27 +338,39 @@ sub encode
         # Z = proper noun
         if($f{subpos} eq "prop")
         {
-            $tag = "Z\tZ";
+            $tag = "Z\tZ-";
         }
         else
         {
-            $tag = "N\tN";
+            $tag = "N\tN-";
         }
     }
     elsif($f{pos} eq "adj")
     {
-        $tag = "A\tA";
+        if($f{subpos} eq 'art')
+        {
+            $tag = "-\t--";
+        }
+        else
+        {
+            $tag = "A\tA-";
+        }
     }
     elsif($f{pos} eq "num")
     {
         # Q = numeral
-        $tag = "Q\tQ";
+        $tag = "Q\tQ-";
     }
     elsif($f{pos} eq "verb")
     {
         # VI = imperfect verb
         # VP = perfect verb
-        if($f{aspect} eq "perf")
+        # VC = imperative verb form
+        if($f{mood} eq 'imp')
+        {
+            $tag = "V\tVC";
+        }
+        elsif($f{aspect} eq "perf")
         {
             $tag = "V\tVP";
         }
@@ -354,15 +381,15 @@ sub encode
     }
     elsif($f{pos} eq "adv")
     {
-        $tag = "D\tD";
+        $tag = "D\tD-";
     }
     elsif($f{pos} eq "prep")
     {
-        $tag = "P\tP";
+        $tag = "P\tP-";
     }
     elsif($f{pos} eq "conj")
     {
-        $tag = "C\tC";
+        $tag = "C\tC-";
     }
     elsif($f{pos} =~ m/^(inf|part)$/)
     {
@@ -379,46 +406,47 @@ sub encode
         }
         else
         {
-            $tag = "F\tF";
+            $tag = "F\tF-";
         }
     }
     elsif($f{pos} eq "int")
     {
         # I = interjection
-        $tag = "I\tI";
+        $tag = "I\tI-";
     }
     elsif($f{pos} eq "punc")
     {
         # T = typo
         # G = punctuation
         # X = non-alphabetic
-        $tag = "G\tG";
+        $tag = "G\tG-";
     }
     else
     {
-        if($f{tagset} eq "ar::conll" && $f{other} eq "-")
-        {
-            $tag = "-\t-";
-        }
-        else
-        {
-            $tag = "X\tX";
-        }
+        $tag = "_\t_";
     }
     # Encode features.
     my @features;
+    if($f{tagset} eq 'ar::conll2007' && $f{other} eq '11')
+    {
+        push(@features, '11');
+    }
     # Only finite imperfect verbs have mood.
     if($f{pos} eq "verb" && $f{aspect} eq "imp" && $f{verbform} eq "fin")
     {
-        if($f{mood} eq "jus")
+        if(tagset::common::iseq($f{mood}, ['sub', 'jus']))
         {
-            push(@features, "Mood=D");
+            push(@features, 'Mood=D');
+        }
+        elsif($f{mood} eq 'jus')
+        {
+            push(@features, 'Mood=J');
         }
         elsif($f{mood} eq "sub")
         {
             push(@features, "Mood=S");
         }
-        elsif(!($f{tagset} eq "ar::conll" && $f{other} eq "empty-mood" ||
+        elsif(!($f{tagset} =~ m/^ar::conll(2007)?$/ && $f{other} eq "empty-mood" ||
                 $f{person} eq "3" && $f{gender} eq "fem" && $f{number} eq "plu"))
         {
             push(@features, "Mood=I");
@@ -483,14 +511,7 @@ sub encode
     # Do not show explicitly for demonstrative pronouns.
     if($f{definiteness} eq "def" && $f{prontype} ne "dem")
     {
-        if($f{tagset} eq "ar::conll" && $f{other} eq "def=C")
-        {
-            push(@features, "Defin=C");
-        }
-        else
-        {
-            push(@features, "Defin=D");
-        }
+        push(@features, "Defin=D");
     }
     elsif($f{definiteness} eq "ind")
     {
@@ -499,6 +520,10 @@ sub encode
     elsif($f{definiteness} eq "red")
     {
         push(@features, "Defin=R");
+    }
+    elsif($f{definiteness} eq 'com')
+    {
+        push(@features, 'Defin=C');
     }
     # Add the features to the part of speech.
     my $features = join("|", @features);

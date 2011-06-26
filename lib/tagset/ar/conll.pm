@@ -133,10 +133,12 @@ sub decode
         $f{pos} = "punc";
     }
     # Although not documented, the data contain the tag "-\t-\tdef=D".
-    # We will preserve it for the case we encode our own decoded tag.
+    # It is always assigned to the definite article 'al' if separated from its noun or adjective.
+    # Normally the article is not tokenized off and makes the definiteness feature of the noun.
     elsif($pos eq "-")
     {
-        $f{other} = "-";
+        $f{pos} = 'adj';
+        $f{subpos} = 'art';
     }
     my @features = split(/\|/, $features);
     foreach my $feature (@features)
@@ -194,24 +196,21 @@ sub decode
         # def = D|I|R|C
         elsif($feature eq "def")
         {
-            if($value eq "D")
+            if($value eq "D") # definite
             {
                 $f{definiteness} = "def";
             }
-            elsif($value eq "I")
+            elsif($value eq "I") # indefinite
             {
                 $f{definiteness} = "ind";
             }
-            elsif($value eq "R")
+            elsif($value eq "R") # reduced
             {
                 $f{definiteness} = "red";
             }
-            # The fourth value is C = complex. DZ Interset does not support it.
-            # It has occurred only once in the CoNLL 2006 data.
-            elsif($value eq "C")
+            elsif($value eq "C") # complex
             {
-                $f{other} = "def=C";
-                $f{definiteness} = "def";
+                $f{definiteness} = "com";
             }
         }
         # person = 1|2|3
@@ -328,7 +327,14 @@ sub encode
     }
     elsif($f{pos} eq "adj")
     {
-        $tag = "A\tA";
+        if($f{subpos} eq 'art')
+        {
+            $tag = "-\t-";
+        }
+        else
+        {
+            $tag = "A\tA";
+        }
     }
     elsif($f{pos} eq "num")
     {
@@ -392,14 +398,7 @@ sub encode
     }
     else
     {
-        if($f{tagset} eq "ar::conll" && $f{other} eq "-")
-        {
-            $tag = "-\t-";
-        }
-        else
-        {
-            $tag = "X\tX";
-        }
+        $tag = "X\tX";
     }
     # Encode features.
     my @features;
@@ -414,7 +413,7 @@ sub encode
         {
             push(@features, "mood=S");
         }
-        elsif(!($f{tagset} eq "ar::conll" && $f{other} eq "empty-mood" ||
+        elsif(!($f{tagset} =~ m/^ar::conll(2007)?$/ && $f{other} eq "empty-mood" ||
                 $f{person} eq "3" && $f{gender} eq "fem" && $f{number} eq "plu"))
         {
             push(@features, "mood=I");
@@ -475,14 +474,7 @@ sub encode
     # Do not show explicitly for demonstrative pronouns.
     if($f{definiteness} eq "def" && $f{prontype} ne "dem")
     {
-        if($f{tagset} eq "ar::conll" && $f{other} eq "def=C")
-        {
-            push(@features, "def=C");
-        }
-        else
-        {
-            push(@features, "def=D");
-        }
+        push(@features, "def=D");
     }
     elsif($f{definiteness} eq "ind")
     {
@@ -491,6 +483,10 @@ sub encode
     elsif($f{definiteness} eq "red")
     {
         push(@features, "def=R");
+    }
+    elsif($f{definiteness} eq 'com')
+    {
+        push(@features, 'def=C');
     }
     # Add the features to the part of speech.
     my $features = join("|", @features);
@@ -509,7 +505,7 @@ sub encode
 # cat danish_ddt_train.conll ../test/danish_ddt_test.conll |\
 #   perl -pe '@x = split(/\s+/, $_); $_ = "$x[3]\t$x[4]\t$x[5]\n"' |\
 #   sort -u | wc -l
-# 144
+# 241
 #------------------------------------------------------------------------------
 sub list
 {
@@ -708,6 +704,7 @@ V   VI  pers=2|gen=M|num=S
 V   VI  pers=3|gen=F|num=P
 V   VI  pers=3|gen=F|num=S
 V   VI  pers=3|gen=M|num=S
+V   VI  voice=P|pers=3|gen=F|num=S
 V   VI  voice=P|pers=3|gen=M|num=S
 V   VP  pers=1|num=P
 V   VP  pers=1|num=S
@@ -773,8 +770,8 @@ end_of_list
 #------------------------------------------------------------------------------
 BEGIN
 {
-    # Store the hash reference in a global variable. 
-    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode); 
+    # Store the hash reference in a global variable.
+    $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode);
 }
 
 

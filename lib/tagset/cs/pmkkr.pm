@@ -208,7 +208,8 @@ sub encode
     # Part of speech (the first letter of the tag) specifies which features follow.
     my $pos = $f{pos};
     # substantivum = noun
-    if($pos eq 'noun')
+    # except for proper nouns, which are under the 'J' class
+    if($pos eq 'noun' && $f{subpos} ne 'prop')
     {
         # substantivum = noun
         if($f{prontype} eq '')
