@@ -1,0 +1,6 @@
+====== CoNLL 2006 Bulgarian ======
+
+Data adapted from the BulTreeBank. Tags have been reformatted. Statistics and examples below are taken from the training part.
+
+  * 12823 sentences
+  * 526 tags

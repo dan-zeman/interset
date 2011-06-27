@@ -1,0 +1,11 @@
+====== Tagsets and Corpora ======
+
+===== CoNLL 2006 Shared Task Treebanks =====
+
+  * [[user:zeman:interset:tagsets:conll-2006-cs|CoNLL 2006 Czech]] (cs::conll)
+  * [[user:zeman:interset:tagsets:conll-2006-sl|CoNLL 2006 Slovene]]
+  * [[user:zeman:interset:tagsets:conll-2006-bg|CoNLL 2006 Bulgarian]] (bg::conll)
+
+===== Other =====
+
+  * [[user:zeman:interset:tagsets:urdu|Urdu]]

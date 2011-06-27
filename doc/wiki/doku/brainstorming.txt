@@ -16,6 +16,7 @@ Zájmena, číslovky a příslovce (a také determiners v sadách, které je roz
   * hromadné (collective) //(každý, všechen)//
   * záporné (negative)
 
+
 ==== Druhy číslovek ====
 
   * základní (cardinal)
@@ -43,7 +44,7 @@ přivlastňovací
 
 (Osobní i přivlastňovací zájmeno může být zvratné. Přivlastňovací může být nejen přivlastňovací zájmeno, ale také vztažné zájmeno ("jehož") a přídavné jméno.)
 
-Kategorii určitosti a negace asi nemůžeme sloučit, pokud má negace současně sloužit i podstatným jménům, přídavným jménům a slovesům, protože podstatná a přídavná jména mohou být současně určitá i neurčitá. Nanejvýš bychom mohli informaci o záporu zdvojit (byla by u určitosti i ve zvláštní kategorii), ale to je asi blbost.
+Kategorii určitosti a negace asi nemůžeme sloučit, pokud má negace současně sloužit i podstatným jménům, přídavným jménům a slovesům, protože podstatná a přídavná jména mohou být současně určitá i záporná. Nanejvýš bychom mohli informaci o záporu zdvojit (byla by u určitosti i ve zvláštní kategorii), ale to je asi blbost.
 
 Kategorii určitosti a vztažnosti už jsem sloučil a zatím to nevadí.
 
@@ -247,3 +248,158 @@ Portugalština:
         # interrogative (quanto), relative (todo_o_que). Many are indefinite, but not all.
 
 Tohle celé by mohlo být zachyceno v nějakém rysu numtype (analogie k prontype), kde by bylo card, ord, mult atd. Přijde mi ale trochu divné označovat neurčité číslovky za kardinální čísla. Další možnost je advtype (popř. reftype), kde by bylo vedle loc, tim a man taky qnt (quantity). Problém s pojmenováním rysu tkví v tom, že v češtině máme druhové číslovky kolikerý apod., které moc nepoužíváme, zatímco v portugalštině se číslovka kolik často používá jako determinátor, který se shoduje s počítaným podstatným jménem v rodě a čísle (quantos, quantas). Zatím tedy budu podobná slova odlišovat pomocí subpos = card, ale výhledově vymyslím něco lepšího.
+
+===== Numerals =====
+
+===== Approaches taken in various tagsets =====
+
+==== cs::pdt ====
+
+Many types of numerals. Numeral types (e.g. cardinal vs. ordinal) and pronoun types (e.g. indefinite, interrogative) are mixed together. There are following subclasses:
+
+''C='' = numerals written using digits ("14")
+''C}'' = Roman numerals ("MCMLXXI")
+''Cl'' = cardinal numbers ("jeden", "dva", "tři", "čtyři")
+''Cn'' = cardinal numbers ("pět", "šest", "sedm", ...)
+''C?'' = interrogative or relative ("kolik")
+''Ca'' = indefinite ("několik", "mnoho", "málo", "kdovíkolik", "tolik")
+''Cy'' = fraction denominators ("polovina", "třetina", "čtvrtina", "setina", "tisícina", ...)
+''Cj'' = generic numerals ("čtvero", "patero", "desatero")
+''Ck'' = generic numerals ("čtvery", "patery", "desatery")
+''Cr'' = ordinal numbers ("první", "druhý", "třetí", "čtvrtý", "pátý", "stý", "tisící", ...)
+''Cz'' = interrogative or relative ordinals ("kolikátý")
+''Cd'' = generic numerals ("jedny", "dvojí", "desaterý")
+''Ch'' = generic numerals ("jedny", "nejedny")
+''Cw'' = indefinite ordinals ("nejeden", "tolikátý")
+''Cv'' = multiplicative adverbial numerals ("jedenkrát", "dvakrát", "třikrát", "stokrát", ...)
+''Cu'' = interrogative or relative multiplicative adverbial numerals ("kolikrát")
+''Co'' = indefinite multiplicative adverbial numerals ("několikrát", "mnohokrát", "tolikrát", ...)
+''C3'' = abbreviated numeral
+
+==== cs::multext ====
+
+There are two orthogonal sets of subclasses:
+
+''Mc'' = cardinal numbers
+''Mo'' = ordinal numbers
+''Mm'' = multiplier numbers
+''Ms'' = generic numerals ("desaterý", "dvojí", "jeden", "několikerý", "několikery", "obojí")
+
+''M.1'' = definite1 ("jeden", "první")
+''M.2'' = definite2 ("druhý", "dvojí", "dvojnásob", "dva", "nadvakrát", "oba", "obojí")
+''M.3'' = definite34 ("čtvrtý", "čtyři", "potřetí", "tři", "třetí", "třikrát")
+''M.f'' = definite ("1929", "čtrnáctý", "čtyřiapadesát", "dvoustý", "tucet", ...)
+''M.d'' = demonstrative ("tolik", "tolikrát")
+''M.i'' = indefinite ("bezpočet", "bezpočtukrát", "bůhvíkolik", "hodně", "málo", "mnohý", "mockrát", "několik", "několikerý", "několikrát", "nejeden", "pár", "vícekrát")
+''M.q'' = interrogative ("kolik", "kolikrát")
+''M.r'' = relative ("kolik", "kolikrát")
+
+==== bg::conll ====
+
+Interrogative, relative, indefinite and demonstrative numerals are treated as pronouns. In addition, there are the following classes of numerals.
+
+''Mc'' = cardinal numbers
+''Mo'' = ordinal numbers
+''Md'' = adverbial numerals ("poveče", "malko", "mnogo", "măničko")
+''My'' = fuzzy numerals about people ("malcina" = "few people", "mnozina" = "many people"); they resemble nouns
+
+==== en::penn ====
+
+Only cardinal numbers have their own tag. Ordinals ("first") are tagged as adjectives (''JJ'') or adverbs (''RB''), depending on context. So are generic numerals ("sevenfold"). Multiplier numerals ("twice") are adverbs. Fractions ("quarter") are nouns (''NN'').
+
+''CD'' = cardinal numbers ("one", "two", "three", ...)
+
+==== de::stts ====
+
+Only cardinal numbers have their own tag. Ordinals ("zweite") are tagged as adjectives (''ADJA'') or ("zweitens") as adverbs (''ADV''). Multiplier numerals ("zweimal") are adverbs. Fractions ("Drittel") are nouns (''NN''). Interrogative numerals ("wieviel") are tagged as pronouns/determiners (''PWAT'', ''PWS'').
+
+''CARD'' = cardinal numbers ("1986", "zwei", "fünf")
+
+==== da::conll ====
+
+No top-level class for numerals. They are tagged as a subclass of adjectives. Interrogative numerals are probably classified as pronouns.
+
+''AC'' = cardinal numbers ("18.45", "tre", "fire", "seks")
+''AO'' = ordinal numbers ("16.", "tredje", "anden", "fjerde")
+''AN'' = normal adjectives
+
+==== sv::hajic ====
+
+''MC'' = cardinal numbers
+''MO'' = ordinal numbers
+
+==== sv::mamba ====
+
+Interrogative numerals are probably tagged as pronouns.
+
+''RO'' = numeral (cardinal or ordinal) other than "en", "ett" (one): "hundra", "24", "två", "fjärde", "sjätte"
+''EN'' = indefinite article or numeral "en", "ett" (one)
+
+==== pt::conll ====
+
+Interrogative numerals ("quanto") are tagged as pronouns/determiners. Ordinal numbers are adjectives.
+
+''num'' = number ("0,05", "cento_e_quatro", "cinco", "setenta_e_dois", "um", "zero")
+''adj''...''<NUM-ord>'' = ordinal number ("primeiro")
+
+==== ar::conll ====
+
+The tag ''Q'' is used only for numbers written using digits. I do not know how numeral words are tagged, nor how ordinals and interrogatives are dealt with.
+
+''Q'' = number written using digits ("1948")
+
+==== zh::conll ====
+
+Determiners and cardinal numbers are in the same group (''Ne''):
+
+''Nep'' = anaphoric determiner ("this", "that")
+''Neq'' = classifying determiner ("much", "half")
+''Nes'' = specific determiner ("you", "shang", "ge"=every)
+''Neu'' = numeric determiner ("yi" = "one", "er" = "two", "san" = "three")
+
+===== Hlavní rozdíl Intersetu oproti Sašově hierarchii pro Intercorp =====
+
+Jestliže se dívám na polské slovo "dziewiata" ("devátá"), dozvím se, že je to přídavné jméno, protože polská sada značek považuje řadové číslovky za přídavná jména. Interset mi ani nenaznačí, že u Poláků by také mohlo jít o řadovou číslovku, i když o konkrétním slově nevíme, zda je nebo není řadovou číslovkou. Saša chce naproti tomu mít hierarchii navrženou tak, aby znalost jazyka (resp. zdrojové sady značek) způsobila, že dotyčnou značku budeme interpretovat jako disjunkci přídavných jmen a řadových číslovek.
+
+Navíc tam má tři pohledy na klasifikaci slov: lexikální (sémantickou), morfologickou (flexivní typ, určuje relevantní morfologické kategorie) a syntaktickou (podle funkce ve větě; vztažné zájmeno "který" je syntakticky podstatné jméno).
+
+===== ISOcat a hierarchie druhů zájmen =====
+
+  * pronoun
+    * adverbialInterrogativeRelativePronoun (de::stts::PWAV)
+    * affixedPersonalPronoun (???)
+    * allusivePronoun (???)
+    * conditionalPronoun (???)
+    * demonstrativePronoun
+      * attributiveDemonstrativePronoun (de::stts::PDAT)
+      * substitutingDemonstrativePronoun (de::stts::PDS)
+    * emphaticPronoun (???)
+    * exclamativePronoun (???)
+    * impersonalPronoun (???)
+    * indefinitePronoun
+      * attributiveIndefinitePronounWithDeterminer (de::stts::PIDAT)
+      * attributiveIndefinitePronounWithoutDeterminer (de::stts::PIAT)
+      * substitutingIndefinitePronoun (de::stts::PIS)
+    * interrogativePronoun
+      * attributiveInterrogativePronoun (de::stts::PWAT)
+      * substitutingInterrogativePronoun (de::stts::PWS)
+    * negativePronoun (DZ: although the distinction is not done in de::stts, there are also subclasses of attributives vs. substituting)
+    * personalPronoun
+      * irreflexivePersonalPronoun (de::stts::PPER)
+      * reflexivePersonalPronoun (de::stts::PRF)
+      * strongPersonalPronoun (???)
+      * weakPersonalPronoun (???)
+    * possessivePronoun
+      * attributivePossessivePronoun (de::stts::PPOSS)
+      * substitutingPossessivePronoun (de::stts::PPOSAT)
+      * reflexivePossessivePronoun (DZ; this could be either attributive or substituting)
+      * relativePossessivePronoun (DZ; this is probably only attributive)
+    * reciprocalPronoun
+    * reflexivePronoun (not personal???)
+    * relativePronoun
+      * attributiveRelativePronoun (de::stts::PRELAT)
+      * substitutingRelativePronoun (de::stts::PRELS)
+    * existentialTherePronoun (en::multext)
+    * collectivePronoun (bg::bultreebank)
+    * prepositionWithPronoun (cs: "proň" = "pro" + "něj", "oč" = "o" + "co")
+    * pronounWithAuxiliary (cs: "tys" = "ty" + "jsi", "kdos" = "kdo" + "jsi")

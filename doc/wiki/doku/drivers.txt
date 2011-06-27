@@ -4,10 +4,19 @@ This is an overview of existing tag set drivers. Tag-set or language specific is
 
 ===== Arabic (ar) =====
 
+==== CoNLL 2006 ====
+
 The Arabic CoNLL tags are derived from the tags of the Prague Arabic Dependency Treebank.
 
 Created in 2006-2007.
 Total work time: 13 hours
+
+==== CoNLL 2007 ====
+
+The Arabic tags in CoNLL 2007 slightly differed from 2006. There are also new tags. The driver ''ar::conll2007'' was cloned from ''ar::conll'' and modified.
+
+Created: 23.6.2011
+Total work time: 2 hours
 
 ===== Bulgarian (bg) =====
 
@@ -78,6 +87,14 @@ Total work time: 16:36 h
 
 Czech tagsets are notoriously complex. This one maps quite nicely to DZ Interset features. However, the few distinctions that are not (yet) represented in DZ Interset made debugging difficult. Clitic_s and generic numerals represented using the ''other'' feature led to wrong feature-value combinations in conversions to/from other Czech sets. DZ Interset had to be slightly modified in response to this tagset, and more changes that initiated here will be done later.
 
+==== Prague Spoken Corpus ====
+
+The Prague Spoken Corpus (Pražský mluvený korpus, PMK) is distributed together with the frequency dictionary of spoken Czech (book). It uses very strange tags and very many of them (over 10000!) Extremely high portion of the tags has to rely on the ''other'' feature. There are two types of tags: long and short.
+
+Work started: 26.11.2009
+Work finished: 4.10.2010
+Total work time: 57 hours
+
 ===== Danish (da) =====
 
 Tags of the Danish Dependency Treebank converted to CoNLL format. 144 tags with complex documentation in Danish.
@@ -118,13 +135,30 @@ Work started: 29.3.2008
 Work finished: 29.3.2008
 Total work time: 4:00 h
 
-==== CoNLL (derived from STTS) ====
+==== CoNLL 2006 ====
 
 Only simple envelope around the STTS driver needed.
 
 Work started: 31.3.2008
 Work finished: 31.3.2008
 Total work time: 10 min
+
+
+==== CoNLL 2009 ====
+
+This tagset is derived from the STTS, too. Unlike CoNLL 2006, there are also morphological features this time, which required additional processing effort.
+
+Work started: 5.4.2009
+Work finished: 6.4.2009
+Total work time: 9:39 h
+
+===== Polish (pl) =====
+
+Based on the [[http://korpus.pl/index.php|Korpus Języka Polskiego IPI PAN]]. (Saša tyhle značky potřebuje zpracovat v&nbsp;Intercorpu.) Moderate amount of new stuff but it is one of the fairly complex Slavic tagsets. And it contributed to [[how-to-write-a-driver#replacing-and-the-other-feature|new treatment of o-tags]] (those setting the ''other'' feature) when learning permitted feature-value combinations.
+
+Work started: 4.9.2009
+Work finished: 8.9.2009
+Total work time: 9:54 h
 
 ===== Portuguese (pt) =====
 

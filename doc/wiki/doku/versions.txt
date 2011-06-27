@@ -17,3 +17,11 @@ As many other projects, DZ Interset has gone through its “Dark Age” when it 
 ! February 2009. Petr Pořízka and Markus Schäfer use DZ Interset in MorphCon, a GUI tool for conversion of Czech morphological tags. They wrote a driver for the Czech ajka tagset (a morphological analyzer from Masaryk University, Brno). MorphCon has been presented at a bohemistic conference in Brno (see [[References]]). Dan added a driver for the Czech tags of the Multext East multilingual corpus.
 
 ! Various maintenance changes took place, too. Version control has been migrated to network-accessible (though not publicly accessible) SVN repository, together with Trac project management interface. Website now includes information on [[License|licensing]], [[references]] and this version history. From now on, I intend to distinguish revisions from numbered releases.
+
+? 1.1
+! 8 September 2009. Three new incarnations of Czech, English and German CoNLL tagsets, reflecting the 2009 changes in format. Most interestingly, German tags now contain morphosyntactic features. Thanks to Saša Rosen, who tries to use DZ Interset together with a multi-language parallel corpus called Intercorp, we also created a driver for the IPI PAN Polish corpus, which in turn caused one systemic change: o-tags (those setting the ''other'' feature) [[how-to-write-a-driver#replacing-and-the-other-feature|can now be ignored]] when the driver is scanning the possible feature-value combinations. And there is a new [[http://quest.ms.mff.cuni.cz/cgi-bin/interset/index.pl|web interface]] to DZ Interset.
+
+? Changes since then
+! New drivers: Prague Spoken Corpus (Pražský mluvený korpus, PMK) long and short tags (''cs::pmkdl'' and ''cs::pmkkr''). Arabic CoNLL 2007 slightly differs from CoNLL 2006, so there is now ''ar::conll2007''.
+! New test: For all tags in all drivers now must hold that deleting the value of the ''other'' feature does not lead to an unknown tag. This should greatly improve chances of finding permitted feature combinations when converting from one tagset to another.
+! New usage: Interset in Treex (TectoMT).

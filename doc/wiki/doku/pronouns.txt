@@ -27,6 +27,85 @@ Our solution makes it difficult to recognize a pronoun for a target tagset that 
 
 ===== Approaches taken in various tagsets =====
 
-==== Czech PDT ====
+==== cs::pdt ====
 
 There are no determiners, just pronouns. I.e., EAGLES-defined determiners are tagged as pronouns.
+
+==== cs::multext ====
+
+There are no determiners, just pronouns. I.e., EAGLES-defined determiners are tagged as pronouns.
+
+==== bg::conll ====
+
+One of the broadest (but also most systematic) pronoun categories. Pronouns include EAGLES-defined determiners and also interrogative and indefinite numerals and pronominal adverbs. Subcategories: personal, possessive, demonstrative, interrogative, relative, collective, indefinite, negative. Orthogonally to that, the tagset specifies what the pronoun refers to (entity, number, location, time...)
+
+==== en::penn ====
+
+''DT'' = determiner ("a", "the", "some")
+''PDT'' = predeterminer ("all" in "all the flowers", "both" in "both his children")
+''PRP'' = personal pronoun ("I", "you", "he", "she", "it", "we", "they")
+''PRP$'' = possessive pronoun ("my", "your", "his", "her", "its", "our", "their")
+''WDT'' = wh-determiner ("which")
+''WP'' = wh-pronoun ("who")
+''WP$'' = possessive wh-pronoun ("whose")
+
+There are also wh-adverbs (''WRB'', e.g. "where", "when", "how", as opposed to adverbs, ''RB'').
+
+==== de::stts ====
+
+''PPER'' = irreflexive personal pronoun ("ich", "du", "er", ..., "mir", "mich", ...); also "meiner", if used as genitive of "ich", not as a possessive pronoun
+''PRF'' = reflexive personal pronoun ("mir", "mich" etc. if used reflexively as in "ich freue mich daran"; also "einander" in "sie mögen sich einander")
+
+Other pronouns systematically distinguish substitutive usage (EAGLES-pronouns) from attributive usage (EAGLES-determiners) and adverbial usage (pronominal adverbs). Often the same word can be tagged either substitutively or attributively depending on context.
+
+There are personal, possessive, demonstrative, interrogative, relative and indefinite pronouns.
+
+Pronominal adverbs ("wann", "wo", "warum", "worüber", ...) are categorized under pronouns, not adverbs.
+
+Articles ("der", "die", "das", ...) have their own tag ''ART'' so they are different from demonstrative pronouns.
+
+==== da::conll ====
+
+There are personal, possessive, reciprocal, demonstrative, indefinite and interrogative/relative pronouns. No separate category for determiners.
+
+==== sv::hajic ====
+
+Determiners (tag starts with ''D'') and pronouns (tag starts with ''P''). Subcategories: personal, indefinite, interrogative and possessive.
+
+==== sv::mamba ====
+
+''EN'' = indefinite article or numeral "en", "ett" (one)
+''PO'' = pronoun
+''TP'' = totality pronoun
+
+==== pt::conll ====
+
+Articles ("a", "as", "o", "os", "uma", "um") are tagged ''art''.
+Pronouns ("que", "outro", "ela", "certo", "o", "algum", "todo", "nós"...) have three main subclasses:
+Personal pronouns ("ela", "elas", "ele", "eles", "eu", "nós", "se", "tu", "você", "vós")
+Determiner-pronouns ("algo", "ambos", "bastante", "demais", "este", "menos", "nosso", "o", "que", "todo_o")
+Independent pronouns ("algo", "aquilo", "cada_qual", "o", "o_que", "que", "todo_o_mundo", "um_pouco")
+
+==== ar::conll ====
+
+Pronouns are demonstrative, relative, personal/possessive. There are interrogative (''FI'') and negative (''FN'') particles but I am not sure whether and how they relate to WH pronouns in other languages.
+
+==== zh::conll ====
+
+Pronouns form a subclass of nouns (''Nh''). Determiners and cardinal numbers are in the same group (''Ne''):
+
+''Nep'' = anaphoric determiner ("this", "that")
+''Neq'' = classifying determiner ("much", "half")
+
+===== Other Sources =====
+
+Helbig-Busch, p. 357-11 (German grammar for foreigners)
+
+  * Artikelwörter
+    * Artikel: "der", "ein"
+    * Adjektivische Demonstrativpronomen: "dieser", "ein solcher", "jener"
+    * Adjektivische Possessivpronomen: "mein", "dessen", "wessen"
+    * Adjektivische Interrogativpronomen: "welcher", "welch ein"
+    * Adjektivische Indefinitpronomen: "jeder", "mancher", "aller", "kein"
+''Nes'' = specific determiner ("you", "shang", "ge"=every)
+''Neu'' = numeric determiner ("one", "two", "three")

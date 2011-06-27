@@ -13,12 +13,15 @@ Note: This list may not be up-to-date. To see what drivers are currently availab
   - tagset::ar::conll - Arabic CoNLL treebank (coarse, fine and feat fields in one string, delimited by tabs)
   - tagset::bg::conll - Bulgarian CoNLL treebank
   - tagset::cs::conll - Czech CoNLL treebank, based on the Prague Dependency Treebank
+  - tagset::cs::conll2009 - Czech CoNLL 2009 treebank (new formatting)
   - tagset::cs::multext - Czech subset of the tagset from the Multext East project
   - tagset::cs::pdt - Czech positional tags of the Prague Dependency Treebank
   - tagset::da::conll - Danish CoNLL treebank
   - tagset::de::conll - German CoNLL treebank (one-to-one mapping to de::stts)
+  - tagset::de::conll2009 - German CoNLL 2009 treebank (STTS POS tags + additional morphological features)
   - tagset::de::stts - German: Stuttgart-Tübingen Tagset (Tiger treebank)
   - tagset::en::conll - English CoNLL treebank (one-to-one mapping to en::penn)
+  - tagset::en::conll2009 - English CoNLL 2009 treebank (new formatting, two new tags)
   - tagset::en::penn - English Penn Treebank
   - tagset::pt::conll - Portuguese CoNLL treebank (based on the Floresta treebank)
   - tagset::sv::conll - Swedish CoNLL treebank (one-to-one mapping to sv::mamba)

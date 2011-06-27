@@ -1,0 +1,18 @@
+====== Urdu Part-of-Speech Tags ======
+
+Hassan Sajjad, Center for Research in Urdu Language Processing, National University of Computer & Emerging Sciences, Lahore, Pakistan, 7.12.2007
+
+  * Tagset description: http://www.crulp.org/Downloads/langproc/UrduPOStagger/UrduPOStagset.pdf
+  * http://www.crulp.org/software/langproc/POStagset.htm
+  * http://www.crulp.org/Downloads/ling_resources/parallelcorpus/Urdu%20POS%20Tagset.pdf
+  * POS Tagged Urdu Corpus: http://www.crulp.org/Downloads/ling_resources/parallelcorpus/Urdu%20Tagged%20Corpus%20(100k).zip
+  * [[http://www.crulp.org/software/langproc/UrduStemmer.htm|Urdu Stemmer.]] This is a Windows GUI program. It requires that some files be in a fixed path but it works. However, its precision is questionable. For example, it segments "ناموں" as "نا|موں" (prefix|stem).
+  * [[http://www.crulp.org/software/langproc/MorphologicalAnalyzer.htm|Urdu Finite State Morphological Analyzer.]] This is a Windows program. I have not been able to run it because it requires Microsoft Visual C++, particularly the ''mfc42ud.dll'' library (Unicode debug version). However, there is a text file with the lexicon that could be potentially converted for PC Kimmo.
+  * [[http://www.crulp.org/software/langproc/POS_tagger.htm|Urdu Statistical POS Tagger.]] This is a Windows program. I have not been able to run it on Emille data. There was an exception. However, there are text files with lexical data that could be potentially used to implement another tagger.
+  * English-to-Urdu MT (based on LFG): http://www.crulp.org/software/langproc/E2UMachineTranslationSystem.htm
+  * Hassan Sajjad, Helmut Schmid: Tagging Urdu Text with Parts of Speech: A Tagger Comparison (EACL 2009 Athens): http://portal.acm.org/citation.cfm?id=1609067.1609144, http://www.aclweb.org/anthology/E/E09/E09-1079.pdf
+  * Urdu Emille POS Tagset: http://www.lancs.ac.uk/staff/hardiea/cl03_urdu.pdf
+  * Urdu Tagging Challenges (presentation): http://www.panl10n.net/Presentations/Laos/RegionalConference/CorpusCollection/Tagset_and_Tagging_Urdu_Corpus.pdf
+  * Mohmil words: http://www.crulp.org/Publication/Crulp_report/CR02_28E.pdf
+  * http://www.crulp.org/Downloads/langproc/UrduPOStagger/UrduPOStagset.pdf
+  * http://aclweb.org/aclwiki/index.php?title=List_of_resources_by_language#U

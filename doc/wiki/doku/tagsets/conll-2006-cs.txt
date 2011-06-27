@@ -1,0 +1,2294 @@
+====== CoNLL 2006 Czech ======
+
+Data adapted from the Prague Dependency Treebank 1.0. Tags have been reformatted and mappability to the original tagset has been broken by adding the ''Sem'' feature (type of named entity). Statistics and examples below are taken from the training part.
+
+  * 72703 sentences
+  * 1941 tags
+
+===== Documentation =====
+
+  * Jiří Hana, Hana Hanová: //Manual for Morphological Annotation.// CKL Technical Report TR-2002-14, Univerzita Karlova v&nbsp;Praze, Praha, Czechia. 
+    * http://ufal.mff.cuni.cz/pdt/Corpora/PDT_1.0/References/mman.html
+    * part of speech: http://ufal.mff.cuni.cz/pdt/Corpora/PDT_1.0/References/mman.html#pos-tags
+    * named entity semantics: http://ufal.mff.cuni.cz/pdt/Corpora/PDT_1.0/References/mman.html#sem-info
+
+===== Tags with examples =====
+
+  * http://localhost/cgi/tags/index.pl?corpus=conll-2006-cs
+  * http://localhost/cgi/tags/index.pl?corpus=conll-2007-cs
+
+<html>
+<head>
+<meta http-equiv='content-type' content='text/html; charset=utf8' />
+<title>Tags with examples</title>
+</head>
+<body>
+<table>
+<tr><td>A	2	Neg=A</td><td>česko izraelsko Česko německo americko</td></tr>
+<tr><td>A	2	Neg=A|Sem=G</td><td>Tchien an Suchumsko Nogent</td></tr>
+<tr><td>A	2	Neg=A|Sem=K</td><td>Elektro Hewlett Hypo Drop Anglo</td></tr>
+
+<tr><td>A	2	Neg=A|Sem=S</td><td>Baden</td></tr>
+<tr><td>A	2	Neg=A|Sem=Y</td><td>Karlo</td></tr>
+<tr><td>A	2	Neg=A|Sem=m</td><td>Česko APLI</td></tr>
+<tr><td>A	A	Gen=F|Num=D|Cas=7|Gra=1|Neg=A</td><td>zavřenýma otevřenýma zdviženýma zkříženýma dlouhýma</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=1|Gra=1|Neg=A</td><td>další České jiné nové různé</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=G</td><td>Horní České Trenčianské</td></tr>
+
+<tr><td>A	A	Gen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=K</td><td>Kostelecké</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=1|Gra=1|Neg=A|Var=6</td><td>Zákostelský Hrubý Smutný Výborný Šťastný</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=1|Gra=1|Neg=N</td><td>nedávné neznámé nedostatečné nebezpečné nezávislé</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=1|Gra=1|Neg=N|Var=6</td><td>Neveselý</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=1|Gra=2|Neg=A</td><td>nižší vyšší větší menší starší</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=1|Gra=2|Neg=N</td><td>nebezpečnější nepatrnější</td></tr>
+
+<tr><td>A	A	Gen=F|Num=P|Cas=1|Gra=3|Neg=A</td><td>nejvyšší Nejnižší nejlepší největší Nejvyšší</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=2|Gra=1|Neg=A</td><td>dalších nových českých politických zahraničních</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=2|Gra=1|Neg=A|Sem=R</td><td>fizičeskich</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=2|Gra=1|Neg=A|Sem=S</td><td>tbiliských</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=2|Gra=1|Neg=N</td><td>necelých nebezpečných nebytových neziskových nevládních</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=2|Gra=2|Neg=A</td><td>menších větších vyšších nižších starších</td></tr>
+
+<tr><td>A	A	Gen=F|Num=P|Cas=2|Gra=3|Neg=A</td><td>největších nejrůznějších nejvyšších nejvyspělejších nejúspěšnějších</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=2|Gra=3|Neg=N</td><td>nejnebezpečnějších nejnešťastnějších</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=3|Gra=1|Neg=A</td><td>dalším Lidovým jiným zahraničním soukromým</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=3|Gra=1|Neg=A|Sem=G</td><td>kvildským</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=3|Gra=1|Neg=N</td><td>nedávným nevhodným nepotvrzeným neracionálním nepříznivým</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=3|Gra=2|Neg=A</td><td>vyšším menším větším nižším významnějším</td></tr>
+
+<tr><td>A	A	Gen=F|Num=P|Cas=3|Gra=3|Neg=A</td><td>největším nejlepším nejslabším nejdůležitějším nejvýznamnějším</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=4|Gra=1|Neg=A</td><td>další nové různé jiné velké</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=4|Gra=1|Neg=A|Sem=G</td><td>Velké</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=4|Gra=1|Neg=A|Var=6</td><td>zatracený</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=4|Gra=1|Neg=N</td><td>nezbytné nezávislé neziskové nemalé nebezpečné</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=4|Gra=2|Neg=A</td><td>větší vyšší nižší menší Bližší</td></tr>
+
+<tr><td>A	A	Gen=F|Num=P|Cas=4|Gra=3|Neg=A</td><td>největší nejlepší nejrůznější nejvyšší nejmenší</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=6|Gra=1|Neg=A</td><td>různých jiných Českých dalších jednotlivých</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=6|Gra=1|Neg=A|Sem=G</td><td>Orlických kvildských Červených</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=6|Gra=1|Neg=A|Sem=S</td><td>tbiliských</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=6|Gra=1|Neg=N</td><td>neziskových necelých nestátních nelidských nechutných</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=6|Gra=2|Neg=A</td><td>vyšších menších nižších větších mladších</td></tr>
+
+<tr><td>A	A	Gen=F|Num=P|Cas=6|Gra=3|Neg=A</td><td>nejrůznějších největších nejnižších nejvyšších nejprestižnějších</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=7|Gra=1|Neg=A</td><td>dalšími jinými ostatními jednotlivými zahraničními</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=7|Gra=1|Neg=N</td><td>neobjasněnými nekonečnými nepočestnými neuváženými nesnadnými</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=7|Gra=2|Neg=A</td><td>výhodnějšími většími dřívějšími menšími mladšími</td></tr>
+<tr><td>A	A	Gen=F|Num=P|Cas=7|Gra=3|Neg=A</td><td>nejlepšími nejvyššími nejrůznějšími nejmenšími Nejobchodovanějšími</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=1|Gra=1|Neg=A</td><td>Česká nová česká celá velká</td></tr>
+
+<tr><td>A	A	Gen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=G</td><td>Olšanská Banská Horní Teronnská Kapská</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=K</td><td>Ľahká Sľobodná Mladá</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=R</td><td>Sovětskaja Národná Moskovskaja Rossijskaja Nězavisimaja</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=S</td><td>Čarnogurská Kopecká</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=1|Gra=1|Neg=N</td><td>nezávislá nedostatečná nezbytná Nebezpečná nedávná</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=1|Gra=2|Neg=A</td><td>větší nižší vyšší menší lepší</td></tr>
+
+<tr><td>A	A	Gen=F|Num=S|Cas=1|Gra=2|Neg=N</td><td>nepravděpodobnější</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=1|Gra=3|Neg=A</td><td>největší nejlepší nejnižší nejvyšší Nejvyšší</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=2|Gra=1|Neg=A</td><td>České české druhé nové politické</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=2|Gra=1|Neg=A|Sem=G</td><td>České Horní Saudské Velké zhůřské</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=2|Gra=1|Neg=A|Sem=K</td><td>Antverpské umelej Zapatovské Beningtonské fyzikálnej</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=2|Gra=1|Neg=A|Sem=R</td><td>wyborczej</td></tr>
+
+<tr><td>A	A	Gen=F|Num=S|Cas=2|Gra=1|Neg=N</td><td>nedávné nezávislé neznámé nedostatečné nezákonné</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=2|Gra=2|Neg=A</td><td>větší nižší vyšší lepší starší</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=2|Gra=2|Neg=N</td><td>nečistší nevýhodnější</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=2|Gra=3|Neg=A</td><td>nejvyšší největší Nejvyšší nejnižší nejsilnější</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=2|Gra=3|Neg=N</td><td>nejnebezpečnější</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=3|Gra=1|Neg=A</td><td>České české celé politické vlastní</td></tr>
+
+<tr><td>A	A	Gen=F|Num=S|Cas=3|Gra=1|Neg=A|Sem=G</td><td>montrealské</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=3|Gra=1|Neg=N</td><td>nešťastné nezákonné neživé nekalé nesportovní</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=3|Gra=2|Neg=A</td><td>větší vyšší menší obecnější snadnější</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=3|Gra=3|Neg=A</td><td>největší nejmladší nejlepší nejširší nejvyšší</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=4|Gra=1|Neg=A</td><td>celou novou druhou vlastní velkou</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=4|Gra=1|Neg=A|Sem=G</td><td>Horní</td></tr>
+
+<tr><td>A	A	Gen=F|Num=S|Cas=4|Gra=1|Neg=A|Sem=K</td><td>Vysokou</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=4|Gra=1|Neg=N</td><td>nedostatečnou nezastupitelnou nespornou neformální neurčitou</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=4|Gra=2|Neg=A</td><td>větší delší vyšší nižší menší</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=4|Gra=2|Neg=N</td><td>nejistější</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=4|Gra=3|Neg=A</td><td>největší nejlepší nejvyšší nejnižší Největší</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=4|Gra=3|Neg=N</td><td>nejnevhodnější</td></tr>
+
+<tr><td>A	A	Gen=F|Num=S|Cas=5|Gra=1|Neg=A</td><td>drahá Milá vzdálená nová Vážená</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=5|Gra=1|Neg=A|Sem=R</td><td>rudá</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=5|Gra=1|Neg=N</td><td>neznámá</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=6|Gra=1|Neg=A</td><td>druhé současné České poslední celé</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=6|Gra=1|Neg=A|Sem=G</td><td>Banské Podmostní Horní Podolské Přadlácké</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=6|Gra=1|Neg=A|Sem=K</td><td>Měnínské</td></tr>
+
+<tr><td>A	A	Gen=F|Num=S|Cas=6|Gra=1|Neg=N</td><td>nedávné neposlední nedaleké nezbytné nečekané</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=6|Gra=2|Neg=A</td><td>větší vyšší menší širší delší</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=6|Gra=3|Neg=A</td><td>nejbližší nejvyšší nejlepší nejnovější nejkratší</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=7|Gra=1|Neg=A</td><td>jedinou Českou druhou velkou vlastní</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=7|Gra=1|Neg=N</td><td>nekonečnou nedávnou nenásilnou Nedostatečnou nepřehlednou</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=7|Gra=2|Neg=A</td><td>větší vyšší menší nižší lepší</td></tr>
+
+<tr><td>A	A	Gen=F|Num=S|Cas=7|Gra=2|Neg=N</td><td>nemenší</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=7|Gra=3|Neg=A</td><td>největší nejlepší nejvyšší Největší nejnižší</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=7|Gra=3|Neg=N</td><td>Nejnebezpečnější nejneuvěřitelnější</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=X|Gra=1|Neg=A</td><td>La la bombycina parahippocampalis LA</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=X|Gra=1|Neg=A|Sem=G</td><td>Kapensis Austrális</td></tr>
+<tr><td>A	A	Gen=F|Num=S|Cas=X|Gra=1|Neg=A|Sem=K</td><td>Supérieure</td></tr>
+
+<tr><td>A	A	Gen=F|Num=X|Cas=X|Gra=1|Neg=A|Sem=G</td><td>Srí</td></tr>
+<tr><td>A	A	Gen=F|Num=X|Cas=X|Gra=1|Neg=A|Var=8</td><td>o</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=1|Gra=1|Neg=A</td><td>další jiné Spojené nové různé</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=1|Gra=1|Neg=A|Sem=G</td><td>Faerské Spojené FAERSKÉ Kajmanské</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=1|Gra=1|Neg=A|Var=6</td><td>celkový</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=1|Gra=1|Neg=N</td><td>nezbytné nebezpečné nezávadné neuvěřitelné nezávislé</td></tr>
+
+<tr><td>A	A	Gen=I|Num=P|Cas=1|Gra=2|Neg=A</td><td>nižší lepší vyšší menší větší</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=1|Gra=2|Neg=N</td><td>nebezpečnější nepravdivější</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=1|Gra=3|Neg=A</td><td>nejrůznější největší nejnižší Největší nejnovější</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=2|Gra=1|Neg=A</td><td>dalších nových jednotlivých cenných jiných</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=2|Gra=1|Neg=A|Sem=G</td><td>Faerských FAERSKÝCH</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=2|Gra=1|Neg=A|Sem=S</td><td>podbízivých</td></tr>
+
+<tr><td>A	A	Gen=I|Num=P|Cas=2|Gra=1|Neg=N</td><td>nezávislých necelých nealkoholických neznámých neeukleidovských</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=2|Gra=2|Neg=A</td><td>vyšších větších menších pozdějších starších</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=2|Gra=3|Neg=A</td><td>nejrůznějších největších nejlepších nejvýznamnějších nejdůležitějších</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=3|Gra=1|Neg=A</td><td>dalším českým jiným německým základním</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=3|Gra=1|Neg=A|Sem=G</td><td>Faerským</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=3|Gra=1|Neg=N</td><td>nebytovým nepříznivým nepřátelským nekrytým nefilmovým</td></tr>
+
+<tr><td>A	A	Gen=I|Num=P|Cas=3|Gra=2|Neg=A</td><td>vyšším větším lepším levnějším horším</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=3|Gra=3|Neg=A</td><td>nejlepším nejdůležitějším nejvýznamnějším nejčastějším nejmenším</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=4|Gra=1|Neg=A</td><td>další nové jednotlivé poslední velké</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=4|Gra=1|Neg=A|Var=6</td><td>malovaný hodnověrný tabákový</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=4|Gra=1|Neg=N</td><td>necelé nekvalitní nemalé neobvyklé nelegální</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=4|Gra=2|Neg=A</td><td>vyšší menší větší lepší výraznější</td></tr>
+
+<tr><td>A	A	Gen=I|Num=P|Cas=4|Gra=2|Neg=N</td><td>nebezpečnější</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=4|Gra=3|Neg=A</td><td>největší nejlepší nejvyšší Nejzajímavější nejdůležitější</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=4|Gra=3|Neg=N</td><td>nejnemožnější</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=6|Gra=1|Neg=A</td><td>posledních minulých jednotlivých jiných Spojených</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=6|Gra=1|Neg=N</td><td>nezávislých necelých neúspěšných netypických neživých</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=6|Gra=2|Neg=A</td><td>posledních větších menších vyšších složitějších</td></tr>
+
+<tr><td>A	A	Gen=I|Num=P|Cas=6|Gra=3|Neg=A</td><td>nejbližších nejdůležitějších nejvyšších největších nejrenomovanějších</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=7|Gra=1|Neg=A</td><td>dalšími jinými různými cennými vysokými</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=7|Gra=1|Neg=A|Sem=G</td><td>Faerskými</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=7|Gra=1|Neg=N</td><td>neznámými nekonečnými nezajímavými neopotřebovanými nezdůvodnitelnými</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=7|Gra=2|Neg=A</td><td>nižšími mírnějšími slabšími většími výkonnějšími</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=7|Gra=2|Neg=N</td><td>nebezpečnějšími</td></tr>
+
+<tr><td>A	A	Gen=I|Num=P|Cas=7|Gra=3|Neg=A</td><td>nejrůznějšími nejlepšími největšími nejdůležitějšími nejvýhodnějšími</td></tr>
+<tr><td>A	A	Gen=I|Num=P|Cas=X|Gra=1|Neg=A|Sem=G</td><td>Buenos</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=1|Gra=1|Neg=A</td><td>Nový Český velký nový český</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=1|Gra=1|Neg=A|Sem=G</td><td>Nový Český Slavonski Sosnovyj Alipašin</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=1|Gra=1|Neg=A|Sem=K</td><td>Ljubljanski</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=1|Gra=1|Neg=A|Sem=S</td><td>Liverpoolský Štyrský panarabský</td></tr>
+
+<tr><td>A	A	Gen=I|Num=S|Cas=1|Gra=1|Neg=A|Var=6</td><td>Růžovej</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=1|Gra=1|Neg=N</td><td>neautorizovaný nebezpečný nepříjemný nekonečný nejistý</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=1|Gra=1|Neg=N|Var=6</td><td>nepřiměřený</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=1|Gra=2|Neg=A</td><td>větší vyšší menší nižší lepší</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=1|Gra=2|Neg=N</td><td>nejistější nepřirozenější nepřijatelnější nebezpečnější</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=1|Gra=3|Neg=A</td><td>největší Nejvyšší nejvyšší Největší nejlepší</td></tr>
+
+<tr><td>A	A	Gen=I|Num=S|Cas=1|Gra=3|Neg=N</td><td>nejnebezpečnější</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=2|Gra=1|Neg=A</td><td>letošního loňského nového českého státního</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=2|Gra=1|Neg=A|Sem=G</td><td>Šanského montrealského Montrealského Krivého Vsetínského</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=2|Gra=1|Neg=A|Sem=S</td><td>Stráského</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=2|Gra=1|Neg=N</td><td>nelegálního nezávislého nedávného nemovitého nehmotného</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=2|Gra=2|Neg=A</td><td>většího vyššího širšího nižšího pozdějšího</td></tr>
+
+<tr><td>A	A	Gen=I|Num=S|Cas=2|Gra=2|Neg=N</td><td>nepříznivějšího</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=2|Gra=3|Neg=A</td><td>Nejvyššího nejvyššího největšího nejmenšího nejlepšího</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=2|Gra=3|Neg=N</td><td>nejnepatrnějšího</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=3|Gra=1|Neg=A</td><td>novému druhému českému jinému velkému</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=3|Gra=1|Neg=N</td><td>neústavnímu nepříjemnému nemovitému nejistému nevyhnutelnému</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=3|Gra=2|Neg=A</td><td>nižšímu většímu rychlejšímu širšímu Obsáhlejšímu</td></tr>
+
+<tr><td>A	A	Gen=I|Num=S|Cas=3|Gra=3|Neg=A</td><td>největšímu Nejvyššímu nejpříznivějšímu nejsilnějšímu nejúspornějšímu</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=4|Gra=1|Neg=A</td><td>celý minulý nový příští další</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=4|Gra=1|Neg=A|Sem=G</td><td>Montrealský Český</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=4|Gra=1|Neg=A|Sem=S</td><td>liverpoolský</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=4|Gra=1|Neg=A|Var=6</td><td>statistickej</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=4|Gra=1|Neg=N</td><td>nepatrný nemovitý nebezpečný nepříznivý nepřijatelný</td></tr>
+
+<tr><td>A	A	Gen=I|Num=S|Cas=4|Gra=2|Neg=A</td><td>větší lepší vyšší menší nižší</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=4|Gra=3|Neg=A</td><td>nejlepší největší Největší nejmenší nejdůležitější</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=4|Gra=3|Neg=N</td><td>nejnepochopitelnější</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=5|Gra=1|Neg=A</td><td>veliký Milý</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=6|Gra=1|Neg=A</td><td>loňském každém příštím letošním pražském</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=6|Gra=1|Neg=A|Sem=G</td><td>Treptowském přílepovském</td></tr>
+
+<tr><td>A	A	Gen=I|Num=S|Cas=6|Gra=1|Neg=A|Sem=S</td><td>Dietrichsteinském</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=6|Gra=1|Neg=A|Var=7</td><td>naprostým</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=6|Gra=1|Neg=N</td><td>nedalekém nezdařeném necelém nekorektním nedávném</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=6|Gra=2|Neg=A</td><td>lepším horším větším menším nižším</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=6|Gra=3|Neg=A</td><td>největším nejvyšším nejširším nejnižším nejkrajnějším</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=7|Gra=1|Neg=A</td><td>Hlavním Dalším jediným jiným hlavním</td></tr>
+
+<tr><td>A	A	Gen=I|Num=S|Cas=7|Gra=1|Neg=A|Var=2</td><td>pathologickým</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=7|Gra=1|Neg=N</td><td>nepříjemným netradičním nekontrolovaným neopakovatelným nezbytným</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=7|Gra=2|Neg=A</td><td>větším menším nižším lepším šťastnějším</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=7|Gra=3|Neg=A</td><td>největším nejlepším nejvyšším Největším nejvýznamnějším</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=X|Gra=1|Neg=A</td><td>Le calcarinus fusiformis La Pariental</td></tr>
+<tr><td>A	A	Gen=I|Num=S|Cas=X|Gra=1|Neg=A|Sem=K</td><td>Deutsches</td></tr>
+
+<tr><td>A	A	Gen=I|Num=S|Cas=X|Gra=1|Neg=A|Sem=R</td><td>Petit</td></tr>
+<tr><td>A	A	Gen=I|Num=X|Cas=X|Gra=1|Neg=A</td><td>joint Joint</td></tr>
+<tr><td>A	A	Gen=I|Num=X|Cas=X|Gra=1|Neg=A|Sem=m</td><td>Meždunaroden</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=1|Gra=1|Neg=A</td><td>další mnozí domácí jiní čeští</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=1|Gra=1|Neg=A|Sem=G</td><td>faerští Ulsterší</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=1|Gra=1|Neg=A|Sem=K</td><td>Archi</td></tr>
+
+<tr><td>A	A	Gen=M|Num=P|Cas=1|Gra=1|Neg=N</td><td>neznámí nezávislí nevinní netrpěliví nesmrtelní</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=1|Gra=2|Neg=A</td><td>starší mladší lepší silnější Starší</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=1|Gra=3|Neg=A</td><td>nejlepší nejvyšší největší nejvýznamnější nejúspěšnější</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=1|Gra=3|Neg=N</td><td>nejnevinnější</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=2|Gra=1|Neg=A</td><td>dalších českých zahraničních domácích mladých</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=2|Gra=1|Neg=A|Sem=G</td><td>shanonských faerských</td></tr>
+
+<tr><td>A	A	Gen=M|Num=P|Cas=2|Gra=1|Neg=A|Sem=S</td><td>Škvoreckých</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=2|Gra=1|Neg=A|Var=6</td><td>mužskejch tenkejch</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=2|Gra=1|Neg=N</td><td>nezávislých nezaměstnaných nespokojených nepohodlných neadaptovaných</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=2|Gra=2|Neg=A</td><td>starších vyšších mladších slabších nižších</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=2|Gra=3|Neg=A</td><td>nejlepších největších nejvyšších nejbližších nejvýznamnějších</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=3|Gra=1|Neg=A</td><td>zahraničním českým dalším ostatním domácím</td></tr>
+
+<tr><td>A	A	Gen=M|Num=P|Cas=3|Gra=1|Neg=N</td><td>nezletilým Nepovolaným nepříjemným nelhostejným nerozhodnutým</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=3|Gra=2|Neg=A</td><td>slabším starším chudším dokonalejším mladším</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=3|Gra=3|Neg=A</td><td>největším nejlepším nejvážnějším Nejmladším nejznámějším</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=4|Gra=1|Neg=A</td><td>zahraniční další domácí nové mladé</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=4|Gra=1|Neg=N</td><td>nezaměstnané neznámé nebezpečné neschopné nemajetné</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=4|Gra=2|Neg=A</td><td>starší nižší chudší menší vyšší</td></tr>
+
+<tr><td>A	A	Gen=M|Num=P|Cas=4|Gra=3|Neg=A</td><td>nejlepší největší nejrůznější nejmenší nejvyšší</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=5|Gra=1|Neg=A</td><td>Vážení Milí vážení přítomní</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=6|Gra=1|Neg=A</td><td>domácích zemřelých popravených vhodných islámských</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=6|Gra=1|Neg=N</td><td>nebezpečných</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=6|Gra=2|Neg=A</td><td>nižších starších</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=6|Gra=3|Neg=A</td><td>nejstarších</td></tr>
+
+<tr><td>A	A	Gen=M|Num=P|Cas=7|Gra=1|Neg=A</td><td>dalšími zahraničními českými ostatními novými</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=7|Gra=1|Neg=N</td><td>neznámými nezávislými neopatrnými nespokojenými nezaměstnanými</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=7|Gra=2|Neg=A</td><td>slavnějšími připravenějšími staršími nižšími pokročilejšími</td></tr>
+<tr><td>A	A	Gen=M|Num=P|Cas=7|Gra=3|Neg=A</td><td>nejbližšími nejlepšími největšími Největšími Nejčastějšími</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=1|Gra=1|Neg=A</td><td>každý bývalý generální český Každý</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=1|Gra=1|Neg=A|Sem=G</td><td>Sveti Ötztálský Jánský Vsetínský</td></tr>
+
+<tr><td>A	A	Gen=M|Num=S|Cas=1|Gra=1|Neg=A|Sem=S</td><td>Stráský Chvalovský Novotný Janecký Dubovský</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=1|Gra=1|Neg=A|Var=6</td><td>malej Daňový Zlatej hodnej abchazský</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=1|Gra=1|Neg=N</td><td>neznámý nejmenovaný nezávislý nešťastný nevinný</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=1|Gra=2|Neg=A</td><td>mladší starší lepší větší menší</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=1|Gra=3|Neg=A</td><td>nejlepší největší nejvyšší Největší Nejlepší</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=1|Gra=3|Neg=N</td><td>nejneukázněnější</td></tr>
+
+<tr><td>A	A	Gen=M|Num=S|Cas=2|Gra=1|Neg=A</td><td>generálního bývalého každého českého nového</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=2|Gra=1|Neg=A|Sem=S</td><td>Zelinského Businského Budinského Stráského Kopeckého</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=2|Gra=1|Neg=N</td><td>neznámého nejmenovaného nepřepadeného neklidného nezabitého</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=2|Gra=2|Neg=A</td><td>mladšího staršího významnějšího většího vyššího</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=2|Gra=3|Neg=A</td><td>nejvyššího nejlepšího největšího nejvyspělejšího nejúspěšnějšího</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=3|Gra=1|Neg=A</td><td>každému jinému bývalému českému americkému</td></tr>
+
+<tr><td>A	A	Gen=M|Num=S|Cas=3|Gra=1|Neg=A|Sem=S</td><td>Dalímu Novotnému Duckému Kaňkovskému</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=3|Gra=1|Neg=N</td><td>neoprávněnému Nemilému nedávnému neposlušnému nezaujatému</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=3|Gra=2|Neg=A</td><td>slabšímu staršímu</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=3|Gra=3|Neg=A</td><td>nejstaršímu nejschopnějšímu nejpovolanějšímu nejnadanějšímu nejbližšímu</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=4|Gra=1|Neg=A</td><td>každého nového jiného letého českého</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=4|Gra=1|Neg=A|Sem=S</td><td>Dubovského</td></tr>
+
+<tr><td>A	A	Gen=M|Num=S|Cas=4|Gra=1|Neg=N</td><td>neznámého nebezpečného Nezávislého nesprávného nehodného</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=4|Gra=2|Neg=A</td><td>staršího pozdějšího vhodnějšího náročnějšího mladšího</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=4|Gra=2|Neg=N</td><td>nebezpečnějšího</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=4|Gra=3|Neg=A</td><td>nejlepšího největšího nejtěžšího nejbližšího nejvyššího</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=5|Gra=1|Neg=A</td><td>Vážený mikrovlnný milý DŮSTOJNÝ Svatý</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=5|Gra=1|Neg=A|Var=6</td><td>Panskej</td></tr>
+
+<tr><td>A	A	Gen=M|Num=S|Cas=6|Gra=1|Neg=A</td><td>každém novém zemřelém někdejším jugoslávském</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=6|Gra=1|Neg=A|Sem=S</td><td>Štyrském</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=6|Gra=1|Neg=N</td><td>nešťastném neznámém nezjištěném nepřesvědčivém</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=6|Gra=2|Neg=A</td><td>lepším</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=6|Gra=3|Neg=A</td><td>nejvyšším</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=7|Gra=1|Neg=A</td><td>novým hlavním jediným generálním českým</td></tr>
+
+<tr><td>A	A	Gen=M|Num=S|Cas=7|Gra=1|Neg=A|Sem=S</td><td>Kopeckým Stráským Chvalovským Javorským</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=7|Gra=1|Neg=N</td><td>neznámým neomezeným nepříjemným nesmrtelným nezávislým</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=7|Gra=2|Neg=A</td><td>mladším lepším poctivějším menším Horším</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=7|Gra=3|Neg=A</td><td>nejlepším největším Největším nejvyšším nejstarším</td></tr>
+<tr><td>A	A	Gen=M|Num=S|Cas=X|Gra=1|Neg=A</td><td>Le amoenus perfectus neoniger</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=1|Gra=1|Neg=A</td><td>další jiná velká různá ostatní</td></tr>
+
+<tr><td>A	A	Gen=N|Num=P|Cas=1|Gra=1|Neg=N</td><td>neobyčejná nejasná netestovatelná nezbytná nepřístupná</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=1|Gra=2|Neg=A</td><td>menší lepší vyšší dražší řidší</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=1|Gra=3|Neg=A</td><td>nejnovější Nejsilnější největší Nejvyšší nejlepší</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=2|Gra=1|Neg=A</td><td>posledních dalších lidských ruských nových</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=2|Gra=1|Neg=N</td><td>necelých Necelých neprohraných nebezpečných nezachytitelných</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=2|Gra=2|Neg=A</td><td>větších menších posledních ožehavějších vážnějších</td></tr>
+
+<tr><td>A	A	Gen=N|Num=P|Cas=2|Gra=3|Neg=A</td><td>nejrůznějších největších nejvyšších nejvýznamnějších nejlevnějších</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=3|Gra=1|Neg=A</td><td>jednotlivým dalším novým cizím Evropským</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=3|Gra=1|Neg=N</td><td>nepopulárním nevhodným neziskovým nekontrolovaným nezbytným</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=3|Gra=2|Neg=A</td><td>dřívějším slabším vážnějším přísnějším radikálnějším</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=3|Gra=3|Neg=A</td><td>nejznámějším nejoblíbenějším nejdůležitějším nejzávažnějším nejzajímavějším</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=4|Gra=1|Neg=A</td><td>další lidská nová různá celá</td></tr>
+
+<tr><td>A	A	Gen=N|Num=P|Cas=4|Gra=1|Neg=N</td><td>nezbytná neodkladná neznámá nepříjemná netradiční</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=4|Gra=2|Neg=A</td><td>vyšší rozsáhlejší menší aktuálnější pomalejší</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=4|Gra=3|Neg=A</td><td>nejlepší největší nejslibnější nejúspěšnější nejbližší</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=6|Gra=1|Neg=A</td><td>posledních příštích dalších minulých různých</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=6|Gra=1|Neg=N</td><td>nestátních necelých nesporných nevyužitých nebezpečných</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=6|Gra=2|Neg=A</td><td>menších větších pozdějších rozvážnějších širších</td></tr>
+
+<tr><td>A	A	Gen=N|Num=P|Cas=6|Gra=3|Neg=A</td><td>nejbližších největších nejlepších nejcennějších nejhlubších</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=6|Gra=3|Neg=N</td><td>nejneuvěřitelnějších</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=7|Gra=1|Neg=A</td><td>Jinými dalšími jinými lidskými pouhými</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=7|Gra=1|Neg=N</td><td>neujasněnými neodůvodněnými nepodloženými nezávislými nepravdivými</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=7|Gra=2|Neg=A</td><td>odrostlejšími vyššími kulatějšími</td></tr>
+<tr><td>A	A	Gen=N|Num=P|Cas=7|Gra=3|Neg=A</td><td>nejpřísnějšími nejprodávanějšími největšími Nejdůležitějšími</td></tr>
+
+<tr><td>A	A	Gen=N|Num=S|Cas=1|Gra=1|Neg=A</td><td>možné nutné jasné zřejmé důležité</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=1|Gra=1|Neg=A|Sem=G</td><td>Kapské Vysoké Alipašino Novo Vsetínské</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=1|Gra=1|Neg=A|Sem=K</td><td>Vysoké</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=1|Gra=1|Neg=A|Sem=R</td><td>Rudé</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=1|Gra=1|Neg=A|Sem=S</td><td>podbízivé</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=1|Gra=1|Neg=A|Var=6</td><td>zakázaný Kytkový možný výborný outrpné</td></tr>
+
+<tr><td>A	A	Gen=N|Num=S|Cas=1|Gra=1|Neg=N</td><td>nezbytné nemožné nebezpečné nemyslitelné nepříjemné</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=1|Gra=1|Neg=N|Var=6</td><td>neuvěřitelný</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=1|Gra=2|Neg=A</td><td>lepší výhodnější horší větší nižší</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=1|Gra=2|Neg=N</td><td>nedětštější nejasnější</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=1|Gra=3|Neg=A</td><td>nejlepší nejdůležitější největší Nejdůležitější nejhorší</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=2|Gra=1|Neg=A</td><td>životního jiného veřejného nového společného</td></tr>
+
+<tr><td>A	A	Gen=N|Num=S|Cas=2|Gra=1|Neg=A|Sem=G</td><td>Vysokého montrealského</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=2|Gra=1|Neg=A|Sem=S</td><td>Novotného</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=2|Gra=1|Neg=A|Var=6</td><td>Vystřelenýho</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=2|Gra=1|Neg=N</td><td>nedovoleného neobvyklého nedalekého neuvěřitelného nespáleného</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=2|Gra=2|Neg=A</td><td>lepšího většího širšího staršího dřívějšího</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=2|Gra=3|Neg=A</td><td>nejbližšího nejhoršího nejstaršího Nejvyššího nejzápadnějšího</td></tr>
+
+<tr><td>A	A	Gen=N|Num=S|Cas=2|Gra=3|Neg=N</td><td>nejnepříznivějšího</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=3|Gra=1|Neg=A</td><td>dalšímu případnému životnímu trestnímu stejnému</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=3|Gra=1|Neg=N</td><td>nezávislému nečekanému nenapravitelnému nezvratnému nepravděpodobnému</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=3|Gra=2|Neg=A</td><td>lepšímu hlubšímu rychlejšímu odrostlejšímu výraznějšímu</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=3|Gra=3|Neg=A</td><td>nejlepšímu nejcennějšímu největšímu nejbližšímu nejvyššímu</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=4|Gra=1|Neg=A</td><td>jiné další nové životní druhé</td></tr>
+
+<tr><td>A	A	Gen=N|Num=S|Cas=4|Gra=1|Neg=A|Sem=G</td><td>crossmaglenské</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=4|Gra=1|Neg=A|Var=6</td><td>Kytkový sporný</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=4|Gra=1|Neg=N</td><td>nezbytné nedávné nekonečné nebezpečné nevhodné</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=4|Gra=2|Neg=A</td><td>větší vyšší lepší širší rychlejší</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=4|Gra=2|Neg=N</td><td>nelepší</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=4|Gra=3|Neg=A</td><td>nejlepší největší nejvyšší nejbližší nejhorší</td></tr>
+
+<tr><td>A	A	Gen=N|Num=S|Cas=4|Gra=3|Neg=N</td><td>nejnepatrnější</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=6|Gra=1|Neg=A</td><td>pražském druhém posledním hlavním včerejším</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=6|Gra=1|Neg=A|Sem=G</td><td>Kapském Olšanském Strážném</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=6|Gra=1|Neg=A|Sem=S</td><td>teheránském</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=6|Gra=1|Neg=N</td><td>nedávném nedalekém neustálém nesprávném nevýdělečném</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=6|Gra=2|Neg=A</td><td>bližším výraznějším delším větším dřívějším</td></tr>
+
+<tr><td>A	A	Gen=N|Num=S|Cas=6|Gra=3|Neg=A</td><td>nejbližším nejmenším nejvyšším nejlepším nejmodernějším</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=7|Gra=1|Neg=A</td><td>velkým jiným vlastním hlavním stejným</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=7|Gra=1|Neg=A|Sem=G</td><td>Strážným</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=7|Gra=1|Neg=A|Sem=S</td><td>podbízivým</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=7|Gra=1|Neg=A|Var=8</td><td>o</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=7|Gra=1|Neg=N</td><td>neobvyklým nezákonným neznámým nedávným neoprávněným</td></tr>
+
+<tr><td>A	A	Gen=N|Num=S|Cas=7|Gra=2|Neg=A</td><td>větším menším vyšším lepším nižším</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=7|Gra=3|Neg=A</td><td>nejlepším Největším největším nejvyšším nejdůležitějším</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=X|Gra=1|Neg=A</td><td>minimum caespitum frequens adiecto</td></tr>
+<tr><td>A	A	Gen=N|Num=S|Cas=X|Gra=1|Neg=A|Sem=G</td><td>SANTO</td></tr>
+<tr><td>A	A	Gen=X|Num=P|Cas=X|Gra=1|Neg=A</td><td>Grandes</td></tr>
+<tr><td>A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A</td><td>The Open the Czech St</td></tr>
+
+<tr><td>A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=E</td><td>Indian</td></tr>
+<tr><td>A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=G</td><td>New Los San Tchaj Devils</td></tr>
+<tr><td>A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=K</td><td>Deutsche United Die Grand British</td></tr>
+<tr><td>A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=R</td><td>Financial Coca Super Wyborcza Prágai</td></tr>
+<tr><td>A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=S</td><td>Gordon Mc</td></tr>
+<tr><td>A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=Y</td><td>Saint Old Boreen Sine Jerusalém</td></tr>
+
+<tr><td>A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=m</td><td>Made French Australian Al al</td></tr>
+<tr><td>A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=1</td><td>An</td></tr>
+<tr><td>A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=8</td><td>tzv a čs sv Čs</td></tr>
+<tr><td>A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=8|Sem=G</td><td>Č N B V Uh</td></tr>
+<tr><td>A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=8|Sem=K</td><td>RM K J IG I</td></tr>
+<tr><td>A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=8|Sem=R</td><td>Eng Chem S T N</td></tr>
+
+<tr><td>A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=8|Sem=m</td><td>US FIA U S ÖMV</td></tr>
+<tr><td>A	A	Gen=X|Num=X|Cas=X|Gra=2|Neg=A|Var=8</td><td>ml Ml</td></tr>
+<tr><td>A	C	Gen=F|Num=S|Cas=4|Neg=A</td><td>živu</td></tr>
+<tr><td>A	C	Gen=M|Num=P|Neg=A</td><td>schopni rádi ochotni spokojeni povinni</td></tr>
+<tr><td>A	C	Gen=M|Num=P|Neg=N</td><td>neradi nešťastni Neradi</td></tr>
+<tr><td>A	C	Gen=N|Num=S|Neg=A</td><td>třeba možno nutno známo schopno</td></tr>
+
+<tr><td>A	C	Gen=N|Num=S|Neg=N</td><td>netřeba Nemožno neznámo Netřeba</td></tr>
+<tr><td>A	C	Gen=Q|Num=W|Neg=A</td><td>schopna ráda ochotna známa vědoma</td></tr>
+<tr><td>A	C	Gen=Q|Num=W|Neg=N</td><td>nerada Nerada</td></tr>
+<tr><td>A	C	Gen=T|Num=P|Neg=A</td><td>známy schopny ochotny povinny spokojeny</td></tr>
+<tr><td>A	C	Gen=Y|Num=S|Neg=A</td><td>rád schopen povinen znám spokojen</td></tr>
+<tr><td>A	C	Gen=Y|Num=S|Neg=N</td><td>nerad Nerad neschopen</td></tr>
+
+<tr><td>A	G	Gen=F|Num=P|Cas=1|Neg=A</td><td>následující týkající lišící odpovídající vznikající</td></tr>
+<tr><td>A	G	Gen=F|Num=P|Cas=1|Neg=N</td><td>nesplňující neprotínající nepracující</td></tr>
+<tr><td>A	G	Gen=F|Num=P|Cas=2|Neg=A</td><td>týkajících rozhodujících existujících vedoucích navazujících</td></tr>
+<tr><td>A	G	Gen=F|Num=P|Cas=2|Neg=N</td><td>neprosperujících nepostačujících neexistujících neřešících neodpovídajících</td></tr>
+<tr><td>A	G	Gen=F|Num=P|Cas=3|Neg=A</td><td>odkazujícím ležícím rostoucím nadcházejícím porušujícím</td></tr>
+<tr><td>A	G	Gen=F|Num=P|Cas=4|Neg=A</td><td>týkající vedoucí následující vyplývající rostoucí</td></tr>
+
+<tr><td>A	G	Gen=F|Num=P|Cas=4|Neg=N</td><td>nemohoucí</td></tr>
+<tr><td>A	G	Gen=F|Num=P|Cas=6|Neg=A</td><td>rozhodujících nadcházejících sousedících týkajících vedoucích</td></tr>
+<tr><td>A	G	Gen=F|Num=P|Cas=6|Neg=N</td><td>neplatících nevyhovujících netýkajících</td></tr>
+<tr><td>A	G	Gen=F|Num=P|Cas=7|Neg=A</td><td>blížícími rostoucími směřujícími přibývajícími uvádějícími</td></tr>
+<tr><td>A	G	Gen=F|Num=S|Cas=1|Neg=A</td><td>následující chybějící rozhodující vynikající vládnoucí</td></tr>
+<tr><td>A	G	Gen=F|Num=S|Cas=1|Neg=N</td><td>nevyhovující nemající nekončící nelišící nedostačující</td></tr>
+
+<tr><td>A	G	Gen=F|Num=S|Cas=2|Neg=A</td><td>vedoucí vládnoucí odpovídající rostoucí zabývající</td></tr>
+<tr><td>A	G	Gen=F|Num=S|Cas=2|Neg=N</td><td>neexistující nevyhovující</td></tr>
+<tr><td>A	G	Gen=F|Num=S|Cas=3|Neg=A</td><td>pokračující vládnoucí měnící přetrvávající následující</td></tr>
+<tr><td>A	G	Gen=F|Num=S|Cas=3|Neg=N</td><td>neexistující neodpovídající nepřesahující neslyšící</td></tr>
+<tr><td>A	G	Gen=F|Num=S|Cas=4|Neg=A</td><td>vedoucí rozhodující odpovídající týkající klesající</td></tr>
+<tr><td>A	G	Gen=F|Num=S|Cas=4|Neg=N</td><td>nepodléhající nevyžadující neexistující nepřekračující nevyhovující</td></tr>
+
+<tr><td>A	G	Gen=F|Num=S|Cas=6|Neg=A</td><td>vedoucí následující rozhodující probíhající rostoucí</td></tr>
+<tr><td>A	G	Gen=F|Num=S|Cas=6|Neg=N</td><td>nedosahující nekódující</td></tr>
+<tr><td>A	G	Gen=F|Num=S|Cas=7|Neg=A</td><td>vedoucí rozhodující rostoucí nadcházející vládnoucí</td></tr>
+<tr><td>A	G	Gen=I|Num=P|Cas=1|Neg=A</td><td>týkající rozhodující ležící rostoucí odpovídající</td></tr>
+<tr><td>A	G	Gen=I|Num=P|Cas=1|Neg=N</td><td>nechápající neodpovídající nepřeceňující</td></tr>
+<tr><td>A	G	Gen=I|Num=P|Cas=2|Neg=A</td><td>probíhajících zbývajících rozhodujících řídících ležících</td></tr>
+
+<tr><td>A	G	Gen=I|Num=P|Cas=2|Neg=N</td><td>nesouvisejících nemířících neexistujících</td></tr>
+<tr><td>A	G	Gen=I|Num=P|Cas=3|Neg=A</td><td>souvisejícím překvapujícím obsahujícím zanikajícím vládnoucím</td></tr>
+<tr><td>A	G	Gen=I|Num=P|Cas=4|Neg=A</td><td>vynikající končící týkající směřující zbývající</td></tr>
+<tr><td>A	G	Gen=I|Num=P|Cas=4|Neg=N</td><td>nehojící neznamenající nepotvrzující nerušící nevyhovující</td></tr>
+<tr><td>A	G	Gen=I|Num=P|Cas=6|Neg=A</td><td>následujících nadcházejících předcházejících souvisejících sloužících</td></tr>
+<tr><td>A	G	Gen=I|Num=P|Cas=7|Neg=A</td><td>prosperujícími poskytujícími unikajícími přibližujícími snižujícími</td></tr>
+
+<tr><td>A	G	Gen=I|Num=S|Cas=1|Neg=A</td><td>ležící pojednávající rozhodující následující Rozhodující</td></tr>
+<tr><td>A	G	Gen=I|Num=S|Cas=1|Neg=N</td><td>nevyhovující nefungující neexistující nekončící neumlkající</td></tr>
+<tr><td>A	G	Gen=I|Num=S|Cas=2|Neg=A</td><td>následujícího řídícího hostujícího vycházejícího trvajícího</td></tr>
+<tr><td>A	G	Gen=I|Num=S|Cas=3|Neg=A</td><td>předcházejícímu hladovějícímu hrozícímu rostoucímu ekonomizujícímu</td></tr>
+<tr><td>A	G	Gen=I|Num=S|Cas=4|Neg=A</td><td>rozhodující následující rostoucí týkající vedoucí</td></tr>
+<tr><td>A	G	Gen=I|Num=S|Cas=4|Neg=N</td><td>nepřináležející neřešící neustávající neodpovídající neuhýbající</td></tr>
+
+<tr><td>A	G	Gen=I|Num=S|Cas=6|Neg=A</td><td>následujícím předcházejícím nadcházejícím rozhodujícím vyhovujícím</td></tr>
+<tr><td>A	G	Gen=I|Num=S|Cas=6|Neg=N</td><td>nezvětšujícím</td></tr>
+<tr><td>A	G	Gen=I|Num=S|Cas=7|Neg=A</td><td>rozhodujícím následujícím rostoucím odpovídajícím přibývajícím</td></tr>
+<tr><td>A	G	Gen=I|Num=S|Cas=7|Neg=N</td><td>nedostačujícím neudivujícím nezbarvujícím</td></tr>
+<tr><td>A	G	Gen=M|Num=P|Cas=1|Neg=A</td><td>cestující žijící vedoucí Vedoucí věřící</td></tr>
+<tr><td>A	G	Gen=M|Num=P|Cas=1|Neg=N</td><td>neslyšící nevěřící nesouhlasící netušící nestárnoucí</td></tr>
+
+<tr><td>A	G	Gen=M|Num=P|Cas=2|Neg=A</td><td>cestujících žijících vedoucích pracujících rozhodujících</td></tr>
+<tr><td>A	G	Gen=M|Num=P|Cas=2|Neg=N</td><td>neslyšících neplatících neexistujících</td></tr>
+<tr><td>A	G	Gen=M|Num=P|Cas=3|Neg=A</td><td>vedoucím žijícím začínajícím stávkujícím píšícím</td></tr>
+<tr><td>A	G	Gen=M|Num=P|Cas=3|Neg=N</td><td>neslyšícím</td></tr>
+<tr><td>A	G	Gen=M|Num=P|Cas=4|Neg=A</td><td>vedoucí žijící cestující řídící vynikající</td></tr>
+<tr><td>A	G	Gen=M|Num=P|Cas=4|Neg=N</td><td>neslyšící nepracující</td></tr>
+
+<tr><td>A	G	Gen=M|Num=P|Cas=6|Neg=A</td><td>zkoumajících žádajících startujících</td></tr>
+<tr><td>A	G	Gen=M|Num=P|Cas=7|Neg=A</td><td>cestujícími sajícími vedoucími řídícími ucházejícími</td></tr>
+<tr><td>A	G	Gen=M|Num=S|Cas=1|Neg=A</td><td>kupující prodávající vedoucí Vynikající hostující</td></tr>
+<tr><td>A	G	Gen=M|Num=S|Cas=1|Neg=N</td><td>nehrající nevládnoucí</td></tr>
+<tr><td>A	G	Gen=M|Num=S|Cas=2|Neg=A</td><td>prodávajícího kupujícího vedoucího žijícího střídajícího</td></tr>
+<tr><td>A	G	Gen=M|Num=S|Cas=2|Neg=N</td><td>neexistujícího</td></tr>
+
+<tr><td>A	G	Gen=M|Num=S|Cas=3|Neg=A</td><td>prodávajícímu kupujícímu Předsedajícímu Vyšetřujícímu Žijícímu</td></tr>
+<tr><td>A	G	Gen=M|Num=S|Cas=3|Neg=N</td><td>nehrajícímu netušícímu</td></tr>
+<tr><td>A	G	Gen=M|Num=S|Cas=4|Neg=A</td><td>začínajícího stojícího kupujícího spícího unikajícího</td></tr>
+<tr><td>A	G	Gen=M|Num=S|Cas=6|Neg=A</td><td>volajícím ošetřujícím hostujícím</td></tr>
+<tr><td>A	G	Gen=M|Num=S|Cas=7|Neg=A</td><td>kupujícím prodávajícím Vynikajícím vynikajícím hrajícím</td></tr>
+<tr><td>A	G	Gen=N|Num=P|Cas=1|Neg=A</td><td>vyplývající odpovídající týkající chladící předcházející</td></tr>
+
+<tr><td>A	G	Gen=N|Num=P|Cas=1|Neg=N</td><td>nedostačující</td></tr>
+<tr><td>A	G	Gen=N|Num=P|Cas=2|Neg=A</td><td>žijících přežívajících následujících zbývajících nadcházejících</td></tr>
+<tr><td>A	G	Gen=N|Num=P|Cas=3|Neg=A</td><td>následujícím rozvíjejícím probíhajícím</td></tr>
+<tr><td>A	G	Gen=N|Num=P|Cas=4|Neg=A</td><td>ovládající chladící vyžadující plánující předcházející</td></tr>
+<tr><td>A	G	Gen=N|Num=P|Cas=4|Neg=N</td><td>nevyskytující nerespektující</td></tr>
+<tr><td>A	G	Gen=N|Num=P|Cas=6|Neg=A</td><td>následujících zbývajících nadcházejících předcházejících uvádějících</td></tr>
+
+<tr><td>A	G	Gen=N|Num=P|Cas=7|Neg=A</td><td>zakazujícími znějícími odrazujícími krvácejícími slábnoucími</td></tr>
+<tr><td>A	G	Gen=N|Num=S|Cas=1|Neg=A</td><td>šokující odpovídající vznikající Rozhodující následující</td></tr>
+<tr><td>A	G	Gen=N|Num=S|Cas=1|Neg=N</td><td>nevyhovující nesplňující nepřející nepostačující nedostačující</td></tr>
+<tr><td>A	G	Gen=N|Num=S|Cas=2|Neg=A</td><td>následujícího předcházejícího dopadajícího hostujícího vrcholícího</td></tr>
+<tr><td>A	G	Gen=N|Num=S|Cas=3|Neg=A</td><td>pokračujícímu blížícímu rostoucímu vedoucímu ležícímu</td></tr>
+<tr><td>A	G	Gen=N|Num=S|Cas=4|Neg=A</td><td>odpovídající nadcházející pokračující vedoucí následující</td></tr>
+
+<tr><td>A	G	Gen=N|Num=S|Cas=4|Neg=N</td><td>neodpovídající</td></tr>
+<tr><td>A	G	Gen=N|Num=S|Cas=6|Neg=A</td><td>následujícím předcházejícím nadcházejícím nesoucím ležícím</td></tr>
+<tr><td>A	G	Gen=N|Num=S|Cas=6|Neg=N</td><td>nedoporučujícím</td></tr>
+<tr><td>A	G	Gen=N|Num=S|Cas=7|Neg=A</td><td>blížícím rostoucím rozvíjejícím zakazujícím přibývajícím</td></tr>
+<tr><td>A	M	Gen=F|Num=P|Cas=2|Neg=A</td><td>zešílevších</td></tr>
+<tr><td>A	M	Gen=F|Num=S|Cas=4|Neg=A</td><td>zapomenuvší</td></tr>
+
+<tr><td>A	M	Gen=F|Num=S|Cas=6|Neg=A</td><td>nastavší</td></tr>
+<tr><td>A	M	Gen=I|Num=P|Cas=4|Neg=A</td><td>vyskytnuvší</td></tr>
+<tr><td>A	M	Gen=I|Num=S|Cas=2|Neg=A</td><td>zaniknuvšího</td></tr>
+<tr><td>A	M	Gen=M|Num=S|Cas=1|Neg=A</td><td>byvší</td></tr>
+<tr><td>A	M	Gen=M|Num=S|Cas=2|Neg=A</td><td>přeživšího zahynuvšího</td></tr>
+<tr><td>A	M	Gen=M|Num=S|Cas=4|Neg=A</td><td>odstoupivšího provinivšího</td></tr>
+
+<tr><td>A	O	Gen=M|Num=P</td><td>sví</td></tr>
+<tr><td>A	O	Gen=N|Num=S</td><td>své Své</td></tr>
+<tr><td>A	O	Gen=Y|Num=S</td><td>svůj</td></tr>
+<tr><td>A	U	Gen=F|Num=P|Cas=1|PGe=F|Sem=Y</td><td>Zdenčiny</td></tr>
+<tr><td>A	U	Gen=F|Num=P|Cas=1|PGe=M</td><td>Nobelovy manažerovy Vlčkovy Autorovy Doktorovy</td></tr>
+<tr><td>A	U	Gen=F|Num=P|Cas=1|PGe=M|Sem=S</td><td>Havlovy Nadeauovy Churchillovy Karadžičovy Béresovy</td></tr>
+
+<tr><td>A	U	Gen=F|Num=P|Cas=1|PGe=M|Sem=Y</td><td>Heinrichovy Karlovy MOJŽÍŠOVY</td></tr>
+<tr><td>A	U	Gen=F|Num=P|Cas=2|PGe=F|Sem=Y</td><td>Irininých</td></tr>
+<tr><td>A	U	Gen=F|Num=P|Cas=2|PGe=M</td><td>Nobelových Matesových spisovatelových respondentových skladatelových</td></tr>
+<tr><td>A	U	Gen=F|Num=P|Cas=2|PGe=M|Sem=S</td><td>Dobsonových Carverových Benešových Nobelových Janáčkových</td></tr>
+<tr><td>A	U	Gen=F|Num=P|Cas=2|PGe=M|Sem=Y</td><td>Heinrichových Karlových Galileových</td></tr>
+<tr><td>A	U	Gen=F|Num=P|Cas=3|PGe=M|Sem=S</td><td>Keenanovým Švankmajerovým Havlovým</td></tr>
+
+<tr><td>A	U	Gen=F|Num=P|Cas=3|PGe=M|Sem=Y</td><td>Jagovým</td></tr>
+<tr><td>A	U	Gen=F|Num=P|Cas=4|PGe=F|Sem=Y</td><td>Petřiny</td></tr>
+<tr><td>A	U	Gen=F|Num=P|Cas=4|PGe=M</td><td>Zemanovy synovy Vlčkovy</td></tr>
+<tr><td>A	U	Gen=F|Num=P|Cas=4|PGe=M|Sem=E</td><td>Brazilcovy</td></tr>
+<tr><td>A	U	Gen=F|Num=P|Cas=4|PGe=M|Sem=S</td><td>Benešovy Genetovy Petrželovy Netscherovy Haasovy</td></tr>
+<tr><td>A	U	Gen=F|Num=P|Cas=6|PGe=M</td><td>prezidentových</td></tr>
+
+<tr><td>A	U	Gen=F|Num=P|Cas=6|PGe=M|Sem=S</td><td>Descartesových Tombových Nepomukových Kalvodových Holaňových</td></tr>
+<tr><td>A	U	Gen=F|Num=P|Cas=6|PGe=M|Sem=Y</td><td>Galileových Ježíšových</td></tr>
+<tr><td>A	U	Gen=F|Num=P|Cas=7|PGe=M|Sem=S</td><td>Smetanovými Morgensternovými Boschovými Rimbaudovými Janouškovými</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=1|PGe=F</td><td>nádeničina</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=1|PGe=F|Sem=Y</td><td>Bystrouščina</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=1|PGe=M</td><td>Samcova Nobelova Stehlíkova autorova Prezidentova</td></tr>
+
+<tr><td>A	U	Gen=F|Num=S|Cas=1|PGe=M|Sem=G</td><td>Neumannova</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=1|PGe=M|Sem=S</td><td>Milíčova Schrödingerova Gödelova Husova Masarykova</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=1|PGe=M|Sem=Y</td><td>Karlova Janova Eliášova Jidášova Matějova</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=2|PGe=F</td><td>babiččiny Královniny dceřiny</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=2|PGe=F|Sem=Y</td><td>Amintiny</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=2|PGe=M</td><td>Nobelovy prezidentovy premiérovy režisérovy zaměstnavatelovy</td></tr>
+
+<tr><td>A	U	Gen=F|Num=S|Cas=2|PGe=M|Sem=S</td><td>Janáčkovy Mečiarovy Schrödingerovy Masarykovy Gödelovy</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=2|PGe=M|Sem=Y</td><td>Karlovy Marcusovy Šalamounovy Václavovy Jupiterovy</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=3|PGe=M</td><td>Vlčkově soupeřově papežově Nobelově</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=3|PGe=M|Sem=S</td><td>Popperově Hirschově Dvořákově Parkinsonově Chabrolově</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=3|PGe=M|Sem=Y</td><td>Marcusově Janově</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=4|PGe=F</td><td>manželčinu autorčinu babiččinu</td></tr>
+
+<tr><td>A	U	Gen=F|Num=S|Cas=4|PGe=F|Sem=S</td><td>Pandořinu</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=4|PGe=M</td><td>Nobelovu prezidentovu autorovu pisatelovu papežovu</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=4|PGe=M|Sem=S</td><td>Dvořákovu Klausovu Stalinovu Schrödingerovu Gödelovu</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=4|PGe=M|Sem=Y</td><td>Václavovu Kristovu Janovu Karlovu</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=6|PGe=M</td><td>Kaprově soupeřově Kantnerově soudcově Kolářově</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=6|PGe=M|Sem=S</td><td>Husově Škrétově Masarykově Křemencově Gödelově</td></tr>
+
+<tr><td>A	U	Gen=F|Num=S|Cas=6|PGe=M|Sem=Y</td><td>Karlově Davidově Čeňkově Matyášově Janově</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=7|PGe=F</td><td>překladatelčinou babiččinou</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=7|PGe=M</td><td>Zemanovou arcibiskupovou malířovou hráčovou Nobelovou</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=7|PGe=M|Sem=S</td><td>Mandelovou Zapatovou Leclerkovou Haškovou HITLEROVOU</td></tr>
+<tr><td>A	U	Gen=F|Num=S|Cas=7|PGe=M|Sem=Y</td><td>Čeňkovou Silvovou Matyášovou Janovou Cyrilovou</td></tr>
+<tr><td>A	U	Gen=I|Num=P|Cas=1|PGe=F|Sem=Y</td><td>Martininy</td></tr>
+
+<tr><td>A	U	Gen=I|Num=P|Cas=1|PGe=M</td><td>Kolářovy Ďáblovy Čertovy Umělcovy společníkovy</td></tr>
+<tr><td>A	U	Gen=I|Num=P|Cas=1|PGe=M|Sem=E</td><td>Američanovy</td></tr>
+<tr><td>A	U	Gen=I|Num=P|Cas=1|PGe=M|Sem=G</td><td>Powellovy</td></tr>
+<tr><td>A	U	Gen=I|Num=P|Cas=1|PGe=M|Sem=S</td><td>Benešovy Witkinovy Eukleidovy Štruncovy Mikoláškovy</td></tr>
+<tr><td>A	U	Gen=I|Num=P|Cas=1|PGe=M|Sem=Y</td><td>Karlovy</td></tr>
+<tr><td>A	U	Gen=I|Num=P|Cas=2|PGe=M</td><td>autorových</td></tr>
+
+<tr><td>A	U	Gen=I|Num=P|Cas=2|PGe=M|Sem=S</td><td>Benešových Eukleidových Parkinsonových Střížkových Kotíkových</td></tr>
+<tr><td>A	U	Gen=I|Num=P|Cas=2|PGe=M|Sem=Y</td><td>Karlových Bernardových</td></tr>
+<tr><td>A	U	Gen=I|Num=P|Cas=3|PGe=M|Sem=S</td><td>Chabrolových</td></tr>
+<tr><td>A	U	Gen=I|Num=P|Cas=4|PGe=M|Sem=S</td><td>Eukleidovy Sennovy Learovy Guerrickovy Benvenistovy</td></tr>
+<tr><td>A	U	Gen=I|Num=P|Cas=4|PGe=M|Sem=Y</td><td>Jagovy</td></tr>
+<tr><td>A	U	Gen=I|Num=P|Cas=6|PGe=M|Sem=S</td><td>Eukleidových Benešových Dvořákových Kafkových Grossmanových</td></tr>
+
+<tr><td>A	U	Gen=I|Num=P|Cas=6|PGe=M|Sem=Y</td><td>Karlových</td></tr>
+<tr><td>A	U	Gen=I|Num=P|Cas=7|PGe=F</td><td>královninými</td></tr>
+<tr><td>A	U	Gen=I|Num=P|Cas=7|PGe=M</td><td>Nerudovými</td></tr>
+<tr><td>A	U	Gen=I|Num=P|Cas=7|PGe=M|Sem=S</td><td>Milankovičovými Dvořákovými</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=1|PGe=F</td><td>zpěvaččin Pandin hrdliččin autorčin</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=1|PGe=F|Sem=Y</td><td>Mariin</td></tr>
+
+<tr><td>A	U	Gen=I|Num=S|Cas=1|PGe=M</td><td>Prezidentův otcův autorův Skladatelův Premiérův</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=1|PGe=M|Sem=G</td><td>Havlíčkův Spenglerův</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=1|PGe=M|Sem=S</td><td>Casimirův Geigerův Klausův Clintonův Hezekiášův</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=1|PGe=M|Sem=Y</td><td>Kristův Wayneův Jindřichův Ostojův Přemyslův</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=2|PGe=F</td><td>babiččina</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=2|PGe=F|Sem=Y</td><td>Alžbětina</td></tr>
+
+<tr><td>A	U	Gen=I|Num=S|Cas=2|PGe=M</td><td>autorova umělcova primářova ministrova prezidentova</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=2|PGe=M|Sem=G</td><td>Havlíčkova</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=2|PGe=M|Sem=S</td><td>Stanleyova Mečiarova Masarykova Casimirova Čalfova</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=2|PGe=M|Sem=Y</td><td>Karlova Matějova Marcusova Jindřichova Petrova</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=3|PGe=M|Sem=S</td><td>Klausovu Novákovu Mečiarovu Kantovu Casimirově</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=4|PGe=F</td><td>babiččin jitřenčin</td></tr>
+
+<tr><td>A	U	Gen=I|Num=S|Cas=4|PGe=M</td><td>králův ředitelův prezidentův autorův cestovatelův</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=4|PGe=M|Sem=E</td><td>Němcův Taliánův Florenťanův Irův</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=4|PGe=M|Sem=G</td><td>Ramanův Havlíčkův</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=4|PGe=M|Sem=S</td><td>Havlův Balladurův Hrdinův Hirschův Geigerův</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=4|PGe=M|Sem=Y</td><td>WAYNEŮV Romanův Reyův Izákův Jindřichův</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=6|PGe=M</td><td>arcibiskupově zákazníkově režisérově malířově otcově</td></tr>
+
+<tr><td>A	U	Gen=I|Num=S|Cas=6|PGe=M|Sem=G</td><td>Havlíčkově Neumannově</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=6|PGe=M|Sem=S</td><td>Špindlerově Masarykově Pasteurově Jelcinově Branaghově</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=6|PGe=M|Sem=Y</td><td>Jindřichově Karlově Hamletově Matějově Jarolímově</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=7|PGe=F</td><td>hereččiným</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=7|PGe=M</td><td>Vrabcovým autorovým prezidentovým</td></tr>
+<tr><td>A	U	Gen=I|Num=S|Cas=7|PGe=M|Sem=S</td><td>Stalinovým Calvinovým Orionovým Hatchovým Hezekiášovým</td></tr>
+
+<tr><td>A	U	Gen=I|Num=S|Cas=7|PGe=M|Sem=Y</td><td>Jindřichovým Vojtěchovým Kristovým</td></tr>
+<tr><td>A	U	Gen=M|Num=P|Cas=1|PGe=F|Sem=Y</td><td>Majčini</td></tr>
+<tr><td>A	U	Gen=M|Num=P|Cas=1|PGe=M</td><td>Sládkovi Prezidentovi Studentovi Hrabalovi Kovářovi</td></tr>
+<tr><td>A	U	Gen=M|Num=P|Cas=1|PGe=M|Sem=S</td><td>Flintstoneovi Šimáčkovi Koecherovi Bartlettovi Coriovi</td></tr>
+<tr><td>A	U	Gen=M|Num=P|Cas=2|PGe=M</td><td>Beranových skladatelových</td></tr>
+<tr><td>A	U	Gen=M|Num=P|Cas=2|PGe=M|Sem=G</td><td>Powellových Neumannových</td></tr>
+
+<tr><td>A	U	Gen=M|Num=P|Cas=2|PGe=M|Sem=S</td><td>Baughanových Boušových Uhdeových Flintstoneových Rosenbergových</td></tr>
+<tr><td>A	U	Gen=M|Num=P|Cas=2|PGe=M|Sem=Y</td><td>Jehovových Danielových</td></tr>
+<tr><td>A	U	Gen=M|Num=P|Cas=3|PGe=M|Sem=S</td><td>Šimáčkovým Novákovým</td></tr>
+<tr><td>A	U	Gen=M|Num=P|Cas=4|PGe=M</td><td>soupeřovy</td></tr>
+<tr><td>A	U	Gen=M|Num=P|Cas=4|PGe=M|Sem=S</td><td>Walensovy Božíkovi Weissovi Hamadíovy Riedelovy</td></tr>
+<tr><td>A	U	Gen=M|Num=P|Cas=6|PGe=M|Sem=S</td><td>Baránkových Castrových</td></tr>
+
+<tr><td>A	U	Gen=M|Num=P|Cas=7|PGe=M</td><td>diktátorovými</td></tr>
+<tr><td>A	U	Gen=M|Num=P|Cas=7|PGe=M|Sem=S</td><td>Baránkovými Leoncavallovými Weisovými Švankmajerovými</td></tr>
+<tr><td>A	U	Gen=M|Num=S|Cas=1|PGe=M</td><td>prezidentův Prezidentův autorův Satanův manželův</td></tr>
+<tr><td>A	U	Gen=M|Num=S|Cas=1|PGe=M|Sem=S</td><td>Straussův Clintonův Honeckerův Aididův Brettův</td></tr>
+<tr><td>A	U	Gen=M|Num=S|Cas=1|PGe=M|Sem=Y</td><td>Pavlův Janův Rudolfův Ježíšův</td></tr>
+<tr><td>A	U	Gen=M|Num=S|Cas=2|PGe=M</td><td>prezidentova</td></tr>
+
+<tr><td>A	U	Gen=M|Num=S|Cas=2|PGe=M|Sem=G</td><td>Neumannova</td></tr>
+<tr><td>A	U	Gen=M|Num=S|Cas=2|PGe=M|Sem=S</td><td>Gogolova Louganisova Laplaceova Schrödingerova Aididova</td></tr>
+<tr><td>A	U	Gen=M|Num=S|Cas=2|PGe=M|Sem=Y</td><td>Matějova Ježíšova</td></tr>
+<tr><td>A	U	Gen=M|Num=S|Cas=3|PGe=M</td><td>Stehlíkovu</td></tr>
+<tr><td>A	U	Gen=M|Num=S|Cas=3|PGe=M|Sem=S</td><td>Jelcinovu Blachutovu Hrbkovu</td></tr>
+<tr><td>A	U	Gen=M|Num=S|Cas=4|PGe=M</td><td>králova arcibiskupova</td></tr>
+
+<tr><td>A	U	Gen=M|Num=S|Cas=4|PGe=M|Sem=S</td><td>Čechovova Zeyerova Frankensteinova Schrödingerova Janáčkova</td></tr>
+<tr><td>A	U	Gen=M|Num=S|Cas=4|PGe=M|Sem=Y</td><td>Alexova</td></tr>
+<tr><td>A	U	Gen=M|Num=S|Cas=6|PGe=M|Sem=S</td><td>Formanově Kačírkově Myslbekově Grossmanově</td></tr>
+<tr><td>A	U	Gen=M|Num=S|Cas=7|PGe=M</td><td>prezidentovým</td></tr>
+<tr><td>A	U	Gen=M|Num=S|Cas=7|PGe=M|Sem=K</td><td>Majklovým</td></tr>
+<tr><td>A	U	Gen=M|Num=S|Cas=7|PGe=M|Sem=S</td><td>Hauptbahnhofovým Werichovým Kosmovým Tengovým Kalvodovým</td></tr>
+
+<tr><td>A	U	Gen=N|Num=P|Cas=1|PGe=M</td><td>náčelníkova premiérova</td></tr>
+<tr><td>A	U	Gen=N|Num=P|Cas=1|PGe=M|Sem=S</td><td>Kalvodova Pavlicova Delorsova Mečiarova Havlova</td></tr>
+<tr><td>A	U	Gen=N|Num=P|Cas=2|PGe=M</td><td>premiérových malířových</td></tr>
+<tr><td>A	U	Gen=N|Num=P|Cas=2|PGe=M|Sem=S</td><td>Glückových Střížkových Klerkových Hirschových Abdičových</td></tr>
+<tr><td>A	U	Gen=N|Num=P|Cas=3|PGe=M</td><td>prezidentovým</td></tr>
+<tr><td>A	U	Gen=N|Num=P|Cas=3|PGe=M|Sem=S</td><td>Janáčkovým Holanovým Halasovým Seifertovým Tomanovým</td></tr>
+
+<tr><td>A	U	Gen=N|Num=P|Cas=4|PGe=M</td><td>ministrova Pekařova</td></tr>
+<tr><td>A	U	Gen=N|Num=P|Cas=4|PGe=M|Sem=S</td><td>Tóthova Janáčkova Dvořákova Břízova Mečiarova</td></tr>
+<tr><td>A	U	Gen=N|Num=P|Cas=4|PGe=M|Sem=Y</td><td>Lukášova</td></tr>
+<tr><td>A	U	Gen=N|Num=P|Cas=6|PGe=M|Sem=S</td><td>Ibsenových Reitmanových</td></tr>
+<tr><td>A	U	Gen=N|Num=P|Cas=7|PGe=M</td><td>umělcovými</td></tr>
+<tr><td>A	U	Gen=N|Num=P|Cas=7|PGe=M|Sem=S</td><td>Sukovými Hartmannovými Bartókovými</td></tr>
+
+<tr><td>A	U	Gen=N|Num=S|Cas=1|PGe=M</td><td>Zemanovo Spisovatelovo Umělcovo Ježkovo Generálovo</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=1|PGe=M|Sem=G</td><td>Powellovo Havlíčkovo Sezimovo</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=1|PGe=M|Sem=S</td><td>Jelcinovo Mečiarovo Schrödingerovo Husovo Havlovo</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=1|PGe=M|Sem=Y</td><td>Davidovo Karlovo Janovo</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=2|PGe=F|Sem=Y</td><td>Desdemonina Mariina Artemidina</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=2|PGe=M</td><td>skladatelova premiérova Mnichova umělcova biskupova</td></tr>
+
+<tr><td>A	U	Gen=N|Num=S|Cas=2|PGe=M|Sem=S</td><td>Sennova Náprstkova Talichova Havlova Kantova</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=2|PGe=M|Sem=Y</td><td>Karlova Abrahamova Silvova Janova Lutherova</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=3|PGe=M</td><td>prezidentovu respondentovu poslancově</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=3|PGe=M|Sem=S</td><td>Masarykovu Kudláčkovu Suchopárkově Dejmalovu Bělehrádkovu</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=4|PGe=F</td><td>královnino</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=4|PGe=F|Sem=Y</td><td>Dianino</td></tr>
+
+<tr><td>A	U	Gen=N|Num=S|Cas=4|PGe=M</td><td>prezidentovo primátorovo pracovníkovo Ředitelovo biskupovo</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=4|PGe=M|Sem=S</td><td>Havlovo Castrovo Tengovo Mitterrandovo Haydnovo</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=4|PGe=M|Sem=Y</td><td>Ludolfovo Karlovo Ježíšovo Homérovo Janovo</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=6|PGe=M</td><td>závodníkově premiérově</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=6|PGe=M|Sem=G</td><td>Sezimově</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=6|PGe=M|Sem=S</td><td>Alšově Jiráskově Smetanově Masarykově Liznerově</td></tr>
+
+<tr><td>A	U	Gen=N|Num=S|Cas=6|PGe=M|Sem=Y</td><td>Karlově</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=7|PGe=M</td><td>otcovým</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=7|PGe=M|Sem=G</td><td>Neumannovým</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=7|PGe=M|Sem=S</td><td>Poissonovým Fogašovým Weissovým Wilsonovým Pančíkovým</td></tr>
+<tr><td>A	U	Gen=N|Num=S|Cas=7|PGe=M|Sem=Y</td><td>Bernardovým</td></tr>
+<tr><td>C	=	_</td><td>1 2 3 4 1992</td></tr>
+
+<tr><td>C	?	Cas=1</td><td>kolik Kolik</td></tr>
+<tr><td>C	?	Cas=2</td><td>kolika</td></tr>
+<tr><td>C	?	Cas=4</td><td>kolik Kolik KOLIK</td></tr>
+<tr><td>C	a	Cas=1</td><td>několik mnoho málo tolik Mnoho</td></tr>
+<tr><td>C	a	Cas=2</td><td>několika mnoha mála tolika nemnoha</td></tr>
+<tr><td>C	a	Cas=2|Var=1</td><td>málo</td></tr>
+
+<tr><td>C	a	Cas=3</td><td>mnoha několika Mnoha Několika málo</td></tr>
+<tr><td>C	a	Cas=4</td><td>několik mnoho tolik málo Mnoho</td></tr>
+<tr><td>C	a	Cas=6</td><td>několika mnoha málo</td></tr>
+<tr><td>C	a	Cas=7</td><td>několika mnoha málo Mnoha tolika</td></tr>
+<tr><td>C	a	Cas=X</td><td>moc Moc MOC móóc</td></tr>
+<tr><td>C	d	Gen=F|Num=S|Cas=2</td><td>obojí dvojí</td></tr>
+
+<tr><td>C	d	Gen=F|Num=S|Cas=4</td><td>dvojí</td></tr>
+<tr><td>C	d	Gen=F|Num=S|Cas=7</td><td>dvojí</td></tr>
+<tr><td>C	d	Gen=I|Num=S|Cas=4</td><td>obojí trojí dvojí</td></tr>
+<tr><td>C	d	Gen=N|Num=S|Cas=1|Var=1</td><td>obé Oboje</td></tr>
+<tr><td>C	d	Gen=N|Num=S|Cas=2</td><td>dvojího</td></tr>
+<tr><td>C	d	Gen=N|Num=S|Cas=4</td><td>dvojí obojí Obojí</td></tr>
+
+<tr><td>C	d	Gen=N|Num=S|Cas=6</td><td>dvojím</td></tr>
+<tr><td>C	d	Gen=N|Num=S|Cas=7</td><td>obojím dvojím</td></tr>
+<tr><td>C	d	Gen=X|Num=P|Cas=1</td><td>Obojí obojí</td></tr>
+<tr><td>C	d	Gen=X|Num=P|Cas=4</td><td>obojí</td></tr>
+<tr><td>C	d	Gen=X|Num=P|Cas=4|Var=1</td><td>dvoje troje</td></tr>
+<tr><td>C	d	Gen=X|Num=P|Cas=7</td><td>dvojími</td></tr>
+
+<tr><td>C	d	Gen=X|Num=S|Cas=1</td><td>dvojí Obojí obojí Trojí trojí</td></tr>
+<tr><td>C	d	Gen=Y|Num=S|Cas=7</td><td>dvojím</td></tr>
+<tr><td>C	h	Gen=F|Num=P|Cas=1</td><td>jedny</td></tr>
+<tr><td>C	h	Gen=F|Num=P|Cas=4</td><td>jedny</td></tr>
+<tr><td>C	h	Gen=I|Num=P|Cas=1</td><td>jedny</td></tr>
+<tr><td>C	h	Gen=M|Num=P|Cas=1</td><td>jedni Jedni</td></tr>
+
+<tr><td>C	h	Gen=X|Num=P|Cas=2</td><td>jedněch</td></tr>
+<tr><td>C	h	Gen=X|Num=P|Cas=3</td><td>jedněm</td></tr>
+<tr><td>C	h	Gen=X|Num=P|Cas=6</td><td>jedněch</td></tr>
+<tr><td>C	h	Gen=X|Num=P|Cas=7</td><td>jedněmi</td></tr>
+<tr><td>C	h	Gen=Y|Num=P|Cas=4</td><td>jedny</td></tr>
+<tr><td>C	k	Num=P|Cas=6</td><td>tých</td></tr>
+
+<tr><td>C	l	Gen=F|Num=D|Cas=7</td><td>oběma dvěma čtyřma</td></tr>
+<tr><td>C	l	Gen=F|Num=S|Cas=1</td><td>jedna Jedna JEDNA</td></tr>
+<tr><td>C	l	Gen=F|Num=S|Cas=2</td><td>jedné</td></tr>
+<tr><td>C	l	Gen=F|Num=S|Cas=3</td><td>jedné Jedné</td></tr>
+<tr><td>C	l	Gen=F|Num=S|Cas=4</td><td>jednu Jednu</td></tr>
+<tr><td>C	l	Gen=F|Num=S|Cas=6</td><td>jedné</td></tr>
+
+<tr><td>C	l	Gen=F|Num=S|Cas=7</td><td>jednou Jednou JEDNOU</td></tr>
+<tr><td>C	l	Gen=H|Num=P|Cas=1</td><td>dvě obě Obě Dvě DVĚ</td></tr>
+<tr><td>C	l	Gen=H|Num=P|Cas=4</td><td>dvě obě Dvě Obě DVĚ</td></tr>
+<tr><td>C	l	Gen=I|Num=S|Cas=4</td><td>jeden Jeden JEDEN</td></tr>
+<tr><td>C	l	Gen=M|Num=S|Cas=4</td><td>jednoho Jednoho</td></tr>
+<tr><td>C	l	Gen=N|Num=S|Cas=1</td><td>jedno Jedno</td></tr>
+
+<tr><td>C	l	Gen=N|Num=S|Cas=4</td><td>jedno Jedno</td></tr>
+<tr><td>C	l	Gen=X|Num=P|Cas=1</td><td>tři čtyři Tři Čtyři TŘI</td></tr>
+<tr><td>C	l	Gen=X|Num=P|Cas=2</td><td>dvou obou tří čtyř sto</td></tr>
+<tr><td>C	l	Gen=X|Num=P|Cas=2|Var=1</td><td>třech</td></tr>
+<tr><td>C	l	Gen=X|Num=P|Cas=3</td><td>dvěma oběma třem čtyřem Třem</td></tr>
+<tr><td>C	l	Gen=X|Num=P|Cas=3|Var=1</td><td>set stům</td></tr>
+
+<tr><td>C	l	Gen=X|Num=P|Cas=3|Var=2</td><td>stě</td></tr>
+<tr><td>C	l	Gen=X|Num=P|Cas=4</td><td>tři čtyři Tři Čtyři Tri</td></tr>
+<tr><td>C	l	Gen=X|Num=P|Cas=6</td><td>dvou obou třech čtyřech pár</td></tr>
+<tr><td>C	l	Gen=X|Num=P|Cas=6|Var=1</td><td>stech</td></tr>
+<tr><td>C	l	Gen=X|Num=P|Cas=7</td><td>dvěma třemi čtyřmi oběma sty</td></tr>
+<tr><td>C	l	Gen=X|Num=P|Cas=X</td><td>Three Six</td></tr>
+
+<tr><td>C	l	Gen=X|Num=P|Cas=X|Sem=K</td><td>Four Twenty Seven</td></tr>
+<tr><td>C	l	Gen=X|Num=S|Cas=2</td><td>tisíc půl čtvrt Tisíc</td></tr>
+<tr><td>C	l	Gen=X|Num=S|Cas=3</td><td>půl</td></tr>
+<tr><td>C	l	Gen=X|Num=S|Cas=6</td><td>půl čtvrt</td></tr>
+<tr><td>C	l	Gen=X|Num=S|Cas=7</td><td>půl čtvrt</td></tr>
+<tr><td>C	l	Gen=X|Num=S|Cas=X</td><td>one One</td></tr>
+
+<tr><td>C	l	Gen=Y|Num=P|Cas=1</td><td>dva oba Oba Dva DVA</td></tr>
+<tr><td>C	l	Gen=Y|Num=P|Cas=4</td><td>dva oba Dva Oba DVA</td></tr>
+<tr><td>C	l	Gen=Y|Num=S|Cas=1</td><td>jeden Jeden</td></tr>
+<tr><td>C	l	Gen=Z|Num=S|Cas=2</td><td>jednoho Jednoho JEDNOHO</td></tr>
+<tr><td>C	l	Gen=Z|Num=S|Cas=3</td><td>jednomu Jednomu</td></tr>
+<tr><td>C	l	Gen=Z|Num=S|Cas=6</td><td>jednom</td></tr>
+
+<tr><td>C	l	Gen=Z|Num=S|Cas=7</td><td>jedním Jedním JEDNÍM</td></tr>
+<tr><td>C	n	Num=P|Cas=2</td><td>pěti šesti deseti sedmi osmi</td></tr>
+<tr><td>C	n	Num=P|Cas=2|Var=1</td><td>desíti</td></tr>
+<tr><td>C	n	Num=P|Cas=3</td><td>deseti pěti šesti osmi dvaceti</td></tr>
+<tr><td>C	n	Num=P|Cas=6</td><td>pěti šesti osmi deseti dvaceti</td></tr>
+<tr><td>C	n	Num=P|Cas=7</td><td>pěti šesti deseti dvaceti osmi</td></tr>
+
+<tr><td>C	n	Num=S|Cas=1</td><td>pět deset šest sedm osm</td></tr>
+<tr><td>C	n	Num=S|Cas=4</td><td>pět deset šest osm dvacet</td></tr>
+<tr><td>C	n	Num=S|Cas=X</td><td>polovic</td></tr>
+<tr><td>C	n	Num=X|Cas=X</td><td>šebah</td></tr>
+<tr><td>C	o	Var=1</td><td>mnohokráte několikráte</td></tr>
+<tr><td>C	o	_</td><td>několikrát mnohokrát vícekrát Několikrát tolikrát</td></tr>
+
+<tr><td>C	r	Gen=F|Num=P|Cas=1</td><td>první První Druhé Čtvrté šestnácté</td></tr>
+<tr><td>C	r	Gen=F|Num=P|Cas=1|Var=6</td><td>Devátý</td></tr>
+<tr><td>C	r	Gen=F|Num=P|Cas=2</td><td>prvních třetích pětaosmdesátých stojedenáctých Prvních</td></tr>
+<tr><td>C	r	Gen=F|Num=P|Cas=3</td><td>třetím padesátým prvním</td></tr>
+<tr><td>C	r	Gen=F|Num=P|Cas=4</td><td>první První druhé třetí patnácté</td></tr>
+<tr><td>C	r	Gen=F|Num=P|Cas=6</td><td>prvních čtrnáctých</td></tr>
+
+<tr><td>C	r	Gen=F|Num=P|Cas=7</td><td>prvními</td></tr>
+<tr><td>C	r	Gen=F|Num=S|Cas=1</td><td>První první třetí Třetí druhá</td></tr>
+<tr><td>C	r	Gen=F|Num=S|Cas=2</td><td>první druhé třetí čtvrté První</td></tr>
+<tr><td>C	r	Gen=F|Num=S|Cas=3</td><td>první druhé třetí První</td></tr>
+<tr><td>C	r	Gen=F|Num=S|Cas=4</td><td>první třetí První čtvrtou druhou</td></tr>
+<tr><td>C	r	Gen=F|Num=S|Cas=6</td><td>první druhé třetí čtvrté páté</td></tr>
+
+<tr><td>C	r	Gen=F|Num=S|Cas=7</td><td>první První třetí Třetí druhou</td></tr>
+<tr><td>C	r	Gen=I|Num=P|Cas=1</td><td>první První šesté</td></tr>
+<tr><td>C	r	Gen=I|Num=P|Cas=2</td><td>prvních Prvních šestých</td></tr>
+<tr><td>C	r	Gen=I|Num=P|Cas=3</td><td>prvním</td></tr>
+<tr><td>C	r	Gen=I|Num=P|Cas=4</td><td>první První třinácté</td></tr>
+<tr><td>C	r	Gen=I|Num=P|Cas=6</td><td>prvních</td></tr>
+
+<tr><td>C	r	Gen=I|Num=P|Cas=7</td><td>prvními</td></tr>
+<tr><td>C	r	Gen=I|Num=S|Cas=1</td><td>první První třetí pátý čtvrtý</td></tr>
+<tr><td>C	r	Gen=I|Num=S|Cas=2</td><td>prvního pátého třetího druhého čtvrtého</td></tr>
+<tr><td>C	r	Gen=I|Num=S|Cas=3</td><td>prvnímu třetímu sedmapadesátému pátému Prvnímu</td></tr>
+<tr><td>C	r	Gen=I|Num=S|Cas=4</td><td>první třetí První pátý čtvrtý</td></tr>
+<tr><td>C	r	Gen=I|Num=S|Cas=4|Var=6</td><td>druhý</td></tr>
+
+<tr><td>C	r	Gen=I|Num=S|Cas=6</td><td>prvním třetím čtvrtém pátém druhém</td></tr>
+<tr><td>C	r	Gen=I|Num=S|Cas=7</td><td>prvním Prvním třetím Druhým pátým</td></tr>
+<tr><td>C	r	Gen=M|Num=P|Cas=1</td><td>první První čtvrtí pátí šestí</td></tr>
+<tr><td>C	r	Gen=M|Num=P|Cas=2</td><td>prvních Prvních druhých</td></tr>
+<tr><td>C	r	Gen=M|Num=P|Cas=3</td><td>prvním</td></tr>
+<tr><td>C	r	Gen=M|Num=P|Cas=4</td><td>první druhé První</td></tr>
+
+<tr><td>C	r	Gen=M|Num=P|Cas=7</td><td>prvními</td></tr>
+<tr><td>C	r	Gen=M|Num=S|Cas=1</td><td>první třetí čtvrtý První druhý</td></tr>
+<tr><td>C	r	Gen=M|Num=S|Cas=1|Var=6</td><td>druhý</td></tr>
+<tr><td>C	r	Gen=M|Num=S|Cas=2</td><td>prvního druhého Devátého šestého patnáctého</td></tr>
+<tr><td>C	r	Gen=M|Num=S|Cas=3</td><td>šestému čtvrtému druhému třetímu Devátému</td></tr>
+<tr><td>C	r	Gen=M|Num=S|Cas=4</td><td>prvního třetího druhého čtvrtého</td></tr>
+
+<tr><td>C	r	Gen=M|Num=S|Cas=7</td><td>prvním třetím Prvním druhým Třetím</td></tr>
+<tr><td>C	r	Gen=N|Num=P|Cas=1</td><td>první Devadesátá První Šedesátá</td></tr>
+<tr><td>C	r	Gen=N|Num=P|Cas=2</td><td>osmdesátých šedesátých sedmdesátých padesátých prvních</td></tr>
+<tr><td>C	r	Gen=N|Num=P|Cas=3</td><td>prvním</td></tr>
+<tr><td>C	r	Gen=N|Num=P|Cas=4</td><td>první První devadesátá osmdesátá třicátá</td></tr>
+<tr><td>C	r	Gen=N|Num=P|Cas=6</td><td>padesátých prvních šedesátých osmdesátých sedmdesátých</td></tr>
+
+<tr><td>C	r	Gen=N|Num=P|Cas=7</td><td>prvními šedesátými</td></tr>
+<tr><td>C	r	Gen=N|Num=S|Cas=1</td><td>první První třetí páté dvacáté</td></tr>
+<tr><td>C	r	Gen=N|Num=S|Cas=2</td><td>prvního dvacátého třetího devatenáctého padesátého</td></tr>
+<tr><td>C	r	Gen=N|Num=S|Cas=3</td><td>prvnímu třetímu dvacátému druhému třicátému</td></tr>
+<tr><td>C	r	Gen=N|Num=S|Cas=4</td><td>první třetí druhé čtvrté páté</td></tr>
+<tr><td>C	r	Gen=N|Num=S|Cas=5</td><td>druhé</td></tr>
+
+<tr><td>C	r	Gen=N|Num=S|Cas=6</td><td>prvním třetím čtvrtém druhém šestém</td></tr>
+<tr><td>C	r	Gen=N|Num=S|Cas=7</td><td>prvním Prvním třetím čtvrtým druhým</td></tr>
+<tr><td>C	r	Gen=X|Num=X|Cas=X|Sem=K</td><td>nd First th</td></tr>
+<tr><td>C	u	_</td><td>Kolikrát kolikrát</td></tr>
+<tr><td>C	v	Var=1</td><td>dvakráte</td></tr>
+<tr><td>C	v	_</td><td>poprvé dvakrát jednou třikrát podruhé</td></tr>
+
+<tr><td>C	w	Gen=F|Num=S|Cas=3</td><td>nejedné</td></tr>
+<tr><td>C	w	Gen=F|Num=S|Cas=6</td><td>nejedné několikáté</td></tr>
+<tr><td>C	w	Gen=I|Num=S|Cas=4</td><td>nejeden několikátý</td></tr>
+<tr><td>C	w	Gen=M|Num=S|Cas=4</td><td>nejednoho</td></tr>
+<tr><td>C	w	Gen=N|Num=S|Cas=4</td><td>nejedno</td></tr>
+<tr><td>C	w	Gen=Y|Num=S|Cas=1</td><td>nejeden</td></tr>
+
+<tr><td>C	w	Gen=Z|Num=S|Cas=2</td><td>nejednoho</td></tr>
+<tr><td>C	w	Gen=Z|Num=S|Cas=3</td><td>nejednomu</td></tr>
+<tr><td>C	y	Gen=F|Num=P|Cas=1</td><td>třetiny čtvrtiny Třetiny desetiny pětiny</td></tr>
+<tr><td>C	y	Gen=F|Num=P|Cas=2</td><td>desetin setin třetin sedmdesátin</td></tr>
+<tr><td>C	y	Gen=F|Num=P|Cas=3</td><td>třetinám</td></tr>
+<tr><td>C	y	Gen=F|Num=P|Cas=4</td><td>třetiny čtvrtiny desetiny TŘETINY pětiny</td></tr>
+
+<tr><td>C	y	Gen=F|Num=P|Cas=6</td><td>třetinách čtvrtinách</td></tr>
+<tr><td>C	y	Gen=F|Num=P|Cas=7</td><td>čtvrtinami</td></tr>
+<tr><td>C	y	Gen=F|Num=S|Cas=1</td><td>třetina čtvrtina desetina pětina Třetina</td></tr>
+<tr><td>C	y	Gen=F|Num=S|Cas=2</td><td>třetiny čtvrtiny desetiny milióntiny setiny</td></tr>
+<tr><td>C	y	Gen=F|Num=S|Cas=4</td><td>třetinu čtvrtinu desetinu pětinu setinu</td></tr>
+<tr><td>C	y	Gen=F|Num=S|Cas=6</td><td>třetině čtvrtině</td></tr>
+
+<tr><td>C	y	Gen=F|Num=S|Cas=7</td><td>třetinou pětinou čtvrtinou desetinou</td></tr>
+<tr><td>C	}	_</td><td>II I III V IV</td></tr>
+<tr><td>D	b	Sem=R</td><td>Live Today Inside Ahead</td></tr>
+<tr><td>D	b	Var=1</td><td>tu loni dále nikoli Dále</td></tr>
+<tr><td>D	b	Var=2</td><td>tentokráte přec Tentokráte</td></tr>
+<tr><td>D	b	Var=6</td><td>teda</td></tr>
+
+<tr><td>D	b	Var=8</td><td>např apod mj atd resp</td></tr>
+<tr><td>D	b	Var=9</td><td>ap AP</td></tr>
+<tr><td>D	b	_</td><td>tak už také již včera</td></tr>
+<tr><td>D	g	Gra=1|Neg=A</td><td>stejně zřejmě často dobře skutečně</td></tr>
+<tr><td>D	g	Gra=1|Neg=A|Sem=S</td><td>podbízivě</td></tr>
+<tr><td>D	g	Gra=1|Neg=A|Sem=m</td><td>Live</td></tr>
+
+<tr><td>D	g	Gra=1|Neg=A|Var=1</td><td>brzo Brzo</td></tr>
+<tr><td>D	g	Gra=1|Neg=A|Var=3</td><td>dosti Dosti</td></tr>
+<tr><td>D	g	Gra=1|Neg=N</td><td>neustále nepochybně nesmírně nedaleko nečekaně</td></tr>
+<tr><td>D	g	Gra=1|Neg=N|Var=3</td><td>Nedosti</td></tr>
+<tr><td>D	g	Gra=2|Neg=A</td><td>více méně později dříve lépe</td></tr>
+<tr><td>D	g	Gra=2|Neg=A|Sem=K</td><td>More</td></tr>
+
+<tr><td>D	g	Gra=2|Neg=A|Var=1</td><td>spíše víc dále výše blíže</td></tr>
+<tr><td>D	g	Gra=2|Neg=A|Var=2</td><td>dřív snáz</td></tr>
+<tr><td>D	g	Gra=2|Neg=N</td><td>Neméně neméně nejistěji nepříznivěji</td></tr>
+<tr><td>D	g	Gra=3|Neg=A</td><td>nejvíce nejméně nejdříve nejlépe nejčastěji</td></tr>
+<tr><td>D	g	Gra=3|Neg=A|Var=1</td><td>nejvýše nejvíc Nejvíc nejblíže nejspíše</td></tr>
+<tr><td>D	g	Gra=3|Neg=A|Var=2</td><td>nejdřív Nejdřív</td></tr>
+
+<tr><td>I	I	Sem=K</td><td>Halo</td></tr>
+<tr><td>I	I	_</td><td>PA ha Pink Inu Ó</td></tr>
+<tr><td>J	*	_</td><td>x krát plus minus kráte</td></tr>
+<tr><td>J	,	Num=X|Per=3</td><td>aby kdyby Aby Kdyby KDYBY</td></tr>
+<tr><td>J	,	Var=1</td><td>Ačkoli ačkoli</td></tr>
+<tr><td>J	,	_</td><td>že jako než aby když</td></tr>
+
+<tr><td>J	^	Var=1</td><td>anebo Anebo n</td></tr>
+<tr><td>J	^	Var=2</td><td>neb</td></tr>
+<tr><td>J	^	Var=8</td><td>tj Tj</td></tr>
+<tr><td>J	^	_</td><td>a i ale však nebo</td></tr>
+<tr><td>N	N	Gen=F|Num=D|Cas=7|Neg=A</td><td>očima rukama nohama OČIMA ušima</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=1|Neg=A</td><td>firmy ceny strany země děti</td></tr>
+
+<tr><td>N	N	Gen=F|Num=P|Cas=1|Neg=A|Sem=E</td><td>Ukrajinky Japonky Rusky Číňanky Francouzky</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=1|Neg=A|Sem=G</td><td>Vítkovice Budějovice Pardubice Teplice Drnovice</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=1|Neg=A|Sem=K</td><td>Ivanovice Jawy Turčianské Ekostavby Kovohutě</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=1|Neg=A|Sem=R</td><td>Tatry bagety lady petry buginy</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=1|Neg=A|Sem=Y</td><td>Julie Mařenky Jackie</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=1|Neg=A|Var=1</td><td>čeledi čtvrti nemoce tresti</td></tr>
+
+<tr><td>N	N	Gen=F|Num=P|Cas=1|Neg=A|Var=1|Sem=G</td><td>Kambodže</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=1|Neg=N</td><td>nesrovnalosti nepravosti</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=2|Neg=A</td><td>korun zemí akcií firem informací</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=2|Neg=A|Sem=E</td><td>Američanek Afričanek Kolumbijek</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=2|Neg=A|Sem=G</td><td>Čech Budějovic Vítkovic Pardubic Drnovic</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=2|Neg=A|Sem=K</td><td>Travel Magic Invest NOV Tater</td></tr>
+
+<tr><td>N	N	Gen=F|Num=P|Cas=2|Neg=A|Sem=R</td><td>Aster winstonek Tater avií tatrovek</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=2|Neg=A|Sem=S</td><td>Nan Fuchsových Hanušových Mahlerových Tomanových</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=2|Neg=A|Sem=Y</td><td>Dagmar Dan Luis Joan DAGMAR</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=2|Neg=A|Sem=m</td><td>Izvestijí</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=2|Neg=A|Var=1</td><td>investic definic zaměstnankyň košil noh</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=2|Neg=N</td><td>nepravostí nerozumností nesprávností nepomocí</td></tr>
+
+<tr><td>N	N	Gen=F|Num=P|Cas=3|Neg=A</td><td>dětem změnám firmám zemím osobám</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=3|Neg=A|Sem=G</td><td>Vítkovicím Budějovicím Vidimem Brémám Malackám</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=3|Neg=A|Var=1</td><td>nemocem branám drahám ranám pastím</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=4|Neg=A</td><td>informace děti podmínky ceny změny</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=4|Neg=A|Sem=E</td><td>Američanky Češky</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=4|Neg=A|Sem=G</td><td>Drnovice Čechy Pardubice Vítkovice Popovice</td></tr>
+
+<tr><td>N	N	Gen=F|Num=P|Cas=4|Neg=A|Sem=R</td><td>tatry petry Tatry</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=4|Neg=A|Var=1</td><td>pravomoce čtvrti lodi stati</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=4|Neg=N</td><td>nesprávnosti nectnosti nedůslednosti nedomyšlenosti nejasnosti</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=5|Neg=A</td><td>děti dámy</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=6|Neg=A</td><td>zemích volbách podmínkách oblastech školách</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=6|Neg=A|Sem=G</td><td>Čechách Budějovicích Teplicích Pardubicích Košicích</td></tr>
+
+<tr><td>N	N	Gen=F|Num=P|Cas=6|Neg=A|Sem=K</td><td>Tatrách</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=6|Neg=A|Sem=R</td><td>literárkách</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=6|Neg=A|Var=1</td><td>drahách skalách ranách vahách rukách</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=6|Neg=A|Var=6</td><td>pracech</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=7|Neg=A</td><td>volbami zeměmi dětmi otázkami stranami</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=7|Neg=A|Sem=G</td><td>Vítkovicemi Drnovicemi Lužánkami Umami Budějovicemi</td></tr>
+
+<tr><td>N	N	Gen=F|Num=P|Cas=7|Neg=A|Var=1</td><td>obětmi drahami ranami branami vánoci</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=7|Neg=A|Var=6</td><td>Vadama</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=7|Neg=N</td><td>neznalostmi</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=X|Neg=A</td><td>Grenzen Eyes Conferences Sciences Frontiers</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=X|Neg=A|Sem=G</td><td>Meadows Moines Linden Vegas Hights</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=X|Neg=A|Sem=K</td><td>News Banshees Securities Airways Airlines</td></tr>
+
+<tr><td>N	N	Gen=F|Num=P|Cas=X|Neg=A|Sem=R</td><td>Sciences Affaires</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=X|Neg=A|Sem=m</td><td>Cars Games Alternatives Europalliances Cells</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=X|Neg=A|Var=8</td><td>OH ZOH přek PP VKV</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=X|Neg=A|Var=8|Sem=K</td><td>ČSD ČSA DSP OKK IPS</td></tr>
+<tr><td>N	N	Gen=F|Num=P|Cas=X|Neg=A|Var=8|Sem=R</td><td>LN NLN</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=1|Neg=A</td><td>vláda firma společnost cena strana</td></tr>
+
+<tr><td>N	N	Gen=F|Num=S|Cas=1|Neg=A|Sem=E</td><td>Němka Rakušanka Švýcarka Španělka Maďarka</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=1|Neg=A|Sem=G</td><td>Praha Ostrava Olomouc Evropa Plzeň</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=1|Neg=A|Sem=K</td><td>Nova Škoda Tatra Viktoria Praga</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=1|Neg=A|Sem=R</td><td>Škoda Cola Tatra Omega Gazeta</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=1|Neg=A|Sem=S</td><td>Navrátilová Chadimová Drahoňovská Bártová Suková</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=1|Neg=A|Sem=Y</td><td>Jana Hana Eva Martina Ivana</td></tr>
+
+<tr><td>N	N	Gen=F|Num=S|Cas=1|Neg=A|Sem=m</td><td>Ladronka Thalassa Reniana INHORGENTA Rivonia</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=1|Neg=A|Var=1</td><td>zem Kuchyně máti</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=1|Neg=A|Var=1|Sem=G</td><td>Philadelphia Sofia Alexandria Pennsylvania Valencia</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=1|Neg=A|Var=1|Sem=K</td><td>Slavia Synthesia Votobia SLAVIA Merkuria</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=1|Neg=A|Var=1|Sem=R</td><td>Felicia</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=1|Neg=A|Var=1|Sem=Y</td><td>Adria Sofia</td></tr>
+
+<tr><td>N	N	Gen=F|Num=S|Cas=1|Neg=N</td><td>neschopnost nezávislost neznalost nemožnost nepřítomnost</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=2|Neg=A</td><td>vlády společnosti strany firmy práce</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=2|Neg=A|Sem=E</td><td>Američanky Francouzky Slovenky Švýcarky</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=2|Neg=A|Sem=G</td><td>Evropy Prahy Králové Moravy Francie</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=2|Neg=A|Sem=K</td><td>Slavie Tatry Viktorie Bohemie Škody</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=2|Neg=A|Sem=R</td><td>Tatry tatry Fanty Gazety astry</td></tr>
+
+<tr><td>N	N	Gen=F|Num=S|Cas=2|Neg=A|Sem=S</td><td>Chadimové Petrové Whiteové Navrátilové Grafové</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=2|Neg=A|Sem=Y</td><td>Marie Jany Evy Marty Věry</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=2|Neg=A|Sem=m</td><td>Superprestige Ladronky</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=2|Neg=A|Var=1</td><td>čeledi chuti lodi oceli rtuti</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=2|Neg=A|Var=1|Sem=G</td><td>Budapešti Bukurešti BUDAPEŠTI</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=2|Neg=A|Var=8|Sem=G</td><td>Kr</td></tr>
+
+<tr><td>N	N	Gen=F|Num=S|Cas=2|Neg=N</td><td>nezávislosti neznalosti nekonečnosti nesnášenlivosti nespokojenosti</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=3|Neg=A</td><td>dispozici vládě firmě společnosti veřejnosti</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=3|Neg=A|Sem=E</td><td>Němce Angličance</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=3|Neg=A|Sem=G</td><td>Evropě Číně Praze Itálii Ukrajině</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=3|Neg=A|Sem=K</td><td>Tatře Slavii Dukle Viktorii Flavii</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=3|Neg=A|Sem=R</td><td>Ladě</td></tr>
+
+<tr><td>N	N	Gen=F|Num=S|Cas=3|Neg=A|Sem=S</td><td>podbízivosti Beránkové Benešové Vostrejšové Herrmannové</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=3|Neg=A|Sem=Y</td><td>Marii Martině Haně Janě Anně</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=3|Neg=A|Var=1|Sem=G</td><td>Kambodži</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=3|Neg=N</td><td>nespokojenosti nevyjasněnosti nepřístupnosti nezávislosti neuspořádanosti</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=4|Neg=A</td><td>dobu cenu možnost práci otázku</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=4|Neg=A|Sem=E</td><td>Rusku Američanku Francouzku Italku Švédku</td></tr>
+
+<tr><td>N	N	Gen=F|Num=S|Cas=4|Neg=A|Sem=G</td><td>Evropu Prahu Moravu Francii Bosnu</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=4|Neg=A|Sem=K</td><td>Slavii Jawu Novu Tatru Viktorii</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=4|Neg=A|Sem=R</td><td>Škodu Mascu stuyvesantku omegu Omegu</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=4|Neg=A|Sem=S</td><td>Navrátilovou Novotnou Grafovou Vopálenskou Albrightovou</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=4|Neg=A|Sem=Y</td><td>Martinu Maryšu Bohumíru Annu Janu</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=4|Neg=A|Sem=m</td><td>Vilenici Castalii Ladronku</td></tr>
+
+<tr><td>N	N	Gen=F|Num=S|Cas=4|Neg=A|Var=1</td><td>zem</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=4|Neg=N</td><td>nezávislost nemožnost nespokojenost nezbytnost neznalost</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=5|Neg=A</td><td>paní Duše Emo vládo Smrti</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=5|Neg=A|Sem=G</td><td>Galileo</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=5|Neg=A|Sem=R</td><td>krávo</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=5|Neg=A|Sem=Y</td><td>Bětko</td></tr>
+
+<tr><td>N	N	Gen=F|Num=S|Cas=6|Neg=A</td><td>době straně oblasti souvislosti republice</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=6|Neg=A|Sem=G</td><td>Praze Evropě Francii Ostravě Moravě</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=6|Neg=A|Sem=K</td><td>Tatře Slavii Škodě Soluně Dukle</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=6|Neg=A|Sem=R</td><td>Tatře Gazetě aprilii Toyotě Ibize</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=6|Neg=A|Sem=S</td><td>Valchařové Albrightové Kůstkové Rakušanové Sampsonové</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=6|Neg=A|Sem=Y</td><td>Lídě Aleně Julianě Janě Zoře</td></tr>
+
+<tr><td>N	N	Gen=F|Num=S|Cas=6|Neg=A|Sem=m</td><td>Thalasse</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=6|Neg=A|Var=1|Sem=G</td><td>Kambodži Bystrici KAMBODŽI</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=6|Neg=N</td><td>nepřítomnosti neúplnosti nemožnosti nezbytnosti neschopnosti</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=7|Neg=A</td><td>součástí většinou cestou výjimkou vládou</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=7|Neg=A|Sem=E</td><td>Francouzkou Japonkou Italkou Ruskou Němkou</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=7|Neg=A|Sem=G</td><td>Sázavou Evropou Kanadou Ukrajinou Francií</td></tr>
+
+<tr><td>N	N	Gen=F|Num=S|Cas=7|Neg=A|Sem=K</td><td>Slavií Viktorií Duklou Viktorkou Lufthansou</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=7|Neg=A|Sem=R</td><td>Tatrou Colou fiestou dvanáctsettrojkou Mascou</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=7|Neg=A|Sem=S</td><td>Chadimovou Novotnou Pierceovou Gaifmanovou Rittnerovou</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=7|Neg=A|Sem=Y</td><td>Martou Janou Julií Magdalenou Evou</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=7|Neg=A|Sem=m</td><td>Thalassou</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=7|Neg=A|Var=1</td><td>mírou branou čarou ranou vahou</td></tr>
+
+<tr><td>N	N	Gen=F|Num=S|Cas=7|Neg=A|Var=1|Sem=G</td><td>Koreou</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=7|Neg=N</td><td>neznalostí nerozhodností nepřesností neohrabaností nedotknutelností</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=X|Neg=A</td><td>MHD scala Grypania Guarantee Cataglyphis</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=X|Neg=A|Sem=G</td><td>SRN Hole Fr Street Alma</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=X|Neg=A|Sem=K</td><td>StB Science University Observatory Europe</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=X|Neg=A|Sem=R</td><td>Lancet Carcinogenesis Freedom Libération Ecology</td></tr>
+
+<tr><td>N	N	Gen=F|Num=S|Cas=X|Neg=A|Sem=S</td><td>Prix Vidal</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=X|Neg=A|Sem=Y</td><td>Bohemians Christine Jane Shirley Edith</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=X|Neg=A|Sem=m</td><td>Toutatis Icecolors Yildun Mesartim Alshain</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=X|Neg=A|Var=8</td><td>p a</td></tr>
+<tr><td>N	N	Gen=F|Num=S|Cas=X|Neg=A|Var=8|Sem=R</td><td>Med</td></tr>
+<tr><td>N	N	Gen=F|Num=X|Cas=X|Neg=A</td><td>Kč play DEM UNPROFOR image</td></tr>
+
+<tr><td>N	N	Gen=F|Num=X|Cas=X|Neg=A|Sem=G</td><td>Chelsea Gondwana Meadow It Mountain</td></tr>
+<tr><td>N	N	Gen=F|Num=X|Cas=X|Neg=A|Sem=K</td><td>ČT Bohemia Poldi AP Group</td></tr>
+<tr><td>N	N	Gen=F|Num=X|Cas=X|Neg=A|Sem=R</td><td>Tribune Sera Legend brandy Audi</td></tr>
+<tr><td>N	N	Gen=F|Num=X|Cas=X|Neg=A|Sem=S</td><td>Carvey Toyen Monroe Sioux Garbo</td></tr>
+<tr><td>N	N	Gen=F|Num=X|Cas=X|Neg=A|Sem=Y</td><td>Mary Madeleine Siouxsie Zazi Dagmar</td></tr>
+<tr><td>N	N	Gen=F|Num=X|Cas=X|Neg=A|Sem=m</td><td>Prix Tour Tugendhat France line</td></tr>
+
+<tr><td>N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=1</td><td>h s H m</td></tr>
+<tr><td>N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8</td><td>s Kčs BIS str mld</td></tr>
+<tr><td>N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=G</td><td>ČR ČSFR SR NDR KLDR</td></tr>
+<tr><td>N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=K</td><td>ODS OSN ODA ČSSD NHL</td></tr>
+<tr><td>N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=R</td><td>MF NLN NPT PAUP Biol</td></tr>
+<tr><td>N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=S</td><td>S O K Z D</td></tr>
+
+<tr><td>N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=Y</td><td>M E J A B</td></tr>
+<tr><td>N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=m</td><td>VC IHL RC MICE GATT</td></tr>
+<tr><td>N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=9|Sem=m</td><td>Brit</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=1|Neg=A</td><td>státy náklady výsledky podniky peníze</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=1|Neg=A|Sem=G</td><td>Vodochody Kralupy Poděbrady Klatovy Drážďany</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=1|Neg=A|Sem=K</td><td>Hlubany Timesy HÁDY Fiaty Hády</td></tr>
+
+<tr><td>N	N	Gen=I|Num=P|Cas=1|Neg=A|Sem=R</td><td>Mercedesy pohľady fiaty granátomety Shakespeary</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=1|Neg=A|Sem=m</td><td>Olšany</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=1|Neg=A|Var=1</td><td>dni</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=1|Neg=N</td><td>nečlánky nedopisy</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=2|Neg=A</td><td>miliónů dolarů milionů podniků měsíců</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=2|Neg=A|Sem=G</td><td>Drážďan Poděbrad Blšan Mochovců Košťan</td></tr>
+
+<tr><td>N	N	Gen=I|Num=P|Cas=2|Neg=A|Sem=K</td><td>Timesů</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=2|Neg=A|Sem=R</td><td>mercedesů favoritů trabantů oplů wartburgů</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=2|Neg=A|Var=1</td><td>dní esejů</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=2|Neg=A|Var=2</td><td>chromatoforův</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=2|Neg=A|Var=3</td><td>dubův stromův bukův</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=3|Neg=A</td><td>podnikům požadavkům problémům účelům vztahům</td></tr>
+
+<tr><td>N	N	Gen=I|Num=P|Cas=3|Neg=A|Sem=G</td><td>Paarům Smrdákům</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=3|Neg=A|Sem=R</td><td>escortům</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=3|Neg=A|Var=6</td><td>Asylum</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=4|Neg=A</td><td>peníze roky problémy výsledky náklady</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=4|Neg=A|Sem=G</td><td>Slapy Azory Libčany Blaníky Špicberky</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=4|Neg=A|Sem=R</td><td>moskviče volkswageny harleye Chevrolety žigulíky</td></tr>
+
+<tr><td>N	N	Gen=I|Num=P|Cas=4|Neg=A|Var=1</td><td>dní</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=5|Neg=A</td><td>milióny</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=5|Neg=A|Var=1</td><td>dni</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=6|Neg=A</td><td>dnech případech měsících státech trzích</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=6|Neg=A|Sem=G</td><td>Vinohradech Beskydech Košťanech Hradčanech Poděbradech</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=6|Neg=A|Sem=K</td><td>Slovanech</td></tr>
+
+<tr><td>N	N	Gen=I|Num=P|Cas=6|Neg=A|Sem=R</td><td>Kamazech</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=6|Neg=A|Var=1</td><td>hotelích drátkách Bukách Potůčkách megahertzích</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=6|Neg=A|Var=1|Sem=G</td><td>Jeseníkách Špicberkách Hrdlořezích</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=6|Neg=A|Var=6|Sem=G</td><td>Golanách</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=7|Neg=A</td><td>problémy státy prostředky roky milióny</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=7|Neg=A|Sem=G</td><td>Rokycany Drážďany</td></tr>
+
+<tr><td>N	N	Gen=I|Num=P|Cas=7|Neg=A|Sem=R</td><td>raketomety Citroeny</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=7|Neg=A|Var=6</td><td>pedálama</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=X|Neg=A</td><td>Windows Limits markets chips Lebenspläne</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=X|Neg=A|Sem=G</td><td>USA Peaks PEAKS Aires Marines</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=X|Neg=A|Sem=K</td><td>Times Seasons Motors Carpets Stones</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=X|Neg=A|Sem=R</td><td>Arts DREAMS Halls Trials Sounds</td></tr>
+
+<tr><td>N	N	Gen=I|Num=P|Cas=X|Neg=A|Sem=m</td><td>Wheels Records MINERALIENTAGE</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=X|Neg=A|Var=8</td><td>ZPS CP</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=X|Neg=A|Var=8|Sem=K</td><td>ČEZ OKD ZTS ZVVZ SBS</td></tr>
+<tr><td>N	N	Gen=I|Num=P|Cas=X|Neg=A|Var=8|Sem=R</td><td>CCT</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=1|Neg=A</td><td>zákon FAX počet stát Kontakt</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=1|Neg=A|Sem=G</td><td>York Liberec Zlín Hradec Londýn</td></tr>
+
+<tr><td>N	N	Gen=I|Num=S|Cas=1|Neg=A|Sem=K</td><td>Telecom International Taliban Siemens Volkswagen</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=1|Neg=A|Sem=R</td><td>Welt Favorit Mercedes Ford Renault</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=1|Neg=A|Sem=S</td><td>UNISTAV Hull Beran Aeskulap Prométheus</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=1|Neg=A|Sem=Y</td><td>Baník Cup Panton Odeon Aeroflot</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=1|Neg=A|Sem=m</td><td>Rapaport Rotwelsch Europartenariát Düsseldorf Jazztival</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=1|Neg=A|Var=1</td><td>Chléb chléb</td></tr>
+
+<tr><td>N	N	Gen=I|Num=S|Cas=1|Neg=A|Var=1|Sem=G</td><td>Québec</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=1|Neg=N</td><td>nesvátek</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=2|Neg=A</td><td>roku zákona světa státu konce</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=2|Neg=A|Sem=G</td><td>Pomuku Izraele Hradce Zlína Benešova</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=2|Neg=A|Sem=K</td><td>Slovanu Telecomu Talibanu Sejmu Ferencvárosu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=2|Neg=A|Sem=R</td><td>semtexu Semtexu Spiegelu Buranu mercedesu</td></tr>
+
+<tr><td>N	N	Gen=I|Num=S|Cas=2|Neg=A|Sem=S</td><td>Blaufeldenu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=2|Neg=A|Sem=Y</td><td>Cupu Baníku Prioru Pantonu Eurostatu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=2|Neg=A|Sem=m</td><td>Rapaportu Conmebolu cupu Europartenariátu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=1</td><td>února kláštera večera tábora kostela</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=1|Sem=G</td><td>Tábora Pomuka Štramberka Rabace Marse</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=1|Sem=K</td><td>Sokola Siemensu Chryslera Saaba</td></tr>
+
+<tr><td>N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=1|Sem=R</td><td>FAVORITA jaguára Jaguara</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=2</td><td>civilu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=2|Sem=G</td><td>Québeku Quebeku</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=8</td><td>aidsu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=3|Neg=A</td><td>státu roku parlamentu závěru soudu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=3|Neg=A|Sem=G</td><td>Iráku Zlínu Chebu Dunaji Izraeli</td></tr>
+
+<tr><td>N	N	Gen=I|Num=S|Cas=3|Neg=A|Sem=K</td><td>Slovanu Bayernu Radiožurnálu Kovofiniši Motorletu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=3|Neg=A|Sem=R</td><td>Miru favoritu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=3|Neg=A|Sem=Y</td><td>Baníku Pantonu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=3|Neg=A|Var=1</td><td>dni kamenu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=4|Neg=A</td><td>rok týden den zájem návrh</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=4|Neg=A|Sem=G</td><td>Kábul Hradec Afghánistán Strahov Izrael</td></tr>
+
+<tr><td>N	N	Gen=I|Num=S|Cas=4|Neg=A|Sem=K</td><td>International Elbit Babalet Bayern Arsenal</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=4|Neg=A|Sem=R</td><td>Sprite DOS Favorit Buran Citroen</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=4|Neg=A|Sem=Y</td><td>Cup Panton Creditanstalt</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=4|Neg=A|Sem=m</td><td>Golem</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=4|Neg=A|Var=1</td><td>chléb taxíka šlofíka</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=4|Neg=A|Var=1|Sem=R</td><td>golfa</td></tr>
+
+<tr><td>N	N	Gen=I|Num=S|Cas=5|Neg=A</td><td>jazýčku šampóne světe deníčku parlamente</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=6|Neg=A</td><td>roce případě trhu světě základě</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=6|Neg=A|Sem=G</td><td>Hradci Londýně Zlíně Yorku Liberci</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=6|Neg=A|Sem=K</td><td>Sejmu Dřevoslohu Vadamu Babaletu Edenu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=6|Neg=A|Sem=R</td><td>Miru breaku harleyi jaguáru Hermesu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=6|Neg=A|Sem=S</td><td>Blaufeldenu Uljanovsku</td></tr>
+
+<tr><td>N	N	Gen=I|Num=S|Cas=6|Neg=A|Sem=Y</td><td>Cupu Odeonu Baníku Behémótu Orbisu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=6|Neg=A|Sem=m</td><td>Musikereinu Supraclubu Diamantberichtu Rapaportu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=1</td><td>parlamentu ústavu způsobu obchodu sjezdu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=G</td><td>Washingtonu Ulsteru Bejrútu Oberstdorfu Jerezu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=K</td><td>Motorpalu Teleaxisu Fiatu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=R</td><td>mercedesu Citroenu</td></tr>
+
+<tr><td>N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=2|Sem=G</td><td>Québeku QUÉBEKU</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=9</td><td>dne</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=6|Neg=N</td><td>nestátu</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=7|Neg=A</td><td>způsobem koncem časem cílem rokem</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=7|Neg=A|Sem=G</td><td>Izraelem Zlínem Mohanem Radhoštěm Washingtonem</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=7|Neg=A|Sem=K</td><td>Interem Arsenalem Manchestrem Slovanem Bayernem</td></tr>
+
+<tr><td>N	N	Gen=I|Num=S|Cas=7|Neg=A|Sem=R</td><td>androidem Litotryptorem Respektem akrylem Optaconem</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=7|Neg=A|Sem=Y</td><td>Cupem Baníkem Eurostatem Testcomem</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=7|Neg=A|Var=8</td><td>l</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=7|Neg=N</td><td>nepřístupem</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=X|Neg=A</td><td>neem Homo gyrus tympani JET</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=X|Neg=A|Sem=G</td><td>Louis Bay Germain Ahmar Street</td></tr>
+
+<tr><td>N	N	Gen=I|Num=S|Cas=X|Neg=A|Sem=K</td><td>Research Zeitung Islanders Flames art</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=X|Neg=A|Sem=R</td><td>Monde Geographic Kaddish Post Journal</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=X|Neg=A|Sem=m</td><td>Age</td></tr>
+<tr><td>N	N	Gen=I|Num=S|Cas=X|Neg=A|Var=8|Sem=K</td><td>MIT</td></tr>
+<tr><td>N	N	Gen=I|Num=X|Cas=X|Neg=A</td><td>USD st SP USK HC</td></tr>
+<tr><td>N	N	Gen=I|Num=X|Cas=X|Neg=A|Sem=E</td><td>Tembu Tutsi</td></tr>
+
+<tr><td>N	N	Gen=I|Num=X|Cas=X|Neg=A|Sem=G</td><td>SSSR wanu Louis wan Bad</td></tr>
+<tr><td>N	N	Gen=I|Num=X|Cas=X|Neg=A|Sem=K</td><td>Nature Press PEN ČSÚ service</td></tr>
+<tr><td>N	N	Gen=I|Num=X|Cas=X|Neg=A|Sem=R</td><td>VW Benz SDL Saab Corriere</td></tr>
+<tr><td>N	N	Gen=I|Num=X|Cas=X|Neg=A|Sem=Y</td><td>Jump JUMP</td></tr>
+<tr><td>N	N	Gen=I|Num=X|Cas=X|Neg=A|Sem=m</td><td>München Capitole Worldloppet CERAMITEC City</td></tr>
+<tr><td>N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=1</td><td>tel § Tel</td></tr>
+
+<tr><td>N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=8</td><td>r m km cm mil</td></tr>
+<tr><td>N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=G</td><td>SSSR Ga Zél Uh CFA</td></tr>
+<tr><td>N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=K</td><td>FNM ČMFS ANC AC FC</td></tr>
+<tr><td>N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=R</td><td>TNT RAV EMS J OSŘ</td></tr>
+<tr><td>N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=m</td><td>PVP PASNet FED OCLC MFF</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=1|Neg=A</td><td>poslanci představitelé zástupci hráči členové</td></tr>
+
+<tr><td>N	N	Gen=M|Num=P|Cas=1|Neg=A|Sem=E</td><td>Češi Němci Američané Rusové Slováci</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=1|Neg=A|Sem=K</td><td>Boemi Iksáci Flaxové Whalers Sabers</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=1|Neg=A|Sem=S</td><td>Němci Howardové Hersantové Mánesové Sokolové</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=1|Neg=A|Sem=Y</td><td>Janové Bruce Jiří Jonášové</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=1|Neg=A|Sem=m</td><td>Doležalovci</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=1|Neg=A|Var=1</td><td>lidé Lidé experti zloději politikové</td></tr>
+
+<tr><td>N	N	Gen=M|Num=P|Cas=1|Neg=A|Var=1|Sem=E</td><td>Chorvati Paštuni Abchazové Američani Masajové</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=1|Neg=A|Var=1|Sem=S</td><td>Hálkové Čapkové Jedinákové Kužílkové Kučové</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=1|Neg=A|Var=2</td><td>jazykové</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=1|Neg=A|Var=6|Sem=S</td><td>Dlouhý Murdochové Kárský</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=1|Neg=A|Var=6|Sem=Y</td><td>Dětřichové</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=2|Neg=A</td><td>lidí občanů pracovníků členů poslanců</td></tr>
+
+<tr><td>N	N	Gen=M|Num=P|Cas=2|Neg=A|Sem=E</td><td>Němců Čechů Romů Srbů Slováků</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=2|Neg=A|Sem=G</td><td>maghribských Vysokoškolákov Sabotů</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=2|Neg=A|Sem=S</td><td>Němců Sabotů Mrštíků Kinských Petrofů</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=2|Neg=A|Sem=Y</td><td>Martinů Oscarů Césarů Petrů Pepíků</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=2|Neg=A|Var=1</td><td>hostí bratří</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=3|Neg=A</td><td>lidem novinářům občanům podnikatelům zákazníkům</td></tr>
+
+<tr><td>N	N	Gen=M|Num=P|Cas=3|Neg=A|Sem=E</td><td>Němcům Čechům Palestincům Srbům Američanům</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=3|Neg=A|Sem=S</td><td>Němcům</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=4|Neg=A</td><td>lidi občany podnikatele pracovníky hráče</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=4|Neg=A|Sem=E</td><td>Němce Slováky Srby Čechy Kubánce</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=4|Neg=A|Sem=S</td><td>Němce France Kříže Dunky Leniny</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=4|Neg=A|Sem=Y</td><td>Césary Jany</td></tr>
+
+<tr><td>N	N	Gen=M|Num=P|Cas=4|Neg=N</td><td>nezletilé</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=5|Neg=A</td><td>pánové čtenáři Podnikatelé Malčiki autoopraváři</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=5|Neg=A|Sem=E</td><td>Češi</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=6|Neg=A</td><td>lidech hráčích účastnících uprchlících rodičích</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=6|Neg=A|Sem=E</td><td>Němcích Češích Japoncích Belgičanech Slovanech</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=6|Neg=A|Sem=S</td><td>Němcích Hoodech</td></tr>
+
+<tr><td>N	N	Gen=M|Num=P|Cas=6|Neg=A|Sem=Y</td><td>Robinech</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=6|Neg=A|Var=1</td><td>bratřích</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=6|Neg=A|Var=6</td><td>duchách</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=7|Neg=A</td><td>lidmi členy partnery zaměstnanci představiteli</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=7|Neg=A|Sem=E</td><td>Srby Němci Čechy Američany Slováky</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=7|Neg=A|Sem=S</td><td>Němci Fauntleroyi Cedriky Hoody</td></tr>
+
+<tr><td>N	N	Gen=M|Num=P|Cas=7|Neg=A|Sem=Y</td><td>Robiny Dětřichy Oscary</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=7|Neg=A|Var=6</td><td>klukama</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=X|Neg=A</td><td>Masters rowdies Rabbits Kopfjägers Heliconidae</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=X|Neg=A|Sem=K</td><td>Boys Rangers Islanders Bruins Canadiens</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=X|Neg=A|Sem=R</td><td>Dancers</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=X|Neg=A|Sem=Y</td><td>Bohemians</td></tr>
+
+<tr><td>N	N	Gen=M|Num=P|Cas=X|Neg=A|Sem=m</td><td>leaders</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=X|Neg=A|Var=8</td><td>D</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=X|Neg=A|Var=8|Sem=K</td><td>SD</td></tr>
+<tr><td>N	N	Gen=M|Num=P|Cas=X|Neg=A|Var=8|Sem=m</td><td>ČB</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=1|Neg=A</td><td>ministr ředitel prezident předseda trenér</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=1|Neg=A|Sem=E</td><td>Američan Rus Francouz Němec Čech</td></tr>
+
+<tr><td>N	N	Gen=M|Num=S|Cas=1|Neg=A|Sem=G</td><td>Neumann Powell Warren Gyula Petrov</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=1|Neg=A|Sem=K</td><td>Reuter Saatchi Burnett Baťa Leo</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=1|Neg=A|Sem=R</td><td>Burda Strauss Johnnie Pascal</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=1|Neg=A|Sem=S</td><td>Klaus Havel Svoboda John Mečiar</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=1|Neg=A|Sem=Y</td><td>Jiří Jan Václav Petr Josef</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=1|Neg=A|Sem=m</td><td>Rechtor Sanin Belmondo Asrael</td></tr>
+
+<tr><td>N	N	Gen=M|Num=S|Cas=1|Neg=A|Var=1</td><td>Pámbu</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=1|Neg=A|Var=1|Sem=S</td><td>Zacharski Nikolski Končalovskij Chojnacki Zagajewski</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=1|Neg=A|Var=1|Sem=Y</td><td>Alexander</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=1|Neg=N</td><td>nespecialista necar neprezident</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=2|Neg=A</td><td>ministra prezidenta ředitele člověka předsedy</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=2|Neg=A|Sem=E</td><td>Turka Itala Rakušana Brazilce Pražáka</td></tr>
+
+<tr><td>N	N	Gen=M|Num=S|Cas=2|Neg=A|Sem=G</td><td>Neumanna Odolena Gyuly Gilberta Vejdovského</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=2|Neg=A|Sem=K</td><td>Reutera Czarnikowa Ventury Bati</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=2|Neg=A|Sem=S</td><td>Klause Havla Mečiara Celsia Jelcina</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=2|Neg=A|Sem=Y</td><td>Jana Jiřího Václava Petra Vladimíra</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=2|Neg=A|Sem=m</td><td>Aquilae Arietis</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=2|Neg=A|Var=1|Sem=S</td><td>Goetheho</td></tr>
+
+<tr><td>N	N	Gen=M|Num=S|Cas=2|Neg=A|Var=1|Sem=Y</td><td>Cavaka Mikea</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=2|Neg=A|Var=2</td><td>Páně</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=2|Neg=A|Var=2|Sem=S</td><td>Alše</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=2|Neg=A|Var=2|Sem=Y</td><td>Otona</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=3|Neg=A</td><td>předsedovi zpravodaji premiérovi řediteli panu</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=3|Neg=A|Sem=E</td><td>Američanovi Švýcarovi Rakušanovi Švédovi Turkovi</td></tr>
+
+<tr><td>N	N	Gen=M|Num=S|Cas=3|Neg=A|Sem=G</td><td>Powellovi</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=3|Neg=A|Sem=S</td><td>Jelcinovi Havlovi Castrovi Walderodemu Clintonovi</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=3|Neg=A|Sem=Y</td><td>Jiřímu Borisi Zdeňkovi Petrovi Alímu</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=3|Neg=A|Var=1</td><td>ministru prezidentu duchu trenéru členu</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=3|Neg=A|Var=1|Sem=E</td><td>Francouzovi Australanu Švédu</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=3|Neg=A|Var=1|Sem=S</td><td>Klausovi Kamešovi Miloševičovi Johnu Švarcovi</td></tr>
+
+<tr><td>N	N	Gen=M|Num=S|Cas=3|Neg=A|Var=1|Sem=Y</td><td>Janu Václavu Pavlu Josefu Petru</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=4|Neg=A</td><td>člověka prezidenta ministra předsedu ředitele</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=4|Neg=A|Sem=E</td><td>Rusa Francouze Pražáka Němce Fina</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=4|Neg=A|Sem=G</td><td>Neumanna Čabalu Butruse Gyulu Bredu</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=4|Neg=A|Sem=K</td><td>Burnetta</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=4|Neg=A|Sem=R</td><td>trabanta</td></tr>
+
+<tr><td>N	N	Gen=M|Num=S|Cas=4|Neg=A|Sem=S</td><td>Klause Havla Němce Vodičku Dvořáka</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=4|Neg=A|Sem=Y</td><td>Jiřího Václava Josefa Jana Petra</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=4|Neg=A|Sem=m</td><td>Asraela</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=5|Neg=A</td><td>pane Pane PANE generále Soudruhu</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=5|Neg=A|Sem=S</td><td>Kameši Johne Steigerwalde Vaculíku Rogalewiczi</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=5|Neg=A|Sem=Y</td><td>Václave Time Pietro Slobodane Baryku</td></tr>
+
+<tr><td>N	N	Gen=M|Num=S|Cas=6|Neg=A</td><td>řediteli člověku pachateli spisovateli pozorovateli</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=6|Neg=A|Sem=E</td><td>Čechovi</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=6|Neg=A|Sem=S</td><td>Firkušném Johánkovi Cidovi Mečiarovi Škrholovi</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=6|Neg=A|Sem=Y</td><td>Kristu Amadeovi Vaškovi Tondovi Hynkovi</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=6|Neg=A|Var=1</td><td>duchu civilu zárodku premiéru štíru</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=6|Neg=A|Var=1|Sem=G</td><td>Mannheimu Paňdžábu</td></tr>
+
+<tr><td>N	N	Gen=M|Num=S|Cas=6|Neg=A|Var=1|Sem=S</td><td>Lokvencovi Rutherfordu Montpellieru Yorku Karadžičovi</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=6|Neg=A|Var=1|Sem=Y</td><td>Karlu Vladimíru Janu Rudolfu Karolu</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=7|Neg=A</td><td>prezidentem předsedou členem ministrem ředitelem</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=7|Neg=A|Sem=E</td><td>Američanem Rusem Čechem Slovákem Švédem</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=7|Neg=A|Sem=G</td><td>Warrenem Neumannem Čihákem Murrayem Otomarem</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=7|Neg=A|Sem=K</td><td>Sharpem</td></tr>
+
+<tr><td>N	N	Gen=M|Num=S|Cas=7|Neg=A|Sem=R</td><td>Walkerem</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=7|Neg=A|Sem=S</td><td>Klausem Havlem Zieleniecem Uhdem Hitlerem</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=7|Neg=A|Sem=Y</td><td>Václavem Janem Jiřím Pavlem Petrem</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=X|Neg=A</td><td>Eutamias obého první Lasius čtyřiadevadesáti</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=X|Neg=A|Sem=G</td><td>Harper</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=X|Neg=A|Sem=K</td><td>Falmouth</td></tr>
+
+<tr><td>N	N	Gen=M|Num=S|Cas=X|Neg=A|Sem=S</td><td>Mathé Shipp Schlée Ming Carré</td></tr>
+<tr><td>N	N	Gen=M|Num=S|Cas=X|Neg=A|Sem=Y</td><td>Mike Sancho Ivo Sal Niki</td></tr>
+<tr><td>N	N	Gen=M|Num=X|Cas=X|Neg=A</td><td>Mr THP God Stranger chargé</td></tr>
+<tr><td>N	N	Gen=M|Num=X|Cas=X|Neg=A|Sem=E</td><td>Hun</td></tr>
+<tr><td>N	N	Gen=M|Num=X|Cas=X|Neg=A|Sem=G</td><td>Fontaine</td></tr>
+<tr><td>N	N	Gen=M|Num=X|Cas=X|Neg=A|Sem=K</td><td>Jethro TEENAGER Steppenwolf Dempsey Cocteau</td></tr>
+
+<tr><td>N	N	Gen=M|Num=X|Cas=X|Neg=A|Sem=R</td><td>Johny Insomniac Levi Mr INSOMNIAC</td></tr>
+<tr><td>N	N	Gen=M|Num=X|Cas=X|Neg=A|Sem=S</td><td>Dow Des Mc Sa Fours</td></tr>
+<tr><td>N	N	Gen=M|Num=X|Cas=X|Neg=A|Sem=Y</td><td>László Guido Bobby Al Li</td></tr>
+<tr><td>N	N	Gen=M|Num=X|Cas=X|Neg=A|Sem=m</td><td>David</td></tr>
+<tr><td>N	N	Gen=M|Num=X|Cas=X|Neg=A|Var=8</td><td>C dr MUDr prof ing</td></tr>
+<tr><td>N	N	Gen=M|Num=X|Cas=X|Neg=A|Var=8|Sem=G</td><td>TGM</td></tr>
+
+<tr><td>N	N	Gen=M|Num=X|Cas=X|Neg=A|Var=8|Sem=K</td><td>EB J G JEP MR</td></tr>
+<tr><td>N	N	Gen=M|Num=X|Cas=X|Neg=A|Var=8|Sem=S</td><td>P N H M J</td></tr>
+<tr><td>N	N	Gen=M|Num=X|Cas=X|Neg=A|Var=8|Sem=Y</td><td>J M V P A</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=1|Neg=A</td><td>slova jednání opatření zařízení místa</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=1|Neg=A|Sem=G</td><td>Československa Luka Napajedla</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=1|Neg=A|Sem=K</td><td>PragoData DATA Data</td></tr>
+
+<tr><td>N	N	Gen=N|Num=P|Cas=1|Neg=A|Sem=R</td><td>Philosophia Pola Scientia</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=1|Neg=A|Var=1</td><td>stě</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=1|Neg=A|Var=2</td><td>léta stimulancia</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=1|Neg=N</td><td>nevyužití</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=2|Neg=A</td><td>let procent slov míst práv</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=2|Neg=A|Sem=G</td><td>Al Kan KAN</td></tr>
+
+<tr><td>N	N	Gen=N|Num=P|Cas=2|Neg=A|Sem=K</td><td>Zamorano</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=2|Neg=A|Sem=R</td><td>Pajer</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=2|Neg=A|Var=1</td><td>staletí stě oblak</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=2|Neg=A|Var=2</td><td>páně</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=3|Neg=A</td><td>městům procentům opatřením letům jednáním</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=3|Neg=A|Var=2</td><td>létům</td></tr>
+
+<tr><td>N	N	Gen=N|Num=P|Cas=4|Neg=A</td><td>místa práva procenta slova opatření</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=4|Neg=A|Var=1</td><td>staletí stě</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=4|Neg=A|Var=2</td><td>léta Léta</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=6|Neg=A</td><td>letech místech městech jednáních kolech</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=6|Neg=A|Var=1</td><td>staletích kolenou ramenou</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=6|Neg=A|Var=2</td><td>létech</td></tr>
+
+<tr><td>N	N	Gen=N|Num=P|Cas=7|Neg=A</td><td>lety procenty slovy zády právy</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=7|Neg=A|Sem=G</td><td>Bubny Sony Bianky</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=7|Neg=A|Var=1</td><td>staletími</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=7|Neg=A|Var=2</td><td>léty</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=7|Neg=A|Var=6</td><td>děckama</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=X|Neg=A</td><td>Fields names Anostraca Pianos Animals</td></tr>
+
+<tr><td>N	N	Gen=N|Num=P|Cas=X|Neg=A|Sem=K</td><td>Data Izvestija Casinos Wings foods</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=X|Neg=A|Var=8</td><td>l</td></tr>
+<tr><td>N	N	Gen=N|Num=P|Cas=X|Neg=A|Var=8|Sem=K</td><td>ES SD</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=1|Neg=A</td><td>ministerstvo Foto vedení Ministerstvo rozhodnutí</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=1|Neg=A|Sem=G</td><td>Brno Rusko Německo Slovensko Polsko</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=1|Neg=A|Sem=K</td><td>Kredo Aero KOVO BESO Nypro</td></tr>
+
+<tr><td>N	N	Gen=N|Num=S|Cas=1|Neg=A|Sem=R</td><td>Pajero Volvo Polo krávo Scorpio</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=1|Neg=A|Sem=S</td><td>Furano</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=1|Neg=A|Sem=Y</td><td>Tchibo José Paramo JOSÉ Artforum</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=1|Neg=A|Sem=m</td><td>ECO Stramilano Stretnutie Foro IFABO</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=1|Neg=N</td><td>nepochopení neporozumění Nepřijímání nekouření Neporozumění</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=2|Neg=A</td><td>ministerstva zahraničí procenta města září</td></tr>
+
+<tr><td>N	N	Gen=N|Num=S|Cas=2|Neg=A|Sem=G</td><td>Německa Ruska Československa Slovenska Brna</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=2|Neg=A|Sem=K</td><td>Aera Buffala Casia Selika Sodexha</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=2|Neg=A|Sem=R</td><td>Talga porsche Messaggera</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=2|Neg=A|Sem=Y</td><td>Artfora</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=2|Neg=A|Var=1</td><td>kolena</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=2|Neg=N</td><td>nedodržení nepochopení neplnění neplacení nebytí</td></tr>
+
+<tr><td>N	N	Gen=N|Num=S|Cas=3|Neg=A</td><td>zvýšení snížení rozhodnutí řešení výročí</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=3|Neg=A|Sem=G</td><td>Slovensku Rusku Německu Srbsku Polsku</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=3|Neg=A|Sem=K</td><td>Seliku Aeru</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=3|Neg=A|Sem=Y</td><td>Josému</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=3|Neg=N</td><td>nepochopení nezaplacení nesdělování nezařazení</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=4|Neg=A</td><td>místo právo zboží pondělí řešení</td></tr>
+
+<tr><td>N	N	Gen=N|Num=S|Cas=4|Neg=A|Sem=G</td><td>Slovensko Německo Rusko Japonsko Československo</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=4|Neg=A|Sem=K</td><td>Aero Buffalo Kovo Casio Leo</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=4|Neg=A|Sem=R</td><td>Figaro</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=4|Neg=A|Sem=m</td><td>Trapezium</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=4|Neg=N</td><td>nedodržení neplnění neporozumění neplacení neposkytnutí</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=5|Neg=A|Sem=G</td><td>Rusko Německo</td></tr>
+
+<tr><td>N	N	Gen=N|Num=S|Cas=6|Neg=A</td><td>místě území kole zahraničí období</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=6|Neg=A|Sem=G</td><td>Německu Brně Slovensku Polsku Rusku</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=6|Neg=A|Sem=K</td><td>Aeru</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=6|Neg=A|Sem=R</td><td>Toledu</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=6|Neg=A|Sem=S</td><td>Furanu</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=6|Neg=A|Sem=Y</td><td>HaDivadle</td></tr>
+
+<tr><td>N	N	Gen=N|Num=S|Cas=6|Neg=A|Var=1</td><td>budoucnu jménu nedohlednu patře nekonečnu</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=6|Neg=A|Var=1|Sem=G</td><td>Sarajevu Bolzanu Hornu Locarnu Komárnu</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=6|Neg=N</td><td>nešíření nepochopení nenaplnění neplnění neproměnění</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=7|Neg=A</td><td>prostřednictvím vedením jménem místem ministerstvem</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=7|Neg=A|Sem=G</td><td>Labem Německem Ruskem Polskem Slovenskem</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=7|Neg=A|Sem=K</td><td>Febiem Buffalem Laziem Casiem</td></tr>
+
+<tr><td>N	N	Gen=N|Num=S|Cas=7|Neg=A|Sem=S</td><td>Pescosolidem</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=7|Neg=A|Var=8</td><td>r</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=7|Neg=A|Var=8|Sem=G</td><td>L</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=7|Neg=N</td><td>nepochopením nerespektováním nepromítnutím Neschválením neplacením</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=X|Neg=A</td><td>V foto IIIB movie P</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=X|Neg=A|Sem=E</td><td>Dani</td></tr>
+
+<tr><td>N	N	Gen=N|Num=S|Cas=X|Neg=A|Sem=G</td><td>Sydney Albertville Salisbury Dachau Tennessee</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=X|Neg=A|Sem=K</td><td>Pharming Théatre</td></tr>
+<tr><td>N	N	Gen=N|Num=S|Cas=X|Neg=A|Sem=m</td><td>Wu Age Nino Li</td></tr>
+<tr><td>N	N	Gen=N|Num=X|Cas=X|Neg=A</td><td>p P q B A</td></tr>
+<tr><td>N	N	Gen=N|Num=X|Cas=X|Neg=A|Sem=G</td><td>Goražde Val Fassa Angeles Jersey</td></tr>
+<tr><td>N	N	Gen=N|Num=X|Cas=X|Neg=A|Sem=K</td><td>FS MDF Intersportturné Schalke Ferrari</td></tr>
+
+<tr><td>N	N	Gen=N|Num=X|Cas=X|Neg=A|Sem=R</td><td>Berlinale cherry BMW Micubiši Mitsubishi</td></tr>
+<tr><td>N	N	Gen=N|Num=X|Cas=X|Neg=A|Sem=S</td><td>O</td></tr>
+<tr><td>N	N	Gen=N|Num=X|Cas=X|Neg=A|Sem=Y</td><td>Giro</td></tr>
+<tr><td>N	N	Gen=N|Num=X|Cas=X|Neg=A|Sem=m</td><td>Open Roxy Quirinale Velas City</td></tr>
+<tr><td>N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=2|Sem=G</td><td>Elbe</td></tr>
+<tr><td>N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=8</td><td>č MS ME EEG WC</td></tr>
+
+<tr><td>N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=G</td><td>SNS Niz Pa Švýc Šp</td></tr>
+<tr><td>N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=K</td><td>NATO HZDS SNP OH ČKD</td></tr>
+<tr><td>N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=R</td><td>PC SAPO SF LX D</td></tr>
+<tr><td>N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=m</td><td>WPP C R B</td></tr>
+<tr><td>N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=9</td><td>n</td></tr>
+<tr><td>N	N	Gen=X|Num=P|Cas=X|Neg=A</td><td>Plants Travels Orgues Vestiges ventures</td></tr>
+
+<tr><td>N	N	Gen=X|Num=P|Cas=X|Neg=A|Sem=K</td><td>Arms Productions VARS</td></tr>
+<tr><td>N	N	Gen=X|Num=S|Cas=X|Neg=A</td><td>Perlini Wachstums Age s</td></tr>
+<tr><td>N	N	Gen=X|Num=S|Cas=X|Neg=A|Sem=K</td><td>NCS JVC</td></tr>
+<tr><td>N	N	Gen=X|Num=S|Cas=X|Neg=A|Sem=m</td><td>ELTEC</td></tr>
+<tr><td>N	N	Gen=X|Num=X|Cas=X|Neg=A</td><td>pc PB Greening rho Dancing</td></tr>
+<tr><td>N	N	Gen=X|Num=X|Cas=X|Neg=A|Sem=G</td><td>Clairvaux Spa Lausanne Boyne Francorchamps</td></tr>
+
+<tr><td>N	N	Gen=X|Num=X|Cas=X|Neg=A|Sem=K</td><td>Formed Sme Mersey Cure Yang</td></tr>
+<tr><td>N	N	Gen=X|Num=X|Cas=X|Neg=A|Sem=R</td><td>XTZ tükör Rapture Roš NÉPSZABADSÁG</td></tr>
+<tr><td>N	N	Gen=X|Num=X|Cas=X|Neg=A|Sem=S</td><td>nov</td></tr>
+<tr><td>N	N	Gen=X|Num=X|Cas=X|Neg=A|Sem=Y</td><td>Ju Qui šek</td></tr>
+<tr><td>N	N	Gen=X|Num=X|Cas=X|Neg=A|Sem=m</td><td>Award WOCHE HERBST Gastrotur F</td></tr>
+<tr><td>N	N	Gen=X|Num=X|Cas=X|Neg=A|Var=8</td><td>F PX HUF NPS MSFL</td></tr>
+
+<tr><td>N	N	Gen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=G</td><td>Maurienne G SNS</td></tr>
+<tr><td>N	N	Gen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=K</td><td>MCM D AGM PSV GSR</td></tr>
+<tr><td>N	N	Gen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=R</td><td>K T ZX S Z</td></tr>
+<tr><td>N	N	Gen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=S</td><td>šv mrk kva jop js</td></tr>
+<tr><td>N	N	Gen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=m</td><td>F MALLEV NCAA MIPIM CEV</td></tr>
+<tr><td>P	1	Gen=F|Num=S|Cas=X|PGe=F|PNu=S|Per=3</td><td>jejíž</td></tr>
+
+<tr><td>P	1	Gen=I|Num=S|Cas=4|PGe=F|PNu=S|Per=3</td><td>jejíž</td></tr>
+<tr><td>P	1	Gen=N|Num=S|Cas=4|PGe=F|PNu=S|Per=3</td><td>jejíž</td></tr>
+<tr><td>P	1	Gen=X|Num=P|Cas=1|PGe=F|PNu=S|Per=3</td><td>jejíž</td></tr>
+<tr><td>P	1	Gen=X|Num=P|Cas=2|PGe=F|PNu=S|Per=3</td><td>jejíchž</td></tr>
+<tr><td>P	1	Gen=X|Num=P|Cas=3|PGe=F|PNu=S|Per=3</td><td>jejímž</td></tr>
+<tr><td>P	1	Gen=X|Num=P|Cas=4|PGe=F|PNu=S|Per=3</td><td>jejíž</td></tr>
+
+<tr><td>P	1	Gen=X|Num=P|Cas=7|PGe=F|PNu=S|Per=3</td><td>jejímiž</td></tr>
+<tr><td>P	1	Gen=X|Num=X|Cas=X|PGe=X|PNu=P|Per=3</td><td>jejichž</td></tr>
+<tr><td>P	1	Gen=X|Num=X|Cas=X|PGe=Z|PNu=S|Per=3</td><td>jehož</td></tr>
+<tr><td>P	1	Gen=Z|Num=S|Cas=1|PGe=F|PNu=S|Per=3</td><td>jejíž</td></tr>
+<tr><td>P	1	Gen=Z|Num=S|Cas=2|PGe=F|PNu=S|Per=3</td><td>jejíhož</td></tr>
+<tr><td>P	1	Gen=Z|Num=S|Cas=3|PGe=F|PNu=S|Per=3</td><td>jejímuž</td></tr>
+
+<tr><td>P	1	Gen=Z|Num=S|Cas=6|PGe=F|PNu=S|Per=3</td><td>jejímž</td></tr>
+<tr><td>P	1	Gen=Z|Num=S|Cas=7|PGe=F|PNu=S|Per=3</td><td>jejímž</td></tr>
+<tr><td>P	4	Gen=F|Num=P|Cas=1</td><td>které jaké Jaké Které</td></tr>
+<tr><td>P	4	Gen=F|Num=P|Cas=4</td><td>které jaké Jaké Které</td></tr>
+<tr><td>P	4	Gen=F|Num=S|Cas=1</td><td>která jaká Jaká Která jakápak</td></tr>
+<tr><td>P	4	Gen=F|Num=S|Cas=2</td><td>které jaké Jaké</td></tr>
+
+<tr><td>P	4	Gen=F|Num=S|Cas=3</td><td>které</td></tr>
+<tr><td>P	4	Gen=F|Num=S|Cas=4</td><td>kterou jakou Jakou Kterou</td></tr>
+<tr><td>P	4	Gen=F|Num=S|Cas=6</td><td>které jaké</td></tr>
+<tr><td>P	4	Gen=F|Num=S|Cas=7</td><td>kterou jakou</td></tr>
+<tr><td>P	4	Gen=I|Num=P|Cas=1</td><td>které jaké Jaké Jaképak Které</td></tr>
+<tr><td>P	4	Gen=I|Num=S|Cas=4</td><td>který jaký Jaký čí KTERÝ</td></tr>
+
+<tr><td>P	4	Gen=M|Num=P|Cas=1</td><td>kteří jací Jací KTEŘÍ Kteří</td></tr>
+<tr><td>P	4	Gen=M|Num=S|Cas=4</td><td>kterého jakého Jakého</td></tr>
+<tr><td>P	4	Gen=N|Num=P|Cas=1</td><td>která jaká Jaká</td></tr>
+<tr><td>P	4	Gen=N|Num=P|Cas=1|Var=7</td><td>které</td></tr>
+<tr><td>P	4	Gen=N|Num=P|Cas=4</td><td>která jaká</td></tr>
+<tr><td>P	4	Gen=N|Num=P|Cas=4|Var=6</td><td>které</td></tr>
+
+<tr><td>P	4	Gen=N|Num=S|Cas=1</td><td>které jaké Jaké Které</td></tr>
+<tr><td>P	4	Gen=N|Num=S|Cas=4</td><td>které jaké Jaké</td></tr>
+<tr><td>P	4	Gen=N|Num=S|Cas=4|Var=6</td><td>které</td></tr>
+<tr><td>P	4	Gen=X|Num=P|Cas=2</td><td>kterých jakých Kterých čích ktorých</td></tr>
+<tr><td>P	4	Gen=X|Num=P|Cas=3</td><td>kterým jakým</td></tr>
+<tr><td>P	4	Gen=X|Num=P|Cas=6</td><td>kterých jakých</td></tr>
+
+<tr><td>P	4	Gen=X|Num=P|Cas=7</td><td>kterými jakými</td></tr>
+<tr><td>P	4	Gen=X|Num=X|Cas=X</td><td>co Co cui</td></tr>
+<tr><td>P	4	Gen=Y|Num=P|Cas=4</td><td>které jaké Jaké Které</td></tr>
+<tr><td>P	4	Gen=Y|Num=S|Cas=1</td><td>který jaký Jaký Který čí</td></tr>
+<tr><td>P	4	Gen=Z|Num=S|Cas=2</td><td>kterého jakého</td></tr>
+<tr><td>P	4	Gen=Z|Num=S|Cas=3</td><td>kterému jakému</td></tr>
+
+<tr><td>P	4	Gen=Z|Num=S|Cas=6</td><td>kterém jakém</td></tr>
+<tr><td>P	4	Gen=Z|Num=S|Cas=7</td><td>kterým jakým Jakým</td></tr>
+<tr><td>P	5	Gen=F|Num=S|Cas=2|Per=3</td><td>ní NÍ</td></tr>
+<tr><td>P	5	Gen=F|Num=S|Cas=3|Per=3</td><td>ní</td></tr>
+<tr><td>P	5	Gen=F|Num=S|Cas=4|Per=3</td><td>ni</td></tr>
+<tr><td>P	5	Gen=F|Num=S|Cas=6|Per=3</td><td>ní</td></tr>
+
+<tr><td>P	5	Gen=F|Num=S|Cas=7|Per=3</td><td>ní</td></tr>
+<tr><td>P	5	Gen=N|Num=S|Cas=4|Per=3</td><td>ně</td></tr>
+<tr><td>P	5	Gen=X|Num=P|Cas=2|Per=3</td><td>nich</td></tr>
+<tr><td>P	5	Gen=X|Num=P|Cas=3|Per=3</td><td>nim</td></tr>
+<tr><td>P	5	Gen=X|Num=P|Cas=4|Per=3</td><td>ně</td></tr>
+<tr><td>P	5	Gen=X|Num=P|Cas=6|Per=3</td><td>nich NICH</td></tr>
+
+<tr><td>P	5	Gen=X|Num=P|Cas=7|Per=3</td><td>nimi</td></tr>
+<tr><td>P	5	Gen=Z|Num=S|Cas=2|Per=3</td><td>něj</td></tr>
+<tr><td>P	5	Gen=Z|Num=S|Cas=2|Per=3|Var=1</td><td>něho</td></tr>
+<tr><td>P	5	Gen=Z|Num=S|Cas=3|Per=3</td><td>němu</td></tr>
+<tr><td>P	5	Gen=Z|Num=S|Cas=4|Per=3</td><td>něj</td></tr>
+<tr><td>P	5	Gen=Z|Num=S|Cas=4|Per=3|Var=1</td><td>něho</td></tr>
+
+<tr><td>P	5	Gen=Z|Num=S|Cas=6|Per=3</td><td>něm</td></tr>
+<tr><td>P	5	Gen=Z|Num=S|Cas=7|Per=3</td><td>ním</td></tr>
+<tr><td>P	6	Num=X|Cas=2</td><td>sebe</td></tr>
+<tr><td>P	6	Num=X|Cas=3</td><td>sobě</td></tr>
+<tr><td>P	6	Num=X|Cas=4</td><td>sebe</td></tr>
+<tr><td>P	6	Num=X|Cas=6</td><td>sobě SOBĚ</td></tr>
+
+<tr><td>P	6	Num=X|Cas=7</td><td>sebou</td></tr>
+<tr><td>P	7	Num=X|Cas=3</td><td>si SI</td></tr>
+<tr><td>P	7	Num=X|Cas=4</td><td>se SE sa</td></tr>
+<tr><td>P	8	Gen=F|Num=D|Cas=7</td><td>svýma</td></tr>
+<tr><td>P	8	Gen=F|Num=P|Cas=4|Var=1</td><td>své Své</td></tr>
+<tr><td>P	8	Gen=F|Num=S|Cas=1|Var=1</td><td>svá</td></tr>
+
+<tr><td>P	8	Gen=F|Num=S|Cas=2|Var=1</td><td>své SVÉ</td></tr>
+<tr><td>P	8	Gen=F|Num=S|Cas=3|Var=1</td><td>své</td></tr>
+<tr><td>P	8	Gen=F|Num=S|Cas=4</td><td>svoji Svoji</td></tr>
+<tr><td>P	8	Gen=F|Num=S|Cas=4|Var=1</td><td>svou Svou SVOU</td></tr>
+<tr><td>P	8	Gen=F|Num=S|Cas=4|Var=6</td><td>svojí</td></tr>
+<tr><td>P	8	Gen=F|Num=S|Cas=6|Var=1</td><td>své SVÉ</td></tr>
+
+<tr><td>P	8	Gen=F|Num=S|Cas=7</td><td>svojí</td></tr>
+<tr><td>P	8	Gen=F|Num=S|Cas=7|Var=1</td><td>svou Svou</td></tr>
+<tr><td>P	8	Gen=I|Num=S|Cas=4</td><td>svůj Svůj SVŮJ</td></tr>
+<tr><td>P	8	Gen=M|Num=P|Cas=1</td><td>svoji</td></tr>
+<tr><td>P	8	Gen=M|Num=S|Cas=4</td><td>svého SVÉHO Svého</td></tr>
+<tr><td>P	8	Gen=N|Num=P|Cas=4|Var=1</td><td>svá Svá SVÁ</td></tr>
+
+<tr><td>P	8	Gen=N|Num=S|Cas=1|Var=1</td><td>své</td></tr>
+<tr><td>P	8	Gen=N|Num=S|Cas=4</td><td>svoje</td></tr>
+<tr><td>P	8	Gen=N|Num=S|Cas=4|Var=1</td><td>své Své</td></tr>
+<tr><td>P	8	Gen=X|Num=P|Cas=2</td><td>svých Svých</td></tr>
+<tr><td>P	8	Gen=X|Num=P|Cas=3</td><td>svým Svým</td></tr>
+<tr><td>P	8	Gen=X|Num=P|Cas=4</td><td>svoje sua</td></tr>
+
+<tr><td>P	8	Gen=X|Num=P|Cas=6</td><td>svých</td></tr>
+<tr><td>P	8	Gen=X|Num=P|Cas=7</td><td>svými Svými</td></tr>
+<tr><td>P	8	Gen=Y|Num=P|Cas=4|Var=1</td><td>své Své</td></tr>
+<tr><td>P	8	Gen=Y|Num=S|Cas=1</td><td>svůj Svůj</td></tr>
+<tr><td>P	8	Gen=Z|Num=S|Cas=2</td><td>svého Svého</td></tr>
+<tr><td>P	8	Gen=Z|Num=S|Cas=3</td><td>svému Svému</td></tr>
+
+<tr><td>P	8	Gen=Z|Num=S|Cas=6</td><td>svém SVÉM</td></tr>
+<tr><td>P	8	Gen=Z|Num=S|Cas=7</td><td>svým Svým</td></tr>
+<tr><td>P	9	Gen=F|Num=S|Cas=2</td><td>níž</td></tr>
+<tr><td>P	9	Gen=F|Num=S|Cas=3</td><td>níž</td></tr>
+<tr><td>P	9	Gen=F|Num=S|Cas=4</td><td>niž</td></tr>
+<tr><td>P	9	Gen=F|Num=S|Cas=6</td><td>níž</td></tr>
+
+<tr><td>P	9	Gen=F|Num=S|Cas=7</td><td>níž</td></tr>
+<tr><td>P	9	Gen=N|Num=S|Cas=4</td><td>něž</td></tr>
+<tr><td>P	9	Gen=X|Num=P|Cas=2</td><td>nichž</td></tr>
+<tr><td>P	9	Gen=X|Num=P|Cas=3</td><td>nimž</td></tr>
+<tr><td>P	9	Gen=X|Num=P|Cas=4</td><td>něž</td></tr>
+<tr><td>P	9	Gen=X|Num=P|Cas=6</td><td>nichž</td></tr>
+
+<tr><td>P	9	Gen=X|Num=P|Cas=7</td><td>nimiž</td></tr>
+<tr><td>P	9	Gen=Z|Num=S|Cas=2</td><td>něhož</td></tr>
+<tr><td>P	9	Gen=Z|Num=S|Cas=2|Var=1</td><td>nějž</td></tr>
+<tr><td>P	9	Gen=Z|Num=S|Cas=3</td><td>němuž</td></tr>
+<tr><td>P	9	Gen=Z|Num=S|Cas=4</td><td>něhož</td></tr>
+<tr><td>P	9	Gen=Z|Num=S|Cas=4|Var=1</td><td>nějž</td></tr>
+
+<tr><td>P	9	Gen=Z|Num=S|Cas=6</td><td>němž</td></tr>
+<tr><td>P	9	Gen=Z|Num=S|Cas=7</td><td>nímž</td></tr>
+<tr><td>P	D	Gen=F|Num=D|Cas=7</td><td>těma</td></tr>
+<tr><td>P	D	Gen=F|Num=P|Cas=1</td><td>tyto ty Tyto Ty takové</td></tr>
+<tr><td>P	D	Gen=F|Num=P|Cas=4</td><td>tyto ty takové Tyto Ty</td></tr>
+<tr><td>P	D	Gen=F|Num=S|Cas=1</td><td>tato Tato Ta ta taková</td></tr>
+
+<tr><td>P	D	Gen=F|Num=S|Cas=2</td><td>této té takové téže oné</td></tr>
+<tr><td>P	D	Gen=F|Num=S|Cas=3</td><td>této té takové Této Té</td></tr>
+<tr><td>P	D	Gen=F|Num=S|Cas=4</td><td>tuto tu takovou Tuto Tu</td></tr>
+<tr><td>P	D	Gen=F|Num=S|Cas=6</td><td>této té takové téže téhle</td></tr>
+<tr><td>P	D	Gen=F|Num=S|Cas=7</td><td>touto tou takovou Touto Tou</td></tr>
+<tr><td>P	D	Gen=I|Num=P|Cas=1</td><td>tyto Tyto ty Ty takové</td></tr>
+
+<tr><td>P	D	Gen=I|Num=P|Cas=4</td><td>tyto takové ty Tyto Ty</td></tr>
+<tr><td>P	D	Gen=I|Num=S|Cas=4</td><td>tento ten Tento takový Ten</td></tr>
+<tr><td>P	D	Gen=M|Num=P|Cas=1</td><td>ti Ti tito Tito takoví</td></tr>
+<tr><td>P	D	Gen=M|Num=P|Cas=1|Var=1</td><td>tací</td></tr>
+<tr><td>P	D	Gen=M|Num=P|Cas=4</td><td>ty tyto takové TY takovéto</td></tr>
+<tr><td>P	D	Gen=M|Num=S|Cas=4</td><td>toho takového tohoto Toho onoho</td></tr>
+
+<tr><td>P	D	Gen=N|Num=P|Cas=1</td><td>tato Tato ta Ta taková</td></tr>
+<tr><td>P	D	Gen=N|Num=P|Cas=1|Var=5</td><td>Ty ty</td></tr>
+<tr><td>P	D	Gen=N|Num=P|Cas=4</td><td>tato ta taková Tato takováto</td></tr>
+<tr><td>P	D	Gen=N|Num=S|Cas=1</td><td>to To toto Toto takové</td></tr>
+<tr><td>P	D	Gen=N|Num=S|Cas=1|Var=8</td><td>t</td></tr>
+<tr><td>P	D	Gen=N|Num=S|Cas=4</td><td>to toto To takové totéž</td></tr>
+
+<tr><td>P	D	Gen=X|Num=P|Cas=2</td><td>těchto těch takových oněch Těch</td></tr>
+<tr><td>P	D	Gen=X|Num=P|Cas=2|Var=1</td><td>týchž</td></tr>
+<tr><td>P	D	Gen=X|Num=P|Cas=3</td><td>těm těmto Těm takovým Těmto</td></tr>
+<tr><td>P	D	Gen=X|Num=P|Cas=6</td><td>těchto těch takových oněch takovýchto</td></tr>
+<tr><td>P	D	Gen=X|Num=P|Cas=6|Var=1</td><td>týchž</td></tr>
+<tr><td>P	D	Gen=X|Num=P|Cas=7</td><td>těmito těmi takovými Těmito Těmi</td></tr>
+
+<tr><td>P	D	Gen=X|Num=P|Cas=X</td><td>These</td></tr>
+<tr><td>P	D	Gen=X|Num=S|Cas=X</td><td>That This</td></tr>
+<tr><td>P	D	Gen=X|Num=X|Cas=X</td><td>C ce</td></tr>
+<tr><td>P	D	Gen=X|Num=X|Cas=X|Var=8</td><td>t</td></tr>
+<tr><td>P	D	Gen=Y|Num=S|Cas=1</td><td>tento ten Tento Ten takový</td></tr>
+<tr><td>P	D	Gen=Z|Num=S|Cas=2</td><td>toho tohoto takového téhož onoho</td></tr>
+
+<tr><td>P	D	Gen=Z|Num=S|Cas=3</td><td>tomu tomuto takovému Tomu onomu</td></tr>
+<tr><td>P	D	Gen=Z|Num=S|Cas=6</td><td>tom tomto takovém témže onom</td></tr>
+<tr><td>P	D	Gen=Z|Num=S|Cas=6|Var=1</td><td>témž</td></tr>
+<tr><td>P	D	Gen=Z|Num=S|Cas=7</td><td>tím tímto Tím takovým Tímto</td></tr>
+<tr><td>P	E	Cas=1</td><td>což Což</td></tr>
+<tr><td>P	E	Cas=2</td><td>čehož</td></tr>
+
+<tr><td>P	E	Cas=3</td><td>čemuž Čemuž</td></tr>
+<tr><td>P	E	Cas=4</td><td>což Což</td></tr>
+<tr><td>P	E	Cas=6</td><td>čemž</td></tr>
+<tr><td>P	E	Cas=7</td><td>čímž</td></tr>
+<tr><td>P	H	Gen=Z|Num=S|Cas=3|Per=3</td><td>mu MU</td></tr>
+<tr><td>P	H	Gen=Z|Num=S|Cas=4|Per=3</td><td>ho Ho</td></tr>
+
+<tr><td>P	H	Num=S|Cas=2|Per=1</td><td>mě</td></tr>
+<tr><td>P	H	Num=S|Cas=3|Per=1</td><td>mi MI Mi</td></tr>
+<tr><td>P	H	Num=S|Cas=3|Per=2</td><td>ti</td></tr>
+<tr><td>P	H	Num=S|Cas=4|Per=1</td><td>mě Mě</td></tr>
+<tr><td>P	H	Num=S|Cas=4|Per=2</td><td>tě</td></tr>
+<tr><td>P	J	Gen=F|Num=S|Cas=1</td><td>jež kterážto</td></tr>
+
+<tr><td>P	J	Gen=F|Num=S|Cas=2</td><td>jíž</td></tr>
+<tr><td>P	J	Gen=F|Num=S|Cas=3</td><td>jíž</td></tr>
+<tr><td>P	J	Gen=F|Num=S|Cas=4</td><td>již</td></tr>
+<tr><td>P	J	Gen=F|Num=S|Cas=7</td><td>jíž</td></tr>
+<tr><td>P	J	Gen=M|Num=P|Cas=1</td><td>již</td></tr>
+<tr><td>P	J	Gen=M|Num=S|Cas=4</td><td>jehož</td></tr>
+
+<tr><td>P	J	Gen=N|Num=S|Cas=1</td><td>jež</td></tr>
+<tr><td>P	J	Gen=N|Num=S|Cas=4</td><td>jež</td></tr>
+<tr><td>P	J	Gen=X|Num=P|Cas=1</td><td>jež</td></tr>
+<tr><td>P	J	Gen=X|Num=P|Cas=2</td><td>jichž</td></tr>
+<tr><td>P	J	Gen=X|Num=P|Cas=3</td><td>jimž</td></tr>
+<tr><td>P	J	Gen=X|Num=P|Cas=4</td><td>jež</td></tr>
+
+<tr><td>P	J	Gen=X|Num=P|Cas=7</td><td>jimiž</td></tr>
+<tr><td>P	J	Gen=Y|Num=S|Cas=1</td><td>jenž jež JENŽ</td></tr>
+<tr><td>P	J	Gen=Z|Num=S|Cas=2</td><td>jehož</td></tr>
+<tr><td>P	J	Gen=Z|Num=S|Cas=3</td><td>jemuž</td></tr>
+<tr><td>P	J	Gen=Z|Num=S|Cas=4|Var=1</td><td>jejž</td></tr>
+<tr><td>P	J	Gen=Z|Num=S|Cas=7</td><td>jímž</td></tr>
+
+<tr><td>P	K	Gen=M|Cas=1</td><td>kdo Kdo KDO who Kdopak</td></tr>
+<tr><td>P	K	Gen=M|Cas=1|Var=2</td><td>kdož</td></tr>
+<tr><td>P	K	Gen=M|Cas=2</td><td>koho Koho</td></tr>
+<tr><td>P	K	Gen=M|Cas=3</td><td>komu Komu</td></tr>
+<tr><td>P	K	Gen=M|Cas=4</td><td>koho Koho kohopak</td></tr>
+<tr><td>P	K	Gen=M|Cas=7</td><td>kým</td></tr>
+
+<tr><td>P	L	Gen=F|Num=P|Cas=1</td><td>všechny Všechny samy veškeré Veškeré</td></tr>
+<tr><td>P	L	Gen=F|Num=P|Cas=4</td><td>všechny veškeré Všechny samé Veškeré</td></tr>
+<tr><td>P	L	Gen=F|Num=S|Cas=1</td><td>sama Sama veškerá samá všechna</td></tr>
+<tr><td>P	L	Gen=F|Num=S|Cas=2</td><td>veškeré vší samé</td></tr>
+<tr><td>P	L	Gen=F|Num=S|Cas=3</td><td>veškeré vší samé</td></tr>
+<tr><td>P	L	Gen=F|Num=S|Cas=4</td><td>veškerou samu všechnu Veškerou samou</td></tr>
+
+<tr><td>P	L	Gen=F|Num=S|Cas=6</td><td>vší samé veškeré</td></tr>
+<tr><td>P	L	Gen=F|Num=S|Cas=7</td><td>vší veškerou samou</td></tr>
+<tr><td>P	L	Gen=I|Num=P|Cas=1</td><td>všechny Všechny veškeré samy Veškeré</td></tr>
+<tr><td>P	L	Gen=I|Num=S|Cas=4</td><td>veškerý sám</td></tr>
+<tr><td>P	L	Gen=M|Num=P|Cas=1</td><td>všichni sami Všichni samí Sami</td></tr>
+<tr><td>P	L	Gen=M|Num=S|Cas=4</td><td>sama samého</td></tr>
+
+<tr><td>P	L	Gen=N|Num=P|Cas=1</td><td>všechna Všechna sama Veškerá veškerá</td></tr>
+<tr><td>P	L	Gen=N|Num=P|Cas=4</td><td>všechna veškerá Všechna</td></tr>
+<tr><td>P	L	Gen=N|Num=S|Cas=1</td><td>všechno Všechno samo veškeré VŠECHNO</td></tr>
+<tr><td>P	L	Gen=N|Num=S|Cas=1|Var=1</td><td>vše Vše</td></tr>
+<tr><td>P	L	Gen=N|Num=S|Cas=4</td><td>všechno veškeré Všechno všecko samé</td></tr>
+<tr><td>P	L	Gen=N|Num=S|Cas=4|Var=1</td><td>vše Vše</td></tr>
+
+<tr><td>P	L	Gen=X|Num=P|Cas=2</td><td>všech veškerých Všech samých</td></tr>
+<tr><td>P	L	Gen=X|Num=P|Cas=3</td><td>všem Všem samým</td></tr>
+<tr><td>P	L	Gen=X|Num=P|Cas=6</td><td>všech samých</td></tr>
+<tr><td>P	L	Gen=X|Num=P|Cas=7</td><td>všemi veškerými samými VŠEMI</td></tr>
+<tr><td>P	L	Gen=X|Num=X|Cas=X</td><td>All</td></tr>
+<tr><td>P	L	Gen=X|Num=X|Cas=X|Sem=K</td><td>All</td></tr>
+
+<tr><td>P	L	Gen=X|Num=X|Cas=X|Var=8</td><td>vš</td></tr>
+<tr><td>P	L	Gen=Y|Num=P|Cas=4</td><td>všechny Všechny veškeré samé Veškeré</td></tr>
+<tr><td>P	L	Gen=Y|Num=S|Cas=1</td><td>sám Sám veškerý Veškerý SÁM</td></tr>
+<tr><td>P	L	Gen=Y|Num=S|Cas=4</td><td>všechen</td></tr>
+<tr><td>P	L	Gen=Z|Num=S|Cas=2</td><td>všeho samého veškerého</td></tr>
+<tr><td>P	L	Gen=Z|Num=S|Cas=3</td><td>všemu samému veškerému</td></tr>
+
+<tr><td>P	L	Gen=Z|Num=S|Cas=6</td><td>všem samém veškerém</td></tr>
+<tr><td>P	L	Gen=Z|Num=S|Cas=7</td><td>vším veškerým samým</td></tr>
+<tr><td>P	P	Gen=F|Num=P|Cas=1|Per=3</td><td>ony Ony</td></tr>
+<tr><td>P	P	Gen=F|Num=S|Cas=1|Per=3</td><td>ona Ona vona</td></tr>
+<tr><td>P	P	Gen=F|Num=S|Cas=2|Per=3</td><td>jí</td></tr>
+<tr><td>P	P	Gen=F|Num=S|Cas=3|Per=3</td><td>jí Jí</td></tr>
+
+<tr><td>P	P	Gen=F|Num=S|Cas=4|Per=3</td><td>ji Ji</td></tr>
+<tr><td>P	P	Gen=F|Num=S|Cas=7|Per=3</td><td>jí</td></tr>
+<tr><td>P	P	Gen=I|Num=P|Cas=1|Per=3</td><td>ony</td></tr>
+<tr><td>P	P	Gen=M|Num=P|Cas=1|Per=3</td><td>oni Oni</td></tr>
+<tr><td>P	P	Gen=M|Num=S|Cas=1|Per=3|Sem=R</td><td>man</td></tr>
+<tr><td>P	P	Gen=N|Num=S|Cas=1|Per=3</td><td>ono Ono</td></tr>
+
+<tr><td>P	P	Gen=N|Num=S|Cas=4|Per=3</td><td>je</td></tr>
+<tr><td>P	P	Gen=N|Num=S|Cas=X|Per=3</td><td>It it</td></tr>
+<tr><td>P	P	Gen=N|Num=S|Cas=X|Per=3|Sem=R</td><td>It</td></tr>
+<tr><td>P	P	Gen=X|Num=P|Cas=2|Per=3</td><td>jich</td></tr>
+<tr><td>P	P	Gen=X|Num=P|Cas=3|Per=3</td><td>jim</td></tr>
+<tr><td>P	P	Gen=X|Num=P|Cas=4|Per=3</td><td>je</td></tr>
+
+<tr><td>P	P	Gen=X|Num=P|Cas=7|Per=3</td><td>jimi Jimi</td></tr>
+<tr><td>P	P	Gen=Y|Num=S|Cas=1|Per=3</td><td>on On von</td></tr>
+<tr><td>P	P	Gen=Y|Num=S|Cas=2|Per=3</td><td>jeho</td></tr>
+<tr><td>P	P	Gen=Y|Num=S|Cas=4|Per=3</td><td>jeho</td></tr>
+<tr><td>P	P	Gen=Z|Num=S|Cas=2|Per=3|Var=1</td><td>jej</td></tr>
+<tr><td>P	P	Gen=Z|Num=S|Cas=3|Per=3</td><td>jemu Jemu</td></tr>
+
+<tr><td>P	P	Gen=Z|Num=S|Cas=4|Per=3|Var=2</td><td>jej</td></tr>
+<tr><td>P	P	Gen=Z|Num=S|Cas=7|Per=3</td><td>jím Jím</td></tr>
+<tr><td>P	P	Num=P|Cas=1|Per=1</td><td>my My We MY</td></tr>
+<tr><td>P	P	Num=P|Cas=1|Per=2</td><td>vy Vy</td></tr>
+<tr><td>P	P	Num=P|Cas=2|Per=1</td><td>nás Nás NÁS</td></tr>
+<tr><td>P	P	Num=P|Cas=2|Per=2</td><td>vás Vás</td></tr>
+
+<tr><td>P	P	Num=P|Cas=3|Per=1</td><td>nám Nám NÁM</td></tr>
+<tr><td>P	P	Num=P|Cas=3|Per=2</td><td>vám Vám VÁM</td></tr>
+<tr><td>P	P	Num=P|Cas=4|Per=1</td><td>nás Nás</td></tr>
+<tr><td>P	P	Num=P|Cas=4|Per=2</td><td>vás Vás</td></tr>
+<tr><td>P	P	Num=P|Cas=6|Per=1</td><td>nás</td></tr>
+<tr><td>P	P	Num=P|Cas=6|Per=2</td><td>vás Vás</td></tr>
+
+<tr><td>P	P	Num=P|Cas=7|Per=1</td><td>námi Námi NÁMI</td></tr>
+<tr><td>P	P	Num=P|Cas=7|Per=2</td><td>vámi Vámi vami</td></tr>
+<tr><td>P	P	Num=P|Cas=X|Per=1</td><td>Us Ourselves US</td></tr>
+<tr><td>P	P	Num=P|Cas=X|Per=2</td><td>you</td></tr>
+<tr><td>P	P	Num=S|Cas=1|Per=1</td><td>já Já ja I</td></tr>
+<tr><td>P	P	Num=S|Cas=1|Per=2</td><td>ty</td></tr>
+
+<tr><td>P	P	Num=S|Cas=2|Per=1</td><td>mne</td></tr>
+<tr><td>P	P	Num=S|Cas=2|Per=2</td><td>tebe</td></tr>
+<tr><td>P	P	Num=S|Cas=3|Per=1</td><td>mně Mně</td></tr>
+<tr><td>P	P	Num=S|Cas=4|Per=1</td><td>mne ma Mne</td></tr>
+<tr><td>P	P	Num=S|Cas=4|Per=2</td><td>tebe</td></tr>
+<tr><td>P	P	Num=S|Cas=5|Per=2</td><td>ty Ty</td></tr>
+
+<tr><td>P	P	Num=S|Cas=5|Per=2|Sem=R</td><td>Ty</td></tr>
+<tr><td>P	P	Num=S|Cas=6|Per=1</td><td>mně mě</td></tr>
+<tr><td>P	P	Num=S|Cas=7|Per=1</td><td>mnou</td></tr>
+<tr><td>P	P	Num=S|Cas=X|Per=1</td><td>Me</td></tr>
+<tr><td>P	P	Num=S|Cas=X|Per=2</td><td>You</td></tr>
+<tr><td>P	P	Num=X|Cas=X|Per=2</td><td>You</td></tr>
+
+<tr><td>P	Q	Cas=1</td><td>co Co Copak CO</td></tr>
+<tr><td>P	Q	Cas=2</td><td>čeho Čeho</td></tr>
+<tr><td>P	Q	Cas=3</td><td>čemu Čemu</td></tr>
+<tr><td>P	Q	Cas=4</td><td>co Co CO Copak copak</td></tr>
+<tr><td>P	Q	Cas=4|Var=9</td><td>Cože</td></tr>
+<tr><td>P	Q	Cas=6</td><td>čem</td></tr>
+
+<tr><td>P	Q	Cas=7</td><td>čím Čím ČÍM</td></tr>
+<tr><td>P	Q	Cas=X</td><td>WAS q</td></tr>
+<tr><td>P	S	Gen=F|Num=D|Cas=7|PGe=F|PNu=S|Per=3</td><td>jejíma</td></tr>
+<tr><td>P	S	Gen=F|Num=P|Cas=1|PNu=S|Per=1|Var=1</td><td>mé Mé</td></tr>
+<tr><td>P	S	Gen=F|Num=P|Cas=4|PNu=S|Per=1|Var=1</td><td>mé</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=1|PNu=S|Per=1|Var=1</td><td>má Má</td></tr>
+
+<tr><td>P	S	Gen=F|Num=S|Cas=1|PNu=S|Per=2|Var=1</td><td>tvá</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=2|PNu=P|Per=1</td><td>naší</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=2|PNu=P|Per=2</td><td>vaší Vaší</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=2|PNu=S|Per=1|Var=1</td><td>mé</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=2|PNu=S|Per=2|Var=1</td><td>tvé</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=3|PNu=P|Per=1</td><td>naší Naší</td></tr>
+
+<tr><td>P	S	Gen=F|Num=S|Cas=3|PNu=P|Per=2</td><td>vaší</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=3|PNu=S|Per=1</td><td>mojí</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=3|PNu=S|Per=1|Var=1</td><td>mé Mé</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=4|PNu=P|Per=1</td><td>naši Naši</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=4|PNu=P|Per=1|Var=6</td><td>naší</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=4|PNu=P|Per=2</td><td>vaši Vaši</td></tr>
+
+<tr><td>P	S	Gen=F|Num=S|Cas=4|PNu=S|Per=1</td><td>moji</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=4|PNu=S|Per=1|Var=1</td><td>mou</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=4|PNu=S|Per=2|Var=1</td><td>tvou</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=5|PNu=S|Per=1|Var=1</td><td>Má</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=6|PNu=P|Per=1</td><td>naší</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=6|PNu=P|Per=2</td><td>vaší</td></tr>
+
+<tr><td>P	S	Gen=F|Num=S|Cas=6|PNu=S|Per=1|Var=1</td><td>mé</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=7|PNu=P|Per=1</td><td>naší Naší</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=7|PNu=P|Per=2</td><td>vaší Vaší</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=7|PNu=S|Per=1</td><td>mojí</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=7|PNu=S|Per=1|Var=1</td><td>mou Mou</td></tr>
+<tr><td>P	S	Gen=F|Num=S|Cas=X|PGe=F|PNu=S|Per=3</td><td>její Její JEJÍ</td></tr>
+
+<tr><td>P	S	Gen=F|Num=S|Cas=X|PNu=P|Per=1|Sem=m</td><td>Notre</td></tr>
+<tr><td>P	S	Gen=H|Num=P|Cas=1|PNu=P|Per=1</td><td>naše Naše</td></tr>
+<tr><td>P	S	Gen=H|Num=P|Cas=1|PNu=P|Per=2</td><td>vaše Vaše</td></tr>
+<tr><td>P	S	Gen=H|Num=P|Cas=1|PNu=S|Per=1</td><td>moje Moje</td></tr>
+<tr><td>P	S	Gen=H|Num=S|Cas=1|PNu=P|Per=1</td><td>naše Naše</td></tr>
+<tr><td>P	S	Gen=H|Num=S|Cas=1|PNu=P|Per=2</td><td>vaše Vaše</td></tr>
+
+<tr><td>P	S	Gen=H|Num=S|Cas=1|PNu=S|Per=1</td><td>moje Moje MOJE</td></tr>
+<tr><td>P	S	Gen=H|Num=S|Cas=5|PNu=P|Per=2</td><td>Vaše</td></tr>
+<tr><td>P	S	Gen=H|Num=S|Cas=5|PNu=S|Per=1</td><td>moje</td></tr>
+<tr><td>P	S	Gen=I|Num=P|Cas=1|PNu=P|Per=1</td><td>naše Naše</td></tr>
+<tr><td>P	S	Gen=I|Num=P|Cas=1|PNu=P|Per=2</td><td>VAŠE vaše Vaše</td></tr>
+<tr><td>P	S	Gen=I|Num=P|Cas=1|PNu=S|Per=1</td><td>moje</td></tr>
+
+<tr><td>P	S	Gen=I|Num=P|Cas=1|PNu=S|Per=1|Var=1</td><td>Mé mé</td></tr>
+<tr><td>P	S	Gen=I|Num=S|Cas=4|PGe=F|PNu=S|Per=3</td><td>její Její</td></tr>
+<tr><td>P	S	Gen=I|Num=S|Cas=4|PNu=P|Per=1</td><td>náš Náš</td></tr>
+<tr><td>P	S	Gen=I|Num=S|Cas=4|PNu=P|Per=2</td><td>Váš váš</td></tr>
+<tr><td>P	S	Gen=I|Num=S|Cas=4|PNu=S|Per=1</td><td>můj Můj</td></tr>
+<tr><td>P	S	Gen=I|Num=S|Cas=X|PNu=S|Per=1</td><td>My</td></tr>
+
+<tr><td>P	S	Gen=M|Num=P|Cas=1|PNu=P|Per=1</td><td>naši Naši NAŠI</td></tr>
+<tr><td>P	S	Gen=M|Num=P|Cas=1|PNu=P|Per=2</td><td>vaši</td></tr>
+<tr><td>P	S	Gen=M|Num=P|Cas=1|PNu=S|Per=1</td><td>moji Moji</td></tr>
+<tr><td>P	S	Gen=M|Num=P|Cas=1|PNu=S|Per=1|Var=1</td><td>Mí</td></tr>
+<tr><td>P	S	Gen=M|Num=S|Cas=4|PGe=F|PNu=S|Per=3</td><td>jejího</td></tr>
+<tr><td>P	S	Gen=M|Num=S|Cas=4|PNu=P|Per=1</td><td>našeho Našeho</td></tr>
+
+<tr><td>P	S	Gen=M|Num=S|Cas=4|PNu=P|Per=2</td><td>vašeho</td></tr>
+<tr><td>P	S	Gen=N|Num=P|Cas=4|PNu=S|Per=1|Var=1</td><td>má</td></tr>
+<tr><td>P	S	Gen=N|Num=S|Cas=1|PNu=S|Per=1|Var=1</td><td>mé Mé</td></tr>
+<tr><td>P	S	Gen=N|Num=S|Cas=4|PGe=F|PNu=S|Per=3</td><td>její Její</td></tr>
+<tr><td>P	S	Gen=N|Num=S|Cas=4|PNu=P|Per=1</td><td>naše Naše</td></tr>
+<tr><td>P	S	Gen=N|Num=S|Cas=4|PNu=P|Per=2</td><td>Vaše vaše</td></tr>
+
+<tr><td>P	S	Gen=N|Num=S|Cas=4|PNu=S|Per=1</td><td>moje</td></tr>
+<tr><td>P	S	Gen=N|Num=S|Cas=4|PNu=S|Per=1|Var=1</td><td>mé</td></tr>
+<tr><td>P	S	Gen=N|Num=S|Cas=X|PNu=S|Per=1</td><td>My</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=1|PGe=F|PNu=S|Per=3</td><td>její Její</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=2|PGe=F|PNu=S|Per=3</td><td>jejích</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=2|PNu=P|Per=1</td><td>našich</td></tr>
+
+<tr><td>P	S	Gen=X|Num=P|Cas=2|PNu=P|Per=2</td><td>vašich Vašich</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=2|PNu=S|Per=1</td><td>mých</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=3|PGe=F|PNu=S|Per=3</td><td>jejím</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=3|PNu=P|Per=1</td><td>našim Našim</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=3|PNu=P|Per=2</td><td>vašim</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=3|PNu=S|Per=1</td><td>mým</td></tr>
+
+<tr><td>P	S	Gen=X|Num=P|Cas=4|PGe=F|PNu=S|Per=3</td><td>její Její</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=4|PNu=P|Per=1</td><td>naše Naše NAŠE</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=4|PNu=P|Per=2</td><td>vaše Vaše</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=4|PNu=S|Per=1</td><td>moje</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=6|PGe=F|PNu=S|Per=3</td><td>jejích</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=6|PNu=P|Per=1</td><td>našich NAŠICH</td></tr>
+
+<tr><td>P	S	Gen=X|Num=P|Cas=6|PNu=P|Per=2</td><td>vašich</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=6|PNu=S|Per=1</td><td>mých</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=7|PGe=F|PNu=S|Per=3</td><td>jejími Jejími</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=7|PNu=P|Per=1</td><td>našimi Našimi</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=7|PNu=P|Per=2</td><td>vašimi Vašimi</td></tr>
+<tr><td>P	S	Gen=X|Num=P|Cas=7|PNu=S|Per=1</td><td>mými</td></tr>
+
+<tr><td>P	S	Gen=X|Num=X|Cas=X|PGe=X|PNu=P|Per=3</td><td>jejich Jejich JEJICH</td></tr>
+<tr><td>P	S	Gen=X|Num=X|Cas=X|PGe=Z|PNu=S|Per=3</td><td>jeho Jeho JEHO</td></tr>
+<tr><td>P	S	Gen=X|Num=X|Cas=X|PNu=X|Per=2</td><td>Your</td></tr>
+<tr><td>P	S	Gen=X|Num=X|Cas=X|PNu=X|Per=2|Sem=R</td><td>Your</td></tr>
+<tr><td>P	S	Gen=Y|Num=P|Cas=4|PNu=S|Per=1|Var=1</td><td>mé</td></tr>
+<tr><td>P	S	Gen=Y|Num=P|Cas=4|PNu=S|Per=1|Var=7</td><td>mý</td></tr>
+
+<tr><td>P	S	Gen=Y|Num=S|Cas=1|PNu=P|Per=1</td><td>náš Náš NÁŠ</td></tr>
+<tr><td>P	S	Gen=Y|Num=S|Cas=1|PNu=P|Per=2</td><td>váš Váš</td></tr>
+<tr><td>P	S	Gen=Y|Num=S|Cas=1|PNu=S|Per=1</td><td>můj Můj MŮJ</td></tr>
+<tr><td>P	S	Gen=Y|Num=S|Cas=1|PNu=S|Per=2</td><td>tvůj Tvůj</td></tr>
+<tr><td>P	S	Gen=Y|Num=S|Cas=5|PNu=P|Per=1</td><td>náš</td></tr>
+<tr><td>P	S	Gen=Y|Num=S|Cas=5|PNu=S|Per=1</td><td>můj Můj</td></tr>
+
+<tr><td>P	S	Gen=Z|Num=S|Cas=1|PGe=F|PNu=S|Per=3</td><td>její Její</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=2|PGe=F|PNu=S|Per=3</td><td>jejího JEJÍHO</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=2|PNu=P|Per=1</td><td>našeho NAŠEHO</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=2|PNu=P|Per=2</td><td>vašeho Vašeho</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=2|PNu=S|Per=1</td><td>mého</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=2|PNu=S|Per=1|Var=6</td><td>mýho</td></tr>
+
+<tr><td>P	S	Gen=Z|Num=S|Cas=2|PNu=S|Per=2</td><td>tvého</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=3|PGe=F|PNu=S|Per=3</td><td>jejímu</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=3|PNu=P|Per=1</td><td>našemu Našemu</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=3|PNu=P|Per=2</td><td>Vašemu</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=3|PNu=S|Per=1</td><td>mému Mému</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=6|PGe=F|PNu=S|Per=3</td><td>jejím</td></tr>
+
+<tr><td>P	S	Gen=Z|Num=S|Cas=6|PNu=P|Per=1</td><td>našem</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=6|PNu=P|Per=2</td><td>vašem</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=6|PNu=S|Per=1</td><td>mém</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=6|PNu=S|Per=2</td><td>tvém</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=7|PGe=F|PNu=S|Per=3</td><td>jejím Jejím</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=7|PNu=P|Per=1</td><td>naším Naším</td></tr>
+
+<tr><td>P	S	Gen=Z|Num=S|Cas=7|PNu=P|Per=1|Var=6</td><td>našim Našim</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=7|PNu=P|Per=1|Var=8</td><td>n</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=7|PNu=P|Per=2</td><td>vaším Vaším</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=7|PNu=S|Per=1</td><td>mým Mým</td></tr>
+<tr><td>P	S	Gen=Z|Num=S|Cas=7|PNu=S|Per=2</td><td>tvým</td></tr>
+<tr><td>P	W	Cas=1</td><td>nic Nic nihil</td></tr>
+
+<tr><td>P	W	Cas=2</td><td>ničeho</td></tr>
+<tr><td>P	W	Cas=3</td><td>ničemu</td></tr>
+<tr><td>P	W	Cas=4</td><td>nic Nic pranic</td></tr>
+<tr><td>P	W	Cas=6</td><td>ničem</td></tr>
+<tr><td>P	W	Cas=7</td><td>ničím</td></tr>
+<tr><td>P	W	Cas=X</td><td>nothing</td></tr>
+
+<tr><td>P	W	Gen=F|Num=P|Cas=1</td><td>žádné</td></tr>
+<tr><td>P	W	Gen=F|Num=P|Cas=4</td><td>žádné Žádné</td></tr>
+<tr><td>P	W	Gen=F|Num=S|Cas=1</td><td>žádná Žádná</td></tr>
+<tr><td>P	W	Gen=F|Num=S|Cas=2</td><td>žádné</td></tr>
+<tr><td>P	W	Gen=F|Num=S|Cas=3</td><td>žádné Žádné</td></tr>
+<tr><td>P	W	Gen=F|Num=S|Cas=4</td><td>žádnou Žádnou</td></tr>
+
+<tr><td>P	W	Gen=F|Num=S|Cas=6</td><td>žádné</td></tr>
+<tr><td>P	W	Gen=F|Num=S|Cas=7</td><td>žádnou</td></tr>
+<tr><td>P	W	Gen=I|Num=P|Cas=1</td><td>žádné Žádné</td></tr>
+<tr><td>P	W	Gen=I|Num=P|Cas=1|Var=6</td><td>žádný</td></tr>
+<tr><td>P	W	Gen=I|Num=S|Cas=4</td><td>žádný Žádný</td></tr>
+<tr><td>P	W	Gen=M|Cas=1</td><td>nikdo Nikdo NIKDO</td></tr>
+
+<tr><td>P	W	Gen=M|Cas=2</td><td>nikoho</td></tr>
+<tr><td>P	W	Gen=M|Cas=3</td><td>nikomu Nikomu NIKOMU</td></tr>
+<tr><td>P	W	Gen=M|Cas=4</td><td>nikoho Nikoho</td></tr>
+<tr><td>P	W	Gen=M|Cas=6</td><td>Nikom nikom</td></tr>
+<tr><td>P	W	Gen=M|Cas=7</td><td>nikým</td></tr>
+<tr><td>P	W	Gen=M|Num=P|Cas=1</td><td>žádní Žádní</td></tr>
+
+<tr><td>P	W	Gen=M|Num=S|Cas=4</td><td>žádného</td></tr>
+<tr><td>P	W	Gen=N|Num=P|Cas=1</td><td>žádná Žádná</td></tr>
+<tr><td>P	W	Gen=N|Num=P|Cas=4</td><td>žádná</td></tr>
+<tr><td>P	W	Gen=N|Num=S|Cas=1</td><td>žádné Žádné</td></tr>
+<tr><td>P	W	Gen=N|Num=S|Cas=4</td><td>žádné Žádné</td></tr>
+<tr><td>P	W	Gen=X|Num=P|Cas=2</td><td>žádných</td></tr>
+
+<tr><td>P	W	Gen=X|Num=P|Cas=3</td><td>žádným</td></tr>
+<tr><td>P	W	Gen=X|Num=P|Cas=6</td><td>žádných</td></tr>
+<tr><td>P	W	Gen=X|Num=P|Cas=7</td><td>žádnými Žádnými</td></tr>
+<tr><td>P	W	Gen=Y|Num=P|Cas=4</td><td>žádné Žádné</td></tr>
+<tr><td>P	W	Gen=Y|Num=S|Cas=1</td><td>žádný Žádný ŽÁDNÝ</td></tr>
+<tr><td>P	W	Gen=Z|Num=S|Cas=2</td><td>žádného</td></tr>
+
+<tr><td>P	W	Gen=Z|Num=S|Cas=3</td><td>žádnému Žádnému</td></tr>
+<tr><td>P	W	Gen=Z|Num=S|Cas=6</td><td>žádném</td></tr>
+<tr><td>P	W	Gen=Z|Num=S|Cas=7</td><td>žádným</td></tr>
+<tr><td>P	Z	Cas=1</td><td>něco cosi Něco leccos cokoliv</td></tr>
+<tr><td>P	Z	Cas=1|Var=1</td><td>cokoli</td></tr>
+<tr><td>P	Z	Cas=2</td><td>něčeho čehosi čehokoliv</td></tr>
+
+<tr><td>P	Z	Cas=2|Var=1</td><td>čehokoli</td></tr>
+<tr><td>P	Z	Cas=3</td><td>něčemu čemusi</td></tr>
+<tr><td>P	Z	Cas=4</td><td>něco cosi cokoliv leccos ledacos</td></tr>
+<tr><td>P	Z	Cas=4|Var=1</td><td>cokoli Cokoli</td></tr>
+<tr><td>P	Z	Cas=6</td><td>něčem čemsi lecčems ledasčem</td></tr>
+<tr><td>P	Z	Cas=6|Var=1</td><td>čemkoli</td></tr>
+
+<tr><td>P	Z	Cas=7</td><td>něčím čímsi lecčím</td></tr>
+<tr><td>P	Z	Cas=7|Var=1</td><td>čímkoli</td></tr>
+<tr><td>P	Z	Gen=F|Num=P|Cas=1</td><td>některé Některé nějaké jakési jakékoliv</td></tr>
+<tr><td>P	Z	Gen=F|Num=P|Cas=1|Var=1</td><td>jakékoli</td></tr>
+<tr><td>P	Z	Gen=F|Num=P|Cas=4</td><td>některé nějaké Některé jakékoliv leckteré</td></tr>
+<tr><td>P	Z	Gen=F|Num=P|Cas=4|Var=1</td><td>jakékoli Jakékoli</td></tr>
+
+<tr><td>P	Z	Gen=F|Num=S|Cas=1</td><td>nějaká jakási jakákoliv některá málokterá</td></tr>
+<tr><td>P	Z	Gen=F|Num=S|Cas=1|Var=1</td><td>jakákoli Jakákoli kterákoli</td></tr>
+<tr><td>P	Z	Gen=F|Num=S|Cas=2</td><td>nějaké některé jakési jakékoliv něčí</td></tr>
+<tr><td>P	Z	Gen=F|Num=S|Cas=2|Var=1</td><td>jakékoli kterékoli</td></tr>
+<tr><td>P	Z	Gen=F|Num=S|Cas=3</td><td>nějaké jakékoliv některé jakési</td></tr>
+<tr><td>P	Z	Gen=F|Num=S|Cas=3|Var=1</td><td>jakékoli</td></tr>
+
+<tr><td>P	Z	Gen=F|Num=S|Cas=4</td><td>nějakou jakousi jakoukoliv některou kteroukoliv</td></tr>
+<tr><td>P	Z	Gen=F|Num=S|Cas=4|Var=1</td><td>jakoukoli kteroukoli</td></tr>
+<tr><td>P	Z	Gen=F|Num=S|Cas=6</td><td>nějaké jakési některé málokteré kterékoliv</td></tr>
+<tr><td>P	Z	Gen=F|Num=S|Cas=6|Var=1</td><td>jakékoli kterékoli</td></tr>
+<tr><td>P	Z	Gen=F|Num=S|Cas=7</td><td>jakousi nějakou některou jakoukoliv</td></tr>
+<tr><td>P	Z	Gen=F|Num=S|Cas=7|Var=1</td><td>jakoukoli</td></tr>
+
+<tr><td>P	Z	Gen=I|Num=P|Cas=1</td><td>některé Některé nějaké všelijaké Nějaké</td></tr>
+<tr><td>P	Z	Gen=I|Num=P|Cas=1|Var=1</td><td>jakékoli Jakékoli</td></tr>
+<tr><td>P	Z	Gen=I|Num=S|Cas=4</td><td>nějaký jakýsi některý jakýkoliv Nějaký</td></tr>
+<tr><td>P	Z	Gen=I|Num=S|Cas=4|Var=1</td><td>jakýkoli Jakýkoli</td></tr>
+<tr><td>P	Z	Gen=M|Cas=1</td><td>někdo Někdo málokdo kdokoliv Málokdo</td></tr>
+<tr><td>P	Z	Gen=M|Cas=1|Var=1</td><td>kdokoli Kdokoli Leckdos</td></tr>
+
+<tr><td>P	Z	Gen=M|Cas=2</td><td>někoho</td></tr>
+<tr><td>P	Z	Gen=M|Cas=2|Var=1</td><td>kohokoli</td></tr>
+<tr><td>P	Z	Gen=M|Cas=3</td><td>někomu komukoliv Někomu leckomu málokomu</td></tr>
+<tr><td>P	Z	Gen=M|Cas=3|Var=1</td><td>komukoli</td></tr>
+<tr><td>P	Z	Gen=M|Cas=4</td><td>někoho kohokoliv Někoho málokoho</td></tr>
+<tr><td>P	Z	Gen=M|Cas=6</td><td>někom</td></tr>
+
+<tr><td>P	Z	Gen=M|Cas=7</td><td>někým</td></tr>
+<tr><td>P	Z	Gen=M|Cas=7|Var=1</td><td>kýmkoli</td></tr>
+<tr><td>P	Z	Gen=M|Num=P|Cas=1</td><td>někteří Někteří málokteří nějací leckteří</td></tr>
+<tr><td>P	Z	Gen=M|Num=S|Cas=4</td><td>nějakého některého jakéhokoliv</td></tr>
+<tr><td>P	Z	Gen=M|Num=S|Cas=4|Var=1</td><td>jakéhokoli</td></tr>
+<tr><td>P	Z	Gen=N|Num=P|Cas=1</td><td>některá Některá ledajaká Leckterá jakási</td></tr>
+
+<tr><td>P	Z	Gen=N|Num=P|Cas=1|Var=1</td><td>jakákoli</td></tr>
+<tr><td>P	Z	Gen=N|Num=P|Cas=4</td><td>některá nějaká všelijaká jakákoliv</td></tr>
+<tr><td>P	Z	Gen=N|Num=P|Cas=4|Var=1</td><td>jakákoli</td></tr>
+<tr><td>P	Z	Gen=N|Num=S|Cas=1</td><td>nějaké jakési některé jakékoliv Jakékoliv</td></tr>
+<tr><td>P	Z	Gen=N|Num=S|Cas=1|Var=1</td><td>jakékoli kterékoli Jakékoli jakákoli</td></tr>
+<tr><td>P	Z	Gen=N|Num=S|Cas=4</td><td>nějaké jakési některé jakékoliv něčí</td></tr>
+
+<tr><td>P	Z	Gen=N|Num=S|Cas=4|Var=1</td><td>jakékoli</td></tr>
+<tr><td>P	Z	Gen=X|Num=P|Cas=2</td><td>některých nějakých jakýchsi jakýchkoliv něčích</td></tr>
+<tr><td>P	Z	Gen=X|Num=P|Cas=2|Var=1</td><td>jakýchkoli</td></tr>
+<tr><td>P	Z	Gen=X|Num=P|Cas=3</td><td>některým Některým jakýmkoliv nějakým jakýmsi</td></tr>
+<tr><td>P	Z	Gen=X|Num=P|Cas=3|Var=1</td><td>jakýmkoli</td></tr>
+<tr><td>P	Z	Gen=X|Num=P|Cas=6</td><td>některých jakýchkoliv všelijakých</td></tr>
+
+<tr><td>P	Z	Gen=X|Num=P|Cas=6|Var=1</td><td>jakýchkoli</td></tr>
+<tr><td>P	Z	Gen=X|Num=P|Cas=7</td><td>některými jakýmisi nějakými lecjakými jakýmikoliv</td></tr>
+<tr><td>P	Z	Gen=X|Num=X|Cas=X</td><td>Some</td></tr>
+<tr><td>P	Z	Gen=Y|Num=P|Cas=4</td><td>některé nějaké Některé jakési všelijaké</td></tr>
+<tr><td>P	Z	Gen=Y|Num=P|Cas=4|Var=1</td><td>jakékoli</td></tr>
+<tr><td>P	Z	Gen=Y|Num=S|Cas=1</td><td>nějaký některý jakýsi jakýkoliv Nějaký</td></tr>
+
+<tr><td>P	Z	Gen=Y|Num=S|Cas=1|Var=1</td><td>jakýkoli kterýkoli Kterýkoli</td></tr>
+<tr><td>P	Z	Gen=Y|Num=S|Cas=1|Var=6</td><td>nějakej</td></tr>
+<tr><td>P	Z	Gen=Z|Num=S|Cas=2</td><td>nějakého některého jakéhosi jakéhokoliv</td></tr>
+<tr><td>P	Z	Gen=Z|Num=S|Cas=2|Var=1</td><td>jakéhokoli kteréhokoli</td></tr>
+<tr><td>P	Z	Gen=Z|Num=S|Cas=3</td><td>nějakému jakémukoliv některému</td></tr>
+<tr><td>P	Z	Gen=Z|Num=S|Cas=3|Var=1</td><td>jakémukoli kterémukoli</td></tr>
+
+<tr><td>P	Z	Gen=Z|Num=S|Cas=6</td><td>nějakém některém jakémsi kterémkoliv jakémkoliv</td></tr>
+<tr><td>P	Z	Gen=Z|Num=S|Cas=6|Var=1</td><td>jakémkoli kterémkoli</td></tr>
+<tr><td>P	Z	Gen=Z|Num=S|Cas=7</td><td>nějakým jakýmsi jakýmkoliv některým takýms</td></tr>
+<tr><td>P	Z	Gen=Z|Num=S|Cas=7|Var=1</td><td>jakýmkoli</td></tr>
+<tr><td>R	F	_</td><td>vzhledem Vzhledem Nehledě narozdíl nehledě</td></tr>
+<tr><td>R	R	Cas=1</td><td>de De ad versus kontra</td></tr>
+
+<tr><td>R	R	Cas=2</td><td>z do od podle u</td></tr>
+<tr><td>R	R	Cas=2|Var=1</td><td>krom Krom</td></tr>
+<tr><td>R	R	Cas=2|Var=8</td><td>vč</td></tr>
+<tr><td>R	R	Cas=3</td><td>k proti K vůči díky</td></tr>
+<tr><td>R	R	Cas=4</td><td>na pro o za v</td></tr>
+<tr><td>R	R	Cas=4|Var=8</td><td>m</td></tr>
+
+<tr><td>R	R	Cas=6</td><td>v na o V po</td></tr>
+<tr><td>R	R	Cas=7</td><td>s před mezi nad pod</td></tr>
+<tr><td>R	R	Cas=7|Var=8</td><td>n př</td></tr>
+<tr><td>R	R	Cas=X</td><td>of in von To Of</td></tr>
+<tr><td>R	R	Cas=X|Sem=G</td><td>del Unter</td></tr>
+<tr><td>R	R	Cas=X|Sem=K</td><td>Pro dei des</td></tr>
+
+<tr><td>R	R	Cas=X|Sem=R</td><td>ex Quantum</td></tr>
+<tr><td>R	R	Cas=X|Sem=S</td><td>do</td></tr>
+<tr><td>R	R	Cas=X|Sem=Y</td><td>di Di</td></tr>
+<tr><td>R	R	Cas=X|Sem=m</td><td>Pro Into</td></tr>
+<tr><td>R	R	Cas=X|Var=8</td><td>a P</td></tr>
+<tr><td>R	V	Cas=2</td><td>ze Ze beze ZE se</td></tr>
+
+<tr><td>R	V	Cas=3</td><td>ke Ke KE</td></tr>
+<tr><td>R	V	Cas=3|Var=1</td><td>ku Ku</td></tr>
+<tr><td>R	V	Cas=4</td><td>ve Ve VE přese</td></tr>
+<tr><td>R	V	Cas=4|Var=1</td><td>skrze Skrze</td></tr>
+<tr><td>R	V	Cas=6</td><td>ve Ve VE o</td></tr>
+<tr><td>R	V	Cas=7</td><td>se Se SE Přede přede</td></tr>
+
+<tr><td>T	T	Sem=K</td><td>Non we</td></tr>
+<tr><td>T	T	Sem=S</td><td>ka</td></tr>
+<tr><td>T	T	Sem=m</td><td>at el</td></tr>
+<tr><td>T	T	Var=1</td><td>t</td></tr>
+<tr><td>T	T	_</td><td>jen až asi li ne</td></tr>
+<tr><td>V	B	Num=P|Per=1|Ten=F|Neg=A|Voi=A</td><td>budeme Budeme půjdeme poneseme BUDEME</td></tr>
+
+<tr><td>V	B	Num=P|Per=1|Ten=F|Neg=A|Voi=A|Var=6</td><td>budem</td></tr>
+<tr><td>V	B	Num=P|Per=1|Ten=F|Neg=N|Voi=A</td><td>nebudeme Nebudeme nepojedeme</td></tr>
+<tr><td>V	B	Num=P|Per=1|Ten=P|Neg=A|Voi=A</td><td>jsme máme můžeme musíme Máme</td></tr>
+<tr><td>V	B	Num=P|Per=1|Ten=P|Neg=A|Voi=A|Var=6</td><td>jdem šoupnem Sejem Nesem Pohlédnem</td></tr>
+<tr><td>V	B	Num=P|Per=1|Ten=P|Neg=N|Voi=A</td><td>nemůžeme nemáme nevíme nejsme Nechceme</td></tr>
+<tr><td>V	B	Num=P|Per=2|Ten=F|Neg=A|Voi=A</td><td>budete Budete Pojedete půjdete</td></tr>
+
+<tr><td>V	B	Num=P|Per=2|Ten=F|Neg=N|Voi=A</td><td>nebudete Nebudete</td></tr>
+<tr><td>V	B	Num=P|Per=2|Ten=P|Neg=A|Voi=A</td><td>jste můžete máte chcete najdete</td></tr>
+<tr><td>V	B	Num=P|Per=2|Ten=P|Neg=N|Voi=A</td><td>nejste nemáte nevíte nemůžete nedovoláte</td></tr>
+<tr><td>V	B	Num=P|Per=3|Ten=F|Neg=A|Voi=A</td><td>budou Budou půjdou BUDOU pojedou</td></tr>
+<tr><td>V	B	Num=P|Per=3|Ten=F|Neg=A|Voi=A|Var=1</td><td>postěhují</td></tr>
+<tr><td>V	B	Num=P|Per=3|Ten=F|Neg=N|Voi=A</td><td>nebudou Nebudou nepůjdou nepojedou</td></tr>
+
+<tr><td>V	B	Num=P|Per=3|Ten=P|Neg=A|Voi=A</td><td>jsou mají chtějí Jsou patří</td></tr>
+<tr><td>V	B	Num=P|Per=3|Ten=P|Neg=A|Voi=A|Var=1</td><td>mohou musí hrají vědí žijí</td></tr>
+<tr><td>V	B	Num=P|Per=3|Ten=P|Neg=A|Voi=A|Var=6</td><td>vypadaj dávaj</td></tr>
+<tr><td>V	B	Num=P|Per=3|Ten=P|Neg=N|Voi=A</td><td>nejsou nemají nechtějí Nejsou neexistují</td></tr>
+<tr><td>V	B	Num=P|Per=3|Ten=P|Neg=N|Voi=A|Var=1</td><td>nemohou nemusí nevědí nepomohou nehrají</td></tr>
+<tr><td>V	B	Num=P|Per=3|Ten=P|Neg=N|Voi=A|Var=2</td><td>nésó</td></tr>
+
+<tr><td>V	B	Num=P|Per=3|Ten=P|Neg=N|Voi=A|Var=6</td><td>NEMUSEJ nemusej'</td></tr>
+<tr><td>V	B	Num=S|Per=1|Ten=F|Neg=A|Voi=A</td><td>budu Budu půjdu poletím</td></tr>
+<tr><td>V	B	Num=S|Per=1|Ten=F|Neg=N|Voi=A</td><td>nebudu nepojedu Nebudu nepoběžím nepůjdu</td></tr>
+<tr><td>V	B	Num=S|Per=1|Ten=P|Neg=A|Voi=A</td><td>jsem mám Myslím Jsem Mám</td></tr>
+<tr><td>V	B	Num=S|Per=1|Ten=P|Neg=A|Voi=A|Var=1</td><td>považuji mohu Mohu doporučuji sleduji</td></tr>
+<tr><td>V	B	Num=S|Per=1|Ten=P|Neg=N|Voi=A</td><td>Nevím nevím nemám nechci Nejsem</td></tr>
+
+<tr><td>V	B	Num=S|Per=1|Ten=P|Neg=N|Voi=A|Var=1</td><td>nemohu Nemohu nepovažuji nepřeji Nevylučuji</td></tr>
+<tr><td>V	B	Num=S|Per=2|Ten=F|Neg=A|Voi=A</td><td>budeš Budeš</td></tr>
+<tr><td>V	B	Num=S|Per=2|Ten=F|Neg=N|Voi=A</td><td>Nebudeš nebudeš</td></tr>
+<tr><td>V	B	Num=S|Per=2|Ten=P|Neg=A|Voi=A</td><td>jsi můžeš máš Víš Vejdeš</td></tr>
+<tr><td>V	B	Num=S|Per=2|Ten=P|Neg=A|Voi=A|Var=7</td><td>si</td></tr>
+<tr><td>V	B	Num=S|Per=2|Ten=P|Neg=N|Voi=A</td><td>nedáš Nepřijmeš Nezabiješ Nedopustíš nedíváš</td></tr>
+
+<tr><td>V	B	Num=S|Per=3|Ten=F|Neg=A|Voi=A</td><td>bude Bude půjde Půjde pojede</td></tr>
+<tr><td>V	B	Num=S|Per=3|Ten=F|Neg=N|Voi=A</td><td>nebude Nebude nepůjde nepojede NEBUDE</td></tr>
+<tr><td>V	B	Num=S|Per=3|Ten=P|Neg=A|Voi=A</td><td>je má může Je musí</td></tr>
+<tr><td>V	B	Num=S|Per=3|Ten=P|Neg=A|Voi=A|Var=1</td><td>týče</td></tr>
+<tr><td>V	B	Num=S|Per=3|Ten=P|Neg=A|Voi=A|Var=2</td><td>jest Jest</td></tr>
+<tr><td>V	B	Num=S|Per=3|Ten=P|Neg=A|Voi=A|Var=8</td><td>tzn j</td></tr>
+
+<tr><td>V	B	Num=S|Per=3|Ten=P|Neg=N|Voi=A</td><td>není nemá nelze nemůže Není</td></tr>
+<tr><td>V	B	Num=S|Per=3|Ten=P|Neg=N|Voi=A|Var=5</td><td>neba</td></tr>
+<tr><td>V	B	Num=X|Per=X|Ten=F|Neg=A|Voi=A</td><td>ll</td></tr>
+<tr><td>V	B	Num=X|Per=X|Ten=F|Neg=N|Voi=A</td><td>Won</td></tr>
+<tr><td>V	B	Num=X|Per=X|Ten=P|Neg=A|Voi=A</td><td>Want are</td></tr>
+<tr><td>V	c	Num=P|Per=1</td><td>bychom</td></tr>
+
+<tr><td>V	c	Num=P|Per=1|Var=6</td><td>bysme</td></tr>
+<tr><td>V	c	Num=P|Per=2</td><td>byste</td></tr>
+<tr><td>V	c	Num=S|Per=1</td><td>bych bysom</td></tr>
+<tr><td>V	c	Num=S|Per=1|Var=6</td><td>bysem</td></tr>
+<tr><td>V	c	Num=S|Per=2</td><td>bys</td></tr>
+<tr><td>V	c	Num=X|Per=3</td><td>by BY By</td></tr>
+
+<tr><td>V	e	Gen=H|Num=S|Neg=A</td><td>říkajíc vsouvajíc držíc hynouc opírajíc</td></tr>
+<tr><td>V	e	Gen=H|Num=S|Neg=N</td><td>nechtíc</td></tr>
+<tr><td>V	e	Gen=X|Num=P|Neg=A</td><td>jsouce věříce tvrdíce mluvíce řkouce</td></tr>
+<tr><td>V	e	Gen=Y|Num=S|Neg=A</td><td>počínaje vlastně konče Počínaje Mluvě</td></tr>
+<tr><td>V	e	Gen=Y|Num=S|Neg=N</td><td>nemluvě Nemluvě nepočítaje nevyjímaje nemaje</td></tr>
+<tr><td>V	f	Neg=A</td><td>být mít získat stát hrát</td></tr>
+
+<tr><td>V	f	Neg=A|Sem=K</td><td>Can Dance</td></tr>
+<tr><td>V	f	Neg=A|Sem=R</td><td>Check Lean</td></tr>
+<tr><td>V	f	Neg=A|Var=1</td><td>říci pomoci říct napomoci zříci</td></tr>
+<tr><td>V	f	Neg=A|Var=2</td><td>býti obléci pokračovati Dolomiti sbírati</td></tr>
+<tr><td>V	f	Neg=N</td><td>nebýt nevidět Nebýt Nenechat nenechat</td></tr>
+<tr><td>V	f	Neg=N|Var=2</td><td>nedělati neobléci</td></tr>
+
+<tr><td>V	i	Num=P|Per=1|Neg=A</td><td>řekněme dejme Doufejme Připomeňme Předpokládejme</td></tr>
+<tr><td>V	i	Num=P|Per=1|Neg=A|Var=1</td><td>Pojďme</td></tr>
+<tr><td>V	i	Num=P|Per=1|Neg=N</td><td>Nedělejme Nezapomínejme Nespoléhejme Neříkejme Nedopusťme</td></tr>
+<tr><td>V	i	Num=P|Per=2|Neg=A</td><td>Buďte Čtěte Pište zasílejte Všimněte</td></tr>
+<tr><td>V	i	Num=P|Per=2|Neg=A|Var=1</td><td>Otevřte</td></tr>
+<tr><td>V	i	Num=P|Per=2|Neg=A|Var=6</td><td>vemte</td></tr>
+
+<tr><td>V	i	Num=P|Per=2|Neg=N</td><td>Nezapomeňte neříkejte nebojte nenechte Nemyslete</td></tr>
+<tr><td>V	i	Num=S|Per=2|Neg=A</td><td>Buď haš ber tel buď</td></tr>
+<tr><td>V	i	Num=S|Per=2|Neg=A|Var=1</td><td>viz Viz Pojď</td></tr>
+<tr><td>V	i	Num=S|Per=2|Neg=A|Var=2</td><td>budiž</td></tr>
+<tr><td>V	i	Num=S|Per=2|Neg=A|Var=6</td><td>Vem vem</td></tr>
+<tr><td>V	i	Num=S|Per=2|Neg=A|Var=8</td><td>srov cf</td></tr>
+
+<tr><td>V	i	Num=S|Per=2|Neg=N</td><td>Nedej neboj nejez nešukej nezvedej</td></tr>
+<tr><td>V	i	Num=S|Per=3|Neg=A</td><td>Budiž budiž</td></tr>
+<tr><td>V	i	Num=S|Per=3|Neg=A|Var=4</td><td>LEP čas Stup</td></tr>
+<tr><td>V	m	Gen=X|Num=P|Neg=A</td><td>semnuvše</td></tr>
+<tr><td>V	m	Gen=X|Num=P|Neg=A|Var=4</td><td>poznajíce</td></tr>
+<tr><td>V	m	Gen=Y|Num=S|Neg=N</td><td>nespočet Nedorost</td></tr>
+
+<tr><td>V	p	Gen=M|Num=P|Per=X|Ten=R|Neg=A|Voi=A</td><td>měli byli mohli začali museli</td></tr>
+<tr><td>V	p	Gen=M|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=1</td><td>rozhodli odmítli dohodli shodli navrhli</td></tr>
+<tr><td>V	p	Gen=M|Num=P|Per=X|Ten=R|Neg=N|Voi=A</td><td>neměli nebyli nemohli nechtěli nedokázali</td></tr>
+<tr><td>V	p	Gen=M|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=1</td><td>nedohodli nerozhodli nezvedli nezvládli nepodlehli</td></tr>
+<tr><td>V	p	Gen=N|Num=S|Per=X|Ten=R|Neg=A|Voi=A</td><td>bylo mělo podařilo došlo mohlo</td></tr>
+<tr><td>V	p	Gen=N|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=1</td><td>rozhodlo vzniklo napadlo dopadlo odmítlo</td></tr>
+
+<tr><td>V	p	Gen=N|Num=S|Per=X|Ten=R|Neg=N|Voi=A</td><td>nebylo nemělo nedošlo nepodařilo nešlo</td></tr>
+<tr><td>V	p	Gen=N|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=1</td><td>nenapadlo nedopadlo nerozhodlo nepadlo nevzniklo</td></tr>
+<tr><td>V	p	Gen=Q|Num=W|Per=X|Ten=R|Neg=A|Voi=A</td><td>byla měla mohla stala začala</td></tr>
+<tr><td>V	p	Gen=Q|Num=W|Per=X|Ten=R|Neg=A|Voi=A|Var=1</td><td>rozhodla vznikla odmítla klesla stoupla</td></tr>
+<tr><td>V	p	Gen=Q|Num=W|Per=X|Ten=R|Neg=N|Voi=A</td><td>nebyla neměla nemohla neřekla nedostala</td></tr>
+<tr><td>V	p	Gen=Q|Num=W|Per=X|Ten=R|Neg=N|Voi=A|Var=1</td><td>nerozhodla nevznikla nedohodla nedotkla Nevrhla</td></tr>
+
+<tr><td>V	p	Gen=T|Num=P|Per=X|Ten=R|Neg=A|Voi=A</td><td>byly měly mohly začaly objevily</td></tr>
+<tr><td>V	p	Gen=T|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=1</td><td>vznikly dohodly stouply proběhly padly</td></tr>
+<tr><td>V	p	Gen=T|Num=P|Per=X|Ten=R|Neg=N|Voi=A</td><td>nebyly neměly nemohly nezměnily nepotvrdily</td></tr>
+<tr><td>V	p	Gen=T|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=1</td><td>nevznikly nedohodly nepropadly nespadly neklesly</td></tr>
+<tr><td>V	p	Gen=X|Num=P|Per=X|Ten=R|Neg=A|Voi=A</td><td>pričinili</td></tr>
+<tr><td>V	p	Gen=X|Num=S|Per=X|Ten=R|Neg=A|Voi=A</td><td>kam</td></tr>
+
+<tr><td>V	p	Gen=X|Num=S|Per=X|Ten=R|Neg=N|Voi=A</td><td>wasn</td></tr>
+<tr><td>V	p	Gen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A</td><td>byl měl řekl uvedl mohl</td></tr>
+<tr><td>V	p	Gen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=1</td><td>rozhodl odmítl vznikl navrhl klesl</td></tr>
+<tr><td>V	p	Gen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=6</td><td>bod Pink</td></tr>
+<tr><td>V	p	Gen=Y|Num=S|Per=X|Ten=R|Neg=N|Voi=A</td><td>nebyl neměl nemohl nechtěl nemusel</td></tr>
+<tr><td>V	p	Gen=Y|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=1</td><td>nerozhodl nevznikl nerozpadl nezvládl nedotkl</td></tr>
+
+<tr><td>V	s	Gen=F|Num=S|Cas=4|Per=X|Ten=X|Neg=A|Voi=P</td><td>uzavřenu připravenu ověřenu podepsánu ohlášenu</td></tr>
+<tr><td>V	s	Gen=M|Num=P|Per=X|Ten=X|Neg=A|Voi=P</td><td>přesvědčeni připraveni nuceni informováni vystaveni</td></tr>
+<tr><td>V	s	Gen=M|Num=P|Per=X|Ten=X|Neg=N|Voi=P</td><td>Nespokojeni nevoleni neomezeni nezatíženi nezváni</td></tr>
+<tr><td>V	s	Gen=N|Num=S|Per=X|Ten=X|Neg=A|Voi=P</td><td>řečeno rozhodnuto uvedeno zraněno dosaženo</td></tr>
+<tr><td>V	s	Gen=N|Num=S|Per=X|Ten=X|Neg=N|Voi=P</td><td>nespokojeno neobsazeno nedohráno nevyřízeno nerozhodnuto</td></tr>
+<tr><td>V	s	Gen=Q|Num=W|Per=X|Ten=X|Neg=A|Voi=P</td><td>připravena otevřena založena uzavřena určena</td></tr>
+
+<tr><td>V	s	Gen=Q|Num=W|Per=X|Ten=X|Neg=N|Voi=P</td><td>neobsazena neudána nevyužita nezodpovězena nepovšimnuta</td></tr>
+<tr><td>V	s	Gen=T|Num=P|Per=X|Ten=X|Neg=A|Voi=P</td><td>uvedeny připraveny nalezeny určeny uzavřeny</td></tr>
+<tr><td>V	s	Gen=T|Num=P|Per=X|Ten=X|Neg=N|Voi=P</td><td>nezměněny neuvedeny Nedotčeny nedořešeny nevyřešeny</td></tr>
+<tr><td>V	s	Gen=Y|Num=S|Per=X|Ten=X|Neg=A|Voi=P</td><td>přesvědčen připraven odsouzen považován zvolen</td></tr>
+<tr><td>V	s	Gen=Y|Num=S|Per=X|Ten=X|Neg=N|Voi=P</td><td>nerušen nezařazen nespokojen neatakován nevyřešen</td></tr>
+<tr><td>X	@	Sem=G</td><td>Bielu</td></tr>
+
+<tr><td>X	@	Var=1</td><td>s x o</td></tr>
+<tr><td>X	@	_</td><td>pc ealista K roll noor</td></tr>
+<tr><td>X	X	Var=8</td><td>d v A S T</td></tr>
+<tr><td>X	x	Sem=K</td><td>PNS FIS FMV</td></tr>
+<tr><td>X	x	_</td><td>DM VC</td></tr>
+<tr><td>Z	:	_</td><td>, . " - )</td></tr>
+
+</table>
+</body>
+</html>

@@ -23,6 +23,6 @@ Do not worry, I **will not** give away your e-mail, neither to the funding agenc
 <p><br/></p>
 </html>
 
-**The latest release, packed using ''zip'', is available [[http://ufal.mff.cuni.cz/~zeman/soubory/interset.zip|here]].**
+**The latest release, packed using ''zip'', is available [[http://ufal.mff.cuni.cz/~zeman/soubory/interset-v1.1.zip|here]].**
 
 The DZ Interset project uses the [[http://trac.edgewall.org/|Trac]] web interface for project management. It provides access (via //Browse Source//) to the subversion repository of various revisions of the code. The structure is more fine-grained (not all revisions constitute new releases) and diffs between revisions are available. The Trac server requires authentication, so anonymous read-only access is currently not available. For authorized users, the entry point is [[http://svn.ms.mff.cuni.cz/projects/interset|here]].

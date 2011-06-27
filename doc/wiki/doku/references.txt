@@ -4,6 +4,9 @@ If you report on something interesting you did with DZ Interset, please cite the
 
   * Daniel Zeman: Reusable Tagset Conversion Using Tagset Drivers. In: Proceedings of the Language Resources and Evaluation Conference, LREC 2008. CD full edition + printed Conference Abstracts (ISBN 2-9517408-4-0). Marrakech, Morocco, 2008. (Available [[http://ufal.mff.cuni.cz/~zeman/publikace/2008-02/tagdrivers-marrakech-styl-lrec.pdf|here]].)
 
+Follow-up papers:
+
+  * Daniel Zeman: Hard Problems of Tagset Conversion. In: Proceedings of the Second International Conference on Global Interoperability for Language Resources (ICGL-2010), City University of Hong Kong, Hong Kong, China, 2010. (Available [[http://ufal.mff.cuni.cz/~zeman/publikace/2010-01/submitted2-camera-ready.pdf|here]].)
 
 ===== Used in / cited by =====
 
@@ -13,3 +16,9 @@ Also, if you do something relevant to DZ Interset, I can include a pointer to yo
     * Daniel Zeman, Philip Resnik: //Cross-Language Parser Adaptation between Related Languages//. In: Proceedings of IJCNLP 2008 Workshop on NLP for Less Privileged Languages, pp. 35-42. Hyderabad, India, 2008. (Available [[http://ufal.mff.cuni.cz/~zeman/publikace/2008-01/padapt-hyderabad-05c-postfinal.pdf|here]].)
   * [[http://www.morphcon.webnode.cz/|MorphCon]] (cs) is a tool for conversion of various tagsets for Czech. It is based on Interset. It has been presented here:
     * Petr Pořízka (UP Olomouc) & Markus Schäfer (Universität Bonn): //MorphCon – program pro konverzi českých morfologických tagsetů//. In: [[http://www.phil.muni.cz/jazyk/cfg/?cfg-2009,1|Čeština ve formální gramatice 2009]], Brno, Filozofická fakulta Masarykovy univerzity, February 2009
+    * Petr Pořízka, Markus Schäfer: //MorphCon - A Software for Conversion of Czech Morphological Tagsets//. In: Jana Levická, Radovan Garabík (eds.): NLP, Corpus Linguistics, Corpus Based Grammar Research, Fifth International Conference, Smolenice, Slovakia, 25-27 November 2009, [[http://korpus.juls.savba.sk/~slovko/2009/Proceedings_Slovko_2009.pdf|Proceedings]], pp. 292-301. Slovenská akadémia vied, Bratislava, Slovakia, 2009
+
+===== Related work =====
+
+  * [[http://utkl.ff.cuni.cz/~skoumal/morfo/|Hana Skoumalová's web interface to cs::pdt]]
+  * [[http://code.google.com/p/universal-pos-tags/|Slav Petrov, Dipanjan Das and Ryan McDonald's universal POS tags]]

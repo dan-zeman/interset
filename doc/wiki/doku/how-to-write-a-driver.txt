@@ -149,16 +149,45 @@ BEGIN
 $fs1 = tagset::common::enforce_permitted_joint($fs0, $permitted);
 </code>
 
+
+
+===== Replacing and the other feature =====
+
+Replacing feature values with defaults has its limitations. It only works with pre-known feature values. It does not touch the features ''tagset'' and ''other''. Such behavior is indeed correct as these features only serve to preserve exotic information when encoding back into the original tagset. However, it also has its downside.
+
+The key problem lies in the method we use to obtain permitted combinations of feature values. All tags of the tagset are decoded into feature structures, which subsequently represent the permitted combinations. Values of ''tagset'' and ''other'' are disregarded. Now what happens if the resulting feature structure (after erasing ''tagset'' and ''other'') is unique, i.e. if if it never occurs without the particular value of ''other''<nowiki>?</nowiki> The encoder cannot create the tag corresponding to the ''other'' value (“o-tag”) because the information contained in ''other'' has been erased. It will thus create a similar tag (“s-tag”). Unfortunately, the s-tag will be constructed using feature values that can only occur with the o-tag. Thus, the s-tag will not be valid.
+
+**Example:** Let's assume that the target tagset contains a narrow-purpose tag called ''pred''. It is not intended for verbs but the words tagged with it often have predicative function and work instead of verbs, so we decided to decode it as a strange type of verb. We set ''pos = "verb"'' and ''other = "pred"''. Unfortunately, all verb tags in that particular tagset have the feature ''aspect'' set, which is not true for ''pred''. The part of encoder that is responsible for replacing does not see the difference between ''pred'' and ''verb'' because it does not read the value of ''other''. It will learn (wrongly) that aspectless verbs exist. And it will start creating invalid aspectless verb tags once it runs across a feature structure from a tagset that does not know about aspect.
+
+The example is a realistic one. O-tags (tags setting the ''other'' feature) are often minor parts of speech. They are used for tokens that hide under broader parts of speech in other tagsets. The specific usage of the o-tags however makes many features of the broader tags unnecessary. Such features are empty in o-tags while they always must be non-empty in corresponding s-tags.
+
+**A possible solution** would be not to use any o-tags when scanning the possible feature value combinations. This would work for numerous tagset drivers that only resort to ''other'' when dealing with a “strange” tag. One would have to make sure when distinguishing a strange tag from its normal counterpart that only the strange tag has ''other'' set, and that the normal tag has it empty (in other words, we cannot set ''other'' for both, say, ''other = "strange"'' for the former and ''other = "normal"'' for the latter). Nevertheless, there are instances where most or all the tags of a tagset are o-tags. A good example is ''zh::conll'': poorly documented set of 294 tags, with most distinctions unrepresentable in DZ Interset. Its decoder only sets ''pos'' and copies the whole tag into ''other''. Excluding o-tags (meaning all tags here) would not work with this tagset.
+
+**Another possible solution** is to implement a new subroutine that returns the list of the tags that can be used for scanning of permitted feature value combinations. By default, the subroutine would return the list of non-o-tags. For tagsets such as ''zh::conll'', it could create a taylored list of tags.
+
+**Current solution:** New (third) parameter to ''tagset::common::get_permitted_structures_joint()'', when set to 1 (''true''), says that o-tags shall be ignored. Note that it requires changing the beginning of ''encode()''. We must not enforce permitted combinations if source tagset is same as target (because we would be violating o-tags without knowing their permitted values). Instead, we should just do a simple deep copy of the feature structure to protect it from incidential modifications during encoding. The following example is taken from the ''pl::ipipan'' driver, which was the first place where the solution was applied.
+
+<code perl>    my $f0 = shift;
+    # Modify the feature structure so that it contains values expected by this
+    # driver. Do not do that if this was also the source tagset (because the
+    # modification would damage tags using 'other'). However, in any case
+    # create a deep copy of the original feature structure so that it is
+    # protected from changes during encoding.
+    my $f;
+    if($f0->{tagset} eq 'pl::ipipan')
+    {
+        $f = tagset::common::duplicate($f0);
+    }
+    else
+    {
+        $f = tagset::common::enforce_permitted_joint($f0, $permitted);
+    }
+    my %f = %{$f};
+</code>
+
 ===== Common problems =====
 
 See [[user:zeman:interset:Common Problems]] for a list of suggestions for phenomena difficult to match between tagsets and the Interset.
-
-
-
-
-
-
-
 
 ===== Test your driver =====
 

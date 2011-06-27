@@ -1,0 +1,14 @@
+====== CoNLL 2006 Slovene ======
+
+Data adapted from the Slovene Dependency Treebank, which in turn is based on the //1984// novel from the Multext East V3 parallel corpus (http://nl.ijs.si/ME/V3/, http://nl.ijs.si/ME/V3/doc/index.html#mtev3-doc-div2-id2305296). Tags have been reformatted. Statistics and examples below are taken from the training part.
+
+  * 1534 sentences
+  * 728 tags
+
+===== Documentation =====
+
+  * Tomaž Erjavec, Peter Holozan, Vojko Gorjanc, Marko Stabej: MULTEXT-East Morphosyntactic Specifications Version 3.0 for Slovene, Ljubljana, Slovenia, 2004.
+    * http://nl.ijs.si/ME/V3/msd/html/
+    * common http://nl.ijs.si/ME/V3/msd/html/msd.html#SECTION04000000000000000000
+    * Slovene http://nl.ijs.si/ME/V3/msd/html/msd.html#SECTION05600000000000000000
+  * http://localhost/cgi/tags/index.pl?corpus=conll-2006-sl
