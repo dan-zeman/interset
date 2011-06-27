@@ -298,7 +298,7 @@ sub decode
         # jeden, dva, tři, čtyři
         $f{numtype} = "card";
         $f{synpos} = "attr";
-        $f{other} = "l";
+        $f{numvalue} = [1, 2, 3];
     }
     elsif($subpos eq "n")
     {
@@ -1012,8 +1012,7 @@ sub encode
                 # několik, mnoho, málo, tolik
                 $tag[1] = "a";
             }
-            elsif($f{tagset} eq "cs::pdt" && $f{other} eq "l" ||
-                  $f{number} eq "plu" && $f{case} eq "")
+            elsif($f{numvalue} =~ m/^[123]$/ || ref($f{numvalue}) eq 'ARRAY' && grep {m/^[123]$/} (@{$f{numvalue}}))
             {
                 $tag[1] = "l";
             }
@@ -1548,7 +1547,11 @@ sub encode
         }
     }
     # variant
-    if($f{variant} =~ m/^[0-9]$/)
+    # Variant 8 encodes abbreviation.
+    # Xx------------- and XX------------8 both mean an unknown abbreviation.
+    # However, Xx------------- is older and obsolete and Xx------------8 is not used at all.
+    if($f{variant} =~ m/^[0-9]$/ &&
+       !($f{variant} eq '8' && $tag[1] eq 'x'))
     {
         $tag[14] = $f{variant};
     }

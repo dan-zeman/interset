@@ -640,37 +640,6 @@ sub list_other_resistant_tags
 
 
 #------------------------------------------------------------------------------
-# Same as list_other_resistant_tags() (see above) but returns only those tags
-# that result from stripping the 'other' feature and are not on the original
-# list. If the original list of valid tags was merely collected from corpus
-# occurrences, this function could identify other tags that are possibly valid
-# although they do not occur in the corpus.
-#------------------------------------------------------------------------------
-sub list_unknown_other_resistant_tags
-{
-    my $list0 = shift; # reference to array
-    my $decode = shift; # reference to driver-specific decoding function
-    my $encode = shift; # reference to driver-specific encoding function
-    my $list1 = list_other_resistant_tags($list0, $decode, $encode);
-    my %hash0;
-    foreach my $tag (@{$list0})
-    {
-        $hash0{$tag}++;
-    }
-    my @unknown;
-    foreach my $tag (@{$list1})
-    {
-        if(!exists($hash0{$tag}))
-        {
-            push(@unknown, $tag);
-        }
-    }
-    return \@unknown;
-}
-
-
-
-#------------------------------------------------------------------------------
 # Reads a list of tags, decodes each tag, converts all array values to scalars
 # (by sorting and joining them), remembers permitted feature structures in a
 # trie. Returns a reference to the trie.

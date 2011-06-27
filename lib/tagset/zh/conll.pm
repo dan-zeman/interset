@@ -210,7 +210,7 @@ sub encode
         $tag = "Str";
     }
     # Encode the detailed part of speech. Only if the original tag set was Chinese CoNLL as well.
-    if($f{tagset} eq "zh::conll")
+    if($f{tagset} eq "zh::conll" && $f{other} ne '')
     {
         # Some detailed parts of speech imply a different main part of speech.
         if($f{other} eq "Head")

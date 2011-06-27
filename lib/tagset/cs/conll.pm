@@ -170,5022 +170,5165 @@ sub pdt_to_conll
 #   perl -pe '@x = split(/\s+/, $_); $_ = "$x[3]\t$x[4]\t$x[5]\n"' |\
 #   sort -u | wc -l
 # 4288
+# After cleaning and adding default tags: 5150
 #------------------------------------------------------------------------------
 sub list
 {
     my $list = <<end_of_list
-A\t.\t_
-A\t2\tNeg=A
-A\t2\tNeg=A|Sem=G
-A\t2\tNeg=A|Sem=K
-A\t2\tNeg=A|Sem=S
-A\t2\tNeg=A|Sem=Y
-A\t2\tNeg=A|Sem=m
-A\t2\tNeg=A|Var=1
-A\t2\tNeg=N
-A\tA\tGen=F|Num=D|Cas=7|Gra=1|Neg=A
-A\tA\tGen=F|Num=D|Cas=7|Gra=1|Neg=A|Var=6
-A\tA\tGen=F|Num=D|Cas=7|Gra=1|Neg=N
-A\tA\tGen=F|Num=D|Cas=7|Gra=1|Neg=N|Var=6
-A\tA\tGen=F|Num=D|Cas=7|Gra=2|Neg=A
-A\tA\tGen=F|Num=D|Cas=7|Gra=2|Neg=A|Var=6
-A\tA\tGen=F|Num=D|Cas=7|Gra=2|Neg=N
-A\tA\tGen=F|Num=D|Cas=7|Gra=2|Neg=N|Var=6
-A\tA\tGen=F|Num=D|Cas=7|Gra=3|Neg=A
-A\tA\tGen=F|Num=D|Cas=7|Gra=3|Neg=A|Var=6
-A\tA\tGen=F|Num=D|Cas=7|Gra=3|Neg=N
-A\tA\tGen=F|Num=D|Cas=7|Gra=3|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=A
-A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=G
-A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=K
-A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=U
-A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=N
-A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=1|Gra=2|Neg=A
-A\tA\tGen=F|Num=P|Cas=1|Gra=2|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=1|Gra=2|Neg=N
-A\tA\tGen=F|Num=P|Cas=1|Gra=2|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=1|Gra=3|Neg=A
-A\tA\tGen=F|Num=P|Cas=1|Gra=3|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=1|Gra=3|Neg=N
-A\tA\tGen=F|Num=P|Cas=1|Gra=3|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=2|Gra=1|Neg=A
-A\tA\tGen=F|Num=P|Cas=2|Gra=1|Neg=A|Sem=R
-A\tA\tGen=F|Num=P|Cas=2|Gra=1|Neg=A|Sem=S
-A\tA\tGen=F|Num=P|Cas=2|Gra=1|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=2|Gra=1|Neg=N
-A\tA\tGen=F|Num=P|Cas=2|Gra=1|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=2|Gra=2|Neg=A
-A\tA\tGen=F|Num=P|Cas=2|Gra=2|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=2|Gra=2|Neg=N
-A\tA\tGen=F|Num=P|Cas=2|Gra=2|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=2|Gra=3|Neg=A
-A\tA\tGen=F|Num=P|Cas=2|Gra=3|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=2|Gra=3|Neg=N
-A\tA\tGen=F|Num=P|Cas=2|Gra=3|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=3|Gra=1|Neg=A
-A\tA\tGen=F|Num=P|Cas=3|Gra=1|Neg=A|Sem=G
-A\tA\tGen=F|Num=P|Cas=3|Gra=1|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=3|Gra=1|Neg=N
-A\tA\tGen=F|Num=P|Cas=3|Gra=1|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=3|Gra=2|Neg=A
-A\tA\tGen=F|Num=P|Cas=3|Gra=2|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=3|Gra=2|Neg=N
-A\tA\tGen=F|Num=P|Cas=3|Gra=2|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=3|Gra=3|Neg=A
-A\tA\tGen=F|Num=P|Cas=3|Gra=3|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=3|Gra=3|Neg=N
-A\tA\tGen=F|Num=P|Cas=3|Gra=3|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=4|Gra=1|Neg=A
-A\tA\tGen=F|Num=P|Cas=4|Gra=1|Neg=A|Sem=G
-A\tA\tGen=F|Num=P|Cas=4|Gra=1|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=4|Gra=1|Neg=N
-A\tA\tGen=F|Num=P|Cas=4|Gra=1|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=4|Gra=2|Neg=A
-A\tA\tGen=F|Num=P|Cas=4|Gra=2|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=4|Gra=2|Neg=N
-A\tA\tGen=F|Num=P|Cas=4|Gra=2|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=4|Gra=3|Neg=A
-A\tA\tGen=F|Num=P|Cas=4|Gra=3|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=4|Gra=3|Neg=N
-A\tA\tGen=F|Num=P|Cas=4|Gra=3|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=5|Gra=1|Neg=A
-A\tA\tGen=F|Num=P|Cas=5|Gra=1|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=5|Gra=1|Neg=N
-A\tA\tGen=F|Num=P|Cas=5|Gra=1|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=5|Gra=2|Neg=A
-A\tA\tGen=F|Num=P|Cas=5|Gra=2|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=5|Gra=2|Neg=N
-A\tA\tGen=F|Num=P|Cas=5|Gra=2|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=5|Gra=3|Neg=A
-A\tA\tGen=F|Num=P|Cas=5|Gra=3|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=5|Gra=3|Neg=N
-A\tA\tGen=F|Num=P|Cas=5|Gra=3|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=6|Gra=1|Neg=A
-A\tA\tGen=F|Num=P|Cas=6|Gra=1|Neg=A|Sem=G
-A\tA\tGen=F|Num=P|Cas=6|Gra=1|Neg=A|Sem=S
-A\tA\tGen=F|Num=P|Cas=6|Gra=1|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=6|Gra=1|Neg=N
-A\tA\tGen=F|Num=P|Cas=6|Gra=1|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=6|Gra=2|Neg=A
-A\tA\tGen=F|Num=P|Cas=6|Gra=2|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=6|Gra=2|Neg=N
-A\tA\tGen=F|Num=P|Cas=6|Gra=2|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=6|Gra=3|Neg=A
-A\tA\tGen=F|Num=P|Cas=6|Gra=3|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=6|Gra=3|Neg=N
-A\tA\tGen=F|Num=P|Cas=6|Gra=3|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=7|Gra=1|Neg=A
-A\tA\tGen=F|Num=P|Cas=7|Gra=1|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=7|Gra=1|Neg=A|Var=7
-A\tA\tGen=F|Num=P|Cas=7|Gra=1|Neg=N
-A\tA\tGen=F|Num=P|Cas=7|Gra=1|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=7|Gra=1|Neg=N|Var=7
-A\tA\tGen=F|Num=P|Cas=7|Gra=2|Neg=A
-A\tA\tGen=F|Num=P|Cas=7|Gra=2|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=7|Gra=2|Neg=A|Var=7
-A\tA\tGen=F|Num=P|Cas=7|Gra=2|Neg=N
-A\tA\tGen=F|Num=P|Cas=7|Gra=2|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=7|Gra=2|Neg=N|Var=7
-A\tA\tGen=F|Num=P|Cas=7|Gra=3|Neg=A
-A\tA\tGen=F|Num=P|Cas=7|Gra=3|Neg=A|Var=6
-A\tA\tGen=F|Num=P|Cas=7|Gra=3|Neg=A|Var=7
-A\tA\tGen=F|Num=P|Cas=7|Gra=3|Neg=N
-A\tA\tGen=F|Num=P|Cas=7|Gra=3|Neg=N|Var=6
-A\tA\tGen=F|Num=P|Cas=7|Gra=3|Neg=N|Var=7
-A\tA\tGen=F|Num=S|Cas=1|Gra=1|Neg=A
-A\tA\tGen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=G
-A\tA\tGen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=K
-A\tA\tGen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=R
-A\tA\tGen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=S
-A\tA\tGen=F|Num=S|Cas=1|Gra=1|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=1|Gra=1|Neg=N
-A\tA\tGen=F|Num=S|Cas=1|Gra=1|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=1|Gra=2|Neg=A
-A\tA\tGen=F|Num=S|Cas=1|Gra=2|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=1|Gra=2|Neg=N
-A\tA\tGen=F|Num=S|Cas=1|Gra=2|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=1|Gra=3|Neg=A
-A\tA\tGen=F|Num=S|Cas=1|Gra=3|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=1|Gra=3|Neg=N
-A\tA\tGen=F|Num=S|Cas=1|Gra=3|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=2|Gra=1|Neg=A
-A\tA\tGen=F|Num=S|Cas=2|Gra=1|Neg=A|Sem=G
-A\tA\tGen=F|Num=S|Cas=2|Gra=1|Neg=A|Sem=K
-A\tA\tGen=F|Num=S|Cas=2|Gra=1|Neg=A|Sem=R
-A\tA\tGen=F|Num=S|Cas=2|Gra=1|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=2|Gra=1|Neg=N
-A\tA\tGen=F|Num=S|Cas=2|Gra=1|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=2|Gra=2|Neg=A
-A\tA\tGen=F|Num=S|Cas=2|Gra=2|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=2|Gra=2|Neg=N
-A\tA\tGen=F|Num=S|Cas=2|Gra=2|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=2|Gra=3|Neg=A
-A\tA\tGen=F|Num=S|Cas=2|Gra=3|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=2|Gra=3|Neg=N
-A\tA\tGen=F|Num=S|Cas=2|Gra=3|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=3|Gra=1|Neg=A
-A\tA\tGen=F|Num=S|Cas=3|Gra=1|Neg=A|Sem=G
-A\tA\tGen=F|Num=S|Cas=3|Gra=1|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=3|Gra=1|Neg=N
-A\tA\tGen=F|Num=S|Cas=3|Gra=1|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=3|Gra=2|Neg=A
-A\tA\tGen=F|Num=S|Cas=3|Gra=2|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=3|Gra=2|Neg=N
-A\tA\tGen=F|Num=S|Cas=3|Gra=2|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=3|Gra=3|Neg=A
-A\tA\tGen=F|Num=S|Cas=3|Gra=3|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=3|Gra=3|Neg=N
-A\tA\tGen=F|Num=S|Cas=3|Gra=3|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=4|Gra=1|Neg=A
-A\tA\tGen=F|Num=S|Cas=4|Gra=1|Neg=A|Sem=G
-A\tA\tGen=F|Num=S|Cas=4|Gra=1|Neg=A|Sem=K
-A\tA\tGen=F|Num=S|Cas=4|Gra=1|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=4|Gra=1|Neg=N
-A\tA\tGen=F|Num=S|Cas=4|Gra=1|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=4|Gra=2|Neg=A
-A\tA\tGen=F|Num=S|Cas=4|Gra=2|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=4|Gra=2|Neg=N
-A\tA\tGen=F|Num=S|Cas=4|Gra=2|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=4|Gra=3|Neg=A
-A\tA\tGen=F|Num=S|Cas=4|Gra=3|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=4|Gra=3|Neg=N
-A\tA\tGen=F|Num=S|Cas=4|Gra=3|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=5|Gra=1|Neg=A
-A\tA\tGen=F|Num=S|Cas=5|Gra=1|Neg=A|Sem=R
-A\tA\tGen=F|Num=S|Cas=5|Gra=1|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=5|Gra=1|Neg=N
-A\tA\tGen=F|Num=S|Cas=5|Gra=1|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=5|Gra=2|Neg=A
-A\tA\tGen=F|Num=S|Cas=5|Gra=2|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=5|Gra=2|Neg=N
-A\tA\tGen=F|Num=S|Cas=5|Gra=2|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=5|Gra=3|Neg=A
-A\tA\tGen=F|Num=S|Cas=5|Gra=3|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=5|Gra=3|Neg=N
-A\tA\tGen=F|Num=S|Cas=5|Gra=3|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=6|Gra=1|Neg=A
-A\tA\tGen=F|Num=S|Cas=6|Gra=1|Neg=A|Sem=G
-A\tA\tGen=F|Num=S|Cas=6|Gra=1|Neg=A|Sem=K
-A\tA\tGen=F|Num=S|Cas=6|Gra=1|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=6|Gra=1|Neg=N
-A\tA\tGen=F|Num=S|Cas=6|Gra=1|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=6|Gra=2|Neg=A
-A\tA\tGen=F|Num=S|Cas=6|Gra=2|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=6|Gra=2|Neg=N
-A\tA\tGen=F|Num=S|Cas=6|Gra=2|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=6|Gra=3|Neg=A
-A\tA\tGen=F|Num=S|Cas=6|Gra=3|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=6|Gra=3|Neg=N
-A\tA\tGen=F|Num=S|Cas=6|Gra=3|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=7|Gra=1|Neg=A
-A\tA\tGen=F|Num=S|Cas=7|Gra=1|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=7|Gra=1|Neg=N
-A\tA\tGen=F|Num=S|Cas=7|Gra=1|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=7|Gra=2|Neg=A
-A\tA\tGen=F|Num=S|Cas=7|Gra=2|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=7|Gra=2|Neg=N
-A\tA\tGen=F|Num=S|Cas=7|Gra=2|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=7|Gra=3|Neg=A
-A\tA\tGen=F|Num=S|Cas=7|Gra=3|Neg=A|Var=6
-A\tA\tGen=F|Num=S|Cas=7|Gra=3|Neg=N
-A\tA\tGen=F|Num=S|Cas=7|Gra=3|Neg=N|Var=6
-A\tA\tGen=F|Num=S|Cas=X|Gra=1|Neg=A
-A\tA\tGen=F|Num=S|Cas=X|Gra=1|Neg=A|Sem=G
-A\tA\tGen=F|Num=S|Cas=X|Gra=1|Neg=A|Sem=K
-A\tA\tGen=F|Num=X|Cas=X|Gra=1|Neg=A
-A\tA\tGen=F|Num=X|Cas=X|Gra=1|Neg=A|Sem=G
-A\tA\tGen=F|Num=X|Cas=X|Gra=1|Neg=A|Var=8
-A\tA\tGen=F|Num=X|Cas=X|Gra=1|Neg=N|Var=8
-A\tA\tGen=I|Num=P|Cas=1|Gra=1|Neg=A
-A\tA\tGen=I|Num=P|Cas=1|Gra=1|Neg=A|Sem=G
-A\tA\tGen=I|Num=P|Cas=1|Gra=1|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=1|Gra=1|Neg=N
-A\tA\tGen=I|Num=P|Cas=1|Gra=1|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=1|Gra=2|Neg=A
-A\tA\tGen=I|Num=P|Cas=1|Gra=2|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=1|Gra=2|Neg=N
-A\tA\tGen=I|Num=P|Cas=1|Gra=2|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=1|Gra=3|Neg=A
-A\tA\tGen=I|Num=P|Cas=1|Gra=3|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=1|Gra=3|Neg=N
-A\tA\tGen=I|Num=P|Cas=1|Gra=3|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=2|Gra=1|Neg=A
-A\tA\tGen=I|Num=P|Cas=2|Gra=1|Neg=A|Sem=G
-A\tA\tGen=I|Num=P|Cas=2|Gra=1|Neg=A|Sem=S
-A\tA\tGen=I|Num=P|Cas=2|Gra=1|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=2|Gra=1|Neg=N
-A\tA\tGen=I|Num=P|Cas=2|Gra=1|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=2|Gra=2|Neg=A
-A\tA\tGen=I|Num=P|Cas=2|Gra=2|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=2|Gra=2|Neg=N
-A\tA\tGen=I|Num=P|Cas=2|Gra=2|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=2|Gra=3|Neg=A
-A\tA\tGen=I|Num=P|Cas=2|Gra=3|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=2|Gra=3|Neg=N
-A\tA\tGen=I|Num=P|Cas=2|Gra=3|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=3|Gra=1|Neg=A
-A\tA\tGen=I|Num=P|Cas=3|Gra=1|Neg=A|Sem=G
-A\tA\tGen=I|Num=P|Cas=3|Gra=1|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=3|Gra=1|Neg=N
-A\tA\tGen=I|Num=P|Cas=3|Gra=1|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=3|Gra=2|Neg=A
-A\tA\tGen=I|Num=P|Cas=3|Gra=2|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=3|Gra=2|Neg=N
-A\tA\tGen=I|Num=P|Cas=3|Gra=2|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=3|Gra=3|Neg=A
-A\tA\tGen=I|Num=P|Cas=3|Gra=3|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=3|Gra=3|Neg=N
-A\tA\tGen=I|Num=P|Cas=3|Gra=3|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=4|Gra=1|Neg=A
-A\tA\tGen=I|Num=P|Cas=4|Gra=1|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=4|Gra=1|Neg=N
-A\tA\tGen=I|Num=P|Cas=4|Gra=1|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=4|Gra=2|Neg=A
-A\tA\tGen=I|Num=P|Cas=4|Gra=2|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=4|Gra=2|Neg=N
-A\tA\tGen=I|Num=P|Cas=4|Gra=2|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=4|Gra=3|Neg=A
-A\tA\tGen=I|Num=P|Cas=4|Gra=3|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=4|Gra=3|Neg=N
-A\tA\tGen=I|Num=P|Cas=4|Gra=3|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=5|Gra=1|Neg=A
-A\tA\tGen=I|Num=P|Cas=5|Gra=1|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=5|Gra=1|Neg=N
-A\tA\tGen=I|Num=P|Cas=5|Gra=1|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=5|Gra=2|Neg=A
-A\tA\tGen=I|Num=P|Cas=5|Gra=2|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=5|Gra=2|Neg=N
-A\tA\tGen=I|Num=P|Cas=5|Gra=2|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=5|Gra=3|Neg=A
-A\tA\tGen=I|Num=P|Cas=5|Gra=3|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=5|Gra=3|Neg=N
-A\tA\tGen=I|Num=P|Cas=5|Gra=3|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=6|Gra=1|Neg=A
-A\tA\tGen=I|Num=P|Cas=6|Gra=1|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=6|Gra=1|Neg=N
-A\tA\tGen=I|Num=P|Cas=6|Gra=1|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=6|Gra=2|Neg=A
-A\tA\tGen=I|Num=P|Cas=6|Gra=2|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=6|Gra=2|Neg=N
-A\tA\tGen=I|Num=P|Cas=6|Gra=2|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=6|Gra=3|Neg=A
-A\tA\tGen=I|Num=P|Cas=6|Gra=3|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=6|Gra=3|Neg=N
-A\tA\tGen=I|Num=P|Cas=6|Gra=3|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=7|Gra=1|Neg=A
-A\tA\tGen=I|Num=P|Cas=7|Gra=1|Neg=A|Sem=G
-A\tA\tGen=I|Num=P|Cas=7|Gra=1|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=7|Gra=1|Neg=A|Var=7
-A\tA\tGen=I|Num=P|Cas=7|Gra=1|Neg=N
-A\tA\tGen=I|Num=P|Cas=7|Gra=1|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=7|Gra=1|Neg=N|Var=7
-A\tA\tGen=I|Num=P|Cas=7|Gra=2|Neg=A
-A\tA\tGen=I|Num=P|Cas=7|Gra=2|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=7|Gra=2|Neg=A|Var=7
-A\tA\tGen=I|Num=P|Cas=7|Gra=2|Neg=N
-A\tA\tGen=I|Num=P|Cas=7|Gra=2|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=7|Gra=2|Neg=N|Var=7
-A\tA\tGen=I|Num=P|Cas=7|Gra=3|Neg=A
-A\tA\tGen=I|Num=P|Cas=7|Gra=3|Neg=A|Var=6
-A\tA\tGen=I|Num=P|Cas=7|Gra=3|Neg=A|Var=7
-A\tA\tGen=I|Num=P|Cas=7|Gra=3|Neg=N
-A\tA\tGen=I|Num=P|Cas=7|Gra=3|Neg=N|Var=6
-A\tA\tGen=I|Num=P|Cas=7|Gra=3|Neg=N|Var=7
-A\tA\tGen=I|Num=P|Cas=X|Gra=1|Neg=A
-A\tA\tGen=I|Num=P|Cas=X|Gra=1|Neg=A|Sem=G
-A\tA\tGen=I|Num=P|Cas=X|Gra=1|Neg=N
-A\tA\tGen=I|Num=P|Cas=X|Gra=2|Neg=A
-A\tA\tGen=I|Num=P|Cas=X|Gra=2|Neg=N
-A\tA\tGen=I|Num=P|Cas=X|Gra=3|Neg=A
-A\tA\tGen=I|Num=P|Cas=X|Gra=3|Neg=N
-A\tA\tGen=I|Num=S|Cas=1|Gra=1|Neg=A
-A\tA\tGen=I|Num=S|Cas=1|Gra=1|Neg=A|Sem=G
-A\tA\tGen=I|Num=S|Cas=1|Gra=1|Neg=A|Sem=K
-A\tA\tGen=I|Num=S|Cas=1|Gra=1|Neg=A|Sem=S
-A\tA\tGen=I|Num=S|Cas=1|Gra=1|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=1|Gra=1|Neg=N
-A\tA\tGen=I|Num=S|Cas=1|Gra=1|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=1|Gra=2|Neg=A
-A\tA\tGen=I|Num=S|Cas=1|Gra=2|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=1|Gra=2|Neg=N
-A\tA\tGen=I|Num=S|Cas=1|Gra=2|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=1|Gra=3|Neg=A
-A\tA\tGen=I|Num=S|Cas=1|Gra=3|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=1|Gra=3|Neg=N
-A\tA\tGen=I|Num=S|Cas=1|Gra=3|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=2|Gra=1|Neg=A
-A\tA\tGen=I|Num=S|Cas=2|Gra=1|Neg=A|Sem=G
-A\tA\tGen=I|Num=S|Cas=2|Gra=1|Neg=A|Sem=S
-A\tA\tGen=I|Num=S|Cas=2|Gra=1|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=2|Gra=1|Neg=N
-A\tA\tGen=I|Num=S|Cas=2|Gra=1|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=2|Gra=2|Neg=A
-A\tA\tGen=I|Num=S|Cas=2|Gra=2|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=2|Gra=2|Neg=N
-A\tA\tGen=I|Num=S|Cas=2|Gra=2|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=2|Gra=3|Neg=A
-A\tA\tGen=I|Num=S|Cas=2|Gra=3|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=2|Gra=3|Neg=N
-A\tA\tGen=I|Num=S|Cas=2|Gra=3|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=3|Gra=1|Neg=A
-A\tA\tGen=I|Num=S|Cas=3|Gra=1|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=3|Gra=1|Neg=N
-A\tA\tGen=I|Num=S|Cas=3|Gra=1|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=3|Gra=2|Neg=A
-A\tA\tGen=I|Num=S|Cas=3|Gra=2|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=3|Gra=2|Neg=N
-A\tA\tGen=I|Num=S|Cas=3|Gra=2|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=3|Gra=3|Neg=A
-A\tA\tGen=I|Num=S|Cas=3|Gra=3|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=3|Gra=3|Neg=N
-A\tA\tGen=I|Num=S|Cas=3|Gra=3|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=4|Gra=1|Neg=A
-A\tA\tGen=I|Num=S|Cas=4|Gra=1|Neg=A|Sem=G
-A\tA\tGen=I|Num=S|Cas=4|Gra=1|Neg=A|Sem=S
-A\tA\tGen=I|Num=S|Cas=4|Gra=1|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=4|Gra=1|Neg=N
-A\tA\tGen=I|Num=S|Cas=4|Gra=1|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=4|Gra=2|Neg=A
-A\tA\tGen=I|Num=S|Cas=4|Gra=2|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=4|Gra=2|Neg=N
-A\tA\tGen=I|Num=S|Cas=4|Gra=2|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=4|Gra=3|Neg=A
-A\tA\tGen=I|Num=S|Cas=4|Gra=3|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=4|Gra=3|Neg=N
-A\tA\tGen=I|Num=S|Cas=4|Gra=3|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=5|Gra=1|Neg=A
-A\tA\tGen=I|Num=S|Cas=5|Gra=1|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=5|Gra=1|Neg=N
-A\tA\tGen=I|Num=S|Cas=5|Gra=1|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=5|Gra=2|Neg=A
-A\tA\tGen=I|Num=S|Cas=5|Gra=2|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=5|Gra=2|Neg=N
-A\tA\tGen=I|Num=S|Cas=5|Gra=2|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=5|Gra=3|Neg=A
-A\tA\tGen=I|Num=S|Cas=5|Gra=3|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=5|Gra=3|Neg=N
-A\tA\tGen=I|Num=S|Cas=5|Gra=3|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=6|Gra=1|Neg=A
-A\tA\tGen=I|Num=S|Cas=6|Gra=1|Neg=A|Sem=G
-A\tA\tGen=I|Num=S|Cas=6|Gra=1|Neg=A|Sem=S
-A\tA\tGen=I|Num=S|Cas=6|Gra=1|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=6|Gra=1|Neg=A|Var=7
-A\tA\tGen=I|Num=S|Cas=6|Gra=1|Neg=N
-A\tA\tGen=I|Num=S|Cas=6|Gra=1|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=6|Gra=1|Neg=N|Var=7
-A\tA\tGen=I|Num=S|Cas=6|Gra=2|Neg=A
-A\tA\tGen=I|Num=S|Cas=6|Gra=2|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=6|Gra=2|Neg=N
-A\tA\tGen=I|Num=S|Cas=6|Gra=2|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=6|Gra=3|Neg=A
-A\tA\tGen=I|Num=S|Cas=6|Gra=3|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=6|Gra=3|Neg=N
-A\tA\tGen=I|Num=S|Cas=6|Gra=3|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=7|Gra=1|Neg=A
-A\tA\tGen=I|Num=S|Cas=7|Gra=1|Neg=A|Var=2
-A\tA\tGen=I|Num=S|Cas=7|Gra=1|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=7|Gra=1|Neg=N
-A\tA\tGen=I|Num=S|Cas=7|Gra=1|Neg=N|Var=2
-A\tA\tGen=I|Num=S|Cas=7|Gra=1|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=7|Gra=2|Neg=A
-A\tA\tGen=I|Num=S|Cas=7|Gra=2|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=7|Gra=2|Neg=N
-A\tA\tGen=I|Num=S|Cas=7|Gra=2|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=7|Gra=3|Neg=A
-A\tA\tGen=I|Num=S|Cas=7|Gra=3|Neg=A|Var=6
-A\tA\tGen=I|Num=S|Cas=7|Gra=3|Neg=N
-A\tA\tGen=I|Num=S|Cas=7|Gra=3|Neg=N|Var=6
-A\tA\tGen=I|Num=S|Cas=X|Gra=1|Neg=A
-A\tA\tGen=I|Num=S|Cas=X|Gra=1|Neg=A|Sem=K
-A\tA\tGen=I|Num=S|Cas=X|Gra=1|Neg=A|Sem=R
-A\tA\tGen=I|Num=X|Cas=X|Gra=1|Neg=A
-A\tA\tGen=I|Num=X|Cas=X|Gra=1|Neg=A|Sem=m
-A\tA\tGen=M|Num=P|Cas=1|Gra=1|Neg=A
-A\tA\tGen=M|Num=P|Cas=1|Gra=1|Neg=A|Sem=G
-A\tA\tGen=M|Num=P|Cas=1|Gra=1|Neg=A|Sem=K
-A\tA\tGen=M|Num=P|Cas=1|Gra=1|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=1|Gra=1|Neg=N
-A\tA\tGen=M|Num=P|Cas=1|Gra=1|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=1|Gra=2|Neg=A
-A\tA\tGen=M|Num=P|Cas=1|Gra=2|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=1|Gra=2|Neg=N
-A\tA\tGen=M|Num=P|Cas=1|Gra=2|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=1|Gra=3|Neg=A
-A\tA\tGen=M|Num=P|Cas=1|Gra=3|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=1|Gra=3|Neg=N
-A\tA\tGen=M|Num=P|Cas=1|Gra=3|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=2|Gra=1|Neg=A
-A\tA\tGen=M|Num=P|Cas=2|Gra=1|Neg=A|Sem=G
-A\tA\tGen=M|Num=P|Cas=2|Gra=1|Neg=A|Sem=S
-A\tA\tGen=M|Num=P|Cas=2|Gra=1|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=2|Gra=1|Neg=N
-A\tA\tGen=M|Num=P|Cas=2|Gra=1|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=2|Gra=2|Neg=A
-A\tA\tGen=M|Num=P|Cas=2|Gra=2|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=2|Gra=2|Neg=N
-A\tA\tGen=M|Num=P|Cas=2|Gra=2|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=2|Gra=3|Neg=A
-A\tA\tGen=M|Num=P|Cas=2|Gra=3|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=2|Gra=3|Neg=N
-A\tA\tGen=M|Num=P|Cas=2|Gra=3|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=3|Gra=1|Neg=A
-A\tA\tGen=M|Num=P|Cas=3|Gra=1|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=3|Gra=1|Neg=N
-A\tA\tGen=M|Num=P|Cas=3|Gra=1|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=3|Gra=2|Neg=A
-A\tA\tGen=M|Num=P|Cas=3|Gra=2|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=3|Gra=2|Neg=N
-A\tA\tGen=M|Num=P|Cas=3|Gra=2|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=3|Gra=3|Neg=A
-A\tA\tGen=M|Num=P|Cas=3|Gra=3|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=3|Gra=3|Neg=N
-A\tA\tGen=M|Num=P|Cas=3|Gra=3|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=4|Gra=1|Neg=A
-A\tA\tGen=M|Num=P|Cas=4|Gra=1|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=4|Gra=1|Neg=N
-A\tA\tGen=M|Num=P|Cas=4|Gra=1|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=4|Gra=2|Neg=A
-A\tA\tGen=M|Num=P|Cas=4|Gra=2|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=4|Gra=2|Neg=N
-A\tA\tGen=M|Num=P|Cas=4|Gra=2|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=4|Gra=3|Neg=A
-A\tA\tGen=M|Num=P|Cas=4|Gra=3|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=4|Gra=3|Neg=N
-A\tA\tGen=M|Num=P|Cas=4|Gra=3|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=5|Gra=1|Neg=A
-A\tA\tGen=M|Num=P|Cas=5|Gra=1|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=5|Gra=1|Neg=N
-A\tA\tGen=M|Num=P|Cas=5|Gra=1|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=5|Gra=2|Neg=A
-A\tA\tGen=M|Num=P|Cas=5|Gra=2|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=5|Gra=2|Neg=N
-A\tA\tGen=M|Num=P|Cas=5|Gra=2|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=5|Gra=3|Neg=A
-A\tA\tGen=M|Num=P|Cas=5|Gra=3|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=5|Gra=3|Neg=N
-A\tA\tGen=M|Num=P|Cas=5|Gra=3|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=6|Gra=1|Neg=A
-A\tA\tGen=M|Num=P|Cas=6|Gra=1|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=6|Gra=1|Neg=N
-A\tA\tGen=M|Num=P|Cas=6|Gra=1|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=6|Gra=2|Neg=A
-A\tA\tGen=M|Num=P|Cas=6|Gra=2|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=6|Gra=2|Neg=N
-A\tA\tGen=M|Num=P|Cas=6|Gra=2|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=6|Gra=3|Neg=A
-A\tA\tGen=M|Num=P|Cas=6|Gra=3|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=6|Gra=3|Neg=N
-A\tA\tGen=M|Num=P|Cas=6|Gra=3|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=7|Gra=1|Neg=A
-A\tA\tGen=M|Num=P|Cas=7|Gra=1|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=7|Gra=1|Neg=A|Var=7
-A\tA\tGen=M|Num=P|Cas=7|Gra=1|Neg=N
-A\tA\tGen=M|Num=P|Cas=7|Gra=1|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=7|Gra=1|Neg=N|Var=7
-A\tA\tGen=M|Num=P|Cas=7|Gra=2|Neg=A
-A\tA\tGen=M|Num=P|Cas=7|Gra=2|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=7|Gra=2|Neg=A|Var=7
-A\tA\tGen=M|Num=P|Cas=7|Gra=2|Neg=N
-A\tA\tGen=M|Num=P|Cas=7|Gra=2|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=7|Gra=2|Neg=N|Var=7
-A\tA\tGen=M|Num=P|Cas=7|Gra=3|Neg=A
-A\tA\tGen=M|Num=P|Cas=7|Gra=3|Neg=A|Var=6
-A\tA\tGen=M|Num=P|Cas=7|Gra=3|Neg=A|Var=7
-A\tA\tGen=M|Num=P|Cas=7|Gra=3|Neg=N
-A\tA\tGen=M|Num=P|Cas=7|Gra=3|Neg=N|Var=6
-A\tA\tGen=M|Num=P|Cas=7|Gra=3|Neg=N|Var=7
-A\tA\tGen=M|Num=S|Cas=1|Gra=1|Neg=A
-A\tA\tGen=M|Num=S|Cas=1|Gra=1|Neg=A|Sem=G
-A\tA\tGen=M|Num=S|Cas=1|Gra=1|Neg=A|Sem=S
-A\tA\tGen=M|Num=S|Cas=1|Gra=1|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=1|Gra=1|Neg=N
-A\tA\tGen=M|Num=S|Cas=1|Gra=1|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=1|Gra=2|Neg=A
-A\tA\tGen=M|Num=S|Cas=1|Gra=2|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=1|Gra=2|Neg=N
-A\tA\tGen=M|Num=S|Cas=1|Gra=2|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=1|Gra=3|Neg=A
-A\tA\tGen=M|Num=S|Cas=1|Gra=3|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=1|Gra=3|Neg=N
-A\tA\tGen=M|Num=S|Cas=1|Gra=3|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=2|Gra=1|Neg=A
-A\tA\tGen=M|Num=S|Cas=2|Gra=1|Neg=A|Sem=S
-A\tA\tGen=M|Num=S|Cas=2|Gra=1|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=2|Gra=1|Neg=N
-A\tA\tGen=M|Num=S|Cas=2|Gra=1|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=2|Gra=2|Neg=A
-A\tA\tGen=M|Num=S|Cas=2|Gra=2|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=2|Gra=2|Neg=N
-A\tA\tGen=M|Num=S|Cas=2|Gra=2|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=2|Gra=3|Neg=A
-A\tA\tGen=M|Num=S|Cas=2|Gra=3|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=2|Gra=3|Neg=N
-A\tA\tGen=M|Num=S|Cas=2|Gra=3|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=3|Gra=1|Neg=A
-A\tA\tGen=M|Num=S|Cas=3|Gra=1|Neg=A|Sem=S
-A\tA\tGen=M|Num=S|Cas=3|Gra=1|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=3|Gra=1|Neg=N
-A\tA\tGen=M|Num=S|Cas=3|Gra=1|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=3|Gra=2|Neg=A
-A\tA\tGen=M|Num=S|Cas=3|Gra=2|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=3|Gra=2|Neg=N
-A\tA\tGen=M|Num=S|Cas=3|Gra=2|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=3|Gra=3|Neg=A
-A\tA\tGen=M|Num=S|Cas=3|Gra=3|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=3|Gra=3|Neg=N
-A\tA\tGen=M|Num=S|Cas=3|Gra=3|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=4|Gra=1|Neg=A
-A\tA\tGen=M|Num=S|Cas=4|Gra=1|Neg=A|Sem=S
-A\tA\tGen=M|Num=S|Cas=4|Gra=1|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=4|Gra=1|Neg=N
-A\tA\tGen=M|Num=S|Cas=4|Gra=1|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=4|Gra=2|Neg=A
-A\tA\tGen=M|Num=S|Cas=4|Gra=2|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=4|Gra=2|Neg=N
-A\tA\tGen=M|Num=S|Cas=4|Gra=2|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=4|Gra=3|Neg=A
-A\tA\tGen=M|Num=S|Cas=4|Gra=3|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=4|Gra=3|Neg=N
-A\tA\tGen=M|Num=S|Cas=4|Gra=3|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=5|Gra=1|Neg=A
-A\tA\tGen=M|Num=S|Cas=5|Gra=1|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=5|Gra=1|Neg=N
-A\tA\tGen=M|Num=S|Cas=5|Gra=1|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=5|Gra=2|Neg=A
-A\tA\tGen=M|Num=S|Cas=5|Gra=2|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=5|Gra=2|Neg=N
-A\tA\tGen=M|Num=S|Cas=5|Gra=2|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=5|Gra=3|Neg=A
-A\tA\tGen=M|Num=S|Cas=5|Gra=3|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=5|Gra=3|Neg=N
-A\tA\tGen=M|Num=S|Cas=5|Gra=3|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=6|Gra=1|Neg=A
-A\tA\tGen=M|Num=S|Cas=6|Gra=1|Neg=A|Sem=S
-A\tA\tGen=M|Num=S|Cas=6|Gra=1|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=6|Gra=1|Neg=A|Var=7
-A\tA\tGen=M|Num=S|Cas=6|Gra=1|Neg=N
-A\tA\tGen=M|Num=S|Cas=6|Gra=1|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=6|Gra=1|Neg=N|Var=7
-A\tA\tGen=M|Num=S|Cas=6|Gra=2|Neg=A
-A\tA\tGen=M|Num=S|Cas=6|Gra=2|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=6|Gra=2|Neg=N
-A\tA\tGen=M|Num=S|Cas=6|Gra=2|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=6|Gra=3|Neg=A
-A\tA\tGen=M|Num=S|Cas=6|Gra=3|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=6|Gra=3|Neg=N
-A\tA\tGen=M|Num=S|Cas=6|Gra=3|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=7|Gra=1|Neg=A
-A\tA\tGen=M|Num=S|Cas=7|Gra=1|Neg=A|Sem=S
-A\tA\tGen=M|Num=S|Cas=7|Gra=1|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=7|Gra=1|Neg=N
-A\tA\tGen=M|Num=S|Cas=7|Gra=1|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=7|Gra=2|Neg=A
-A\tA\tGen=M|Num=S|Cas=7|Gra=2|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=7|Gra=2|Neg=N
-A\tA\tGen=M|Num=S|Cas=7|Gra=2|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=7|Gra=3|Neg=A
-A\tA\tGen=M|Num=S|Cas=7|Gra=3|Neg=A|Var=6
-A\tA\tGen=M|Num=S|Cas=7|Gra=3|Neg=N
-A\tA\tGen=M|Num=S|Cas=7|Gra=3|Neg=N|Var=6
-A\tA\tGen=M|Num=S|Cas=X|Gra=1|Neg=A
-A\tA\tGen=N|Num=D|Cas=7|Gra=1|Neg=A
-A\tA\tGen=N|Num=D|Cas=7|Gra=1|Neg=A|Var=6
-A\tA\tGen=N|Num=D|Cas=7|Gra=1|Neg=N
-A\tA\tGen=N|Num=D|Cas=7|Gra=1|Neg=N|Var=6
-A\tA\tGen=N|Num=D|Cas=7|Gra=2|Neg=A
-A\tA\tGen=N|Num=D|Cas=7|Gra=2|Neg=A|Var=6
-A\tA\tGen=N|Num=D|Cas=7|Gra=2|Neg=N
-A\tA\tGen=N|Num=D|Cas=7|Gra=2|Neg=N|Var=6
-A\tA\tGen=N|Num=D|Cas=7|Gra=3|Neg=A
-A\tA\tGen=N|Num=D|Cas=7|Gra=3|Neg=A|Var=6
-A\tA\tGen=N|Num=D|Cas=7|Gra=3|Neg=N
-A\tA\tGen=N|Num=D|Cas=7|Gra=3|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=1|Gra=1|Neg=A
-A\tA\tGen=N|Num=P|Cas=1|Gra=1|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=1|Gra=1|Neg=N
-A\tA\tGen=N|Num=P|Cas=1|Gra=1|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=1|Gra=2|Neg=A
-A\tA\tGen=N|Num=P|Cas=1|Gra=2|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=1|Gra=2|Neg=N
-A\tA\tGen=N|Num=P|Cas=1|Gra=2|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=1|Gra=3|Neg=A
-A\tA\tGen=N|Num=P|Cas=1|Gra=3|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=1|Gra=3|Neg=N
-A\tA\tGen=N|Num=P|Cas=1|Gra=3|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=2|Gra=1|Neg=A
-A\tA\tGen=N|Num=P|Cas=2|Gra=1|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=2|Gra=1|Neg=N
-A\tA\tGen=N|Num=P|Cas=2|Gra=1|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=2|Gra=2|Neg=A
-A\tA\tGen=N|Num=P|Cas=2|Gra=2|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=2|Gra=2|Neg=N
-A\tA\tGen=N|Num=P|Cas=2|Gra=2|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=2|Gra=3|Neg=A
-A\tA\tGen=N|Num=P|Cas=2|Gra=3|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=2|Gra=3|Neg=N
-A\tA\tGen=N|Num=P|Cas=2|Gra=3|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=3|Gra=1|Neg=A
-A\tA\tGen=N|Num=P|Cas=3|Gra=1|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=3|Gra=1|Neg=N
-A\tA\tGen=N|Num=P|Cas=3|Gra=1|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=3|Gra=2|Neg=A
-A\tA\tGen=N|Num=P|Cas=3|Gra=2|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=3|Gra=2|Neg=N
-A\tA\tGen=N|Num=P|Cas=3|Gra=2|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=3|Gra=3|Neg=A
-A\tA\tGen=N|Num=P|Cas=3|Gra=3|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=3|Gra=3|Neg=N
-A\tA\tGen=N|Num=P|Cas=3|Gra=3|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=4|Gra=1|Neg=A
-A\tA\tGen=N|Num=P|Cas=4|Gra=1|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=4|Gra=1|Neg=N
-A\tA\tGen=N|Num=P|Cas=4|Gra=1|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=4|Gra=2|Neg=A
-A\tA\tGen=N|Num=P|Cas=4|Gra=2|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=4|Gra=2|Neg=N
-A\tA\tGen=N|Num=P|Cas=4|Gra=2|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=4|Gra=3|Neg=A
-A\tA\tGen=N|Num=P|Cas=4|Gra=3|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=4|Gra=3|Neg=N
-A\tA\tGen=N|Num=P|Cas=4|Gra=3|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=5|Gra=1|Neg=A
-A\tA\tGen=N|Num=P|Cas=5|Gra=1|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=5|Gra=1|Neg=N
-A\tA\tGen=N|Num=P|Cas=5|Gra=1|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=5|Gra=2|Neg=A
-A\tA\tGen=N|Num=P|Cas=5|Gra=2|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=5|Gra=2|Neg=N
-A\tA\tGen=N|Num=P|Cas=5|Gra=2|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=5|Gra=3|Neg=A
-A\tA\tGen=N|Num=P|Cas=5|Gra=3|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=5|Gra=3|Neg=N
-A\tA\tGen=N|Num=P|Cas=5|Gra=3|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=6|Gra=1|Neg=A
-A\tA\tGen=N|Num=P|Cas=6|Gra=1|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=6|Gra=1|Neg=N
-A\tA\tGen=N|Num=P|Cas=6|Gra=1|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=6|Gra=2|Neg=A
-A\tA\tGen=N|Num=P|Cas=6|Gra=2|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=6|Gra=2|Neg=N
-A\tA\tGen=N|Num=P|Cas=6|Gra=2|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=6|Gra=3|Neg=A
-A\tA\tGen=N|Num=P|Cas=6|Gra=3|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=6|Gra=3|Neg=N
-A\tA\tGen=N|Num=P|Cas=6|Gra=3|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=7|Gra=1|Neg=A
-A\tA\tGen=N|Num=P|Cas=7|Gra=1|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=7|Gra=1|Neg=A|Var=7
-A\tA\tGen=N|Num=P|Cas=7|Gra=1|Neg=N
-A\tA\tGen=N|Num=P|Cas=7|Gra=1|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=7|Gra=1|Neg=N|Var=7
-A\tA\tGen=N|Num=P|Cas=7|Gra=2|Neg=A
-A\tA\tGen=N|Num=P|Cas=7|Gra=2|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=7|Gra=2|Neg=A|Var=7
-A\tA\tGen=N|Num=P|Cas=7|Gra=2|Neg=N
-A\tA\tGen=N|Num=P|Cas=7|Gra=2|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=7|Gra=2|Neg=N|Var=7
-A\tA\tGen=N|Num=P|Cas=7|Gra=3|Neg=A
-A\tA\tGen=N|Num=P|Cas=7|Gra=3|Neg=A|Var=6
-A\tA\tGen=N|Num=P|Cas=7|Gra=3|Neg=A|Var=7
-A\tA\tGen=N|Num=P|Cas=7|Gra=3|Neg=N
-A\tA\tGen=N|Num=P|Cas=7|Gra=3|Neg=N|Var=6
-A\tA\tGen=N|Num=P|Cas=7|Gra=3|Neg=N|Var=7
-A\tA\tGen=N|Num=S|Cas=1|Gra=1|Neg=A
-A\tA\tGen=N|Num=S|Cas=1|Gra=1|Neg=A|Sem=G
-A\tA\tGen=N|Num=S|Cas=1|Gra=1|Neg=A|Sem=K
-A\tA\tGen=N|Num=S|Cas=1|Gra=1|Neg=A|Sem=R
-A\tA\tGen=N|Num=S|Cas=1|Gra=1|Neg=A|Sem=S
-A\tA\tGen=N|Num=S|Cas=1|Gra=1|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=1|Gra=1|Neg=N
-A\tA\tGen=N|Num=S|Cas=1|Gra=1|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=1|Gra=2|Neg=A
-A\tA\tGen=N|Num=S|Cas=1|Gra=2|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=1|Gra=2|Neg=N
-A\tA\tGen=N|Num=S|Cas=1|Gra=2|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=1|Gra=3|Neg=A
-A\tA\tGen=N|Num=S|Cas=1|Gra=3|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=1|Gra=3|Neg=N
-A\tA\tGen=N|Num=S|Cas=1|Gra=3|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=2|Gra=1|Neg=A
-A\tA\tGen=N|Num=S|Cas=2|Gra=1|Neg=A|Sem=G
-A\tA\tGen=N|Num=S|Cas=2|Gra=1|Neg=A|Sem=S
-A\tA\tGen=N|Num=S|Cas=2|Gra=1|Neg=A|Sem=o
-A\tA\tGen=N|Num=S|Cas=2|Gra=1|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=2|Gra=1|Neg=N
-A\tA\tGen=N|Num=S|Cas=2|Gra=1|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=2|Gra=2|Neg=A
-A\tA\tGen=N|Num=S|Cas=2|Gra=2|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=2|Gra=2|Neg=N
-A\tA\tGen=N|Num=S|Cas=2|Gra=2|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=2|Gra=3|Neg=A
-A\tA\tGen=N|Num=S|Cas=2|Gra=3|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=2|Gra=3|Neg=N
-A\tA\tGen=N|Num=S|Cas=2|Gra=3|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=3|Gra=1|Neg=A
-A\tA\tGen=N|Num=S|Cas=3|Gra=1|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=3|Gra=1|Neg=N
-A\tA\tGen=N|Num=S|Cas=3|Gra=1|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=3|Gra=2|Neg=A
-A\tA\tGen=N|Num=S|Cas=3|Gra=2|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=3|Gra=2|Neg=N
-A\tA\tGen=N|Num=S|Cas=3|Gra=2|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=3|Gra=3|Neg=A
-A\tA\tGen=N|Num=S|Cas=3|Gra=3|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=3|Gra=3|Neg=N
-A\tA\tGen=N|Num=S|Cas=3|Gra=3|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=4|Gra=1|Neg=A
-A\tA\tGen=N|Num=S|Cas=4|Gra=1|Neg=A|Sem=G
-A\tA\tGen=N|Num=S|Cas=4|Gra=1|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=4|Gra=1|Neg=N
-A\tA\tGen=N|Num=S|Cas=4|Gra=1|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=4|Gra=2|Neg=A
-A\tA\tGen=N|Num=S|Cas=4|Gra=2|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=4|Gra=2|Neg=N
-A\tA\tGen=N|Num=S|Cas=4|Gra=2|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=4|Gra=3|Neg=A
-A\tA\tGen=N|Num=S|Cas=4|Gra=3|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=4|Gra=3|Neg=N
-A\tA\tGen=N|Num=S|Cas=4|Gra=3|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=5|Gra=1|Neg=A
-A\tA\tGen=N|Num=S|Cas=5|Gra=1|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=5|Gra=1|Neg=N
-A\tA\tGen=N|Num=S|Cas=5|Gra=1|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=5|Gra=2|Neg=A
-A\tA\tGen=N|Num=S|Cas=5|Gra=2|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=5|Gra=2|Neg=N
-A\tA\tGen=N|Num=S|Cas=5|Gra=2|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=5|Gra=3|Neg=A
-A\tA\tGen=N|Num=S|Cas=5|Gra=3|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=5|Gra=3|Neg=N
-A\tA\tGen=N|Num=S|Cas=5|Gra=3|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=6|Gra=1|Neg=A
-A\tA\tGen=N|Num=S|Cas=6|Gra=1|Neg=A|Sem=G
-A\tA\tGen=N|Num=S|Cas=6|Gra=1|Neg=A|Sem=S
-A\tA\tGen=N|Num=S|Cas=6|Gra=1|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=6|Gra=1|Neg=A|Var=7
-A\tA\tGen=N|Num=S|Cas=6|Gra=1|Neg=N
-A\tA\tGen=N|Num=S|Cas=6|Gra=1|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=6|Gra=1|Neg=N|Var=7
-A\tA\tGen=N|Num=S|Cas=6|Gra=2|Neg=A
-A\tA\tGen=N|Num=S|Cas=6|Gra=2|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=6|Gra=2|Neg=N
-A\tA\tGen=N|Num=S|Cas=6|Gra=2|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=6|Gra=3|Neg=A
-A\tA\tGen=N|Num=S|Cas=6|Gra=3|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=6|Gra=3|Neg=N
-A\tA\tGen=N|Num=S|Cas=6|Gra=3|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=7|Gra=1|Neg=A
-A\tA\tGen=N|Num=S|Cas=7|Gra=1|Neg=A|Sem=G
-A\tA\tGen=N|Num=S|Cas=7|Gra=1|Neg=A|Sem=S
-A\tA\tGen=N|Num=S|Cas=7|Gra=1|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=7|Gra=1|Neg=A|Var=8
-A\tA\tGen=N|Num=S|Cas=7|Gra=1|Neg=N
-A\tA\tGen=N|Num=S|Cas=7|Gra=1|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=7|Gra=2|Neg=A
-A\tA\tGen=N|Num=S|Cas=7|Gra=2|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=7|Gra=2|Neg=N
-A\tA\tGen=N|Num=S|Cas=7|Gra=2|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=7|Gra=3|Neg=A
-A\tA\tGen=N|Num=S|Cas=7|Gra=3|Neg=A|Var=6
-A\tA\tGen=N|Num=S|Cas=7|Gra=3|Neg=N
-A\tA\tGen=N|Num=S|Cas=7|Gra=3|Neg=N|Var=6
-A\tA\tGen=N|Num=S|Cas=X|Gra=1|Neg=A
-A\tA\tGen=N|Num=S|Cas=X|Gra=1|Neg=A|Sem=G
-A\tA\tGen=X|Num=P|Cas=X|Gra=1|Neg=A
-A\tA\tGen=X|Num=P|Cas=X|Gra=1|Neg=N
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=E
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=G
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=K
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=R
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=S
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=Y
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=m
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=w
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=1
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=8
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=8|Sem=G
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=8|Sem=K
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=8|Sem=R
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=8|Sem=m
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=9
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=N
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=N|Var=8
-A\tA\tGen=X|Num=X|Cas=X|Gra=1|Neg=N|Var=9
-A\tA\tGen=X|Num=X|Cas=X|Gra=2|Neg=A|Var=8
-A\tA\tGen=X|Num=X|Cas=X|Gra=3|Neg=A|Var=8
-A\tC\tGen=F|Num=S|Cas=4|Neg=A
-A\tC\tGen=F|Num=S|Cas=4|Neg=N
-A\tC\tGen=M|Num=P|Neg=A
-A\tC\tGen=M|Num=P|Neg=N
-A\tC\tGen=N|Num=S|Neg=A
-A\tC\tGen=N|Num=S|Neg=N
-A\tC\tGen=Q|Num=W|Neg=A
-A\tC\tGen=Q|Num=W|Neg=N
-A\tC\tGen=T|Num=P|Neg=A
-A\tC\tGen=T|Num=P|Neg=N
-A\tC\tGen=Y|Num=S|Neg=A
-A\tC\tGen=Y|Num=S|Neg=N
-A\tG\tGen=F|Num=D|Cas=7|Neg=A
-A\tG\tGen=F|Num=D|Cas=7|Neg=A|Var=6
-A\tG\tGen=F|Num=D|Cas=7|Neg=N
-A\tG\tGen=F|Num=D|Cas=7|Neg=N|Var=6
-A\tG\tGen=F|Num=P|Cas=1|Neg=A
-A\tG\tGen=F|Num=P|Cas=1|Neg=A|Var=6
-A\tG\tGen=F|Num=P|Cas=1|Neg=N
-A\tG\tGen=F|Num=P|Cas=1|Neg=N|Var=6
-A\tG\tGen=F|Num=P|Cas=2|Neg=A
-A\tG\tGen=F|Num=P|Cas=2|Neg=A|Var=6
-A\tG\tGen=F|Num=P|Cas=2|Neg=N
-A\tG\tGen=F|Num=P|Cas=2|Neg=N|Var=6
-A\tG\tGen=F|Num=P|Cas=3|Neg=A
-A\tG\tGen=F|Num=P|Cas=3|Neg=A|Var=6
-A\tG\tGen=F|Num=P|Cas=3|Neg=N
-A\tG\tGen=F|Num=P|Cas=3|Neg=N|Var=6
-A\tG\tGen=F|Num=P|Cas=4|Neg=A
-A\tG\tGen=F|Num=P|Cas=4|Neg=A|Var=6
-A\tG\tGen=F|Num=P|Cas=4|Neg=N
-A\tG\tGen=F|Num=P|Cas=4|Neg=N|Var=6
-A\tG\tGen=F|Num=P|Cas=5|Neg=A
-A\tG\tGen=F|Num=P|Cas=5|Neg=A|Var=6
-A\tG\tGen=F|Num=P|Cas=5|Neg=N
-A\tG\tGen=F|Num=P|Cas=5|Neg=N|Var=6
-A\tG\tGen=F|Num=P|Cas=6|Neg=A
-A\tG\tGen=F|Num=P|Cas=6|Neg=A|Var=6
-A\tG\tGen=F|Num=P|Cas=6|Neg=N
-A\tG\tGen=F|Num=P|Cas=6|Neg=N|Var=6
-A\tG\tGen=F|Num=P|Cas=7|Neg=A
-A\tG\tGen=F|Num=P|Cas=7|Neg=A|Var=6
-A\tG\tGen=F|Num=P|Cas=7|Neg=N
-A\tG\tGen=F|Num=P|Cas=7|Neg=N|Var=6
-A\tG\tGen=F|Num=S|Cas=1|Neg=A
-A\tG\tGen=F|Num=S|Cas=1|Neg=A|Var=6
-A\tG\tGen=F|Num=S|Cas=1|Neg=N
-A\tG\tGen=F|Num=S|Cas=1|Neg=N|Var=6
-A\tG\tGen=F|Num=S|Cas=2|Neg=A
-A\tG\tGen=F|Num=S|Cas=2|Neg=A|Var=6
-A\tG\tGen=F|Num=S|Cas=2|Neg=N
-A\tG\tGen=F|Num=S|Cas=2|Neg=N|Var=6
-A\tG\tGen=F|Num=S|Cas=3|Neg=A
-A\tG\tGen=F|Num=S|Cas=3|Neg=A|Var=6
-A\tG\tGen=F|Num=S|Cas=3|Neg=N
-A\tG\tGen=F|Num=S|Cas=3|Neg=N|Var=6
-A\tG\tGen=F|Num=S|Cas=4|Neg=A
-A\tG\tGen=F|Num=S|Cas=4|Neg=A|Var=6
-A\tG\tGen=F|Num=S|Cas=4|Neg=N
-A\tG\tGen=F|Num=S|Cas=4|Neg=N|Var=6
-A\tG\tGen=F|Num=S|Cas=5|Neg=A
-A\tG\tGen=F|Num=S|Cas=5|Neg=A|Var=6
-A\tG\tGen=F|Num=S|Cas=5|Neg=N
-A\tG\tGen=F|Num=S|Cas=5|Neg=N|Var=6
-A\tG\tGen=F|Num=S|Cas=6|Neg=A
-A\tG\tGen=F|Num=S|Cas=6|Neg=A|Var=6
-A\tG\tGen=F|Num=S|Cas=6|Neg=N
-A\tG\tGen=F|Num=S|Cas=6|Neg=N|Var=6
-A\tG\tGen=F|Num=S|Cas=7|Neg=A
-A\tG\tGen=F|Num=S|Cas=7|Neg=A|Var=6
-A\tG\tGen=F|Num=S|Cas=7|Neg=N
-A\tG\tGen=F|Num=S|Cas=7|Neg=N|Var=6
-A\tG\tGen=I|Num=P|Cas=1|Neg=A
-A\tG\tGen=I|Num=P|Cas=1|Neg=A|Var=6
-A\tG\tGen=I|Num=P|Cas=1|Neg=N
-A\tG\tGen=I|Num=P|Cas=1|Neg=N|Var=6
-A\tG\tGen=I|Num=P|Cas=2|Neg=A
-A\tG\tGen=I|Num=P|Cas=2|Neg=A|Var=6
-A\tG\tGen=I|Num=P|Cas=2|Neg=N
-A\tG\tGen=I|Num=P|Cas=2|Neg=N|Var=6
-A\tG\tGen=I|Num=P|Cas=3|Neg=A
-A\tG\tGen=I|Num=P|Cas=3|Neg=A|Var=6
-A\tG\tGen=I|Num=P|Cas=3|Neg=N
-A\tG\tGen=I|Num=P|Cas=3|Neg=N|Var=6
-A\tG\tGen=I|Num=P|Cas=4|Neg=A
-A\tG\tGen=I|Num=P|Cas=4|Neg=A|Var=6
-A\tG\tGen=I|Num=P|Cas=4|Neg=N
-A\tG\tGen=I|Num=P|Cas=4|Neg=N|Var=6
-A\tG\tGen=I|Num=P|Cas=5|Neg=A
-A\tG\tGen=I|Num=P|Cas=5|Neg=A|Var=6
-A\tG\tGen=I|Num=P|Cas=5|Neg=N
-A\tG\tGen=I|Num=P|Cas=5|Neg=N|Var=6
-A\tG\tGen=I|Num=P|Cas=6|Neg=A
-A\tG\tGen=I|Num=P|Cas=6|Neg=A|Var=6
-A\tG\tGen=I|Num=P|Cas=6|Neg=N
-A\tG\tGen=I|Num=P|Cas=6|Neg=N|Var=6
-A\tG\tGen=I|Num=P|Cas=7|Neg=A
-A\tG\tGen=I|Num=P|Cas=7|Neg=A|Var=6
-A\tG\tGen=I|Num=P|Cas=7|Neg=N
-A\tG\tGen=I|Num=P|Cas=7|Neg=N|Var=6
-A\tG\tGen=I|Num=S|Cas=1|Neg=A
-A\tG\tGen=I|Num=S|Cas=1|Neg=A|Var=6
-A\tG\tGen=I|Num=S|Cas=1|Neg=N
-A\tG\tGen=I|Num=S|Cas=1|Neg=N|Var=6
-A\tG\tGen=I|Num=S|Cas=2|Neg=A
-A\tG\tGen=I|Num=S|Cas=2|Neg=A|Var=6
-A\tG\tGen=I|Num=S|Cas=2|Neg=N
-A\tG\tGen=I|Num=S|Cas=2|Neg=N|Var=6
-A\tG\tGen=I|Num=S|Cas=3|Neg=A
-A\tG\tGen=I|Num=S|Cas=3|Neg=A|Var=6
-A\tG\tGen=I|Num=S|Cas=3|Neg=N
-A\tG\tGen=I|Num=S|Cas=3|Neg=N|Var=6
-A\tG\tGen=I|Num=S|Cas=4|Neg=A
-A\tG\tGen=I|Num=S|Cas=4|Neg=A|Var=6
-A\tG\tGen=I|Num=S|Cas=4|Neg=N
-A\tG\tGen=I|Num=S|Cas=4|Neg=N|Var=6
-A\tG\tGen=I|Num=S|Cas=5|Neg=A
-A\tG\tGen=I|Num=S|Cas=5|Neg=A|Var=6
-A\tG\tGen=I|Num=S|Cas=5|Neg=N
-A\tG\tGen=I|Num=S|Cas=5|Neg=N|Var=6
-A\tG\tGen=I|Num=S|Cas=6|Neg=A
-A\tG\tGen=I|Num=S|Cas=6|Neg=A|Var=6
-A\tG\tGen=I|Num=S|Cas=6|Neg=A|Var=7
-A\tG\tGen=I|Num=S|Cas=6|Neg=N
-A\tG\tGen=I|Num=S|Cas=6|Neg=N|Var=6
-A\tG\tGen=I|Num=S|Cas=6|Neg=N|Var=7
-A\tG\tGen=I|Num=S|Cas=7|Neg=A
-A\tG\tGen=I|Num=S|Cas=7|Neg=A|Var=6
-A\tG\tGen=I|Num=S|Cas=7|Neg=N
-A\tG\tGen=I|Num=S|Cas=7|Neg=N|Var=6
-A\tG\tGen=M|Num=P|Cas=1|Neg=A
-A\tG\tGen=M|Num=P|Cas=1|Neg=A|Var=6
-A\tG\tGen=M|Num=P|Cas=1|Neg=N
-A\tG\tGen=M|Num=P|Cas=1|Neg=N|Var=6
-A\tG\tGen=M|Num=P|Cas=2|Neg=A
-A\tG\tGen=M|Num=P|Cas=2|Neg=A|Var=6
-A\tG\tGen=M|Num=P|Cas=2|Neg=N
-A\tG\tGen=M|Num=P|Cas=2|Neg=N|Var=6
-A\tG\tGen=M|Num=P|Cas=3|Neg=A
-A\tG\tGen=M|Num=P|Cas=3|Neg=A|Var=6
-A\tG\tGen=M|Num=P|Cas=3|Neg=N
-A\tG\tGen=M|Num=P|Cas=3|Neg=N|Var=6
-A\tG\tGen=M|Num=P|Cas=4|Neg=A
-A\tG\tGen=M|Num=P|Cas=4|Neg=A|Var=6
-A\tG\tGen=M|Num=P|Cas=4|Neg=N
-A\tG\tGen=M|Num=P|Cas=4|Neg=N|Var=6
-A\tG\tGen=M|Num=P|Cas=5|Neg=A
-A\tG\tGen=M|Num=P|Cas=5|Neg=A|Var=6
-A\tG\tGen=M|Num=P|Cas=5|Neg=N
-A\tG\tGen=M|Num=P|Cas=5|Neg=N|Var=6
-A\tG\tGen=M|Num=P|Cas=6|Neg=A
-A\tG\tGen=M|Num=P|Cas=6|Neg=A|Var=6
-A\tG\tGen=M|Num=P|Cas=6|Neg=N
-A\tG\tGen=M|Num=P|Cas=6|Neg=N|Var=6
-A\tG\tGen=M|Num=P|Cas=7|Neg=A
-A\tG\tGen=M|Num=P|Cas=7|Neg=A|Var=6
-A\tG\tGen=M|Num=P|Cas=7|Neg=N
-A\tG\tGen=M|Num=P|Cas=7|Neg=N|Var=6
-A\tG\tGen=M|Num=S|Cas=1|Neg=A
-A\tG\tGen=M|Num=S|Cas=1|Neg=A|Var=6
-A\tG\tGen=M|Num=S|Cas=1|Neg=N
-A\tG\tGen=M|Num=S|Cas=1|Neg=N|Var=6
-A\tG\tGen=M|Num=S|Cas=2|Neg=A
-A\tG\tGen=M|Num=S|Cas=2|Neg=A|Var=6
-A\tG\tGen=M|Num=S|Cas=2|Neg=N
-A\tG\tGen=M|Num=S|Cas=2|Neg=N|Var=6
-A\tG\tGen=M|Num=S|Cas=3|Neg=A
-A\tG\tGen=M|Num=S|Cas=3|Neg=A|Var=6
-A\tG\tGen=M|Num=S|Cas=3|Neg=N
-A\tG\tGen=M|Num=S|Cas=3|Neg=N|Var=6
-A\tG\tGen=M|Num=S|Cas=4|Neg=A
-A\tG\tGen=M|Num=S|Cas=4|Neg=A|Var=6
-A\tG\tGen=M|Num=S|Cas=4|Neg=N
-A\tG\tGen=M|Num=S|Cas=4|Neg=N|Var=6
-A\tG\tGen=M|Num=S|Cas=5|Neg=A
-A\tG\tGen=M|Num=S|Cas=5|Neg=A|Var=6
-A\tG\tGen=M|Num=S|Cas=5|Neg=N
-A\tG\tGen=M|Num=S|Cas=5|Neg=N|Var=6
-A\tG\tGen=M|Num=S|Cas=6|Neg=A
-A\tG\tGen=M|Num=S|Cas=6|Neg=A|Var=6
-A\tG\tGen=M|Num=S|Cas=6|Neg=A|Var=7
-A\tG\tGen=M|Num=S|Cas=6|Neg=N
-A\tG\tGen=M|Num=S|Cas=6|Neg=N|Var=6
-A\tG\tGen=M|Num=S|Cas=6|Neg=N|Var=7
-A\tG\tGen=M|Num=S|Cas=7|Neg=A
-A\tG\tGen=M|Num=S|Cas=7|Neg=A|Var=6
-A\tG\tGen=M|Num=S|Cas=7|Neg=N
-A\tG\tGen=M|Num=S|Cas=7|Neg=N|Var=6
-A\tG\tGen=N|Num=D|Cas=7|Neg=A
-A\tG\tGen=N|Num=D|Cas=7|Neg=A|Var=6
-A\tG\tGen=N|Num=D|Cas=7|Neg=N
-A\tG\tGen=N|Num=D|Cas=7|Neg=N|Var=6
-A\tG\tGen=N|Num=P|Cas=1|Neg=A
-A\tG\tGen=N|Num=P|Cas=1|Neg=A|Var=6
-A\tG\tGen=N|Num=P|Cas=1|Neg=N
-A\tG\tGen=N|Num=P|Cas=1|Neg=N|Var=6
-A\tG\tGen=N|Num=P|Cas=2|Neg=A
-A\tG\tGen=N|Num=P|Cas=2|Neg=A|Var=6
-A\tG\tGen=N|Num=P|Cas=2|Neg=N
-A\tG\tGen=N|Num=P|Cas=2|Neg=N|Var=6
-A\tG\tGen=N|Num=P|Cas=3|Neg=A
-A\tG\tGen=N|Num=P|Cas=3|Neg=A|Var=6
-A\tG\tGen=N|Num=P|Cas=3|Neg=N
-A\tG\tGen=N|Num=P|Cas=3|Neg=N|Var=6
-A\tG\tGen=N|Num=P|Cas=4|Neg=A
-A\tG\tGen=N|Num=P|Cas=4|Neg=A|Var=6
-A\tG\tGen=N|Num=P|Cas=4|Neg=N
-A\tG\tGen=N|Num=P|Cas=4|Neg=N|Var=6
-A\tG\tGen=N|Num=P|Cas=5|Neg=A
-A\tG\tGen=N|Num=P|Cas=5|Neg=A|Var=6
-A\tG\tGen=N|Num=P|Cas=5|Neg=N
-A\tG\tGen=N|Num=P|Cas=5|Neg=N|Var=6
-A\tG\tGen=N|Num=P|Cas=6|Neg=A
-A\tG\tGen=N|Num=P|Cas=6|Neg=A|Var=6
-A\tG\tGen=N|Num=P|Cas=6|Neg=N
-A\tG\tGen=N|Num=P|Cas=6|Neg=N|Var=6
-A\tG\tGen=N|Num=P|Cas=7|Neg=A
-A\tG\tGen=N|Num=P|Cas=7|Neg=A|Var=6
-A\tG\tGen=N|Num=P|Cas=7|Neg=N
-A\tG\tGen=N|Num=P|Cas=7|Neg=N|Var=6
-A\tG\tGen=N|Num=S|Cas=1|Neg=A
-A\tG\tGen=N|Num=S|Cas=1|Neg=A|Var=6
-A\tG\tGen=N|Num=S|Cas=1|Neg=N
-A\tG\tGen=N|Num=S|Cas=1|Neg=N|Var=6
-A\tG\tGen=N|Num=S|Cas=2|Neg=A
-A\tG\tGen=N|Num=S|Cas=2|Neg=A|Var=6
-A\tG\tGen=N|Num=S|Cas=2|Neg=N
-A\tG\tGen=N|Num=S|Cas=2|Neg=N|Var=6
-A\tG\tGen=N|Num=S|Cas=3|Neg=A
-A\tG\tGen=N|Num=S|Cas=3|Neg=A|Var=6
-A\tG\tGen=N|Num=S|Cas=3|Neg=N
-A\tG\tGen=N|Num=S|Cas=3|Neg=N|Var=6
-A\tG\tGen=N|Num=S|Cas=4|Neg=A
-A\tG\tGen=N|Num=S|Cas=4|Neg=A|Var=6
-A\tG\tGen=N|Num=S|Cas=4|Neg=N
-A\tG\tGen=N|Num=S|Cas=4|Neg=N|Var=6
-A\tG\tGen=N|Num=S|Cas=5|Neg=A
-A\tG\tGen=N|Num=S|Cas=5|Neg=A|Var=6
-A\tG\tGen=N|Num=S|Cas=5|Neg=N
-A\tG\tGen=N|Num=S|Cas=5|Neg=N|Var=6
-A\tG\tGen=N|Num=S|Cas=6|Neg=A
-A\tG\tGen=N|Num=S|Cas=6|Neg=A|Var=6
-A\tG\tGen=N|Num=S|Cas=6|Neg=A|Var=7
-A\tG\tGen=N|Num=S|Cas=6|Neg=N
-A\tG\tGen=N|Num=S|Cas=6|Neg=N|Var=6
-A\tG\tGen=N|Num=S|Cas=6|Neg=N|Var=7
-A\tG\tGen=N|Num=S|Cas=7|Neg=A
-A\tG\tGen=N|Num=S|Cas=7|Neg=A|Var=6
-A\tG\tGen=N|Num=S|Cas=7|Neg=N
-A\tG\tGen=N|Num=S|Cas=7|Neg=N|Var=6
-A\tM\tGen=F|Num=D|Cas=7|Neg=A
-A\tM\tGen=F|Num=D|Cas=7|Neg=A|Var=6
-A\tM\tGen=F|Num=D|Cas=7|Neg=N
-A\tM\tGen=F|Num=D|Cas=7|Neg=N|Var=6
-A\tM\tGen=F|Num=P|Cas=1|Neg=A
-A\tM\tGen=F|Num=P|Cas=1|Neg=A|Var=6
-A\tM\tGen=F|Num=P|Cas=1|Neg=N
-A\tM\tGen=F|Num=P|Cas=1|Neg=N|Var=6
-A\tM\tGen=F|Num=P|Cas=2|Neg=A
-A\tM\tGen=F|Num=P|Cas=2|Neg=A|Var=6
-A\tM\tGen=F|Num=P|Cas=2|Neg=N
-A\tM\tGen=F|Num=P|Cas=2|Neg=N|Var=6
-A\tM\tGen=F|Num=P|Cas=3|Neg=A
-A\tM\tGen=F|Num=P|Cas=3|Neg=A|Var=6
-A\tM\tGen=F|Num=P|Cas=3|Neg=N
-A\tM\tGen=F|Num=P|Cas=3|Neg=N|Var=6
-A\tM\tGen=F|Num=P|Cas=4|Neg=A
-A\tM\tGen=F|Num=P|Cas=4|Neg=A|Var=6
-A\tM\tGen=F|Num=P|Cas=4|Neg=N
-A\tM\tGen=F|Num=P|Cas=4|Neg=N|Var=6
-A\tM\tGen=F|Num=P|Cas=5|Neg=A
-A\tM\tGen=F|Num=P|Cas=5|Neg=A|Var=6
-A\tM\tGen=F|Num=P|Cas=5|Neg=N
-A\tM\tGen=F|Num=P|Cas=5|Neg=N|Var=6
-A\tM\tGen=F|Num=P|Cas=6|Neg=A
-A\tM\tGen=F|Num=P|Cas=6|Neg=A|Var=6
-A\tM\tGen=F|Num=P|Cas=6|Neg=N
-A\tM\tGen=F|Num=P|Cas=6|Neg=N|Var=6
-A\tM\tGen=F|Num=P|Cas=7|Neg=A
-A\tM\tGen=F|Num=P|Cas=7|Neg=A|Var=6
-A\tM\tGen=F|Num=P|Cas=7|Neg=N
-A\tM\tGen=F|Num=P|Cas=7|Neg=N|Var=6
-A\tM\tGen=F|Num=S|Cas=1|Neg=A
-A\tM\tGen=F|Num=S|Cas=1|Neg=A|Var=6
-A\tM\tGen=F|Num=S|Cas=1|Neg=N
-A\tM\tGen=F|Num=S|Cas=1|Neg=N|Var=6
-A\tM\tGen=F|Num=S|Cas=2|Neg=A
-A\tM\tGen=F|Num=S|Cas=2|Neg=A|Var=6
-A\tM\tGen=F|Num=S|Cas=2|Neg=N
-A\tM\tGen=F|Num=S|Cas=2|Neg=N|Var=6
-A\tM\tGen=F|Num=S|Cas=3|Neg=A
-A\tM\tGen=F|Num=S|Cas=3|Neg=A|Var=6
-A\tM\tGen=F|Num=S|Cas=3|Neg=N
-A\tM\tGen=F|Num=S|Cas=3|Neg=N|Var=6
-A\tM\tGen=F|Num=S|Cas=4|Neg=A
-A\tM\tGen=F|Num=S|Cas=4|Neg=A|Var=6
-A\tM\tGen=F|Num=S|Cas=4|Neg=N
-A\tM\tGen=F|Num=S|Cas=4|Neg=N|Var=6
-A\tM\tGen=F|Num=S|Cas=5|Neg=A
-A\tM\tGen=F|Num=S|Cas=5|Neg=A|Var=6
-A\tM\tGen=F|Num=S|Cas=5|Neg=N
-A\tM\tGen=F|Num=S|Cas=5|Neg=N|Var=6
-A\tM\tGen=F|Num=S|Cas=6|Neg=A
-A\tM\tGen=F|Num=S|Cas=6|Neg=A|Var=6
-A\tM\tGen=F|Num=S|Cas=6|Neg=N
-A\tM\tGen=F|Num=S|Cas=6|Neg=N|Var=6
-A\tM\tGen=F|Num=S|Cas=7|Neg=A
-A\tM\tGen=F|Num=S|Cas=7|Neg=A|Var=6
-A\tM\tGen=F|Num=S|Cas=7|Neg=N
-A\tM\tGen=F|Num=S|Cas=7|Neg=N|Var=6
-A\tM\tGen=I|Num=P|Cas=1|Neg=A
-A\tM\tGen=I|Num=P|Cas=1|Neg=A|Var=6
-A\tM\tGen=I|Num=P|Cas=1|Neg=N
-A\tM\tGen=I|Num=P|Cas=1|Neg=N|Var=6
-A\tM\tGen=I|Num=P|Cas=2|Neg=A
-A\tM\tGen=I|Num=P|Cas=2|Neg=A|Var=6
-A\tM\tGen=I|Num=P|Cas=2|Neg=N
-A\tM\tGen=I|Num=P|Cas=2|Neg=N|Var=6
-A\tM\tGen=I|Num=P|Cas=3|Neg=A
-A\tM\tGen=I|Num=P|Cas=3|Neg=A|Var=6
-A\tM\tGen=I|Num=P|Cas=3|Neg=N
-A\tM\tGen=I|Num=P|Cas=3|Neg=N|Var=6
-A\tM\tGen=I|Num=P|Cas=4|Neg=A
-A\tM\tGen=I|Num=P|Cas=4|Neg=A|Var=6
-A\tM\tGen=I|Num=P|Cas=4|Neg=N
-A\tM\tGen=I|Num=P|Cas=4|Neg=N|Var=6
-A\tM\tGen=I|Num=P|Cas=5|Neg=A
-A\tM\tGen=I|Num=P|Cas=5|Neg=A|Var=6
-A\tM\tGen=I|Num=P|Cas=5|Neg=N
-A\tM\tGen=I|Num=P|Cas=5|Neg=N|Var=6
-A\tM\tGen=I|Num=P|Cas=6|Neg=A
-A\tM\tGen=I|Num=P|Cas=6|Neg=A|Var=6
-A\tM\tGen=I|Num=P|Cas=6|Neg=N
-A\tM\tGen=I|Num=P|Cas=6|Neg=N|Var=6
-A\tM\tGen=I|Num=P|Cas=7|Neg=A
-A\tM\tGen=I|Num=P|Cas=7|Neg=A|Var=6
-A\tM\tGen=I|Num=P|Cas=7|Neg=N
-A\tM\tGen=I|Num=P|Cas=7|Neg=N|Var=6
-A\tM\tGen=I|Num=S|Cas=1|Neg=A
-A\tM\tGen=I|Num=S|Cas=1|Neg=A|Var=6
-A\tM\tGen=I|Num=S|Cas=1|Neg=N
-A\tM\tGen=I|Num=S|Cas=1|Neg=N|Var=6
-A\tM\tGen=I|Num=S|Cas=2|Neg=A
-A\tM\tGen=I|Num=S|Cas=2|Neg=A|Var=6
-A\tM\tGen=I|Num=S|Cas=2|Neg=N
-A\tM\tGen=I|Num=S|Cas=2|Neg=N|Var=6
-A\tM\tGen=I|Num=S|Cas=3|Neg=A
-A\tM\tGen=I|Num=S|Cas=3|Neg=A|Var=6
-A\tM\tGen=I|Num=S|Cas=3|Neg=N
-A\tM\tGen=I|Num=S|Cas=3|Neg=N|Var=6
-A\tM\tGen=I|Num=S|Cas=4|Neg=A
-A\tM\tGen=I|Num=S|Cas=4|Neg=A|Var=6
-A\tM\tGen=I|Num=S|Cas=4|Neg=N
-A\tM\tGen=I|Num=S|Cas=4|Neg=N|Var=6
-A\tM\tGen=I|Num=S|Cas=5|Neg=A
-A\tM\tGen=I|Num=S|Cas=5|Neg=A|Var=6
-A\tM\tGen=I|Num=S|Cas=5|Neg=N
-A\tM\tGen=I|Num=S|Cas=5|Neg=N|Var=6
-A\tM\tGen=I|Num=S|Cas=6|Neg=A
-A\tM\tGen=I|Num=S|Cas=6|Neg=A|Var=6
-A\tM\tGen=I|Num=S|Cas=6|Neg=A|Var=7
-A\tM\tGen=I|Num=S|Cas=6|Neg=N
-A\tM\tGen=I|Num=S|Cas=6|Neg=N|Var=6
-A\tM\tGen=I|Num=S|Cas=6|Neg=N|Var=7
-A\tM\tGen=I|Num=S|Cas=7|Neg=A
-A\tM\tGen=I|Num=S|Cas=7|Neg=A|Var=6
-A\tM\tGen=I|Num=S|Cas=7|Neg=N
-A\tM\tGen=I|Num=S|Cas=7|Neg=N|Var=6
-A\tM\tGen=M|Num=P|Cas=1|Neg=A
-A\tM\tGen=M|Num=P|Cas=1|Neg=A|Var=6
-A\tM\tGen=M|Num=P|Cas=1|Neg=N
-A\tM\tGen=M|Num=P|Cas=1|Neg=N|Var=6
-A\tM\tGen=M|Num=P|Cas=2|Neg=A
-A\tM\tGen=M|Num=P|Cas=2|Neg=A|Var=6
-A\tM\tGen=M|Num=P|Cas=2|Neg=N
-A\tM\tGen=M|Num=P|Cas=2|Neg=N|Var=6
-A\tM\tGen=M|Num=P|Cas=3|Neg=A
-A\tM\tGen=M|Num=P|Cas=3|Neg=A|Var=6
-A\tM\tGen=M|Num=P|Cas=3|Neg=N
-A\tM\tGen=M|Num=P|Cas=3|Neg=N|Var=6
-A\tM\tGen=M|Num=P|Cas=4|Neg=A
-A\tM\tGen=M|Num=P|Cas=4|Neg=A|Var=6
-A\tM\tGen=M|Num=P|Cas=4|Neg=N
-A\tM\tGen=M|Num=P|Cas=4|Neg=N|Var=6
-A\tM\tGen=M|Num=P|Cas=5|Neg=A
-A\tM\tGen=M|Num=P|Cas=5|Neg=A|Var=6
-A\tM\tGen=M|Num=P|Cas=5|Neg=N
-A\tM\tGen=M|Num=P|Cas=5|Neg=N|Var=6
-A\tM\tGen=M|Num=P|Cas=6|Neg=A
-A\tM\tGen=M|Num=P|Cas=6|Neg=A|Var=6
-A\tM\tGen=M|Num=P|Cas=6|Neg=N
-A\tM\tGen=M|Num=P|Cas=6|Neg=N|Var=6
-A\tM\tGen=M|Num=P|Cas=7|Neg=A
-A\tM\tGen=M|Num=P|Cas=7|Neg=A|Var=6
-A\tM\tGen=M|Num=P|Cas=7|Neg=N
-A\tM\tGen=M|Num=P|Cas=7|Neg=N|Var=6
-A\tM\tGen=M|Num=S|Cas=1|Neg=A
-A\tM\tGen=M|Num=S|Cas=1|Neg=A|Var=6
-A\tM\tGen=M|Num=S|Cas=1|Neg=N
-A\tM\tGen=M|Num=S|Cas=1|Neg=N|Var=6
-A\tM\tGen=M|Num=S|Cas=2|Neg=A
-A\tM\tGen=M|Num=S|Cas=2|Neg=A|Var=6
-A\tM\tGen=M|Num=S|Cas=2|Neg=N
-A\tM\tGen=M|Num=S|Cas=2|Neg=N|Var=6
-A\tM\tGen=M|Num=S|Cas=3|Neg=A
-A\tM\tGen=M|Num=S|Cas=3|Neg=A|Var=6
-A\tM\tGen=M|Num=S|Cas=3|Neg=N
-A\tM\tGen=M|Num=S|Cas=3|Neg=N|Var=6
-A\tM\tGen=M|Num=S|Cas=4|Neg=A
-A\tM\tGen=M|Num=S|Cas=4|Neg=A|Var=6
-A\tM\tGen=M|Num=S|Cas=4|Neg=N
-A\tM\tGen=M|Num=S|Cas=4|Neg=N|Var=6
-A\tM\tGen=M|Num=S|Cas=5|Neg=A
-A\tM\tGen=M|Num=S|Cas=5|Neg=A|Var=6
-A\tM\tGen=M|Num=S|Cas=5|Neg=N
-A\tM\tGen=M|Num=S|Cas=5|Neg=N|Var=6
-A\tM\tGen=M|Num=S|Cas=6|Neg=A
-A\tM\tGen=M|Num=S|Cas=6|Neg=A|Var=6
-A\tM\tGen=M|Num=S|Cas=6|Neg=A|Var=7
-A\tM\tGen=M|Num=S|Cas=6|Neg=N
-A\tM\tGen=M|Num=S|Cas=6|Neg=N|Var=6
-A\tM\tGen=M|Num=S|Cas=6|Neg=N|Var=7
-A\tM\tGen=M|Num=S|Cas=7|Neg=A
-A\tM\tGen=M|Num=S|Cas=7|Neg=A|Var=6
-A\tM\tGen=M|Num=S|Cas=7|Neg=N
-A\tM\tGen=M|Num=S|Cas=7|Neg=N|Var=6
-A\tM\tGen=N|Num=D|Cas=7|Neg=A
-A\tM\tGen=N|Num=D|Cas=7|Neg=A|Var=6
-A\tM\tGen=N|Num=D|Cas=7|Neg=N
-A\tM\tGen=N|Num=D|Cas=7|Neg=N|Var=6
-A\tM\tGen=N|Num=P|Cas=1|Neg=A
-A\tM\tGen=N|Num=P|Cas=1|Neg=A|Var=6
-A\tM\tGen=N|Num=P|Cas=1|Neg=N
-A\tM\tGen=N|Num=P|Cas=1|Neg=N|Var=6
-A\tM\tGen=N|Num=P|Cas=2|Neg=A
-A\tM\tGen=N|Num=P|Cas=2|Neg=A|Var=6
-A\tM\tGen=N|Num=P|Cas=2|Neg=N
-A\tM\tGen=N|Num=P|Cas=2|Neg=N|Var=6
-A\tM\tGen=N|Num=P|Cas=3|Neg=A
-A\tM\tGen=N|Num=P|Cas=3|Neg=A|Var=6
-A\tM\tGen=N|Num=P|Cas=3|Neg=N
-A\tM\tGen=N|Num=P|Cas=3|Neg=N|Var=6
-A\tM\tGen=N|Num=P|Cas=4|Neg=A
-A\tM\tGen=N|Num=P|Cas=4|Neg=A|Var=6
-A\tM\tGen=N|Num=P|Cas=4|Neg=N
-A\tM\tGen=N|Num=P|Cas=4|Neg=N|Var=6
-A\tM\tGen=N|Num=P|Cas=5|Neg=A
-A\tM\tGen=N|Num=P|Cas=5|Neg=A|Var=6
-A\tM\tGen=N|Num=P|Cas=5|Neg=N
-A\tM\tGen=N|Num=P|Cas=5|Neg=N|Var=6
-A\tM\tGen=N|Num=P|Cas=6|Neg=A
-A\tM\tGen=N|Num=P|Cas=6|Neg=A|Var=6
-A\tM\tGen=N|Num=P|Cas=6|Neg=N
-A\tM\tGen=N|Num=P|Cas=6|Neg=N|Var=6
-A\tM\tGen=N|Num=P|Cas=7|Neg=A
-A\tM\tGen=N|Num=P|Cas=7|Neg=A|Var=6
-A\tM\tGen=N|Num=P|Cas=7|Neg=N
-A\tM\tGen=N|Num=P|Cas=7|Neg=N|Var=6
-A\tM\tGen=N|Num=S|Cas=1|Neg=A
-A\tM\tGen=N|Num=S|Cas=1|Neg=A|Var=6
-A\tM\tGen=N|Num=S|Cas=1|Neg=N
-A\tM\tGen=N|Num=S|Cas=1|Neg=N|Var=6
-A\tM\tGen=N|Num=S|Cas=2|Neg=A
-A\tM\tGen=N|Num=S|Cas=2|Neg=A|Var=6
-A\tM\tGen=N|Num=S|Cas=2|Neg=N
-A\tM\tGen=N|Num=S|Cas=2|Neg=N|Var=6
-A\tM\tGen=N|Num=S|Cas=3|Neg=A
-A\tM\tGen=N|Num=S|Cas=3|Neg=A|Var=6
-A\tM\tGen=N|Num=S|Cas=3|Neg=N
-A\tM\tGen=N|Num=S|Cas=3|Neg=N|Var=6
-A\tM\tGen=N|Num=S|Cas=4|Neg=A
-A\tM\tGen=N|Num=S|Cas=4|Neg=A|Var=6
-A\tM\tGen=N|Num=S|Cas=4|Neg=N
-A\tM\tGen=N|Num=S|Cas=4|Neg=N|Var=6
-A\tM\tGen=N|Num=S|Cas=5|Neg=A
-A\tM\tGen=N|Num=S|Cas=5|Neg=A|Var=6
-A\tM\tGen=N|Num=S|Cas=5|Neg=N
-A\tM\tGen=N|Num=S|Cas=5|Neg=N|Var=6
-A\tM\tGen=N|Num=S|Cas=6|Neg=A
-A\tM\tGen=N|Num=S|Cas=6|Neg=A|Var=6
-A\tM\tGen=N|Num=S|Cas=6|Neg=A|Var=7
-A\tM\tGen=N|Num=S|Cas=6|Neg=N
-A\tM\tGen=N|Num=S|Cas=6|Neg=N|Var=6
-A\tM\tGen=N|Num=S|Cas=6|Neg=N|Var=7
-A\tM\tGen=N|Num=S|Cas=7|Neg=A
-A\tM\tGen=N|Num=S|Cas=7|Neg=A|Var=6
-A\tM\tGen=N|Num=S|Cas=7|Neg=N
-A\tM\tGen=N|Num=S|Cas=7|Neg=N|Var=6
-A\tO\tGen=F|Num=P
-A\tO\tGen=F|Num=P|Var=1
-A\tO\tGen=F|Num=P|Var=6
-A\tO\tGen=F|Num=S
-A\tO\tGen=F|Num=S|Var=1
-A\tO\tGen=I|Num=P
-A\tO\tGen=I|Num=P|Var=1
-A\tO\tGen=I|Num=P|Var=6
-A\tO\tGen=M|Num=P
-A\tO\tGen=M|Num=P|Var=1
-A\tO\tGen=M|Num=P|Var=6
-A\tO\tGen=N|Num=P
-A\tO\tGen=N|Num=P|Var=1
-A\tO\tGen=N|Num=P|Var=6
-A\tO\tGen=N|Num=S
-A\tO\tGen=N|Num=S|Var=1
-A\tO\tGen=N|Num=S|Var=6
-A\tO\tGen=Y|Num=S
-A\tO\tGen=Y|Num=S|Var=6
-A\tU\tGen=F|Num=D|Cas=7|PGe=F
-A\tU\tGen=F|Num=D|Cas=7|PGe=F|Var=6
-A\tU\tGen=F|Num=D|Cas=7|PGe=M
-A\tU\tGen=F|Num=D|Cas=7|PGe=M|Var=6
-A\tU\tGen=F|Num=P|Cas=1|PGe=F
-A\tU\tGen=F|Num=P|Cas=1|PGe=F|Sem=Y
-A\tU\tGen=F|Num=P|Cas=1|PGe=F|Var=6
-A\tU\tGen=F|Num=P|Cas=1|PGe=M
-A\tU\tGen=F|Num=P|Cas=1|PGe=M|Sem=S
-A\tU\tGen=F|Num=P|Cas=1|PGe=M|Sem=Y
-A\tU\tGen=F|Num=P|Cas=1|PGe=M|Var=5
-A\tU\tGen=F|Num=P|Cas=1|PGe=M|Var=6
-A\tU\tGen=F|Num=P|Cas=2|PGe=F
-A\tU\tGen=F|Num=P|Cas=2|PGe=F|Sem=Y
-A\tU\tGen=F|Num=P|Cas=2|PGe=F|Var=6
-A\tU\tGen=F|Num=P|Cas=2|PGe=M
-A\tU\tGen=F|Num=P|Cas=2|PGe=M|Sem=S
-A\tU\tGen=F|Num=P|Cas=2|PGe=M|Sem=Y
-A\tU\tGen=F|Num=P|Cas=2|PGe=M|Var=6
-A\tU\tGen=F|Num=P|Cas=3|PGe=F
-A\tU\tGen=F|Num=P|Cas=3|PGe=F|Var=6
-A\tU\tGen=F|Num=P|Cas=3|PGe=M
-A\tU\tGen=F|Num=P|Cas=3|PGe=M|Sem=S
-A\tU\tGen=F|Num=P|Cas=3|PGe=M|Sem=Y
-A\tU\tGen=F|Num=P|Cas=3|PGe=M|Var=6
-A\tU\tGen=F|Num=P|Cas=4|PGe=F
-A\tU\tGen=F|Num=P|Cas=4|PGe=F|Sem=Y
-A\tU\tGen=F|Num=P|Cas=4|PGe=F|Var=6
-A\tU\tGen=F|Num=P|Cas=4|PGe=M
-A\tU\tGen=F|Num=P|Cas=4|PGe=M|Sem=E
-A\tU\tGen=F|Num=P|Cas=4|PGe=M|Sem=S
-A\tU\tGen=F|Num=P|Cas=4|PGe=M|Var=6
-A\tU\tGen=F|Num=P|Cas=5|PGe=F
-A\tU\tGen=F|Num=P|Cas=5|PGe=F|Var=6
-A\tU\tGen=F|Num=P|Cas=5|PGe=M
-A\tU\tGen=F|Num=P|Cas=5|PGe=M|Var=6
-A\tU\tGen=F|Num=P|Cas=6|PGe=F
-A\tU\tGen=F|Num=P|Cas=6|PGe=F|Var=6
-A\tU\tGen=F|Num=P|Cas=6|PGe=M
-A\tU\tGen=F|Num=P|Cas=6|PGe=M|Sem=S
-A\tU\tGen=F|Num=P|Cas=6|PGe=M|Sem=Y
-A\tU\tGen=F|Num=P|Cas=6|PGe=M|Var=6
-A\tU\tGen=F|Num=P|Cas=7|PGe=F
-A\tU\tGen=F|Num=P|Cas=7|PGe=F|Var=6
-A\tU\tGen=F|Num=P|Cas=7|PGe=F|Var=7
-A\tU\tGen=F|Num=P|Cas=7|PGe=M
-A\tU\tGen=F|Num=P|Cas=7|PGe=M|Sem=S
-A\tU\tGen=F|Num=P|Cas=7|PGe=M|Var=6
-A\tU\tGen=F|Num=P|Cas=7|PGe=M|Var=7
-A\tU\tGen=F|Num=S|Cas=1|PGe=F
-A\tU\tGen=F|Num=S|Cas=1|PGe=F|Sem=Y
-A\tU\tGen=F|Num=S|Cas=1|PGe=F|Var=6
-A\tU\tGen=F|Num=S|Cas=1|PGe=M
-A\tU\tGen=F|Num=S|Cas=1|PGe=M|Sem=G
-A\tU\tGen=F|Num=S|Cas=1|PGe=M|Sem=S
-A\tU\tGen=F|Num=S|Cas=1|PGe=M|Sem=Y
-A\tU\tGen=F|Num=S|Cas=1|PGe=M|Var=6
-A\tU\tGen=F|Num=S|Cas=2|PGe=F
-A\tU\tGen=F|Num=S|Cas=2|PGe=F|Sem=Y
-A\tU\tGen=F|Num=S|Cas=2|PGe=F|Var=6
-A\tU\tGen=F|Num=S|Cas=2|PGe=M
-A\tU\tGen=F|Num=S|Cas=2|PGe=M|Sem=S
-A\tU\tGen=F|Num=S|Cas=2|PGe=M|Sem=Y
-A\tU\tGen=F|Num=S|Cas=2|PGe=M|Var=6
-A\tU\tGen=F|Num=S|Cas=3|PGe=F
-A\tU\tGen=F|Num=S|Cas=3|PGe=F|Var=6
-A\tU\tGen=F|Num=S|Cas=3|PGe=M
-A\tU\tGen=F|Num=S|Cas=3|PGe=M|Sem=S
-A\tU\tGen=F|Num=S|Cas=3|PGe=M|Sem=Y
-A\tU\tGen=F|Num=S|Cas=3|PGe=M|Var=6
-A\tU\tGen=F|Num=S|Cas=4|PGe=F
-A\tU\tGen=F|Num=S|Cas=4|PGe=F|Sem=S
-A\tU\tGen=F|Num=S|Cas=4|PGe=F|Var=6
-A\tU\tGen=F|Num=S|Cas=4|PGe=M
-A\tU\tGen=F|Num=S|Cas=4|PGe=M|Sem=S
-A\tU\tGen=F|Num=S|Cas=4|PGe=M|Sem=Y
-A\tU\tGen=F|Num=S|Cas=4|PGe=M|Var=6
-A\tU\tGen=F|Num=S|Cas=5|PGe=F
-A\tU\tGen=F|Num=S|Cas=5|PGe=F|Var=6
-A\tU\tGen=F|Num=S|Cas=5|PGe=M
-A\tU\tGen=F|Num=S|Cas=5|PGe=M|Var=6
-A\tU\tGen=F|Num=S|Cas=6|PGe=F
-A\tU\tGen=F|Num=S|Cas=6|PGe=F|Var=6
-A\tU\tGen=F|Num=S|Cas=6|PGe=M
-A\tU\tGen=F|Num=S|Cas=6|PGe=M|Sem=S
-A\tU\tGen=F|Num=S|Cas=6|PGe=M|Sem=Y
-A\tU\tGen=F|Num=S|Cas=6|PGe=M|Var=6
-A\tU\tGen=F|Num=S|Cas=7|PGe=F
-A\tU\tGen=F|Num=S|Cas=7|PGe=F|Var=6
-A\tU\tGen=F|Num=S|Cas=7|PGe=M
-A\tU\tGen=F|Num=S|Cas=7|PGe=M|Sem=S
-A\tU\tGen=F|Num=S|Cas=7|PGe=M|Sem=Y
-A\tU\tGen=F|Num=S|Cas=7|PGe=M|Var=6
-A\tU\tGen=I|Num=P|Cas=1|PGe=F
-A\tU\tGen=I|Num=P|Cas=1|PGe=F|Sem=Y
-A\tU\tGen=I|Num=P|Cas=1|PGe=F|Var=6
-A\tU\tGen=I|Num=P|Cas=1|PGe=M
-A\tU\tGen=I|Num=P|Cas=1|PGe=M|Sem=E
-A\tU\tGen=I|Num=P|Cas=1|PGe=M|Sem=G
-A\tU\tGen=I|Num=P|Cas=1|PGe=M|Sem=S
-A\tU\tGen=I|Num=P|Cas=1|PGe=M|Sem=Y
-A\tU\tGen=I|Num=P|Cas=1|PGe=M|Var=6
-A\tU\tGen=I|Num=P|Cas=2|PGe=F
-A\tU\tGen=I|Num=P|Cas=2|PGe=F|Var=6
-A\tU\tGen=I|Num=P|Cas=2|PGe=M
-A\tU\tGen=I|Num=P|Cas=2|PGe=M|Sem=S
-A\tU\tGen=I|Num=P|Cas=2|PGe=M|Sem=Y
-A\tU\tGen=I|Num=P|Cas=2|PGe=M|Var=6
-A\tU\tGen=I|Num=P|Cas=3|PGe=F
-A\tU\tGen=I|Num=P|Cas=3|PGe=F|Var=6
-A\tU\tGen=I|Num=P|Cas=3|PGe=M
-A\tU\tGen=I|Num=P|Cas=3|PGe=M|Sem=S
-A\tU\tGen=I|Num=P|Cas=3|PGe=M|Var=6
-A\tU\tGen=I|Num=P|Cas=4|PGe=F
-A\tU\tGen=I|Num=P|Cas=4|PGe=F|Var=6
-A\tU\tGen=I|Num=P|Cas=4|PGe=M
-A\tU\tGen=I|Num=P|Cas=4|PGe=M|Sem=S
-A\tU\tGen=I|Num=P|Cas=4|PGe=M|Sem=Y
-A\tU\tGen=I|Num=P|Cas=4|PGe=M|Var=6
-A\tU\tGen=I|Num=P|Cas=5|PGe=F
-A\tU\tGen=I|Num=P|Cas=5|PGe=F|Var=6
-A\tU\tGen=I|Num=P|Cas=5|PGe=M
-A\tU\tGen=I|Num=P|Cas=5|PGe=M|Var=6
-A\tU\tGen=I|Num=P|Cas=6|PGe=F
-A\tU\tGen=I|Num=P|Cas=6|PGe=F|Var=6
-A\tU\tGen=I|Num=P|Cas=6|PGe=M
-A\tU\tGen=I|Num=P|Cas=6|PGe=M|Sem=G
-A\tU\tGen=I|Num=P|Cas=6|PGe=M|Sem=S
-A\tU\tGen=I|Num=P|Cas=6|PGe=M|Sem=Y
-A\tU\tGen=I|Num=P|Cas=6|PGe=M|Var=6
-A\tU\tGen=I|Num=P|Cas=7|PGe=F
-A\tU\tGen=I|Num=P|Cas=7|PGe=F|Var=6
-A\tU\tGen=I|Num=P|Cas=7|PGe=F|Var=7
-A\tU\tGen=I|Num=P|Cas=7|PGe=M
-A\tU\tGen=I|Num=P|Cas=7|PGe=M|Sem=S
-A\tU\tGen=I|Num=P|Cas=7|PGe=M|Var=6
-A\tU\tGen=I|Num=P|Cas=7|PGe=M|Var=7
-A\tU\tGen=I|Num=S|Cas=1|PGe=F
-A\tU\tGen=I|Num=S|Cas=1|PGe=F|Sem=Y
-A\tU\tGen=I|Num=S|Cas=1|PGe=F|Var=6
-A\tU\tGen=I|Num=S|Cas=1|PGe=M
-A\tU\tGen=I|Num=S|Cas=1|PGe=M|Sem=G
-A\tU\tGen=I|Num=S|Cas=1|PGe=M|Sem=S
-A\tU\tGen=I|Num=S|Cas=1|PGe=M|Sem=Y
-A\tU\tGen=I|Num=S|Cas=1|PGe=M|Var=6
-A\tU\tGen=I|Num=S|Cas=2|PGe=F
-A\tU\tGen=I|Num=S|Cas=2|PGe=F|Sem=Y
-A\tU\tGen=I|Num=S|Cas=2|PGe=F|Var=6
-A\tU\tGen=I|Num=S|Cas=2|PGe=M
-A\tU\tGen=I|Num=S|Cas=2|PGe=M|Sem=G
-A\tU\tGen=I|Num=S|Cas=2|PGe=M|Sem=S
-A\tU\tGen=I|Num=S|Cas=2|PGe=M|Sem=Y
-A\tU\tGen=I|Num=S|Cas=2|PGe=M|Var=6
-A\tU\tGen=I|Num=S|Cas=3|PGe=F
-A\tU\tGen=I|Num=S|Cas=3|PGe=F|Var=6
-A\tU\tGen=I|Num=S|Cas=3|PGe=M
-A\tU\tGen=I|Num=S|Cas=3|PGe=M|Sem=S
-A\tU\tGen=I|Num=S|Cas=3|PGe=M|Var=6
-A\tU\tGen=I|Num=S|Cas=4|PGe=F
-A\tU\tGen=I|Num=S|Cas=4|PGe=F|Var=6
-A\tU\tGen=I|Num=S|Cas=4|PGe=M
-A\tU\tGen=I|Num=S|Cas=4|PGe=M|Sem=E
-A\tU\tGen=I|Num=S|Cas=4|PGe=M|Sem=G
-A\tU\tGen=I|Num=S|Cas=4|PGe=M|Sem=S
-A\tU\tGen=I|Num=S|Cas=4|PGe=M|Sem=Y
-A\tU\tGen=I|Num=S|Cas=4|PGe=M|Var=6
-A\tU\tGen=I|Num=S|Cas=5|PGe=F
-A\tU\tGen=I|Num=S|Cas=5|PGe=F|Var=6
-A\tU\tGen=I|Num=S|Cas=5|PGe=M
-A\tU\tGen=I|Num=S|Cas=5|PGe=M|Var=6
-A\tU\tGen=I|Num=S|Cas=6|PGe=F
-A\tU\tGen=I|Num=S|Cas=6|PGe=F|Var=1
-A\tU\tGen=I|Num=S|Cas=6|PGe=F|Var=6
-A\tU\tGen=I|Num=S|Cas=6|PGe=M
-A\tU\tGen=I|Num=S|Cas=6|PGe=M|Sem=G
-A\tU\tGen=I|Num=S|Cas=6|PGe=M|Sem=S
-A\tU\tGen=I|Num=S|Cas=6|PGe=M|Sem=Y
-A\tU\tGen=I|Num=S|Cas=6|PGe=M|Var=1
-A\tU\tGen=I|Num=S|Cas=6|PGe=M|Var=6
-A\tU\tGen=I|Num=S|Cas=7|PGe=F
-A\tU\tGen=I|Num=S|Cas=7|PGe=F|Var=6
-A\tU\tGen=I|Num=S|Cas=7|PGe=M
-A\tU\tGen=I|Num=S|Cas=7|PGe=M|Sem=S
-A\tU\tGen=I|Num=S|Cas=7|PGe=M|Sem=Y
-A\tU\tGen=I|Num=S|Cas=7|PGe=M|Var=6
-A\tU\tGen=M|Num=P|Cas=1|PGe=F
-A\tU\tGen=M|Num=P|Cas=1|PGe=F|Sem=Y
-A\tU\tGen=M|Num=P|Cas=1|PGe=F|Var=6
-A\tU\tGen=M|Num=P|Cas=1|PGe=M
-A\tU\tGen=M|Num=P|Cas=1|PGe=M|Sem=S
-A\tU\tGen=M|Num=P|Cas=1|PGe=M|Var=6
-A\tU\tGen=M|Num=P|Cas=2|PGe=F
-A\tU\tGen=M|Num=P|Cas=2|PGe=F|Var=6
-A\tU\tGen=M|Num=P|Cas=2|PGe=M
-A\tU\tGen=M|Num=P|Cas=2|PGe=M|Sem=G
-A\tU\tGen=M|Num=P|Cas=2|PGe=M|Sem=S
-A\tU\tGen=M|Num=P|Cas=2|PGe=M|Sem=Y
-A\tU\tGen=M|Num=P|Cas=2|PGe=M|Var=6
-A\tU\tGen=M|Num=P|Cas=3|PGe=F
-A\tU\tGen=M|Num=P|Cas=3|PGe=F|Var=6
-A\tU\tGen=M|Num=P|Cas=3|PGe=M
-A\tU\tGen=M|Num=P|Cas=3|PGe=M|Sem=S
-A\tU\tGen=M|Num=P|Cas=3|PGe=M|Var=6
-A\tU\tGen=M|Num=P|Cas=4|PGe=F
-A\tU\tGen=M|Num=P|Cas=4|PGe=F|Var=6
-A\tU\tGen=M|Num=P|Cas=4|PGe=M
-A\tU\tGen=M|Num=P|Cas=4|PGe=M|Sem=S
-A\tU\tGen=M|Num=P|Cas=4|PGe=M|Var=6
-A\tU\tGen=M|Num=P|Cas=5|PGe=F
-A\tU\tGen=M|Num=P|Cas=5|PGe=F|Var=6
-A\tU\tGen=M|Num=P|Cas=5|PGe=M
-A\tU\tGen=M|Num=P|Cas=5|PGe=M|Var=6
-A\tU\tGen=M|Num=P|Cas=6|PGe=F
-A\tU\tGen=M|Num=P|Cas=6|PGe=F|Var=6
-A\tU\tGen=M|Num=P|Cas=6|PGe=M
-A\tU\tGen=M|Num=P|Cas=6|PGe=M|Sem=S
-A\tU\tGen=M|Num=P|Cas=6|PGe=M|Var=6
-A\tU\tGen=M|Num=P|Cas=7|PGe=F
-A\tU\tGen=M|Num=P|Cas=7|PGe=F|Var=6
-A\tU\tGen=M|Num=P|Cas=7|PGe=F|Var=7
-A\tU\tGen=M|Num=P|Cas=7|PGe=M
-A\tU\tGen=M|Num=P|Cas=7|PGe=M|Sem=S
-A\tU\tGen=M|Num=P|Cas=7|PGe=M|Var=6
-A\tU\tGen=M|Num=P|Cas=7|PGe=M|Var=7
-A\tU\tGen=M|Num=S|Cas=1|PGe=F
-A\tU\tGen=M|Num=S|Cas=1|PGe=F|Var=6
-A\tU\tGen=M|Num=S|Cas=1|PGe=M
-A\tU\tGen=M|Num=S|Cas=1|PGe=M|Sem=S
-A\tU\tGen=M|Num=S|Cas=1|PGe=M|Sem=Y
-A\tU\tGen=M|Num=S|Cas=1|PGe=M|Var=6
-A\tU\tGen=M|Num=S|Cas=2|PGe=F
-A\tU\tGen=M|Num=S|Cas=2|PGe=F|Var=6
-A\tU\tGen=M|Num=S|Cas=2|PGe=M
-A\tU\tGen=M|Num=S|Cas=2|PGe=M|Sem=G
-A\tU\tGen=M|Num=S|Cas=2|PGe=M|Sem=S
-A\tU\tGen=M|Num=S|Cas=2|PGe=M|Sem=Y
-A\tU\tGen=M|Num=S|Cas=2|PGe=M|Var=6
-A\tU\tGen=M|Num=S|Cas=3|PGe=F
-A\tU\tGen=M|Num=S|Cas=3|PGe=F|Var=6
-A\tU\tGen=M|Num=S|Cas=3|PGe=M
-A\tU\tGen=M|Num=S|Cas=3|PGe=M|Sem=S
-A\tU\tGen=M|Num=S|Cas=3|PGe=M|Var=6
-A\tU\tGen=M|Num=S|Cas=4|PGe=F
-A\tU\tGen=M|Num=S|Cas=4|PGe=F|Var=6
-A\tU\tGen=M|Num=S|Cas=4|PGe=M
-A\tU\tGen=M|Num=S|Cas=4|PGe=M|Sem=S
-A\tU\tGen=M|Num=S|Cas=4|PGe=M|Sem=Y
-A\tU\tGen=M|Num=S|Cas=4|PGe=M|Var=6
-A\tU\tGen=M|Num=S|Cas=5|PGe=F
-A\tU\tGen=M|Num=S|Cas=5|PGe=F|Var=6
-A\tU\tGen=M|Num=S|Cas=5|PGe=M
-A\tU\tGen=M|Num=S|Cas=5|PGe=M|Var=6
-A\tU\tGen=M|Num=S|Cas=6|PGe=F
-A\tU\tGen=M|Num=S|Cas=6|PGe=F|Var=1
-A\tU\tGen=M|Num=S|Cas=6|PGe=F|Var=6
-A\tU\tGen=M|Num=S|Cas=6|PGe=M
-A\tU\tGen=M|Num=S|Cas=6|PGe=M|Sem=S
-A\tU\tGen=M|Num=S|Cas=6|PGe=M|Var=1
-A\tU\tGen=M|Num=S|Cas=6|PGe=M|Var=6
-A\tU\tGen=M|Num=S|Cas=7|PGe=F
-A\tU\tGen=M|Num=S|Cas=7|PGe=F|Var=6
-A\tU\tGen=M|Num=S|Cas=7|PGe=M
-A\tU\tGen=M|Num=S|Cas=7|PGe=M|Sem=K
-A\tU\tGen=M|Num=S|Cas=7|PGe=M|Sem=S
-A\tU\tGen=M|Num=S|Cas=7|PGe=M|Var=6
-A\tU\tGen=N|Num=D|Cas=7|PGe=F
-A\tU\tGen=N|Num=D|Cas=7|PGe=F|Var=6
-A\tU\tGen=N|Num=D|Cas=7|PGe=M
-A\tU\tGen=N|Num=D|Cas=7|PGe=M|Var=6
-A\tU\tGen=N|Num=P|Cas=1|PGe=F
-A\tU\tGen=N|Num=P|Cas=1|PGe=F|Var=6
-A\tU\tGen=N|Num=P|Cas=1|PGe=M
-A\tU\tGen=N|Num=P|Cas=1|PGe=M|Sem=S
-A\tU\tGen=N|Num=P|Cas=1|PGe=M|Var=6
-A\tU\tGen=N|Num=P|Cas=2|PGe=F
-A\tU\tGen=N|Num=P|Cas=2|PGe=F|Var=6
-A\tU\tGen=N|Num=P|Cas=2|PGe=M
-A\tU\tGen=N|Num=P|Cas=2|PGe=M|Sem=S
-A\tU\tGen=N|Num=P|Cas=2|PGe=M|Var=6
-A\tU\tGen=N|Num=P|Cas=3|PGe=F
-A\tU\tGen=N|Num=P|Cas=3|PGe=F|Var=6
-A\tU\tGen=N|Num=P|Cas=3|PGe=M
-A\tU\tGen=N|Num=P|Cas=3|PGe=M|Sem=S
-A\tU\tGen=N|Num=P|Cas=3|PGe=M|Var=6
-A\tU\tGen=N|Num=P|Cas=4|PGe=F
-A\tU\tGen=N|Num=P|Cas=4|PGe=F|Var=6
-A\tU\tGen=N|Num=P|Cas=4|PGe=M
-A\tU\tGen=N|Num=P|Cas=4|PGe=M|Sem=S
-A\tU\tGen=N|Num=P|Cas=4|PGe=M|Sem=Y
-A\tU\tGen=N|Num=P|Cas=4|PGe=M|Var=6
-A\tU\tGen=N|Num=P|Cas=5|PGe=F
-A\tU\tGen=N|Num=P|Cas=5|PGe=F|Var=6
-A\tU\tGen=N|Num=P|Cas=5|PGe=M
-A\tU\tGen=N|Num=P|Cas=5|PGe=M|Var=6
-A\tU\tGen=N|Num=P|Cas=6|PGe=F
-A\tU\tGen=N|Num=P|Cas=6|PGe=F|Var=6
-A\tU\tGen=N|Num=P|Cas=6|PGe=M
-A\tU\tGen=N|Num=P|Cas=6|PGe=M|Sem=S
-A\tU\tGen=N|Num=P|Cas=6|PGe=M|Var=6
-A\tU\tGen=N|Num=P|Cas=7|PGe=F
-A\tU\tGen=N|Num=P|Cas=7|PGe=F|Var=6
-A\tU\tGen=N|Num=P|Cas=7|PGe=F|Var=7
-A\tU\tGen=N|Num=P|Cas=7|PGe=M
-A\tU\tGen=N|Num=P|Cas=7|PGe=M|Sem=S
-A\tU\tGen=N|Num=P|Cas=7|PGe=M|Var=6
-A\tU\tGen=N|Num=P|Cas=7|PGe=M|Var=7
-A\tU\tGen=N|Num=S|Cas=1|PGe=F
-A\tU\tGen=N|Num=S|Cas=1|PGe=F|Var=6
-A\tU\tGen=N|Num=S|Cas=1|PGe=M
-A\tU\tGen=N|Num=S|Cas=1|PGe=M|Sem=G
-A\tU\tGen=N|Num=S|Cas=1|PGe=M|Sem=S
-A\tU\tGen=N|Num=S|Cas=1|PGe=M|Sem=Y
-A\tU\tGen=N|Num=S|Cas=1|PGe=M|Var=6
-A\tU\tGen=N|Num=S|Cas=2|PGe=F
-A\tU\tGen=N|Num=S|Cas=2|PGe=F|Sem=Y
-A\tU\tGen=N|Num=S|Cas=2|PGe=F|Var=6
-A\tU\tGen=N|Num=S|Cas=2|PGe=M
-A\tU\tGen=N|Num=S|Cas=2|PGe=M|Sem=S
-A\tU\tGen=N|Num=S|Cas=2|PGe=M|Sem=Y
-A\tU\tGen=N|Num=S|Cas=2|PGe=M|Var=6
-A\tU\tGen=N|Num=S|Cas=3|PGe=F
-A\tU\tGen=N|Num=S|Cas=3|PGe=F|Var=6
-A\tU\tGen=N|Num=S|Cas=3|PGe=M
-A\tU\tGen=N|Num=S|Cas=3|PGe=M|Sem=S
-A\tU\tGen=N|Num=S|Cas=3|PGe=M|Var=6
-A\tU\tGen=N|Num=S|Cas=4|PGe=F
-A\tU\tGen=N|Num=S|Cas=4|PGe=F|Sem=Y
-A\tU\tGen=N|Num=S|Cas=4|PGe=F|Var=6
-A\tU\tGen=N|Num=S|Cas=4|PGe=M
-A\tU\tGen=N|Num=S|Cas=4|PGe=M|Sem=S
-A\tU\tGen=N|Num=S|Cas=4|PGe=M|Sem=Y
-A\tU\tGen=N|Num=S|Cas=4|PGe=M|Var=6
-A\tU\tGen=N|Num=S|Cas=5|PGe=F
-A\tU\tGen=N|Num=S|Cas=5|PGe=F|Var=6
-A\tU\tGen=N|Num=S|Cas=5|PGe=M
-A\tU\tGen=N|Num=S|Cas=5|PGe=M|Var=6
-A\tU\tGen=N|Num=S|Cas=6|PGe=F
-A\tU\tGen=N|Num=S|Cas=6|PGe=F|Var=1
-A\tU\tGen=N|Num=S|Cas=6|PGe=F|Var=6
-A\tU\tGen=N|Num=S|Cas=6|PGe=M
-A\tU\tGen=N|Num=S|Cas=6|PGe=M|Sem=G
-A\tU\tGen=N|Num=S|Cas=6|PGe=M|Sem=S
-A\tU\tGen=N|Num=S|Cas=6|PGe=M|Sem=Y
-A\tU\tGen=N|Num=S|Cas=6|PGe=M|Var=1
-A\tU\tGen=N|Num=S|Cas=6|PGe=M|Var=6
-A\tU\tGen=N|Num=S|Cas=7|PGe=F
-A\tU\tGen=N|Num=S|Cas=7|PGe=F|Var=6
-A\tU\tGen=N|Num=S|Cas=7|PGe=M
-A\tU\tGen=N|Num=S|Cas=7|PGe=M|Sem=G
-A\tU\tGen=N|Num=S|Cas=7|PGe=M|Sem=S
-A\tU\tGen=N|Num=S|Cas=7|PGe=M|Sem=Y
-A\tU\tGen=N|Num=S|Cas=7|PGe=M|Var=6
-A\tU\tGen=X|Num=X|Cas=X|PGe=F|Var=8
-A\tU\tGen=X|Num=X|Cas=X|PGe=M
-A\tU\tGen=X|Num=X|Cas=X|PGe=M|Var=6
-A\tU\tGen=X|Num=X|Cas=X|PGe=M|Var=8
-A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=o
-A\tA\tGen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=R
-A\tA\tGen=F|Num=P|Cas=2|Gra=1|Neg=A|Sem=G
-A\tA\tGen=F|Num=P|Cas=6|Gra=1|Neg=A|Sem=o
-A\tA\tGen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=L
-A\tA\tGen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=o
-A\tA\tGen=F|Num=S|Cas=2|Gra=1|Neg=A|Sem=o
-A\tA\tGen=F|Num=S|Cas=4|Gra=1|Neg=A|Sem=o
-A\tA\tGen=F|Num=S|Cas=4|Gra=1|Neg=A|Sem=S
-A\tA\tGen=F|Num=S|Cas=6|Gra=1|Neg=A|Sem=o
-A\tA\tGen=I|Num=P|Cas=1|Gra=1|Neg=A|Sem=R
-A\tA\tGen=I|Num=P|Cas=6|Gra=1|Neg=A|Sem=R
-A\tA\tGen=I|Num=P|Cas=7|Gra=1|Neg=A|Sem=o
-A\tA\tGen=I|Num=S|Cas=1|Gra=1|Neg=A|Sem=H
-A\tA\tGen=I|Num=S|Cas=1|Gra=1|Neg=A|Sem=o
-A\tA\tGen=I|Num=S|Cas=2|Gra=1|Neg=A|Sem=H
-A\tA\tGen=I|Num=S|Cas=2|Gra=1|Neg=A|Sem=o
-A\tA\tGen=I|Num=S|Cas=6|Gra=1|Neg=A|Sem=o
-A\tA\tGen=I|Num=S|Cas=7|Gra=1|Neg=A|Sem=H
-A\tA\tGen=I|Num=S|Cas=7|Gra=1|Neg=A|Sem=o
-A\tA\tGen=M|Num=S|Cas=1|Gra=1|Neg=A|Sem=U
-A\tA\tGen=N|Num=P|Cas=3|Gra=1|Neg=A|Sem=o
-A\tU\tGen=I|Num=P|Cas=3|PGe=M|Sem=Y
-A\tU\tGen=I|Num=S|Cas=1|PGe=M|Sem=E
-A\tU\tGen=M|Num=S|Cas=4|PGe=F|Sem=Y
-A\tU\tGen=N|Num=S|Cas=1|PGe=M|Sem=E
-A\tU\tGen=N|Num=S|Cas=4|PGe=M|Sem=E
-A\tU\tGen=X|Num=X|Cas=X|PGe=M|Sem=S
-A\tU\tGen=X|Num=X|Cas=X|PGe=M|Var=6|Sem=S
-C\t3\t_
-C\t=\t_
-C\t?\tCas=1
-C\t?\tCas=2
-C\t?\tCas=3
-C\t?\tCas=4
-C\t?\tCas=6
-C\t?\tCas=7
-C\ta\tCas=1
-C\ta\tCas=2
-C\ta\tCas=2|Var=1
-C\ta\tCas=3
-C\ta\tCas=4
-C\ta\tCas=5
-C\ta\tCas=6
-C\ta\tCas=7
-C\ta\tCas=X
-C\ta\tCas=X|Var=8
-C\td\tGen=F|Num=D|Cas=7
-C\td\tGen=F|Num=D|Cas=7|Var=6
-C\td\tGen=F|Num=P|Cas=1
-C\td\tGen=F|Num=P|Cas=1|Var=6
-C\td\tGen=F|Num=P|Cas=2
-C\td\tGen=F|Num=P|Cas=2|Var=6
-C\td\tGen=F|Num=P|Cas=3
-C\td\tGen=F|Num=P|Cas=3|Var=6
-C\td\tGen=F|Num=P|Cas=4
-C\td\tGen=F|Num=P|Cas=4|Var=6
-C\td\tGen=F|Num=P|Cas=5
-C\td\tGen=F|Num=P|Cas=5|Var=6
-C\td\tGen=F|Num=P|Cas=6
-C\td\tGen=F|Num=P|Cas=6|Var=6
-C\td\tGen=F|Num=P|Cas=7
-C\td\tGen=F|Num=P|Cas=7|Var=6
-C\td\tGen=F|Num=P|Cas=7|Var=7
-C\td\tGen=F|Num=S|Cas=1
-C\td\tGen=F|Num=S|Cas=2
-C\td\tGen=F|Num=S|Cas=2|Var=6
-C\td\tGen=F|Num=S|Cas=3
-C\td\tGen=F|Num=S|Cas=3|Var=6
-C\td\tGen=F|Num=S|Cas=4
-C\td\tGen=F|Num=S|Cas=4|Var=2
-C\td\tGen=F|Num=S|Cas=5
-C\td\tGen=F|Num=S|Cas=6
-C\td\tGen=F|Num=S|Cas=6|Var=6
-C\td\tGen=F|Num=S|Cas=7
-C\td\tGen=I|Num=P|Cas=1
-C\td\tGen=I|Num=P|Cas=1|Var=6
-C\td\tGen=I|Num=P|Cas=2
-C\td\tGen=I|Num=P|Cas=2|Var=6
-C\td\tGen=I|Num=P|Cas=3
-C\td\tGen=I|Num=P|Cas=3|Var=6
-C\td\tGen=I|Num=P|Cas=4
-C\td\tGen=I|Num=P|Cas=4|Var=6
-C\td\tGen=I|Num=P|Cas=5
-C\td\tGen=I|Num=P|Cas=5|Var=6
-C\td\tGen=I|Num=P|Cas=6
-C\td\tGen=I|Num=P|Cas=6|Var=6
-C\td\tGen=I|Num=P|Cas=7
-C\td\tGen=I|Num=P|Cas=7|Var=6
-C\td\tGen=I|Num=P|Cas=7|Var=7
-C\td\tGen=I|Num=S|Cas=1
-C\td\tGen=I|Num=S|Cas=1|Var=6
-C\td\tGen=I|Num=S|Cas=2
-C\td\tGen=I|Num=S|Cas=2|Var=6
-C\td\tGen=I|Num=S|Cas=3
-C\td\tGen=I|Num=S|Cas=3|Var=6
-C\td\tGen=I|Num=S|Cas=4
-C\td\tGen=I|Num=S|Cas=4|Var=6
-C\td\tGen=I|Num=S|Cas=5
-C\td\tGen=I|Num=S|Cas=5|Var=6
-C\td\tGen=I|Num=S|Cas=6
-C\td\tGen=I|Num=S|Cas=6|Var=6
-C\td\tGen=I|Num=S|Cas=7
-C\td\tGen=I|Num=S|Cas=7|Var=6
-C\td\tGen=M|Num=P|Cas=1
-C\td\tGen=M|Num=P|Cas=1|Var=6
-C\td\tGen=M|Num=P|Cas=2
-C\td\tGen=M|Num=P|Cas=2|Var=6
-C\td\tGen=M|Num=P|Cas=3
-C\td\tGen=M|Num=P|Cas=3|Var=6
-C\td\tGen=M|Num=P|Cas=4
-C\td\tGen=M|Num=P|Cas=4|Var=6
-C\td\tGen=M|Num=P|Cas=5
-C\td\tGen=M|Num=P|Cas=5|Var=6
-C\td\tGen=M|Num=P|Cas=6
-C\td\tGen=M|Num=P|Cas=6|Var=6
-C\td\tGen=M|Num=P|Cas=7
-C\td\tGen=M|Num=P|Cas=7|Var=6
-C\td\tGen=M|Num=P|Cas=7|Var=7
-C\td\tGen=M|Num=S|Cas=1
-C\td\tGen=M|Num=S|Cas=1|Var=6
-C\td\tGen=M|Num=S|Cas=2
-C\td\tGen=M|Num=S|Cas=2|Var=6
-C\td\tGen=M|Num=S|Cas=3
-C\td\tGen=M|Num=S|Cas=3|Var=6
-C\td\tGen=M|Num=S|Cas=4
-C\td\tGen=M|Num=S|Cas=4|Var=6
-C\td\tGen=M|Num=S|Cas=5
-C\td\tGen=M|Num=S|Cas=5|Var=6
-C\td\tGen=M|Num=S|Cas=6
-C\td\tGen=M|Num=S|Cas=6|Var=6
-C\td\tGen=M|Num=S|Cas=7
-C\td\tGen=M|Num=S|Cas=7|Var=6
-C\td\tGen=N|Num=D|Cas=7
-C\td\tGen=N|Num=P|Cas=1
-C\td\tGen=N|Num=P|Cas=1|Var=6
-C\td\tGen=N|Num=P|Cas=2
-C\td\tGen=N|Num=P|Cas=2|Var=6
-C\td\tGen=N|Num=P|Cas=3
-C\td\tGen=N|Num=P|Cas=3|Var=6
-C\td\tGen=N|Num=P|Cas=4
-C\td\tGen=N|Num=P|Cas=4|Var=6
-C\td\tGen=N|Num=P|Cas=5
-C\td\tGen=N|Num=P|Cas=5|Var=6
-C\td\tGen=N|Num=P|Cas=6
-C\td\tGen=N|Num=P|Cas=6|Var=6
-C\td\tGen=N|Num=P|Cas=7
-C\td\tGen=N|Num=P|Cas=7|Var=6
-C\td\tGen=N|Num=P|Cas=7|Var=7
-C\td\tGen=N|Num=S|Cas=1
-C\td\tGen=N|Num=S|Cas=1|Var=1
-C\td\tGen=N|Num=S|Cas=1|Var=6
-C\td\tGen=N|Num=S|Cas=2
-C\td\tGen=N|Num=S|Cas=2|Var=6
-C\td\tGen=N|Num=S|Cas=3
-C\td\tGen=N|Num=S|Cas=3|Var=6
-C\td\tGen=N|Num=S|Cas=4
-C\td\tGen=N|Num=S|Cas=4|Var=1
-C\td\tGen=N|Num=S|Cas=4|Var=6
-C\td\tGen=N|Num=S|Cas=5
-C\td\tGen=N|Num=S|Cas=5|Var=6
-C\td\tGen=N|Num=S|Cas=6
-C\td\tGen=N|Num=S|Cas=6|Var=6
-C\td\tGen=N|Num=S|Cas=7
-C\td\tGen=N|Num=S|Cas=7|Var=6
-C\td\tGen=X|Num=P|Cas=1
-C\td\tGen=X|Num=P|Cas=1|Var=1
-C\td\tGen=X|Num=P|Cas=2
-C\td\tGen=X|Num=P|Cas=3
-C\td\tGen=X|Num=P|Cas=4
-C\td\tGen=X|Num=P|Cas=4|Var=1
-C\td\tGen=X|Num=P|Cas=5
-C\td\tGen=X|Num=P|Cas=5|Var=1
-C\td\tGen=X|Num=P|Cas=6
-C\td\tGen=X|Num=P|Cas=7
-C\td\tGen=X|Num=S|Cas=1
-C\td\tGen=X|Num=S|Cas=5
-C\td\tGen=Y|Num=S|Cas=2
-C\td\tGen=Y|Num=S|Cas=3
-C\td\tGen=Y|Num=S|Cas=6
-C\td\tGen=Y|Num=S|Cas=7
-C\th\tGen=F|Num=D|Cas=7
-C\th\tGen=F|Num=P|Cas=1
-C\th\tGen=F|Num=P|Cas=4
-C\th\tGen=F|Num=P|Cas=5
-C\th\tGen=I|Num=P|Cas=1
-C\th\tGen=I|Num=P|Cas=5
-C\th\tGen=M|Num=P|Cas=1
-C\th\tGen=M|Num=P|Cas=5
-C\th\tGen=N|Num=P|Cas=1
-C\th\tGen=N|Num=P|Cas=4
-C\th\tGen=N|Num=P|Cas=5
-C\th\tGen=X|Num=P|Cas=2
-C\th\tGen=X|Num=P|Cas=3
-C\th\tGen=X|Num=P|Cas=6
-C\th\tGen=X|Num=P|Cas=7
-C\th\tGen=Y|Num=P|Cas=4
-C\tj\tNum=S|Cas=1
-C\tj\tNum=S|Cas=2
-C\tj\tNum=S|Cas=2|Var=1
-C\tj\tNum=S|Cas=3
-C\tj\tNum=S|Cas=3|Var=1
-C\tj\tNum=S|Cas=4
-C\tj\tNum=S|Cas=5
-C\tj\tNum=S|Cas=6
-C\tj\tNum=S|Cas=6|Var=1
-C\tj\tNum=S|Cas=7
-C\tj\tNum=S|Cas=7|Var=1
-C\tk\tNum=P|Cas=1
-C\tk\tNum=P|Cas=2
-C\tk\tNum=P|Cas=3
-C\tk\tNum=P|Cas=4
-C\tk\tNum=P|Cas=5
-C\tk\tNum=P|Cas=6
-C\tk\tNum=P|Cas=7
-C\tl\tGen=F|Num=D|Cas=7
-C\tl\tGen=F|Num=D|Cas=7|Var=6
-C\tl\tGen=F|Num=D|Cas=7|Var=9
-C\tl\tGen=F|Num=S|Cas=1
-C\tl\tGen=F|Num=S|Cas=2
-C\tl\tGen=F|Num=S|Cas=3
-C\tl\tGen=F|Num=S|Cas=4
-C\tl\tGen=F|Num=S|Cas=5
-C\tl\tGen=F|Num=S|Cas=6
-C\tl\tGen=F|Num=S|Cas=7
-C\tl\tGen=H|Num=P|Cas=1
-C\tl\tGen=H|Num=P|Cas=4
-C\tl\tGen=H|Num=P|Cas=5
-C\tl\tGen=I|Num=S|Cas=4
-C\tl\tGen=M|Num=S|Cas=4
-C\tl\tGen=N|Num=S|Cas=1
-C\tl\tGen=N|Num=S|Cas=4
-C\tl\tGen=N|Num=S|Cas=5
-C\tl\tGen=X|Num=P|Cas=1
-C\tl\tGen=X|Num=P|Cas=1|Var=6
-C\tl\tGen=X|Num=P|Cas=2
-C\tl\tGen=X|Num=P|Cas=2|Var=1
-C\tl\tGen=X|Num=P|Cas=2|Var=6
-C\tl\tGen=X|Num=P|Cas=3
-C\tl\tGen=X|Num=P|Cas=3|Var=1
-C\tl\tGen=X|Num=P|Cas=3|Var=2
-C\tl\tGen=X|Num=P|Cas=3|Var=6
-C\tl\tGen=X|Num=P|Cas=3|Var=9
-C\tl\tGen=X|Num=P|Cas=4
-C\tl\tGen=X|Num=P|Cas=4|Var=6
-C\tl\tGen=X|Num=P|Cas=5
-C\tl\tGen=X|Num=P|Cas=5|Var=6
-C\tl\tGen=X|Num=P|Cas=6
-C\tl\tGen=X|Num=P|Cas=6|Var=1
-C\tl\tGen=X|Num=P|Cas=6|Var=2
-C\tl\tGen=X|Num=P|Cas=6|Var=6
-C\tl\tGen=X|Num=P|Cas=7
-C\tl\tGen=X|Num=P|Cas=7|Var=1
-C\tl\tGen=X|Num=P|Cas=7|Var=2
-C\tl\tGen=X|Num=P|Cas=7|Var=6
-C\tl\tGen=X|Num=P|Cas=7|Var=9
-C\tl\tGen=X|Num=P|Cas=X
-C\tl\tGen=X|Num=P|Cas=X|Sem=K
-C\tl\tGen=X|Num=S|Cas=2
-C\tl\tGen=X|Num=S|Cas=3
-C\tl\tGen=X|Num=S|Cas=6
-C\tl\tGen=X|Num=S|Cas=7
-C\tl\tGen=X|Num=S|Cas=X
-C\tl\tGen=Y|Num=P|Cas=1
-C\tl\tGen=Y|Num=P|Cas=4
-C\tl\tGen=Y|Num=P|Cas=5
-C\tl\tGen=Y|Num=S|Cas=1
-C\tl\tGen=Y|Num=S|Cas=5
-C\tl\tGen=Z|Num=S|Cas=2
-C\tl\tGen=Z|Num=S|Cas=3
-C\tl\tGen=Z|Num=S|Cas=6
-C\tl\tGen=Z|Num=S|Cas=7
-C\tn\tNum=P|Cas=2
-C\tn\tNum=P|Cas=2|Var=1
-C\tn\tNum=P|Cas=3
-C\tn\tNum=P|Cas=3|Var=1
-C\tn\tNum=P|Cas=6
-C\tn\tNum=P|Cas=6|Var=1
-C\tn\tNum=P|Cas=7
-C\tn\tNum=P|Cas=7|Var=1
-C\tn\tNum=S|Cas=1
-C\tn\tNum=S|Cas=1|Sem=K
-C\tn\tNum=S|Cas=1|Var=1
-C\tn\tNum=S|Cas=4
-C\tn\tNum=S|Cas=4|Var=1
-C\tn\tNum=S|Cas=5
-C\tn\tNum=S|Cas=5|Var=1
-C\tn\tNum=S|Cas=X
-C\tn\tNum=X|Cas=X
-C\to\tVar=1
-C\to\t_
-C\tr\tGen=F|Num=D|Cas=7
-C\tr\tGen=F|Num=D|Cas=7|Var=6
-C\tr\tGen=F|Num=P|Cas=1
-C\tr\tGen=F|Num=P|Cas=1|Var=6
-C\tr\tGen=F|Num=P|Cas=2
-C\tr\tGen=F|Num=P|Cas=2|Var=6
-C\tr\tGen=F|Num=P|Cas=3
-C\tr\tGen=F|Num=P|Cas=3|Var=6
-C\tr\tGen=F|Num=P|Cas=4
-C\tr\tGen=F|Num=P|Cas=4|Var=6
-C\tr\tGen=F|Num=P|Cas=5
-C\tr\tGen=F|Num=P|Cas=5|Var=6
-C\tr\tGen=F|Num=P|Cas=6
-C\tr\tGen=F|Num=P|Cas=6|Var=6
-C\tr\tGen=F|Num=P|Cas=7
-C\tr\tGen=F|Num=P|Cas=7|Var=6
-C\tr\tGen=F|Num=P|Cas=7|Var=7
-C\tr\tGen=F|Num=S|Cas=1
-C\tr\tGen=F|Num=S|Cas=2
-C\tr\tGen=F|Num=S|Cas=2|Var=6
-C\tr\tGen=F|Num=S|Cas=3
-C\tr\tGen=F|Num=S|Cas=3|Var=6
-C\tr\tGen=F|Num=S|Cas=4
-C\tr\tGen=F|Num=S|Cas=5
-C\tr\tGen=F|Num=S|Cas=6
-C\tr\tGen=F|Num=S|Cas=6|Var=6
-C\tr\tGen=F|Num=S|Cas=7
-C\tr\tGen=I|Num=P|Cas=1
-C\tr\tGen=I|Num=P|Cas=1|Var=6
-C\tr\tGen=I|Num=P|Cas=2
-C\tr\tGen=I|Num=P|Cas=2|Var=6
-C\tr\tGen=I|Num=P|Cas=3
-C\tr\tGen=I|Num=P|Cas=3|Var=6
-C\tr\tGen=I|Num=P|Cas=4
-C\tr\tGen=I|Num=P|Cas=4|Var=6
-C\tr\tGen=I|Num=P|Cas=5
-C\tr\tGen=I|Num=P|Cas=5|Var=6
-C\tr\tGen=I|Num=P|Cas=6
-C\tr\tGen=I|Num=P|Cas=6|Var=6
-C\tr\tGen=I|Num=P|Cas=7
-C\tr\tGen=I|Num=P|Cas=7|Var=6
-C\tr\tGen=I|Num=P|Cas=7|Var=7
-C\tr\tGen=I|Num=S|Cas=1
-C\tr\tGen=I|Num=S|Cas=1|Var=6
-C\tr\tGen=I|Num=S|Cas=2
-C\tr\tGen=I|Num=S|Cas=2|Var=6
-C\tr\tGen=I|Num=S|Cas=3
-C\tr\tGen=I|Num=S|Cas=3|Var=6
-C\tr\tGen=I|Num=S|Cas=4
-C\tr\tGen=I|Num=S|Cas=4|Var=6
-C\tr\tGen=I|Num=S|Cas=5
-C\tr\tGen=I|Num=S|Cas=5|Var=6
-C\tr\tGen=I|Num=S|Cas=6
-C\tr\tGen=I|Num=S|Cas=6|Var=6
-C\tr\tGen=I|Num=S|Cas=6|Var=7
-C\tr\tGen=I|Num=S|Cas=7
-C\tr\tGen=I|Num=S|Cas=7|Var=6
-C\tr\tGen=M|Num=P|Cas=1
-C\tr\tGen=M|Num=P|Cas=1|Var=6
-C\tr\tGen=M|Num=P|Cas=2
-C\tr\tGen=M|Num=P|Cas=2|Var=6
-C\tr\tGen=M|Num=P|Cas=3
-C\tr\tGen=M|Num=P|Cas=3|Var=6
-C\tr\tGen=M|Num=P|Cas=4
-C\tr\tGen=M|Num=P|Cas=4|Var=6
-C\tr\tGen=M|Num=P|Cas=5
-C\tr\tGen=M|Num=P|Cas=5|Var=6
-C\tr\tGen=M|Num=P|Cas=6
-C\tr\tGen=M|Num=P|Cas=6|Var=6
-C\tr\tGen=M|Num=P|Cas=7
-C\tr\tGen=M|Num=P|Cas=7|Var=6
-C\tr\tGen=M|Num=P|Cas=7|Var=7
-C\tr\tGen=M|Num=S|Cas=1
-C\tr\tGen=M|Num=S|Cas=1|Var=6
-C\tr\tGen=M|Num=S|Cas=2
-C\tr\tGen=M|Num=S|Cas=2|Var=6
-C\tr\tGen=M|Num=S|Cas=3
-C\tr\tGen=M|Num=S|Cas=3|Var=6
-C\tr\tGen=M|Num=S|Cas=4
-C\tr\tGen=M|Num=S|Cas=4|Var=6
-C\tr\tGen=M|Num=S|Cas=5
-C\tr\tGen=M|Num=S|Cas=5|Var=6
-C\tr\tGen=M|Num=S|Cas=6
-C\tr\tGen=M|Num=S|Cas=6|Var=6
-C\tr\tGen=M|Num=S|Cas=6|Var=7
-C\tr\tGen=M|Num=S|Cas=7
-C\tr\tGen=M|Num=S|Cas=7|Var=6
-C\tr\tGen=N|Num=D|Cas=7
-C\tr\tGen=N|Num=P|Cas=1
-C\tr\tGen=N|Num=P|Cas=1|Var=6
-C\tr\tGen=N|Num=P|Cas=2
-C\tr\tGen=N|Num=P|Cas=2|Var=6
-C\tr\tGen=N|Num=P|Cas=3
-C\tr\tGen=N|Num=P|Cas=3|Var=6
-C\tr\tGen=N|Num=P|Cas=4
-C\tr\tGen=N|Num=P|Cas=4|Var=6
-C\tr\tGen=N|Num=P|Cas=5
-C\tr\tGen=N|Num=P|Cas=5|Var=6
-C\tr\tGen=N|Num=P|Cas=6
-C\tr\tGen=N|Num=P|Cas=6|Var=6
-C\tr\tGen=N|Num=P|Cas=7
-C\tr\tGen=N|Num=P|Cas=7|Var=6
-C\tr\tGen=N|Num=P|Cas=7|Var=7
-C\tr\tGen=N|Num=S|Cas=1
-C\tr\tGen=N|Num=S|Cas=1|Var=6
-C\tr\tGen=N|Num=S|Cas=2
-C\tr\tGen=N|Num=S|Cas=2|Var=6
-C\tr\tGen=N|Num=S|Cas=3
-C\tr\tGen=N|Num=S|Cas=3|Var=6
-C\tr\tGen=N|Num=S|Cas=4
-C\tr\tGen=N|Num=S|Cas=4|Var=6
-C\tr\tGen=N|Num=S|Cas=5
-C\tr\tGen=N|Num=S|Cas=5|Var=6
-C\tr\tGen=N|Num=S|Cas=6
-C\tr\tGen=N|Num=S|Cas=6|Var=6
-C\tr\tGen=N|Num=S|Cas=6|Var=7
-C\tr\tGen=N|Num=S|Cas=7
-C\tr\tGen=N|Num=S|Cas=7|Var=6
-C\tr\tGen=X|Num=X|Cas=X
-C\tr\tGen=X|Num=X|Cas=X|Sem=K
-C\tu\t_
-C\tv\tVar=1
-C\tv\tVar=6
-C\tv\t_
-C\tw\tGen=F|Num=D|Cas=7
-C\tw\tGen=F|Num=P|Cas=1
-C\tw\tGen=F|Num=P|Cas=4
-C\tw\tGen=F|Num=P|Cas=5
-C\tw\tGen=F|Num=S|Cas=1
-C\tw\tGen=F|Num=S|Cas=2
-C\tw\tGen=F|Num=S|Cas=3
-C\tw\tGen=F|Num=S|Cas=4
-C\tw\tGen=F|Num=S|Cas=5
-C\tw\tGen=F|Num=S|Cas=6
-C\tw\tGen=F|Num=S|Cas=7
-C\tw\tGen=I|Num=P|Cas=1
-C\tw\tGen=I|Num=P|Cas=5
-C\tw\tGen=I|Num=S|Cas=4
-C\tw\tGen=M|Num=P|Cas=1
-C\tw\tGen=M|Num=P|Cas=5
-C\tw\tGen=M|Num=S|Cas=4
-C\tw\tGen=N|Num=P|Cas=1
-C\tw\tGen=N|Num=P|Cas=4
-C\tw\tGen=N|Num=P|Cas=5
-C\tw\tGen=N|Num=S|Cas=1
-C\tw\tGen=N|Num=S|Cas=4
-C\tw\tGen=N|Num=S|Cas=5
-C\tw\tGen=X|Num=P|Cas=2
-C\tw\tGen=X|Num=P|Cas=3
-C\tw\tGen=X|Num=P|Cas=6
-C\tw\tGen=X|Num=P|Cas=7
-C\tw\tGen=Y|Num=P|Cas=4
-C\tw\tGen=Y|Num=S|Cas=1
-C\tw\tGen=Y|Num=S|Cas=5
-C\tw\tGen=Z|Num=S|Cas=2
-C\tw\tGen=Z|Num=S|Cas=3
-C\tw\tGen=Z|Num=S|Cas=6
-C\tw\tGen=Z|Num=S|Cas=7
-C\ty\tGen=F|Num=P|Cas=1
-C\ty\tGen=F|Num=P|Cas=2
-C\ty\tGen=F|Num=P|Cas=3
-C\ty\tGen=F|Num=P|Cas=4
-C\ty\tGen=F|Num=P|Cas=5
-C\ty\tGen=F|Num=P|Cas=6
-C\ty\tGen=F|Num=P|Cas=7
-C\ty\tGen=F|Num=P|Cas=7|Var=6
-C\ty\tGen=F|Num=S|Cas=1
-C\ty\tGen=F|Num=S|Cas=2
-C\ty\tGen=F|Num=S|Cas=3
-C\ty\tGen=F|Num=S|Cas=4
-C\ty\tGen=F|Num=S|Cas=5
-C\ty\tGen=F|Num=S|Cas=6
-C\ty\tGen=F|Num=S|Cas=7
-C\tz\tGen=F|Num=D|Cas=7
-C\tz\tGen=F|Num=P|Cas=1
-C\tz\tGen=F|Num=P|Cas=4
-C\tz\tGen=F|Num=S|Cas=1
-C\tz\tGen=F|Num=S|Cas=2
-C\tz\tGen=F|Num=S|Cas=3
-C\tz\tGen=F|Num=S|Cas=4
-C\tz\tGen=F|Num=S|Cas=6
-C\tz\tGen=F|Num=S|Cas=7
-C\tz\tGen=I|Num=P|Cas=1
-C\tz\tGen=I|Num=S|Cas=4
-C\tz\tGen=M|Num=P|Cas=1
-C\tz\tGen=M|Num=S|Cas=4
-C\tz\tGen=N|Num=P|Cas=1
-C\tz\tGen=N|Num=P|Cas=4
-C\tz\tGen=N|Num=S|Cas=1
-C\tz\tGen=N|Num=S|Cas=4
-C\tz\tGen=X|Num=P|Cas=2
-C\tz\tGen=X|Num=P|Cas=3
-C\tz\tGen=X|Num=P|Cas=6
-C\tz\tGen=X|Num=P|Cas=7
-C\tz\tGen=Y|Num=P|Cas=4
-C\tz\tGen=Y|Num=S|Cas=1
-C\tz\tGen=Z|Num=S|Cas=2
-C\tz\tGen=Z|Num=S|Cas=3
-C\tz\tGen=Z|Num=S|Cas=6
-C\tz\tGen=Z|Num=S|Cas=7
-C\t}\tVar=1
-C\t}\tVar=2
-C\t}\t_
-D\t!\t_
-D\tb\tNeg=A
-D\tb\tNeg=N
-D\tb\tSem=R
-D\tb\tSem=m
-D\tb\tVar=1
-D\tb\tVar=2
-D\tb\tVar=4
-D\tb\tVar=6
-D\tb\tVar=7
-D\tb\tVar=8
-D\tb\tVar=9
-D\tb\t_
-D\tg\tGra=1|Neg=A
-D\tg\tGra=1|Neg=A|Sem=S
-D\tg\tGra=1|Neg=A|Sem=m
-D\tg\tGra=1|Neg=A|Var=1
-D\tg\tGra=1|Neg=A|Var=3
-D\tg\tGra=1|Neg=A|Var=8
-D\tg\tGra=1|Neg=N
-D\tg\tGra=1|Neg=N|Var=3
-D\tg\tGra=1|Neg=N|Var=8
-D\tg\tGra=2|Neg=A
-D\tg\tGra=2|Neg=A|Sem=K
-D\tg\tGra=2|Neg=A|Var=1
-D\tg\tGra=2|Neg=A|Var=2
-D\tg\tGra=2|Neg=A|Var=3
-D\tg\tGra=2|Neg=A|Var=6
-D\tg\tGra=2|Neg=N
-D\tg\tGra=2|Neg=N|Var=1
-D\tg\tGra=2|Neg=N|Var=2
-D\tg\tGra=2|Neg=N|Var=3
-D\tg\tGra=2|Neg=N|Var=6
-D\tg\tGra=3|Neg=A
-D\tg\tGra=3|Neg=A|Var=1
-D\tg\tGra=3|Neg=A|Var=2
-D\tg\tGra=3|Neg=A|Var=3
-D\tg\tGra=3|Neg=A|Var=6
-D\tg\tGra=3|Neg=N
-D\tg\tGra=3|Neg=N|Var=1
-D\tg\tGra=3|Neg=N|Var=2
-D\tg\tGra=3|Neg=N|Var=3
-D\tg\tGra=3|Neg=N|Var=6
-I\tI\tSem=K
-I\tI\t_
-J\t*\t_
-J\t,\tNum=P|Per=1
-J\t,\tNum=P|Per=2
-J\t,\tNum=S|Per=1
-J\t,\tNum=S|Per=2
-J\t,\tNum=X|Per=3
-J\t,\tVar=1
-J\t,\tVar=8
-J\t,\t_
-J\t^\tSem=K
-J\t^\tVar=1
-J\t^\tVar=2
-J\t^\tVar=8
-J\t^\t_
-N\t;\t_
-N\tN\tGen=F|Num=D|Cas=7|Neg=A
-N\tN\tGen=F|Num=D|Cas=7|Neg=A|Sem=m
-N\tN\tGen=F|Num=D|Cas=7|Neg=N
-N\tN\tGen=F|Num=P|Cas=1|Neg=A
-N\tN\tGen=F|Num=P|Cas=1|Neg=A|Sem=E
-N\tN\tGen=F|Num=P|Cas=1|Neg=A|Sem=G
-N\tN\tGen=F|Num=P|Cas=1|Neg=A|Sem=K
-N\tN\tGen=F|Num=P|Cas=1|Neg=A|Sem=R
-N\tN\tGen=F|Num=P|Cas=1|Neg=A|Sem=Y
-N\tN\tGen=F|Num=P|Cas=1|Neg=A|Sem=m
-N\tN\tGen=F|Num=P|Cas=1|Neg=A|Var=1
-N\tN\tGen=F|Num=P|Cas=1|Neg=A|Var=1|Sem=G
-N\tN\tGen=F|Num=P|Cas=1|Neg=A|Var=4
-N\tN\tGen=F|Num=P|Cas=1|Neg=A|Var=6
-N\tN\tGen=F|Num=P|Cas=1|Neg=A|Var=8
-N\tN\tGen=F|Num=P|Cas=1|Neg=N
-N\tN\tGen=F|Num=P|Cas=1|Neg=N|Var=1
-N\tN\tGen=F|Num=P|Cas=1|Neg=N|Var=4
-N\tN\tGen=F|Num=P|Cas=1|Neg=N|Var=6
-N\tN\tGen=F|Num=P|Cas=1|Neg=N|Var=8
-N\tN\tGen=F|Num=P|Cas=2|Neg=A
-N\tN\tGen=F|Num=P|Cas=2|Neg=A|Sem=E
-N\tN\tGen=F|Num=P|Cas=2|Neg=A|Sem=G
-N\tN\tGen=F|Num=P|Cas=2|Neg=A|Sem=K
-N\tN\tGen=F|Num=P|Cas=2|Neg=A|Sem=R
-N\tN\tGen=F|Num=P|Cas=2|Neg=A|Sem=S
-N\tN\tGen=F|Num=P|Cas=2|Neg=A|Sem=Y
-N\tN\tGen=F|Num=P|Cas=2|Neg=A|Sem=m
-N\tN\tGen=F|Num=P|Cas=2|Neg=A|Var=1
-N\tN\tGen=F|Num=P|Cas=2|Neg=A|Var=6
-N\tN\tGen=F|Num=P|Cas=2|Neg=A|Var=8
-N\tN\tGen=F|Num=P|Cas=2|Neg=N
-N\tN\tGen=F|Num=P|Cas=2|Neg=N|Var=1
-N\tN\tGen=F|Num=P|Cas=2|Neg=N|Var=6
-N\tN\tGen=F|Num=P|Cas=2|Neg=N|Var=8
-N\tN\tGen=F|Num=P|Cas=3|Neg=A
-N\tN\tGen=F|Num=P|Cas=3|Neg=A|Sem=G
-N\tN\tGen=F|Num=P|Cas=3|Neg=A|Sem=m
-N\tN\tGen=F|Num=P|Cas=3|Neg=A|Var=1
-N\tN\tGen=F|Num=P|Cas=3|Neg=A|Var=6
-N\tN\tGen=F|Num=P|Cas=3|Neg=A|Var=8
-N\tN\tGen=F|Num=P|Cas=3|Neg=N
-N\tN\tGen=F|Num=P|Cas=3|Neg=N|Var=1
-N\tN\tGen=F|Num=P|Cas=3|Neg=N|Var=6
-N\tN\tGen=F|Num=P|Cas=3|Neg=N|Var=8
-N\tN\tGen=F|Num=P|Cas=4|Neg=A
-N\tN\tGen=F|Num=P|Cas=4|Neg=A|Sem=E
-N\tN\tGen=F|Num=P|Cas=4|Neg=A|Sem=G
-N\tN\tGen=F|Num=P|Cas=4|Neg=A|Sem=K
-N\tN\tGen=F|Num=P|Cas=4|Neg=A|Sem=R
-N\tN\tGen=F|Num=P|Cas=4|Neg=A|Sem=m
-N\tN\tGen=F|Num=P|Cas=4|Neg=A|Var=1
-N\tN\tGen=F|Num=P|Cas=4|Neg=A|Var=4
-N\tN\tGen=F|Num=P|Cas=4|Neg=A|Var=6
-N\tN\tGen=F|Num=P|Cas=4|Neg=A|Var=8
-N\tN\tGen=F|Num=P|Cas=4|Neg=N
-N\tN\tGen=F|Num=P|Cas=4|Neg=N|Var=1
-N\tN\tGen=F|Num=P|Cas=4|Neg=N|Var=4
-N\tN\tGen=F|Num=P|Cas=4|Neg=N|Var=6
-N\tN\tGen=F|Num=P|Cas=4|Neg=N|Var=8
-N\tN\tGen=F|Num=P|Cas=5|Neg=A
-N\tN\tGen=F|Num=P|Cas=5|Neg=A|Sem=m
-N\tN\tGen=F|Num=P|Cas=5|Neg=A|Var=1
-N\tN\tGen=F|Num=P|Cas=5|Neg=A|Var=4
-N\tN\tGen=F|Num=P|Cas=5|Neg=A|Var=6
-N\tN\tGen=F|Num=P|Cas=5|Neg=A|Var=8
-N\tN\tGen=F|Num=P|Cas=5|Neg=N
-N\tN\tGen=F|Num=P|Cas=5|Neg=N|Var=1
-N\tN\tGen=F|Num=P|Cas=5|Neg=N|Var=4
-N\tN\tGen=F|Num=P|Cas=5|Neg=N|Var=6
-N\tN\tGen=F|Num=P|Cas=5|Neg=N|Var=8
-N\tN\tGen=F|Num=P|Cas=6|Neg=A
-N\tN\tGen=F|Num=P|Cas=6|Neg=A|Sem=G
-N\tN\tGen=F|Num=P|Cas=6|Neg=A|Sem=K
-N\tN\tGen=F|Num=P|Cas=6|Neg=A|Sem=R
-N\tN\tGen=F|Num=P|Cas=6|Neg=A|Sem=m
-N\tN\tGen=F|Num=P|Cas=6|Neg=A|Var=1
-N\tN\tGen=F|Num=P|Cas=6|Neg=A|Var=6
-N\tN\tGen=F|Num=P|Cas=6|Neg=A|Var=7
-N\tN\tGen=F|Num=P|Cas=6|Neg=A|Var=8
-N\tN\tGen=F|Num=P|Cas=6|Neg=N
-N\tN\tGen=F|Num=P|Cas=6|Neg=N|Var=1
-N\tN\tGen=F|Num=P|Cas=6|Neg=N|Var=6
-N\tN\tGen=F|Num=P|Cas=6|Neg=N|Var=7
-N\tN\tGen=F|Num=P|Cas=6|Neg=N|Var=8
-N\tN\tGen=F|Num=P|Cas=7|Neg=A
-N\tN\tGen=F|Num=P|Cas=7|Neg=A|Sem=G
-N\tN\tGen=F|Num=P|Cas=7|Neg=A|Sem=m
-N\tN\tGen=F|Num=P|Cas=7|Neg=A|Var=1
-N\tN\tGen=F|Num=P|Cas=7|Neg=A|Var=2
-N\tN\tGen=F|Num=P|Cas=7|Neg=A|Var=6
-N\tN\tGen=F|Num=P|Cas=7|Neg=A|Var=7
-N\tN\tGen=F|Num=P|Cas=7|Neg=A|Var=8
-N\tN\tGen=F|Num=P|Cas=7|Neg=N
-N\tN\tGen=F|Num=P|Cas=7|Neg=N|Var=1
-N\tN\tGen=F|Num=P|Cas=7|Neg=N|Var=2
-N\tN\tGen=F|Num=P|Cas=7|Neg=N|Var=6
-N\tN\tGen=F|Num=P|Cas=7|Neg=N|Var=7
-N\tN\tGen=F|Num=P|Cas=7|Neg=N|Var=8
-N\tN\tGen=F|Num=P|Cas=X|Neg=A
-N\tN\tGen=F|Num=P|Cas=X|Neg=A|Sem=G
-N\tN\tGen=F|Num=P|Cas=X|Neg=A|Sem=K
-N\tN\tGen=F|Num=P|Cas=X|Neg=A|Sem=R
-N\tN\tGen=F|Num=P|Cas=X|Neg=A|Sem=m
-N\tN\tGen=F|Num=P|Cas=X|Neg=A|Var=8
-N\tN\tGen=F|Num=P|Cas=X|Neg=A|Var=8|Sem=K
-N\tN\tGen=F|Num=P|Cas=X|Neg=A|Var=8|Sem=R
-N\tN\tGen=F|Num=P|Cas=X|Neg=A|Var=8|Sem=w
-N\tN\tGen=F|Num=P|Cas=X|Neg=N
-N\tN\tGen=F|Num=P|Cas=X|Neg=N|Var=8
-N\tN\tGen=F|Num=S|Cas=1|Neg=A
-N\tN\tGen=F|Num=S|Cas=1|Neg=A|Sem=E
-N\tN\tGen=F|Num=S|Cas=1|Neg=A|Sem=G
-N\tN\tGen=F|Num=S|Cas=1|Neg=A|Sem=K
-N\tN\tGen=F|Num=S|Cas=1|Neg=A|Sem=R
-N\tN\tGen=F|Num=S|Cas=1|Neg=A|Sem=S
-N\tN\tGen=F|Num=S|Cas=1|Neg=A|Sem=Y
-N\tN\tGen=F|Num=S|Cas=1|Neg=A|Sem=m
-N\tN\tGen=F|Num=S|Cas=1|Neg=A|Var=1
-N\tN\tGen=F|Num=S|Cas=1|Neg=A|Var=1|Sem=G
-N\tN\tGen=F|Num=S|Cas=1|Neg=A|Var=1|Sem=K
-N\tN\tGen=F|Num=S|Cas=1|Neg=A|Var=1|Sem=R
-N\tN\tGen=F|Num=S|Cas=1|Neg=A|Var=1|Sem=Y
-N\tN\tGen=F|Num=S|Cas=1|Neg=A|Var=8
-N\tN\tGen=F|Num=S|Cas=1|Neg=N
-N\tN\tGen=F|Num=S|Cas=1|Neg=N|Var=1
-N\tN\tGen=F|Num=S|Cas=1|Neg=N|Var=8
-N\tN\tGen=F|Num=S|Cas=2|Neg=A
-N\tN\tGen=F|Num=S|Cas=2|Neg=A|Sem=E
-N\tN\tGen=F|Num=S|Cas=2|Neg=A|Sem=G
-N\tN\tGen=F|Num=S|Cas=2|Neg=A|Sem=K
-N\tN\tGen=F|Num=S|Cas=2|Neg=A|Sem=R
-N\tN\tGen=F|Num=S|Cas=2|Neg=A|Sem=S
-N\tN\tGen=F|Num=S|Cas=2|Neg=A|Sem=Y
-N\tN\tGen=F|Num=S|Cas=2|Neg=A|Sem=m
-N\tN\tGen=F|Num=S|Cas=2|Neg=A|Var=1
-N\tN\tGen=F|Num=S|Cas=2|Neg=A|Var=1|Sem=G
-N\tN\tGen=F|Num=S|Cas=2|Neg=A|Var=2
-N\tN\tGen=F|Num=S|Cas=2|Neg=A|Var=6
-N\tN\tGen=F|Num=S|Cas=2|Neg=A|Var=8
-N\tN\tGen=F|Num=S|Cas=2|Neg=A|Var=8|Sem=G
-N\tN\tGen=F|Num=S|Cas=2|Neg=N
-N\tN\tGen=F|Num=S|Cas=2|Neg=N|Var=1
-N\tN\tGen=F|Num=S|Cas=2|Neg=N|Var=2
-N\tN\tGen=F|Num=S|Cas=2|Neg=N|Var=6
-N\tN\tGen=F|Num=S|Cas=2|Neg=N|Var=8
-N\tN\tGen=F|Num=S|Cas=3|Neg=A
-N\tN\tGen=F|Num=S|Cas=3|Neg=A|Sem=E
-N\tN\tGen=F|Num=S|Cas=3|Neg=A|Sem=G
-N\tN\tGen=F|Num=S|Cas=3|Neg=A|Sem=K
-N\tN\tGen=F|Num=S|Cas=3|Neg=A|Sem=R
-N\tN\tGen=F|Num=S|Cas=3|Neg=A|Sem=S
-N\tN\tGen=F|Num=S|Cas=3|Neg=A|Sem=Y
-N\tN\tGen=F|Num=S|Cas=3|Neg=A|Sem=m
-N\tN\tGen=F|Num=S|Cas=3|Neg=A|Var=1
-N\tN\tGen=F|Num=S|Cas=3|Neg=A|Var=1|Sem=G
-N\tN\tGen=F|Num=S|Cas=3|Neg=A|Var=2
-N\tN\tGen=F|Num=S|Cas=3|Neg=A|Var=6
-N\tN\tGen=F|Num=S|Cas=3|Neg=A|Var=8
-N\tN\tGen=F|Num=S|Cas=3|Neg=N
-N\tN\tGen=F|Num=S|Cas=3|Neg=N|Var=1
-N\tN\tGen=F|Num=S|Cas=3|Neg=N|Var=2
-N\tN\tGen=F|Num=S|Cas=3|Neg=N|Var=6
-N\tN\tGen=F|Num=S|Cas=3|Neg=N|Var=8
-N\tN\tGen=F|Num=S|Cas=4|Neg=A
-N\tN\tGen=F|Num=S|Cas=4|Neg=A|Sem=E
-N\tN\tGen=F|Num=S|Cas=4|Neg=A|Sem=G
-N\tN\tGen=F|Num=S|Cas=4|Neg=A|Sem=K
-N\tN\tGen=F|Num=S|Cas=4|Neg=A|Sem=R
-N\tN\tGen=F|Num=S|Cas=4|Neg=A|Sem=S
-N\tN\tGen=F|Num=S|Cas=4|Neg=A|Sem=Y
-N\tN\tGen=F|Num=S|Cas=4|Neg=A|Sem=m
-N\tN\tGen=F|Num=S|Cas=4|Neg=A|Var=1
-N\tN\tGen=F|Num=S|Cas=4|Neg=A|Var=8
-N\tN\tGen=F|Num=S|Cas=4|Neg=N
-N\tN\tGen=F|Num=S|Cas=4|Neg=N|Var=1
-N\tN\tGen=F|Num=S|Cas=4|Neg=N|Var=8
-N\tN\tGen=F|Num=S|Cas=5|Neg=A
-N\tN\tGen=F|Num=S|Cas=5|Neg=A|Sem=G
-N\tN\tGen=F|Num=S|Cas=5|Neg=A|Sem=R
-N\tN\tGen=F|Num=S|Cas=5|Neg=A|Sem=Y
-N\tN\tGen=F|Num=S|Cas=5|Neg=A|Sem=m
-N\tN\tGen=F|Num=S|Cas=5|Neg=A|Var=1
-N\tN\tGen=F|Num=S|Cas=5|Neg=A|Var=8
-N\tN\tGen=F|Num=S|Cas=5|Neg=N
-N\tN\tGen=F|Num=S|Cas=5|Neg=N|Var=1
-N\tN\tGen=F|Num=S|Cas=5|Neg=N|Var=8
-N\tN\tGen=F|Num=S|Cas=6|Neg=A
-N\tN\tGen=F|Num=S|Cas=6|Neg=A|Sem=G
-N\tN\tGen=F|Num=S|Cas=6|Neg=A|Sem=K
-N\tN\tGen=F|Num=S|Cas=6|Neg=A|Sem=R
-N\tN\tGen=F|Num=S|Cas=6|Neg=A|Sem=S
-N\tN\tGen=F|Num=S|Cas=6|Neg=A|Sem=Y
-N\tN\tGen=F|Num=S|Cas=6|Neg=A|Sem=j
-N\tN\tGen=F|Num=S|Cas=6|Neg=A|Sem=m
-N\tN\tGen=F|Num=S|Cas=6|Neg=A|Var=1
-N\tN\tGen=F|Num=S|Cas=6|Neg=A|Var=1|Sem=G
-N\tN\tGen=F|Num=S|Cas=6|Neg=A|Var=6
-N\tN\tGen=F|Num=S|Cas=6|Neg=A|Var=8
-N\tN\tGen=F|Num=S|Cas=6|Neg=N
-N\tN\tGen=F|Num=S|Cas=6|Neg=N|Var=1
-N\tN\tGen=F|Num=S|Cas=6|Neg=N|Var=6
-N\tN\tGen=F|Num=S|Cas=6|Neg=N|Var=8
-N\tN\tGen=F|Num=S|Cas=7|Neg=A
-N\tN\tGen=F|Num=S|Cas=7|Neg=A|Sem=E
-N\tN\tGen=F|Num=S|Cas=7|Neg=A|Sem=G
-N\tN\tGen=F|Num=S|Cas=7|Neg=A|Sem=K
-N\tN\tGen=F|Num=S|Cas=7|Neg=A|Sem=R
-N\tN\tGen=F|Num=S|Cas=7|Neg=A|Sem=S
-N\tN\tGen=F|Num=S|Cas=7|Neg=A|Sem=Y
-N\tN\tGen=F|Num=S|Cas=7|Neg=A|Sem=m
-N\tN\tGen=F|Num=S|Cas=7|Neg=A|Var=1
-N\tN\tGen=F|Num=S|Cas=7|Neg=A|Var=1|Sem=G
-N\tN\tGen=F|Num=S|Cas=7|Neg=A|Var=3
-N\tN\tGen=F|Num=S|Cas=7|Neg=A|Var=6
-N\tN\tGen=F|Num=S|Cas=7|Neg=A|Var=8
-N\tN\tGen=F|Num=S|Cas=7|Neg=N
-N\tN\tGen=F|Num=S|Cas=7|Neg=N|Var=1
-N\tN\tGen=F|Num=S|Cas=7|Neg=N|Var=3
-N\tN\tGen=F|Num=S|Cas=7|Neg=N|Var=6
-N\tN\tGen=F|Num=S|Cas=7|Neg=N|Var=8
-N\tN\tGen=F|Num=S|Cas=X|Neg=A
-N\tN\tGen=F|Num=S|Cas=X|Neg=A|Sem=G
-N\tN\tGen=F|Num=S|Cas=X|Neg=A|Sem=K
-N\tN\tGen=F|Num=S|Cas=X|Neg=A|Sem=R
-N\tN\tGen=F|Num=S|Cas=X|Neg=A|Sem=S
-N\tN\tGen=F|Num=S|Cas=X|Neg=A|Sem=Y
-N\tN\tGen=F|Num=S|Cas=X|Neg=A|Sem=m
-N\tN\tGen=F|Num=S|Cas=X|Neg=A|Var=8
-N\tN\tGen=F|Num=S|Cas=X|Neg=A|Var=8|Sem=R
-N\tN\tGen=F|Num=S|Cas=X|Neg=N
-N\tN\tGen=F|Num=S|Cas=X|Neg=N|Var=8
-N\tN\tGen=F|Num=X|Cas=X|Neg=A
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Sem=G
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Sem=K
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Sem=R
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Sem=S
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Sem=Y
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Sem=m
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=1
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=2
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=G
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=K
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=R
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=S
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=Y
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=b
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=j
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=m
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=9
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=9|Sem=m
-N\tN\tGen=F|Num=X|Cas=X|Neg=N
-N\tN\tGen=F|Num=X|Cas=X|Neg=N|Var=1
-N\tN\tGen=F|Num=X|Cas=X|Neg=N|Var=2
-N\tN\tGen=F|Num=X|Cas=X|Neg=N|Var=8
-N\tN\tGen=F|Num=X|Cas=X|Neg=N|Var=9
-N\tN\tGen=I|Num=P|Cas=1|Neg=A
-N\tN\tGen=I|Num=P|Cas=1|Neg=A|Sem=G
-N\tN\tGen=I|Num=P|Cas=1|Neg=A|Sem=K
-N\tN\tGen=I|Num=P|Cas=1|Neg=A|Sem=R
-N\tN\tGen=I|Num=P|Cas=1|Neg=A|Sem=m
-N\tN\tGen=I|Num=P|Cas=1|Neg=A|Var=1
-N\tN\tGen=I|Num=P|Cas=1|Neg=A|Var=2
-N\tN\tGen=I|Num=P|Cas=1|Neg=A|Var=3
-N\tN\tGen=I|Num=P|Cas=1|Neg=A|Var=6
-N\tN\tGen=I|Num=P|Cas=1|Neg=A|Var=8
-N\tN\tGen=I|Num=P|Cas=1|Neg=A|Var=9
-N\tN\tGen=I|Num=P|Cas=1|Neg=N
-N\tN\tGen=I|Num=P|Cas=1|Neg=N|Var=1
-N\tN\tGen=I|Num=P|Cas=1|Neg=N|Var=2
-N\tN\tGen=I|Num=P|Cas=1|Neg=N|Var=3
-N\tN\tGen=I|Num=P|Cas=1|Neg=N|Var=6
-N\tN\tGen=I|Num=P|Cas=1|Neg=N|Var=8
-N\tN\tGen=I|Num=P|Cas=1|Neg=N|Var=9
-N\tN\tGen=I|Num=P|Cas=2|Neg=A
-N\tN\tGen=I|Num=P|Cas=2|Neg=A|Sem=G
-N\tN\tGen=I|Num=P|Cas=2|Neg=A|Sem=K
-N\tN\tGen=I|Num=P|Cas=2|Neg=A|Sem=R
-N\tN\tGen=I|Num=P|Cas=2|Neg=A|Sem=b
-N\tN\tGen=I|Num=P|Cas=2|Neg=A|Var=1
-N\tN\tGen=I|Num=P|Cas=2|Neg=A|Var=2
-N\tN\tGen=I|Num=P|Cas=2|Neg=A|Var=3
-N\tN\tGen=I|Num=P|Cas=2|Neg=A|Var=6
-N\tN\tGen=I|Num=P|Cas=2|Neg=A|Var=8
-N\tN\tGen=I|Num=P|Cas=2|Neg=A|Var=9
-N\tN\tGen=I|Num=P|Cas=2|Neg=N
-N\tN\tGen=I|Num=P|Cas=2|Neg=N|Var=1
-N\tN\tGen=I|Num=P|Cas=2|Neg=N|Var=2
-N\tN\tGen=I|Num=P|Cas=2|Neg=N|Var=3
-N\tN\tGen=I|Num=P|Cas=2|Neg=N|Var=6
-N\tN\tGen=I|Num=P|Cas=2|Neg=N|Var=8
-N\tN\tGen=I|Num=P|Cas=2|Neg=N|Var=9
-N\tN\tGen=I|Num=P|Cas=3|Neg=A
-N\tN\tGen=I|Num=P|Cas=3|Neg=A|Sem=G
-N\tN\tGen=I|Num=P|Cas=3|Neg=A|Sem=R
-N\tN\tGen=I|Num=P|Cas=3|Neg=A|Var=1
-N\tN\tGen=I|Num=P|Cas=3|Neg=A|Var=2
-N\tN\tGen=I|Num=P|Cas=3|Neg=A|Var=6
-N\tN\tGen=I|Num=P|Cas=3|Neg=A|Var=7
-N\tN\tGen=I|Num=P|Cas=3|Neg=A|Var=8
-N\tN\tGen=I|Num=P|Cas=3|Neg=A|Var=9
-N\tN\tGen=I|Num=P|Cas=3|Neg=N
-N\tN\tGen=I|Num=P|Cas=3|Neg=N|Var=1
-N\tN\tGen=I|Num=P|Cas=3|Neg=N|Var=2
-N\tN\tGen=I|Num=P|Cas=3|Neg=N|Var=6
-N\tN\tGen=I|Num=P|Cas=3|Neg=N|Var=7
-N\tN\tGen=I|Num=P|Cas=3|Neg=N|Var=8
-N\tN\tGen=I|Num=P|Cas=3|Neg=N|Var=9
-N\tN\tGen=I|Num=P|Cas=4|Neg=A
-N\tN\tGen=I|Num=P|Cas=4|Neg=A|Sem=G
-N\tN\tGen=I|Num=P|Cas=4|Neg=A|Sem=R
-N\tN\tGen=I|Num=P|Cas=4|Neg=A|Sem=b
-N\tN\tGen=I|Num=P|Cas=4|Neg=A|Var=1
-N\tN\tGen=I|Num=P|Cas=4|Neg=A|Var=2
-N\tN\tGen=I|Num=P|Cas=4|Neg=A|Var=3
-N\tN\tGen=I|Num=P|Cas=4|Neg=A|Var=6
-N\tN\tGen=I|Num=P|Cas=4|Neg=A|Var=8
-N\tN\tGen=I|Num=P|Cas=4|Neg=A|Var=9
-N\tN\tGen=I|Num=P|Cas=4|Neg=N
-N\tN\tGen=I|Num=P|Cas=4|Neg=N|Var=1
-N\tN\tGen=I|Num=P|Cas=4|Neg=N|Var=2
-N\tN\tGen=I|Num=P|Cas=4|Neg=N|Var=3
-N\tN\tGen=I|Num=P|Cas=4|Neg=N|Var=6
-N\tN\tGen=I|Num=P|Cas=4|Neg=N|Var=8
-N\tN\tGen=I|Num=P|Cas=4|Neg=N|Var=9
-N\tN\tGen=I|Num=P|Cas=5|Neg=A
-N\tN\tGen=I|Num=P|Cas=5|Neg=A|Var=1
-N\tN\tGen=I|Num=P|Cas=5|Neg=A|Var=2
-N\tN\tGen=I|Num=P|Cas=5|Neg=A|Var=3
-N\tN\tGen=I|Num=P|Cas=5|Neg=A|Var=6
-N\tN\tGen=I|Num=P|Cas=5|Neg=A|Var=8
-N\tN\tGen=I|Num=P|Cas=5|Neg=A|Var=9
-N\tN\tGen=I|Num=P|Cas=5|Neg=N
-N\tN\tGen=I|Num=P|Cas=5|Neg=N|Var=1
-N\tN\tGen=I|Num=P|Cas=5|Neg=N|Var=2
-N\tN\tGen=I|Num=P|Cas=5|Neg=N|Var=3
-N\tN\tGen=I|Num=P|Cas=5|Neg=N|Var=6
-N\tN\tGen=I|Num=P|Cas=5|Neg=N|Var=8
-N\tN\tGen=I|Num=P|Cas=5|Neg=N|Var=9
-N\tN\tGen=I|Num=P|Cas=6|Neg=A
-N\tN\tGen=I|Num=P|Cas=6|Neg=A|Sem=G
-N\tN\tGen=I|Num=P|Cas=6|Neg=A|Sem=K
-N\tN\tGen=I|Num=P|Cas=6|Neg=A|Sem=R
-N\tN\tGen=I|Num=P|Cas=6|Neg=A|Var=1
-N\tN\tGen=I|Num=P|Cas=6|Neg=A|Var=1|Sem=G
-N\tN\tGen=I|Num=P|Cas=6|Neg=A|Var=2
-N\tN\tGen=I|Num=P|Cas=6|Neg=A|Var=3
-N\tN\tGen=I|Num=P|Cas=6|Neg=A|Var=6
-N\tN\tGen=I|Num=P|Cas=6|Neg=A|Var=6|Sem=G
-N\tN\tGen=I|Num=P|Cas=6|Neg=A|Var=8
-N\tN\tGen=I|Num=P|Cas=6|Neg=A|Var=9
-N\tN\tGen=I|Num=P|Cas=6|Neg=N
-N\tN\tGen=I|Num=P|Cas=6|Neg=N|Var=1
-N\tN\tGen=I|Num=P|Cas=6|Neg=N|Var=2
-N\tN\tGen=I|Num=P|Cas=6|Neg=N|Var=3
-N\tN\tGen=I|Num=P|Cas=6|Neg=N|Var=6
-N\tN\tGen=I|Num=P|Cas=6|Neg=N|Var=8
-N\tN\tGen=I|Num=P|Cas=6|Neg=N|Var=9
-N\tN\tGen=I|Num=P|Cas=7|Neg=A
-N\tN\tGen=I|Num=P|Cas=7|Neg=A|Sem=G
-N\tN\tGen=I|Num=P|Cas=7|Neg=A|Sem=R
-N\tN\tGen=I|Num=P|Cas=7|Neg=A|Var=1
-N\tN\tGen=I|Num=P|Cas=7|Neg=A|Var=2
-N\tN\tGen=I|Num=P|Cas=7|Neg=A|Var=6
-N\tN\tGen=I|Num=P|Cas=7|Neg=A|Var=7
-N\tN\tGen=I|Num=P|Cas=7|Neg=A|Var=8
-N\tN\tGen=I|Num=P|Cas=7|Neg=A|Var=9
-N\tN\tGen=I|Num=P|Cas=7|Neg=N
-N\tN\tGen=I|Num=P|Cas=7|Neg=N|Var=1
-N\tN\tGen=I|Num=P|Cas=7|Neg=N|Var=2
-N\tN\tGen=I|Num=P|Cas=7|Neg=N|Var=6
-N\tN\tGen=I|Num=P|Cas=7|Neg=N|Var=7
-N\tN\tGen=I|Num=P|Cas=7|Neg=N|Var=8
-N\tN\tGen=I|Num=P|Cas=7|Neg=N|Var=9
-N\tN\tGen=I|Num=P|Cas=X|Neg=A
-N\tN\tGen=I|Num=P|Cas=X|Neg=A|Sem=G
-N\tN\tGen=I|Num=P|Cas=X|Neg=A|Sem=K
-N\tN\tGen=I|Num=P|Cas=X|Neg=A|Sem=R
-N\tN\tGen=I|Num=P|Cas=X|Neg=A|Sem=m
-N\tN\tGen=I|Num=P|Cas=X|Neg=A|Var=1
-N\tN\tGen=I|Num=P|Cas=X|Neg=A|Var=8
-N\tN\tGen=I|Num=P|Cas=X|Neg=A|Var=8|Sem=K
-N\tN\tGen=I|Num=P|Cas=X|Neg=A|Var=8|Sem=R
-N\tN\tGen=I|Num=P|Cas=X|Neg=N
-N\tN\tGen=I|Num=P|Cas=X|Neg=N|Var=1
-N\tN\tGen=I|Num=P|Cas=X|Neg=N|Var=8
-N\tN\tGen=I|Num=S|Cas=1|Neg=A
-N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=G
-N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=E
-N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=K
-N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=R
-N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=S
-N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=Y
-N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=m
-N\tN\tGen=I|Num=S|Cas=1|Neg=A|Var=1
-N\tN\tGen=I|Num=S|Cas=1|Neg=A|Var=1|Sem=G
-N\tN\tGen=I|Num=S|Cas=1|Neg=A|Var=2
-N\tN\tGen=I|Num=S|Cas=1|Neg=A|Var=6
-N\tN\tGen=I|Num=S|Cas=1|Neg=A|Var=8
-N\tN\tGen=I|Num=S|Cas=1|Neg=N
-N\tN\tGen=I|Num=S|Cas=1|Neg=N|Var=1
-N\tN\tGen=I|Num=S|Cas=1|Neg=N|Var=2
-N\tN\tGen=I|Num=S|Cas=1|Neg=N|Var=6
-N\tN\tGen=I|Num=S|Cas=1|Neg=N|Var=8
-N\tN\tGen=I|Num=S|Cas=2|Neg=A
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Sem=G
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Sem=K
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Sem=R
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Sem=S
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Sem=Y
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Sem=m
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Var=1
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Var=1|Sem=G
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Var=1|Sem=K
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Var=1|Sem=R
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Var=2
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Var=2|Sem=G
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Var=6
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Var=8
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Var=9
-N\tN\tGen=I|Num=S|Cas=2|Neg=N
-N\tN\tGen=I|Num=S|Cas=2|Neg=N|Var=1
-N\tN\tGen=I|Num=S|Cas=2|Neg=N|Var=2
-N\tN\tGen=I|Num=S|Cas=2|Neg=N|Var=6
-N\tN\tGen=I|Num=S|Cas=2|Neg=N|Var=8
-N\tN\tGen=I|Num=S|Cas=2|Neg=N|Var=9
-N\tN\tGen=I|Num=S|Cas=3|Neg=A
-N\tN\tGen=I|Num=S|Cas=3|Neg=A|Sem=G
-N\tN\tGen=I|Num=S|Cas=3|Neg=A|Sem=E
-N\tN\tGen=I|Num=S|Cas=3|Neg=A|Sem=K
-N\tN\tGen=I|Num=S|Cas=3|Neg=A|Sem=R
-N\tN\tGen=I|Num=S|Cas=3|Neg=A|Sem=Y
-N\tN\tGen=I|Num=S|Cas=3|Neg=A|Var=1
-N\tN\tGen=I|Num=S|Cas=3|Neg=A|Var=2
-N\tN\tGen=I|Num=S|Cas=3|Neg=A|Var=6
-N\tN\tGen=I|Num=S|Cas=3|Neg=A|Var=8
-N\tN\tGen=I|Num=S|Cas=3|Neg=A|Var=9
-N\tN\tGen=I|Num=S|Cas=3|Neg=N
-N\tN\tGen=I|Num=S|Cas=3|Neg=N|Var=1
-N\tN\tGen=I|Num=S|Cas=3|Neg=N|Var=2
-N\tN\tGen=I|Num=S|Cas=3|Neg=N|Var=6
-N\tN\tGen=I|Num=S|Cas=3|Neg=N|Var=8
-N\tN\tGen=I|Num=S|Cas=3|Neg=N|Var=9
-N\tN\tGen=I|Num=S|Cas=4|Neg=A
-N\tN\tGen=I|Num=S|Cas=4|Neg=A|Sem=G
-N\tN\tGen=I|Num=S|Cas=4|Neg=A|Sem=K
-N\tN\tGen=I|Num=S|Cas=4|Neg=A|Sem=R
-N\tN\tGen=I|Num=S|Cas=4|Neg=A|Sem=Y
-N\tN\tGen=I|Num=S|Cas=4|Neg=A|Sem=m
-N\tN\tGen=I|Num=S|Cas=4|Neg=A|Var=1
-N\tN\tGen=I|Num=S|Cas=4|Neg=A|Var=1|Sem=R
-N\tN\tGen=I|Num=S|Cas=4|Neg=A|Var=2
-N\tN\tGen=I|Num=S|Cas=4|Neg=A|Var=6
-N\tN\tGen=I|Num=S|Cas=4|Neg=A|Var=8
-N\tN\tGen=I|Num=S|Cas=4|Neg=N
-N\tN\tGen=I|Num=S|Cas=4|Neg=N|Var=1
-N\tN\tGen=I|Num=S|Cas=4|Neg=N|Var=2
-N\tN\tGen=I|Num=S|Cas=4|Neg=N|Var=6
-N\tN\tGen=I|Num=S|Cas=4|Neg=N|Var=8
-N\tN\tGen=I|Num=S|Cas=5|Neg=A
-N\tN\tGen=I|Num=S|Cas=5|Neg=A|Var=1
-N\tN\tGen=I|Num=S|Cas=5|Neg=A|Var=2
-N\tN\tGen=I|Num=S|Cas=5|Neg=A|Var=6
-N\tN\tGen=I|Num=S|Cas=5|Neg=A|Var=8
-N\tN\tGen=I|Num=S|Cas=5|Neg=A|Var=9
-N\tN\tGen=I|Num=S|Cas=5|Neg=N
-N\tN\tGen=I|Num=S|Cas=5|Neg=N|Var=1
-N\tN\tGen=I|Num=S|Cas=5|Neg=N|Var=2
-N\tN\tGen=I|Num=S|Cas=5|Neg=N|Var=6
-N\tN\tGen=I|Num=S|Cas=5|Neg=N|Var=8
-N\tN\tGen=I|Num=S|Cas=5|Neg=N|Var=9
-N\tN\tGen=I|Num=S|Cas=6|Neg=A
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Sem=G
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Sem=K
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Sem=R
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Sem=S
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Sem=Y
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Sem=m
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=1
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=G
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=E
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=K
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=R
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=S
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=2
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=2|Sem=G
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=6
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=7
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=8
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Var=9
-N\tN\tGen=I|Num=S|Cas=6|Neg=N
-N\tN\tGen=I|Num=S|Cas=6|Neg=N|Var=1
-N\tN\tGen=I|Num=S|Cas=6|Neg=N|Var=2
-N\tN\tGen=I|Num=S|Cas=6|Neg=N|Var=6
-N\tN\tGen=I|Num=S|Cas=6|Neg=N|Var=7
-N\tN\tGen=I|Num=S|Cas=6|Neg=N|Var=8
-N\tN\tGen=I|Num=S|Cas=6|Neg=N|Var=9
-N\tN\tGen=I|Num=S|Cas=7|Neg=A
-N\tN\tGen=I|Num=S|Cas=7|Neg=A|Sem=G
-N\tN\tGen=I|Num=S|Cas=7|Neg=A|Sem=K
-N\tN\tGen=I|Num=S|Cas=7|Neg=A|Sem=R
-N\tN\tGen=I|Num=S|Cas=7|Neg=A|Sem=Y
-N\tN\tGen=I|Num=S|Cas=7|Neg=A|Var=1
-N\tN\tGen=I|Num=S|Cas=7|Neg=A|Var=2
-N\tN\tGen=I|Num=S|Cas=7|Neg=A|Var=6
-N\tN\tGen=I|Num=S|Cas=7|Neg=A|Var=8
-N\tN\tGen=I|Num=S|Cas=7|Neg=A|Var=9
-N\tN\tGen=I|Num=S|Cas=7|Neg=N
-N\tN\tGen=I|Num=S|Cas=7|Neg=N|Var=1
-N\tN\tGen=I|Num=S|Cas=7|Neg=N|Var=2
-N\tN\tGen=I|Num=S|Cas=7|Neg=N|Var=6
-N\tN\tGen=I|Num=S|Cas=7|Neg=N|Var=8
-N\tN\tGen=I|Num=S|Cas=7|Neg=N|Var=9
-N\tN\tGen=I|Num=S|Cas=X|Neg=A
-N\tN\tGen=I|Num=S|Cas=X|Neg=A|Sem=G
-N\tN\tGen=I|Num=S|Cas=X|Neg=A|Sem=K
-N\tN\tGen=I|Num=S|Cas=X|Neg=A|Sem=R
-N\tN\tGen=I|Num=S|Cas=X|Neg=A|Sem=m
-N\tN\tGen=I|Num=S|Cas=X|Neg=A|Var=8
-N\tN\tGen=I|Num=S|Cas=X|Neg=A|Var=8|Sem=K
-N\tN\tGen=I|Num=S|Cas=X|Neg=N
-N\tN\tGen=I|Num=S|Cas=X|Neg=N|Var=8
-N\tN\tGen=I|Num=X|Cas=X|Neg=A
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Sem=E
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Sem=G
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Sem=K
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Sem=R
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Sem=Y
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Sem=m
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=1
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=G
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=K
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=L
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=R
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=U
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=m
-N\tN\tGen=I|Num=X|Cas=X|Neg=N
-N\tN\tGen=I|Num=X|Cas=X|Neg=N|Var=1
-N\tN\tGen=I|Num=X|Cas=X|Neg=N|Var=8
-N\tN\tGen=M|Num=P|Cas=1|Neg=A
-N\tN\tGen=M|Num=P|Cas=1|Neg=A|Sem=E
-N\tN\tGen=M|Num=P|Cas=1|Neg=A|Sem=K
-N\tN\tGen=M|Num=P|Cas=1|Neg=A|Sem=S
-N\tN\tGen=M|Num=P|Cas=1|Neg=A|Sem=Y
-N\tN\tGen=M|Num=P|Cas=1|Neg=A|Sem=m
-N\tN\tGen=M|Num=P|Cas=1|Neg=A|Var=1
-N\tN\tGen=M|Num=P|Cas=1|Neg=A|Var=1|Sem=E
-N\tN\tGen=M|Num=P|Cas=1|Neg=A|Var=1|Sem=S
-N\tN\tGen=M|Num=P|Cas=1|Neg=A|Var=2
-N\tN\tGen=M|Num=P|Cas=1|Neg=A|Var=6
-N\tN\tGen=M|Num=P|Cas=1|Neg=A|Var=6|Sem=S
-N\tN\tGen=M|Num=P|Cas=1|Neg=A|Var=6|Sem=Y
-N\tN\tGen=M|Num=P|Cas=1|Neg=A|Var=7
-N\tN\tGen=M|Num=P|Cas=1|Neg=A|Var=8
-N\tN\tGen=M|Num=P|Cas=1|Neg=N
-N\tN\tGen=M|Num=P|Cas=1|Neg=N|Var=1
-N\tN\tGen=M|Num=P|Cas=1|Neg=N|Var=2
-N\tN\tGen=M|Num=P|Cas=1|Neg=N|Var=6
-N\tN\tGen=M|Num=P|Cas=1|Neg=N|Var=7
-N\tN\tGen=M|Num=P|Cas=1|Neg=N|Var=8
-N\tN\tGen=M|Num=P|Cas=2|Neg=A
-N\tN\tGen=M|Num=P|Cas=2|Neg=A|Sem=E
-N\tN\tGen=M|Num=P|Cas=2|Neg=A|Sem=G
-N\tN\tGen=M|Num=P|Cas=2|Neg=A|Sem=S
-N\tN\tGen=M|Num=P|Cas=2|Neg=A|Sem=Y
-N\tN\tGen=M|Num=P|Cas=2|Neg=A|Sem=m
-N\tN\tGen=M|Num=P|Cas=2|Neg=A|Var=1
-N\tN\tGen=M|Num=P|Cas=2|Neg=A|Var=2
-N\tN\tGen=M|Num=P|Cas=2|Neg=A|Var=6
-N\tN\tGen=M|Num=P|Cas=2|Neg=A|Var=8
-N\tN\tGen=M|Num=P|Cas=2|Neg=N
-N\tN\tGen=M|Num=P|Cas=2|Neg=N|Var=1
-N\tN\tGen=M|Num=P|Cas=2|Neg=N|Var=2
-N\tN\tGen=M|Num=P|Cas=2|Neg=N|Var=6
-N\tN\tGen=M|Num=P|Cas=2|Neg=N|Var=8
-N\tN\tGen=M|Num=P|Cas=3|Neg=A
-N\tN\tGen=M|Num=P|Cas=3|Neg=A|Sem=E
-N\tN\tGen=M|Num=P|Cas=3|Neg=A|Sem=S
-N\tN\tGen=M|Num=P|Cas=3|Neg=A|Sem=m
-N\tN\tGen=M|Num=P|Cas=3|Neg=A|Var=1
-N\tN\tGen=M|Num=P|Cas=3|Neg=A|Var=2
-N\tN\tGen=M|Num=P|Cas=3|Neg=A|Var=6
-N\tN\tGen=M|Num=P|Cas=3|Neg=A|Var=7
-N\tN\tGen=M|Num=P|Cas=3|Neg=A|Var=8
-N\tN\tGen=M|Num=P|Cas=3|Neg=N
-N\tN\tGen=M|Num=P|Cas=3|Neg=N|Var=1
-N\tN\tGen=M|Num=P|Cas=3|Neg=N|Var=2
-N\tN\tGen=M|Num=P|Cas=3|Neg=N|Var=6
-N\tN\tGen=M|Num=P|Cas=3|Neg=N|Var=7
-N\tN\tGen=M|Num=P|Cas=3|Neg=N|Var=8
-N\tN\tGen=M|Num=P|Cas=4|Neg=A
-N\tN\tGen=M|Num=P|Cas=4|Neg=A|Sem=E
-N\tN\tGen=M|Num=P|Cas=4|Neg=A|Sem=S
-N\tN\tGen=M|Num=P|Cas=4|Neg=A|Sem=Y
-N\tN\tGen=M|Num=P|Cas=4|Neg=A|Sem=m
-N\tN\tGen=M|Num=P|Cas=4|Neg=A|Var=1
-N\tN\tGen=M|Num=P|Cas=4|Neg=A|Var=2
-N\tN\tGen=M|Num=P|Cas=4|Neg=A|Var=6
-N\tN\tGen=M|Num=P|Cas=4|Neg=A|Var=7
-N\tN\tGen=M|Num=P|Cas=4|Neg=A|Var=8
-N\tN\tGen=M|Num=P|Cas=4|Neg=N
-N\tN\tGen=M|Num=P|Cas=4|Neg=N|Var=1
-N\tN\tGen=M|Num=P|Cas=4|Neg=N|Var=2
-N\tN\tGen=M|Num=P|Cas=4|Neg=N|Var=6
-N\tN\tGen=M|Num=P|Cas=4|Neg=N|Var=7
-N\tN\tGen=M|Num=P|Cas=4|Neg=N|Var=8
-N\tN\tGen=M|Num=P|Cas=5|Neg=A
-N\tN\tGen=M|Num=P|Cas=5|Neg=A|Sem=E
-N\tN\tGen=M|Num=P|Cas=5|Neg=A|Sem=m
-N\tN\tGen=M|Num=P|Cas=5|Neg=A|Var=1
-N\tN\tGen=M|Num=P|Cas=5|Neg=A|Var=2
-N\tN\tGen=M|Num=P|Cas=5|Neg=A|Var=5
-N\tN\tGen=M|Num=P|Cas=5|Neg=A|Var=6
-N\tN\tGen=M|Num=P|Cas=5|Neg=A|Var=7
-N\tN\tGen=M|Num=P|Cas=5|Neg=A|Var=8
-N\tN\tGen=M|Num=P|Cas=5|Neg=N
-N\tN\tGen=M|Num=P|Cas=5|Neg=N|Var=1
-N\tN\tGen=M|Num=P|Cas=5|Neg=N|Var=2
-N\tN\tGen=M|Num=P|Cas=5|Neg=N|Var=5
-N\tN\tGen=M|Num=P|Cas=5|Neg=N|Var=6
-N\tN\tGen=M|Num=P|Cas=5|Neg=N|Var=7
-N\tN\tGen=M|Num=P|Cas=5|Neg=N|Var=8
-N\tN\tGen=M|Num=P|Cas=6|Neg=A
-N\tN\tGen=M|Num=P|Cas=6|Neg=A|Sem=E
-N\tN\tGen=M|Num=P|Cas=6|Neg=A|Sem=S
-N\tN\tGen=M|Num=P|Cas=6|Neg=A|Sem=Y
-N\tN\tGen=M|Num=P|Cas=6|Neg=A|Sem=m
-N\tN\tGen=M|Num=P|Cas=6|Neg=A|Var=1
-N\tN\tGen=M|Num=P|Cas=6|Neg=A|Var=2
-N\tN\tGen=M|Num=P|Cas=6|Neg=A|Var=6
-N\tN\tGen=M|Num=P|Cas=6|Neg=A|Var=7
-N\tN\tGen=M|Num=P|Cas=6|Neg=A|Var=8
-N\tN\tGen=M|Num=P|Cas=6|Neg=N
-N\tN\tGen=M|Num=P|Cas=6|Neg=N|Var=1
-N\tN\tGen=M|Num=P|Cas=6|Neg=N|Var=2
-N\tN\tGen=M|Num=P|Cas=6|Neg=N|Var=6
-N\tN\tGen=M|Num=P|Cas=6|Neg=N|Var=7
-N\tN\tGen=M|Num=P|Cas=6|Neg=N|Var=8
-N\tN\tGen=M|Num=P|Cas=7|Neg=A
-N\tN\tGen=M|Num=P|Cas=7|Neg=A|Sem=E
-N\tN\tGen=M|Num=P|Cas=7|Neg=A|Sem=S
-N\tN\tGen=M|Num=P|Cas=7|Neg=A|Sem=Y
-N\tN\tGen=M|Num=P|Cas=7|Neg=A|Sem=m
-N\tN\tGen=M|Num=P|Cas=7|Neg=A|Var=1
-N\tN\tGen=M|Num=P|Cas=7|Neg=A|Var=2
-N\tN\tGen=M|Num=P|Cas=7|Neg=A|Var=6
-N\tN\tGen=M|Num=P|Cas=7|Neg=A|Var=7
-N\tN\tGen=M|Num=P|Cas=7|Neg=A|Var=8
-N\tN\tGen=M|Num=P|Cas=7|Neg=N
-N\tN\tGen=M|Num=P|Cas=7|Neg=N|Var=1
-N\tN\tGen=M|Num=P|Cas=7|Neg=N|Var=2
-N\tN\tGen=M|Num=P|Cas=7|Neg=N|Var=6
-N\tN\tGen=M|Num=P|Cas=7|Neg=N|Var=7
-N\tN\tGen=M|Num=P|Cas=7|Neg=N|Var=8
-N\tN\tGen=M|Num=P|Cas=X|Neg=A
-N\tN\tGen=M|Num=P|Cas=X|Neg=A|Sem=K
-N\tN\tGen=M|Num=P|Cas=X|Neg=A|Sem=R
-N\tN\tGen=M|Num=P|Cas=X|Neg=A|Sem=Y
-N\tN\tGen=M|Num=P|Cas=X|Neg=A|Sem=m
-N\tN\tGen=M|Num=P|Cas=X|Neg=A|Var=8
-N\tN\tGen=M|Num=P|Cas=X|Neg=A|Var=8|Sem=K
-N\tN\tGen=M|Num=P|Cas=X|Neg=A|Var=8|Sem=m
-N\tN\tGen=M|Num=P|Cas=X|Neg=N
-N\tN\tGen=M|Num=P|Cas=X|Neg=N|Var=8
-N\tN\tGen=M|Num=S|Cas=1|Neg=A
-N\tN\tGen=M|Num=S|Cas=1|Neg=A|Sem=E
-N\tN\tGen=M|Num=S|Cas=1|Neg=A|Sem=G
-N\tN\tGen=M|Num=S|Cas=1|Neg=A|Sem=K
-N\tN\tGen=M|Num=S|Cas=1|Neg=A|Sem=R
-N\tN\tGen=M|Num=S|Cas=1|Neg=A|Sem=S
-N\tN\tGen=M|Num=S|Cas=1|Neg=A|Sem=Y
-N\tN\tGen=M|Num=S|Cas=1|Neg=A|Sem=m
-N\tN\tGen=M|Num=S|Cas=1|Neg=A|Var=1
-N\tN\tGen=M|Num=S|Cas=1|Neg=A|Var=1|Sem=S
-N\tN\tGen=M|Num=S|Cas=1|Neg=A|Var=1|Sem=Y
-N\tN\tGen=M|Num=S|Cas=1|Neg=A|Var=2
-N\tN\tGen=M|Num=S|Cas=1|Neg=A|Var=6
-N\tN\tGen=M|Num=S|Cas=1|Neg=A|Var=8
-N\tN\tGen=M|Num=S|Cas=1|Neg=N
-N\tN\tGen=M|Num=S|Cas=1|Neg=N|Var=1
-N\tN\tGen=M|Num=S|Cas=1|Neg=N|Var=2
-N\tN\tGen=M|Num=S|Cas=1|Neg=N|Var=6
-N\tN\tGen=M|Num=S|Cas=1|Neg=N|Var=8
-N\tN\tGen=M|Num=S|Cas=2|Neg=A
-N\tN\tGen=M|Num=S|Cas=2|Neg=A|Sem=E
-N\tN\tGen=M|Num=S|Cas=2|Neg=A|Sem=G
-N\tN\tGen=M|Num=S|Cas=2|Neg=A|Sem=K
-N\tN\tGen=M|Num=S|Cas=2|Neg=A|Sem=S
-N\tN\tGen=M|Num=S|Cas=2|Neg=A|Sem=Y
-N\tN\tGen=M|Num=S|Cas=2|Neg=A|Sem=m
-N\tN\tGen=M|Num=S|Cas=2|Neg=A|Var=1
-N\tN\tGen=M|Num=S|Cas=2|Neg=A|Var=1|Sem=S
-N\tN\tGen=M|Num=S|Cas=2|Neg=A|Var=1|Sem=Y
-N\tN\tGen=M|Num=S|Cas=2|Neg=A|Var=2
-N\tN\tGen=M|Num=S|Cas=2|Neg=A|Var=2|Sem=S
-N\tN\tGen=M|Num=S|Cas=2|Neg=A|Var=2|Sem=Y
-N\tN\tGen=M|Num=S|Cas=2|Neg=A|Var=3
-N\tN\tGen=M|Num=S|Cas=2|Neg=A|Var=6
-N\tN\tGen=M|Num=S|Cas=2|Neg=A|Var=7
-N\tN\tGen=M|Num=S|Cas=2|Neg=A|Var=8
-N\tN\tGen=M|Num=S|Cas=2|Neg=N
-N\tN\tGen=M|Num=S|Cas=2|Neg=N|Var=1
-N\tN\tGen=M|Num=S|Cas=2|Neg=N|Var=2
-N\tN\tGen=M|Num=S|Cas=2|Neg=N|Var=3
-N\tN\tGen=M|Num=S|Cas=2|Neg=N|Var=6
-N\tN\tGen=M|Num=S|Cas=2|Neg=N|Var=7
-N\tN\tGen=M|Num=S|Cas=2|Neg=N|Var=8
-N\tN\tGen=M|Num=S|Cas=3|Neg=A
-N\tN\tGen=M|Num=S|Cas=3|Neg=A|Sem=E
-N\tN\tGen=M|Num=S|Cas=3|Neg=A|Sem=G
-N\tN\tGen=M|Num=S|Cas=3|Neg=A|Sem=S
-N\tN\tGen=M|Num=S|Cas=3|Neg=A|Sem=Y
-N\tN\tGen=M|Num=S|Cas=3|Neg=A|Sem=m
-N\tN\tGen=M|Num=S|Cas=3|Neg=A|Var=1
-N\tN\tGen=M|Num=S|Cas=3|Neg=A|Var=1|Sem=E
-N\tN\tGen=M|Num=S|Cas=3|Neg=A|Var=1|Sem=S
-N\tN\tGen=M|Num=S|Cas=3|Neg=A|Var=1|Sem=Y
-N\tN\tGen=M|Num=S|Cas=3|Neg=A|Var=2
-N\tN\tGen=M|Num=S|Cas=3|Neg=A|Var=3
-N\tN\tGen=M|Num=S|Cas=3|Neg=A|Var=6
-N\tN\tGen=M|Num=S|Cas=3|Neg=A|Var=7
-N\tN\tGen=M|Num=S|Cas=3|Neg=A|Var=8
-N\tN\tGen=M|Num=S|Cas=3|Neg=N
-N\tN\tGen=M|Num=S|Cas=3|Neg=N|Var=1
-N\tN\tGen=M|Num=S|Cas=3|Neg=N|Var=2
-N\tN\tGen=M|Num=S|Cas=3|Neg=N|Var=3
-N\tN\tGen=M|Num=S|Cas=3|Neg=N|Var=6
-N\tN\tGen=M|Num=S|Cas=3|Neg=N|Var=7
-N\tN\tGen=M|Num=S|Cas=3|Neg=N|Var=8
-N\tN\tGen=M|Num=S|Cas=4|Neg=A
-N\tN\tGen=M|Num=S|Cas=4|Neg=A|Sem=E
-N\tN\tGen=M|Num=S|Cas=4|Neg=A|Sem=G
-N\tN\tGen=M|Num=S|Cas=4|Neg=A|Sem=K
-N\tN\tGen=M|Num=S|Cas=4|Neg=A|Sem=R
-N\tN\tGen=M|Num=S|Cas=4|Neg=A|Sem=S
-N\tN\tGen=M|Num=S|Cas=4|Neg=A|Sem=Y
-N\tN\tGen=M|Num=S|Cas=4|Neg=A|Sem=m
-N\tN\tGen=M|Num=S|Cas=4|Neg=A|Var=1
-N\tN\tGen=M|Num=S|Cas=4|Neg=A|Var=2
-N\tN\tGen=M|Num=S|Cas=4|Neg=A|Var=6
-N\tN\tGen=M|Num=S|Cas=4|Neg=A|Var=7
-N\tN\tGen=M|Num=S|Cas=4|Neg=A|Var=8
-N\tN\tGen=M|Num=S|Cas=4|Neg=N
-N\tN\tGen=M|Num=S|Cas=4|Neg=N|Var=1
-N\tN\tGen=M|Num=S|Cas=4|Neg=N|Var=2
-N\tN\tGen=M|Num=S|Cas=4|Neg=N|Var=6
-N\tN\tGen=M|Num=S|Cas=4|Neg=N|Var=7
-N\tN\tGen=M|Num=S|Cas=4|Neg=N|Var=8
-N\tN\tGen=M|Num=S|Cas=5|Neg=A
-N\tN\tGen=M|Num=S|Cas=5|Neg=A|Sem=S
-N\tN\tGen=M|Num=S|Cas=5|Neg=A|Sem=Y
-N\tN\tGen=M|Num=S|Cas=5|Neg=A|Sem=m
-N\tN\tGen=M|Num=S|Cas=5|Neg=A|Var=1
-N\tN\tGen=M|Num=S|Cas=5|Neg=A|Var=2
-N\tN\tGen=M|Num=S|Cas=5|Neg=A|Var=4
-N\tN\tGen=M|Num=S|Cas=5|Neg=A|Var=5
-N\tN\tGen=M|Num=S|Cas=5|Neg=A|Var=6
-N\tN\tGen=M|Num=S|Cas=5|Neg=A|Var=7
-N\tN\tGen=M|Num=S|Cas=5|Neg=A|Var=8
-N\tN\tGen=M|Num=S|Cas=5|Neg=N
-N\tN\tGen=M|Num=S|Cas=5|Neg=N|Var=1
-N\tN\tGen=M|Num=S|Cas=5|Neg=N|Var=2
-N\tN\tGen=M|Num=S|Cas=5|Neg=N|Var=4
-N\tN\tGen=M|Num=S|Cas=5|Neg=N|Var=5
-N\tN\tGen=M|Num=S|Cas=5|Neg=N|Var=6
-N\tN\tGen=M|Num=S|Cas=5|Neg=N|Var=7
-N\tN\tGen=M|Num=S|Cas=5|Neg=N|Var=8
-N\tN\tGen=M|Num=S|Cas=6|Neg=A
-N\tN\tGen=M|Num=S|Cas=6|Neg=A|Sem=E
-N\tN\tGen=M|Num=S|Cas=6|Neg=A|Sem=S
-N\tN\tGen=M|Num=S|Cas=6|Neg=A|Sem=Y
-N\tN\tGen=M|Num=S|Cas=6|Neg=A|Sem=m
-N\tN\tGen=M|Num=S|Cas=6|Neg=A|Var=1
-N\tN\tGen=M|Num=S|Cas=6|Neg=A|Var=1|Sem=G
-N\tN\tGen=M|Num=S|Cas=6|Neg=A|Var=1|Sem=S
-N\tN\tGen=M|Num=S|Cas=6|Neg=A|Var=1|Sem=Y
-N\tN\tGen=M|Num=S|Cas=6|Neg=A|Var=2
-N\tN\tGen=M|Num=S|Cas=6|Neg=A|Var=3
-N\tN\tGen=M|Num=S|Cas=6|Neg=A|Var=6
-N\tN\tGen=M|Num=S|Cas=6|Neg=A|Var=7
-N\tN\tGen=M|Num=S|Cas=6|Neg=A|Var=8
-N\tN\tGen=M|Num=S|Cas=6|Neg=N
-N\tN\tGen=M|Num=S|Cas=6|Neg=N|Var=1
-N\tN\tGen=M|Num=S|Cas=6|Neg=N|Var=2
-N\tN\tGen=M|Num=S|Cas=6|Neg=N|Var=3
-N\tN\tGen=M|Num=S|Cas=6|Neg=N|Var=6
-N\tN\tGen=M|Num=S|Cas=6|Neg=N|Var=7
-N\tN\tGen=M|Num=S|Cas=6|Neg=N|Var=8
-N\tN\tGen=M|Num=S|Cas=7|Neg=A
-N\tN\tGen=M|Num=S|Cas=7|Neg=A|Sem=E
-N\tN\tGen=M|Num=S|Cas=7|Neg=A|Sem=G
-N\tN\tGen=M|Num=S|Cas=7|Neg=A|Sem=K
-N\tN\tGen=M|Num=S|Cas=7|Neg=A|Sem=R
-N\tN\tGen=M|Num=S|Cas=7|Neg=A|Sem=S
-N\tN\tGen=M|Num=S|Cas=7|Neg=A|Sem=Y
-N\tN\tGen=M|Num=S|Cas=7|Neg=A|Sem=m
-N\tN\tGen=M|Num=S|Cas=7|Neg=A|Var=1
-N\tN\tGen=M|Num=S|Cas=7|Neg=A|Var=2
-N\tN\tGen=M|Num=S|Cas=7|Neg=A|Var=6
-N\tN\tGen=M|Num=S|Cas=7|Neg=A|Var=8
-N\tN\tGen=M|Num=S|Cas=7|Neg=N
-N\tN\tGen=M|Num=S|Cas=7|Neg=N|Var=1
-N\tN\tGen=M|Num=S|Cas=7|Neg=N|Var=2
-N\tN\tGen=M|Num=S|Cas=7|Neg=N|Var=6
-N\tN\tGen=M|Num=S|Cas=7|Neg=N|Var=8
-N\tN\tGen=M|Num=S|Cas=X|Neg=A
-N\tN\tGen=M|Num=S|Cas=X|Neg=A|Sem=G
-N\tN\tGen=M|Num=S|Cas=X|Neg=A|Sem=K
-N\tN\tGen=M|Num=S|Cas=X|Neg=A|Sem=S
-N\tN\tGen=M|Num=S|Cas=X|Neg=A|Sem=Y
-N\tN\tGen=M|Num=S|Cas=X|Neg=A|Sem=m
-N\tN\tGen=M|Num=S|Cas=X|Neg=A|Var=1
-N\tN\tGen=M|Num=S|Cas=X|Neg=A|Var=8
-N\tN\tGen=M|Num=S|Cas=X|Neg=N
-N\tN\tGen=M|Num=S|Cas=X|Neg=N|Var=1
-N\tN\tGen=M|Num=S|Cas=X|Neg=N|Var=8
-N\tN\tGen=M|Num=X|Cas=X|Neg=A
-N\tN\tGen=M|Num=X|Cas=X|Neg=A|Sem=E
-N\tN\tGen=M|Num=X|Cas=X|Neg=A|Sem=G
-N\tN\tGen=M|Num=X|Cas=X|Neg=A|Sem=K
-N\tN\tGen=M|Num=X|Cas=X|Neg=A|Sem=R
-N\tN\tGen=M|Num=X|Cas=X|Neg=A|Sem=S
-N\tN\tGen=M|Num=X|Cas=X|Neg=A|Sem=Y
-N\tN\tGen=M|Num=X|Cas=X|Neg=A|Sem=m
-N\tN\tGen=M|Num=X|Cas=X|Neg=A|Var=1
-N\tN\tGen=M|Num=X|Cas=X|Neg=A|Var=8
-N\tN\tGen=M|Num=X|Cas=X|Neg=A|Var=8|Sem=G
-N\tN\tGen=M|Num=X|Cas=X|Neg=A|Var=8|Sem=K
-N\tN\tGen=M|Num=X|Cas=X|Neg=A|Var=8|Sem=S
-N\tN\tGen=M|Num=X|Cas=X|Neg=A|Var=8|Sem=Y
-N\tN\tGen=M|Num=X|Cas=X|Neg=N
-N\tN\tGen=M|Num=X|Cas=X|Neg=N|Var=1
-N\tN\tGen=M|Num=X|Cas=X|Neg=N|Var=8
-N\tN\tGen=N|Num=P|Cas=1|Neg=A
-N\tN\tGen=N|Num=P|Cas=1|Neg=A|Sem=G
-N\tN\tGen=N|Num=P|Cas=1|Neg=A|Sem=K
-N\tN\tGen=N|Num=P|Cas=1|Neg=A|Sem=R
-N\tN\tGen=N|Num=P|Cas=1|Neg=A|Sem=m
-N\tN\tGen=N|Num=P|Cas=1|Neg=A|Var=1
-N\tN\tGen=N|Num=P|Cas=1|Neg=A|Var=2
-N\tN\tGen=N|Num=P|Cas=1|Neg=A|Var=3
-N\tN\tGen=N|Num=P|Cas=1|Neg=A|Var=6
-N\tN\tGen=N|Num=P|Cas=1|Neg=A|Var=8
-N\tN\tGen=N|Num=P|Cas=1|Neg=N
-N\tN\tGen=N|Num=P|Cas=1|Neg=N|Var=1
-N\tN\tGen=N|Num=P|Cas=1|Neg=N|Var=2
-N\tN\tGen=N|Num=P|Cas=1|Neg=N|Var=3
-N\tN\tGen=N|Num=P|Cas=1|Neg=N|Var=6
-N\tN\tGen=N|Num=P|Cas=1|Neg=N|Var=8
-N\tN\tGen=N|Num=P|Cas=2|Neg=A
-N\tN\tGen=N|Num=P|Cas=2|Neg=A|Sem=G
-N\tN\tGen=N|Num=P|Cas=2|Neg=A|Sem=K
-N\tN\tGen=N|Num=P|Cas=2|Neg=A|Sem=R
-N\tN\tGen=N|Num=P|Cas=2|Neg=A|Sem=m
-N\tN\tGen=N|Num=P|Cas=2|Neg=A|Var=1
-N\tN\tGen=N|Num=P|Cas=2|Neg=A|Var=2
-N\tN\tGen=N|Num=P|Cas=2|Neg=A|Var=3
-N\tN\tGen=N|Num=P|Cas=2|Neg=A|Var=6
-N\tN\tGen=N|Num=P|Cas=2|Neg=A|Var=8
-N\tN\tGen=N|Num=P|Cas=2|Neg=N
-N\tN\tGen=N|Num=P|Cas=2|Neg=N|Var=1
-N\tN\tGen=N|Num=P|Cas=2|Neg=N|Var=2
-N\tN\tGen=N|Num=P|Cas=2|Neg=N|Var=3
-N\tN\tGen=N|Num=P|Cas=2|Neg=N|Var=6
-N\tN\tGen=N|Num=P|Cas=2|Neg=N|Var=8
-N\tN\tGen=N|Num=P|Cas=3|Neg=A
-N\tN\tGen=N|Num=P|Cas=3|Neg=A|Sem=m
-N\tN\tGen=N|Num=P|Cas=3|Neg=A|Var=1
-N\tN\tGen=N|Num=P|Cas=3|Neg=A|Var=2
-N\tN\tGen=N|Num=P|Cas=3|Neg=A|Var=3
-N\tN\tGen=N|Num=P|Cas=3|Neg=A|Var=6
-N\tN\tGen=N|Num=P|Cas=3|Neg=A|Var=7
-N\tN\tGen=N|Num=P|Cas=3|Neg=A|Var=8
-N\tN\tGen=N|Num=P|Cas=3|Neg=N
-N\tN\tGen=N|Num=P|Cas=3|Neg=N|Var=1
-N\tN\tGen=N|Num=P|Cas=3|Neg=N|Var=2
-N\tN\tGen=N|Num=P|Cas=3|Neg=N|Var=3
-N\tN\tGen=N|Num=P|Cas=3|Neg=N|Var=6
-N\tN\tGen=N|Num=P|Cas=3|Neg=N|Var=7
-N\tN\tGen=N|Num=P|Cas=3|Neg=N|Var=8
-N\tN\tGen=N|Num=P|Cas=4|Neg=A
-N\tN\tGen=N|Num=P|Cas=4|Neg=A|Sem=m
-N\tN\tGen=N|Num=P|Cas=4|Neg=A|Var=1
-N\tN\tGen=N|Num=P|Cas=4|Neg=A|Var=2
-N\tN\tGen=N|Num=P|Cas=4|Neg=A|Var=3
-N\tN\tGen=N|Num=P|Cas=4|Neg=A|Var=6
-N\tN\tGen=N|Num=P|Cas=4|Neg=A|Var=8
-N\tN\tGen=N|Num=P|Cas=4|Neg=N
-N\tN\tGen=N|Num=P|Cas=4|Neg=N|Var=1
-N\tN\tGen=N|Num=P|Cas=4|Neg=N|Var=2
-N\tN\tGen=N|Num=P|Cas=4|Neg=N|Var=3
-N\tN\tGen=N|Num=P|Cas=4|Neg=N|Var=6
-N\tN\tGen=N|Num=P|Cas=4|Neg=N|Var=8
-N\tN\tGen=N|Num=P|Cas=5|Neg=A
-N\tN\tGen=N|Num=P|Cas=5|Neg=A|Sem=m
-N\tN\tGen=N|Num=P|Cas=5|Neg=A|Var=1
-N\tN\tGen=N|Num=P|Cas=5|Neg=A|Var=2
-N\tN\tGen=N|Num=P|Cas=5|Neg=A|Var=3
-N\tN\tGen=N|Num=P|Cas=5|Neg=A|Var=6
-N\tN\tGen=N|Num=P|Cas=5|Neg=A|Var=8
-N\tN\tGen=N|Num=P|Cas=5|Neg=N
-N\tN\tGen=N|Num=P|Cas=5|Neg=N|Var=1
-N\tN\tGen=N|Num=P|Cas=5|Neg=N|Var=2
-N\tN\tGen=N|Num=P|Cas=5|Neg=N|Var=3
-N\tN\tGen=N|Num=P|Cas=5|Neg=N|Var=6
-N\tN\tGen=N|Num=P|Cas=5|Neg=N|Var=8
-N\tN\tGen=N|Num=P|Cas=6|Neg=A
-N\tN\tGen=N|Num=P|Cas=6|Neg=A|Sem=m
-N\tN\tGen=N|Num=P|Cas=6|Neg=A|Var=1
-N\tN\tGen=N|Num=P|Cas=6|Neg=A|Var=2
-N\tN\tGen=N|Num=P|Cas=6|Neg=A|Var=3
-N\tN\tGen=N|Num=P|Cas=6|Neg=A|Var=6
-N\tN\tGen=N|Num=P|Cas=6|Neg=A|Var=8
-N\tN\tGen=N|Num=P|Cas=6|Neg=N
-N\tN\tGen=N|Num=P|Cas=6|Neg=N|Var=1
-N\tN\tGen=N|Num=P|Cas=6|Neg=N|Var=2
-N\tN\tGen=N|Num=P|Cas=6|Neg=N|Var=3
-N\tN\tGen=N|Num=P|Cas=6|Neg=N|Var=6
-N\tN\tGen=N|Num=P|Cas=6|Neg=N|Var=8
-N\tN\tGen=N|Num=P|Cas=7|Neg=A
-N\tN\tGen=N|Num=P|Cas=7|Neg=A|Sem=G
-N\tN\tGen=N|Num=P|Cas=7|Neg=A|Sem=m
-N\tN\tGen=N|Num=P|Cas=7|Neg=A|Var=1
-N\tN\tGen=N|Num=P|Cas=7|Neg=A|Var=2
-N\tN\tGen=N|Num=P|Cas=7|Neg=A|Var=3
-N\tN\tGen=N|Num=P|Cas=7|Neg=A|Var=6
-N\tN\tGen=N|Num=P|Cas=7|Neg=A|Var=7
-N\tN\tGen=N|Num=P|Cas=7|Neg=A|Var=8
-N\tN\tGen=N|Num=P|Cas=7|Neg=N
-N\tN\tGen=N|Num=P|Cas=7|Neg=N|Var=1
-N\tN\tGen=N|Num=P|Cas=7|Neg=N|Var=2
-N\tN\tGen=N|Num=P|Cas=7|Neg=N|Var=3
-N\tN\tGen=N|Num=P|Cas=7|Neg=N|Var=6
-N\tN\tGen=N|Num=P|Cas=7|Neg=N|Var=7
-N\tN\tGen=N|Num=P|Cas=7|Neg=N|Var=8
-N\tN\tGen=N|Num=P|Cas=X|Neg=A
-N\tN\tGen=N|Num=P|Cas=X|Neg=A|Sem=K
-N\tN\tGen=N|Num=P|Cas=X|Neg=A|Sem=m
-N\tN\tGen=N|Num=P|Cas=X|Neg=A|Var=1
-N\tN\tGen=N|Num=P|Cas=X|Neg=A|Var=8
-N\tN\tGen=N|Num=P|Cas=X|Neg=A|Var=8|Sem=K
-N\tN\tGen=N|Num=P|Cas=X|Neg=N
-N\tN\tGen=N|Num=P|Cas=X|Neg=N|Var=1
-N\tN\tGen=N|Num=P|Cas=X|Neg=N|Var=8
-N\tN\tGen=N|Num=S|Cas=1|Neg=A
-N\tN\tGen=N|Num=S|Cas=1|Neg=A|Sem=G
-N\tN\tGen=N|Num=S|Cas=1|Neg=A|Sem=K
-N\tN\tGen=N|Num=S|Cas=1|Neg=A|Sem=R
-N\tN\tGen=N|Num=S|Cas=1|Neg=A|Sem=S
-N\tN\tGen=N|Num=S|Cas=1|Neg=A|Sem=Y
-N\tN\tGen=N|Num=S|Cas=1|Neg=A|Sem=m
-N\tN\tGen=N|Num=S|Cas=1|Neg=A|Var=1
-N\tN\tGen=N|Num=S|Cas=1|Neg=A|Var=2
-N\tN\tGen=N|Num=S|Cas=1|Neg=A|Var=6
-N\tN\tGen=N|Num=S|Cas=1|Neg=A|Var=8
-N\tN\tGen=N|Num=S|Cas=1|Neg=N
-N\tN\tGen=N|Num=S|Cas=1|Neg=N|Var=1
-N\tN\tGen=N|Num=S|Cas=1|Neg=N|Var=2
-N\tN\tGen=N|Num=S|Cas=1|Neg=N|Var=6
-N\tN\tGen=N|Num=S|Cas=1|Neg=N|Var=8
-N\tN\tGen=N|Num=S|Cas=2|Neg=A
-N\tN\tGen=N|Num=S|Cas=2|Neg=A|Sem=G
-N\tN\tGen=N|Num=S|Cas=2|Neg=A|Sem=K
-N\tN\tGen=N|Num=S|Cas=2|Neg=A|Sem=R
-N\tN\tGen=N|Num=S|Cas=2|Neg=A|Sem=Y
-N\tN\tGen=N|Num=S|Cas=2|Neg=A|Sem=m
-N\tN\tGen=N|Num=S|Cas=2|Neg=A|Var=1
-N\tN\tGen=N|Num=S|Cas=2|Neg=A|Var=2
-N\tN\tGen=N|Num=S|Cas=2|Neg=A|Var=3
-N\tN\tGen=N|Num=S|Cas=2|Neg=A|Var=6
-N\tN\tGen=N|Num=S|Cas=2|Neg=A|Var=8
-N\tN\tGen=N|Num=S|Cas=2|Neg=N
-N\tN\tGen=N|Num=S|Cas=2|Neg=N|Var=1
-N\tN\tGen=N|Num=S|Cas=2|Neg=N|Var=2
-N\tN\tGen=N|Num=S|Cas=2|Neg=N|Var=3
-N\tN\tGen=N|Num=S|Cas=2|Neg=N|Var=6
-N\tN\tGen=N|Num=S|Cas=2|Neg=N|Var=8
-N\tN\tGen=N|Num=S|Cas=3|Neg=A
-N\tN\tGen=N|Num=S|Cas=3|Neg=A|Sem=G
-N\tN\tGen=N|Num=S|Cas=3|Neg=A|Sem=K
-N\tN\tGen=N|Num=S|Cas=3|Neg=A|Sem=Y
-N\tN\tGen=N|Num=S|Cas=3|Neg=A|Sem=m
-N\tN\tGen=N|Num=S|Cas=3|Neg=A|Var=1
-N\tN\tGen=N|Num=S|Cas=3|Neg=A|Var=2
-N\tN\tGen=N|Num=S|Cas=3|Neg=A|Var=3
-N\tN\tGen=N|Num=S|Cas=3|Neg=A|Var=6
-N\tN\tGen=N|Num=S|Cas=3|Neg=A|Var=8
-N\tN\tGen=N|Num=S|Cas=3|Neg=N
-N\tN\tGen=N|Num=S|Cas=3|Neg=N|Var=1
-N\tN\tGen=N|Num=S|Cas=3|Neg=N|Var=2
-N\tN\tGen=N|Num=S|Cas=3|Neg=N|Var=3
-N\tN\tGen=N|Num=S|Cas=3|Neg=N|Var=6
-N\tN\tGen=N|Num=S|Cas=3|Neg=N|Var=8
-N\tN\tGen=N|Num=S|Cas=4|Neg=A
-N\tN\tGen=N|Num=S|Cas=4|Neg=A|Sem=G
-N\tN\tGen=N|Num=S|Cas=4|Neg=A|Sem=K
-N\tN\tGen=N|Num=S|Cas=4|Neg=A|Sem=R
-N\tN\tGen=N|Num=S|Cas=4|Neg=A|Sem=m
-N\tN\tGen=N|Num=S|Cas=4|Neg=A|Var=1
-N\tN\tGen=N|Num=S|Cas=4|Neg=A|Var=2
-N\tN\tGen=N|Num=S|Cas=4|Neg=A|Var=6
-N\tN\tGen=N|Num=S|Cas=4|Neg=A|Var=8
-N\tN\tGen=N|Num=S|Cas=4|Neg=N
-N\tN\tGen=N|Num=S|Cas=4|Neg=N|Var=1
-N\tN\tGen=N|Num=S|Cas=4|Neg=N|Var=2
-N\tN\tGen=N|Num=S|Cas=4|Neg=N|Var=6
-N\tN\tGen=N|Num=S|Cas=4|Neg=N|Var=8
-N\tN\tGen=N|Num=S|Cas=5|Neg=A
-N\tN\tGen=N|Num=S|Cas=5|Neg=A|Sem=G
-N\tN\tGen=N|Num=S|Cas=5|Neg=A|Sem=m
-N\tN\tGen=N|Num=S|Cas=5|Neg=A|Var=1
-N\tN\tGen=N|Num=S|Cas=5|Neg=A|Var=2
-N\tN\tGen=N|Num=S|Cas=5|Neg=A|Var=6
-N\tN\tGen=N|Num=S|Cas=5|Neg=A|Var=8
-N\tN\tGen=N|Num=S|Cas=5|Neg=N
-N\tN\tGen=N|Num=S|Cas=5|Neg=N|Var=1
-N\tN\tGen=N|Num=S|Cas=5|Neg=N|Var=2
-N\tN\tGen=N|Num=S|Cas=5|Neg=N|Var=6
-N\tN\tGen=N|Num=S|Cas=5|Neg=N|Var=8
-N\tN\tGen=N|Num=S|Cas=6|Neg=A
-N\tN\tGen=N|Num=S|Cas=6|Neg=A|Sem=G
-N\tN\tGen=N|Num=S|Cas=6|Neg=A|Sem=K
-N\tN\tGen=N|Num=S|Cas=6|Neg=A|Sem=R
-N\tN\tGen=N|Num=S|Cas=6|Neg=A|Sem=S
-N\tN\tGen=N|Num=S|Cas=6|Neg=A|Sem=Y
-N\tN\tGen=N|Num=S|Cas=6|Neg=A|Sem=m
-N\tN\tGen=N|Num=S|Cas=6|Neg=A|Var=1
-N\tN\tGen=N|Num=S|Cas=6|Neg=A|Var=1|Sem=G
-N\tN\tGen=N|Num=S|Cas=6|Neg=A|Var=2
-N\tN\tGen=N|Num=S|Cas=6|Neg=A|Var=6
-N\tN\tGen=N|Num=S|Cas=6|Neg=A|Var=7
-N\tN\tGen=N|Num=S|Cas=6|Neg=A|Var=8
-N\tN\tGen=N|Num=S|Cas=6|Neg=N
-N\tN\tGen=N|Num=S|Cas=6|Neg=N|Var=1
-N\tN\tGen=N|Num=S|Cas=6|Neg=N|Var=2
-N\tN\tGen=N|Num=S|Cas=6|Neg=N|Var=6
-N\tN\tGen=N|Num=S|Cas=6|Neg=N|Var=7
-N\tN\tGen=N|Num=S|Cas=6|Neg=N|Var=8
-N\tN\tGen=N|Num=S|Cas=7|Neg=A
-N\tN\tGen=N|Num=S|Cas=7|Neg=A|Sem=G
-N\tN\tGen=N|Num=S|Cas=7|Neg=A|Sem=K
-N\tN\tGen=N|Num=S|Cas=7|Neg=A|Sem=S
-N\tN\tGen=N|Num=S|Cas=7|Neg=A|Sem=m
-N\tN\tGen=N|Num=S|Cas=7|Neg=A|Var=1
-N\tN\tGen=N|Num=S|Cas=7|Neg=A|Var=2
-N\tN\tGen=N|Num=S|Cas=7|Neg=A|Var=6
-N\tN\tGen=N|Num=S|Cas=7|Neg=A|Var=8
-N\tN\tGen=N|Num=S|Cas=7|Neg=A|Var=8|Sem=G
-N\tN\tGen=N|Num=S|Cas=7|Neg=N
-N\tN\tGen=N|Num=S|Cas=7|Neg=N|Var=1
-N\tN\tGen=N|Num=S|Cas=7|Neg=N|Var=2
-N\tN\tGen=N|Num=S|Cas=7|Neg=N|Var=6
-N\tN\tGen=N|Num=S|Cas=7|Neg=N|Var=8
-N\tN\tGen=N|Num=S|Cas=X|Neg=A
-N\tN\tGen=N|Num=S|Cas=X|Neg=A|Sem=E
-N\tN\tGen=N|Num=S|Cas=X|Neg=A|Sem=G
-N\tN\tGen=N|Num=S|Cas=X|Neg=A|Sem=K
-N\tN\tGen=N|Num=S|Cas=X|Neg=A|Sem=m
-N\tN\tGen=N|Num=S|Cas=X|Neg=A|Var=8
-N\tN\tGen=N|Num=S|Cas=X|Neg=N
-N\tN\tGen=N|Num=S|Cas=X|Neg=N|Var=8
-N\tN\tGen=N|Num=X|Cas=X|Neg=A
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Sem=G
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Sem=K
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Sem=R
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Sem=S
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Sem=Y
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Sem=m
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=1
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=2
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=2|Sem=G
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=8
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=G
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=K
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=R
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=m
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=w
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=9
-N\tN\tGen=N|Num=X|Cas=X|Neg=N
-N\tN\tGen=N|Num=X|Cas=X|Neg=N|Var=1
-N\tN\tGen=N|Num=X|Cas=X|Neg=N|Var=2
-N\tN\tGen=N|Num=X|Cas=X|Neg=N|Var=8
-N\tN\tGen=N|Num=X|Cas=X|Neg=N|Var=9
-N\tN\tGen=X|Num=P|Cas=X|Neg=A
-N\tN\tGen=X|Num=P|Cas=X|Neg=A|Sem=K
-N\tN\tGen=X|Num=P|Cas=X|Neg=A|Sem=m
-N\tN\tGen=X|Num=P|Cas=X|Neg=N
-N\tN\tGen=X|Num=S|Cas=X|Neg=A
-N\tN\tGen=X|Num=S|Cas=X|Neg=A|Sem=K
-N\tN\tGen=X|Num=S|Cas=X|Neg=A|Sem=m
-N\tN\tGen=X|Num=S|Cas=X|Neg=N
-N\tN\tGen=X|Num=X|Cas=X|Neg=A
-N\tN\tGen=X|Num=X|Cas=X|Neg=A|Sem=G
-N\tN\tGen=X|Num=X|Cas=X|Neg=A|Sem=K
-N\tN\tGen=X|Num=X|Cas=X|Neg=A|Sem=R
-N\tN\tGen=X|Num=X|Cas=X|Neg=A|Sem=S
-N\tN\tGen=X|Num=X|Cas=X|Neg=A|Sem=Y
-N\tN\tGen=X|Num=X|Cas=X|Neg=A|Sem=m
-N\tN\tGen=X|Num=X|Cas=X|Neg=A|Var=8
-N\tN\tGen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=G
-N\tN\tGen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=K
-N\tN\tGen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=R
-N\tN\tGen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=S
-N\tN\tGen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=m
-N\tN\tGen=X|Num=X|Cas=X|Neg=N
-N\tN\tGen=X|Num=X|Cas=X|Neg=N|Var=8
-N\tN\tGen=F|Num=P|Cas=3|Neg=A|Sem=E
-N\tN\tGen=F|Num=S|Cas=1|Neg=A|Sem=j
-N\tN\tGen=F|Num=S|Cas=1|Neg=A|Sem=L
-N\tN\tGen=F|Num=S|Cas=1|Neg=A|Sem=U
-N\tN\tGen=F|Num=S|Cas=2|Neg=A|Sem=j
-N\tN\tGen=F|Num=S|Cas=2|Neg=A|Sem=L
-N\tN\tGen=F|Num=S|Cas=2|Neg=A|Sem=U
-N\tN\tGen=F|Num=S|Cas=4|Neg=A|Sem=j
-N\tN\tGen=F|Num=S|Cas=6|Neg=A|Var=1|Sem=K
-N\tN\tGen=F|Num=S|Cas=7|Neg=A|Sem=L
-N\tN\tGen=F|Num=S|Cas=7|Neg=A|Var=1|Sem=Y
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=p
-N\tN\tGen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=w
-N\tN\tGen=I|Num=P|Cas=1|Neg=A|Sem=b
-N\tN\tGen=I|Num=P|Cas=1|Neg=A|Sem=m
-N\tN\tGen=I|Num=P|Cas=2|Neg=A|Sem=H
-N\tN\tGen=I|Num=P|Cas=2|Neg=A|Sem=m
-N\tN\tGen=I|Num=P|Cas=2|Neg=A|Var=1|Sem=G
-N\tN\tGen=I|Num=P|Cas=2|Neg=A|Var=1|Sem=m
-N\tN\tGen=I|Num=P|Cas=4|Neg=A|Sem=L
-N\tN\tGen=I|Num=P|Cas=4|Neg=A|Sem=m
-N\tN\tGen=I|Num=P|Cas=6|Neg=A|Sem=b
-N\tN\tGen=I|Num=P|Cas=6|Neg=A|Sem=m
-N\tN\tGen=I|Num=P|Cas=7|Neg=A|Sem=b
-N\tN\tGen=I|Num=P|Cas=7|Neg=A|Sem=m
-N\tN\tGen=I|Num=P|Cas=X|Neg=A|Var=8|Sem=G
-N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=b
-N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=H
-N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=L
-N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=U
-N\tN\tGen=I|Num=S|Cas=1|Neg=A|Sem=m
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Sem=b
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Sem=H
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Sem=L
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Sem=u
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Sem=w
-N\tN\tGen=I|Num=S|Cas=2|Neg=A|Sem=m
-N\tN\tGen=I|Num=S|Cas=3|Neg=A|Sem=b
-N\tN\tGen=I|Num=S|Cas=3|Neg=A|Sem=m
-N\tN\tGen=I|Num=S|Cas=4|Neg=A|Sem=b
-N\tN\tGen=I|Num=S|Cas=4|Neg=A|Sem=L
-N\tN\tGen=I|Num=S|Cas=4|Neg=A|Sem=U
-N\tN\tGen=I|Num=S|Cas=4|Neg=A|Sem=w
-N\tN\tGen=I|Num=S|Cas=4|Neg=A|Sem=m
-N\tN\tGen=I|Num=S|Cas=4|Neg=A|Var=6|Sem=R
-N\tN\tGen=I|Num=S|Cas=4|Neg=A|Var=6|Sem=m
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Sem=w
-N\tN\tGen=I|Num=S|Cas=6|Neg=A|Sem=m
-N\tN\tGen=I|Num=S|Cas=7|Neg=A|Sem=b
-N\tN\tGen=I|Num=S|Cas=7|Neg=A|Sem=m
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Sem=H
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Sem=S
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=b
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=c
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=g
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=H
-N\tN\tGen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=p
-N\tN\tGen=M|Num=P|Cas=2|Neg=A|Sem=K
-N\tN\tGen=M|Num=S|Cas=1|Neg=A|Sem=y
-N\tN\tGen=M|Num=S|Cas=4|Neg=A|Var=1|Sem=Y
-N\tN\tGen=M|Num=S|Cas=4|Neg=A|Var=1|Sem=m
-N\tN\tGen=N|Num=P|Cas=1|Neg=A|Sem=U
-N\tN\tGen=N|Num=P|Cas=2|Neg=A|Sem=U
-N\tN\tGen=N|Num=S|Cas=1|Neg=A|Sem=U
-N\tN\tGen=N|Num=S|Cas=2|Neg=A|Sem=H
-N\tN\tGen=N|Num=S|Cas=4|Neg=A|Sem=o
-N\tN\tGen=N|Num=S|Cas=6|Neg=A|Sem=U
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Sem=w
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=g
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=y
-N\tN\tGen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=m
-N\tN\tGen=X|Num=S|Cas=X|Neg=A|Sem=R
-N\tN\tGen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=Y
-N\tN\tGen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=m
-P\t0\t_
-P\t1\tGen=F|Num=D|Cas=7|PGe=F|PNu=S|Per=3
-P\t1\tGen=F|Num=D|Cas=7|PGe=F|PNu=S|Per=3|Var=2
-P\t1\tGen=F|Num=S|Cas=X|PGe=F|PNu=S|Per=3
-P\t1\tGen=F|Num=S|Cas=X|PGe=F|PNu=S|Per=3|Var=2
-P\t1\tGen=I|Num=S|Cas=4|PGe=F|PNu=S|Per=3
-P\t1\tGen=I|Num=S|Cas=4|PGe=F|PNu=S|Per=3|Var=2
-P\t1\tGen=M|Num=S|Cas=4|PGe=F|PNu=S|Per=3
-P\t1\tGen=M|Num=S|Cas=4|PGe=F|PNu=S|Per=3|Var=2
-P\t1\tGen=N|Num=S|Cas=4|PGe=F|PNu=S|Per=3
-P\t1\tGen=N|Num=S|Cas=4|PGe=F|PNu=S|Per=3|Var=2
-P\t1\tGen=X|Num=P|Cas=1|PGe=F|PNu=S|Per=3
-P\t1\tGen=X|Num=P|Cas=1|PGe=F|PNu=S|Per=3|Var=2
-P\t1\tGen=X|Num=P|Cas=2|PGe=F|PNu=S|Per=3
-P\t1\tGen=X|Num=P|Cas=2|PGe=F|PNu=S|Per=3|Var=2
-P\t1\tGen=X|Num=P|Cas=3|PGe=F|PNu=S|Per=3
-P\t1\tGen=X|Num=P|Cas=3|PGe=F|PNu=S|Per=3|Var=2
-P\t1\tGen=X|Num=P|Cas=4|PGe=F|PNu=S|Per=3
-P\t1\tGen=X|Num=P|Cas=4|PGe=F|PNu=S|Per=3|Var=2
-P\t1\tGen=X|Num=P|Cas=6|PGe=F|PNu=S|Per=3
-P\t1\tGen=X|Num=P|Cas=6|PGe=F|PNu=S|Per=3|Var=2
-P\t1\tGen=X|Num=P|Cas=7|PGe=F|PNu=S|Per=3
-P\t1\tGen=X|Num=P|Cas=7|PGe=F|PNu=S|Per=3|Var=2
-P\t1\tGen=X|Num=X|Cas=X|PGe=X|PNu=P|Per=3
-P\t1\tGen=X|Num=X|Cas=X|PGe=X|PNu=P|Per=3|Var=2
-P\t1\tGen=X|Num=X|Cas=X|PGe=Z|PNu=S|Per=3
-P\t1\tGen=X|Num=X|Cas=X|PGe=Z|PNu=S|Per=3|Var=2
-P\t1\tGen=Z|Num=S|Cas=1|PGe=F|PNu=S|Per=3
-P\t1\tGen=Z|Num=S|Cas=1|PGe=F|PNu=S|Per=3|Var=2
-P\t1\tGen=Z|Num=S|Cas=2|PGe=F|PNu=S|Per=3
-P\t1\tGen=Z|Num=S|Cas=2|PGe=F|PNu=S|Per=3|Var=2
-P\t1\tGen=Z|Num=S|Cas=3|PGe=F|PNu=S|Per=3
-P\t1\tGen=Z|Num=S|Cas=3|PGe=F|PNu=S|Per=3|Var=2
-P\t1\tGen=Z|Num=S|Cas=6|PGe=F|PNu=S|Per=3
-P\t1\tGen=Z|Num=S|Cas=6|PGe=F|PNu=S|Per=3|Var=2
-P\t1\tGen=Z|Num=S|Cas=7|PGe=F|PNu=S|Per=3
-P\t1\tGen=Z|Num=S|Cas=7|PGe=F|PNu=S|Per=3|Var=2
-P\t4\tGen=F|Num=D|Cas=7
-P\t4\tGen=F|Num=D|Cas=7|Var=6
-P\t4\tGen=F|Num=P|Cas=1
-P\t4\tGen=F|Num=P|Cas=1|Var=6
-P\t4\tGen=F|Num=P|Cas=4
-P\t4\tGen=F|Num=P|Cas=4|Var=6
-P\t4\tGen=F|Num=S|Cas=1
-P\t4\tGen=F|Num=S|Cas=1|Var=3
-P\t4\tGen=F|Num=S|Cas=1|Var=6
-P\t4\tGen=F|Num=S|Cas=2
-P\t4\tGen=F|Num=S|Cas=2|Var=6
-P\t4\tGen=F|Num=S|Cas=3
-P\t4\tGen=F|Num=S|Cas=3|Var=6
-P\t4\tGen=F|Num=S|Cas=4
-P\t4\tGen=F|Num=S|Cas=4|Var=6
-P\t4\tGen=F|Num=S|Cas=6
-P\t4\tGen=F|Num=S|Cas=6|Var=6
-P\t4\tGen=F|Num=S|Cas=7
-P\t4\tGen=F|Num=S|Cas=7|Var=6
-P\t4\tGen=I|Num=P|Cas=1
-P\t4\tGen=I|Num=P|Cas=1|Var=6
-P\t4\tGen=I|Num=S|Cas=4
-P\t4\tGen=I|Num=S|Cas=4|Var=6
-P\t4\tGen=M|Num=P|Cas=1
-P\t4\tGen=M|Num=P|Cas=1|Var=6
-P\t4\tGen=M|Num=S|Cas=4
-P\t4\tGen=M|Num=S|Cas=4|Var=6
-P\t4\tGen=N|Num=P|Cas=1
-P\t4\tGen=N|Num=P|Cas=1|Var=6
-P\t4\tGen=N|Num=P|Cas=1|Var=7
-P\t4\tGen=N|Num=P|Cas=4
-P\t4\tGen=N|Num=P|Cas=4|Var=6
-P\t4\tGen=N|Num=S|Cas=1
-P\t4\tGen=N|Num=S|Cas=1|Var=6
-P\t4\tGen=N|Num=S|Cas=4
-P\t4\tGen=N|Num=S|Cas=4|Var=6
-P\t4\tGen=X|Num=D|Cas=7
-P\t4\tGen=X|Num=P|Cas=2
-P\t4\tGen=X|Num=P|Cas=2|Var=6
-P\t4\tGen=X|Num=P|Cas=3
-P\t4\tGen=X|Num=P|Cas=3|Var=6
-P\t4\tGen=X|Num=P|Cas=6
-P\t4\tGen=X|Num=P|Cas=6|Var=6
-P\t4\tGen=X|Num=P|Cas=7
-P\t4\tGen=X|Num=P|Cas=7|Var=6
-P\t4\tGen=X|Num=P|Cas=7|Var=7
-P\t4\tGen=X|Num=X|Cas=X
-P\t4\tGen=Y|Num=P|Cas=4
-P\t4\tGen=Y|Num=P|Cas=4|Var=6
-P\t4\tGen=Y|Num=S|Cas=1
-P\t4\tGen=Y|Num=S|Cas=1|Var=3
-P\t4\tGen=Y|Num=S|Cas=1|Var=6
-P\t4\tGen=Z|Num=S|Cas=2
-P\t4\tGen=Z|Num=S|Cas=2|Var=6
-P\t4\tGen=Z|Num=S|Cas=3
-P\t4\tGen=Z|Num=S|Cas=3|Var=6
-P\t4\tGen=Z|Num=S|Cas=6
-P\t4\tGen=Z|Num=S|Cas=6|Var=6
-P\t4\tGen=Z|Num=S|Cas=7
-P\t4\tGen=Z|Num=S|Cas=7|Var=6
-P\t5\tGen=F|Num=S|Cas=2|Per=3
-P\t5\tGen=F|Num=S|Cas=3|Per=3
-P\t5\tGen=F|Num=S|Cas=4|Per=3
-P\t5\tGen=F|Num=S|Cas=4|Per=3|Var=6
-P\t5\tGen=F|Num=S|Cas=6|Per=3
-P\t5\tGen=F|Num=S|Cas=7|Per=3
-P\t5\tGen=N|Num=S|Cas=4|Per=3
-P\t5\tGen=X|Num=P|Cas=2|Per=3
-P\t5\tGen=X|Num=P|Cas=3|Per=3
-P\t5\tGen=X|Num=P|Cas=4|Per=3
-P\t5\tGen=X|Num=P|Cas=6|Per=3
-P\t5\tGen=X|Num=P|Cas=7|Per=3
-P\t5\tGen=Z|Num=S|Cas=2|Per=3
-P\t5\tGen=Z|Num=S|Cas=2|Per=3|Var=1
-P\t5\tGen=Z|Num=S|Cas=3|Per=3
-P\t5\tGen=Z|Num=S|Cas=4|Per=3
-P\t5\tGen=Z|Num=S|Cas=4|Per=3|Var=1
-P\t5\tGen=Z|Num=S|Cas=6|Per=3
-P\t5\tGen=Z|Num=S|Cas=7|Per=3
-P\t6\tNum=X|Cas=2
-P\t6\tNum=X|Cas=3
-P\t6\tNum=X|Cas=4
-P\t6\tNum=X|Cas=6
-P\t6\tNum=X|Cas=7
-P\t7\tNum=S|Cas=3
-P\t7\tNum=S|Cas=3|Per=2
-P\t7\tNum=S|Cas=4
-P\t7\tNum=S|Cas=4|Per=2
-P\t7\tNum=X|Cas=3
-P\t7\tNum=X|Cas=4
-P\t8\tGen=F|Num=D|Cas=7
-P\t8\tGen=F|Num=D|Cas=7|Var=6
-P\t8\tGen=F|Num=P|Cas=1|Var=1
-P\t8\tGen=F|Num=P|Cas=4|Var=1
-P\t8\tGen=F|Num=S|Cas=1|Var=1
-P\t8\tGen=F|Num=S|Cas=2
-P\t8\tGen=F|Num=S|Cas=2|Var=1
-P\t8\tGen=F|Num=S|Cas=2|Var=6
-P\t8\tGen=F|Num=S|Cas=3
-P\t8\tGen=F|Num=S|Cas=3|Var=1
-P\t8\tGen=F|Num=S|Cas=3|Var=6
-P\t8\tGen=F|Num=S|Cas=4
-P\t8\tGen=F|Num=S|Cas=4|Var=1
-P\t8\tGen=F|Num=S|Cas=4|Var=6
-P\t8\tGen=F|Num=S|Cas=5|Var=1
-P\t8\tGen=F|Num=S|Cas=6
-P\t8\tGen=F|Num=S|Cas=6|Var=1
-P\t8\tGen=F|Num=S|Cas=6|Var=6
-P\t8\tGen=F|Num=S|Cas=7
-P\t8\tGen=F|Num=S|Cas=7|Var=1
-P\t8\tGen=H|Num=P|Cas=1
-P\t8\tGen=H|Num=P|Cas=5
-P\t8\tGen=H|Num=P|Cas=5|Var=7
-P\t8\tGen=H|Num=S|Cas=1
-P\t8\tGen=H|Num=S|Cas=5
-P\t8\tGen=I|Num=P|Cas=1
-P\t8\tGen=I|Num=P|Cas=1|Var=1
-P\t8\tGen=I|Num=P|Cas=1|Var=7
-P\t8\tGen=I|Num=P|Cas=5
-P\t8\tGen=I|Num=P|Cas=5|Var=1
-P\t8\tGen=I|Num=P|Cas=5|Var=7
-P\t8\tGen=I|Num=S|Cas=4
-P\t8\tGen=I|Num=S|Cas=4|Var=6
-P\t8\tGen=M|Num=P|Cas=1
-P\t8\tGen=M|Num=P|Cas=1|Var=1
-P\t8\tGen=M|Num=P|Cas=5
-P\t8\tGen=M|Num=P|Cas=5|Var=1
-P\t8\tGen=M|Num=S|Cas=4
-P\t8\tGen=M|Num=S|Cas=4|Var=6
-P\t8\tGen=N|Num=P|Cas=1|Var=1
-P\t8\tGen=N|Num=P|Cas=4|Var=1
-P\t8\tGen=N|Num=P|Cas=5|Var=1
-P\t8\tGen=N|Num=S|Cas=1|Var=1
-P\t8\tGen=N|Num=S|Cas=4
-P\t8\tGen=N|Num=S|Cas=4|Var=1
-P\t8\tGen=N|Num=S|Cas=5|Var=1
-P\t8\tGen=X|Num=P|Cas=2
-P\t8\tGen=X|Num=P|Cas=2|Var=6
-P\t8\tGen=X|Num=P|Cas=3
-P\t8\tGen=X|Num=P|Cas=3|Var=6
-P\t8\tGen=X|Num=P|Cas=4
-P\t8\tGen=X|Num=P|Cas=4|Var=7
-P\t8\tGen=X|Num=P|Cas=6
-P\t8\tGen=X|Num=P|Cas=6|Var=6
-P\t8\tGen=X|Num=P|Cas=7
-P\t8\tGen=Y|Num=P|Cas=4|Var=1
-P\t8\tGen=Y|Num=S|Cas=1
-P\t8\tGen=Y|Num=S|Cas=1|Var=6
-P\t8\tGen=Y|Num=S|Cas=5
-P\t8\tGen=Y|Num=S|Cas=5|Var=6
-P\t8\tGen=Z|Num=S|Cas=2
-P\t8\tGen=Z|Num=S|Cas=2|Var=6
-P\t8\tGen=Z|Num=S|Cas=3
-P\t8\tGen=Z|Num=S|Cas=3|Var=6
-P\t8\tGen=Z|Num=S|Cas=6
-P\t8\tGen=Z|Num=S|Cas=6|Var=6
-P\t8\tGen=Z|Num=S|Cas=6|Var=7
-P\t8\tGen=Z|Num=S|Cas=7
-P\t8\tGen=Z|Num=S|Cas=7|Var=6
-P\t9\tGen=F|Num=S|Cas=2
-P\t9\tGen=F|Num=S|Cas=2|Var=2
-P\t9\tGen=F|Num=S|Cas=3
-P\t9\tGen=F|Num=S|Cas=3|Var=2
-P\t9\tGen=F|Num=S|Cas=4
-P\t9\tGen=F|Num=S|Cas=4|Var=2
-P\t9\tGen=F|Num=S|Cas=6
-P\t9\tGen=F|Num=S|Cas=6|Var=2
-P\t9\tGen=F|Num=S|Cas=7
-P\t9\tGen=F|Num=S|Cas=7|Var=2
-P\t9\tGen=N|Num=S|Cas=4
-P\t9\tGen=N|Num=S|Cas=4|Var=2
-P\t9\tGen=X|Num=P|Cas=2
-P\t9\tGen=X|Num=P|Cas=2|Var=2
-P\t9\tGen=X|Num=P|Cas=3
-P\t9\tGen=X|Num=P|Cas=3|Var=2
-P\t9\tGen=X|Num=P|Cas=4
-P\t9\tGen=X|Num=P|Cas=4|Var=2
-P\t9\tGen=X|Num=P|Cas=6
-P\t9\tGen=X|Num=P|Cas=6|Var=2
-P\t9\tGen=X|Num=P|Cas=7
-P\t9\tGen=X|Num=P|Cas=7|Var=2
-P\t9\tGen=Z|Num=S|Cas=2
-P\t9\tGen=Z|Num=S|Cas=2|Var=1
-P\t9\tGen=Z|Num=S|Cas=2|Var=2
-P\t9\tGen=Z|Num=S|Cas=2|Var=3
-P\t9\tGen=Z|Num=S|Cas=3
-P\t9\tGen=Z|Num=S|Cas=3|Var=2
-P\t9\tGen=Z|Num=S|Cas=4
-P\t9\tGen=Z|Num=S|Cas=4|Var=1
-P\t9\tGen=Z|Num=S|Cas=4|Var=2
-P\t9\tGen=Z|Num=S|Cas=4|Var=3
-P\t9\tGen=Z|Num=S|Cas=6
-P\t9\tGen=Z|Num=S|Cas=6|Var=2
-P\t9\tGen=Z|Num=S|Cas=7
-P\t9\tGen=Z|Num=S|Cas=7|Var=2
-P\tD\tGen=F|Num=D|Cas=7
-P\tD\tGen=F|Num=D|Cas=7|Var=2
-P\tD\tGen=F|Num=D|Cas=7|Var=5
-P\tD\tGen=F|Num=D|Cas=7|Var=6
-P\tD\tGen=F|Num=P|Cas=1
-P\tD\tGen=F|Num=P|Cas=1|Var=5
-P\tD\tGen=F|Num=P|Cas=1|Var=6
-P\tD\tGen=F|Num=P|Cas=2
-P\tD\tGen=F|Num=P|Cas=3
-P\tD\tGen=F|Num=P|Cas=4
-P\tD\tGen=F|Num=P|Cas=4|Var=5
-P\tD\tGen=F|Num=P|Cas=4|Var=6
-P\tD\tGen=F|Num=P|Cas=6
-P\tD\tGen=F|Num=P|Cas=7
-P\tD\tGen=F|Num=S|Cas=1
-P\tD\tGen=F|Num=S|Cas=1|Var=5
-P\tD\tGen=F|Num=S|Cas=1|Var=6
-P\tD\tGen=F|Num=S|Cas=1|Var=8
-P\tD\tGen=F|Num=S|Cas=2
-P\tD\tGen=F|Num=S|Cas=2|Var=5
-P\tD\tGen=F|Num=S|Cas=2|Var=6
-P\tD\tGen=F|Num=S|Cas=2|Var=8
-P\tD\tGen=F|Num=S|Cas=3
-P\tD\tGen=F|Num=S|Cas=3|Var=5
-P\tD\tGen=F|Num=S|Cas=3|Var=6
-P\tD\tGen=F|Num=S|Cas=3|Var=8
-P\tD\tGen=F|Num=S|Cas=4
-P\tD\tGen=F|Num=S|Cas=4|Var=5
-P\tD\tGen=F|Num=S|Cas=4|Var=6
-P\tD\tGen=F|Num=S|Cas=4|Var=8
-P\tD\tGen=F|Num=S|Cas=6
-P\tD\tGen=F|Num=S|Cas=6|Var=5
-P\tD\tGen=F|Num=S|Cas=6|Var=6
-P\tD\tGen=F|Num=S|Cas=6|Var=8
-P\tD\tGen=F|Num=S|Cas=7
-P\tD\tGen=F|Num=S|Cas=7|Var=5
-P\tD\tGen=F|Num=S|Cas=7|Var=6
-P\tD\tGen=F|Num=S|Cas=7|Var=8
-P\tD\tGen=I|Num=P|Cas=1
-P\tD\tGen=I|Num=P|Cas=1|Var=5
-P\tD\tGen=I|Num=P|Cas=1|Var=6
-P\tD\tGen=I|Num=P|Cas=2
-P\tD\tGen=I|Num=P|Cas=3
-P\tD\tGen=I|Num=P|Cas=4
-P\tD\tGen=I|Num=P|Cas=4|Var=5
-P\tD\tGen=I|Num=P|Cas=4|Var=6
-P\tD\tGen=I|Num=P|Cas=6
-P\tD\tGen=I|Num=P|Cas=7
-P\tD\tGen=I|Num=S|Cas=1|Var=8
-P\tD\tGen=I|Num=S|Cas=2
-P\tD\tGen=I|Num=S|Cas=2|Var=8
-P\tD\tGen=I|Num=S|Cas=3
-P\tD\tGen=I|Num=S|Cas=3|Var=8
-P\tD\tGen=I|Num=S|Cas=4
-P\tD\tGen=I|Num=S|Cas=4|Var=5
-P\tD\tGen=I|Num=S|Cas=4|Var=6
-P\tD\tGen=I|Num=S|Cas=4|Var=8
-P\tD\tGen=I|Num=S|Cas=6
-P\tD\tGen=I|Num=S|Cas=6|Var=8
-P\tD\tGen=I|Num=S|Cas=7
-P\tD\tGen=I|Num=S|Cas=7|Var=8
-P\tD\tGen=M|Num=P|Cas=1
-P\tD\tGen=M|Num=P|Cas=1|Var=1
-P\tD\tGen=M|Num=P|Cas=1|Var=5
-P\tD\tGen=M|Num=P|Cas=1|Var=6
-P\tD\tGen=M|Num=P|Cas=2
-P\tD\tGen=M|Num=P|Cas=3
-P\tD\tGen=M|Num=P|Cas=4
-P\tD\tGen=M|Num=P|Cas=4|Var=5
-P\tD\tGen=M|Num=P|Cas=4|Var=6
-P\tD\tGen=M|Num=P|Cas=6
-P\tD\tGen=M|Num=P|Cas=7
-P\tD\tGen=M|Num=S|Cas=1
-P\tD\tGen=M|Num=S|Cas=1|Var=8
-P\tD\tGen=M|Num=S|Cas=2
-P\tD\tGen=M|Num=S|Cas=2|Var=8
-P\tD\tGen=M|Num=S|Cas=3
-P\tD\tGen=M|Num=S|Cas=3|Var=8
-P\tD\tGen=M|Num=S|Cas=4
-P\tD\tGen=M|Num=S|Cas=4|Var=5
-P\tD\tGen=M|Num=S|Cas=4|Var=6
-P\tD\tGen=M|Num=S|Cas=4|Var=8
-P\tD\tGen=M|Num=S|Cas=6|Var=8
-P\tD\tGen=M|Num=S|Cas=7
-P\tD\tGen=M|Num=S|Cas=7|Var=8
-P\tD\tGen=N|Num=P|Cas=1
-P\tD\tGen=N|Num=P|Cas=1|Var=5
-P\tD\tGen=N|Num=P|Cas=1|Var=6
-P\tD\tGen=N|Num=P|Cas=2
-P\tD\tGen=N|Num=P|Cas=3
-P\tD\tGen=N|Num=P|Cas=4
-P\tD\tGen=N|Num=P|Cas=4|Var=5
-P\tD\tGen=N|Num=P|Cas=4|Var=6
-P\tD\tGen=N|Num=P|Cas=6
-P\tD\tGen=N|Num=P|Cas=7
-P\tD\tGen=N|Num=S|Cas=1
-P\tD\tGen=N|Num=S|Cas=1|Sem=m
-P\tD\tGen=N|Num=S|Cas=1|Var=2
-P\tD\tGen=N|Num=S|Cas=1|Var=5
-P\tD\tGen=N|Num=S|Cas=1|Var=6
-P\tD\tGen=N|Num=S|Cas=1|Var=8
-P\tD\tGen=N|Num=S|Cas=2
-P\tD\tGen=N|Num=S|Cas=2|Var=8
-P\tD\tGen=N|Num=S|Cas=3
-P\tD\tGen=N|Num=S|Cas=3|Var=8
-P\tD\tGen=N|Num=S|Cas=4
-P\tD\tGen=N|Num=S|Cas=4|Var=2
-P\tD\tGen=N|Num=S|Cas=4|Var=5
-P\tD\tGen=N|Num=S|Cas=4|Var=6
-P\tD\tGen=N|Num=S|Cas=4|Var=8
-P\tD\tGen=N|Num=S|Cas=6
-P\tD\tGen=N|Num=S|Cas=6|Var=8
-P\tD\tGen=N|Num=S|Cas=7
-P\tD\tGen=N|Num=S|Cas=7|Var=8
-P\tD\tGen=X|Num=P|Cas=2
-P\tD\tGen=X|Num=P|Cas=2|Var=1
-P\tD\tGen=X|Num=P|Cas=2|Var=2
-P\tD\tGen=X|Num=P|Cas=2|Var=5
-P\tD\tGen=X|Num=P|Cas=2|Var=6
-P\tD\tGen=X|Num=P|Cas=3
-P\tD\tGen=X|Num=P|Cas=3|Var=1
-P\tD\tGen=X|Num=P|Cas=3|Var=2
-P\tD\tGen=X|Num=P|Cas=3|Var=5
-P\tD\tGen=X|Num=P|Cas=3|Var=6
-P\tD\tGen=X|Num=P|Cas=6
-P\tD\tGen=X|Num=P|Cas=6|Var=1
-P\tD\tGen=X|Num=P|Cas=6|Var=2
-P\tD\tGen=X|Num=P|Cas=6|Var=5
-P\tD\tGen=X|Num=P|Cas=6|Var=6
-P\tD\tGen=X|Num=P|Cas=7
-P\tD\tGen=X|Num=P|Cas=7|Var=2
-P\tD\tGen=X|Num=P|Cas=7|Var=5
-P\tD\tGen=X|Num=P|Cas=7|Var=6
-P\tD\tGen=X|Num=P|Cas=X
-P\tD\tGen=X|Num=P|Cas=X|Var=8
-P\tD\tGen=X|Num=S|Cas=1
-P\tD\tGen=X|Num=S|Cas=2
-P\tD\tGen=X|Num=S|Cas=3
-P\tD\tGen=X|Num=S|Cas=4
-P\tD\tGen=X|Num=S|Cas=6
-P\tD\tGen=X|Num=S|Cas=7
-P\tD\tGen=X|Num=S|Cas=X
-P\tD\tGen=X|Num=S|Cas=X|Var=8
-P\tD\tGen=X|Num=X|Cas=X
-P\tD\tGen=X|Num=X|Cas=X|Var=8
-P\tD\tGen=Y|Num=S|Cas=1
-P\tD\tGen=Y|Num=S|Cas=1|Var=5
-P\tD\tGen=Y|Num=S|Cas=1|Var=6
-P\tD\tGen=Y|Num=S|Cas=4
-P\tD\tGen=Z|Num=S|Cas=2
-P\tD\tGen=Z|Num=S|Cas=2|Var=5
-P\tD\tGen=Z|Num=S|Cas=2|Var=6
-P\tD\tGen=Z|Num=S|Cas=3
-P\tD\tGen=Z|Num=S|Cas=3|Var=5
-P\tD\tGen=Z|Num=S|Cas=3|Var=6
-P\tD\tGen=Z|Num=S|Cas=6
-P\tD\tGen=Z|Num=S|Cas=6|Var=1
-P\tD\tGen=Z|Num=S|Cas=6|Var=2
-P\tD\tGen=Z|Num=S|Cas=6|Var=5
-P\tD\tGen=Z|Num=S|Cas=6|Var=6
-P\tD\tGen=Z|Num=S|Cas=7
-P\tD\tGen=Z|Num=S|Cas=7|Var=5
-P\tD\tGen=Z|Num=S|Cas=7|Var=6
-P\tE\tCas=1
-P\tE\tCas=2
-P\tE\tCas=3
-P\tE\tCas=4
-P\tE\tCas=6
-P\tE\tCas=7
-P\tH\tGen=Z|Num=S|Cas=2|Per=3
-P\tH\tGen=Z|Num=S|Cas=3|Per=3
-P\tH\tGen=Z|Num=S|Cas=4|Per=3
-P\tH\tNum=S|Cas=2|Per=1
-P\tH\tNum=S|Cas=2|Per=2
-P\tH\tNum=S|Cas=3|Per=1
-P\tH\tNum=S|Cas=3|Per=2
-P\tH\tNum=S|Cas=4|Per=1
-P\tH\tNum=S|Cas=4|Per=2
-P\tJ\tGen=F|Num=D|Cas=7
-P\tJ\tGen=F|Num=P|Cas=1
-P\tJ\tGen=F|Num=P|Cas=4
-P\tJ\tGen=F|Num=S|Cas=1
-P\tJ\tGen=F|Num=S|Cas=1|Var=2
-P\tJ\tGen=F|Num=S|Cas=2
-P\tJ\tGen=F|Num=S|Cas=2|Var=2
-P\tJ\tGen=F|Num=S|Cas=3
-P\tJ\tGen=F|Num=S|Cas=3|Var=2
-P\tJ\tGen=F|Num=S|Cas=4
-P\tJ\tGen=F|Num=S|Cas=4|Var=2
-P\tJ\tGen=F|Num=S|Cas=6
-P\tJ\tGen=F|Num=S|Cas=7
-P\tJ\tGen=F|Num=S|Cas=7|Var=2
-P\tJ\tGen=I|Num=P|Cas=1
-P\tJ\tGen=I|Num=S|Cas=4
-P\tJ\tGen=I|Num=S|Cas=4|Var=2
-P\tJ\tGen=M|Num=P|Cas=1
-P\tJ\tGen=M|Num=S|Cas=4
-P\tJ\tGen=M|Num=S|Cas=4|Var=2
-P\tJ\tGen=N|Num=P|Cas=1
-P\tJ\tGen=N|Num=P|Cas=4
-P\tJ\tGen=N|Num=S|Cas=1
-P\tJ\tGen=N|Num=S|Cas=1|Var=2
-P\tJ\tGen=N|Num=S|Cas=4
-P\tJ\tGen=N|Num=S|Cas=4|Var=2
-P\tJ\tGen=X|Num=P|Cas=1
-P\tJ\tGen=X|Num=P|Cas=1|Var=2
-P\tJ\tGen=X|Num=P|Cas=2
-P\tJ\tGen=X|Num=P|Cas=2|Var=2
-P\tJ\tGen=X|Num=P|Cas=3
-P\tJ\tGen=X|Num=P|Cas=3|Var=2
-P\tJ\tGen=X|Num=P|Cas=4
-P\tJ\tGen=X|Num=P|Cas=4|Var=2
-P\tJ\tGen=X|Num=P|Cas=6
-P\tJ\tGen=X|Num=P|Cas=7
-P\tJ\tGen=X|Num=P|Cas=7|Var=2
-P\tJ\tGen=Y|Num=P|Cas=4
-P\tJ\tGen=Y|Num=S|Cas=1
-P\tJ\tGen=Y|Num=S|Cas=1|Var=2
-P\tJ\tGen=Z|Num=S|Cas=2
-P\tJ\tGen=Z|Num=S|Cas=2|Var=1
-P\tJ\tGen=Z|Num=S|Cas=2|Var=2
-P\tJ\tGen=Z|Num=S|Cas=2|Var=3
-P\tJ\tGen=Z|Num=S|Cas=3
-P\tJ\tGen=Z|Num=S|Cas=3|Var=2
-P\tJ\tGen=Z|Num=S|Cas=4|Var=1
-P\tJ\tGen=Z|Num=S|Cas=4|Var=3
-P\tJ\tGen=Z|Num=S|Cas=6
-P\tJ\tGen=Z|Num=S|Cas=7
-P\tJ\tGen=Z|Num=S|Cas=7|Var=2
-P\tK\tGen=M|Cas=1
-P\tK\tGen=M|Cas=1|Per=2
-P\tK\tGen=M|Cas=1|Var=1
-P\tK\tGen=M|Cas=1|Var=2
-P\tK\tGen=M|Cas=2
-P\tK\tGen=M|Cas=2|Per=2
-P\tK\tGen=M|Cas=2|Var=2
-P\tK\tGen=M|Cas=3
-P\tK\tGen=M|Cas=3|Per=2
-P\tK\tGen=M|Cas=3|Var=2
-P\tK\tGen=M|Cas=4
-P\tK\tGen=M|Cas=4|Per=2
-P\tK\tGen=M|Cas=4|Var=2
-P\tK\tGen=M|Cas=6
-P\tK\tGen=M|Cas=6|Per=2
-P\tK\tGen=M|Cas=6|Var=2
-P\tK\tGen=M|Cas=7
-P\tK\tGen=M|Cas=7|Per=2
-P\tK\tGen=M|Cas=7|Var=2
-P\tL\tGen=F|Num=D|Cas=7
-P\tL\tGen=F|Num=P|Cas=1
-P\tL\tGen=F|Num=P|Cas=1|Var=6
-P\tL\tGen=F|Num=P|Cas=4
-P\tL\tGen=F|Num=P|Cas=5
-P\tL\tGen=F|Num=S|Cas=1
-P\tL\tGen=F|Num=S|Cas=2
-P\tL\tGen=F|Num=S|Cas=3
-P\tL\tGen=F|Num=S|Cas=4
-P\tL\tGen=F|Num=S|Cas=5
-P\tL\tGen=F|Num=S|Cas=5|Var=1
-P\tL\tGen=F|Num=S|Cas=6
-P\tL\tGen=F|Num=S|Cas=7
-P\tL\tGen=I|Num=P|Cas=1
-P\tL\tGen=I|Num=P|Cas=1|Var=6
-P\tL\tGen=I|Num=P|Cas=5
-P\tL\tGen=I|Num=S|Cas=4
-P\tL\tGen=I|Num=S|Cas=4|Var=1
-P\tL\tGen=M|Num=P|Cas=1
-P\tL\tGen=M|Num=P|Cas=1|Var=6
-P\tL\tGen=M|Num=P|Cas=5
-P\tL\tGen=M|Num=S|Cas=4
-P\tL\tGen=N|Num=P|Cas=1
-P\tL\tGen=N|Num=P|Cas=1|Var=6
-P\tL\tGen=N|Num=P|Cas=4
-P\tL\tGen=N|Num=P|Cas=5
-P\tL\tGen=N|Num=S|Cas=1
-P\tL\tGen=N|Num=S|Cas=1|Var=1
-P\tL\tGen=N|Num=S|Cas=1|Var=6
-P\tL\tGen=N|Num=S|Cas=4
-P\tL\tGen=N|Num=S|Cas=4|Var=1
-P\tL\tGen=N|Num=S|Cas=4|Var=6
-P\tL\tGen=N|Num=S|Cas=4|Sem=m
-P\tL\tGen=N|Num=S|Cas=5
-P\tL\tGen=N|Num=S|Cas=5|Var=1
-P\tL\tGen=X|Num=P|Cas=2
-P\tL\tGen=X|Num=P|Cas=3
-P\tL\tGen=X|Num=P|Cas=6
-P\tL\tGen=X|Num=P|Cas=7
-P\tL\tGen=X|Num=P|Cas=7|Var=6
-P\tL\tGen=X|Num=X|Cas=X
-P\tL\tGen=X|Num=X|Cas=X|Sem=K
-P\tL\tGen=X|Num=X|Cas=X|Sem=m
-P\tL\tGen=X|Num=X|Cas=X|Var=8
-P\tL\tGen=Y|Num=P|Cas=4
-P\tL\tGen=Y|Num=S|Cas=1
-P\tL\tGen=Y|Num=S|Cas=1|Var=1
-P\tL\tGen=Y|Num=S|Cas=4
-P\tL\tGen=Y|Num=S|Cas=5
-P\tL\tGen=Y|Num=S|Cas=5|Var=1
-P\tL\tGen=Z|Num=S|Cas=2
-P\tL\tGen=Z|Num=S|Cas=3
-P\tL\tGen=Z|Num=S|Cas=6
-P\tL\tGen=Z|Num=S|Cas=7
-P\tP\tGen=F|Num=P|Cas=1|Per=3
-P\tP\tGen=F|Num=P|Cas=2|Per=3
-P\tP\tGen=F|Num=P|Cas=3|Per=3
-P\tP\tGen=F|Num=P|Cas=4|Per=3
-P\tP\tGen=F|Num=P|Cas=6|Per=3
-P\tP\tGen=F|Num=P|Cas=7|Per=3
-P\tP\tGen=F|Num=P|Cas=X|Per=3
-P\tP\tGen=F|Num=S|Cas=1|Per=3
-P\tP\tGen=F|Num=S|Cas=2|Per=3
-P\tP\tGen=F|Num=S|Cas=3|Per=3
-P\tP\tGen=F|Num=S|Cas=4|Per=3
-P\tP\tGen=F|Num=S|Cas=6|Per=3
-P\tP\tGen=F|Num=S|Cas=7|Per=3
-P\tP\tGen=F|Num=S|Cas=X|Per=3
-P\tP\tGen=I|Num=P|Cas=1|Per=3
-P\tP\tGen=I|Num=P|Cas=2|Per=3
-P\tP\tGen=I|Num=P|Cas=3|Per=3
-P\tP\tGen=I|Num=P|Cas=4|Per=3
-P\tP\tGen=I|Num=P|Cas=6|Per=3
-P\tP\tGen=I|Num=P|Cas=7|Per=3
-P\tP\tGen=I|Num=S|Cas=2|Per=3
-P\tP\tGen=I|Num=S|Cas=3|Per=3
-P\tP\tGen=I|Num=S|Cas=4|Per=3
-P\tP\tGen=I|Num=S|Cas=6|Per=3
-P\tP\tGen=I|Num=S|Cas=7|Per=3
-P\tP\tGen=M|Num=P|Cas=1|Per=3
-P\tP\tGen=M|Num=P|Cas=2|Per=3
-P\tP\tGen=M|Num=P|Cas=3|Per=3
-P\tP\tGen=M|Num=P|Cas=4|Per=3
-P\tP\tGen=M|Num=P|Cas=6|Per=3
-P\tP\tGen=M|Num=P|Cas=7|Per=3
-P\tP\tGen=M|Num=P|Cas=X|Per=3
-P\tP\tGen=M|Num=S|Cas=1|Per=3
-P\tP\tGen=M|Num=S|Cas=1|Per=3|Sem=R
-P\tP\tGen=M|Num=S|Cas=2|Per=3
-P\tP\tGen=M|Num=S|Cas=3|Per=3
-P\tP\tGen=M|Num=S|Cas=4|Per=3
-P\tP\tGen=M|Num=S|Cas=6|Per=3
-P\tP\tGen=M|Num=S|Cas=7|Per=3
-P\tP\tGen=M|Num=S|Cas=X|Per=3
-P\tP\tGen=N|Num=P|Cas=1|Per=3
-P\tP\tGen=N|Num=P|Cas=2|Per=3
-P\tP\tGen=N|Num=P|Cas=3|Per=3
-P\tP\tGen=N|Num=P|Cas=4|Per=3
-P\tP\tGen=N|Num=P|Cas=7|Per=3
-P\tP\tGen=N|Num=P|Cas=X|Per=3
-P\tP\tGen=N|Num=S|Cas=1|Per=3
-P\tP\tGen=N|Num=S|Cas=2|Per=3
-P\tP\tGen=N|Num=S|Cas=4|Per=3
-P\tP\tGen=N|Num=S|Cas=6|Per=3
-P\tP\tGen=N|Num=S|Cas=7|Per=3
-P\tP\tGen=N|Num=S|Cas=X|Per=3
-P\tP\tGen=N|Num=S|Cas=X|Per=3|Sem=R
-P\tP\tGen=X|Num=P|Cas=1|Per=3
-P\tP\tGen=X|Num=P|Cas=2|Per=3
-P\tP\tGen=X|Num=P|Cas=3|Per=3
-P\tP\tGen=X|Num=P|Cas=4|Per=3
-P\tP\tGen=X|Num=P|Cas=7|Per=3
-P\tP\tGen=X|Num=P|Cas=X|Per=3
-P\tP\tGen=X|Num=S|Cas=3|Per=3
-P\tP\tGen=Y|Num=S|Cas=1|Per=3
-P\tP\tGen=Y|Num=S|Cas=2|Per=3
-P\tP\tGen=Y|Num=S|Cas=4|Per=3
-P\tP\tGen=Z|Num=S|Cas=2|Per=3|Var=1
-P\tP\tGen=Z|Num=S|Cas=3|Per=3
-P\tP\tGen=Z|Num=S|Cas=4|Per=3|Var=2
-P\tP\tGen=Z|Num=S|Cas=7|Per=3
-P\tP\tNum=P|Cas=1|Per=1
-P\tP\tNum=P|Cas=1|Per=2
-P\tP\tNum=P|Cas=2|Per=1
-P\tP\tNum=P|Cas=2|Per=2
-P\tP\tNum=P|Cas=3|Per=1
-P\tP\tNum=P|Cas=3|Per=2
-P\tP\tNum=P|Cas=4|Per=1
-P\tP\tNum=P|Cas=4|Per=2
-P\tP\tNum=P|Cas=5|Per=1
-P\tP\tNum=P|Cas=5|Per=2
-P\tP\tNum=P|Cas=6|Per=1
-P\tP\tNum=P|Cas=6|Per=2
-P\tP\tNum=P|Cas=7|Per=1
-P\tP\tNum=P|Cas=7|Per=1|Var=6
-P\tP\tNum=P|Cas=7|Per=2
-P\tP\tNum=P|Cas=X|Per=1
-P\tP\tNum=P|Cas=X|Per=2
-P\tP\tNum=S|Cas=1|Per=1
-P\tP\tNum=S|Cas=1|Per=2
-P\tP\tNum=S|Cas=1|Per=2|Ten=P|Neg=A|Voi=A
-P\tP\tNum=S|Cas=2|Per=1
-P\tP\tNum=S|Cas=2|Per=2
-P\tP\tNum=S|Cas=3|Per=1
-P\tP\tNum=S|Cas=3|Per=2
-P\tP\tNum=S|Cas=4|Per=1
-P\tP\tNum=S|Cas=4|Per=2
-P\tP\tNum=S|Cas=4|Per=2|Sem=m
-P\tP\tNum=S|Cas=5|Per=1
-P\tP\tNum=S|Cas=5|Per=2
-P\tP\tNum=S|Cas=5|Per=2|Sem=R
-P\tP\tNum=S|Cas=6|Per=1
-P\tP\tNum=S|Cas=6|Per=2
-P\tP\tNum=S|Cas=7|Per=1
-P\tP\tNum=S|Cas=7|Per=2
-P\tP\tNum=S|Cas=X|Per=1
-P\tP\tNum=S|Cas=X|Per=2
-P\tP\tNum=X|Cas=X|Per=2
-P\tQ\tCas=1
-P\tQ\tCas=1|Var=9
-P\tQ\tCas=2
-P\tQ\tCas=2|Var=9
-P\tQ\tCas=3
-P\tQ\tCas=3|Var=9
-P\tQ\tCas=4
-P\tQ\tCas=4|Var=9
-P\tQ\tCas=6
-P\tQ\tCas=6|Var=9
-P\tQ\tCas=7
-P\tQ\tCas=7|Var=9
-P\tQ\tCas=X
-P\tQ\tCas=X|Var=9
-P\tS\tGen=F|Num=D|Cas=7|PGe=F|PNu=S|Per=3
-P\tS\tGen=F|Num=D|Cas=7|PNu=P|Per=1
-P\tS\tGen=F|Num=D|Cas=7|PNu=P|Per=2
-P\tS\tGen=F|Num=D|Cas=7|PNu=S|Per=1
-P\tS\tGen=F|Num=D|Cas=7|PNu=S|Per=1|Var=6
-P\tS\tGen=F|Num=D|Cas=7|PNu=S|Per=2
-P\tS\tGen=F|Num=D|Cas=7|PNu=S|Per=2|Var=6
-P\tS\tGen=F|Num=P|Cas=1|PNu=S|Per=1|Var=1
-P\tS\tGen=F|Num=P|Cas=1|PNu=S|Per=2|Var=1
-P\tS\tGen=F|Num=P|Cas=4|PNu=S|Per=1|Var=1
-P\tS\tGen=F|Num=P|Cas=4|PNu=S|Per=2|Var=1
-P\tS\tGen=F|Num=P|Cas=X|PNu=P|Per=1
-P\tS\tGen=F|Num=P|Cas=X|PNu=S|Per=1
-P\tS\tGen=F|Num=P|Cas=X|PNu=X|Per=1
-P\tS\tGen=F|Num=S|Cas=1|PNu=S|Per=1|Var=1
-P\tS\tGen=F|Num=S|Cas=1|PNu=S|Per=2|Var=1
-P\tS\tGen=F|Num=S|Cas=2|PNu=P|Per=1
-P\tS\tGen=F|Num=S|Cas=2|PNu=P|Per=2
-P\tS\tGen=F|Num=S|Cas=2|PNu=S|Per=1
-P\tS\tGen=F|Num=S|Cas=2|PNu=S|Per=1|Var=1
-P\tS\tGen=F|Num=S|Cas=2|PNu=S|Per=1|Var=6
-P\tS\tGen=F|Num=S|Cas=2|PNu=S|Per=2
-P\tS\tGen=F|Num=S|Cas=2|PNu=S|Per=2|Var=1
-P\tS\tGen=F|Num=S|Cas=2|PNu=S|Per=2|Var=6
-P\tS\tGen=F|Num=S|Cas=3|PNu=P|Per=1
-P\tS\tGen=F|Num=S|Cas=3|PNu=P|Per=2
-P\tS\tGen=F|Num=S|Cas=3|PNu=S|Per=1
-P\tS\tGen=F|Num=S|Cas=3|PNu=S|Per=1|Var=1
-P\tS\tGen=F|Num=S|Cas=3|PNu=S|Per=1|Var=6
-P\tS\tGen=F|Num=S|Cas=3|PNu=S|Per=2
-P\tS\tGen=F|Num=S|Cas=3|PNu=S|Per=2|Var=1
-P\tS\tGen=F|Num=S|Cas=3|PNu=S|Per=2|Var=6
-P\tS\tGen=F|Num=S|Cas=4|PNu=P|Per=1
-P\tS\tGen=F|Num=S|Cas=4|PNu=P|Per=1|Var=6
-P\tS\tGen=F|Num=S|Cas=4|PNu=P|Per=2
-P\tS\tGen=F|Num=S|Cas=4|PNu=P|Per=2|Var=6
-P\tS\tGen=F|Num=S|Cas=4|PNu=S|Per=1
-P\tS\tGen=F|Num=S|Cas=4|PNu=S|Per=1|Var=1
-P\tS\tGen=F|Num=S|Cas=4|PNu=S|Per=1|Var=6
-P\tS\tGen=F|Num=S|Cas=4|PNu=S|Per=2
-P\tS\tGen=F|Num=S|Cas=4|PNu=S|Per=2|Var=1
-P\tS\tGen=F|Num=S|Cas=4|PNu=S|Per=2|Var=6
-P\tS\tGen=F|Num=S|Cas=5|PNu=S|Per=1|Var=1
-P\tS\tGen=F|Num=S|Cas=5|PNu=S|Per=2|Var=1
-P\tS\tGen=F|Num=S|Cas=6|PNu=P|Per=1
-P\tS\tGen=F|Num=S|Cas=6|PNu=P|Per=2
-P\tS\tGen=F|Num=S|Cas=6|PNu=S|Per=1
-P\tS\tGen=F|Num=S|Cas=6|PNu=S|Per=1|Var=1
-P\tS\tGen=F|Num=S|Cas=6|PNu=S|Per=1|Var=6
-P\tS\tGen=F|Num=S|Cas=6|PNu=S|Per=2
-P\tS\tGen=F|Num=S|Cas=6|PNu=S|Per=2|Var=1
-P\tS\tGen=F|Num=S|Cas=6|PNu=S|Per=2|Var=6
-P\tS\tGen=F|Num=S|Cas=7|PNu=P|Per=1
-P\tS\tGen=F|Num=S|Cas=7|PNu=P|Per=2
-P\tS\tGen=F|Num=S|Cas=7|PNu=S|Per=1
-P\tS\tGen=F|Num=S|Cas=7|PNu=S|Per=1|Var=1
-P\tS\tGen=F|Num=S|Cas=7|PNu=S|Per=2
-P\tS\tGen=F|Num=S|Cas=7|PNu=S|Per=2|Var=1
-P\tS\tGen=F|Num=S|Cas=X|PGe=F|PNu=S|Per=3
-P\tS\tGen=F|Num=S|Cas=X|PNu=P|Per=1
-P\tS\tGen=F|Num=S|Cas=X|PNu=P|Per=1|Sem=m
-P\tS\tGen=F|Num=S|Cas=X|PNu=S|Per=1
-P\tS\tGen=F|Num=S|Cas=X|PNu=X|Per=1
-P\tS\tGen=H|Num=P|Cas=1|PNu=P|Per=1
-P\tS\tGen=H|Num=P|Cas=1|PNu=P|Per=2
-P\tS\tGen=H|Num=P|Cas=1|PNu=S|Per=1
-P\tS\tGen=H|Num=P|Cas=1|PNu=S|Per=2
-P\tS\tGen=H|Num=P|Cas=5|PNu=S|Per=1
-P\tS\tGen=H|Num=P|Cas=5|PNu=S|Per=1|Var=7
-P\tS\tGen=H|Num=P|Cas=5|PNu=S|Per=2
-P\tS\tGen=H|Num=P|Cas=5|PNu=S|Per=2|Var=7
-P\tS\tGen=H|Num=S|Cas=1|PNu=P|Per=1
-P\tS\tGen=H|Num=S|Cas=1|PNu=P|Per=2
-P\tS\tGen=H|Num=S|Cas=1|PNu=S|Per=1
-P\tS\tGen=H|Num=S|Cas=1|PNu=S|Per=2
-P\tS\tGen=H|Num=S|Cas=5|PNu=P|Per=1
-P\tS\tGen=H|Num=S|Cas=5|PNu=P|Per=2
-P\tS\tGen=H|Num=S|Cas=5|PNu=S|Per=1
-P\tS\tGen=H|Num=S|Cas=5|PNu=S|Per=2
-P\tS\tGen=I|Num=P|Cas=1|PNu=P|Per=1
-P\tS\tGen=I|Num=P|Cas=1|PNu=P|Per=2
-P\tS\tGen=I|Num=P|Cas=1|PNu=S|Per=1
-P\tS\tGen=I|Num=P|Cas=1|PNu=S|Per=1|Var=1
-P\tS\tGen=I|Num=P|Cas=1|PNu=S|Per=1|Var=7
-P\tS\tGen=I|Num=P|Cas=1|PNu=S|Per=2
-P\tS\tGen=I|Num=P|Cas=1|PNu=S|Per=2|Var=1
-P\tS\tGen=I|Num=P|Cas=1|PNu=S|Per=2|Var=7
-P\tS\tGen=I|Num=P|Cas=5|PNu=S|Per=1
-P\tS\tGen=I|Num=P|Cas=5|PNu=S|Per=1|Var=1
-P\tS\tGen=I|Num=P|Cas=5|PNu=S|Per=1|Var=7
-P\tS\tGen=I|Num=P|Cas=5|PNu=S|Per=2
-P\tS\tGen=I|Num=P|Cas=5|PNu=S|Per=2|Var=1
-P\tS\tGen=I|Num=P|Cas=5|PNu=S|Per=2|Var=7
-P\tS\tGen=I|Num=P|Cas=X|PNu=P|Per=1
-P\tS\tGen=I|Num=P|Cas=X|PNu=S|Per=1
-P\tS\tGen=I|Num=P|Cas=X|PNu=X|Per=1
-P\tS\tGen=I|Num=S|Cas=4|PGe=F|PNu=S|Per=3
-P\tS\tGen=I|Num=S|Cas=4|PNu=P|Per=1
-P\tS\tGen=I|Num=S|Cas=4|PNu=P|Per=2
-P\tS\tGen=I|Num=S|Cas=4|PNu=S|Per=1
-P\tS\tGen=I|Num=S|Cas=4|PNu=S|Per=1|Var=6
-P\tS\tGen=I|Num=S|Cas=4|PNu=S|Per=2
-P\tS\tGen=I|Num=S|Cas=4|PNu=S|Per=2|Var=6
-P\tS\tGen=I|Num=S|Cas=X|PNu=P|Per=1
-P\tS\tGen=I|Num=S|Cas=X|PNu=S|Per=1
-P\tS\tGen=I|Num=S|Cas=X|PNu=X|Per=1
-P\tS\tGen=M|Num=P|Cas=1|PNu=P|Per=1
-P\tS\tGen=M|Num=P|Cas=1|PNu=P|Per=2
-P\tS\tGen=M|Num=P|Cas=1|PNu=S|Per=1
-P\tS\tGen=M|Num=P|Cas=1|PNu=S|Per=1|Var=1
-P\tS\tGen=M|Num=P|Cas=1|PNu=S|Per=1|Var=7
-P\tS\tGen=M|Num=P|Cas=1|PNu=S|Per=2
-P\tS\tGen=M|Num=P|Cas=1|PNu=S|Per=2|Var=1
-P\tS\tGen=M|Num=P|Cas=5|PNu=P|Per=1
-P\tS\tGen=M|Num=P|Cas=5|PNu=P|Per=2
-P\tS\tGen=M|Num=P|Cas=5|PNu=S|Per=1
-P\tS\tGen=M|Num=P|Cas=5|PNu=S|Per=1|Var=1
-P\tS\tGen=M|Num=P|Cas=5|PNu=S|Per=1|Var=7
-P\tS\tGen=M|Num=P|Cas=5|PNu=S|Per=2
-P\tS\tGen=M|Num=P|Cas=5|PNu=S|Per=2|Var=1
-P\tS\tGen=M|Num=P|Cas=X|PNu=P|Per=1
-P\tS\tGen=M|Num=P|Cas=X|PNu=S|Per=1
-P\tS\tGen=M|Num=P|Cas=X|PNu=X|Per=1
-P\tS\tGen=M|Num=S|Cas=4|PGe=F|PNu=S|Per=3
-P\tS\tGen=M|Num=S|Cas=4|PNu=P|Per=1
-P\tS\tGen=M|Num=S|Cas=4|PNu=P|Per=2
-P\tS\tGen=M|Num=S|Cas=4|PNu=S|Per=1
-P\tS\tGen=M|Num=S|Cas=4|PNu=S|Per=1|Var=6
-P\tS\tGen=M|Num=S|Cas=4|PNu=S|Per=2
-P\tS\tGen=M|Num=S|Cas=4|PNu=S|Per=2|Var=6
-P\tS\tGen=M|Num=S|Cas=X|PNu=P|Per=1
-P\tS\tGen=M|Num=S|Cas=X|PNu=S|Per=1
-P\tS\tGen=M|Num=S|Cas=X|PNu=X|Per=1
-P\tS\tGen=N|Num=P|Cas=1|PNu=S|Per=1|Var=1
-P\tS\tGen=N|Num=P|Cas=1|PNu=S|Per=2|Var=1
-P\tS\tGen=N|Num=P|Cas=4|PNu=S|Per=1|Var=1
-P\tS\tGen=N|Num=P|Cas=4|PNu=S|Per=2|Var=1
-P\tS\tGen=N|Num=P|Cas=5|PNu=S|Per=1|Var=1
-P\tS\tGen=N|Num=P|Cas=5|PNu=S|Per=2|Var=1
-P\tS\tGen=N|Num=P|Cas=X|PNu=P|Per=1
-P\tS\tGen=N|Num=P|Cas=X|PNu=S|Per=1
-P\tS\tGen=N|Num=P|Cas=X|PNu=X|Per=1
-P\tS\tGen=N|Num=S|Cas=1|PNu=S|Per=1|Var=1
-P\tS\tGen=N|Num=S|Cas=1|PNu=S|Per=2|Var=1
-P\tS\tGen=N|Num=S|Cas=4|PGe=F|PNu=S|Per=3
-P\tS\tGen=N|Num=S|Cas=4|PNu=P|Per=1
-P\tS\tGen=N|Num=S|Cas=4|PNu=P|Per=2
-P\tS\tGen=N|Num=S|Cas=4|PNu=S|Per=1
-P\tS\tGen=N|Num=S|Cas=4|PNu=S|Per=1|Var=1
-P\tS\tGen=N|Num=S|Cas=4|PNu=S|Per=2
-P\tS\tGen=N|Num=S|Cas=4|PNu=S|Per=2|Var=1
-P\tS\tGen=N|Num=S|Cas=5|PNu=S|Per=1|Var=1
-P\tS\tGen=N|Num=S|Cas=5|PNu=S|Per=2|Var=1
-P\tS\tGen=N|Num=S|Cas=X|PNu=P|Per=1
-P\tS\tGen=N|Num=S|Cas=X|PNu=S|Per=1
-P\tS\tGen=N|Num=S|Cas=X|PNu=X|Per=1
-P\tS\tGen=X|Num=P|Cas=1|PGe=F|PNu=S|Per=3
-P\tS\tGen=X|Num=P|Cas=2|PGe=F|PNu=S|Per=3
-P\tS\tGen=X|Num=P|Cas=2|PNu=P|Per=1
-P\tS\tGen=X|Num=P|Cas=2|PNu=P|Per=2
-P\tS\tGen=X|Num=P|Cas=2|PNu=S|Per=1
-P\tS\tGen=X|Num=P|Cas=2|PNu=S|Per=1|Var=6
-P\tS\tGen=X|Num=P|Cas=2|PNu=S|Per=2
-P\tS\tGen=X|Num=P|Cas=2|PNu=S|Per=2|Var=6
-P\tS\tGen=X|Num=P|Cas=3|PGe=F|PNu=S|Per=3
-P\tS\tGen=X|Num=P|Cas=3|PNu=P|Per=1
-P\tS\tGen=X|Num=P|Cas=3|PNu=P|Per=2
-P\tS\tGen=X|Num=P|Cas=3|PNu=S|Per=1
-P\tS\tGen=X|Num=P|Cas=3|PNu=S|Per=1|Var=6
-P\tS\tGen=X|Num=P|Cas=3|PNu=S|Per=2
-P\tS\tGen=X|Num=P|Cas=3|PNu=S|Per=2|Var=6
-P\tS\tGen=X|Num=P|Cas=4|PGe=F|PNu=S|Per=3
-P\tS\tGen=X|Num=P|Cas=4|PNu=P|Per=1
-P\tS\tGen=X|Num=P|Cas=4|PNu=P|Per=2
-P\tS\tGen=X|Num=P|Cas=4|PNu=S|Per=1
-P\tS\tGen=X|Num=P|Cas=4|PNu=S|Per=1|Var=7
-P\tS\tGen=X|Num=P|Cas=4|PNu=S|Per=2
-P\tS\tGen=X|Num=P|Cas=4|PNu=S|Per=2|Var=7
-P\tS\tGen=X|Num=P|Cas=5|PGe=F|PNu=S|Per=3
-P\tS\tGen=X|Num=P|Cas=6|PGe=F|PNu=S|Per=3
-P\tS\tGen=X|Num=P|Cas=6|PNu=P|Per=1
-P\tS\tGen=X|Num=P|Cas=6|PNu=P|Per=2
-P\tS\tGen=X|Num=P|Cas=6|PNu=S|Per=1
-P\tS\tGen=X|Num=P|Cas=6|PNu=S|Per=1|Var=6
-P\tS\tGen=X|Num=P|Cas=6|PNu=S|Per=2
-P\tS\tGen=X|Num=P|Cas=6|PNu=S|Per=2|Var=6
-P\tS\tGen=X|Num=P|Cas=7|PGe=F|PNu=S|Per=3
-P\tS\tGen=X|Num=P|Cas=7|PGe=F|PNu=S|Per=3|Var=6
-P\tS\tGen=X|Num=P|Cas=7|PNu=P|Per=1
-P\tS\tGen=X|Num=P|Cas=7|PNu=P|Per=1|Var=6
-P\tS\tGen=X|Num=P|Cas=7|PNu=P|Per=2
-P\tS\tGen=X|Num=P|Cas=7|PNu=P|Per=2|Var=6
-P\tS\tGen=X|Num=P|Cas=7|PNu=S|Per=1
-P\tS\tGen=X|Num=P|Cas=7|PNu=S|Per=2
-P\tS\tGen=X|Num=X|Cas=X|PGe=N|PNu=S|Per=3
-P\tS\tGen=X|Num=X|Cas=X|PGe=X|PNu=P|Per=3
-P\tS\tGen=X|Num=X|Cas=X|PGe=Y|PNu=S|Per=3
-P\tS\tGen=X|Num=X|Cas=X|PGe=Z|PNu=S|Per=3
-P\tS\tGen=X|Num=X|Cas=X|PNu=P|Per=1
-P\tS\tGen=X|Num=X|Cas=X|PNu=S|Per=1
-P\tS\tGen=X|Num=X|Cas=X|PNu=X|Per=2
-P\tS\tGen=X|Num=X|Cas=X|PNu=X|Per=2|Sem=R
-P\tS\tGen=Y|Num=P|Cas=4|PNu=S|Per=1|Var=1
-P\tS\tGen=Y|Num=P|Cas=4|PNu=S|Per=1|Var=7
-P\tS\tGen=Y|Num=P|Cas=4|PNu=S|Per=2|Var=1
-P\tS\tGen=Y|Num=S|Cas=1|PNu=P|Per=1
-P\tS\tGen=Y|Num=S|Cas=1|PNu=P|Per=2
-P\tS\tGen=Y|Num=S|Cas=1|PNu=S|Per=1
-P\tS\tGen=Y|Num=S|Cas=1|PNu=S|Per=1|Var=6
-P\tS\tGen=Y|Num=S|Cas=1|PNu=S|Per=2
-P\tS\tGen=Y|Num=S|Cas=1|PNu=S|Per=2|Var=6
-P\tS\tGen=Y|Num=S|Cas=5|PNu=P|Per=1
-P\tS\tGen=Y|Num=S|Cas=5|PNu=P|Per=2
-P\tS\tGen=Y|Num=S|Cas=5|PNu=S|Per=1
-P\tS\tGen=Y|Num=S|Cas=5|PNu=S|Per=1|Var=6
-P\tS\tGen=Y|Num=S|Cas=5|PNu=S|Per=2
-P\tS\tGen=Y|Num=S|Cas=5|PNu=S|Per=2|Var=6
-P\tS\tGen=Z|Num=S|Cas=1|PGe=F|PNu=S|Per=3
-P\tS\tGen=Z|Num=S|Cas=2|PGe=F|PNu=S|Per=3
-P\tS\tGen=Z|Num=S|Cas=2|PNu=P|Per=1
-P\tS\tGen=Z|Num=S|Cas=2|PNu=P|Per=2
-P\tS\tGen=Z|Num=S|Cas=2|PNu=S|Per=1
-P\tS\tGen=Z|Num=S|Cas=2|PNu=S|Per=1|Var=6
-P\tS\tGen=Z|Num=S|Cas=2|PNu=S|Per=2
-P\tS\tGen=Z|Num=S|Cas=2|PNu=S|Per=2|Var=6
-P\tS\tGen=Z|Num=S|Cas=3|PGe=F|PNu=S|Per=3
-P\tS\tGen=Z|Num=S|Cas=3|PNu=P|Per=1
-P\tS\tGen=Z|Num=S|Cas=3|PNu=P|Per=2
-P\tS\tGen=Z|Num=S|Cas=3|PNu=S|Per=1
-P\tS\tGen=Z|Num=S|Cas=3|PNu=S|Per=1|Var=6
-P\tS\tGen=Z|Num=S|Cas=3|PNu=S|Per=2
-P\tS\tGen=Z|Num=S|Cas=3|PNu=S|Per=2|Var=6
-P\tS\tGen=Z|Num=S|Cas=5|PGe=F|PNu=S|Per=3
-P\tS\tGen=Z|Num=S|Cas=6|PGe=F|PNu=S|Per=3
-P\tS\tGen=Z|Num=S|Cas=6|PNu=P|Per=1
-P\tS\tGen=Z|Num=S|Cas=6|PNu=P|Per=2
-P\tS\tGen=Z|Num=S|Cas=6|PNu=S|Per=1
-P\tS\tGen=Z|Num=S|Cas=6|PNu=S|Per=1|Var=6
-P\tS\tGen=Z|Num=S|Cas=6|PNu=S|Per=1|Var=7
-P\tS\tGen=Z|Num=S|Cas=6|PNu=S|Per=2
-P\tS\tGen=Z|Num=S|Cas=6|PNu=S|Per=2|Var=6
-P\tS\tGen=Z|Num=S|Cas=6|PNu=S|Per=2|Var=7
-P\tS\tGen=Z|Num=S|Cas=7|PGe=F|PNu=S|Per=3
-P\tS\tGen=Z|Num=S|Cas=7|PNu=P|Per=1
-P\tS\tGen=Z|Num=S|Cas=7|PNu=P|Per=1|Var=6
-P\tS\tGen=Z|Num=S|Cas=7|PNu=P|Per=1|Var=8
-P\tS\tGen=Z|Num=S|Cas=7|PNu=P|Per=2
-P\tS\tGen=Z|Num=S|Cas=7|PNu=P|Per=2|Var=6
-P\tS\tGen=Z|Num=S|Cas=7|PNu=S|Per=1
-P\tS\tGen=Z|Num=S|Cas=7|PNu=S|Per=1|Var=6
-P\tS\tGen=Z|Num=S|Cas=7|PNu=S|Per=2
-P\tS\tGen=Z|Num=S|Cas=7|PNu=S|Per=2|Var=6
-P\tW\tCas=1
-P\tW\tCas=2
-P\tW\tCas=2|Var=2
-P\tW\tCas=3
-P\tW\tCas=3|Var=2
-P\tW\tCas=4
-P\tW\tCas=6
-P\tW\tCas=6|Var=2
-P\tW\tCas=7
-P\tW\tCas=7|Var=2
-P\tW\tCas=X
-P\tW\tGen=F|Num=D|Cas=7
-P\tW\tGen=F|Num=D|Cas=7|Var=6
-P\tW\tGen=F|Num=P|Cas=1
-P\tW\tGen=F|Num=P|Cas=1|Var=6
-P\tW\tGen=F|Num=P|Cas=4
-P\tW\tGen=F|Num=P|Cas=4|Var=6
-P\tW\tGen=F|Num=P|Cas=5
-P\tW\tGen=F|Num=P|Cas=5|Var=6
-P\tW\tGen=F|Num=S|Cas=1
-P\tW\tGen=F|Num=S|Cas=2
-P\tW\tGen=F|Num=S|Cas=2|Var=6
-P\tW\tGen=F|Num=S|Cas=3
-P\tW\tGen=F|Num=S|Cas=3|Var=6
-P\tW\tGen=F|Num=S|Cas=4
-P\tW\tGen=F|Num=S|Cas=5
-P\tW\tGen=F|Num=S|Cas=6
-P\tW\tGen=F|Num=S|Cas=6|Var=6
-P\tW\tGen=F|Num=S|Cas=7
-P\tW\tGen=I|Num=P|Cas=1
-P\tW\tGen=I|Num=P|Cas=1|Var=6
-P\tW\tGen=I|Num=P|Cas=5
-P\tW\tGen=I|Num=P|Cas=5|Var=6
-P\tW\tGen=I|Num=S|Cas=4
-P\tW\tGen=I|Num=S|Cas=4|Var=6
-P\tW\tGen=M|Cas=1
-P\tW\tGen=M|Cas=2
-P\tW\tGen=M|Cas=3
-P\tW\tGen=M|Cas=4
-P\tW\tGen=M|Cas=6
-P\tW\tGen=M|Cas=7
-P\tW\tGen=M|Num=P|Cas=1
-P\tW\tGen=M|Num=P|Cas=1|Var=6
-P\tW\tGen=M|Num=P|Cas=5
-P\tW\tGen=M|Num=P|Cas=5|Var=6
-P\tW\tGen=M|Num=S|Cas=4
-P\tW\tGen=M|Num=S|Cas=4|Var=6
-P\tW\tGen=N|Num=P|Cas=1
-P\tW\tGen=N|Num=P|Cas=1|Var=6
-P\tW\tGen=N|Num=P|Cas=1|Var=7
-P\tW\tGen=N|Num=P|Cas=4
-P\tW\tGen=N|Num=P|Cas=4|Var=6
-P\tW\tGen=N|Num=P|Cas=5
-P\tW\tGen=N|Num=P|Cas=5|Var=6
-P\tW\tGen=N|Num=S|Cas=1
-P\tW\tGen=N|Num=S|Cas=1|Var=6
-P\tW\tGen=N|Num=S|Cas=4
-P\tW\tGen=N|Num=S|Cas=4|Var=6
-P\tW\tGen=N|Num=S|Cas=5
-P\tW\tGen=N|Num=S|Cas=5|Var=6
-P\tW\tGen=X|Num=P|Cas=2
-P\tW\tGen=X|Num=P|Cas=2|Var=6
-P\tW\tGen=X|Num=P|Cas=3
-P\tW\tGen=X|Num=P|Cas=3|Var=6
-P\tW\tGen=X|Num=P|Cas=6
-P\tW\tGen=X|Num=P|Cas=6|Var=6
-P\tW\tGen=X|Num=P|Cas=7
-P\tW\tGen=X|Num=P|Cas=7|Var=6
-P\tW\tGen=X|Num=P|Cas=7|Var=7
-P\tW\tGen=Y|Num=P|Cas=4
-P\tW\tGen=Y|Num=P|Cas=4|Var=6
-P\tW\tGen=Y|Num=S|Cas=1
-P\tW\tGen=Y|Num=S|Cas=1|Var=6
-P\tW\tGen=Y|Num=S|Cas=5
-P\tW\tGen=Y|Num=S|Cas=5|Var=6
-P\tW\tGen=Z|Num=S|Cas=2
-P\tW\tGen=Z|Num=S|Cas=2|Var=6
-P\tW\tGen=Z|Num=S|Cas=3
-P\tW\tGen=Z|Num=S|Cas=3|Var=6
-P\tW\tGen=Z|Num=S|Cas=6
-P\tW\tGen=Z|Num=S|Cas=6|Var=6
-P\tW\tGen=Z|Num=S|Cas=6|Var=7
-P\tW\tGen=Z|Num=S|Cas=7
-P\tW\tGen=Z|Num=S|Cas=7|Var=6
-P\tY\t_
-P\tZ\tCas=1
-P\tZ\tCas=1|Var=1
-P\tZ\tCas=1|Var=2
-P\tZ\tCas=1|Var=4
-P\tZ\tCas=2
-P\tZ\tCas=2|Var=1
-P\tZ\tCas=2|Var=2
-P\tZ\tCas=3
-P\tZ\tCas=3|Var=1
-P\tZ\tCas=3|Var=2
-P\tZ\tCas=4
-P\tZ\tCas=4|Var=1
-P\tZ\tCas=4|Var=2
-P\tZ\tCas=4|Var=4
-P\tZ\tCas=5
-P\tZ\tCas=5|Var=1
-P\tZ\tCas=5|Var=2
-P\tZ\tCas=6
-P\tZ\tCas=6|Var=1
-P\tZ\tCas=6|Var=2
-P\tZ\tCas=7
-P\tZ\tCas=7|Var=1
-P\tZ\tCas=7|Var=2
-P\tZ\tGen=F|Num=D|Cas=7
-P\tZ\tGen=F|Num=D|Cas=7|Var=1
-P\tZ\tGen=F|Num=D|Cas=7|Var=6
-P\tZ\tGen=F|Num=P|Cas=1
-P\tZ\tGen=F|Num=P|Cas=1|Var=1
-P\tZ\tGen=F|Num=P|Cas=1|Var=6
-P\tZ\tGen=F|Num=P|Cas=4
-P\tZ\tGen=F|Num=P|Cas=4|Var=1
-P\tZ\tGen=F|Num=P|Cas=4|Var=6
-P\tZ\tGen=F|Num=P|Cas=5
-P\tZ\tGen=F|Num=P|Cas=5|Var=1
-P\tZ\tGen=F|Num=P|Cas=5|Var=6
-P\tZ\tGen=F|Num=S|Cas=1
-P\tZ\tGen=F|Num=S|Cas=1|Var=1
-P\tZ\tGen=F|Num=S|Cas=1|Var=6
-P\tZ\tGen=F|Num=S|Cas=2
-P\tZ\tGen=F|Num=S|Cas=2|Var=1
-P\tZ\tGen=F|Num=S|Cas=2|Var=6
-P\tZ\tGen=F|Num=S|Cas=3
-P\tZ\tGen=F|Num=S|Cas=3|Var=1
-P\tZ\tGen=F|Num=S|Cas=3|Var=6
-P\tZ\tGen=F|Num=S|Cas=4
-P\tZ\tGen=F|Num=S|Cas=4|Var=1
-P\tZ\tGen=F|Num=S|Cas=4|Var=6
-P\tZ\tGen=F|Num=S|Cas=5
-P\tZ\tGen=F|Num=S|Cas=5|Var=1
-P\tZ\tGen=F|Num=S|Cas=5|Var=6
-P\tZ\tGen=F|Num=S|Cas=6
-P\tZ\tGen=F|Num=S|Cas=6|Var=1
-P\tZ\tGen=F|Num=S|Cas=6|Var=6
-P\tZ\tGen=F|Num=S|Cas=7
-P\tZ\tGen=F|Num=S|Cas=7|Var=1
-P\tZ\tGen=F|Num=S|Cas=7|Var=6
-P\tZ\tGen=I|Num=P|Cas=1
-P\tZ\tGen=I|Num=P|Cas=1|Var=1
-P\tZ\tGen=I|Num=P|Cas=1|Var=6
-P\tZ\tGen=I|Num=P|Cas=5
-P\tZ\tGen=I|Num=P|Cas=5|Var=1
-P\tZ\tGen=I|Num=P|Cas=5|Var=6
-P\tZ\tGen=I|Num=S|Cas=4
-P\tZ\tGen=I|Num=S|Cas=4|Var=1
-P\tZ\tGen=I|Num=S|Cas=4|Var=6
-P\tZ\tGen=I|Num=S|Cas=6|Var=7
-P\tZ\tGen=M|Cas=1
-P\tZ\tGen=M|Cas=1|Var=1
-P\tZ\tGen=M|Cas=2
-P\tZ\tGen=M|Cas=2|Var=1
-P\tZ\tGen=M|Cas=3
-P\tZ\tGen=M|Cas=3|Var=1
-P\tZ\tGen=M|Cas=4
-P\tZ\tGen=M|Cas=4|Var=1
-P\tZ\tGen=M|Cas=5
-P\tZ\tGen=M|Cas=5|Var=1
-P\tZ\tGen=M|Cas=6
-P\tZ\tGen=M|Cas=6|Var=1
-P\tZ\tGen=M|Cas=7
-P\tZ\tGen=M|Cas=7|Var=1
-P\tZ\tGen=M|Num=P|Cas=1
-P\tZ\tGen=M|Num=P|Cas=1|Var=1
-P\tZ\tGen=M|Num=P|Cas=1|Var=6
-P\tZ\tGen=M|Num=P|Cas=5
-P\tZ\tGen=M|Num=P|Cas=5|Var=1
-P\tZ\tGen=M|Num=P|Cas=5|Var=6
-P\tZ\tGen=M|Num=S|Cas=4
-P\tZ\tGen=M|Num=S|Cas=4|Var=1
-P\tZ\tGen=M|Num=S|Cas=4|Var=6
-P\tZ\tGen=M|Num=S|Cas=6|Var=7
-P\tZ\tGen=N|Num=P|Cas=1
-P\tZ\tGen=N|Num=P|Cas=1|Var=1
-P\tZ\tGen=N|Num=P|Cas=1|Var=6
-P\tZ\tGen=N|Num=P|Cas=4
-P\tZ\tGen=N|Num=P|Cas=4|Var=1
-P\tZ\tGen=N|Num=P|Cas=4|Var=6
-P\tZ\tGen=N|Num=P|Cas=5
-P\tZ\tGen=N|Num=P|Cas=5|Var=1
-P\tZ\tGen=N|Num=P|Cas=5|Var=6
-P\tZ\tGen=N|Num=S|Cas=1
-P\tZ\tGen=N|Num=S|Cas=1|Var=1
-P\tZ\tGen=N|Num=S|Cas=1|Var=6
-P\tZ\tGen=N|Num=S|Cas=4
-P\tZ\tGen=N|Num=S|Cas=4|Var=1
-P\tZ\tGen=N|Num=S|Cas=4|Var=6
-P\tZ\tGen=N|Num=S|Cas=5
-P\tZ\tGen=N|Num=S|Cas=5|Var=1
-P\tZ\tGen=N|Num=S|Cas=5|Var=6
-P\tZ\tGen=N|Num=S|Cas=6|Var=7
-P\tZ\tGen=X|Num=P|Cas=2
-P\tZ\tGen=X|Num=P|Cas=2|Var=1
-P\tZ\tGen=X|Num=P|Cas=2|Var=6
-P\tZ\tGen=X|Num=P|Cas=3
-P\tZ\tGen=X|Num=P|Cas=3|Var=1
-P\tZ\tGen=X|Num=P|Cas=3|Var=6
-P\tZ\tGen=X|Num=P|Cas=6
-P\tZ\tGen=X|Num=P|Cas=6|Var=1
-P\tZ\tGen=X|Num=P|Cas=6|Var=6
-P\tZ\tGen=X|Num=P|Cas=7
-P\tZ\tGen=X|Num=P|Cas=7|Var=1
-P\tZ\tGen=X|Num=P|Cas=7|Var=6
-P\tZ\tGen=X|Num=P|Cas=7|Var=7
-P\tZ\tGen=X|Num=X|Cas=X
-P\tZ\tGen=Y|Num=P|Cas=4
-P\tZ\tGen=Y|Num=P|Cas=4|Var=1
-P\tZ\tGen=Y|Num=P|Cas=4|Var=6
-P\tZ\tGen=Y|Num=S|Cas=1
-P\tZ\tGen=Y|Num=S|Cas=1|Var=1
-P\tZ\tGen=Y|Num=S|Cas=1|Var=6
-P\tZ\tGen=Y|Num=S|Cas=2
-P\tZ\tGen=Y|Num=S|Cas=3
-P\tZ\tGen=Y|Num=S|Cas=5
-P\tZ\tGen=Y|Num=S|Cas=5|Var=1
-P\tZ\tGen=Y|Num=S|Cas=5|Var=6
-P\tZ\tGen=Z|Num=S|Cas=2
-P\tZ\tGen=Z|Num=S|Cas=2|Var=1
-P\tZ\tGen=Z|Num=S|Cas=2|Var=6
-P\tZ\tGen=Z|Num=S|Cas=3
-P\tZ\tGen=Z|Num=S|Cas=3|Var=1
-P\tZ\tGen=Z|Num=S|Cas=3|Var=6
-P\tZ\tGen=Z|Num=S|Cas=6
-P\tZ\tGen=Z|Num=S|Cas=6|Var=1
-P\tZ\tGen=Z|Num=S|Cas=6|Var=6
-P\tZ\tGen=Z|Num=S|Cas=6|Var=7
-P\tZ\tGen=Z|Num=S|Cas=7
-P\tZ\tGen=Z|Num=S|Cas=7|Var=1
-P\tZ\tGen=Z|Num=S|Cas=7|Var=6
-R\tF\t_
-R\tR\tCas=1
-R\tR\tCas=1|Var=8
-R\tR\tCas=2
-R\tR\tCas=2|Var=1
-R\tR\tCas=2|Var=3
-R\tR\tCas=2|Var=8
-R\tR\tCas=3
-R\tR\tCas=3|Var=8
-R\tR\tCas=4
-R\tR\tCas=4|Var=8
-R\tR\tCas=6
-R\tR\tCas=7
-R\tR\tCas=7|Var=8
-R\tR\tCas=X
-R\tR\tCas=X|Sem=G
-R\tR\tCas=X|Sem=K
-R\tR\tCas=X|Sem=R
-R\tR\tCas=X|Sem=S
-R\tR\tCas=X|Sem=Y
-R\tR\tCas=X|Sem=m
-R\tR\tCas=X|Var=8
-R\tV\tCas=1
-R\tV\tCas=2
-R\tV\tCas=2|Var=1
-R\tV\tCas=3
-R\tV\tCas=3|Var=1
-R\tV\tCas=4
-R\tV\tCas=4|Var=1
-R\tV\tCas=6
-R\tV\tCas=7
-T\tT\tSem=K
-T\tT\tSem=S
-T\tT\tSem=m
-T\tT\tVar=1
-T\tT\tVar=8
-T\tT\t_
-V\tB\tNum=P|Per=1|Ten=F|Neg=A|Voi=A
-V\tB\tNum=P|Per=1|Ten=F|Neg=A|Voi=A|Var=6
-V\tB\tNum=P|Per=1|Ten=F|Neg=A|Voi=A|Var=7
-V\tB\tNum=P|Per=1|Ten=F|Neg=A|Voi=A|Var=8
-V\tB\tNum=P|Per=1|Ten=F|Neg=N|Voi=A
-V\tB\tNum=P|Per=1|Ten=F|Neg=N|Voi=A|Var=6
-V\tB\tNum=P|Per=1|Ten=F|Neg=N|Voi=A|Var=7
-V\tB\tNum=P|Per=1|Ten=F|Neg=N|Voi=A|Var=8
-V\tB\tNum=P|Per=1|Ten=P|Neg=A|Voi=A
-V\tB\tNum=P|Per=1|Ten=P|Neg=A|Voi=A|Var=1
-V\tB\tNum=P|Per=1|Ten=P|Neg=A|Voi=A|Var=2
-V\tB\tNum=P|Per=1|Ten=P|Neg=A|Voi=A|Var=3
-V\tB\tNum=P|Per=1|Ten=P|Neg=A|Voi=A|Var=6
-V\tB\tNum=P|Per=1|Ten=P|Neg=A|Voi=A|Var=7
-V\tB\tNum=P|Per=1|Ten=P|Neg=N|Voi=A
-V\tB\tNum=P|Per=1|Ten=P|Neg=N|Voi=A|Var=1
-V\tB\tNum=P|Per=1|Ten=P|Neg=N|Voi=A|Var=2
-V\tB\tNum=P|Per=1|Ten=P|Neg=N|Voi=A|Var=3
-V\tB\tNum=P|Per=1|Ten=P|Neg=N|Voi=A|Var=6
-V\tB\tNum=P|Per=1|Ten=P|Neg=N|Voi=A|Var=7
-V\tB\tNum=P|Per=2|Ten=F|Neg=A|Voi=A
-V\tB\tNum=P|Per=2|Ten=F|Neg=A|Voi=A|Var=7
-V\tB\tNum=P|Per=2|Ten=F|Neg=N|Voi=A
-V\tB\tNum=P|Per=2|Ten=F|Neg=N|Voi=A|Var=7
-V\tB\tNum=P|Per=2|Ten=P|Neg=A|Voi=A
-V\tB\tNum=P|Per=2|Ten=P|Neg=A|Voi=A|Var=1
-V\tB\tNum=P|Per=2|Ten=P|Neg=A|Voi=A|Var=2
-V\tB\tNum=P|Per=2|Ten=P|Neg=A|Voi=A|Var=3
-V\tB\tNum=P|Per=2|Ten=P|Neg=A|Voi=A|Var=6
-V\tB\tNum=P|Per=2|Ten=P|Neg=N|Voi=A
-V\tB\tNum=P|Per=2|Ten=P|Neg=N|Voi=A|Var=1
-V\tB\tNum=P|Per=2|Ten=P|Neg=N|Voi=A|Var=2
-V\tB\tNum=P|Per=2|Ten=P|Neg=N|Voi=A|Var=3
-V\tB\tNum=P|Per=2|Ten=P|Neg=N|Voi=A|Var=6
-V\tB\tNum=P|Per=3|Ten=F|Neg=A|Voi=A
-V\tB\tNum=P|Per=3|Ten=F|Neg=A|Voi=A|Var=1
-V\tB\tNum=P|Per=3|Ten=F|Neg=A|Voi=A|Var=7
-V\tB\tNum=P|Per=3|Ten=F|Neg=N|Voi=A
-V\tB\tNum=P|Per=3|Ten=F|Neg=N|Voi=A|Var=1
-V\tB\tNum=P|Per=3|Ten=F|Neg=N|Voi=A|Var=7
-V\tB\tNum=P|Per=3|Ten=P|Neg=A|Voi=A
-V\tB\tNum=P|Per=3|Ten=P|Neg=A|Voi=A|Sem=m
-V\tB\tNum=P|Per=3|Ten=P|Neg=A|Voi=A|Var=1
-V\tB\tNum=P|Per=3|Ten=P|Neg=A|Voi=A|Var=2
-V\tB\tNum=P|Per=3|Ten=P|Neg=A|Voi=A|Var=3
-V\tB\tNum=P|Per=3|Ten=P|Neg=A|Voi=A|Var=4
-V\tB\tNum=P|Per=3|Ten=P|Neg=A|Voi=A|Var=5
-V\tB\tNum=P|Per=3|Ten=P|Neg=A|Voi=A|Var=6
-V\tB\tNum=P|Per=3|Ten=P|Neg=A|Voi=A|Var=7
-V\tB\tNum=P|Per=3|Ten=P|Neg=N|Voi=A
-V\tB\tNum=P|Per=3|Ten=P|Neg=N|Voi=A|Var=1
-V\tB\tNum=P|Per=3|Ten=P|Neg=N|Voi=A|Var=2
-V\tB\tNum=P|Per=3|Ten=P|Neg=N|Voi=A|Var=3
-V\tB\tNum=P|Per=3|Ten=P|Neg=N|Voi=A|Var=4
-V\tB\tNum=P|Per=3|Ten=P|Neg=N|Voi=A|Var=5
-V\tB\tNum=P|Per=3|Ten=P|Neg=N|Voi=A|Var=6
-V\tB\tNum=P|Per=3|Ten=P|Neg=N|Voi=A|Var=7
-V\tB\tNum=S|Per=1|Ten=F|Neg=A|Voi=A
-V\tB\tNum=S|Per=1|Ten=F|Neg=A|Voi=A|Var=1
-V\tB\tNum=S|Per=1|Ten=F|Neg=A|Voi=A|Var=7
-V\tB\tNum=S|Per=1|Ten=F|Neg=N|Voi=A
-V\tB\tNum=S|Per=1|Ten=F|Neg=N|Voi=A|Var=1
-V\tB\tNum=S|Per=1|Ten=F|Neg=N|Voi=A|Var=7
-V\tB\tNum=S|Per=1|Ten=P|Neg=A|Voi=A
-V\tB\tNum=S|Per=1|Ten=P|Neg=A|Voi=A|Sem=m
-V\tB\tNum=S|Per=1|Ten=P|Neg=A|Voi=A|Var=1
-V\tB\tNum=S|Per=1|Ten=P|Neg=A|Voi=A|Var=2
-V\tB\tNum=S|Per=1|Ten=P|Neg=A|Voi=A|Var=3
-V\tB\tNum=S|Per=1|Ten=P|Neg=A|Voi=A|Var=4
-V\tB\tNum=S|Per=1|Ten=P|Neg=A|Voi=A|Var=6
-V\tB\tNum=S|Per=1|Ten=P|Neg=A|Voi=A|Var=7
-V\tB\tNum=S|Per=1|Ten=P|Neg=N|Voi=A
-V\tB\tNum=S|Per=1|Ten=P|Neg=N|Voi=A|Var=1
-V\tB\tNum=S|Per=1|Ten=P|Neg=N|Voi=A|Var=2
-V\tB\tNum=S|Per=1|Ten=P|Neg=N|Voi=A|Var=3
-V\tB\tNum=S|Per=1|Ten=P|Neg=N|Voi=A|Var=4
-V\tB\tNum=S|Per=1|Ten=P|Neg=N|Voi=A|Var=6
-V\tB\tNum=S|Per=2|Ten=F|Neg=A|Voi=A
-V\tB\tNum=S|Per=2|Ten=F|Neg=A|Voi=A|Var=7
-V\tB\tNum=S|Per=2|Ten=F|Neg=N|Voi=A
-V\tB\tNum=S|Per=2|Ten=F|Neg=N|Voi=A|Var=7
-V\tB\tNum=S|Per=2|Ten=P|Neg=A|Voi=A
-V\tB\tNum=S|Per=2|Ten=P|Neg=A|Voi=A|Var=1
-V\tB\tNum=S|Per=2|Ten=P|Neg=A|Voi=A|Var=2
-V\tB\tNum=S|Per=2|Ten=P|Neg=A|Voi=A|Var=3
-V\tB\tNum=S|Per=2|Ten=P|Neg=A|Voi=A|Var=6
-V\tB\tNum=S|Per=2|Ten=P|Neg=A|Voi=A|Var=7
-V\tB\tNum=S|Per=2|Ten=P|Neg=N|Voi=A
-V\tB\tNum=S|Per=2|Ten=P|Neg=N|Voi=A|Var=1
-V\tB\tNum=S|Per=2|Ten=P|Neg=N|Voi=A|Var=2
-V\tB\tNum=S|Per=2|Ten=P|Neg=N|Voi=A|Var=3
-V\tB\tNum=S|Per=2|Ten=P|Neg=N|Voi=A|Var=6
-V\tB\tNum=S|Per=3|Ten=F|Neg=A|Voi=A
-V\tB\tNum=S|Per=3|Ten=F|Neg=A|Voi=A|Var=7
-V\tB\tNum=S|Per=3|Ten=F|Neg=N|Voi=A
-V\tB\tNum=S|Per=3|Ten=F|Neg=N|Voi=A|Var=7
-V\tB\tNum=S|Per=3|Ten=P|Neg=A|Voi=A
-V\tB\tNum=S|Per=3|Ten=P|Neg=A|Voi=A|Sem=m
-V\tB\tNum=S|Per=3|Ten=P|Neg=A|Voi=A|Var=1
-V\tB\tNum=S|Per=3|Ten=P|Neg=A|Voi=A|Var=2
-V\tB\tNum=S|Per=3|Ten=P|Neg=A|Voi=A|Var=3
-V\tB\tNum=S|Per=3|Ten=P|Neg=A|Voi=A|Var=4
-V\tB\tNum=S|Per=3|Ten=P|Neg=A|Voi=A|Var=5
-V\tB\tNum=S|Per=3|Ten=P|Neg=A|Voi=A|Var=6
-V\tB\tNum=S|Per=3|Ten=P|Neg=A|Voi=A|Var=7
-V\tB\tNum=S|Per=3|Ten=P|Neg=A|Voi=A|Var=8
-V\tB\tNum=S|Per=3|Ten=P|Neg=N|Voi=A
-V\tB\tNum=S|Per=3|Ten=P|Neg=N|Voi=A|Var=1
-V\tB\tNum=S|Per=3|Ten=P|Neg=N|Voi=A|Var=2
-V\tB\tNum=S|Per=3|Ten=P|Neg=N|Voi=A|Var=3
-V\tB\tNum=S|Per=3|Ten=P|Neg=N|Voi=A|Var=4
-V\tB\tNum=S|Per=3|Ten=P|Neg=N|Voi=A|Var=5
-V\tB\tNum=S|Per=3|Ten=P|Neg=N|Voi=A|Var=6
-V\tB\tNum=S|Per=3|Ten=P|Neg=N|Voi=A|Var=7
-V\tB\tNum=X|Per=X|Ten=F|Neg=A|Voi=A
-V\tB\tNum=X|Per=X|Ten=F|Neg=N|Voi=A
-V\tB\tNum=X|Per=X|Ten=P|Neg=A|Voi=A
-V\tB\tNum=X|Per=X|Ten=P|Neg=A|Voi=A|Sem=m
-V\tB\tNum=X|Per=X|Ten=P|Neg=N|Voi=A
-V\tc\tNum=P|Per=1
-V\tc\tNum=P|Per=1|Var=6
-V\tc\tNum=P|Per=2
-V\tc\tNum=S|Per=1
-V\tc\tNum=S|Per=1|Var=6
-V\tc\tNum=S|Per=2
-V\tc\tNum=X|Per=3
-V\te\tGen=H|Num=S|Neg=A
-V\te\tGen=H|Num=S|Neg=A|Var=2
-V\te\tGen=H|Num=S|Neg=N
-V\te\tGen=H|Num=S|Neg=N|Var=2
-V\te\tGen=X|Num=P|Neg=A
-V\te\tGen=X|Num=P|Neg=A|Var=2
-V\te\tGen=X|Num=P|Neg=N
-V\te\tGen=X|Num=P|Neg=N|Var=2
-V\te\tGen=Y|Num=S|Neg=A
-V\te\tGen=Y|Num=S|Neg=N
-V\tf\tNeg=A
-V\tf\tNeg=A|Sem=K
-V\tf\tNeg=A|Sem=R
-V\tf\tNeg=A|Var=1
-V\tf\tNeg=A|Var=2
-V\tf\tNeg=A|Var=3
-V\tf\tNeg=A|Var=4
-V\tf\tNeg=A|Var=6
-V\tf\tNeg=A|Var=8
-V\tf\tNeg=N
-V\tf\tNeg=N|Var=1
-V\tf\tNeg=N|Var=2
-V\tf\tNeg=N|Var=3
-V\tf\tNeg=N|Var=4
-V\tf\tNeg=N|Var=6
-V\ti\tNum=P|Per=1|Neg=A
-V\ti\tNum=P|Per=1|Neg=A|Var=1
-V\ti\tNum=P|Per=1|Neg=A|Var=2
-V\ti\tNum=P|Per=1|Neg=A|Var=3
-V\ti\tNum=P|Per=1|Neg=A|Var=6
-V\ti\tNum=P|Per=1|Neg=N
-V\ti\tNum=P|Per=1|Neg=N|Var=1
-V\ti\tNum=P|Per=1|Neg=N|Var=2
-V\ti\tNum=P|Per=1|Neg=N|Var=3
-V\ti\tNum=P|Per=1|Neg=N|Var=6
-V\ti\tNum=P|Per=2|Neg=A
-V\ti\tNum=P|Per=2|Neg=A|Var=1
-V\ti\tNum=P|Per=2|Neg=A|Var=2
-V\ti\tNum=P|Per=2|Neg=A|Var=3
-V\ti\tNum=P|Per=2|Neg=A|Var=6
-V\ti\tNum=P|Per=2|Neg=A|Var=7
-V\ti\tNum=P|Per=2|Neg=N
-V\ti\tNum=P|Per=2|Neg=N|Var=1
-V\ti\tNum=P|Per=2|Neg=N|Var=2
-V\ti\tNum=P|Per=2|Neg=N|Var=3
-V\ti\tNum=P|Per=2|Neg=N|Var=6
-V\ti\tNum=P|Per=2|Neg=N|Var=7
-V\ti\tNum=P|Per=3|Neg=A|Var=1
-V\ti\tNum=P|Per=3|Neg=A|Var=2
-V\ti\tNum=P|Per=3|Neg=A|Var=3
-V\ti\tNum=P|Per=3|Neg=A|Var=4
-V\ti\tNum=P|Per=3|Neg=A|Var=9
-V\ti\tNum=P|Per=3|Neg=N|Var=1
-V\ti\tNum=P|Per=3|Neg=N|Var=2
-V\ti\tNum=P|Per=3|Neg=N|Var=3
-V\ti\tNum=P|Per=3|Neg=N|Var=4
-V\ti\tNum=P|Per=3|Neg=N|Var=9
-V\ti\tNum=S|Per=2|Neg=A
-V\ti\tNum=S|Per=2|Neg=A|Var=1
-V\ti\tNum=S|Per=2|Neg=A|Var=2
-V\ti\tNum=S|Per=2|Neg=A|Var=6
-V\ti\tNum=S|Per=2|Neg=A|Var=7
-V\ti\tNum=S|Per=2|Neg=A|Var=8
-V\ti\tNum=S|Per=2|Neg=N
-V\ti\tNum=S|Per=2|Neg=N|Var=1
-V\ti\tNum=S|Per=2|Neg=N|Var=2
-V\ti\tNum=S|Per=2|Neg=N|Var=6
-V\ti\tNum=S|Per=2|Neg=N|Var=7
-V\ti\tNum=S|Per=3|Neg=A
-V\ti\tNum=S|Per=3|Neg=A|Var=2
-V\ti\tNum=S|Per=3|Neg=A|Var=3
-V\ti\tNum=S|Per=3|Neg=A|Var=4
-V\ti\tNum=S|Per=3|Neg=A|Var=9
-V\ti\tNum=S|Per=3|Neg=N
-V\ti\tNum=S|Per=3|Neg=N|Var=2
-V\ti\tNum=S|Per=3|Neg=N|Var=3
-V\ti\tNum=S|Per=3|Neg=N|Var=4
-V\ti\tNum=S|Per=3|Neg=N|Var=9
-V\ti\tNum=X|Per=2|Neg=A
-V\ti\tNum=X|Per=2|Neg=N
-V\tm\tGen=H|Num=S|Neg=A
-V\tm\tGen=H|Num=S|Neg=A|Var=4
-V\tm\tGen=H|Num=S|Neg=N
-V\tm\tGen=H|Num=S|Neg=N|Var=4
-V\tm\tGen=X|Num=P|Neg=A
-V\tm\tGen=X|Num=P|Neg=A|Var=4
-V\tm\tGen=X|Num=P|Neg=N
-V\tm\tGen=X|Num=P|Neg=N|Var=4
-V\tm\tGen=Y|Num=S|Neg=A
-V\tm\tGen=Y|Num=S|Neg=A|Var=4
-V\tm\tGen=Y|Num=S|Neg=N
-V\tm\tGen=Y|Num=S|Neg=N|Var=4
-V\tp\tGen=F|Num=S|Per=2|Ten=R|Neg=A|Voi=A
-V\tp\tGen=F|Num=S|Per=2|Ten=R|Neg=A|Voi=A|Var=1
-V\tp\tGen=F|Num=S|Per=2|Ten=R|Neg=A|Voi=A|Var=6
-V\tp\tGen=F|Num=S|Per=2|Ten=R|Neg=N|Voi=A
-V\tp\tGen=F|Num=S|Per=2|Ten=R|Neg=N|Voi=A|Var=1
-V\tp\tGen=F|Num=S|Per=2|Ten=R|Neg=N|Voi=A|Var=6
-V\tp\tGen=M|Num=P|Per=X|Ten=R|Neg=A|Voi=A
-V\tp\tGen=M|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=1
-V\tp\tGen=M|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=3
-V\tp\tGen=M|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=6
-V\tp\tGen=M|Num=P|Per=X|Ten=R|Neg=N|Voi=A
-V\tp\tGen=M|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=1
-V\tp\tGen=M|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=3
-V\tp\tGen=M|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=6
-V\tp\tGen=N|Num=S|Per=2|Ten=R|Neg=A|Voi=A
-V\tp\tGen=N|Num=S|Per=2|Ten=R|Neg=A|Voi=A|Var=1
-V\tp\tGen=N|Num=S|Per=2|Ten=R|Neg=A|Voi=A|Var=6
-V\tp\tGen=N|Num=S|Per=2|Ten=R|Neg=N|Voi=A
-V\tp\tGen=N|Num=S|Per=2|Ten=R|Neg=N|Voi=A|Var=1
-V\tp\tGen=N|Num=S|Per=2|Ten=R|Neg=N|Voi=A|Var=6
-V\tp\tGen=N|Num=S|Per=X|Ten=R|Neg=A|Voi=A
-V\tp\tGen=N|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=1
-V\tp\tGen=N|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=3
-V\tp\tGen=N|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=6
-V\tp\tGen=N|Num=S|Per=X|Ten=R|Neg=N|Voi=A
-V\tp\tGen=N|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=1
-V\tp\tGen=N|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=3
-V\tp\tGen=N|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=6
-V\tp\tGen=Q|Num=W|Per=X|Ten=R|Neg=A|Voi=A
-V\tp\tGen=Q|Num=W|Per=X|Ten=R|Neg=A|Voi=A|Var=1
-V\tp\tGen=Q|Num=W|Per=X|Ten=R|Neg=A|Voi=A|Var=3
-V\tp\tGen=Q|Num=W|Per=X|Ten=R|Neg=A|Voi=A|Var=6
-V\tp\tGen=Q|Num=W|Per=X|Ten=R|Neg=N|Voi=A
-V\tp\tGen=Q|Num=W|Per=X|Ten=R|Neg=N|Voi=A|Var=1
-V\tp\tGen=Q|Num=W|Per=X|Ten=R|Neg=N|Voi=A|Var=3
-V\tp\tGen=Q|Num=W|Per=X|Ten=R|Neg=N|Voi=A|Var=6
-V\tp\tGen=T|Num=P|Per=X|Ten=R|Neg=A|Voi=A
-V\tp\tGen=T|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=1
-V\tp\tGen=T|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=3
-V\tp\tGen=T|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=6
-V\tp\tGen=T|Num=P|Per=X|Ten=R|Neg=N|Voi=A
-V\tp\tGen=T|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=1
-V\tp\tGen=T|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=3
-V\tp\tGen=T|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=6
-V\tp\tGen=X|Num=P|Per=X|Ten=R|Neg=A|Voi=A
-V\tp\tGen=X|Num=P|Per=X|Ten=R|Neg=N|Voi=A
-V\tp\tGen=X|Num=S|Per=X|Ten=R|Neg=A|Voi=A
-V\tp\tGen=X|Num=S|Per=X|Ten=R|Neg=N|Voi=A
-V\tp\tGen=X|Num=X|Per=X|Ten=R|Neg=A|Voi=A
-V\tp\tGen=X|Num=X|Per=X|Ten=R|Neg=A|Voi=A|Sem=m
-V\tp\tGen=X|Num=X|Per=X|Ten=R|Neg=N|Voi=A
-V\tp\tGen=Y|Num=S|Per=2|Ten=R|Neg=A|Voi=A
-V\tp\tGen=Y|Num=S|Per=2|Ten=R|Neg=A|Voi=A|Var=1
-V\tp\tGen=Y|Num=S|Per=2|Ten=R|Neg=A|Voi=A|Var=6
-V\tp\tGen=Y|Num=S|Per=2|Ten=R|Neg=N|Voi=A
-V\tp\tGen=Y|Num=S|Per=2|Ten=R|Neg=N|Voi=A|Var=1
-V\tp\tGen=Y|Num=S|Per=2|Ten=R|Neg=N|Voi=A|Var=6
-V\tp\tGen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A
-V\tp\tGen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=1
-V\tp\tGen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=6
-V\tp\tGen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=8
-V\tp\tGen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=9
-V\tp\tGen=Y|Num=S|Per=X|Ten=R|Neg=N|Voi=A
-V\tp\tGen=Y|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=1
-V\tp\tGen=Y|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=6
-V\tp\tGen=Y|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=8
-V\tq\tGen=M|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=2
-V\tq\tGen=M|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=3
-V\tq\tGen=M|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=7
-V\tq\tGen=M|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=2
-V\tq\tGen=M|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=3
-V\tq\tGen=M|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=7
-V\tq\tGen=N|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=2
-V\tq\tGen=N|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=3
-V\tq\tGen=N|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=7
-V\tq\tGen=N|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=2
-V\tq\tGen=N|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=3
-V\tq\tGen=N|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=7
-V\tq\tGen=Q|Num=W|Per=X|Ten=R|Neg=A|Voi=A|Var=2
-V\tq\tGen=Q|Num=W|Per=X|Ten=R|Neg=A|Voi=A|Var=3
-V\tq\tGen=Q|Num=W|Per=X|Ten=R|Neg=A|Voi=A|Var=7
-V\tq\tGen=Q|Num=W|Per=X|Ten=R|Neg=N|Voi=A|Var=2
-V\tq\tGen=Q|Num=W|Per=X|Ten=R|Neg=N|Voi=A|Var=3
-V\tq\tGen=Q|Num=W|Per=X|Ten=R|Neg=N|Voi=A|Var=7
-V\tq\tGen=T|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=2
-V\tq\tGen=T|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=3
-V\tq\tGen=T|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=7
-V\tq\tGen=T|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=2
-V\tq\tGen=T|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=3
-V\tq\tGen=T|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=7
-V\tq\tGen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=2
-V\tq\tGen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=3
-V\tq\tGen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=7
-V\tq\tGen=Y|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=2
-V\tq\tGen=Y|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=3
-V\tq\tGen=Y|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=7
-V\ts\tGen=F|Num=S|Cas=4|Per=X|Ten=X|Neg=A|Voi=P
-V\ts\tGen=F|Num=S|Cas=4|Per=X|Ten=X|Neg=A|Voi=P|Var=2
-V\ts\tGen=F|Num=S|Cas=4|Per=X|Ten=X|Neg=N|Voi=P
-V\ts\tGen=F|Num=S|Cas=4|Per=X|Ten=X|Neg=N|Voi=P|Var=2
-V\ts\tGen=F|Num=S|Per=2|Ten=H|Neg=A|Voi=P
-V\ts\tGen=F|Num=S|Per=2|Ten=H|Neg=A|Voi=P|Var=2
-V\ts\tGen=F|Num=S|Per=2|Ten=H|Neg=N|Voi=P
-V\ts\tGen=F|Num=S|Per=2|Ten=H|Neg=N|Voi=P|Var=2
-V\ts\tGen=M|Num=P|Per=X|Ten=X|Neg=A|Voi=P
-V\ts\tGen=M|Num=P|Per=X|Ten=X|Neg=A|Voi=P|Var=2
-V\ts\tGen=M|Num=P|Per=X|Ten=X|Neg=N|Voi=P
-V\ts\tGen=M|Num=P|Per=X|Ten=X|Neg=N|Voi=P|Var=2
-V\ts\tGen=N|Num=S|Per=2|Ten=H|Neg=A|Voi=P
-V\ts\tGen=N|Num=S|Per=2|Ten=H|Neg=A|Voi=P|Var=2
-V\ts\tGen=N|Num=S|Per=2|Ten=H|Neg=N|Voi=P
-V\ts\tGen=N|Num=S|Per=2|Ten=H|Neg=N|Voi=P|Var=2
-V\ts\tGen=N|Num=S|Per=X|Ten=X|Neg=A|Voi=P
-V\ts\tGen=N|Num=S|Per=X|Ten=X|Neg=A|Voi=P|Var=2
-V\ts\tGen=N|Num=S|Per=X|Ten=X|Neg=N|Voi=P
-V\ts\tGen=N|Num=S|Per=X|Ten=X|Neg=N|Voi=P|Var=2
-V\ts\tGen=Q|Num=W|Per=X|Ten=X|Neg=A|Voi=P
-V\ts\tGen=Q|Num=W|Per=X|Ten=X|Neg=A|Voi=P|Var=2
-V\ts\tGen=Q|Num=W|Per=X|Ten=X|Neg=N|Voi=P
-V\ts\tGen=Q|Num=W|Per=X|Ten=X|Neg=N|Voi=P|Var=2
-V\ts\tGen=T|Num=P|Per=X|Ten=X|Neg=A|Voi=P
-V\ts\tGen=T|Num=P|Per=X|Ten=X|Neg=A|Voi=P|Var=2
-V\ts\tGen=T|Num=P|Per=X|Ten=X|Neg=N|Voi=P
-V\ts\tGen=T|Num=P|Per=X|Ten=X|Neg=N|Voi=P|Var=2
-V\ts\tGen=Y|Num=S|Per=2|Ten=H|Neg=A|Voi=P
-V\ts\tGen=Y|Num=S|Per=X|Ten=X|Neg=A|Voi=P
-V\ts\tGen=Y|Num=S|Per=X|Ten=X|Neg=A|Voi=P|Var=2
-V\ts\tGen=Y|Num=S|Per=X|Ten=X|Neg=N|Voi=P
-V\ts\tGen=Y|Num=S|Per=X|Ten=X|Neg=N|Voi=P|Var=2
-V\tt\tNum=P|Per=1|Ten=F|Neg=A|Voi=A|Var=2
-V\tt\tNum=P|Per=1|Ten=F|Neg=A|Voi=A|Var=3
-V\tt\tNum=P|Per=1|Ten=F|Neg=N|Voi=A|Var=2
-V\tt\tNum=P|Per=1|Ten=F|Neg=N|Voi=A|Var=3
-V\tt\tNum=P|Per=1|Ten=P|Neg=A|Voi=A|Var=2
-V\tt\tNum=P|Per=1|Ten=P|Neg=A|Voi=A|Var=3
-V\tt\tNum=P|Per=1|Ten=P|Neg=N|Voi=A|Var=2
-V\tt\tNum=P|Per=1|Ten=P|Neg=N|Voi=A|Var=3
-V\tt\tNum=P|Per=2|Ten=F|Neg=A|Voi=A|Var=2
-V\tt\tNum=P|Per=2|Ten=F|Neg=N|Voi=A|Var=2
-V\tt\tNum=P|Per=2|Ten=P|Neg=A|Voi=A|Var=2
-V\tt\tNum=P|Per=2|Ten=P|Neg=N|Voi=A|Var=2
-V\tt\tNum=P|Per=3|Ten=F|Neg=A|Voi=A|Var=2
-V\tt\tNum=P|Per=3|Ten=F|Neg=A|Voi=A|Var=3
-V\tt\tNum=P|Per=3|Ten=F|Neg=N|Voi=A|Var=2
-V\tt\tNum=P|Per=3|Ten=F|Neg=N|Voi=A|Var=3
-V\tt\tNum=P|Per=3|Ten=P|Neg=A|Voi=A|Var=2
-V\tt\tNum=P|Per=3|Ten=P|Neg=A|Voi=A|Var=3
-V\tt\tNum=P|Per=3|Ten=P|Neg=A|Voi=A|Var=9
-V\tt\tNum=P|Per=3|Ten=P|Neg=N|Voi=A|Var=2
-V\tt\tNum=P|Per=3|Ten=P|Neg=N|Voi=A|Var=3
-V\tt\tNum=P|Per=3|Ten=P|Neg=N|Voi=A|Var=9
-V\tt\tNum=S|Per=1|Ten=F|Neg=A|Voi=A|Var=2
-V\tt\tNum=S|Per=1|Ten=F|Neg=A|Voi=A|Var=3
-V\tt\tNum=S|Per=1|Ten=F|Neg=N|Voi=A|Var=2
-V\tt\tNum=S|Per=1|Ten=F|Neg=N|Voi=A|Var=3
-V\tt\tNum=S|Per=1|Ten=P|Neg=A|Voi=A|Var=2
-V\tt\tNum=S|Per=1|Ten=P|Neg=A|Voi=A|Var=3
-V\tt\tNum=S|Per=1|Ten=P|Neg=N|Voi=A|Var=2
-V\tt\tNum=S|Per=1|Ten=P|Neg=N|Voi=A|Var=3
-V\tt\tNum=S|Per=2|Ten=F|Neg=A|Voi=A|Var=2
-V\tt\tNum=S|Per=2|Ten=F|Neg=N|Voi=A|Var=2
-V\tt\tNum=S|Per=2|Ten=P|Neg=A|Voi=A|Var=2
-V\tt\tNum=S|Per=2|Ten=P|Neg=N|Voi=A|Var=2
-V\tt\tNum=S|Per=3|Ten=F|Neg=A|Voi=A|Var=2
-V\tt\tNum=S|Per=3|Ten=F|Neg=N|Voi=A|Var=2
-V\tt\tNum=S|Per=3|Ten=P|Neg=A|Voi=A|Var=2
-V\tt\tNum=S|Per=3|Ten=P|Neg=N|Voi=A|Var=2
-V\t~\t_
-X\tX\tVar=8
-X\tX\t_
-X\t\@\tSem=G
-X\t\@\tVar=0
-X\t\@\tVar=1
-X\t\@\t_
-X\tx\tSem=K
-X\tx\t_
-Z\t#\t_
-Z\t:\t_
+A	.	_
+A	2	Neg=A
+A	2	Neg=A|Sem=G
+A	2	Neg=A|Sem=K
+A	2	Neg=A|Sem=S
+A	2	Neg=A|Sem=Y
+A	2	Neg=A|Sem=m
+A	2	Neg=A|Var=1
+A	2	Neg=N
+A	A	Gen=F|Num=D|Cas=7|Gra=1|Neg=A
+A	A	Gen=F|Num=D|Cas=7|Gra=1|Neg=A|Var=6
+A	A	Gen=F|Num=D|Cas=7|Gra=1|Neg=N
+A	A	Gen=F|Num=D|Cas=7|Gra=1|Neg=N|Var=6
+A	A	Gen=F|Num=D|Cas=7|Gra=2|Neg=A
+A	A	Gen=F|Num=D|Cas=7|Gra=2|Neg=A|Var=6
+A	A	Gen=F|Num=D|Cas=7|Gra=2|Neg=N
+A	A	Gen=F|Num=D|Cas=7|Gra=2|Neg=N|Var=6
+A	A	Gen=F|Num=D|Cas=7|Gra=3|Neg=A
+A	A	Gen=F|Num=D|Cas=7|Gra=3|Neg=A|Var=6
+A	A	Gen=F|Num=D|Cas=7|Gra=3|Neg=N
+A	A	Gen=F|Num=D|Cas=7|Gra=3|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=1|Gra=1|Neg=A
+A	A	Gen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=G
+A	A	Gen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=K
+A	A	Gen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=R
+A	A	Gen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=U
+A	A	Gen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=m
+A	A	Gen=F|Num=P|Cas=1|Gra=1|Neg=A|Sem=o
+A	A	Gen=F|Num=P|Cas=1|Gra=1|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=1|Gra=1|Neg=N
+A	A	Gen=F|Num=P|Cas=1|Gra=1|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=1|Gra=2|Neg=A
+A	A	Gen=F|Num=P|Cas=1|Gra=2|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=1|Gra=2|Neg=N
+A	A	Gen=F|Num=P|Cas=1|Gra=2|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=1|Gra=3|Neg=A
+A	A	Gen=F|Num=P|Cas=1|Gra=3|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=1|Gra=3|Neg=N
+A	A	Gen=F|Num=P|Cas=1|Gra=3|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=2|Gra=1|Neg=A
+A	A	Gen=F|Num=P|Cas=2|Gra=1|Neg=A|Sem=G
+A	A	Gen=F|Num=P|Cas=2|Gra=1|Neg=A|Sem=R
+A	A	Gen=F|Num=P|Cas=2|Gra=1|Neg=A|Sem=S
+A	A	Gen=F|Num=P|Cas=2|Gra=1|Neg=A|Sem=m
+A	A	Gen=F|Num=P|Cas=2|Gra=1|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=2|Gra=1|Neg=N
+A	A	Gen=F|Num=P|Cas=2|Gra=1|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=2|Gra=2|Neg=A
+A	A	Gen=F|Num=P|Cas=2|Gra=2|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=2|Gra=2|Neg=N
+A	A	Gen=F|Num=P|Cas=2|Gra=2|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=2|Gra=3|Neg=A
+A	A	Gen=F|Num=P|Cas=2|Gra=3|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=2|Gra=3|Neg=N
+A	A	Gen=F|Num=P|Cas=2|Gra=3|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=3|Gra=1|Neg=A
+A	A	Gen=F|Num=P|Cas=3|Gra=1|Neg=A|Sem=G
+A	A	Gen=F|Num=P|Cas=3|Gra=1|Neg=A|Sem=m
+A	A	Gen=F|Num=P|Cas=3|Gra=1|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=3|Gra=1|Neg=N
+A	A	Gen=F|Num=P|Cas=3|Gra=1|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=3|Gra=2|Neg=A
+A	A	Gen=F|Num=P|Cas=3|Gra=2|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=3|Gra=2|Neg=N
+A	A	Gen=F|Num=P|Cas=3|Gra=2|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=3|Gra=3|Neg=A
+A	A	Gen=F|Num=P|Cas=3|Gra=3|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=3|Gra=3|Neg=N
+A	A	Gen=F|Num=P|Cas=3|Gra=3|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=4|Gra=1|Neg=A
+A	A	Gen=F|Num=P|Cas=4|Gra=1|Neg=A|Sem=G
+A	A	Gen=F|Num=P|Cas=4|Gra=1|Neg=A|Sem=m
+A	A	Gen=F|Num=P|Cas=4|Gra=1|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=4|Gra=1|Neg=N
+A	A	Gen=F|Num=P|Cas=4|Gra=1|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=4|Gra=2|Neg=A
+A	A	Gen=F|Num=P|Cas=4|Gra=2|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=4|Gra=2|Neg=N
+A	A	Gen=F|Num=P|Cas=4|Gra=2|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=4|Gra=3|Neg=A
+A	A	Gen=F|Num=P|Cas=4|Gra=3|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=4|Gra=3|Neg=N
+A	A	Gen=F|Num=P|Cas=4|Gra=3|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=5|Gra=1|Neg=A
+A	A	Gen=F|Num=P|Cas=5|Gra=1|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=5|Gra=1|Neg=N
+A	A	Gen=F|Num=P|Cas=5|Gra=1|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=5|Gra=2|Neg=A
+A	A	Gen=F|Num=P|Cas=5|Gra=2|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=5|Gra=2|Neg=N
+A	A	Gen=F|Num=P|Cas=5|Gra=2|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=5|Gra=3|Neg=A
+A	A	Gen=F|Num=P|Cas=5|Gra=3|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=5|Gra=3|Neg=N
+A	A	Gen=F|Num=P|Cas=5|Gra=3|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=6|Gra=1|Neg=A
+A	A	Gen=F|Num=P|Cas=6|Gra=1|Neg=A|Sem=G
+A	A	Gen=F|Num=P|Cas=6|Gra=1|Neg=A|Sem=S
+A	A	Gen=F|Num=P|Cas=6|Gra=1|Neg=A|Sem=m
+A	A	Gen=F|Num=P|Cas=6|Gra=1|Neg=A|Sem=o
+A	A	Gen=F|Num=P|Cas=6|Gra=1|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=6|Gra=1|Neg=N
+A	A	Gen=F|Num=P|Cas=6|Gra=1|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=6|Gra=2|Neg=A
+A	A	Gen=F|Num=P|Cas=6|Gra=2|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=6|Gra=2|Neg=N
+A	A	Gen=F|Num=P|Cas=6|Gra=2|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=6|Gra=3|Neg=A
+A	A	Gen=F|Num=P|Cas=6|Gra=3|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=6|Gra=3|Neg=N
+A	A	Gen=F|Num=P|Cas=6|Gra=3|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=7|Gra=1|Neg=A
+A	A	Gen=F|Num=P|Cas=7|Gra=1|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=7|Gra=1|Neg=A|Var=7
+A	A	Gen=F|Num=P|Cas=7|Gra=1|Neg=N
+A	A	Gen=F|Num=P|Cas=7|Gra=1|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=7|Gra=1|Neg=N|Var=7
+A	A	Gen=F|Num=P|Cas=7|Gra=2|Neg=A
+A	A	Gen=F|Num=P|Cas=7|Gra=2|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=7|Gra=2|Neg=A|Var=7
+A	A	Gen=F|Num=P|Cas=7|Gra=2|Neg=N
+A	A	Gen=F|Num=P|Cas=7|Gra=2|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=7|Gra=2|Neg=N|Var=7
+A	A	Gen=F|Num=P|Cas=7|Gra=3|Neg=A
+A	A	Gen=F|Num=P|Cas=7|Gra=3|Neg=A|Var=6
+A	A	Gen=F|Num=P|Cas=7|Gra=3|Neg=A|Var=7
+A	A	Gen=F|Num=P|Cas=7|Gra=3|Neg=N
+A	A	Gen=F|Num=P|Cas=7|Gra=3|Neg=N|Var=6
+A	A	Gen=F|Num=P|Cas=7|Gra=3|Neg=N|Var=7
+A	A	Gen=F|Num=S|Cas=1|Gra=1|Neg=A
+A	A	Gen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=G
+A	A	Gen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=K
+A	A	Gen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=L
+A	A	Gen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=R
+A	A	Gen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=S
+A	A	Gen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=m
+A	A	Gen=F|Num=S|Cas=1|Gra=1|Neg=A|Sem=o
+A	A	Gen=F|Num=S|Cas=1|Gra=1|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=1|Gra=1|Neg=N
+A	A	Gen=F|Num=S|Cas=1|Gra=1|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=1|Gra=2|Neg=A
+A	A	Gen=F|Num=S|Cas=1|Gra=2|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=1|Gra=2|Neg=N
+A	A	Gen=F|Num=S|Cas=1|Gra=2|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=1|Gra=3|Neg=A
+A	A	Gen=F|Num=S|Cas=1|Gra=3|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=1|Gra=3|Neg=N
+A	A	Gen=F|Num=S|Cas=1|Gra=3|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=2|Gra=1|Neg=A
+A	A	Gen=F|Num=S|Cas=2|Gra=1|Neg=A|Sem=G
+A	A	Gen=F|Num=S|Cas=2|Gra=1|Neg=A|Sem=K
+A	A	Gen=F|Num=S|Cas=2|Gra=1|Neg=A|Sem=R
+A	A	Gen=F|Num=S|Cas=2|Gra=1|Neg=A|Sem=m
+A	A	Gen=F|Num=S|Cas=2|Gra=1|Neg=A|Sem=o
+A	A	Gen=F|Num=S|Cas=2|Gra=1|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=2|Gra=1|Neg=N
+A	A	Gen=F|Num=S|Cas=2|Gra=1|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=2|Gra=2|Neg=A
+A	A	Gen=F|Num=S|Cas=2|Gra=2|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=2|Gra=2|Neg=N
+A	A	Gen=F|Num=S|Cas=2|Gra=2|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=2|Gra=3|Neg=A
+A	A	Gen=F|Num=S|Cas=2|Gra=3|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=2|Gra=3|Neg=N
+A	A	Gen=F|Num=S|Cas=2|Gra=3|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=3|Gra=1|Neg=A
+A	A	Gen=F|Num=S|Cas=3|Gra=1|Neg=A|Sem=G
+A	A	Gen=F|Num=S|Cas=3|Gra=1|Neg=A|Sem=m
+A	A	Gen=F|Num=S|Cas=3|Gra=1|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=3|Gra=1|Neg=N
+A	A	Gen=F|Num=S|Cas=3|Gra=1|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=3|Gra=2|Neg=A
+A	A	Gen=F|Num=S|Cas=3|Gra=2|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=3|Gra=2|Neg=N
+A	A	Gen=F|Num=S|Cas=3|Gra=2|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=3|Gra=3|Neg=A
+A	A	Gen=F|Num=S|Cas=3|Gra=3|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=3|Gra=3|Neg=N
+A	A	Gen=F|Num=S|Cas=3|Gra=3|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=4|Gra=1|Neg=A
+A	A	Gen=F|Num=S|Cas=4|Gra=1|Neg=A|Sem=G
+A	A	Gen=F|Num=S|Cas=4|Gra=1|Neg=A|Sem=K
+A	A	Gen=F|Num=S|Cas=4|Gra=1|Neg=A|Sem=S
+A	A	Gen=F|Num=S|Cas=4|Gra=1|Neg=A|Sem=m
+A	A	Gen=F|Num=S|Cas=4|Gra=1|Neg=A|Sem=o
+A	A	Gen=F|Num=S|Cas=4|Gra=1|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=4|Gra=1|Neg=N
+A	A	Gen=F|Num=S|Cas=4|Gra=1|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=4|Gra=2|Neg=A
+A	A	Gen=F|Num=S|Cas=4|Gra=2|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=4|Gra=2|Neg=N
+A	A	Gen=F|Num=S|Cas=4|Gra=2|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=4|Gra=3|Neg=A
+A	A	Gen=F|Num=S|Cas=4|Gra=3|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=4|Gra=3|Neg=N
+A	A	Gen=F|Num=S|Cas=4|Gra=3|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=5|Gra=1|Neg=A
+A	A	Gen=F|Num=S|Cas=5|Gra=1|Neg=A|Sem=R
+A	A	Gen=F|Num=S|Cas=5|Gra=1|Neg=A|Sem=m
+A	A	Gen=F|Num=S|Cas=5|Gra=1|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=5|Gra=1|Neg=N
+A	A	Gen=F|Num=S|Cas=5|Gra=1|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=5|Gra=2|Neg=A
+A	A	Gen=F|Num=S|Cas=5|Gra=2|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=5|Gra=2|Neg=N
+A	A	Gen=F|Num=S|Cas=5|Gra=2|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=5|Gra=3|Neg=A
+A	A	Gen=F|Num=S|Cas=5|Gra=3|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=5|Gra=3|Neg=N
+A	A	Gen=F|Num=S|Cas=5|Gra=3|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=6|Gra=1|Neg=A
+A	A	Gen=F|Num=S|Cas=6|Gra=1|Neg=A|Sem=G
+A	A	Gen=F|Num=S|Cas=6|Gra=1|Neg=A|Sem=K
+A	A	Gen=F|Num=S|Cas=6|Gra=1|Neg=A|Sem=m
+A	A	Gen=F|Num=S|Cas=6|Gra=1|Neg=A|Sem=o
+A	A	Gen=F|Num=S|Cas=6|Gra=1|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=6|Gra=1|Neg=N
+A	A	Gen=F|Num=S|Cas=6|Gra=1|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=6|Gra=2|Neg=A
+A	A	Gen=F|Num=S|Cas=6|Gra=2|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=6|Gra=2|Neg=N
+A	A	Gen=F|Num=S|Cas=6|Gra=2|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=6|Gra=3|Neg=A
+A	A	Gen=F|Num=S|Cas=6|Gra=3|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=6|Gra=3|Neg=N
+A	A	Gen=F|Num=S|Cas=6|Gra=3|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=7|Gra=1|Neg=A
+A	A	Gen=F|Num=S|Cas=7|Gra=1|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=7|Gra=1|Neg=N
+A	A	Gen=F|Num=S|Cas=7|Gra=1|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=7|Gra=2|Neg=A
+A	A	Gen=F|Num=S|Cas=7|Gra=2|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=7|Gra=2|Neg=N
+A	A	Gen=F|Num=S|Cas=7|Gra=2|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=7|Gra=3|Neg=A
+A	A	Gen=F|Num=S|Cas=7|Gra=3|Neg=A|Var=6
+A	A	Gen=F|Num=S|Cas=7|Gra=3|Neg=N
+A	A	Gen=F|Num=S|Cas=7|Gra=3|Neg=N|Var=6
+A	A	Gen=F|Num=S|Cas=X|Gra=1|Neg=A
+A	A	Gen=F|Num=S|Cas=X|Gra=1|Neg=A|Sem=G
+A	A	Gen=F|Num=S|Cas=X|Gra=1|Neg=A|Sem=K
+A	A	Gen=F|Num=S|Cas=X|Gra=1|Neg=A|Sem=m
+A	A	Gen=F|Num=X|Cas=X|Gra=1|Neg=A
+A	A	Gen=F|Num=X|Cas=X|Gra=1|Neg=A|Sem=G
+A	A	Gen=F|Num=X|Cas=X|Gra=1|Neg=A|Sem=m
+A	A	Gen=F|Num=X|Cas=X|Gra=1|Neg=A|Var=8
+A	A	Gen=F|Num=X|Cas=X|Gra=1|Neg=N|Var=8
+A	A	Gen=I|Num=P|Cas=1|Gra=1|Neg=A
+A	A	Gen=I|Num=P|Cas=1|Gra=1|Neg=A|Sem=G
+A	A	Gen=I|Num=P|Cas=1|Gra=1|Neg=A|Sem=R
+A	A	Gen=I|Num=P|Cas=1|Gra=1|Neg=A|Sem=m
+A	A	Gen=I|Num=P|Cas=1|Gra=1|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=1|Gra=1|Neg=N
+A	A	Gen=I|Num=P|Cas=1|Gra=1|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=1|Gra=2|Neg=A
+A	A	Gen=I|Num=P|Cas=1|Gra=2|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=1|Gra=2|Neg=N
+A	A	Gen=I|Num=P|Cas=1|Gra=2|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=1|Gra=3|Neg=A
+A	A	Gen=I|Num=P|Cas=1|Gra=3|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=1|Gra=3|Neg=N
+A	A	Gen=I|Num=P|Cas=1|Gra=3|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=2|Gra=1|Neg=A
+A	A	Gen=I|Num=P|Cas=2|Gra=1|Neg=A|Sem=G
+A	A	Gen=I|Num=P|Cas=2|Gra=1|Neg=A|Sem=S
+A	A	Gen=I|Num=P|Cas=2|Gra=1|Neg=A|Sem=m
+A	A	Gen=I|Num=P|Cas=2|Gra=1|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=2|Gra=1|Neg=N
+A	A	Gen=I|Num=P|Cas=2|Gra=1|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=2|Gra=2|Neg=A
+A	A	Gen=I|Num=P|Cas=2|Gra=2|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=2|Gra=2|Neg=N
+A	A	Gen=I|Num=P|Cas=2|Gra=2|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=2|Gra=3|Neg=A
+A	A	Gen=I|Num=P|Cas=2|Gra=3|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=2|Gra=3|Neg=N
+A	A	Gen=I|Num=P|Cas=2|Gra=3|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=3|Gra=1|Neg=A
+A	A	Gen=I|Num=P|Cas=3|Gra=1|Neg=A|Sem=G
+A	A	Gen=I|Num=P|Cas=3|Gra=1|Neg=A|Sem=m
+A	A	Gen=I|Num=P|Cas=3|Gra=1|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=3|Gra=1|Neg=N
+A	A	Gen=I|Num=P|Cas=3|Gra=1|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=3|Gra=2|Neg=A
+A	A	Gen=I|Num=P|Cas=3|Gra=2|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=3|Gra=2|Neg=N
+A	A	Gen=I|Num=P|Cas=3|Gra=2|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=3|Gra=3|Neg=A
+A	A	Gen=I|Num=P|Cas=3|Gra=3|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=3|Gra=3|Neg=N
+A	A	Gen=I|Num=P|Cas=3|Gra=3|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=4|Gra=1|Neg=A
+A	A	Gen=I|Num=P|Cas=4|Gra=1|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=4|Gra=1|Neg=N
+A	A	Gen=I|Num=P|Cas=4|Gra=1|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=4|Gra=2|Neg=A
+A	A	Gen=I|Num=P|Cas=4|Gra=2|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=4|Gra=2|Neg=N
+A	A	Gen=I|Num=P|Cas=4|Gra=2|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=4|Gra=3|Neg=A
+A	A	Gen=I|Num=P|Cas=4|Gra=3|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=4|Gra=3|Neg=N
+A	A	Gen=I|Num=P|Cas=4|Gra=3|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=5|Gra=1|Neg=A
+A	A	Gen=I|Num=P|Cas=5|Gra=1|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=5|Gra=1|Neg=N
+A	A	Gen=I|Num=P|Cas=5|Gra=1|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=5|Gra=2|Neg=A
+A	A	Gen=I|Num=P|Cas=5|Gra=2|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=5|Gra=2|Neg=N
+A	A	Gen=I|Num=P|Cas=5|Gra=2|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=5|Gra=3|Neg=A
+A	A	Gen=I|Num=P|Cas=5|Gra=3|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=5|Gra=3|Neg=N
+A	A	Gen=I|Num=P|Cas=5|Gra=3|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=6|Gra=1|Neg=A
+A	A	Gen=I|Num=P|Cas=6|Gra=1|Neg=A|Sem=R
+A	A	Gen=I|Num=P|Cas=6|Gra=1|Neg=A|Sem=m
+A	A	Gen=I|Num=P|Cas=6|Gra=1|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=6|Gra=1|Neg=N
+A	A	Gen=I|Num=P|Cas=6|Gra=1|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=6|Gra=2|Neg=A
+A	A	Gen=I|Num=P|Cas=6|Gra=2|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=6|Gra=2|Neg=N
+A	A	Gen=I|Num=P|Cas=6|Gra=2|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=6|Gra=3|Neg=A
+A	A	Gen=I|Num=P|Cas=6|Gra=3|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=6|Gra=3|Neg=N
+A	A	Gen=I|Num=P|Cas=6|Gra=3|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=7|Gra=1|Neg=A
+A	A	Gen=I|Num=P|Cas=7|Gra=1|Neg=A|Sem=G
+A	A	Gen=I|Num=P|Cas=7|Gra=1|Neg=A|Sem=m
+A	A	Gen=I|Num=P|Cas=7|Gra=1|Neg=A|Sem=o
+A	A	Gen=I|Num=P|Cas=7|Gra=1|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=7|Gra=1|Neg=A|Var=7
+A	A	Gen=I|Num=P|Cas=7|Gra=1|Neg=N
+A	A	Gen=I|Num=P|Cas=7|Gra=1|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=7|Gra=1|Neg=N|Var=7
+A	A	Gen=I|Num=P|Cas=7|Gra=2|Neg=A
+A	A	Gen=I|Num=P|Cas=7|Gra=2|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=7|Gra=2|Neg=A|Var=7
+A	A	Gen=I|Num=P|Cas=7|Gra=2|Neg=N
+A	A	Gen=I|Num=P|Cas=7|Gra=2|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=7|Gra=2|Neg=N|Var=7
+A	A	Gen=I|Num=P|Cas=7|Gra=3|Neg=A
+A	A	Gen=I|Num=P|Cas=7|Gra=3|Neg=A|Var=6
+A	A	Gen=I|Num=P|Cas=7|Gra=3|Neg=A|Var=7
+A	A	Gen=I|Num=P|Cas=7|Gra=3|Neg=N
+A	A	Gen=I|Num=P|Cas=7|Gra=3|Neg=N|Var=6
+A	A	Gen=I|Num=P|Cas=7|Gra=3|Neg=N|Var=7
+A	A	Gen=I|Num=P|Cas=X|Gra=1|Neg=A
+A	A	Gen=I|Num=P|Cas=X|Gra=1|Neg=A|Sem=G
+A	A	Gen=I|Num=P|Cas=X|Gra=1|Neg=A|Sem=m
+A	A	Gen=I|Num=P|Cas=X|Gra=1|Neg=N
+A	A	Gen=I|Num=P|Cas=X|Gra=2|Neg=A
+A	A	Gen=I|Num=P|Cas=X|Gra=2|Neg=N
+A	A	Gen=I|Num=P|Cas=X|Gra=3|Neg=A
+A	A	Gen=I|Num=P|Cas=X|Gra=3|Neg=N
+A	A	Gen=I|Num=S|Cas=1|Gra=1|Neg=A
+A	A	Gen=I|Num=S|Cas=1|Gra=1|Neg=A|Sem=G
+A	A	Gen=I|Num=S|Cas=1|Gra=1|Neg=A|Sem=H
+A	A	Gen=I|Num=S|Cas=1|Gra=1|Neg=A|Sem=K
+A	A	Gen=I|Num=S|Cas=1|Gra=1|Neg=A|Sem=S
+A	A	Gen=I|Num=S|Cas=1|Gra=1|Neg=A|Sem=m
+A	A	Gen=I|Num=S|Cas=1|Gra=1|Neg=A|Sem=o
+A	A	Gen=I|Num=S|Cas=1|Gra=1|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=1|Gra=1|Neg=N
+A	A	Gen=I|Num=S|Cas=1|Gra=1|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=1|Gra=2|Neg=A
+A	A	Gen=I|Num=S|Cas=1|Gra=2|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=1|Gra=2|Neg=N
+A	A	Gen=I|Num=S|Cas=1|Gra=2|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=1|Gra=3|Neg=A
+A	A	Gen=I|Num=S|Cas=1|Gra=3|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=1|Gra=3|Neg=N
+A	A	Gen=I|Num=S|Cas=1|Gra=3|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=2|Gra=1|Neg=A
+A	A	Gen=I|Num=S|Cas=2|Gra=1|Neg=A|Sem=G
+A	A	Gen=I|Num=S|Cas=2|Gra=1|Neg=A|Sem=H
+A	A	Gen=I|Num=S|Cas=2|Gra=1|Neg=A|Sem=S
+A	A	Gen=I|Num=S|Cas=2|Gra=1|Neg=A|Sem=m
+A	A	Gen=I|Num=S|Cas=2|Gra=1|Neg=A|Sem=o
+A	A	Gen=I|Num=S|Cas=2|Gra=1|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=2|Gra=1|Neg=N
+A	A	Gen=I|Num=S|Cas=2|Gra=1|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=2|Gra=2|Neg=A
+A	A	Gen=I|Num=S|Cas=2|Gra=2|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=2|Gra=2|Neg=N
+A	A	Gen=I|Num=S|Cas=2|Gra=2|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=2|Gra=3|Neg=A
+A	A	Gen=I|Num=S|Cas=2|Gra=3|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=2|Gra=3|Neg=N
+A	A	Gen=I|Num=S|Cas=2|Gra=3|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=3|Gra=1|Neg=A
+A	A	Gen=I|Num=S|Cas=3|Gra=1|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=3|Gra=1|Neg=N
+A	A	Gen=I|Num=S|Cas=3|Gra=1|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=3|Gra=2|Neg=A
+A	A	Gen=I|Num=S|Cas=3|Gra=2|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=3|Gra=2|Neg=N
+A	A	Gen=I|Num=S|Cas=3|Gra=2|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=3|Gra=3|Neg=A
+A	A	Gen=I|Num=S|Cas=3|Gra=3|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=3|Gra=3|Neg=N
+A	A	Gen=I|Num=S|Cas=3|Gra=3|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=4|Gra=1|Neg=A
+A	A	Gen=I|Num=S|Cas=4|Gra=1|Neg=A|Sem=G
+A	A	Gen=I|Num=S|Cas=4|Gra=1|Neg=A|Sem=S
+A	A	Gen=I|Num=S|Cas=4|Gra=1|Neg=A|Sem=m
+A	A	Gen=I|Num=S|Cas=4|Gra=1|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=4|Gra=1|Neg=N
+A	A	Gen=I|Num=S|Cas=4|Gra=1|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=4|Gra=2|Neg=A
+A	A	Gen=I|Num=S|Cas=4|Gra=2|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=4|Gra=2|Neg=N
+A	A	Gen=I|Num=S|Cas=4|Gra=2|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=4|Gra=3|Neg=A
+A	A	Gen=I|Num=S|Cas=4|Gra=3|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=4|Gra=3|Neg=N
+A	A	Gen=I|Num=S|Cas=4|Gra=3|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=5|Gra=1|Neg=A
+A	A	Gen=I|Num=S|Cas=5|Gra=1|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=5|Gra=1|Neg=N
+A	A	Gen=I|Num=S|Cas=5|Gra=1|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=5|Gra=2|Neg=A
+A	A	Gen=I|Num=S|Cas=5|Gra=2|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=5|Gra=2|Neg=N
+A	A	Gen=I|Num=S|Cas=5|Gra=2|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=5|Gra=3|Neg=A
+A	A	Gen=I|Num=S|Cas=5|Gra=3|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=5|Gra=3|Neg=N
+A	A	Gen=I|Num=S|Cas=5|Gra=3|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=6|Gra=1|Neg=A
+A	A	Gen=I|Num=S|Cas=6|Gra=1|Neg=A|Sem=G
+A	A	Gen=I|Num=S|Cas=6|Gra=1|Neg=A|Sem=S
+A	A	Gen=I|Num=S|Cas=6|Gra=1|Neg=A|Sem=m
+A	A	Gen=I|Num=S|Cas=6|Gra=1|Neg=A|Sem=o
+A	A	Gen=I|Num=S|Cas=6|Gra=1|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=6|Gra=1|Neg=A|Var=7
+A	A	Gen=I|Num=S|Cas=6|Gra=1|Neg=N
+A	A	Gen=I|Num=S|Cas=6|Gra=1|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=6|Gra=1|Neg=N|Var=7
+A	A	Gen=I|Num=S|Cas=6|Gra=2|Neg=A
+A	A	Gen=I|Num=S|Cas=6|Gra=2|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=6|Gra=2|Neg=N
+A	A	Gen=I|Num=S|Cas=6|Gra=2|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=6|Gra=3|Neg=A
+A	A	Gen=I|Num=S|Cas=6|Gra=3|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=6|Gra=3|Neg=N
+A	A	Gen=I|Num=S|Cas=6|Gra=3|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=7|Gra=1|Neg=A
+A	A	Gen=I|Num=S|Cas=7|Gra=1|Neg=A|Sem=H
+A	A	Gen=I|Num=S|Cas=7|Gra=1|Neg=A|Sem=m
+A	A	Gen=I|Num=S|Cas=7|Gra=1|Neg=A|Sem=o
+A	A	Gen=I|Num=S|Cas=7|Gra=1|Neg=A|Var=2
+A	A	Gen=I|Num=S|Cas=7|Gra=1|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=7|Gra=1|Neg=N
+A	A	Gen=I|Num=S|Cas=7|Gra=1|Neg=N|Var=2
+A	A	Gen=I|Num=S|Cas=7|Gra=1|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=7|Gra=2|Neg=A
+A	A	Gen=I|Num=S|Cas=7|Gra=2|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=7|Gra=2|Neg=N
+A	A	Gen=I|Num=S|Cas=7|Gra=2|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=7|Gra=3|Neg=A
+A	A	Gen=I|Num=S|Cas=7|Gra=3|Neg=A|Var=6
+A	A	Gen=I|Num=S|Cas=7|Gra=3|Neg=N
+A	A	Gen=I|Num=S|Cas=7|Gra=3|Neg=N|Var=6
+A	A	Gen=I|Num=S|Cas=X|Gra=1|Neg=A
+A	A	Gen=I|Num=S|Cas=X|Gra=1|Neg=A|Sem=K
+A	A	Gen=I|Num=S|Cas=X|Gra=1|Neg=A|Sem=R
+A	A	Gen=I|Num=S|Cas=X|Gra=1|Neg=A|Sem=m
+A	A	Gen=I|Num=X|Cas=X|Gra=1|Neg=A
+A	A	Gen=I|Num=X|Cas=X|Gra=1|Neg=A|Sem=m
+A	A	Gen=M|Num=P|Cas=1|Gra=1|Neg=A
+A	A	Gen=M|Num=P|Cas=1|Gra=1|Neg=A|Sem=G
+A	A	Gen=M|Num=P|Cas=1|Gra=1|Neg=A|Sem=K
+A	A	Gen=M|Num=P|Cas=1|Gra=1|Neg=A|Sem=m
+A	A	Gen=M|Num=P|Cas=1|Gra=1|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=1|Gra=1|Neg=N
+A	A	Gen=M|Num=P|Cas=1|Gra=1|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=1|Gra=2|Neg=A
+A	A	Gen=M|Num=P|Cas=1|Gra=2|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=1|Gra=2|Neg=N
+A	A	Gen=M|Num=P|Cas=1|Gra=2|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=1|Gra=3|Neg=A
+A	A	Gen=M|Num=P|Cas=1|Gra=3|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=1|Gra=3|Neg=N
+A	A	Gen=M|Num=P|Cas=1|Gra=3|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=2|Gra=1|Neg=A
+A	A	Gen=M|Num=P|Cas=2|Gra=1|Neg=A|Sem=G
+A	A	Gen=M|Num=P|Cas=2|Gra=1|Neg=A|Sem=S
+A	A	Gen=M|Num=P|Cas=2|Gra=1|Neg=A|Sem=m
+A	A	Gen=M|Num=P|Cas=2|Gra=1|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=2|Gra=1|Neg=N
+A	A	Gen=M|Num=P|Cas=2|Gra=1|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=2|Gra=2|Neg=A
+A	A	Gen=M|Num=P|Cas=2|Gra=2|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=2|Gra=2|Neg=N
+A	A	Gen=M|Num=P|Cas=2|Gra=2|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=2|Gra=3|Neg=A
+A	A	Gen=M|Num=P|Cas=2|Gra=3|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=2|Gra=3|Neg=N
+A	A	Gen=M|Num=P|Cas=2|Gra=3|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=3|Gra=1|Neg=A
+A	A	Gen=M|Num=P|Cas=3|Gra=1|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=3|Gra=1|Neg=N
+A	A	Gen=M|Num=P|Cas=3|Gra=1|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=3|Gra=2|Neg=A
+A	A	Gen=M|Num=P|Cas=3|Gra=2|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=3|Gra=2|Neg=N
+A	A	Gen=M|Num=P|Cas=3|Gra=2|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=3|Gra=3|Neg=A
+A	A	Gen=M|Num=P|Cas=3|Gra=3|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=3|Gra=3|Neg=N
+A	A	Gen=M|Num=P|Cas=3|Gra=3|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=4|Gra=1|Neg=A
+A	A	Gen=M|Num=P|Cas=4|Gra=1|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=4|Gra=1|Neg=N
+A	A	Gen=M|Num=P|Cas=4|Gra=1|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=4|Gra=2|Neg=A
+A	A	Gen=M|Num=P|Cas=4|Gra=2|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=4|Gra=2|Neg=N
+A	A	Gen=M|Num=P|Cas=4|Gra=2|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=4|Gra=3|Neg=A
+A	A	Gen=M|Num=P|Cas=4|Gra=3|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=4|Gra=3|Neg=N
+A	A	Gen=M|Num=P|Cas=4|Gra=3|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=5|Gra=1|Neg=A
+A	A	Gen=M|Num=P|Cas=5|Gra=1|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=5|Gra=1|Neg=N
+A	A	Gen=M|Num=P|Cas=5|Gra=1|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=5|Gra=2|Neg=A
+A	A	Gen=M|Num=P|Cas=5|Gra=2|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=5|Gra=2|Neg=N
+A	A	Gen=M|Num=P|Cas=5|Gra=2|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=5|Gra=3|Neg=A
+A	A	Gen=M|Num=P|Cas=5|Gra=3|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=5|Gra=3|Neg=N
+A	A	Gen=M|Num=P|Cas=5|Gra=3|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=6|Gra=1|Neg=A
+A	A	Gen=M|Num=P|Cas=6|Gra=1|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=6|Gra=1|Neg=N
+A	A	Gen=M|Num=P|Cas=6|Gra=1|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=6|Gra=2|Neg=A
+A	A	Gen=M|Num=P|Cas=6|Gra=2|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=6|Gra=2|Neg=N
+A	A	Gen=M|Num=P|Cas=6|Gra=2|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=6|Gra=3|Neg=A
+A	A	Gen=M|Num=P|Cas=6|Gra=3|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=6|Gra=3|Neg=N
+A	A	Gen=M|Num=P|Cas=6|Gra=3|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=7|Gra=1|Neg=A
+A	A	Gen=M|Num=P|Cas=7|Gra=1|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=7|Gra=1|Neg=A|Var=7
+A	A	Gen=M|Num=P|Cas=7|Gra=1|Neg=N
+A	A	Gen=M|Num=P|Cas=7|Gra=1|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=7|Gra=1|Neg=N|Var=7
+A	A	Gen=M|Num=P|Cas=7|Gra=2|Neg=A
+A	A	Gen=M|Num=P|Cas=7|Gra=2|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=7|Gra=2|Neg=A|Var=7
+A	A	Gen=M|Num=P|Cas=7|Gra=2|Neg=N
+A	A	Gen=M|Num=P|Cas=7|Gra=2|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=7|Gra=2|Neg=N|Var=7
+A	A	Gen=M|Num=P|Cas=7|Gra=3|Neg=A
+A	A	Gen=M|Num=P|Cas=7|Gra=3|Neg=A|Var=6
+A	A	Gen=M|Num=P|Cas=7|Gra=3|Neg=A|Var=7
+A	A	Gen=M|Num=P|Cas=7|Gra=3|Neg=N
+A	A	Gen=M|Num=P|Cas=7|Gra=3|Neg=N|Var=6
+A	A	Gen=M|Num=P|Cas=7|Gra=3|Neg=N|Var=7
+A	A	Gen=M|Num=S|Cas=1|Gra=1|Neg=A
+A	A	Gen=M|Num=S|Cas=1|Gra=1|Neg=A|Sem=G
+A	A	Gen=M|Num=S|Cas=1|Gra=1|Neg=A|Sem=S
+A	A	Gen=M|Num=S|Cas=1|Gra=1|Neg=A|Sem=U
+A	A	Gen=M|Num=S|Cas=1|Gra=1|Neg=A|Sem=m
+A	A	Gen=M|Num=S|Cas=1|Gra=1|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=1|Gra=1|Neg=N
+A	A	Gen=M|Num=S|Cas=1|Gra=1|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=1|Gra=2|Neg=A
+A	A	Gen=M|Num=S|Cas=1|Gra=2|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=1|Gra=2|Neg=N
+A	A	Gen=M|Num=S|Cas=1|Gra=2|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=1|Gra=3|Neg=A
+A	A	Gen=M|Num=S|Cas=1|Gra=3|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=1|Gra=3|Neg=N
+A	A	Gen=M|Num=S|Cas=1|Gra=3|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=2|Gra=1|Neg=A
+A	A	Gen=M|Num=S|Cas=2|Gra=1|Neg=A|Sem=S
+A	A	Gen=M|Num=S|Cas=2|Gra=1|Neg=A|Sem=m
+A	A	Gen=M|Num=S|Cas=2|Gra=1|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=2|Gra=1|Neg=N
+A	A	Gen=M|Num=S|Cas=2|Gra=1|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=2|Gra=2|Neg=A
+A	A	Gen=M|Num=S|Cas=2|Gra=2|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=2|Gra=2|Neg=N
+A	A	Gen=M|Num=S|Cas=2|Gra=2|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=2|Gra=3|Neg=A
+A	A	Gen=M|Num=S|Cas=2|Gra=3|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=2|Gra=3|Neg=N
+A	A	Gen=M|Num=S|Cas=2|Gra=3|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=3|Gra=1|Neg=A
+A	A	Gen=M|Num=S|Cas=3|Gra=1|Neg=A|Sem=S
+A	A	Gen=M|Num=S|Cas=3|Gra=1|Neg=A|Sem=m
+A	A	Gen=M|Num=S|Cas=3|Gra=1|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=3|Gra=1|Neg=N
+A	A	Gen=M|Num=S|Cas=3|Gra=1|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=3|Gra=2|Neg=A
+A	A	Gen=M|Num=S|Cas=3|Gra=2|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=3|Gra=2|Neg=N
+A	A	Gen=M|Num=S|Cas=3|Gra=2|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=3|Gra=3|Neg=A
+A	A	Gen=M|Num=S|Cas=3|Gra=3|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=3|Gra=3|Neg=N
+A	A	Gen=M|Num=S|Cas=3|Gra=3|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=4|Gra=1|Neg=A
+A	A	Gen=M|Num=S|Cas=4|Gra=1|Neg=A|Sem=S
+A	A	Gen=M|Num=S|Cas=4|Gra=1|Neg=A|Sem=m
+A	A	Gen=M|Num=S|Cas=4|Gra=1|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=4|Gra=1|Neg=N
+A	A	Gen=M|Num=S|Cas=4|Gra=1|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=4|Gra=2|Neg=A
+A	A	Gen=M|Num=S|Cas=4|Gra=2|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=4|Gra=2|Neg=N
+A	A	Gen=M|Num=S|Cas=4|Gra=2|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=4|Gra=3|Neg=A
+A	A	Gen=M|Num=S|Cas=4|Gra=3|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=4|Gra=3|Neg=N
+A	A	Gen=M|Num=S|Cas=4|Gra=3|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=5|Gra=1|Neg=A
+A	A	Gen=M|Num=S|Cas=5|Gra=1|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=5|Gra=1|Neg=N
+A	A	Gen=M|Num=S|Cas=5|Gra=1|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=5|Gra=2|Neg=A
+A	A	Gen=M|Num=S|Cas=5|Gra=2|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=5|Gra=2|Neg=N
+A	A	Gen=M|Num=S|Cas=5|Gra=2|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=5|Gra=3|Neg=A
+A	A	Gen=M|Num=S|Cas=5|Gra=3|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=5|Gra=3|Neg=N
+A	A	Gen=M|Num=S|Cas=5|Gra=3|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=6|Gra=1|Neg=A
+A	A	Gen=M|Num=S|Cas=6|Gra=1|Neg=A|Sem=S
+A	A	Gen=M|Num=S|Cas=6|Gra=1|Neg=A|Sem=m
+A	A	Gen=M|Num=S|Cas=6|Gra=1|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=6|Gra=1|Neg=A|Var=7
+A	A	Gen=M|Num=S|Cas=6|Gra=1|Neg=N
+A	A	Gen=M|Num=S|Cas=6|Gra=1|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=6|Gra=1|Neg=N|Var=7
+A	A	Gen=M|Num=S|Cas=6|Gra=2|Neg=A
+A	A	Gen=M|Num=S|Cas=6|Gra=2|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=6|Gra=2|Neg=N
+A	A	Gen=M|Num=S|Cas=6|Gra=2|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=6|Gra=3|Neg=A
+A	A	Gen=M|Num=S|Cas=6|Gra=3|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=6|Gra=3|Neg=N
+A	A	Gen=M|Num=S|Cas=6|Gra=3|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=7|Gra=1|Neg=A
+A	A	Gen=M|Num=S|Cas=7|Gra=1|Neg=A|Sem=S
+A	A	Gen=M|Num=S|Cas=7|Gra=1|Neg=A|Sem=m
+A	A	Gen=M|Num=S|Cas=7|Gra=1|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=7|Gra=1|Neg=N
+A	A	Gen=M|Num=S|Cas=7|Gra=1|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=7|Gra=2|Neg=A
+A	A	Gen=M|Num=S|Cas=7|Gra=2|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=7|Gra=2|Neg=N
+A	A	Gen=M|Num=S|Cas=7|Gra=2|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=7|Gra=3|Neg=A
+A	A	Gen=M|Num=S|Cas=7|Gra=3|Neg=A|Var=6
+A	A	Gen=M|Num=S|Cas=7|Gra=3|Neg=N
+A	A	Gen=M|Num=S|Cas=7|Gra=3|Neg=N|Var=6
+A	A	Gen=M|Num=S|Cas=X|Gra=1|Neg=A
+A	A	Gen=N|Num=D|Cas=7|Gra=1|Neg=A
+A	A	Gen=N|Num=D|Cas=7|Gra=1|Neg=A|Var=6
+A	A	Gen=N|Num=D|Cas=7|Gra=1|Neg=N
+A	A	Gen=N|Num=D|Cas=7|Gra=1|Neg=N|Var=6
+A	A	Gen=N|Num=D|Cas=7|Gra=2|Neg=A
+A	A	Gen=N|Num=D|Cas=7|Gra=2|Neg=A|Var=6
+A	A	Gen=N|Num=D|Cas=7|Gra=2|Neg=N
+A	A	Gen=N|Num=D|Cas=7|Gra=2|Neg=N|Var=6
+A	A	Gen=N|Num=D|Cas=7|Gra=3|Neg=A
+A	A	Gen=N|Num=D|Cas=7|Gra=3|Neg=A|Var=6
+A	A	Gen=N|Num=D|Cas=7|Gra=3|Neg=N
+A	A	Gen=N|Num=D|Cas=7|Gra=3|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=1|Gra=1|Neg=A
+A	A	Gen=N|Num=P|Cas=1|Gra=1|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=1|Gra=1|Neg=N
+A	A	Gen=N|Num=P|Cas=1|Gra=1|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=1|Gra=2|Neg=A
+A	A	Gen=N|Num=P|Cas=1|Gra=2|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=1|Gra=2|Neg=N
+A	A	Gen=N|Num=P|Cas=1|Gra=2|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=1|Gra=3|Neg=A
+A	A	Gen=N|Num=P|Cas=1|Gra=3|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=1|Gra=3|Neg=N
+A	A	Gen=N|Num=P|Cas=1|Gra=3|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=2|Gra=1|Neg=A
+A	A	Gen=N|Num=P|Cas=2|Gra=1|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=2|Gra=1|Neg=N
+A	A	Gen=N|Num=P|Cas=2|Gra=1|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=2|Gra=2|Neg=A
+A	A	Gen=N|Num=P|Cas=2|Gra=2|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=2|Gra=2|Neg=N
+A	A	Gen=N|Num=P|Cas=2|Gra=2|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=2|Gra=3|Neg=A
+A	A	Gen=N|Num=P|Cas=2|Gra=3|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=2|Gra=3|Neg=N
+A	A	Gen=N|Num=P|Cas=2|Gra=3|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=3|Gra=1|Neg=A
+A	A	Gen=N|Num=P|Cas=3|Gra=1|Neg=A|Sem=m
+A	A	Gen=N|Num=P|Cas=3|Gra=1|Neg=A|Sem=o
+A	A	Gen=N|Num=P|Cas=3|Gra=1|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=3|Gra=1|Neg=N
+A	A	Gen=N|Num=P|Cas=3|Gra=1|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=3|Gra=2|Neg=A
+A	A	Gen=N|Num=P|Cas=3|Gra=2|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=3|Gra=2|Neg=N
+A	A	Gen=N|Num=P|Cas=3|Gra=2|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=3|Gra=3|Neg=A
+A	A	Gen=N|Num=P|Cas=3|Gra=3|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=3|Gra=3|Neg=N
+A	A	Gen=N|Num=P|Cas=3|Gra=3|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=4|Gra=1|Neg=A
+A	A	Gen=N|Num=P|Cas=4|Gra=1|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=4|Gra=1|Neg=N
+A	A	Gen=N|Num=P|Cas=4|Gra=1|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=4|Gra=2|Neg=A
+A	A	Gen=N|Num=P|Cas=4|Gra=2|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=4|Gra=2|Neg=N
+A	A	Gen=N|Num=P|Cas=4|Gra=2|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=4|Gra=3|Neg=A
+A	A	Gen=N|Num=P|Cas=4|Gra=3|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=4|Gra=3|Neg=N
+A	A	Gen=N|Num=P|Cas=4|Gra=3|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=5|Gra=1|Neg=A
+A	A	Gen=N|Num=P|Cas=5|Gra=1|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=5|Gra=1|Neg=N
+A	A	Gen=N|Num=P|Cas=5|Gra=1|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=5|Gra=2|Neg=A
+A	A	Gen=N|Num=P|Cas=5|Gra=2|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=5|Gra=2|Neg=N
+A	A	Gen=N|Num=P|Cas=5|Gra=2|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=5|Gra=3|Neg=A
+A	A	Gen=N|Num=P|Cas=5|Gra=3|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=5|Gra=3|Neg=N
+A	A	Gen=N|Num=P|Cas=5|Gra=3|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=6|Gra=1|Neg=A
+A	A	Gen=N|Num=P|Cas=6|Gra=1|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=6|Gra=1|Neg=N
+A	A	Gen=N|Num=P|Cas=6|Gra=1|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=6|Gra=2|Neg=A
+A	A	Gen=N|Num=P|Cas=6|Gra=2|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=6|Gra=2|Neg=N
+A	A	Gen=N|Num=P|Cas=6|Gra=2|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=6|Gra=3|Neg=A
+A	A	Gen=N|Num=P|Cas=6|Gra=3|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=6|Gra=3|Neg=N
+A	A	Gen=N|Num=P|Cas=6|Gra=3|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=7|Gra=1|Neg=A
+A	A	Gen=N|Num=P|Cas=7|Gra=1|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=7|Gra=1|Neg=A|Var=7
+A	A	Gen=N|Num=P|Cas=7|Gra=1|Neg=N
+A	A	Gen=N|Num=P|Cas=7|Gra=1|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=7|Gra=1|Neg=N|Var=7
+A	A	Gen=N|Num=P|Cas=7|Gra=2|Neg=A
+A	A	Gen=N|Num=P|Cas=7|Gra=2|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=7|Gra=2|Neg=A|Var=7
+A	A	Gen=N|Num=P|Cas=7|Gra=2|Neg=N
+A	A	Gen=N|Num=P|Cas=7|Gra=2|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=7|Gra=2|Neg=N|Var=7
+A	A	Gen=N|Num=P|Cas=7|Gra=3|Neg=A
+A	A	Gen=N|Num=P|Cas=7|Gra=3|Neg=A|Var=6
+A	A	Gen=N|Num=P|Cas=7|Gra=3|Neg=A|Var=7
+A	A	Gen=N|Num=P|Cas=7|Gra=3|Neg=N
+A	A	Gen=N|Num=P|Cas=7|Gra=3|Neg=N|Var=6
+A	A	Gen=N|Num=P|Cas=7|Gra=3|Neg=N|Var=7
+A	A	Gen=N|Num=S|Cas=1|Gra=1|Neg=A
+A	A	Gen=N|Num=S|Cas=1|Gra=1|Neg=A|Sem=G
+A	A	Gen=N|Num=S|Cas=1|Gra=1|Neg=A|Sem=K
+A	A	Gen=N|Num=S|Cas=1|Gra=1|Neg=A|Sem=R
+A	A	Gen=N|Num=S|Cas=1|Gra=1|Neg=A|Sem=S
+A	A	Gen=N|Num=S|Cas=1|Gra=1|Neg=A|Sem=m
+A	A	Gen=N|Num=S|Cas=1|Gra=1|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=1|Gra=1|Neg=N
+A	A	Gen=N|Num=S|Cas=1|Gra=1|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=1|Gra=2|Neg=A
+A	A	Gen=N|Num=S|Cas=1|Gra=2|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=1|Gra=2|Neg=N
+A	A	Gen=N|Num=S|Cas=1|Gra=2|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=1|Gra=3|Neg=A
+A	A	Gen=N|Num=S|Cas=1|Gra=3|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=1|Gra=3|Neg=N
+A	A	Gen=N|Num=S|Cas=1|Gra=3|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=2|Gra=1|Neg=A
+A	A	Gen=N|Num=S|Cas=2|Gra=1|Neg=A|Sem=G
+A	A	Gen=N|Num=S|Cas=2|Gra=1|Neg=A|Sem=S
+A	A	Gen=N|Num=S|Cas=2|Gra=1|Neg=A|Sem=m
+A	A	Gen=N|Num=S|Cas=2|Gra=1|Neg=A|Sem=o
+A	A	Gen=N|Num=S|Cas=2|Gra=1|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=2|Gra=1|Neg=N
+A	A	Gen=N|Num=S|Cas=2|Gra=1|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=2|Gra=2|Neg=A
+A	A	Gen=N|Num=S|Cas=2|Gra=2|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=2|Gra=2|Neg=N
+A	A	Gen=N|Num=S|Cas=2|Gra=2|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=2|Gra=3|Neg=A
+A	A	Gen=N|Num=S|Cas=2|Gra=3|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=2|Gra=3|Neg=N
+A	A	Gen=N|Num=S|Cas=2|Gra=3|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=3|Gra=1|Neg=A
+A	A	Gen=N|Num=S|Cas=3|Gra=1|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=3|Gra=1|Neg=N
+A	A	Gen=N|Num=S|Cas=3|Gra=1|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=3|Gra=2|Neg=A
+A	A	Gen=N|Num=S|Cas=3|Gra=2|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=3|Gra=2|Neg=N
+A	A	Gen=N|Num=S|Cas=3|Gra=2|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=3|Gra=3|Neg=A
+A	A	Gen=N|Num=S|Cas=3|Gra=3|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=3|Gra=3|Neg=N
+A	A	Gen=N|Num=S|Cas=3|Gra=3|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=4|Gra=1|Neg=A
+A	A	Gen=N|Num=S|Cas=4|Gra=1|Neg=A|Sem=G
+A	A	Gen=N|Num=S|Cas=4|Gra=1|Neg=A|Sem=m
+A	A	Gen=N|Num=S|Cas=4|Gra=1|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=4|Gra=1|Neg=N
+A	A	Gen=N|Num=S|Cas=4|Gra=1|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=4|Gra=2|Neg=A
+A	A	Gen=N|Num=S|Cas=4|Gra=2|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=4|Gra=2|Neg=N
+A	A	Gen=N|Num=S|Cas=4|Gra=2|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=4|Gra=3|Neg=A
+A	A	Gen=N|Num=S|Cas=4|Gra=3|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=4|Gra=3|Neg=N
+A	A	Gen=N|Num=S|Cas=4|Gra=3|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=5|Gra=1|Neg=A
+A	A	Gen=N|Num=S|Cas=5|Gra=1|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=5|Gra=1|Neg=N
+A	A	Gen=N|Num=S|Cas=5|Gra=1|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=5|Gra=2|Neg=A
+A	A	Gen=N|Num=S|Cas=5|Gra=2|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=5|Gra=2|Neg=N
+A	A	Gen=N|Num=S|Cas=5|Gra=2|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=5|Gra=3|Neg=A
+A	A	Gen=N|Num=S|Cas=5|Gra=3|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=5|Gra=3|Neg=N
+A	A	Gen=N|Num=S|Cas=5|Gra=3|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=6|Gra=1|Neg=A
+A	A	Gen=N|Num=S|Cas=6|Gra=1|Neg=A|Sem=G
+A	A	Gen=N|Num=S|Cas=6|Gra=1|Neg=A|Sem=S
+A	A	Gen=N|Num=S|Cas=6|Gra=1|Neg=A|Sem=m
+A	A	Gen=N|Num=S|Cas=6|Gra=1|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=6|Gra=1|Neg=A|Var=7
+A	A	Gen=N|Num=S|Cas=6|Gra=1|Neg=N
+A	A	Gen=N|Num=S|Cas=6|Gra=1|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=6|Gra=1|Neg=N|Var=7
+A	A	Gen=N|Num=S|Cas=6|Gra=2|Neg=A
+A	A	Gen=N|Num=S|Cas=6|Gra=2|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=6|Gra=2|Neg=N
+A	A	Gen=N|Num=S|Cas=6|Gra=2|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=6|Gra=3|Neg=A
+A	A	Gen=N|Num=S|Cas=6|Gra=3|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=6|Gra=3|Neg=N
+A	A	Gen=N|Num=S|Cas=6|Gra=3|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=7|Gra=1|Neg=A
+A	A	Gen=N|Num=S|Cas=7|Gra=1|Neg=A|Sem=G
+A	A	Gen=N|Num=S|Cas=7|Gra=1|Neg=A|Sem=S
+A	A	Gen=N|Num=S|Cas=7|Gra=1|Neg=A|Sem=m
+A	A	Gen=N|Num=S|Cas=7|Gra=1|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=7|Gra=1|Neg=A|Var=8
+A	A	Gen=N|Num=S|Cas=7|Gra=1|Neg=N
+A	A	Gen=N|Num=S|Cas=7|Gra=1|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=7|Gra=2|Neg=A
+A	A	Gen=N|Num=S|Cas=7|Gra=2|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=7|Gra=2|Neg=N
+A	A	Gen=N|Num=S|Cas=7|Gra=2|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=7|Gra=3|Neg=A
+A	A	Gen=N|Num=S|Cas=7|Gra=3|Neg=A|Var=6
+A	A	Gen=N|Num=S|Cas=7|Gra=3|Neg=N
+A	A	Gen=N|Num=S|Cas=7|Gra=3|Neg=N|Var=6
+A	A	Gen=N|Num=S|Cas=X|Gra=1|Neg=A
+A	A	Gen=N|Num=S|Cas=X|Gra=1|Neg=A|Sem=G
+A	A	Gen=N|Num=S|Cas=X|Gra=1|Neg=A|Sem=m
+A	A	Gen=X|Num=P|Cas=X|Gra=1|Neg=A
+A	A	Gen=X|Num=P|Cas=X|Gra=1|Neg=N
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=E
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=G
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=K
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=R
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=S
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=Y
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=m
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Sem=w
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=1
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=8
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=8|Sem=G
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=8|Sem=K
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=8|Sem=R
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=8|Sem=m
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=A|Var=9
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=N
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=N|Var=8
+A	A	Gen=X|Num=X|Cas=X|Gra=1|Neg=N|Var=9
+A	A	Gen=X|Num=X|Cas=X|Gra=2|Neg=A|Var=8
+A	A	Gen=X|Num=X|Cas=X|Gra=3|Neg=A|Var=8
+A	C	Gen=F|Num=S|Cas=4|Neg=A
+A	C	Gen=F|Num=S|Cas=4|Neg=N
+A	C	Gen=M|Num=P|Neg=A
+A	C	Gen=M|Num=P|Neg=N
+A	C	Gen=N|Num=S|Neg=A
+A	C	Gen=N|Num=S|Neg=N
+A	C	Gen=Q|Num=W|Neg=A
+A	C	Gen=Q|Num=W|Neg=N
+A	C	Gen=T|Num=P|Neg=A
+A	C	Gen=T|Num=P|Neg=N
+A	C	Gen=Y|Num=S|Neg=A
+A	C	Gen=Y|Num=S|Neg=N
+A	G	Gen=F|Num=D|Cas=7|Neg=A
+A	G	Gen=F|Num=D|Cas=7|Neg=A|Var=6
+A	G	Gen=F|Num=D|Cas=7|Neg=N
+A	G	Gen=F|Num=D|Cas=7|Neg=N|Var=6
+A	G	Gen=F|Num=P|Cas=1|Neg=A
+A	G	Gen=F|Num=P|Cas=1|Neg=A|Var=6
+A	G	Gen=F|Num=P|Cas=1|Neg=N
+A	G	Gen=F|Num=P|Cas=1|Neg=N|Var=6
+A	G	Gen=F|Num=P|Cas=2|Neg=A
+A	G	Gen=F|Num=P|Cas=2|Neg=A|Var=6
+A	G	Gen=F|Num=P|Cas=2|Neg=N
+A	G	Gen=F|Num=P|Cas=2|Neg=N|Var=6
+A	G	Gen=F|Num=P|Cas=3|Neg=A
+A	G	Gen=F|Num=P|Cas=3|Neg=A|Var=6
+A	G	Gen=F|Num=P|Cas=3|Neg=N
+A	G	Gen=F|Num=P|Cas=3|Neg=N|Var=6
+A	G	Gen=F|Num=P|Cas=4|Neg=A
+A	G	Gen=F|Num=P|Cas=4|Neg=A|Var=6
+A	G	Gen=F|Num=P|Cas=4|Neg=N
+A	G	Gen=F|Num=P|Cas=4|Neg=N|Var=6
+A	G	Gen=F|Num=P|Cas=5|Neg=A
+A	G	Gen=F|Num=P|Cas=5|Neg=A|Var=6
+A	G	Gen=F|Num=P|Cas=5|Neg=N
+A	G	Gen=F|Num=P|Cas=5|Neg=N|Var=6
+A	G	Gen=F|Num=P|Cas=6|Neg=A
+A	G	Gen=F|Num=P|Cas=6|Neg=A|Var=6
+A	G	Gen=F|Num=P|Cas=6|Neg=N
+A	G	Gen=F|Num=P|Cas=6|Neg=N|Var=6
+A	G	Gen=F|Num=P|Cas=7|Neg=A
+A	G	Gen=F|Num=P|Cas=7|Neg=A|Var=6
+A	G	Gen=F|Num=P|Cas=7|Neg=N
+A	G	Gen=F|Num=P|Cas=7|Neg=N|Var=6
+A	G	Gen=F|Num=S|Cas=1|Neg=A
+A	G	Gen=F|Num=S|Cas=1|Neg=A|Var=6
+A	G	Gen=F|Num=S|Cas=1|Neg=N
+A	G	Gen=F|Num=S|Cas=1|Neg=N|Var=6
+A	G	Gen=F|Num=S|Cas=2|Neg=A
+A	G	Gen=F|Num=S|Cas=2|Neg=A|Var=6
+A	G	Gen=F|Num=S|Cas=2|Neg=N
+A	G	Gen=F|Num=S|Cas=2|Neg=N|Var=6
+A	G	Gen=F|Num=S|Cas=3|Neg=A
+A	G	Gen=F|Num=S|Cas=3|Neg=A|Var=6
+A	G	Gen=F|Num=S|Cas=3|Neg=N
+A	G	Gen=F|Num=S|Cas=3|Neg=N|Var=6
+A	G	Gen=F|Num=S|Cas=4|Neg=A
+A	G	Gen=F|Num=S|Cas=4|Neg=A|Var=6
+A	G	Gen=F|Num=S|Cas=4|Neg=N
+A	G	Gen=F|Num=S|Cas=4|Neg=N|Var=6
+A	G	Gen=F|Num=S|Cas=5|Neg=A
+A	G	Gen=F|Num=S|Cas=5|Neg=A|Var=6
+A	G	Gen=F|Num=S|Cas=5|Neg=N
+A	G	Gen=F|Num=S|Cas=5|Neg=N|Var=6
+A	G	Gen=F|Num=S|Cas=6|Neg=A
+A	G	Gen=F|Num=S|Cas=6|Neg=A|Var=6
+A	G	Gen=F|Num=S|Cas=6|Neg=N
+A	G	Gen=F|Num=S|Cas=6|Neg=N|Var=6
+A	G	Gen=F|Num=S|Cas=7|Neg=A
+A	G	Gen=F|Num=S|Cas=7|Neg=A|Var=6
+A	G	Gen=F|Num=S|Cas=7|Neg=N
+A	G	Gen=F|Num=S|Cas=7|Neg=N|Var=6
+A	G	Gen=I|Num=P|Cas=1|Neg=A
+A	G	Gen=I|Num=P|Cas=1|Neg=A|Var=6
+A	G	Gen=I|Num=P|Cas=1|Neg=N
+A	G	Gen=I|Num=P|Cas=1|Neg=N|Var=6
+A	G	Gen=I|Num=P|Cas=2|Neg=A
+A	G	Gen=I|Num=P|Cas=2|Neg=A|Var=6
+A	G	Gen=I|Num=P|Cas=2|Neg=N
+A	G	Gen=I|Num=P|Cas=2|Neg=N|Var=6
+A	G	Gen=I|Num=P|Cas=3|Neg=A
+A	G	Gen=I|Num=P|Cas=3|Neg=A|Var=6
+A	G	Gen=I|Num=P|Cas=3|Neg=N
+A	G	Gen=I|Num=P|Cas=3|Neg=N|Var=6
+A	G	Gen=I|Num=P|Cas=4|Neg=A
+A	G	Gen=I|Num=P|Cas=4|Neg=A|Var=6
+A	G	Gen=I|Num=P|Cas=4|Neg=N
+A	G	Gen=I|Num=P|Cas=4|Neg=N|Var=6
+A	G	Gen=I|Num=P|Cas=5|Neg=A
+A	G	Gen=I|Num=P|Cas=5|Neg=A|Var=6
+A	G	Gen=I|Num=P|Cas=5|Neg=N
+A	G	Gen=I|Num=P|Cas=5|Neg=N|Var=6
+A	G	Gen=I|Num=P|Cas=6|Neg=A
+A	G	Gen=I|Num=P|Cas=6|Neg=A|Var=6
+A	G	Gen=I|Num=P|Cas=6|Neg=N
+A	G	Gen=I|Num=P|Cas=6|Neg=N|Var=6
+A	G	Gen=I|Num=P|Cas=7|Neg=A
+A	G	Gen=I|Num=P|Cas=7|Neg=A|Var=6
+A	G	Gen=I|Num=P|Cas=7|Neg=N
+A	G	Gen=I|Num=P|Cas=7|Neg=N|Var=6
+A	G	Gen=I|Num=S|Cas=1|Neg=A
+A	G	Gen=I|Num=S|Cas=1|Neg=A|Var=6
+A	G	Gen=I|Num=S|Cas=1|Neg=N
+A	G	Gen=I|Num=S|Cas=1|Neg=N|Var=6
+A	G	Gen=I|Num=S|Cas=2|Neg=A
+A	G	Gen=I|Num=S|Cas=2|Neg=A|Var=6
+A	G	Gen=I|Num=S|Cas=2|Neg=N
+A	G	Gen=I|Num=S|Cas=2|Neg=N|Var=6
+A	G	Gen=I|Num=S|Cas=3|Neg=A
+A	G	Gen=I|Num=S|Cas=3|Neg=A|Var=6
+A	G	Gen=I|Num=S|Cas=3|Neg=N
+A	G	Gen=I|Num=S|Cas=3|Neg=N|Var=6
+A	G	Gen=I|Num=S|Cas=4|Neg=A
+A	G	Gen=I|Num=S|Cas=4|Neg=A|Var=6
+A	G	Gen=I|Num=S|Cas=4|Neg=N
+A	G	Gen=I|Num=S|Cas=4|Neg=N|Var=6
+A	G	Gen=I|Num=S|Cas=5|Neg=A
+A	G	Gen=I|Num=S|Cas=5|Neg=A|Var=6
+A	G	Gen=I|Num=S|Cas=5|Neg=N
+A	G	Gen=I|Num=S|Cas=5|Neg=N|Var=6
+A	G	Gen=I|Num=S|Cas=6|Neg=A
+A	G	Gen=I|Num=S|Cas=6|Neg=A|Var=6
+A	G	Gen=I|Num=S|Cas=6|Neg=A|Var=7
+A	G	Gen=I|Num=S|Cas=6|Neg=N
+A	G	Gen=I|Num=S|Cas=6|Neg=N|Var=6
+A	G	Gen=I|Num=S|Cas=6|Neg=N|Var=7
+A	G	Gen=I|Num=S|Cas=7|Neg=A
+A	G	Gen=I|Num=S|Cas=7|Neg=A|Var=6
+A	G	Gen=I|Num=S|Cas=7|Neg=N
+A	G	Gen=I|Num=S|Cas=7|Neg=N|Var=6
+A	G	Gen=M|Num=P|Cas=1|Neg=A
+A	G	Gen=M|Num=P|Cas=1|Neg=A|Var=6
+A	G	Gen=M|Num=P|Cas=1|Neg=N
+A	G	Gen=M|Num=P|Cas=1|Neg=N|Var=6
+A	G	Gen=M|Num=P|Cas=2|Neg=A
+A	G	Gen=M|Num=P|Cas=2|Neg=A|Var=6
+A	G	Gen=M|Num=P|Cas=2|Neg=N
+A	G	Gen=M|Num=P|Cas=2|Neg=N|Var=6
+A	G	Gen=M|Num=P|Cas=3|Neg=A
+A	G	Gen=M|Num=P|Cas=3|Neg=A|Var=6
+A	G	Gen=M|Num=P|Cas=3|Neg=N
+A	G	Gen=M|Num=P|Cas=3|Neg=N|Var=6
+A	G	Gen=M|Num=P|Cas=4|Neg=A
+A	G	Gen=M|Num=P|Cas=4|Neg=A|Var=6
+A	G	Gen=M|Num=P|Cas=4|Neg=N
+A	G	Gen=M|Num=P|Cas=4|Neg=N|Var=6
+A	G	Gen=M|Num=P|Cas=5|Neg=A
+A	G	Gen=M|Num=P|Cas=5|Neg=A|Var=6
+A	G	Gen=M|Num=P|Cas=5|Neg=N
+A	G	Gen=M|Num=P|Cas=5|Neg=N|Var=6
+A	G	Gen=M|Num=P|Cas=6|Neg=A
+A	G	Gen=M|Num=P|Cas=6|Neg=A|Var=6
+A	G	Gen=M|Num=P|Cas=6|Neg=N
+A	G	Gen=M|Num=P|Cas=6|Neg=N|Var=6
+A	G	Gen=M|Num=P|Cas=7|Neg=A
+A	G	Gen=M|Num=P|Cas=7|Neg=A|Var=6
+A	G	Gen=M|Num=P|Cas=7|Neg=N
+A	G	Gen=M|Num=P|Cas=7|Neg=N|Var=6
+A	G	Gen=M|Num=S|Cas=1|Neg=A
+A	G	Gen=M|Num=S|Cas=1|Neg=A|Var=6
+A	G	Gen=M|Num=S|Cas=1|Neg=N
+A	G	Gen=M|Num=S|Cas=1|Neg=N|Var=6
+A	G	Gen=M|Num=S|Cas=2|Neg=A
+A	G	Gen=M|Num=S|Cas=2|Neg=A|Var=6
+A	G	Gen=M|Num=S|Cas=2|Neg=N
+A	G	Gen=M|Num=S|Cas=2|Neg=N|Var=6
+A	G	Gen=M|Num=S|Cas=3|Neg=A
+A	G	Gen=M|Num=S|Cas=3|Neg=A|Var=6
+A	G	Gen=M|Num=S|Cas=3|Neg=N
+A	G	Gen=M|Num=S|Cas=3|Neg=N|Var=6
+A	G	Gen=M|Num=S|Cas=4|Neg=A
+A	G	Gen=M|Num=S|Cas=4|Neg=A|Var=6
+A	G	Gen=M|Num=S|Cas=4|Neg=N
+A	G	Gen=M|Num=S|Cas=4|Neg=N|Var=6
+A	G	Gen=M|Num=S|Cas=5|Neg=A
+A	G	Gen=M|Num=S|Cas=5|Neg=A|Var=6
+A	G	Gen=M|Num=S|Cas=5|Neg=N
+A	G	Gen=M|Num=S|Cas=5|Neg=N|Var=6
+A	G	Gen=M|Num=S|Cas=6|Neg=A
+A	G	Gen=M|Num=S|Cas=6|Neg=A|Var=6
+A	G	Gen=M|Num=S|Cas=6|Neg=A|Var=7
+A	G	Gen=M|Num=S|Cas=6|Neg=N
+A	G	Gen=M|Num=S|Cas=6|Neg=N|Var=6
+A	G	Gen=M|Num=S|Cas=6|Neg=N|Var=7
+A	G	Gen=M|Num=S|Cas=7|Neg=A
+A	G	Gen=M|Num=S|Cas=7|Neg=A|Var=6
+A	G	Gen=M|Num=S|Cas=7|Neg=N
+A	G	Gen=M|Num=S|Cas=7|Neg=N|Var=6
+A	G	Gen=N|Num=D|Cas=7|Neg=A
+A	G	Gen=N|Num=D|Cas=7|Neg=A|Var=6
+A	G	Gen=N|Num=D|Cas=7|Neg=N
+A	G	Gen=N|Num=D|Cas=7|Neg=N|Var=6
+A	G	Gen=N|Num=P|Cas=1|Neg=A
+A	G	Gen=N|Num=P|Cas=1|Neg=A|Var=6
+A	G	Gen=N|Num=P|Cas=1|Neg=N
+A	G	Gen=N|Num=P|Cas=1|Neg=N|Var=6
+A	G	Gen=N|Num=P|Cas=2|Neg=A
+A	G	Gen=N|Num=P|Cas=2|Neg=A|Var=6
+A	G	Gen=N|Num=P|Cas=2|Neg=N
+A	G	Gen=N|Num=P|Cas=2|Neg=N|Var=6
+A	G	Gen=N|Num=P|Cas=3|Neg=A
+A	G	Gen=N|Num=P|Cas=3|Neg=A|Var=6
+A	G	Gen=N|Num=P|Cas=3|Neg=N
+A	G	Gen=N|Num=P|Cas=3|Neg=N|Var=6
+A	G	Gen=N|Num=P|Cas=4|Neg=A
+A	G	Gen=N|Num=P|Cas=4|Neg=A|Var=6
+A	G	Gen=N|Num=P|Cas=4|Neg=N
+A	G	Gen=N|Num=P|Cas=4|Neg=N|Var=6
+A	G	Gen=N|Num=P|Cas=5|Neg=A
+A	G	Gen=N|Num=P|Cas=5|Neg=A|Var=6
+A	G	Gen=N|Num=P|Cas=5|Neg=N
+A	G	Gen=N|Num=P|Cas=5|Neg=N|Var=6
+A	G	Gen=N|Num=P|Cas=6|Neg=A
+A	G	Gen=N|Num=P|Cas=6|Neg=A|Var=6
+A	G	Gen=N|Num=P|Cas=6|Neg=N
+A	G	Gen=N|Num=P|Cas=6|Neg=N|Var=6
+A	G	Gen=N|Num=P|Cas=7|Neg=A
+A	G	Gen=N|Num=P|Cas=7|Neg=A|Var=6
+A	G	Gen=N|Num=P|Cas=7|Neg=N
+A	G	Gen=N|Num=P|Cas=7|Neg=N|Var=6
+A	G	Gen=N|Num=S|Cas=1|Neg=A
+A	G	Gen=N|Num=S|Cas=1|Neg=A|Var=6
+A	G	Gen=N|Num=S|Cas=1|Neg=N
+A	G	Gen=N|Num=S|Cas=1|Neg=N|Var=6
+A	G	Gen=N|Num=S|Cas=2|Neg=A
+A	G	Gen=N|Num=S|Cas=2|Neg=A|Var=6
+A	G	Gen=N|Num=S|Cas=2|Neg=N
+A	G	Gen=N|Num=S|Cas=2|Neg=N|Var=6
+A	G	Gen=N|Num=S|Cas=3|Neg=A
+A	G	Gen=N|Num=S|Cas=3|Neg=A|Var=6
+A	G	Gen=N|Num=S|Cas=3|Neg=N
+A	G	Gen=N|Num=S|Cas=3|Neg=N|Var=6
+A	G	Gen=N|Num=S|Cas=4|Neg=A
+A	G	Gen=N|Num=S|Cas=4|Neg=A|Var=6
+A	G	Gen=N|Num=S|Cas=4|Neg=N
+A	G	Gen=N|Num=S|Cas=4|Neg=N|Var=6
+A	G	Gen=N|Num=S|Cas=5|Neg=A
+A	G	Gen=N|Num=S|Cas=5|Neg=A|Var=6
+A	G	Gen=N|Num=S|Cas=5|Neg=N
+A	G	Gen=N|Num=S|Cas=5|Neg=N|Var=6
+A	G	Gen=N|Num=S|Cas=6|Neg=A
+A	G	Gen=N|Num=S|Cas=6|Neg=A|Var=6
+A	G	Gen=N|Num=S|Cas=6|Neg=A|Var=7
+A	G	Gen=N|Num=S|Cas=6|Neg=N
+A	G	Gen=N|Num=S|Cas=6|Neg=N|Var=6
+A	G	Gen=N|Num=S|Cas=6|Neg=N|Var=7
+A	G	Gen=N|Num=S|Cas=7|Neg=A
+A	G	Gen=N|Num=S|Cas=7|Neg=A|Var=6
+A	G	Gen=N|Num=S|Cas=7|Neg=N
+A	G	Gen=N|Num=S|Cas=7|Neg=N|Var=6
+A	M	Gen=F|Num=D|Cas=7|Neg=A
+A	M	Gen=F|Num=D|Cas=7|Neg=A|Var=6
+A	M	Gen=F|Num=D|Cas=7|Neg=N
+A	M	Gen=F|Num=D|Cas=7|Neg=N|Var=6
+A	M	Gen=F|Num=P|Cas=1|Neg=A
+A	M	Gen=F|Num=P|Cas=1|Neg=A|Var=6
+A	M	Gen=F|Num=P|Cas=1|Neg=N
+A	M	Gen=F|Num=P|Cas=1|Neg=N|Var=6
+A	M	Gen=F|Num=P|Cas=2|Neg=A
+A	M	Gen=F|Num=P|Cas=2|Neg=A|Var=6
+A	M	Gen=F|Num=P|Cas=2|Neg=N
+A	M	Gen=F|Num=P|Cas=2|Neg=N|Var=6
+A	M	Gen=F|Num=P|Cas=3|Neg=A
+A	M	Gen=F|Num=P|Cas=3|Neg=A|Var=6
+A	M	Gen=F|Num=P|Cas=3|Neg=N
+A	M	Gen=F|Num=P|Cas=3|Neg=N|Var=6
+A	M	Gen=F|Num=P|Cas=4|Neg=A
+A	M	Gen=F|Num=P|Cas=4|Neg=A|Var=6
+A	M	Gen=F|Num=P|Cas=4|Neg=N
+A	M	Gen=F|Num=P|Cas=4|Neg=N|Var=6
+A	M	Gen=F|Num=P|Cas=5|Neg=A
+A	M	Gen=F|Num=P|Cas=5|Neg=A|Var=6
+A	M	Gen=F|Num=P|Cas=5|Neg=N
+A	M	Gen=F|Num=P|Cas=5|Neg=N|Var=6
+A	M	Gen=F|Num=P|Cas=6|Neg=A
+A	M	Gen=F|Num=P|Cas=6|Neg=A|Var=6
+A	M	Gen=F|Num=P|Cas=6|Neg=N
+A	M	Gen=F|Num=P|Cas=6|Neg=N|Var=6
+A	M	Gen=F|Num=P|Cas=7|Neg=A
+A	M	Gen=F|Num=P|Cas=7|Neg=A|Var=6
+A	M	Gen=F|Num=P|Cas=7|Neg=N
+A	M	Gen=F|Num=P|Cas=7|Neg=N|Var=6
+A	M	Gen=F|Num=S|Cas=1|Neg=A
+A	M	Gen=F|Num=S|Cas=1|Neg=A|Var=6
+A	M	Gen=F|Num=S|Cas=1|Neg=N
+A	M	Gen=F|Num=S|Cas=1|Neg=N|Var=6
+A	M	Gen=F|Num=S|Cas=2|Neg=A
+A	M	Gen=F|Num=S|Cas=2|Neg=A|Var=6
+A	M	Gen=F|Num=S|Cas=2|Neg=N
+A	M	Gen=F|Num=S|Cas=2|Neg=N|Var=6
+A	M	Gen=F|Num=S|Cas=3|Neg=A
+A	M	Gen=F|Num=S|Cas=3|Neg=A|Var=6
+A	M	Gen=F|Num=S|Cas=3|Neg=N
+A	M	Gen=F|Num=S|Cas=3|Neg=N|Var=6
+A	M	Gen=F|Num=S|Cas=4|Neg=A
+A	M	Gen=F|Num=S|Cas=4|Neg=A|Var=6
+A	M	Gen=F|Num=S|Cas=4|Neg=N
+A	M	Gen=F|Num=S|Cas=4|Neg=N|Var=6
+A	M	Gen=F|Num=S|Cas=5|Neg=A
+A	M	Gen=F|Num=S|Cas=5|Neg=A|Var=6
+A	M	Gen=F|Num=S|Cas=5|Neg=N
+A	M	Gen=F|Num=S|Cas=5|Neg=N|Var=6
+A	M	Gen=F|Num=S|Cas=6|Neg=A
+A	M	Gen=F|Num=S|Cas=6|Neg=A|Var=6
+A	M	Gen=F|Num=S|Cas=6|Neg=N
+A	M	Gen=F|Num=S|Cas=6|Neg=N|Var=6
+A	M	Gen=F|Num=S|Cas=7|Neg=A
+A	M	Gen=F|Num=S|Cas=7|Neg=A|Var=6
+A	M	Gen=F|Num=S|Cas=7|Neg=N
+A	M	Gen=F|Num=S|Cas=7|Neg=N|Var=6
+A	M	Gen=I|Num=P|Cas=1|Neg=A
+A	M	Gen=I|Num=P|Cas=1|Neg=A|Var=6
+A	M	Gen=I|Num=P|Cas=1|Neg=N
+A	M	Gen=I|Num=P|Cas=1|Neg=N|Var=6
+A	M	Gen=I|Num=P|Cas=2|Neg=A
+A	M	Gen=I|Num=P|Cas=2|Neg=A|Var=6
+A	M	Gen=I|Num=P|Cas=2|Neg=N
+A	M	Gen=I|Num=P|Cas=2|Neg=N|Var=6
+A	M	Gen=I|Num=P|Cas=3|Neg=A
+A	M	Gen=I|Num=P|Cas=3|Neg=A|Var=6
+A	M	Gen=I|Num=P|Cas=3|Neg=N
+A	M	Gen=I|Num=P|Cas=3|Neg=N|Var=6
+A	M	Gen=I|Num=P|Cas=4|Neg=A
+A	M	Gen=I|Num=P|Cas=4|Neg=A|Var=6
+A	M	Gen=I|Num=P|Cas=4|Neg=N
+A	M	Gen=I|Num=P|Cas=4|Neg=N|Var=6
+A	M	Gen=I|Num=P|Cas=5|Neg=A
+A	M	Gen=I|Num=P|Cas=5|Neg=A|Var=6
+A	M	Gen=I|Num=P|Cas=5|Neg=N
+A	M	Gen=I|Num=P|Cas=5|Neg=N|Var=6
+A	M	Gen=I|Num=P|Cas=6|Neg=A
+A	M	Gen=I|Num=P|Cas=6|Neg=A|Var=6
+A	M	Gen=I|Num=P|Cas=6|Neg=N
+A	M	Gen=I|Num=P|Cas=6|Neg=N|Var=6
+A	M	Gen=I|Num=P|Cas=7|Neg=A
+A	M	Gen=I|Num=P|Cas=7|Neg=A|Var=6
+A	M	Gen=I|Num=P|Cas=7|Neg=N
+A	M	Gen=I|Num=P|Cas=7|Neg=N|Var=6
+A	M	Gen=I|Num=S|Cas=1|Neg=A
+A	M	Gen=I|Num=S|Cas=1|Neg=A|Var=6
+A	M	Gen=I|Num=S|Cas=1|Neg=N
+A	M	Gen=I|Num=S|Cas=1|Neg=N|Var=6
+A	M	Gen=I|Num=S|Cas=2|Neg=A
+A	M	Gen=I|Num=S|Cas=2|Neg=A|Var=6
+A	M	Gen=I|Num=S|Cas=2|Neg=N
+A	M	Gen=I|Num=S|Cas=2|Neg=N|Var=6
+A	M	Gen=I|Num=S|Cas=3|Neg=A
+A	M	Gen=I|Num=S|Cas=3|Neg=A|Var=6
+A	M	Gen=I|Num=S|Cas=3|Neg=N
+A	M	Gen=I|Num=S|Cas=3|Neg=N|Var=6
+A	M	Gen=I|Num=S|Cas=4|Neg=A
+A	M	Gen=I|Num=S|Cas=4|Neg=A|Var=6
+A	M	Gen=I|Num=S|Cas=4|Neg=N
+A	M	Gen=I|Num=S|Cas=4|Neg=N|Var=6
+A	M	Gen=I|Num=S|Cas=5|Neg=A
+A	M	Gen=I|Num=S|Cas=5|Neg=A|Var=6
+A	M	Gen=I|Num=S|Cas=5|Neg=N
+A	M	Gen=I|Num=S|Cas=5|Neg=N|Var=6
+A	M	Gen=I|Num=S|Cas=6|Neg=A
+A	M	Gen=I|Num=S|Cas=6|Neg=A|Var=6
+A	M	Gen=I|Num=S|Cas=6|Neg=A|Var=7
+A	M	Gen=I|Num=S|Cas=6|Neg=N
+A	M	Gen=I|Num=S|Cas=6|Neg=N|Var=6
+A	M	Gen=I|Num=S|Cas=6|Neg=N|Var=7
+A	M	Gen=I|Num=S|Cas=7|Neg=A
+A	M	Gen=I|Num=S|Cas=7|Neg=A|Var=6
+A	M	Gen=I|Num=S|Cas=7|Neg=N
+A	M	Gen=I|Num=S|Cas=7|Neg=N|Var=6
+A	M	Gen=M|Num=P|Cas=1|Neg=A
+A	M	Gen=M|Num=P|Cas=1|Neg=A|Var=6
+A	M	Gen=M|Num=P|Cas=1|Neg=N
+A	M	Gen=M|Num=P|Cas=1|Neg=N|Var=6
+A	M	Gen=M|Num=P|Cas=2|Neg=A
+A	M	Gen=M|Num=P|Cas=2|Neg=A|Var=6
+A	M	Gen=M|Num=P|Cas=2|Neg=N
+A	M	Gen=M|Num=P|Cas=2|Neg=N|Var=6
+A	M	Gen=M|Num=P|Cas=3|Neg=A
+A	M	Gen=M|Num=P|Cas=3|Neg=A|Var=6
+A	M	Gen=M|Num=P|Cas=3|Neg=N
+A	M	Gen=M|Num=P|Cas=3|Neg=N|Var=6
+A	M	Gen=M|Num=P|Cas=4|Neg=A
+A	M	Gen=M|Num=P|Cas=4|Neg=A|Var=6
+A	M	Gen=M|Num=P|Cas=4|Neg=N
+A	M	Gen=M|Num=P|Cas=4|Neg=N|Var=6
+A	M	Gen=M|Num=P|Cas=5|Neg=A
+A	M	Gen=M|Num=P|Cas=5|Neg=A|Var=6
+A	M	Gen=M|Num=P|Cas=5|Neg=N
+A	M	Gen=M|Num=P|Cas=5|Neg=N|Var=6
+A	M	Gen=M|Num=P|Cas=6|Neg=A
+A	M	Gen=M|Num=P|Cas=6|Neg=A|Var=6
+A	M	Gen=M|Num=P|Cas=6|Neg=N
+A	M	Gen=M|Num=P|Cas=6|Neg=N|Var=6
+A	M	Gen=M|Num=P|Cas=7|Neg=A
+A	M	Gen=M|Num=P|Cas=7|Neg=A|Var=6
+A	M	Gen=M|Num=P|Cas=7|Neg=N
+A	M	Gen=M|Num=P|Cas=7|Neg=N|Var=6
+A	M	Gen=M|Num=S|Cas=1|Neg=A
+A	M	Gen=M|Num=S|Cas=1|Neg=A|Var=6
+A	M	Gen=M|Num=S|Cas=1|Neg=N
+A	M	Gen=M|Num=S|Cas=1|Neg=N|Var=6
+A	M	Gen=M|Num=S|Cas=2|Neg=A
+A	M	Gen=M|Num=S|Cas=2|Neg=A|Var=6
+A	M	Gen=M|Num=S|Cas=2|Neg=N
+A	M	Gen=M|Num=S|Cas=2|Neg=N|Var=6
+A	M	Gen=M|Num=S|Cas=3|Neg=A
+A	M	Gen=M|Num=S|Cas=3|Neg=A|Var=6
+A	M	Gen=M|Num=S|Cas=3|Neg=N
+A	M	Gen=M|Num=S|Cas=3|Neg=N|Var=6
+A	M	Gen=M|Num=S|Cas=4|Neg=A
+A	M	Gen=M|Num=S|Cas=4|Neg=A|Var=6
+A	M	Gen=M|Num=S|Cas=4|Neg=N
+A	M	Gen=M|Num=S|Cas=4|Neg=N|Var=6
+A	M	Gen=M|Num=S|Cas=5|Neg=A
+A	M	Gen=M|Num=S|Cas=5|Neg=A|Var=6
+A	M	Gen=M|Num=S|Cas=5|Neg=N
+A	M	Gen=M|Num=S|Cas=5|Neg=N|Var=6
+A	M	Gen=M|Num=S|Cas=6|Neg=A
+A	M	Gen=M|Num=S|Cas=6|Neg=A|Var=6
+A	M	Gen=M|Num=S|Cas=6|Neg=A|Var=7
+A	M	Gen=M|Num=S|Cas=6|Neg=N
+A	M	Gen=M|Num=S|Cas=6|Neg=N|Var=6
+A	M	Gen=M|Num=S|Cas=6|Neg=N|Var=7
+A	M	Gen=M|Num=S|Cas=7|Neg=A
+A	M	Gen=M|Num=S|Cas=7|Neg=A|Var=6
+A	M	Gen=M|Num=S|Cas=7|Neg=N
+A	M	Gen=M|Num=S|Cas=7|Neg=N|Var=6
+A	M	Gen=N|Num=D|Cas=7|Neg=A
+A	M	Gen=N|Num=D|Cas=7|Neg=A|Var=6
+A	M	Gen=N|Num=D|Cas=7|Neg=N
+A	M	Gen=N|Num=D|Cas=7|Neg=N|Var=6
+A	M	Gen=N|Num=P|Cas=1|Neg=A
+A	M	Gen=N|Num=P|Cas=1|Neg=A|Var=6
+A	M	Gen=N|Num=P|Cas=1|Neg=N
+A	M	Gen=N|Num=P|Cas=1|Neg=N|Var=6
+A	M	Gen=N|Num=P|Cas=2|Neg=A
+A	M	Gen=N|Num=P|Cas=2|Neg=A|Var=6
+A	M	Gen=N|Num=P|Cas=2|Neg=N
+A	M	Gen=N|Num=P|Cas=2|Neg=N|Var=6
+A	M	Gen=N|Num=P|Cas=3|Neg=A
+A	M	Gen=N|Num=P|Cas=3|Neg=A|Var=6
+A	M	Gen=N|Num=P|Cas=3|Neg=N
+A	M	Gen=N|Num=P|Cas=3|Neg=N|Var=6
+A	M	Gen=N|Num=P|Cas=4|Neg=A
+A	M	Gen=N|Num=P|Cas=4|Neg=A|Var=6
+A	M	Gen=N|Num=P|Cas=4|Neg=N
+A	M	Gen=N|Num=P|Cas=4|Neg=N|Var=6
+A	M	Gen=N|Num=P|Cas=5|Neg=A
+A	M	Gen=N|Num=P|Cas=5|Neg=A|Var=6
+A	M	Gen=N|Num=P|Cas=5|Neg=N
+A	M	Gen=N|Num=P|Cas=5|Neg=N|Var=6
+A	M	Gen=N|Num=P|Cas=6|Neg=A
+A	M	Gen=N|Num=P|Cas=6|Neg=A|Var=6
+A	M	Gen=N|Num=P|Cas=6|Neg=N
+A	M	Gen=N|Num=P|Cas=6|Neg=N|Var=6
+A	M	Gen=N|Num=P|Cas=7|Neg=A
+A	M	Gen=N|Num=P|Cas=7|Neg=A|Var=6
+A	M	Gen=N|Num=P|Cas=7|Neg=N
+A	M	Gen=N|Num=P|Cas=7|Neg=N|Var=6
+A	M	Gen=N|Num=S|Cas=1|Neg=A
+A	M	Gen=N|Num=S|Cas=1|Neg=A|Var=6
+A	M	Gen=N|Num=S|Cas=1|Neg=N
+A	M	Gen=N|Num=S|Cas=1|Neg=N|Var=6
+A	M	Gen=N|Num=S|Cas=2|Neg=A
+A	M	Gen=N|Num=S|Cas=2|Neg=A|Var=6
+A	M	Gen=N|Num=S|Cas=2|Neg=N
+A	M	Gen=N|Num=S|Cas=2|Neg=N|Var=6
+A	M	Gen=N|Num=S|Cas=3|Neg=A
+A	M	Gen=N|Num=S|Cas=3|Neg=A|Var=6
+A	M	Gen=N|Num=S|Cas=3|Neg=N
+A	M	Gen=N|Num=S|Cas=3|Neg=N|Var=6
+A	M	Gen=N|Num=S|Cas=4|Neg=A
+A	M	Gen=N|Num=S|Cas=4|Neg=A|Var=6
+A	M	Gen=N|Num=S|Cas=4|Neg=N
+A	M	Gen=N|Num=S|Cas=4|Neg=N|Var=6
+A	M	Gen=N|Num=S|Cas=5|Neg=A
+A	M	Gen=N|Num=S|Cas=5|Neg=A|Var=6
+A	M	Gen=N|Num=S|Cas=5|Neg=N
+A	M	Gen=N|Num=S|Cas=5|Neg=N|Var=6
+A	M	Gen=N|Num=S|Cas=6|Neg=A
+A	M	Gen=N|Num=S|Cas=6|Neg=A|Var=6
+A	M	Gen=N|Num=S|Cas=6|Neg=A|Var=7
+A	M	Gen=N|Num=S|Cas=6|Neg=N
+A	M	Gen=N|Num=S|Cas=6|Neg=N|Var=6
+A	M	Gen=N|Num=S|Cas=6|Neg=N|Var=7
+A	M	Gen=N|Num=S|Cas=7|Neg=A
+A	M	Gen=N|Num=S|Cas=7|Neg=A|Var=6
+A	M	Gen=N|Num=S|Cas=7|Neg=N
+A	M	Gen=N|Num=S|Cas=7|Neg=N|Var=6
+A	O	Gen=F|Num=P
+A	O	Gen=F|Num=P|Var=1
+A	O	Gen=F|Num=P|Var=6
+A	O	Gen=F|Num=S
+A	O	Gen=F|Num=S|Var=1
+A	O	Gen=I|Num=P
+A	O	Gen=I|Num=P|Var=1
+A	O	Gen=I|Num=P|Var=6
+A	O	Gen=M|Num=P
+A	O	Gen=M|Num=P|Var=1
+A	O	Gen=M|Num=P|Var=6
+A	O	Gen=N|Num=P
+A	O	Gen=N|Num=P|Var=1
+A	O	Gen=N|Num=P|Var=6
+A	O	Gen=N|Num=S
+A	O	Gen=N|Num=S|Var=1
+A	O	Gen=N|Num=S|Var=6
+A	O	Gen=Y|Num=S
+A	O	Gen=Y|Num=S|Var=6
+A	U	Gen=F|Num=D|Cas=7|PGe=F
+A	U	Gen=F|Num=D|Cas=7|PGe=F|Var=6
+A	U	Gen=F|Num=D|Cas=7|PGe=M
+A	U	Gen=F|Num=D|Cas=7|PGe=M|Var=6
+A	U	Gen=F|Num=P|Cas=1|PGe=F
+A	U	Gen=F|Num=P|Cas=1|PGe=F|Sem=Y
+A	U	Gen=F|Num=P|Cas=1|PGe=F|Sem=m
+A	U	Gen=F|Num=P|Cas=1|PGe=F|Var=6
+A	U	Gen=F|Num=P|Cas=1|PGe=M
+A	U	Gen=F|Num=P|Cas=1|PGe=M|Sem=S
+A	U	Gen=F|Num=P|Cas=1|PGe=M|Sem=Y
+A	U	Gen=F|Num=P|Cas=1|PGe=M|Sem=m
+A	U	Gen=F|Num=P|Cas=1|PGe=M|Var=5
+A	U	Gen=F|Num=P|Cas=1|PGe=M|Var=6
+A	U	Gen=F|Num=P|Cas=2|PGe=F
+A	U	Gen=F|Num=P|Cas=2|PGe=F|Sem=Y
+A	U	Gen=F|Num=P|Cas=2|PGe=F|Sem=m
+A	U	Gen=F|Num=P|Cas=2|PGe=F|Var=6
+A	U	Gen=F|Num=P|Cas=2|PGe=M
+A	U	Gen=F|Num=P|Cas=2|PGe=M|Sem=S
+A	U	Gen=F|Num=P|Cas=2|PGe=M|Sem=Y
+A	U	Gen=F|Num=P|Cas=2|PGe=M|Sem=m
+A	U	Gen=F|Num=P|Cas=2|PGe=M|Var=6
+A	U	Gen=F|Num=P|Cas=3|PGe=F
+A	U	Gen=F|Num=P|Cas=3|PGe=F|Var=6
+A	U	Gen=F|Num=P|Cas=3|PGe=M
+A	U	Gen=F|Num=P|Cas=3|PGe=M|Sem=S
+A	U	Gen=F|Num=P|Cas=3|PGe=M|Sem=Y
+A	U	Gen=F|Num=P|Cas=3|PGe=M|Sem=m
+A	U	Gen=F|Num=P|Cas=3|PGe=M|Var=6
+A	U	Gen=F|Num=P|Cas=4|PGe=F
+A	U	Gen=F|Num=P|Cas=4|PGe=F|Sem=Y
+A	U	Gen=F|Num=P|Cas=4|PGe=F|Sem=m
+A	U	Gen=F|Num=P|Cas=4|PGe=F|Var=6
+A	U	Gen=F|Num=P|Cas=4|PGe=M
+A	U	Gen=F|Num=P|Cas=4|PGe=M|Sem=E
+A	U	Gen=F|Num=P|Cas=4|PGe=M|Sem=S
+A	U	Gen=F|Num=P|Cas=4|PGe=M|Sem=m
+A	U	Gen=F|Num=P|Cas=4|PGe=M|Var=6
+A	U	Gen=F|Num=P|Cas=5|PGe=F
+A	U	Gen=F|Num=P|Cas=5|PGe=F|Var=6
+A	U	Gen=F|Num=P|Cas=5|PGe=M
+A	U	Gen=F|Num=P|Cas=5|PGe=M|Var=6
+A	U	Gen=F|Num=P|Cas=6|PGe=F
+A	U	Gen=F|Num=P|Cas=6|PGe=F|Var=6
+A	U	Gen=F|Num=P|Cas=6|PGe=M
+A	U	Gen=F|Num=P|Cas=6|PGe=M|Sem=S
+A	U	Gen=F|Num=P|Cas=6|PGe=M|Sem=Y
+A	U	Gen=F|Num=P|Cas=6|PGe=M|Sem=m
+A	U	Gen=F|Num=P|Cas=6|PGe=M|Var=6
+A	U	Gen=F|Num=P|Cas=7|PGe=F
+A	U	Gen=F|Num=P|Cas=7|PGe=F|Var=6
+A	U	Gen=F|Num=P|Cas=7|PGe=F|Var=7
+A	U	Gen=F|Num=P|Cas=7|PGe=M
+A	U	Gen=F|Num=P|Cas=7|PGe=M|Sem=S
+A	U	Gen=F|Num=P|Cas=7|PGe=M|Sem=m
+A	U	Gen=F|Num=P|Cas=7|PGe=M|Var=6
+A	U	Gen=F|Num=P|Cas=7|PGe=M|Var=7
+A	U	Gen=F|Num=S|Cas=1|PGe=F
+A	U	Gen=F|Num=S|Cas=1|PGe=F|Sem=Y
+A	U	Gen=F|Num=S|Cas=1|PGe=F|Sem=m
+A	U	Gen=F|Num=S|Cas=1|PGe=F|Var=6
+A	U	Gen=F|Num=S|Cas=1|PGe=M
+A	U	Gen=F|Num=S|Cas=1|PGe=M|Sem=G
+A	U	Gen=F|Num=S|Cas=1|PGe=M|Sem=S
+A	U	Gen=F|Num=S|Cas=1|PGe=M|Sem=Y
+A	U	Gen=F|Num=S|Cas=1|PGe=M|Sem=m
+A	U	Gen=F|Num=S|Cas=1|PGe=M|Var=6
+A	U	Gen=F|Num=S|Cas=2|PGe=F
+A	U	Gen=F|Num=S|Cas=2|PGe=F|Sem=Y
+A	U	Gen=F|Num=S|Cas=2|PGe=F|Sem=m
+A	U	Gen=F|Num=S|Cas=2|PGe=F|Var=6
+A	U	Gen=F|Num=S|Cas=2|PGe=M
+A	U	Gen=F|Num=S|Cas=2|PGe=M|Sem=S
+A	U	Gen=F|Num=S|Cas=2|PGe=M|Sem=Y
+A	U	Gen=F|Num=S|Cas=2|PGe=M|Sem=m
+A	U	Gen=F|Num=S|Cas=2|PGe=M|Var=6
+A	U	Gen=F|Num=S|Cas=3|PGe=F
+A	U	Gen=F|Num=S|Cas=3|PGe=F|Var=6
+A	U	Gen=F|Num=S|Cas=3|PGe=M
+A	U	Gen=F|Num=S|Cas=3|PGe=M|Sem=S
+A	U	Gen=F|Num=S|Cas=3|PGe=M|Sem=Y
+A	U	Gen=F|Num=S|Cas=3|PGe=M|Sem=m
+A	U	Gen=F|Num=S|Cas=3|PGe=M|Var=6
+A	U	Gen=F|Num=S|Cas=4|PGe=F
+A	U	Gen=F|Num=S|Cas=4|PGe=F|Sem=S
+A	U	Gen=F|Num=S|Cas=4|PGe=F|Sem=m
+A	U	Gen=F|Num=S|Cas=4|PGe=F|Var=6
+A	U	Gen=F|Num=S|Cas=4|PGe=M
+A	U	Gen=F|Num=S|Cas=4|PGe=M|Sem=S
+A	U	Gen=F|Num=S|Cas=4|PGe=M|Sem=Y
+A	U	Gen=F|Num=S|Cas=4|PGe=M|Sem=m
+A	U	Gen=F|Num=S|Cas=4|PGe=M|Var=6
+A	U	Gen=F|Num=S|Cas=5|PGe=F
+A	U	Gen=F|Num=S|Cas=5|PGe=F|Var=6
+A	U	Gen=F|Num=S|Cas=5|PGe=M
+A	U	Gen=F|Num=S|Cas=5|PGe=M|Var=6
+A	U	Gen=F|Num=S|Cas=6|PGe=F
+A	U	Gen=F|Num=S|Cas=6|PGe=F|Var=6
+A	U	Gen=F|Num=S|Cas=6|PGe=M
+A	U	Gen=F|Num=S|Cas=6|PGe=M|Sem=S
+A	U	Gen=F|Num=S|Cas=6|PGe=M|Sem=Y
+A	U	Gen=F|Num=S|Cas=6|PGe=M|Sem=m
+A	U	Gen=F|Num=S|Cas=6|PGe=M|Var=6
+A	U	Gen=F|Num=S|Cas=7|PGe=F
+A	U	Gen=F|Num=S|Cas=7|PGe=F|Var=6
+A	U	Gen=F|Num=S|Cas=7|PGe=M
+A	U	Gen=F|Num=S|Cas=7|PGe=M|Sem=S
+A	U	Gen=F|Num=S|Cas=7|PGe=M|Sem=Y
+A	U	Gen=F|Num=S|Cas=7|PGe=M|Sem=m
+A	U	Gen=F|Num=S|Cas=7|PGe=M|Var=6
+A	U	Gen=I|Num=P|Cas=1|PGe=F
+A	U	Gen=I|Num=P|Cas=1|PGe=F|Sem=Y
+A	U	Gen=I|Num=P|Cas=1|PGe=F|Sem=m
+A	U	Gen=I|Num=P|Cas=1|PGe=F|Var=6
+A	U	Gen=I|Num=P|Cas=1|PGe=M
+A	U	Gen=I|Num=P|Cas=1|PGe=M|Sem=E
+A	U	Gen=I|Num=P|Cas=1|PGe=M|Sem=G
+A	U	Gen=I|Num=P|Cas=1|PGe=M|Sem=S
+A	U	Gen=I|Num=P|Cas=1|PGe=M|Sem=Y
+A	U	Gen=I|Num=P|Cas=1|PGe=M|Sem=m
+A	U	Gen=I|Num=P|Cas=1|PGe=M|Var=6
+A	U	Gen=I|Num=P|Cas=2|PGe=F
+A	U	Gen=I|Num=P|Cas=2|PGe=F|Var=6
+A	U	Gen=I|Num=P|Cas=2|PGe=M
+A	U	Gen=I|Num=P|Cas=2|PGe=M|Sem=S
+A	U	Gen=I|Num=P|Cas=2|PGe=M|Sem=Y
+A	U	Gen=I|Num=P|Cas=2|PGe=M|Sem=m
+A	U	Gen=I|Num=P|Cas=2|PGe=M|Var=6
+A	U	Gen=I|Num=P|Cas=3|PGe=F
+A	U	Gen=I|Num=P|Cas=3|PGe=F|Var=6
+A	U	Gen=I|Num=P|Cas=3|PGe=M
+A	U	Gen=I|Num=P|Cas=3|PGe=M|Sem=S
+A	U	Gen=I|Num=P|Cas=3|PGe=M|Sem=Y
+A	U	Gen=I|Num=P|Cas=3|PGe=M|Sem=m
+A	U	Gen=I|Num=P|Cas=3|PGe=M|Var=6
+A	U	Gen=I|Num=P|Cas=4|PGe=F
+A	U	Gen=I|Num=P|Cas=4|PGe=F|Var=6
+A	U	Gen=I|Num=P|Cas=4|PGe=M
+A	U	Gen=I|Num=P|Cas=4|PGe=M|Sem=S
+A	U	Gen=I|Num=P|Cas=4|PGe=M|Sem=Y
+A	U	Gen=I|Num=P|Cas=4|PGe=M|Sem=m
+A	U	Gen=I|Num=P|Cas=4|PGe=M|Var=6
+A	U	Gen=I|Num=P|Cas=5|PGe=F
+A	U	Gen=I|Num=P|Cas=5|PGe=F|Var=6
+A	U	Gen=I|Num=P|Cas=5|PGe=M
+A	U	Gen=I|Num=P|Cas=5|PGe=M|Var=6
+A	U	Gen=I|Num=P|Cas=6|PGe=F
+A	U	Gen=I|Num=P|Cas=6|PGe=F|Var=6
+A	U	Gen=I|Num=P|Cas=6|PGe=M
+A	U	Gen=I|Num=P|Cas=6|PGe=M|Sem=G
+A	U	Gen=I|Num=P|Cas=6|PGe=M|Sem=S
+A	U	Gen=I|Num=P|Cas=6|PGe=M|Sem=Y
+A	U	Gen=I|Num=P|Cas=6|PGe=M|Sem=m
+A	U	Gen=I|Num=P|Cas=6|PGe=M|Var=6
+A	U	Gen=I|Num=P|Cas=7|PGe=F
+A	U	Gen=I|Num=P|Cas=7|PGe=F|Var=6
+A	U	Gen=I|Num=P|Cas=7|PGe=F|Var=7
+A	U	Gen=I|Num=P|Cas=7|PGe=M
+A	U	Gen=I|Num=P|Cas=7|PGe=M|Sem=S
+A	U	Gen=I|Num=P|Cas=7|PGe=M|Sem=m
+A	U	Gen=I|Num=P|Cas=7|PGe=M|Var=6
+A	U	Gen=I|Num=P|Cas=7|PGe=M|Var=7
+A	U	Gen=I|Num=S|Cas=1|PGe=F
+A	U	Gen=I|Num=S|Cas=1|PGe=F|Sem=Y
+A	U	Gen=I|Num=S|Cas=1|PGe=F|Sem=m
+A	U	Gen=I|Num=S|Cas=1|PGe=F|Var=6
+A	U	Gen=I|Num=S|Cas=1|PGe=M
+A	U	Gen=I|Num=S|Cas=1|PGe=M|Sem=E
+A	U	Gen=I|Num=S|Cas=1|PGe=M|Sem=G
+A	U	Gen=I|Num=S|Cas=1|PGe=M|Sem=S
+A	U	Gen=I|Num=S|Cas=1|PGe=M|Sem=Y
+A	U	Gen=I|Num=S|Cas=1|PGe=M|Sem=m
+A	U	Gen=I|Num=S|Cas=1|PGe=M|Var=6
+A	U	Gen=I|Num=S|Cas=2|PGe=F
+A	U	Gen=I|Num=S|Cas=2|PGe=F|Sem=Y
+A	U	Gen=I|Num=S|Cas=2|PGe=F|Sem=m
+A	U	Gen=I|Num=S|Cas=2|PGe=F|Var=6
+A	U	Gen=I|Num=S|Cas=2|PGe=M
+A	U	Gen=I|Num=S|Cas=2|PGe=M|Sem=G
+A	U	Gen=I|Num=S|Cas=2|PGe=M|Sem=S
+A	U	Gen=I|Num=S|Cas=2|PGe=M|Sem=Y
+A	U	Gen=I|Num=S|Cas=2|PGe=M|Sem=m
+A	U	Gen=I|Num=S|Cas=2|PGe=M|Var=6
+A	U	Gen=I|Num=S|Cas=3|PGe=F
+A	U	Gen=I|Num=S|Cas=3|PGe=F|Var=6
+A	U	Gen=I|Num=S|Cas=3|PGe=M
+A	U	Gen=I|Num=S|Cas=3|PGe=M|Sem=S
+A	U	Gen=I|Num=S|Cas=3|PGe=M|Sem=m
+A	U	Gen=I|Num=S|Cas=3|PGe=M|Var=6
+A	U	Gen=I|Num=S|Cas=4|PGe=F
+A	U	Gen=I|Num=S|Cas=4|PGe=F|Var=6
+A	U	Gen=I|Num=S|Cas=4|PGe=M
+A	U	Gen=I|Num=S|Cas=4|PGe=M|Sem=E
+A	U	Gen=I|Num=S|Cas=4|PGe=M|Sem=G
+A	U	Gen=I|Num=S|Cas=4|PGe=M|Sem=S
+A	U	Gen=I|Num=S|Cas=4|PGe=M|Sem=Y
+A	U	Gen=I|Num=S|Cas=4|PGe=M|Sem=m
+A	U	Gen=I|Num=S|Cas=4|PGe=M|Var=6
+A	U	Gen=I|Num=S|Cas=5|PGe=F
+A	U	Gen=I|Num=S|Cas=5|PGe=F|Var=6
+A	U	Gen=I|Num=S|Cas=5|PGe=M
+A	U	Gen=I|Num=S|Cas=5|PGe=M|Var=6
+A	U	Gen=I|Num=S|Cas=6|PGe=F
+A	U	Gen=I|Num=S|Cas=6|PGe=F|Var=1
+A	U	Gen=I|Num=S|Cas=6|PGe=F|Var=6
+A	U	Gen=I|Num=S|Cas=6|PGe=M
+A	U	Gen=I|Num=S|Cas=6|PGe=M|Sem=G
+A	U	Gen=I|Num=S|Cas=6|PGe=M|Sem=S
+A	U	Gen=I|Num=S|Cas=6|PGe=M|Sem=Y
+A	U	Gen=I|Num=S|Cas=6|PGe=M|Sem=m
+A	U	Gen=I|Num=S|Cas=6|PGe=M|Var=1
+A	U	Gen=I|Num=S|Cas=6|PGe=M|Var=6
+A	U	Gen=I|Num=S|Cas=7|PGe=F
+A	U	Gen=I|Num=S|Cas=7|PGe=F|Var=6
+A	U	Gen=I|Num=S|Cas=7|PGe=M
+A	U	Gen=I|Num=S|Cas=7|PGe=M|Sem=S
+A	U	Gen=I|Num=S|Cas=7|PGe=M|Sem=Y
+A	U	Gen=I|Num=S|Cas=7|PGe=M|Sem=m
+A	U	Gen=I|Num=S|Cas=7|PGe=M|Var=6
+A	U	Gen=M|Num=P|Cas=1|PGe=F
+A	U	Gen=M|Num=P|Cas=1|PGe=F|Sem=Y
+A	U	Gen=M|Num=P|Cas=1|PGe=F|Sem=m
+A	U	Gen=M|Num=P|Cas=1|PGe=F|Var=6
+A	U	Gen=M|Num=P|Cas=1|PGe=M
+A	U	Gen=M|Num=P|Cas=1|PGe=M|Sem=S
+A	U	Gen=M|Num=P|Cas=1|PGe=M|Sem=m
+A	U	Gen=M|Num=P|Cas=1|PGe=M|Var=6
+A	U	Gen=M|Num=P|Cas=2|PGe=F
+A	U	Gen=M|Num=P|Cas=2|PGe=F|Var=6
+A	U	Gen=M|Num=P|Cas=2|PGe=M
+A	U	Gen=M|Num=P|Cas=2|PGe=M|Sem=G
+A	U	Gen=M|Num=P|Cas=2|PGe=M|Sem=S
+A	U	Gen=M|Num=P|Cas=2|PGe=M|Sem=Y
+A	U	Gen=M|Num=P|Cas=2|PGe=M|Sem=m
+A	U	Gen=M|Num=P|Cas=2|PGe=M|Var=6
+A	U	Gen=M|Num=P|Cas=3|PGe=F
+A	U	Gen=M|Num=P|Cas=3|PGe=F|Var=6
+A	U	Gen=M|Num=P|Cas=3|PGe=M
+A	U	Gen=M|Num=P|Cas=3|PGe=M|Sem=S
+A	U	Gen=M|Num=P|Cas=3|PGe=M|Sem=m
+A	U	Gen=M|Num=P|Cas=3|PGe=M|Var=6
+A	U	Gen=M|Num=P|Cas=4|PGe=F
+A	U	Gen=M|Num=P|Cas=4|PGe=F|Var=6
+A	U	Gen=M|Num=P|Cas=4|PGe=M
+A	U	Gen=M|Num=P|Cas=4|PGe=M|Sem=S
+A	U	Gen=M|Num=P|Cas=4|PGe=M|Sem=m
+A	U	Gen=M|Num=P|Cas=4|PGe=M|Var=6
+A	U	Gen=M|Num=P|Cas=5|PGe=F
+A	U	Gen=M|Num=P|Cas=5|PGe=F|Var=6
+A	U	Gen=M|Num=P|Cas=5|PGe=M
+A	U	Gen=M|Num=P|Cas=5|PGe=M|Var=6
+A	U	Gen=M|Num=P|Cas=6|PGe=F
+A	U	Gen=M|Num=P|Cas=6|PGe=F|Var=6
+A	U	Gen=M|Num=P|Cas=6|PGe=M
+A	U	Gen=M|Num=P|Cas=6|PGe=M|Sem=S
+A	U	Gen=M|Num=P|Cas=6|PGe=M|Sem=m
+A	U	Gen=M|Num=P|Cas=6|PGe=M|Var=6
+A	U	Gen=M|Num=P|Cas=7|PGe=F
+A	U	Gen=M|Num=P|Cas=7|PGe=F|Var=6
+A	U	Gen=M|Num=P|Cas=7|PGe=F|Var=7
+A	U	Gen=M|Num=P|Cas=7|PGe=M
+A	U	Gen=M|Num=P|Cas=7|PGe=M|Sem=S
+A	U	Gen=M|Num=P|Cas=7|PGe=M|Sem=m
+A	U	Gen=M|Num=P|Cas=7|PGe=M|Var=6
+A	U	Gen=M|Num=P|Cas=7|PGe=M|Var=7
+A	U	Gen=M|Num=S|Cas=1|PGe=F
+A	U	Gen=M|Num=S|Cas=1|PGe=F|Var=6
+A	U	Gen=M|Num=S|Cas=1|PGe=M
+A	U	Gen=M|Num=S|Cas=1|PGe=M|Sem=S
+A	U	Gen=M|Num=S|Cas=1|PGe=M|Sem=Y
+A	U	Gen=M|Num=S|Cas=1|PGe=M|Sem=m
+A	U	Gen=M|Num=S|Cas=1|PGe=M|Var=6
+A	U	Gen=M|Num=S|Cas=2|PGe=F
+A	U	Gen=M|Num=S|Cas=2|PGe=F|Var=6
+A	U	Gen=M|Num=S|Cas=2|PGe=M
+A	U	Gen=M|Num=S|Cas=2|PGe=M|Sem=G
+A	U	Gen=M|Num=S|Cas=2|PGe=M|Sem=S
+A	U	Gen=M|Num=S|Cas=2|PGe=M|Sem=Y
+A	U	Gen=M|Num=S|Cas=2|PGe=M|Sem=m
+A	U	Gen=M|Num=S|Cas=2|PGe=M|Var=6
+A	U	Gen=M|Num=S|Cas=3|PGe=F
+A	U	Gen=M|Num=S|Cas=3|PGe=F|Var=6
+A	U	Gen=M|Num=S|Cas=3|PGe=M
+A	U	Gen=M|Num=S|Cas=3|PGe=M|Sem=S
+A	U	Gen=M|Num=S|Cas=3|PGe=M|Sem=m
+A	U	Gen=M|Num=S|Cas=3|PGe=M|Var=6
+A	U	Gen=M|Num=S|Cas=4|PGe=F
+A	U	Gen=M|Num=S|Cas=4|PGe=F|Sem=Y
+A	U	Gen=M|Num=S|Cas=4|PGe=F|Sem=m
+A	U	Gen=M|Num=S|Cas=4|PGe=F|Var=6
+A	U	Gen=M|Num=S|Cas=4|PGe=M
+A	U	Gen=M|Num=S|Cas=4|PGe=M|Sem=S
+A	U	Gen=M|Num=S|Cas=4|PGe=M|Sem=Y
+A	U	Gen=M|Num=S|Cas=4|PGe=M|Sem=m
+A	U	Gen=M|Num=S|Cas=4|PGe=M|Var=6
+A	U	Gen=M|Num=S|Cas=5|PGe=F
+A	U	Gen=M|Num=S|Cas=5|PGe=F|Var=6
+A	U	Gen=M|Num=S|Cas=5|PGe=M
+A	U	Gen=M|Num=S|Cas=5|PGe=M|Var=6
+A	U	Gen=M|Num=S|Cas=6|PGe=F
+A	U	Gen=M|Num=S|Cas=6|PGe=F|Var=1
+A	U	Gen=M|Num=S|Cas=6|PGe=F|Var=6
+A	U	Gen=M|Num=S|Cas=6|PGe=M
+A	U	Gen=M|Num=S|Cas=6|PGe=M|Sem=S
+A	U	Gen=M|Num=S|Cas=6|PGe=M|Sem=m
+A	U	Gen=M|Num=S|Cas=6|PGe=M|Var=1
+A	U	Gen=M|Num=S|Cas=6|PGe=M|Var=6
+A	U	Gen=M|Num=S|Cas=7|PGe=F
+A	U	Gen=M|Num=S|Cas=7|PGe=F|Var=6
+A	U	Gen=M|Num=S|Cas=7|PGe=M
+A	U	Gen=M|Num=S|Cas=7|PGe=M|Sem=K
+A	U	Gen=M|Num=S|Cas=7|PGe=M|Sem=S
+A	U	Gen=M|Num=S|Cas=7|PGe=M|Sem=m
+A	U	Gen=M|Num=S|Cas=7|PGe=M|Var=6
+A	U	Gen=N|Num=D|Cas=7|PGe=F
+A	U	Gen=N|Num=D|Cas=7|PGe=F|Var=6
+A	U	Gen=N|Num=D|Cas=7|PGe=M
+A	U	Gen=N|Num=D|Cas=7|PGe=M|Var=6
+A	U	Gen=N|Num=P|Cas=1|PGe=F
+A	U	Gen=N|Num=P|Cas=1|PGe=F|Var=6
+A	U	Gen=N|Num=P|Cas=1|PGe=M
+A	U	Gen=N|Num=P|Cas=1|PGe=M|Sem=S
+A	U	Gen=N|Num=P|Cas=1|PGe=M|Sem=m
+A	U	Gen=N|Num=P|Cas=1|PGe=M|Var=6
+A	U	Gen=N|Num=P|Cas=2|PGe=F
+A	U	Gen=N|Num=P|Cas=2|PGe=F|Var=6
+A	U	Gen=N|Num=P|Cas=2|PGe=M
+A	U	Gen=N|Num=P|Cas=2|PGe=M|Sem=S
+A	U	Gen=N|Num=P|Cas=2|PGe=M|Sem=m
+A	U	Gen=N|Num=P|Cas=2|PGe=M|Var=6
+A	U	Gen=N|Num=P|Cas=3|PGe=F
+A	U	Gen=N|Num=P|Cas=3|PGe=F|Var=6
+A	U	Gen=N|Num=P|Cas=3|PGe=M
+A	U	Gen=N|Num=P|Cas=3|PGe=M|Sem=S
+A	U	Gen=N|Num=P|Cas=3|PGe=M|Sem=m
+A	U	Gen=N|Num=P|Cas=3|PGe=M|Var=6
+A	U	Gen=N|Num=P|Cas=4|PGe=F
+A	U	Gen=N|Num=P|Cas=4|PGe=F|Var=6
+A	U	Gen=N|Num=P|Cas=4|PGe=M
+A	U	Gen=N|Num=P|Cas=4|PGe=M|Sem=S
+A	U	Gen=N|Num=P|Cas=4|PGe=M|Sem=Y
+A	U	Gen=N|Num=P|Cas=4|PGe=M|Sem=m
+A	U	Gen=N|Num=P|Cas=4|PGe=M|Var=6
+A	U	Gen=N|Num=P|Cas=5|PGe=F
+A	U	Gen=N|Num=P|Cas=5|PGe=F|Var=6
+A	U	Gen=N|Num=P|Cas=5|PGe=M
+A	U	Gen=N|Num=P|Cas=5|PGe=M|Var=6
+A	U	Gen=N|Num=P|Cas=6|PGe=F
+A	U	Gen=N|Num=P|Cas=6|PGe=F|Var=6
+A	U	Gen=N|Num=P|Cas=6|PGe=M
+A	U	Gen=N|Num=P|Cas=6|PGe=M|Sem=S
+A	U	Gen=N|Num=P|Cas=6|PGe=M|Sem=m
+A	U	Gen=N|Num=P|Cas=6|PGe=M|Var=6
+A	U	Gen=N|Num=P|Cas=7|PGe=F
+A	U	Gen=N|Num=P|Cas=7|PGe=F|Var=6
+A	U	Gen=N|Num=P|Cas=7|PGe=F|Var=7
+A	U	Gen=N|Num=P|Cas=7|PGe=M
+A	U	Gen=N|Num=P|Cas=7|PGe=M|Sem=S
+A	U	Gen=N|Num=P|Cas=7|PGe=M|Sem=m
+A	U	Gen=N|Num=P|Cas=7|PGe=M|Var=6
+A	U	Gen=N|Num=P|Cas=7|PGe=M|Var=7
+A	U	Gen=N|Num=S|Cas=1|PGe=F
+A	U	Gen=N|Num=S|Cas=1|PGe=F|Var=6
+A	U	Gen=N|Num=S|Cas=1|PGe=M
+A	U	Gen=N|Num=S|Cas=1|PGe=M|Sem=E
+A	U	Gen=N|Num=S|Cas=1|PGe=M|Sem=G
+A	U	Gen=N|Num=S|Cas=1|PGe=M|Sem=S
+A	U	Gen=N|Num=S|Cas=1|PGe=M|Sem=Y
+A	U	Gen=N|Num=S|Cas=1|PGe=M|Sem=m
+A	U	Gen=N|Num=S|Cas=1|PGe=M|Var=6
+A	U	Gen=N|Num=S|Cas=2|PGe=F
+A	U	Gen=N|Num=S|Cas=2|PGe=F|Sem=Y
+A	U	Gen=N|Num=S|Cas=2|PGe=F|Sem=m
+A	U	Gen=N|Num=S|Cas=2|PGe=F|Var=6
+A	U	Gen=N|Num=S|Cas=2|PGe=M
+A	U	Gen=N|Num=S|Cas=2|PGe=M|Sem=S
+A	U	Gen=N|Num=S|Cas=2|PGe=M|Sem=Y
+A	U	Gen=N|Num=S|Cas=2|PGe=M|Sem=m
+A	U	Gen=N|Num=S|Cas=2|PGe=M|Var=6
+A	U	Gen=N|Num=S|Cas=3|PGe=F
+A	U	Gen=N|Num=S|Cas=3|PGe=F|Var=6
+A	U	Gen=N|Num=S|Cas=3|PGe=M
+A	U	Gen=N|Num=S|Cas=3|PGe=M|Sem=S
+A	U	Gen=N|Num=S|Cas=3|PGe=M|Sem=m
+A	U	Gen=N|Num=S|Cas=3|PGe=M|Var=6
+A	U	Gen=N|Num=S|Cas=4|PGe=F
+A	U	Gen=N|Num=S|Cas=4|PGe=F|Sem=Y
+A	U	Gen=N|Num=S|Cas=4|PGe=F|Sem=m
+A	U	Gen=N|Num=S|Cas=4|PGe=F|Var=6
+A	U	Gen=N|Num=S|Cas=4|PGe=M
+A	U	Gen=N|Num=S|Cas=4|PGe=M|Sem=E
+A	U	Gen=N|Num=S|Cas=4|PGe=M|Sem=S
+A	U	Gen=N|Num=S|Cas=4|PGe=M|Sem=Y
+A	U	Gen=N|Num=S|Cas=4|PGe=M|Sem=m
+A	U	Gen=N|Num=S|Cas=4|PGe=M|Var=6
+A	U	Gen=N|Num=S|Cas=5|PGe=F
+A	U	Gen=N|Num=S|Cas=5|PGe=F|Var=6
+A	U	Gen=N|Num=S|Cas=5|PGe=M
+A	U	Gen=N|Num=S|Cas=5|PGe=M|Var=6
+A	U	Gen=N|Num=S|Cas=6|PGe=F
+A	U	Gen=N|Num=S|Cas=6|PGe=F|Var=1
+A	U	Gen=N|Num=S|Cas=6|PGe=F|Var=6
+A	U	Gen=N|Num=S|Cas=6|PGe=M
+A	U	Gen=N|Num=S|Cas=6|PGe=M|Sem=G
+A	U	Gen=N|Num=S|Cas=6|PGe=M|Sem=S
+A	U	Gen=N|Num=S|Cas=6|PGe=M|Sem=Y
+A	U	Gen=N|Num=S|Cas=6|PGe=M|Sem=m
+A	U	Gen=N|Num=S|Cas=6|PGe=M|Var=1
+A	U	Gen=N|Num=S|Cas=6|PGe=M|Var=6
+A	U	Gen=N|Num=S|Cas=7|PGe=F
+A	U	Gen=N|Num=S|Cas=7|PGe=F|Var=6
+A	U	Gen=N|Num=S|Cas=7|PGe=M
+A	U	Gen=N|Num=S|Cas=7|PGe=M|Sem=G
+A	U	Gen=N|Num=S|Cas=7|PGe=M|Sem=S
+A	U	Gen=N|Num=S|Cas=7|PGe=M|Sem=Y
+A	U	Gen=N|Num=S|Cas=7|PGe=M|Sem=m
+A	U	Gen=N|Num=S|Cas=7|PGe=M|Var=6
+A	U	Gen=X|Num=X|Cas=X|PGe=F|Var=8
+A	U	Gen=X|Num=X|Cas=X|PGe=M
+A	U	Gen=X|Num=X|Cas=X|PGe=M|Sem=S
+A	U	Gen=X|Num=X|Cas=X|PGe=M|Sem=m
+A	U	Gen=X|Num=X|Cas=X|PGe=M|Var=6
+A	U	Gen=X|Num=X|Cas=X|PGe=M|Var=6|Sem=S
+A	U	Gen=X|Num=X|Cas=X|PGe=M|Var=6|Sem=m
+A	U	Gen=X|Num=X|Cas=X|PGe=M|Var=8
+C	3	_
+C	=	_
+C	?	Cas=1
+C	?	Cas=2
+C	?	Cas=3
+C	?	Cas=4
+C	?	Cas=6
+C	?	Cas=7
+C	a	Cas=1
+C	a	Cas=2
+C	a	Cas=2|Var=1
+C	a	Cas=3
+C	a	Cas=4
+C	a	Cas=5
+C	a	Cas=6
+C	a	Cas=7
+C	a	Cas=X
+C	a	Cas=X|Var=8
+C	d	Gen=F|Num=D|Cas=7
+C	d	Gen=F|Num=D|Cas=7|Var=6
+C	d	Gen=F|Num=P|Cas=1
+C	d	Gen=F|Num=P|Cas=1|Var=6
+C	d	Gen=F|Num=P|Cas=2
+C	d	Gen=F|Num=P|Cas=2|Var=6
+C	d	Gen=F|Num=P|Cas=3
+C	d	Gen=F|Num=P|Cas=3|Var=6
+C	d	Gen=F|Num=P|Cas=4
+C	d	Gen=F|Num=P|Cas=4|Var=6
+C	d	Gen=F|Num=P|Cas=5
+C	d	Gen=F|Num=P|Cas=5|Var=6
+C	d	Gen=F|Num=P|Cas=6
+C	d	Gen=F|Num=P|Cas=6|Var=6
+C	d	Gen=F|Num=P|Cas=7
+C	d	Gen=F|Num=P|Cas=7|Var=6
+C	d	Gen=F|Num=P|Cas=7|Var=7
+C	d	Gen=F|Num=S|Cas=1
+C	d	Gen=F|Num=S|Cas=2
+C	d	Gen=F|Num=S|Cas=2|Var=6
+C	d	Gen=F|Num=S|Cas=3
+C	d	Gen=F|Num=S|Cas=3|Var=6
+C	d	Gen=F|Num=S|Cas=4
+C	d	Gen=F|Num=S|Cas=4|Var=2
+C	d	Gen=F|Num=S|Cas=5
+C	d	Gen=F|Num=S|Cas=6
+C	d	Gen=F|Num=S|Cas=6|Var=6
+C	d	Gen=F|Num=S|Cas=7
+C	d	Gen=I|Num=P|Cas=1
+C	d	Gen=I|Num=P|Cas=1|Var=6
+C	d	Gen=I|Num=P|Cas=2
+C	d	Gen=I|Num=P|Cas=2|Var=6
+C	d	Gen=I|Num=P|Cas=3
+C	d	Gen=I|Num=P|Cas=3|Var=6
+C	d	Gen=I|Num=P|Cas=4
+C	d	Gen=I|Num=P|Cas=4|Var=6
+C	d	Gen=I|Num=P|Cas=5
+C	d	Gen=I|Num=P|Cas=5|Var=6
+C	d	Gen=I|Num=P|Cas=6
+C	d	Gen=I|Num=P|Cas=6|Var=6
+C	d	Gen=I|Num=P|Cas=7
+C	d	Gen=I|Num=P|Cas=7|Var=6
+C	d	Gen=I|Num=P|Cas=7|Var=7
+C	d	Gen=I|Num=S|Cas=1
+C	d	Gen=I|Num=S|Cas=1|Var=6
+C	d	Gen=I|Num=S|Cas=2
+C	d	Gen=I|Num=S|Cas=2|Var=6
+C	d	Gen=I|Num=S|Cas=3
+C	d	Gen=I|Num=S|Cas=3|Var=6
+C	d	Gen=I|Num=S|Cas=4
+C	d	Gen=I|Num=S|Cas=4|Var=6
+C	d	Gen=I|Num=S|Cas=5
+C	d	Gen=I|Num=S|Cas=5|Var=6
+C	d	Gen=I|Num=S|Cas=6
+C	d	Gen=I|Num=S|Cas=6|Var=6
+C	d	Gen=I|Num=S|Cas=7
+C	d	Gen=I|Num=S|Cas=7|Var=6
+C	d	Gen=M|Num=P|Cas=1
+C	d	Gen=M|Num=P|Cas=1|Var=6
+C	d	Gen=M|Num=P|Cas=2
+C	d	Gen=M|Num=P|Cas=2|Var=6
+C	d	Gen=M|Num=P|Cas=3
+C	d	Gen=M|Num=P|Cas=3|Var=6
+C	d	Gen=M|Num=P|Cas=4
+C	d	Gen=M|Num=P|Cas=4|Var=6
+C	d	Gen=M|Num=P|Cas=5
+C	d	Gen=M|Num=P|Cas=5|Var=6
+C	d	Gen=M|Num=P|Cas=6
+C	d	Gen=M|Num=P|Cas=6|Var=6
+C	d	Gen=M|Num=P|Cas=7
+C	d	Gen=M|Num=P|Cas=7|Var=6
+C	d	Gen=M|Num=P|Cas=7|Var=7
+C	d	Gen=M|Num=S|Cas=1
+C	d	Gen=M|Num=S|Cas=1|Var=6
+C	d	Gen=M|Num=S|Cas=2
+C	d	Gen=M|Num=S|Cas=2|Var=6
+C	d	Gen=M|Num=S|Cas=3
+C	d	Gen=M|Num=S|Cas=3|Var=6
+C	d	Gen=M|Num=S|Cas=4
+C	d	Gen=M|Num=S|Cas=4|Var=6
+C	d	Gen=M|Num=S|Cas=5
+C	d	Gen=M|Num=S|Cas=5|Var=6
+C	d	Gen=M|Num=S|Cas=6
+C	d	Gen=M|Num=S|Cas=6|Var=6
+C	d	Gen=M|Num=S|Cas=7
+C	d	Gen=M|Num=S|Cas=7|Var=6
+C	d	Gen=N|Num=D|Cas=7
+C	d	Gen=N|Num=P|Cas=1
+C	d	Gen=N|Num=P|Cas=1|Var=6
+C	d	Gen=N|Num=P|Cas=2
+C	d	Gen=N|Num=P|Cas=2|Var=6
+C	d	Gen=N|Num=P|Cas=3
+C	d	Gen=N|Num=P|Cas=3|Var=6
+C	d	Gen=N|Num=P|Cas=4
+C	d	Gen=N|Num=P|Cas=4|Var=6
+C	d	Gen=N|Num=P|Cas=5
+C	d	Gen=N|Num=P|Cas=5|Var=6
+C	d	Gen=N|Num=P|Cas=6
+C	d	Gen=N|Num=P|Cas=6|Var=6
+C	d	Gen=N|Num=P|Cas=7
+C	d	Gen=N|Num=P|Cas=7|Var=6
+C	d	Gen=N|Num=P|Cas=7|Var=7
+C	d	Gen=N|Num=S|Cas=1
+C	d	Gen=N|Num=S|Cas=1|Var=1
+C	d	Gen=N|Num=S|Cas=1|Var=6
+C	d	Gen=N|Num=S|Cas=2
+C	d	Gen=N|Num=S|Cas=2|Var=6
+C	d	Gen=N|Num=S|Cas=3
+C	d	Gen=N|Num=S|Cas=3|Var=6
+C	d	Gen=N|Num=S|Cas=4
+C	d	Gen=N|Num=S|Cas=4|Var=1
+C	d	Gen=N|Num=S|Cas=4|Var=6
+C	d	Gen=N|Num=S|Cas=5
+C	d	Gen=N|Num=S|Cas=5|Var=6
+C	d	Gen=N|Num=S|Cas=6
+C	d	Gen=N|Num=S|Cas=6|Var=6
+C	d	Gen=N|Num=S|Cas=7
+C	d	Gen=N|Num=S|Cas=7|Var=6
+C	d	Gen=X|Num=P|Cas=1
+C	d	Gen=X|Num=P|Cas=1|Var=1
+C	d	Gen=X|Num=P|Cas=2
+C	d	Gen=X|Num=P|Cas=3
+C	d	Gen=X|Num=P|Cas=4
+C	d	Gen=X|Num=P|Cas=4|Var=1
+C	d	Gen=X|Num=P|Cas=5
+C	d	Gen=X|Num=P|Cas=5|Var=1
+C	d	Gen=X|Num=P|Cas=6
+C	d	Gen=X|Num=P|Cas=7
+C	d	Gen=X|Num=S|Cas=1
+C	d	Gen=X|Num=S|Cas=5
+C	d	Gen=Y|Num=S|Cas=2
+C	d	Gen=Y|Num=S|Cas=3
+C	d	Gen=Y|Num=S|Cas=6
+C	d	Gen=Y|Num=S|Cas=7
+C	h	Gen=F|Num=D|Cas=7
+C	h	Gen=F|Num=P|Cas=1
+C	h	Gen=F|Num=P|Cas=4
+C	h	Gen=F|Num=P|Cas=5
+C	h	Gen=I|Num=P|Cas=1
+C	h	Gen=I|Num=P|Cas=5
+C	h	Gen=M|Num=P|Cas=1
+C	h	Gen=M|Num=P|Cas=5
+C	h	Gen=N|Num=P|Cas=1
+C	h	Gen=N|Num=P|Cas=4
+C	h	Gen=N|Num=P|Cas=5
+C	h	Gen=X|Num=P|Cas=2
+C	h	Gen=X|Num=P|Cas=3
+C	h	Gen=X|Num=P|Cas=6
+C	h	Gen=X|Num=P|Cas=7
+C	h	Gen=Y|Num=P|Cas=4
+C	j	Num=S|Cas=1
+C	j	Num=S|Cas=2
+C	j	Num=S|Cas=2|Var=1
+C	j	Num=S|Cas=3
+C	j	Num=S|Cas=3|Var=1
+C	j	Num=S|Cas=4
+C	j	Num=S|Cas=5
+C	j	Num=S|Cas=6
+C	j	Num=S|Cas=6|Var=1
+C	j	Num=S|Cas=7
+C	j	Num=S|Cas=7|Var=1
+C	k	Num=P|Cas=1
+C	k	Num=P|Cas=2
+C	k	Num=P|Cas=3
+C	k	Num=P|Cas=4
+C	k	Num=P|Cas=5
+C	k	Num=P|Cas=6
+C	k	Num=P|Cas=7
+C	l	Gen=F|Num=D|Cas=7
+C	l	Gen=F|Num=D|Cas=7|Var=6
+C	l	Gen=F|Num=D|Cas=7|Var=9
+C	l	Gen=F|Num=S|Cas=1
+C	l	Gen=F|Num=S|Cas=2
+C	l	Gen=F|Num=S|Cas=3
+C	l	Gen=F|Num=S|Cas=4
+C	l	Gen=F|Num=S|Cas=5
+C	l	Gen=F|Num=S|Cas=6
+C	l	Gen=F|Num=S|Cas=7
+C	l	Gen=H|Num=P|Cas=1
+C	l	Gen=H|Num=P|Cas=4
+C	l	Gen=H|Num=P|Cas=5
+C	l	Gen=I|Num=S|Cas=4
+C	l	Gen=M|Num=S|Cas=4
+C	l	Gen=N|Num=S|Cas=1
+C	l	Gen=N|Num=S|Cas=4
+C	l	Gen=N|Num=S|Cas=5
+C	l	Gen=X|Num=P|Cas=1
+C	l	Gen=X|Num=P|Cas=1|Var=6
+C	l	Gen=X|Num=P|Cas=2
+C	l	Gen=X|Num=P|Cas=2|Var=1
+C	l	Gen=X|Num=P|Cas=2|Var=6
+C	l	Gen=X|Num=P|Cas=3
+C	l	Gen=X|Num=P|Cas=3|Var=1
+C	l	Gen=X|Num=P|Cas=3|Var=2
+C	l	Gen=X|Num=P|Cas=3|Var=6
+C	l	Gen=X|Num=P|Cas=3|Var=9
+C	l	Gen=X|Num=P|Cas=4
+C	l	Gen=X|Num=P|Cas=4|Var=6
+C	l	Gen=X|Num=P|Cas=5
+C	l	Gen=X|Num=P|Cas=5|Var=6
+C	l	Gen=X|Num=P|Cas=6
+C	l	Gen=X|Num=P|Cas=6|Var=1
+C	l	Gen=X|Num=P|Cas=6|Var=2
+C	l	Gen=X|Num=P|Cas=6|Var=6
+C	l	Gen=X|Num=P|Cas=7
+C	l	Gen=X|Num=P|Cas=7|Var=1
+C	l	Gen=X|Num=P|Cas=7|Var=2
+C	l	Gen=X|Num=P|Cas=7|Var=6
+C	l	Gen=X|Num=P|Cas=7|Var=9
+C	l	Gen=X|Num=P|Cas=X
+C	l	Gen=X|Num=P|Cas=X|Sem=K
+C	l	Gen=X|Num=P|Cas=X|Sem=m
+C	l	Gen=X|Num=S|Cas=2
+C	l	Gen=X|Num=S|Cas=3
+C	l	Gen=X|Num=S|Cas=6
+C	l	Gen=X|Num=S|Cas=7
+C	l	Gen=X|Num=S|Cas=X
+C	l	Gen=Y|Num=P|Cas=1
+C	l	Gen=Y|Num=P|Cas=4
+C	l	Gen=Y|Num=P|Cas=5
+C	l	Gen=Y|Num=S|Cas=1
+C	l	Gen=Y|Num=S|Cas=5
+C	l	Gen=Z|Num=S|Cas=2
+C	l	Gen=Z|Num=S|Cas=3
+C	l	Gen=Z|Num=S|Cas=6
+C	l	Gen=Z|Num=S|Cas=7
+C	n	Num=P|Cas=2
+C	n	Num=P|Cas=2|Var=1
+C	n	Num=P|Cas=3
+C	n	Num=P|Cas=3|Var=1
+C	n	Num=P|Cas=6
+C	n	Num=P|Cas=6|Var=1
+C	n	Num=P|Cas=7
+C	n	Num=P|Cas=7|Var=1
+C	n	Num=S|Cas=1
+C	n	Num=S|Cas=1|Sem=K
+C	n	Num=S|Cas=1|Sem=m
+C	n	Num=S|Cas=1|Var=1
+C	n	Num=S|Cas=4
+C	n	Num=S|Cas=4|Var=1
+C	n	Num=S|Cas=5
+C	n	Num=S|Cas=5|Var=1
+C	n	Num=S|Cas=X
+C	n	Num=X|Cas=X
+C	o	Var=1
+C	o	_
+C	r	Gen=F|Num=D|Cas=7
+C	r	Gen=F|Num=D|Cas=7|Var=6
+C	r	Gen=F|Num=P|Cas=1
+C	r	Gen=F|Num=P|Cas=1|Var=6
+C	r	Gen=F|Num=P|Cas=2
+C	r	Gen=F|Num=P|Cas=2|Var=6
+C	r	Gen=F|Num=P|Cas=3
+C	r	Gen=F|Num=P|Cas=3|Var=6
+C	r	Gen=F|Num=P|Cas=4
+C	r	Gen=F|Num=P|Cas=4|Var=6
+C	r	Gen=F|Num=P|Cas=5
+C	r	Gen=F|Num=P|Cas=5|Var=6
+C	r	Gen=F|Num=P|Cas=6
+C	r	Gen=F|Num=P|Cas=6|Var=6
+C	r	Gen=F|Num=P|Cas=7
+C	r	Gen=F|Num=P|Cas=7|Var=6
+C	r	Gen=F|Num=P|Cas=7|Var=7
+C	r	Gen=F|Num=S|Cas=1
+C	r	Gen=F|Num=S|Cas=2
+C	r	Gen=F|Num=S|Cas=2|Var=6
+C	r	Gen=F|Num=S|Cas=3
+C	r	Gen=F|Num=S|Cas=3|Var=6
+C	r	Gen=F|Num=S|Cas=4
+C	r	Gen=F|Num=S|Cas=5
+C	r	Gen=F|Num=S|Cas=6
+C	r	Gen=F|Num=S|Cas=6|Var=6
+C	r	Gen=F|Num=S|Cas=7
+C	r	Gen=I|Num=P|Cas=1
+C	r	Gen=I|Num=P|Cas=1|Var=6
+C	r	Gen=I|Num=P|Cas=2
+C	r	Gen=I|Num=P|Cas=2|Var=6
+C	r	Gen=I|Num=P|Cas=3
+C	r	Gen=I|Num=P|Cas=3|Var=6
+C	r	Gen=I|Num=P|Cas=4
+C	r	Gen=I|Num=P|Cas=4|Var=6
+C	r	Gen=I|Num=P|Cas=5
+C	r	Gen=I|Num=P|Cas=5|Var=6
+C	r	Gen=I|Num=P|Cas=6
+C	r	Gen=I|Num=P|Cas=6|Var=6
+C	r	Gen=I|Num=P|Cas=7
+C	r	Gen=I|Num=P|Cas=7|Var=6
+C	r	Gen=I|Num=P|Cas=7|Var=7
+C	r	Gen=I|Num=S|Cas=1
+C	r	Gen=I|Num=S|Cas=1|Var=6
+C	r	Gen=I|Num=S|Cas=2
+C	r	Gen=I|Num=S|Cas=2|Var=6
+C	r	Gen=I|Num=S|Cas=3
+C	r	Gen=I|Num=S|Cas=3|Var=6
+C	r	Gen=I|Num=S|Cas=4
+C	r	Gen=I|Num=S|Cas=4|Var=6
+C	r	Gen=I|Num=S|Cas=5
+C	r	Gen=I|Num=S|Cas=5|Var=6
+C	r	Gen=I|Num=S|Cas=6
+C	r	Gen=I|Num=S|Cas=6|Var=6
+C	r	Gen=I|Num=S|Cas=6|Var=7
+C	r	Gen=I|Num=S|Cas=7
+C	r	Gen=I|Num=S|Cas=7|Var=6
+C	r	Gen=M|Num=P|Cas=1
+C	r	Gen=M|Num=P|Cas=1|Var=6
+C	r	Gen=M|Num=P|Cas=2
+C	r	Gen=M|Num=P|Cas=2|Var=6
+C	r	Gen=M|Num=P|Cas=3
+C	r	Gen=M|Num=P|Cas=3|Var=6
+C	r	Gen=M|Num=P|Cas=4
+C	r	Gen=M|Num=P|Cas=4|Var=6
+C	r	Gen=M|Num=P|Cas=5
+C	r	Gen=M|Num=P|Cas=5|Var=6
+C	r	Gen=M|Num=P|Cas=6
+C	r	Gen=M|Num=P|Cas=6|Var=6
+C	r	Gen=M|Num=P|Cas=7
+C	r	Gen=M|Num=P|Cas=7|Var=6
+C	r	Gen=M|Num=P|Cas=7|Var=7
+C	r	Gen=M|Num=S|Cas=1
+C	r	Gen=M|Num=S|Cas=1|Var=6
+C	r	Gen=M|Num=S|Cas=2
+C	r	Gen=M|Num=S|Cas=2|Var=6
+C	r	Gen=M|Num=S|Cas=3
+C	r	Gen=M|Num=S|Cas=3|Var=6
+C	r	Gen=M|Num=S|Cas=4
+C	r	Gen=M|Num=S|Cas=4|Var=6
+C	r	Gen=M|Num=S|Cas=5
+C	r	Gen=M|Num=S|Cas=5|Var=6
+C	r	Gen=M|Num=S|Cas=6
+C	r	Gen=M|Num=S|Cas=6|Var=6
+C	r	Gen=M|Num=S|Cas=6|Var=7
+C	r	Gen=M|Num=S|Cas=7
+C	r	Gen=M|Num=S|Cas=7|Var=6
+C	r	Gen=N|Num=D|Cas=7
+C	r	Gen=N|Num=P|Cas=1
+C	r	Gen=N|Num=P|Cas=1|Var=6
+C	r	Gen=N|Num=P|Cas=2
+C	r	Gen=N|Num=P|Cas=2|Var=6
+C	r	Gen=N|Num=P|Cas=3
+C	r	Gen=N|Num=P|Cas=3|Var=6
+C	r	Gen=N|Num=P|Cas=4
+C	r	Gen=N|Num=P|Cas=4|Var=6
+C	r	Gen=N|Num=P|Cas=5
+C	r	Gen=N|Num=P|Cas=5|Var=6
+C	r	Gen=N|Num=P|Cas=6
+C	r	Gen=N|Num=P|Cas=6|Var=6
+C	r	Gen=N|Num=P|Cas=7
+C	r	Gen=N|Num=P|Cas=7|Var=6
+C	r	Gen=N|Num=P|Cas=7|Var=7
+C	r	Gen=N|Num=S|Cas=1
+C	r	Gen=N|Num=S|Cas=1|Var=6
+C	r	Gen=N|Num=S|Cas=2
+C	r	Gen=N|Num=S|Cas=2|Var=6
+C	r	Gen=N|Num=S|Cas=3
+C	r	Gen=N|Num=S|Cas=3|Var=6
+C	r	Gen=N|Num=S|Cas=4
+C	r	Gen=N|Num=S|Cas=4|Var=6
+C	r	Gen=N|Num=S|Cas=5
+C	r	Gen=N|Num=S|Cas=5|Var=6
+C	r	Gen=N|Num=S|Cas=6
+C	r	Gen=N|Num=S|Cas=6|Var=6
+C	r	Gen=N|Num=S|Cas=6|Var=7
+C	r	Gen=N|Num=S|Cas=7
+C	r	Gen=N|Num=S|Cas=7|Var=6
+C	r	Gen=X|Num=X|Cas=X
+C	r	Gen=X|Num=X|Cas=X|Sem=K
+C	r	Gen=X|Num=X|Cas=X|Sem=m
+C	u	_
+C	v	Var=1
+C	v	Var=6
+C	v	_
+C	w	Gen=F|Num=D|Cas=7
+C	w	Gen=F|Num=P|Cas=1
+C	w	Gen=F|Num=P|Cas=4
+C	w	Gen=F|Num=P|Cas=5
+C	w	Gen=F|Num=S|Cas=1
+C	w	Gen=F|Num=S|Cas=2
+C	w	Gen=F|Num=S|Cas=3
+C	w	Gen=F|Num=S|Cas=4
+C	w	Gen=F|Num=S|Cas=5
+C	w	Gen=F|Num=S|Cas=6
+C	w	Gen=F|Num=S|Cas=7
+C	w	Gen=I|Num=P|Cas=1
+C	w	Gen=I|Num=P|Cas=5
+C	w	Gen=I|Num=S|Cas=4
+C	w	Gen=M|Num=P|Cas=1
+C	w	Gen=M|Num=P|Cas=5
+C	w	Gen=M|Num=S|Cas=4
+C	w	Gen=N|Num=P|Cas=1
+C	w	Gen=N|Num=P|Cas=4
+C	w	Gen=N|Num=P|Cas=5
+C	w	Gen=N|Num=S|Cas=1
+C	w	Gen=N|Num=S|Cas=4
+C	w	Gen=N|Num=S|Cas=5
+C	w	Gen=X|Num=P|Cas=2
+C	w	Gen=X|Num=P|Cas=3
+C	w	Gen=X|Num=P|Cas=6
+C	w	Gen=X|Num=P|Cas=7
+C	w	Gen=Y|Num=P|Cas=4
+C	w	Gen=Y|Num=S|Cas=1
+C	w	Gen=Y|Num=S|Cas=5
+C	w	Gen=Z|Num=S|Cas=2
+C	w	Gen=Z|Num=S|Cas=3
+C	w	Gen=Z|Num=S|Cas=6
+C	w	Gen=Z|Num=S|Cas=7
+C	y	Gen=F|Num=P|Cas=1
+C	y	Gen=F|Num=P|Cas=2
+C	y	Gen=F|Num=P|Cas=3
+C	y	Gen=F|Num=P|Cas=4
+C	y	Gen=F|Num=P|Cas=5
+C	y	Gen=F|Num=P|Cas=6
+C	y	Gen=F|Num=P|Cas=7
+C	y	Gen=F|Num=P|Cas=7|Var=6
+C	y	Gen=F|Num=S|Cas=1
+C	y	Gen=F|Num=S|Cas=2
+C	y	Gen=F|Num=S|Cas=3
+C	y	Gen=F|Num=S|Cas=4
+C	y	Gen=F|Num=S|Cas=5
+C	y	Gen=F|Num=S|Cas=6
+C	y	Gen=F|Num=S|Cas=7
+C	z	Gen=F|Num=D|Cas=7
+C	z	Gen=F|Num=P|Cas=1
+C	z	Gen=F|Num=P|Cas=4
+C	z	Gen=F|Num=S|Cas=1
+C	z	Gen=F|Num=S|Cas=2
+C	z	Gen=F|Num=S|Cas=3
+C	z	Gen=F|Num=S|Cas=4
+C	z	Gen=F|Num=S|Cas=6
+C	z	Gen=F|Num=S|Cas=7
+C	z	Gen=I|Num=P|Cas=1
+C	z	Gen=I|Num=S|Cas=4
+C	z	Gen=M|Num=P|Cas=1
+C	z	Gen=M|Num=S|Cas=4
+C	z	Gen=N|Num=P|Cas=1
+C	z	Gen=N|Num=P|Cas=4
+C	z	Gen=N|Num=S|Cas=1
+C	z	Gen=N|Num=S|Cas=4
+C	z	Gen=X|Num=P|Cas=2
+C	z	Gen=X|Num=P|Cas=3
+C	z	Gen=X|Num=P|Cas=6
+C	z	Gen=X|Num=P|Cas=7
+C	z	Gen=Y|Num=P|Cas=4
+C	z	Gen=Y|Num=S|Cas=1
+C	z	Gen=Z|Num=S|Cas=2
+C	z	Gen=Z|Num=S|Cas=3
+C	z	Gen=Z|Num=S|Cas=6
+C	z	Gen=Z|Num=S|Cas=7
+C	}	Var=1
+C	}	Var=2
+C	}	_
+D	!	_
+D	b	Neg=A
+D	b	Neg=N
+D	b	Sem=R
+D	b	Sem=m
+D	b	Var=1
+D	b	Var=2
+D	b	Var=4
+D	b	Var=6
+D	b	Var=7
+D	b	Var=8
+D	b	Var=9
+D	b	_
+D	g	Gra=1|Neg=A
+D	g	Gra=1|Neg=A|Sem=S
+D	g	Gra=1|Neg=A|Sem=m
+D	g	Gra=1|Neg=A|Var=1
+D	g	Gra=1|Neg=A|Var=3
+D	g	Gra=1|Neg=A|Var=8
+D	g	Gra=1|Neg=N
+D	g	Gra=1|Neg=N|Var=3
+D	g	Gra=1|Neg=N|Var=8
+D	g	Gra=2|Neg=A
+D	g	Gra=2|Neg=A|Sem=K
+D	g	Gra=2|Neg=A|Sem=m
+D	g	Gra=2|Neg=A|Var=1
+D	g	Gra=2|Neg=A|Var=2
+D	g	Gra=2|Neg=A|Var=3
+D	g	Gra=2|Neg=A|Var=6
+D	g	Gra=2|Neg=N
+D	g	Gra=2|Neg=N|Var=1
+D	g	Gra=2|Neg=N|Var=2
+D	g	Gra=2|Neg=N|Var=3
+D	g	Gra=2|Neg=N|Var=6
+D	g	Gra=3|Neg=A
+D	g	Gra=3|Neg=A|Var=1
+D	g	Gra=3|Neg=A|Var=2
+D	g	Gra=3|Neg=A|Var=3
+D	g	Gra=3|Neg=A|Var=6
+D	g	Gra=3|Neg=N
+D	g	Gra=3|Neg=N|Var=1
+D	g	Gra=3|Neg=N|Var=2
+D	g	Gra=3|Neg=N|Var=3
+D	g	Gra=3|Neg=N|Var=6
+I	I	Sem=K
+I	I	Sem=m
+I	I	_
+J	*	_
+J	,	Num=P|Per=1
+J	,	Num=P|Per=2
+J	,	Num=S|Per=1
+J	,	Num=S|Per=2
+J	,	Num=X|Per=3
+J	,	Var=1
+J	,	Var=8
+J	,	_
+J	^	Sem=K
+J	^	Var=1
+J	^	Var=2
+J	^	Var=8
+J	^	_
+N	;	_
+N	N	Gen=F|Num=D|Cas=7|Neg=A
+N	N	Gen=F|Num=D|Cas=7|Neg=A|Sem=m
+N	N	Gen=F|Num=D|Cas=7|Neg=N
+N	N	Gen=F|Num=P|Cas=1|Neg=A
+N	N	Gen=F|Num=P|Cas=1|Neg=A|Sem=E
+N	N	Gen=F|Num=P|Cas=1|Neg=A|Sem=G
+N	N	Gen=F|Num=P|Cas=1|Neg=A|Sem=K
+N	N	Gen=F|Num=P|Cas=1|Neg=A|Sem=R
+N	N	Gen=F|Num=P|Cas=1|Neg=A|Sem=Y
+N	N	Gen=F|Num=P|Cas=1|Neg=A|Sem=m
+N	N	Gen=F|Num=P|Cas=1|Neg=A|Var=1
+N	N	Gen=F|Num=P|Cas=1|Neg=A|Var=1|Sem=G
+N	N	Gen=F|Num=P|Cas=1|Neg=A|Var=1|Sem=m
+N	N	Gen=F|Num=P|Cas=1|Neg=A|Var=4
+N	N	Gen=F|Num=P|Cas=1|Neg=A|Var=6
+N	N	Gen=F|Num=P|Cas=1|Neg=A|Var=8
+N	N	Gen=F|Num=P|Cas=1|Neg=N
+N	N	Gen=F|Num=P|Cas=1|Neg=N|Var=1
+N	N	Gen=F|Num=P|Cas=1|Neg=N|Var=4
+N	N	Gen=F|Num=P|Cas=1|Neg=N|Var=6
+N	N	Gen=F|Num=P|Cas=1|Neg=N|Var=8
+N	N	Gen=F|Num=P|Cas=2|Neg=A
+N	N	Gen=F|Num=P|Cas=2|Neg=A|Sem=E
+N	N	Gen=F|Num=P|Cas=2|Neg=A|Sem=G
+N	N	Gen=F|Num=P|Cas=2|Neg=A|Sem=K
+N	N	Gen=F|Num=P|Cas=2|Neg=A|Sem=R
+N	N	Gen=F|Num=P|Cas=2|Neg=A|Sem=S
+N	N	Gen=F|Num=P|Cas=2|Neg=A|Sem=Y
+N	N	Gen=F|Num=P|Cas=2|Neg=A|Sem=m
+N	N	Gen=F|Num=P|Cas=2|Neg=A|Var=1
+N	N	Gen=F|Num=P|Cas=2|Neg=A|Var=6
+N	N	Gen=F|Num=P|Cas=2|Neg=A|Var=8
+N	N	Gen=F|Num=P|Cas=2|Neg=N
+N	N	Gen=F|Num=P|Cas=2|Neg=N|Var=1
+N	N	Gen=F|Num=P|Cas=2|Neg=N|Var=6
+N	N	Gen=F|Num=P|Cas=2|Neg=N|Var=8
+N	N	Gen=F|Num=P|Cas=3|Neg=A
+N	N	Gen=F|Num=P|Cas=3|Neg=A|Sem=E
+N	N	Gen=F|Num=P|Cas=3|Neg=A|Sem=G
+N	N	Gen=F|Num=P|Cas=3|Neg=A|Sem=m
+N	N	Gen=F|Num=P|Cas=3|Neg=A|Var=1
+N	N	Gen=F|Num=P|Cas=3|Neg=A|Var=6
+N	N	Gen=F|Num=P|Cas=3|Neg=A|Var=8
+N	N	Gen=F|Num=P|Cas=3|Neg=N
+N	N	Gen=F|Num=P|Cas=3|Neg=N|Var=1
+N	N	Gen=F|Num=P|Cas=3|Neg=N|Var=6
+N	N	Gen=F|Num=P|Cas=3|Neg=N|Var=8
+N	N	Gen=F|Num=P|Cas=4|Neg=A
+N	N	Gen=F|Num=P|Cas=4|Neg=A|Sem=E
+N	N	Gen=F|Num=P|Cas=4|Neg=A|Sem=G
+N	N	Gen=F|Num=P|Cas=4|Neg=A|Sem=K
+N	N	Gen=F|Num=P|Cas=4|Neg=A|Sem=R
+N	N	Gen=F|Num=P|Cas=4|Neg=A|Sem=m
+N	N	Gen=F|Num=P|Cas=4|Neg=A|Var=1
+N	N	Gen=F|Num=P|Cas=4|Neg=A|Var=4
+N	N	Gen=F|Num=P|Cas=4|Neg=A|Var=6
+N	N	Gen=F|Num=P|Cas=4|Neg=A|Var=8
+N	N	Gen=F|Num=P|Cas=4|Neg=N
+N	N	Gen=F|Num=P|Cas=4|Neg=N|Var=1
+N	N	Gen=F|Num=P|Cas=4|Neg=N|Var=4
+N	N	Gen=F|Num=P|Cas=4|Neg=N|Var=6
+N	N	Gen=F|Num=P|Cas=4|Neg=N|Var=8
+N	N	Gen=F|Num=P|Cas=5|Neg=A
+N	N	Gen=F|Num=P|Cas=5|Neg=A|Sem=m
+N	N	Gen=F|Num=P|Cas=5|Neg=A|Var=1
+N	N	Gen=F|Num=P|Cas=5|Neg=A|Var=4
+N	N	Gen=F|Num=P|Cas=5|Neg=A|Var=6
+N	N	Gen=F|Num=P|Cas=5|Neg=A|Var=8
+N	N	Gen=F|Num=P|Cas=5|Neg=N
+N	N	Gen=F|Num=P|Cas=5|Neg=N|Var=1
+N	N	Gen=F|Num=P|Cas=5|Neg=N|Var=4
+N	N	Gen=F|Num=P|Cas=5|Neg=N|Var=6
+N	N	Gen=F|Num=P|Cas=5|Neg=N|Var=8
+N	N	Gen=F|Num=P|Cas=6|Neg=A
+N	N	Gen=F|Num=P|Cas=6|Neg=A|Sem=G
+N	N	Gen=F|Num=P|Cas=6|Neg=A|Sem=K
+N	N	Gen=F|Num=P|Cas=6|Neg=A|Sem=R
+N	N	Gen=F|Num=P|Cas=6|Neg=A|Sem=m
+N	N	Gen=F|Num=P|Cas=6|Neg=A|Var=1
+N	N	Gen=F|Num=P|Cas=6|Neg=A|Var=6
+N	N	Gen=F|Num=P|Cas=6|Neg=A|Var=7
+N	N	Gen=F|Num=P|Cas=6|Neg=A|Var=8
+N	N	Gen=F|Num=P|Cas=6|Neg=N
+N	N	Gen=F|Num=P|Cas=6|Neg=N|Var=1
+N	N	Gen=F|Num=P|Cas=6|Neg=N|Var=6
+N	N	Gen=F|Num=P|Cas=6|Neg=N|Var=7
+N	N	Gen=F|Num=P|Cas=6|Neg=N|Var=8
+N	N	Gen=F|Num=P|Cas=7|Neg=A
+N	N	Gen=F|Num=P|Cas=7|Neg=A|Sem=G
+N	N	Gen=F|Num=P|Cas=7|Neg=A|Sem=m
+N	N	Gen=F|Num=P|Cas=7|Neg=A|Var=1
+N	N	Gen=F|Num=P|Cas=7|Neg=A|Var=2
+N	N	Gen=F|Num=P|Cas=7|Neg=A|Var=6
+N	N	Gen=F|Num=P|Cas=7|Neg=A|Var=7
+N	N	Gen=F|Num=P|Cas=7|Neg=A|Var=8
+N	N	Gen=F|Num=P|Cas=7|Neg=N
+N	N	Gen=F|Num=P|Cas=7|Neg=N|Var=1
+N	N	Gen=F|Num=P|Cas=7|Neg=N|Var=2
+N	N	Gen=F|Num=P|Cas=7|Neg=N|Var=6
+N	N	Gen=F|Num=P|Cas=7|Neg=N|Var=7
+N	N	Gen=F|Num=P|Cas=7|Neg=N|Var=8
+N	N	Gen=F|Num=P|Cas=X|Neg=A
+N	N	Gen=F|Num=P|Cas=X|Neg=A|Sem=G
+N	N	Gen=F|Num=P|Cas=X|Neg=A|Sem=K
+N	N	Gen=F|Num=P|Cas=X|Neg=A|Sem=R
+N	N	Gen=F|Num=P|Cas=X|Neg=A|Sem=m
+N	N	Gen=F|Num=P|Cas=X|Neg=A|Var=8
+N	N	Gen=F|Num=P|Cas=X|Neg=A|Var=8|Sem=K
+N	N	Gen=F|Num=P|Cas=X|Neg=A|Var=8|Sem=R
+N	N	Gen=F|Num=P|Cas=X|Neg=A|Var=8|Sem=m
+N	N	Gen=F|Num=P|Cas=X|Neg=A|Var=8|Sem=w
+N	N	Gen=F|Num=P|Cas=X|Neg=N
+N	N	Gen=F|Num=P|Cas=X|Neg=N|Var=8
+N	N	Gen=F|Num=S|Cas=1|Neg=A
+N	N	Gen=F|Num=S|Cas=1|Neg=A|Sem=E
+N	N	Gen=F|Num=S|Cas=1|Neg=A|Sem=G
+N	N	Gen=F|Num=S|Cas=1|Neg=A|Sem=K
+N	N	Gen=F|Num=S|Cas=1|Neg=A|Sem=L
+N	N	Gen=F|Num=S|Cas=1|Neg=A|Sem=R
+N	N	Gen=F|Num=S|Cas=1|Neg=A|Sem=S
+N	N	Gen=F|Num=S|Cas=1|Neg=A|Sem=U
+N	N	Gen=F|Num=S|Cas=1|Neg=A|Sem=Y
+N	N	Gen=F|Num=S|Cas=1|Neg=A|Sem=j
+N	N	Gen=F|Num=S|Cas=1|Neg=A|Sem=m
+N	N	Gen=F|Num=S|Cas=1|Neg=A|Var=1
+N	N	Gen=F|Num=S|Cas=1|Neg=A|Var=1|Sem=G
+N	N	Gen=F|Num=S|Cas=1|Neg=A|Var=1|Sem=K
+N	N	Gen=F|Num=S|Cas=1|Neg=A|Var=1|Sem=R
+N	N	Gen=F|Num=S|Cas=1|Neg=A|Var=1|Sem=Y
+N	N	Gen=F|Num=S|Cas=1|Neg=A|Var=1|Sem=m
+N	N	Gen=F|Num=S|Cas=1|Neg=A|Var=8
+N	N	Gen=F|Num=S|Cas=1|Neg=N
+N	N	Gen=F|Num=S|Cas=1|Neg=N|Var=1
+N	N	Gen=F|Num=S|Cas=1|Neg=N|Var=8
+N	N	Gen=F|Num=S|Cas=2|Neg=A
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Sem=E
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Sem=G
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Sem=K
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Sem=L
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Sem=R
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Sem=S
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Sem=U
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Sem=Y
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Sem=j
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Sem=m
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Var=1
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Var=1|Sem=G
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Var=1|Sem=m
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Var=2
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Var=6
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Var=8
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Var=8|Sem=G
+N	N	Gen=F|Num=S|Cas=2|Neg=A|Var=8|Sem=m
+N	N	Gen=F|Num=S|Cas=2|Neg=N
+N	N	Gen=F|Num=S|Cas=2|Neg=N|Var=1
+N	N	Gen=F|Num=S|Cas=2|Neg=N|Var=2
+N	N	Gen=F|Num=S|Cas=2|Neg=N|Var=6
+N	N	Gen=F|Num=S|Cas=2|Neg=N|Var=8
+N	N	Gen=F|Num=S|Cas=3|Neg=A
+N	N	Gen=F|Num=S|Cas=3|Neg=A|Sem=E
+N	N	Gen=F|Num=S|Cas=3|Neg=A|Sem=G
+N	N	Gen=F|Num=S|Cas=3|Neg=A|Sem=K
+N	N	Gen=F|Num=S|Cas=3|Neg=A|Sem=R
+N	N	Gen=F|Num=S|Cas=3|Neg=A|Sem=S
+N	N	Gen=F|Num=S|Cas=3|Neg=A|Sem=Y
+N	N	Gen=F|Num=S|Cas=3|Neg=A|Sem=m
+N	N	Gen=F|Num=S|Cas=3|Neg=A|Var=1
+N	N	Gen=F|Num=S|Cas=3|Neg=A|Var=1|Sem=G
+N	N	Gen=F|Num=S|Cas=3|Neg=A|Var=1|Sem=m
+N	N	Gen=F|Num=S|Cas=3|Neg=A|Var=2
+N	N	Gen=F|Num=S|Cas=3|Neg=A|Var=6
+N	N	Gen=F|Num=S|Cas=3|Neg=A|Var=8
+N	N	Gen=F|Num=S|Cas=3|Neg=N
+N	N	Gen=F|Num=S|Cas=3|Neg=N|Var=1
+N	N	Gen=F|Num=S|Cas=3|Neg=N|Var=2
+N	N	Gen=F|Num=S|Cas=3|Neg=N|Var=6
+N	N	Gen=F|Num=S|Cas=3|Neg=N|Var=8
+N	N	Gen=F|Num=S|Cas=4|Neg=A
+N	N	Gen=F|Num=S|Cas=4|Neg=A|Sem=E
+N	N	Gen=F|Num=S|Cas=4|Neg=A|Sem=G
+N	N	Gen=F|Num=S|Cas=4|Neg=A|Sem=K
+N	N	Gen=F|Num=S|Cas=4|Neg=A|Sem=R
+N	N	Gen=F|Num=S|Cas=4|Neg=A|Sem=S
+N	N	Gen=F|Num=S|Cas=4|Neg=A|Sem=Y
+N	N	Gen=F|Num=S|Cas=4|Neg=A|Sem=j
+N	N	Gen=F|Num=S|Cas=4|Neg=A|Sem=m
+N	N	Gen=F|Num=S|Cas=4|Neg=A|Var=1
+N	N	Gen=F|Num=S|Cas=4|Neg=A|Var=8
+N	N	Gen=F|Num=S|Cas=4|Neg=N
+N	N	Gen=F|Num=S|Cas=4|Neg=N|Var=1
+N	N	Gen=F|Num=S|Cas=4|Neg=N|Var=8
+N	N	Gen=F|Num=S|Cas=5|Neg=A
+N	N	Gen=F|Num=S|Cas=5|Neg=A|Sem=G
+N	N	Gen=F|Num=S|Cas=5|Neg=A|Sem=R
+N	N	Gen=F|Num=S|Cas=5|Neg=A|Sem=Y
+N	N	Gen=F|Num=S|Cas=5|Neg=A|Sem=m
+N	N	Gen=F|Num=S|Cas=5|Neg=A|Var=1
+N	N	Gen=F|Num=S|Cas=5|Neg=A|Var=8
+N	N	Gen=F|Num=S|Cas=5|Neg=N
+N	N	Gen=F|Num=S|Cas=5|Neg=N|Var=1
+N	N	Gen=F|Num=S|Cas=5|Neg=N|Var=8
+N	N	Gen=F|Num=S|Cas=6|Neg=A
+N	N	Gen=F|Num=S|Cas=6|Neg=A|Sem=G
+N	N	Gen=F|Num=S|Cas=6|Neg=A|Sem=K
+N	N	Gen=F|Num=S|Cas=6|Neg=A|Sem=R
+N	N	Gen=F|Num=S|Cas=6|Neg=A|Sem=S
+N	N	Gen=F|Num=S|Cas=6|Neg=A|Sem=Y
+N	N	Gen=F|Num=S|Cas=6|Neg=A|Sem=j
+N	N	Gen=F|Num=S|Cas=6|Neg=A|Sem=m
+N	N	Gen=F|Num=S|Cas=6|Neg=A|Var=1
+N	N	Gen=F|Num=S|Cas=6|Neg=A|Var=1|Sem=G
+N	N	Gen=F|Num=S|Cas=6|Neg=A|Var=1|Sem=K
+N	N	Gen=F|Num=S|Cas=6|Neg=A|Var=1|Sem=m
+N	N	Gen=F|Num=S|Cas=6|Neg=A|Var=6
+N	N	Gen=F|Num=S|Cas=6|Neg=A|Var=8
+N	N	Gen=F|Num=S|Cas=6|Neg=N
+N	N	Gen=F|Num=S|Cas=6|Neg=N|Var=1
+N	N	Gen=F|Num=S|Cas=6|Neg=N|Var=6
+N	N	Gen=F|Num=S|Cas=6|Neg=N|Var=8
+N	N	Gen=F|Num=S|Cas=7|Neg=A
+N	N	Gen=F|Num=S|Cas=7|Neg=A|Sem=E
+N	N	Gen=F|Num=S|Cas=7|Neg=A|Sem=G
+N	N	Gen=F|Num=S|Cas=7|Neg=A|Sem=K
+N	N	Gen=F|Num=S|Cas=7|Neg=A|Sem=L
+N	N	Gen=F|Num=S|Cas=7|Neg=A|Sem=R
+N	N	Gen=F|Num=S|Cas=7|Neg=A|Sem=S
+N	N	Gen=F|Num=S|Cas=7|Neg=A|Sem=Y
+N	N	Gen=F|Num=S|Cas=7|Neg=A|Sem=m
+N	N	Gen=F|Num=S|Cas=7|Neg=A|Var=1
+N	N	Gen=F|Num=S|Cas=7|Neg=A|Var=1|Sem=G
+N	N	Gen=F|Num=S|Cas=7|Neg=A|Var=1|Sem=Y
+N	N	Gen=F|Num=S|Cas=7|Neg=A|Var=1|Sem=m
+N	N	Gen=F|Num=S|Cas=7|Neg=A|Var=3
+N	N	Gen=F|Num=S|Cas=7|Neg=A|Var=6
+N	N	Gen=F|Num=S|Cas=7|Neg=A|Var=8
+N	N	Gen=F|Num=S|Cas=7|Neg=N
+N	N	Gen=F|Num=S|Cas=7|Neg=N|Var=1
+N	N	Gen=F|Num=S|Cas=7|Neg=N|Var=3
+N	N	Gen=F|Num=S|Cas=7|Neg=N|Var=6
+N	N	Gen=F|Num=S|Cas=7|Neg=N|Var=8
+N	N	Gen=F|Num=S|Cas=X|Neg=A
+N	N	Gen=F|Num=S|Cas=X|Neg=A|Sem=G
+N	N	Gen=F|Num=S|Cas=X|Neg=A|Sem=K
+N	N	Gen=F|Num=S|Cas=X|Neg=A|Sem=R
+N	N	Gen=F|Num=S|Cas=X|Neg=A|Sem=S
+N	N	Gen=F|Num=S|Cas=X|Neg=A|Sem=Y
+N	N	Gen=F|Num=S|Cas=X|Neg=A|Sem=m
+N	N	Gen=F|Num=S|Cas=X|Neg=A|Var=8
+N	N	Gen=F|Num=S|Cas=X|Neg=A|Var=8|Sem=R
+N	N	Gen=F|Num=S|Cas=X|Neg=A|Var=8|Sem=m
+N	N	Gen=F|Num=S|Cas=X|Neg=N
+N	N	Gen=F|Num=S|Cas=X|Neg=N|Var=8
+N	N	Gen=F|Num=X|Cas=X|Neg=A
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Sem=G
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Sem=K
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Sem=R
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Sem=S
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Sem=Y
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Sem=m
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=1
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=2
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=G
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=K
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=R
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=S
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=Y
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=b
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=j
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=m
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=p
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=8|Sem=w
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=9
+N	N	Gen=F|Num=X|Cas=X|Neg=A|Var=9|Sem=m
+N	N	Gen=F|Num=X|Cas=X|Neg=N
+N	N	Gen=F|Num=X|Cas=X|Neg=N|Var=1
+N	N	Gen=F|Num=X|Cas=X|Neg=N|Var=2
+N	N	Gen=F|Num=X|Cas=X|Neg=N|Var=8
+N	N	Gen=F|Num=X|Cas=X|Neg=N|Var=9
+N	N	Gen=I|Num=P|Cas=1|Neg=A
+N	N	Gen=I|Num=P|Cas=1|Neg=A|Sem=G
+N	N	Gen=I|Num=P|Cas=1|Neg=A|Sem=K
+N	N	Gen=I|Num=P|Cas=1|Neg=A|Sem=R
+N	N	Gen=I|Num=P|Cas=1|Neg=A|Sem=b
+N	N	Gen=I|Num=P|Cas=1|Neg=A|Sem=m
+N	N	Gen=I|Num=P|Cas=1|Neg=A|Var=1
+N	N	Gen=I|Num=P|Cas=1|Neg=A|Var=2
+N	N	Gen=I|Num=P|Cas=1|Neg=A|Var=3
+N	N	Gen=I|Num=P|Cas=1|Neg=A|Var=6
+N	N	Gen=I|Num=P|Cas=1|Neg=A|Var=8
+N	N	Gen=I|Num=P|Cas=1|Neg=A|Var=9
+N	N	Gen=I|Num=P|Cas=1|Neg=N
+N	N	Gen=I|Num=P|Cas=1|Neg=N|Var=1
+N	N	Gen=I|Num=P|Cas=1|Neg=N|Var=2
+N	N	Gen=I|Num=P|Cas=1|Neg=N|Var=3
+N	N	Gen=I|Num=P|Cas=1|Neg=N|Var=6
+N	N	Gen=I|Num=P|Cas=1|Neg=N|Var=8
+N	N	Gen=I|Num=P|Cas=1|Neg=N|Var=9
+N	N	Gen=I|Num=P|Cas=2|Neg=A
+N	N	Gen=I|Num=P|Cas=2|Neg=A|Sem=G
+N	N	Gen=I|Num=P|Cas=2|Neg=A|Sem=H
+N	N	Gen=I|Num=P|Cas=2|Neg=A|Sem=K
+N	N	Gen=I|Num=P|Cas=2|Neg=A|Sem=R
+N	N	Gen=I|Num=P|Cas=2|Neg=A|Sem=b
+N	N	Gen=I|Num=P|Cas=2|Neg=A|Sem=m
+N	N	Gen=I|Num=P|Cas=2|Neg=A|Var=1
+N	N	Gen=I|Num=P|Cas=2|Neg=A|Var=1|Sem=G
+N	N	Gen=I|Num=P|Cas=2|Neg=A|Var=1|Sem=m
+N	N	Gen=I|Num=P|Cas=2|Neg=A|Var=2
+N	N	Gen=I|Num=P|Cas=2|Neg=A|Var=3
+N	N	Gen=I|Num=P|Cas=2|Neg=A|Var=6
+N	N	Gen=I|Num=P|Cas=2|Neg=A|Var=8
+N	N	Gen=I|Num=P|Cas=2|Neg=A|Var=9
+N	N	Gen=I|Num=P|Cas=2|Neg=N
+N	N	Gen=I|Num=P|Cas=2|Neg=N|Var=1
+N	N	Gen=I|Num=P|Cas=2|Neg=N|Var=2
+N	N	Gen=I|Num=P|Cas=2|Neg=N|Var=3
+N	N	Gen=I|Num=P|Cas=2|Neg=N|Var=6
+N	N	Gen=I|Num=P|Cas=2|Neg=N|Var=8
+N	N	Gen=I|Num=P|Cas=2|Neg=N|Var=9
+N	N	Gen=I|Num=P|Cas=3|Neg=A
+N	N	Gen=I|Num=P|Cas=3|Neg=A|Sem=G
+N	N	Gen=I|Num=P|Cas=3|Neg=A|Sem=R
+N	N	Gen=I|Num=P|Cas=3|Neg=A|Sem=m
+N	N	Gen=I|Num=P|Cas=3|Neg=A|Var=1
+N	N	Gen=I|Num=P|Cas=3|Neg=A|Var=2
+N	N	Gen=I|Num=P|Cas=3|Neg=A|Var=6
+N	N	Gen=I|Num=P|Cas=3|Neg=A|Var=7
+N	N	Gen=I|Num=P|Cas=3|Neg=A|Var=8
+N	N	Gen=I|Num=P|Cas=3|Neg=A|Var=9
+N	N	Gen=I|Num=P|Cas=3|Neg=N
+N	N	Gen=I|Num=P|Cas=3|Neg=N|Var=1
+N	N	Gen=I|Num=P|Cas=3|Neg=N|Var=2
+N	N	Gen=I|Num=P|Cas=3|Neg=N|Var=6
+N	N	Gen=I|Num=P|Cas=3|Neg=N|Var=7
+N	N	Gen=I|Num=P|Cas=3|Neg=N|Var=8
+N	N	Gen=I|Num=P|Cas=3|Neg=N|Var=9
+N	N	Gen=I|Num=P|Cas=4|Neg=A
+N	N	Gen=I|Num=P|Cas=4|Neg=A|Sem=G
+N	N	Gen=I|Num=P|Cas=4|Neg=A|Sem=L
+N	N	Gen=I|Num=P|Cas=4|Neg=A|Sem=R
+N	N	Gen=I|Num=P|Cas=4|Neg=A|Sem=b
+N	N	Gen=I|Num=P|Cas=4|Neg=A|Sem=m
+N	N	Gen=I|Num=P|Cas=4|Neg=A|Var=1
+N	N	Gen=I|Num=P|Cas=4|Neg=A|Var=2
+N	N	Gen=I|Num=P|Cas=4|Neg=A|Var=3
+N	N	Gen=I|Num=P|Cas=4|Neg=A|Var=6
+N	N	Gen=I|Num=P|Cas=4|Neg=A|Var=8
+N	N	Gen=I|Num=P|Cas=4|Neg=A|Var=9
+N	N	Gen=I|Num=P|Cas=4|Neg=N
+N	N	Gen=I|Num=P|Cas=4|Neg=N|Var=1
+N	N	Gen=I|Num=P|Cas=4|Neg=N|Var=2
+N	N	Gen=I|Num=P|Cas=4|Neg=N|Var=3
+N	N	Gen=I|Num=P|Cas=4|Neg=N|Var=6
+N	N	Gen=I|Num=P|Cas=4|Neg=N|Var=8
+N	N	Gen=I|Num=P|Cas=4|Neg=N|Var=9
+N	N	Gen=I|Num=P|Cas=5|Neg=A
+N	N	Gen=I|Num=P|Cas=5|Neg=A|Var=1
+N	N	Gen=I|Num=P|Cas=5|Neg=A|Var=2
+N	N	Gen=I|Num=P|Cas=5|Neg=A|Var=3
+N	N	Gen=I|Num=P|Cas=5|Neg=A|Var=6
+N	N	Gen=I|Num=P|Cas=5|Neg=A|Var=8
+N	N	Gen=I|Num=P|Cas=5|Neg=A|Var=9
+N	N	Gen=I|Num=P|Cas=5|Neg=N
+N	N	Gen=I|Num=P|Cas=5|Neg=N|Var=1
+N	N	Gen=I|Num=P|Cas=5|Neg=N|Var=2
+N	N	Gen=I|Num=P|Cas=5|Neg=N|Var=3
+N	N	Gen=I|Num=P|Cas=5|Neg=N|Var=6
+N	N	Gen=I|Num=P|Cas=5|Neg=N|Var=8
+N	N	Gen=I|Num=P|Cas=5|Neg=N|Var=9
+N	N	Gen=I|Num=P|Cas=6|Neg=A
+N	N	Gen=I|Num=P|Cas=6|Neg=A|Sem=G
+N	N	Gen=I|Num=P|Cas=6|Neg=A|Sem=K
+N	N	Gen=I|Num=P|Cas=6|Neg=A|Sem=R
+N	N	Gen=I|Num=P|Cas=6|Neg=A|Sem=b
+N	N	Gen=I|Num=P|Cas=6|Neg=A|Sem=m
+N	N	Gen=I|Num=P|Cas=6|Neg=A|Var=1
+N	N	Gen=I|Num=P|Cas=6|Neg=A|Var=1|Sem=G
+N	N	Gen=I|Num=P|Cas=6|Neg=A|Var=1|Sem=m
+N	N	Gen=I|Num=P|Cas=6|Neg=A|Var=2
+N	N	Gen=I|Num=P|Cas=6|Neg=A|Var=3
+N	N	Gen=I|Num=P|Cas=6|Neg=A|Var=6
+N	N	Gen=I|Num=P|Cas=6|Neg=A|Var=6|Sem=G
+N	N	Gen=I|Num=P|Cas=6|Neg=A|Var=6|Sem=m
+N	N	Gen=I|Num=P|Cas=6|Neg=A|Var=8
+N	N	Gen=I|Num=P|Cas=6|Neg=A|Var=9
+N	N	Gen=I|Num=P|Cas=6|Neg=N
+N	N	Gen=I|Num=P|Cas=6|Neg=N|Var=1
+N	N	Gen=I|Num=P|Cas=6|Neg=N|Var=2
+N	N	Gen=I|Num=P|Cas=6|Neg=N|Var=3
+N	N	Gen=I|Num=P|Cas=6|Neg=N|Var=6
+N	N	Gen=I|Num=P|Cas=6|Neg=N|Var=8
+N	N	Gen=I|Num=P|Cas=6|Neg=N|Var=9
+N	N	Gen=I|Num=P|Cas=7|Neg=A
+N	N	Gen=I|Num=P|Cas=7|Neg=A|Sem=G
+N	N	Gen=I|Num=P|Cas=7|Neg=A|Sem=R
+N	N	Gen=I|Num=P|Cas=7|Neg=A|Sem=b
+N	N	Gen=I|Num=P|Cas=7|Neg=A|Sem=m
+N	N	Gen=I|Num=P|Cas=7|Neg=A|Var=1
+N	N	Gen=I|Num=P|Cas=7|Neg=A|Var=2
+N	N	Gen=I|Num=P|Cas=7|Neg=A|Var=6
+N	N	Gen=I|Num=P|Cas=7|Neg=A|Var=7
+N	N	Gen=I|Num=P|Cas=7|Neg=A|Var=8
+N	N	Gen=I|Num=P|Cas=7|Neg=A|Var=9
+N	N	Gen=I|Num=P|Cas=7|Neg=N
+N	N	Gen=I|Num=P|Cas=7|Neg=N|Var=1
+N	N	Gen=I|Num=P|Cas=7|Neg=N|Var=2
+N	N	Gen=I|Num=P|Cas=7|Neg=N|Var=6
+N	N	Gen=I|Num=P|Cas=7|Neg=N|Var=7
+N	N	Gen=I|Num=P|Cas=7|Neg=N|Var=8
+N	N	Gen=I|Num=P|Cas=7|Neg=N|Var=9
+N	N	Gen=I|Num=P|Cas=X|Neg=A
+N	N	Gen=I|Num=P|Cas=X|Neg=A|Sem=G
+N	N	Gen=I|Num=P|Cas=X|Neg=A|Sem=K
+N	N	Gen=I|Num=P|Cas=X|Neg=A|Sem=R
+N	N	Gen=I|Num=P|Cas=X|Neg=A|Sem=m
+N	N	Gen=I|Num=P|Cas=X|Neg=A|Var=1
+N	N	Gen=I|Num=P|Cas=X|Neg=A|Var=8
+N	N	Gen=I|Num=P|Cas=X|Neg=A|Var=8|Sem=G
+N	N	Gen=I|Num=P|Cas=X|Neg=A|Var=8|Sem=K
+N	N	Gen=I|Num=P|Cas=X|Neg=A|Var=8|Sem=R
+N	N	Gen=I|Num=P|Cas=X|Neg=A|Var=8|Sem=m
+N	N	Gen=I|Num=P|Cas=X|Neg=N
+N	N	Gen=I|Num=P|Cas=X|Neg=N|Var=1
+N	N	Gen=I|Num=P|Cas=X|Neg=N|Var=8
+N	N	Gen=I|Num=S|Cas=1|Neg=A
+N	N	Gen=I|Num=S|Cas=1|Neg=A|Sem=E
+N	N	Gen=I|Num=S|Cas=1|Neg=A|Sem=G
+N	N	Gen=I|Num=S|Cas=1|Neg=A|Sem=H
+N	N	Gen=I|Num=S|Cas=1|Neg=A|Sem=K
+N	N	Gen=I|Num=S|Cas=1|Neg=A|Sem=L
+N	N	Gen=I|Num=S|Cas=1|Neg=A|Sem=R
+N	N	Gen=I|Num=S|Cas=1|Neg=A|Sem=S
+N	N	Gen=I|Num=S|Cas=1|Neg=A|Sem=U
+N	N	Gen=I|Num=S|Cas=1|Neg=A|Sem=Y
+N	N	Gen=I|Num=S|Cas=1|Neg=A|Sem=b
+N	N	Gen=I|Num=S|Cas=1|Neg=A|Sem=m
+N	N	Gen=I|Num=S|Cas=1|Neg=A|Var=1
+N	N	Gen=I|Num=S|Cas=1|Neg=A|Var=1|Sem=G
+N	N	Gen=I|Num=S|Cas=1|Neg=A|Var=1|Sem=m
+N	N	Gen=I|Num=S|Cas=1|Neg=A|Var=2
+N	N	Gen=I|Num=S|Cas=1|Neg=A|Var=6
+N	N	Gen=I|Num=S|Cas=1|Neg=A|Var=8
+N	N	Gen=I|Num=S|Cas=1|Neg=N
+N	N	Gen=I|Num=S|Cas=1|Neg=N|Var=1
+N	N	Gen=I|Num=S|Cas=1|Neg=N|Var=2
+N	N	Gen=I|Num=S|Cas=1|Neg=N|Var=6
+N	N	Gen=I|Num=S|Cas=1|Neg=N|Var=8
+N	N	Gen=I|Num=S|Cas=2|Neg=A
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Sem=G
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Sem=H
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Sem=K
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Sem=L
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Sem=R
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Sem=S
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Sem=Y
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Sem=b
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Sem=m
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Sem=u
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Sem=w
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=1
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=1|Sem=G
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=1|Sem=K
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=1|Sem=R
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=1|Sem=m
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=2
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=2|Sem=G
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=2|Sem=m
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=6
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=8
+N	N	Gen=I|Num=S|Cas=2|Neg=A|Var=9
+N	N	Gen=I|Num=S|Cas=2|Neg=N
+N	N	Gen=I|Num=S|Cas=2|Neg=N|Var=1
+N	N	Gen=I|Num=S|Cas=2|Neg=N|Var=2
+N	N	Gen=I|Num=S|Cas=2|Neg=N|Var=6
+N	N	Gen=I|Num=S|Cas=2|Neg=N|Var=8
+N	N	Gen=I|Num=S|Cas=2|Neg=N|Var=9
+N	N	Gen=I|Num=S|Cas=3|Neg=A
+N	N	Gen=I|Num=S|Cas=3|Neg=A|Sem=E
+N	N	Gen=I|Num=S|Cas=3|Neg=A|Sem=G
+N	N	Gen=I|Num=S|Cas=3|Neg=A|Sem=K
+N	N	Gen=I|Num=S|Cas=3|Neg=A|Sem=R
+N	N	Gen=I|Num=S|Cas=3|Neg=A|Sem=Y
+N	N	Gen=I|Num=S|Cas=3|Neg=A|Sem=b
+N	N	Gen=I|Num=S|Cas=3|Neg=A|Sem=m
+N	N	Gen=I|Num=S|Cas=3|Neg=A|Var=1
+N	N	Gen=I|Num=S|Cas=3|Neg=A|Var=2
+N	N	Gen=I|Num=S|Cas=3|Neg=A|Var=6
+N	N	Gen=I|Num=S|Cas=3|Neg=A|Var=8
+N	N	Gen=I|Num=S|Cas=3|Neg=A|Var=9
+N	N	Gen=I|Num=S|Cas=3|Neg=N
+N	N	Gen=I|Num=S|Cas=3|Neg=N|Var=1
+N	N	Gen=I|Num=S|Cas=3|Neg=N|Var=2
+N	N	Gen=I|Num=S|Cas=3|Neg=N|Var=6
+N	N	Gen=I|Num=S|Cas=3|Neg=N|Var=8
+N	N	Gen=I|Num=S|Cas=3|Neg=N|Var=9
+N	N	Gen=I|Num=S|Cas=4|Neg=A
+N	N	Gen=I|Num=S|Cas=4|Neg=A|Sem=G
+N	N	Gen=I|Num=S|Cas=4|Neg=A|Sem=K
+N	N	Gen=I|Num=S|Cas=4|Neg=A|Sem=L
+N	N	Gen=I|Num=S|Cas=4|Neg=A|Sem=R
+N	N	Gen=I|Num=S|Cas=4|Neg=A|Sem=U
+N	N	Gen=I|Num=S|Cas=4|Neg=A|Sem=Y
+N	N	Gen=I|Num=S|Cas=4|Neg=A|Sem=b
+N	N	Gen=I|Num=S|Cas=4|Neg=A|Sem=m
+N	N	Gen=I|Num=S|Cas=4|Neg=A|Sem=w
+N	N	Gen=I|Num=S|Cas=4|Neg=A|Var=1
+N	N	Gen=I|Num=S|Cas=4|Neg=A|Var=1|Sem=R
+N	N	Gen=I|Num=S|Cas=4|Neg=A|Var=1|Sem=m
+N	N	Gen=I|Num=S|Cas=4|Neg=A|Var=2
+N	N	Gen=I|Num=S|Cas=4|Neg=A|Var=6
+N	N	Gen=I|Num=S|Cas=4|Neg=A|Var=6|Sem=R
+N	N	Gen=I|Num=S|Cas=4|Neg=A|Var=6|Sem=m
+N	N	Gen=I|Num=S|Cas=4|Neg=A|Var=8
+N	N	Gen=I|Num=S|Cas=4|Neg=N
+N	N	Gen=I|Num=S|Cas=4|Neg=N|Var=1
+N	N	Gen=I|Num=S|Cas=4|Neg=N|Var=2
+N	N	Gen=I|Num=S|Cas=4|Neg=N|Var=6
+N	N	Gen=I|Num=S|Cas=4|Neg=N|Var=8
+N	N	Gen=I|Num=S|Cas=5|Neg=A
+N	N	Gen=I|Num=S|Cas=5|Neg=A|Var=1
+N	N	Gen=I|Num=S|Cas=5|Neg=A|Var=2
+N	N	Gen=I|Num=S|Cas=5|Neg=A|Var=6
+N	N	Gen=I|Num=S|Cas=5|Neg=A|Var=8
+N	N	Gen=I|Num=S|Cas=5|Neg=A|Var=9
+N	N	Gen=I|Num=S|Cas=5|Neg=N
+N	N	Gen=I|Num=S|Cas=5|Neg=N|Var=1
+N	N	Gen=I|Num=S|Cas=5|Neg=N|Var=2
+N	N	Gen=I|Num=S|Cas=5|Neg=N|Var=6
+N	N	Gen=I|Num=S|Cas=5|Neg=N|Var=8
+N	N	Gen=I|Num=S|Cas=5|Neg=N|Var=9
+N	N	Gen=I|Num=S|Cas=6|Neg=A
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Sem=G
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Sem=K
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Sem=R
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Sem=S
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Sem=Y
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Sem=m
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Sem=w
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=1
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=E
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=G
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=K
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=R
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=S
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=1|Sem=m
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=2
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=2|Sem=G
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=2|Sem=m
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=6
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=7
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=8
+N	N	Gen=I|Num=S|Cas=6|Neg=A|Var=9
+N	N	Gen=I|Num=S|Cas=6|Neg=N
+N	N	Gen=I|Num=S|Cas=6|Neg=N|Var=1
+N	N	Gen=I|Num=S|Cas=6|Neg=N|Var=2
+N	N	Gen=I|Num=S|Cas=6|Neg=N|Var=6
+N	N	Gen=I|Num=S|Cas=6|Neg=N|Var=7
+N	N	Gen=I|Num=S|Cas=6|Neg=N|Var=8
+N	N	Gen=I|Num=S|Cas=6|Neg=N|Var=9
+N	N	Gen=I|Num=S|Cas=7|Neg=A
+N	N	Gen=I|Num=S|Cas=7|Neg=A|Sem=G
+N	N	Gen=I|Num=S|Cas=7|Neg=A|Sem=K
+N	N	Gen=I|Num=S|Cas=7|Neg=A|Sem=R
+N	N	Gen=I|Num=S|Cas=7|Neg=A|Sem=Y
+N	N	Gen=I|Num=S|Cas=7|Neg=A|Sem=b
+N	N	Gen=I|Num=S|Cas=7|Neg=A|Sem=m
+N	N	Gen=I|Num=S|Cas=7|Neg=A|Var=1
+N	N	Gen=I|Num=S|Cas=7|Neg=A|Var=2
+N	N	Gen=I|Num=S|Cas=7|Neg=A|Var=6
+N	N	Gen=I|Num=S|Cas=7|Neg=A|Var=8
+N	N	Gen=I|Num=S|Cas=7|Neg=A|Var=9
+N	N	Gen=I|Num=S|Cas=7|Neg=N
+N	N	Gen=I|Num=S|Cas=7|Neg=N|Var=1
+N	N	Gen=I|Num=S|Cas=7|Neg=N|Var=2
+N	N	Gen=I|Num=S|Cas=7|Neg=N|Var=6
+N	N	Gen=I|Num=S|Cas=7|Neg=N|Var=8
+N	N	Gen=I|Num=S|Cas=7|Neg=N|Var=9
+N	N	Gen=I|Num=S|Cas=X|Neg=A
+N	N	Gen=I|Num=S|Cas=X|Neg=A|Sem=G
+N	N	Gen=I|Num=S|Cas=X|Neg=A|Sem=K
+N	N	Gen=I|Num=S|Cas=X|Neg=A|Sem=R
+N	N	Gen=I|Num=S|Cas=X|Neg=A|Sem=m
+N	N	Gen=I|Num=S|Cas=X|Neg=A|Var=8
+N	N	Gen=I|Num=S|Cas=X|Neg=A|Var=8|Sem=K
+N	N	Gen=I|Num=S|Cas=X|Neg=A|Var=8|Sem=m
+N	N	Gen=I|Num=S|Cas=X|Neg=N
+N	N	Gen=I|Num=S|Cas=X|Neg=N|Var=8
+N	N	Gen=I|Num=X|Cas=X|Neg=A
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Sem=E
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Sem=G
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Sem=H
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Sem=K
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Sem=R
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Sem=S
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Sem=Y
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Sem=m
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=1
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=8
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=G
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=H
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=K
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=L
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=R
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=U
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=b
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=c
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=g
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=m
+N	N	Gen=I|Num=X|Cas=X|Neg=A|Var=8|Sem=p
+N	N	Gen=I|Num=X|Cas=X|Neg=N
+N	N	Gen=I|Num=X|Cas=X|Neg=N|Var=1
+N	N	Gen=I|Num=X|Cas=X|Neg=N|Var=8
+N	N	Gen=M|Num=P|Cas=1|Neg=A
+N	N	Gen=M|Num=P|Cas=1|Neg=A|Sem=E
+N	N	Gen=M|Num=P|Cas=1|Neg=A|Sem=K
+N	N	Gen=M|Num=P|Cas=1|Neg=A|Sem=S
+N	N	Gen=M|Num=P|Cas=1|Neg=A|Sem=Y
+N	N	Gen=M|Num=P|Cas=1|Neg=A|Sem=m
+N	N	Gen=M|Num=P|Cas=1|Neg=A|Var=1
+N	N	Gen=M|Num=P|Cas=1|Neg=A|Var=1|Sem=E
+N	N	Gen=M|Num=P|Cas=1|Neg=A|Var=1|Sem=S
+N	N	Gen=M|Num=P|Cas=1|Neg=A|Var=1|Sem=m
+N	N	Gen=M|Num=P|Cas=1|Neg=A|Var=2
+N	N	Gen=M|Num=P|Cas=1|Neg=A|Var=6
+N	N	Gen=M|Num=P|Cas=1|Neg=A|Var=6|Sem=S
+N	N	Gen=M|Num=P|Cas=1|Neg=A|Var=6|Sem=Y
+N	N	Gen=M|Num=P|Cas=1|Neg=A|Var=6|Sem=m
+N	N	Gen=M|Num=P|Cas=1|Neg=A|Var=7
+N	N	Gen=M|Num=P|Cas=1|Neg=A|Var=8
+N	N	Gen=M|Num=P|Cas=1|Neg=N
+N	N	Gen=M|Num=P|Cas=1|Neg=N|Var=1
+N	N	Gen=M|Num=P|Cas=1|Neg=N|Var=2
+N	N	Gen=M|Num=P|Cas=1|Neg=N|Var=6
+N	N	Gen=M|Num=P|Cas=1|Neg=N|Var=7
+N	N	Gen=M|Num=P|Cas=1|Neg=N|Var=8
+N	N	Gen=M|Num=P|Cas=2|Neg=A
+N	N	Gen=M|Num=P|Cas=2|Neg=A|Sem=E
+N	N	Gen=M|Num=P|Cas=2|Neg=A|Sem=G
+N	N	Gen=M|Num=P|Cas=2|Neg=A|Sem=K
+N	N	Gen=M|Num=P|Cas=2|Neg=A|Sem=S
+N	N	Gen=M|Num=P|Cas=2|Neg=A|Sem=Y
+N	N	Gen=M|Num=P|Cas=2|Neg=A|Sem=m
+N	N	Gen=M|Num=P|Cas=2|Neg=A|Var=1
+N	N	Gen=M|Num=P|Cas=2|Neg=A|Var=2
+N	N	Gen=M|Num=P|Cas=2|Neg=A|Var=6
+N	N	Gen=M|Num=P|Cas=2|Neg=A|Var=8
+N	N	Gen=M|Num=P|Cas=2|Neg=N
+N	N	Gen=M|Num=P|Cas=2|Neg=N|Var=1
+N	N	Gen=M|Num=P|Cas=2|Neg=N|Var=2
+N	N	Gen=M|Num=P|Cas=2|Neg=N|Var=6
+N	N	Gen=M|Num=P|Cas=2|Neg=N|Var=8
+N	N	Gen=M|Num=P|Cas=3|Neg=A
+N	N	Gen=M|Num=P|Cas=3|Neg=A|Sem=E
+N	N	Gen=M|Num=P|Cas=3|Neg=A|Sem=S
+N	N	Gen=M|Num=P|Cas=3|Neg=A|Sem=m
+N	N	Gen=M|Num=P|Cas=3|Neg=A|Var=1
+N	N	Gen=M|Num=P|Cas=3|Neg=A|Var=2
+N	N	Gen=M|Num=P|Cas=3|Neg=A|Var=6
+N	N	Gen=M|Num=P|Cas=3|Neg=A|Var=7
+N	N	Gen=M|Num=P|Cas=3|Neg=A|Var=8
+N	N	Gen=M|Num=P|Cas=3|Neg=N
+N	N	Gen=M|Num=P|Cas=3|Neg=N|Var=1
+N	N	Gen=M|Num=P|Cas=3|Neg=N|Var=2
+N	N	Gen=M|Num=P|Cas=3|Neg=N|Var=6
+N	N	Gen=M|Num=P|Cas=3|Neg=N|Var=7
+N	N	Gen=M|Num=P|Cas=3|Neg=N|Var=8
+N	N	Gen=M|Num=P|Cas=4|Neg=A
+N	N	Gen=M|Num=P|Cas=4|Neg=A|Sem=E
+N	N	Gen=M|Num=P|Cas=4|Neg=A|Sem=S
+N	N	Gen=M|Num=P|Cas=4|Neg=A|Sem=Y
+N	N	Gen=M|Num=P|Cas=4|Neg=A|Sem=m
+N	N	Gen=M|Num=P|Cas=4|Neg=A|Var=1
+N	N	Gen=M|Num=P|Cas=4|Neg=A|Var=2
+N	N	Gen=M|Num=P|Cas=4|Neg=A|Var=6
+N	N	Gen=M|Num=P|Cas=4|Neg=A|Var=7
+N	N	Gen=M|Num=P|Cas=4|Neg=A|Var=8
+N	N	Gen=M|Num=P|Cas=4|Neg=N
+N	N	Gen=M|Num=P|Cas=4|Neg=N|Var=1
+N	N	Gen=M|Num=P|Cas=4|Neg=N|Var=2
+N	N	Gen=M|Num=P|Cas=4|Neg=N|Var=6
+N	N	Gen=M|Num=P|Cas=4|Neg=N|Var=7
+N	N	Gen=M|Num=P|Cas=4|Neg=N|Var=8
+N	N	Gen=M|Num=P|Cas=5|Neg=A
+N	N	Gen=M|Num=P|Cas=5|Neg=A|Sem=E
+N	N	Gen=M|Num=P|Cas=5|Neg=A|Sem=m
+N	N	Gen=M|Num=P|Cas=5|Neg=A|Var=1
+N	N	Gen=M|Num=P|Cas=5|Neg=A|Var=2
+N	N	Gen=M|Num=P|Cas=5|Neg=A|Var=5
+N	N	Gen=M|Num=P|Cas=5|Neg=A|Var=6
+N	N	Gen=M|Num=P|Cas=5|Neg=A|Var=7
+N	N	Gen=M|Num=P|Cas=5|Neg=A|Var=8
+N	N	Gen=M|Num=P|Cas=5|Neg=N
+N	N	Gen=M|Num=P|Cas=5|Neg=N|Var=1
+N	N	Gen=M|Num=P|Cas=5|Neg=N|Var=2
+N	N	Gen=M|Num=P|Cas=5|Neg=N|Var=5
+N	N	Gen=M|Num=P|Cas=5|Neg=N|Var=6
+N	N	Gen=M|Num=P|Cas=5|Neg=N|Var=7
+N	N	Gen=M|Num=P|Cas=5|Neg=N|Var=8
+N	N	Gen=M|Num=P|Cas=6|Neg=A
+N	N	Gen=M|Num=P|Cas=6|Neg=A|Sem=E
+N	N	Gen=M|Num=P|Cas=6|Neg=A|Sem=S
+N	N	Gen=M|Num=P|Cas=6|Neg=A|Sem=Y
+N	N	Gen=M|Num=P|Cas=6|Neg=A|Sem=m
+N	N	Gen=M|Num=P|Cas=6|Neg=A|Var=1
+N	N	Gen=M|Num=P|Cas=6|Neg=A|Var=2
+N	N	Gen=M|Num=P|Cas=6|Neg=A|Var=6
+N	N	Gen=M|Num=P|Cas=6|Neg=A|Var=7
+N	N	Gen=M|Num=P|Cas=6|Neg=A|Var=8
+N	N	Gen=M|Num=P|Cas=6|Neg=N
+N	N	Gen=M|Num=P|Cas=6|Neg=N|Var=1
+N	N	Gen=M|Num=P|Cas=6|Neg=N|Var=2
+N	N	Gen=M|Num=P|Cas=6|Neg=N|Var=6
+N	N	Gen=M|Num=P|Cas=6|Neg=N|Var=7
+N	N	Gen=M|Num=P|Cas=6|Neg=N|Var=8
+N	N	Gen=M|Num=P|Cas=7|Neg=A
+N	N	Gen=M|Num=P|Cas=7|Neg=A|Sem=E
+N	N	Gen=M|Num=P|Cas=7|Neg=A|Sem=S
+N	N	Gen=M|Num=P|Cas=7|Neg=A|Sem=Y
+N	N	Gen=M|Num=P|Cas=7|Neg=A|Sem=m
+N	N	Gen=M|Num=P|Cas=7|Neg=A|Var=1
+N	N	Gen=M|Num=P|Cas=7|Neg=A|Var=2
+N	N	Gen=M|Num=P|Cas=7|Neg=A|Var=6
+N	N	Gen=M|Num=P|Cas=7|Neg=A|Var=7
+N	N	Gen=M|Num=P|Cas=7|Neg=A|Var=8
+N	N	Gen=M|Num=P|Cas=7|Neg=N
+N	N	Gen=M|Num=P|Cas=7|Neg=N|Var=1
+N	N	Gen=M|Num=P|Cas=7|Neg=N|Var=2
+N	N	Gen=M|Num=P|Cas=7|Neg=N|Var=6
+N	N	Gen=M|Num=P|Cas=7|Neg=N|Var=7
+N	N	Gen=M|Num=P|Cas=7|Neg=N|Var=8
+N	N	Gen=M|Num=P|Cas=X|Neg=A
+N	N	Gen=M|Num=P|Cas=X|Neg=A|Sem=K
+N	N	Gen=M|Num=P|Cas=X|Neg=A|Sem=R
+N	N	Gen=M|Num=P|Cas=X|Neg=A|Sem=Y
+N	N	Gen=M|Num=P|Cas=X|Neg=A|Sem=m
+N	N	Gen=M|Num=P|Cas=X|Neg=A|Var=8
+N	N	Gen=M|Num=P|Cas=X|Neg=A|Var=8|Sem=K
+N	N	Gen=M|Num=P|Cas=X|Neg=A|Var=8|Sem=m
+N	N	Gen=M|Num=P|Cas=X|Neg=N
+N	N	Gen=M|Num=P|Cas=X|Neg=N|Var=8
+N	N	Gen=M|Num=S|Cas=1|Neg=A
+N	N	Gen=M|Num=S|Cas=1|Neg=A|Sem=E
+N	N	Gen=M|Num=S|Cas=1|Neg=A|Sem=G
+N	N	Gen=M|Num=S|Cas=1|Neg=A|Sem=K
+N	N	Gen=M|Num=S|Cas=1|Neg=A|Sem=R
+N	N	Gen=M|Num=S|Cas=1|Neg=A|Sem=S
+N	N	Gen=M|Num=S|Cas=1|Neg=A|Sem=Y
+N	N	Gen=M|Num=S|Cas=1|Neg=A|Sem=m
+N	N	Gen=M|Num=S|Cas=1|Neg=A|Sem=y
+N	N	Gen=M|Num=S|Cas=1|Neg=A|Var=1
+N	N	Gen=M|Num=S|Cas=1|Neg=A|Var=1|Sem=S
+N	N	Gen=M|Num=S|Cas=1|Neg=A|Var=1|Sem=Y
+N	N	Gen=M|Num=S|Cas=1|Neg=A|Var=1|Sem=m
+N	N	Gen=M|Num=S|Cas=1|Neg=A|Var=2
+N	N	Gen=M|Num=S|Cas=1|Neg=A|Var=6
+N	N	Gen=M|Num=S|Cas=1|Neg=A|Var=8
+N	N	Gen=M|Num=S|Cas=1|Neg=N
+N	N	Gen=M|Num=S|Cas=1|Neg=N|Var=1
+N	N	Gen=M|Num=S|Cas=1|Neg=N|Var=2
+N	N	Gen=M|Num=S|Cas=1|Neg=N|Var=6
+N	N	Gen=M|Num=S|Cas=1|Neg=N|Var=8
+N	N	Gen=M|Num=S|Cas=2|Neg=A
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Sem=E
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Sem=G
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Sem=K
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Sem=S
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Sem=Y
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Sem=m
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Var=1
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Var=1|Sem=S
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Var=1|Sem=Y
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Var=1|Sem=m
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Var=2
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Var=2|Sem=S
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Var=2|Sem=Y
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Var=2|Sem=m
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Var=3
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Var=6
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Var=7
+N	N	Gen=M|Num=S|Cas=2|Neg=A|Var=8
+N	N	Gen=M|Num=S|Cas=2|Neg=N
+N	N	Gen=M|Num=S|Cas=2|Neg=N|Var=1
+N	N	Gen=M|Num=S|Cas=2|Neg=N|Var=2
+N	N	Gen=M|Num=S|Cas=2|Neg=N|Var=3
+N	N	Gen=M|Num=S|Cas=2|Neg=N|Var=6
+N	N	Gen=M|Num=S|Cas=2|Neg=N|Var=7
+N	N	Gen=M|Num=S|Cas=2|Neg=N|Var=8
+N	N	Gen=M|Num=S|Cas=3|Neg=A
+N	N	Gen=M|Num=S|Cas=3|Neg=A|Sem=E
+N	N	Gen=M|Num=S|Cas=3|Neg=A|Sem=G
+N	N	Gen=M|Num=S|Cas=3|Neg=A|Sem=S
+N	N	Gen=M|Num=S|Cas=3|Neg=A|Sem=Y
+N	N	Gen=M|Num=S|Cas=3|Neg=A|Sem=m
+N	N	Gen=M|Num=S|Cas=3|Neg=A|Var=1
+N	N	Gen=M|Num=S|Cas=3|Neg=A|Var=1|Sem=E
+N	N	Gen=M|Num=S|Cas=3|Neg=A|Var=1|Sem=S
+N	N	Gen=M|Num=S|Cas=3|Neg=A|Var=1|Sem=Y
+N	N	Gen=M|Num=S|Cas=3|Neg=A|Var=1|Sem=m
+N	N	Gen=M|Num=S|Cas=3|Neg=A|Var=2
+N	N	Gen=M|Num=S|Cas=3|Neg=A|Var=3
+N	N	Gen=M|Num=S|Cas=3|Neg=A|Var=6
+N	N	Gen=M|Num=S|Cas=3|Neg=A|Var=7
+N	N	Gen=M|Num=S|Cas=3|Neg=A|Var=8
+N	N	Gen=M|Num=S|Cas=3|Neg=N
+N	N	Gen=M|Num=S|Cas=3|Neg=N|Var=1
+N	N	Gen=M|Num=S|Cas=3|Neg=N|Var=2
+N	N	Gen=M|Num=S|Cas=3|Neg=N|Var=3
+N	N	Gen=M|Num=S|Cas=3|Neg=N|Var=6
+N	N	Gen=M|Num=S|Cas=3|Neg=N|Var=7
+N	N	Gen=M|Num=S|Cas=3|Neg=N|Var=8
+N	N	Gen=M|Num=S|Cas=4|Neg=A
+N	N	Gen=M|Num=S|Cas=4|Neg=A|Sem=E
+N	N	Gen=M|Num=S|Cas=4|Neg=A|Sem=G
+N	N	Gen=M|Num=S|Cas=4|Neg=A|Sem=K
+N	N	Gen=M|Num=S|Cas=4|Neg=A|Sem=R
+N	N	Gen=M|Num=S|Cas=4|Neg=A|Sem=S
+N	N	Gen=M|Num=S|Cas=4|Neg=A|Sem=Y
+N	N	Gen=M|Num=S|Cas=4|Neg=A|Sem=m
+N	N	Gen=M|Num=S|Cas=4|Neg=A|Var=1
+N	N	Gen=M|Num=S|Cas=4|Neg=A|Var=1|Sem=Y
+N	N	Gen=M|Num=S|Cas=4|Neg=A|Var=1|Sem=m
+N	N	Gen=M|Num=S|Cas=4|Neg=A|Var=2
+N	N	Gen=M|Num=S|Cas=4|Neg=A|Var=6
+N	N	Gen=M|Num=S|Cas=4|Neg=A|Var=7
+N	N	Gen=M|Num=S|Cas=4|Neg=A|Var=8
+N	N	Gen=M|Num=S|Cas=4|Neg=N
+N	N	Gen=M|Num=S|Cas=4|Neg=N|Var=1
+N	N	Gen=M|Num=S|Cas=4|Neg=N|Var=2
+N	N	Gen=M|Num=S|Cas=4|Neg=N|Var=6
+N	N	Gen=M|Num=S|Cas=4|Neg=N|Var=7
+N	N	Gen=M|Num=S|Cas=4|Neg=N|Var=8
+N	N	Gen=M|Num=S|Cas=5|Neg=A
+N	N	Gen=M|Num=S|Cas=5|Neg=A|Sem=S
+N	N	Gen=M|Num=S|Cas=5|Neg=A|Sem=Y
+N	N	Gen=M|Num=S|Cas=5|Neg=A|Sem=m
+N	N	Gen=M|Num=S|Cas=5|Neg=A|Var=1
+N	N	Gen=M|Num=S|Cas=5|Neg=A|Var=2
+N	N	Gen=M|Num=S|Cas=5|Neg=A|Var=4
+N	N	Gen=M|Num=S|Cas=5|Neg=A|Var=5
+N	N	Gen=M|Num=S|Cas=5|Neg=A|Var=6
+N	N	Gen=M|Num=S|Cas=5|Neg=A|Var=7
+N	N	Gen=M|Num=S|Cas=5|Neg=A|Var=8
+N	N	Gen=M|Num=S|Cas=5|Neg=N
+N	N	Gen=M|Num=S|Cas=5|Neg=N|Var=1
+N	N	Gen=M|Num=S|Cas=5|Neg=N|Var=2
+N	N	Gen=M|Num=S|Cas=5|Neg=N|Var=4
+N	N	Gen=M|Num=S|Cas=5|Neg=N|Var=5
+N	N	Gen=M|Num=S|Cas=5|Neg=N|Var=6
+N	N	Gen=M|Num=S|Cas=5|Neg=N|Var=7
+N	N	Gen=M|Num=S|Cas=5|Neg=N|Var=8
+N	N	Gen=M|Num=S|Cas=6|Neg=A
+N	N	Gen=M|Num=S|Cas=6|Neg=A|Sem=E
+N	N	Gen=M|Num=S|Cas=6|Neg=A|Sem=S
+N	N	Gen=M|Num=S|Cas=6|Neg=A|Sem=Y
+N	N	Gen=M|Num=S|Cas=6|Neg=A|Sem=m
+N	N	Gen=M|Num=S|Cas=6|Neg=A|Var=1
+N	N	Gen=M|Num=S|Cas=6|Neg=A|Var=1|Sem=G
+N	N	Gen=M|Num=S|Cas=6|Neg=A|Var=1|Sem=S
+N	N	Gen=M|Num=S|Cas=6|Neg=A|Var=1|Sem=Y
+N	N	Gen=M|Num=S|Cas=6|Neg=A|Var=1|Sem=m
+N	N	Gen=M|Num=S|Cas=6|Neg=A|Var=2
+N	N	Gen=M|Num=S|Cas=6|Neg=A|Var=3
+N	N	Gen=M|Num=S|Cas=6|Neg=A|Var=6
+N	N	Gen=M|Num=S|Cas=6|Neg=A|Var=7
+N	N	Gen=M|Num=S|Cas=6|Neg=A|Var=8
+N	N	Gen=M|Num=S|Cas=6|Neg=N
+N	N	Gen=M|Num=S|Cas=6|Neg=N|Var=1
+N	N	Gen=M|Num=S|Cas=6|Neg=N|Var=2
+N	N	Gen=M|Num=S|Cas=6|Neg=N|Var=3
+N	N	Gen=M|Num=S|Cas=6|Neg=N|Var=6
+N	N	Gen=M|Num=S|Cas=6|Neg=N|Var=7
+N	N	Gen=M|Num=S|Cas=6|Neg=N|Var=8
+N	N	Gen=M|Num=S|Cas=7|Neg=A
+N	N	Gen=M|Num=S|Cas=7|Neg=A|Sem=E
+N	N	Gen=M|Num=S|Cas=7|Neg=A|Sem=G
+N	N	Gen=M|Num=S|Cas=7|Neg=A|Sem=K
+N	N	Gen=M|Num=S|Cas=7|Neg=A|Sem=R
+N	N	Gen=M|Num=S|Cas=7|Neg=A|Sem=S
+N	N	Gen=M|Num=S|Cas=7|Neg=A|Sem=Y
+N	N	Gen=M|Num=S|Cas=7|Neg=A|Sem=m
+N	N	Gen=M|Num=S|Cas=7|Neg=A|Var=1
+N	N	Gen=M|Num=S|Cas=7|Neg=A|Var=2
+N	N	Gen=M|Num=S|Cas=7|Neg=A|Var=6
+N	N	Gen=M|Num=S|Cas=7|Neg=A|Var=8
+N	N	Gen=M|Num=S|Cas=7|Neg=N
+N	N	Gen=M|Num=S|Cas=7|Neg=N|Var=1
+N	N	Gen=M|Num=S|Cas=7|Neg=N|Var=2
+N	N	Gen=M|Num=S|Cas=7|Neg=N|Var=6
+N	N	Gen=M|Num=S|Cas=7|Neg=N|Var=8
+N	N	Gen=M|Num=S|Cas=X|Neg=A
+N	N	Gen=M|Num=S|Cas=X|Neg=A|Sem=G
+N	N	Gen=M|Num=S|Cas=X|Neg=A|Sem=K
+N	N	Gen=M|Num=S|Cas=X|Neg=A|Sem=S
+N	N	Gen=M|Num=S|Cas=X|Neg=A|Sem=Y
+N	N	Gen=M|Num=S|Cas=X|Neg=A|Sem=m
+N	N	Gen=M|Num=S|Cas=X|Neg=A|Var=1
+N	N	Gen=M|Num=S|Cas=X|Neg=A|Var=8
+N	N	Gen=M|Num=S|Cas=X|Neg=N
+N	N	Gen=M|Num=S|Cas=X|Neg=N|Var=1
+N	N	Gen=M|Num=S|Cas=X|Neg=N|Var=8
+N	N	Gen=M|Num=X|Cas=X|Neg=A
+N	N	Gen=M|Num=X|Cas=X|Neg=A|Sem=E
+N	N	Gen=M|Num=X|Cas=X|Neg=A|Sem=G
+N	N	Gen=M|Num=X|Cas=X|Neg=A|Sem=K
+N	N	Gen=M|Num=X|Cas=X|Neg=A|Sem=R
+N	N	Gen=M|Num=X|Cas=X|Neg=A|Sem=S
+N	N	Gen=M|Num=X|Cas=X|Neg=A|Sem=Y
+N	N	Gen=M|Num=X|Cas=X|Neg=A|Sem=m
+N	N	Gen=M|Num=X|Cas=X|Neg=A|Var=1
+N	N	Gen=M|Num=X|Cas=X|Neg=A|Var=8
+N	N	Gen=M|Num=X|Cas=X|Neg=A|Var=8|Sem=G
+N	N	Gen=M|Num=X|Cas=X|Neg=A|Var=8|Sem=K
+N	N	Gen=M|Num=X|Cas=X|Neg=A|Var=8|Sem=S
+N	N	Gen=M|Num=X|Cas=X|Neg=A|Var=8|Sem=Y
+N	N	Gen=M|Num=X|Cas=X|Neg=A|Var=8|Sem=m
+N	N	Gen=M|Num=X|Cas=X|Neg=N
+N	N	Gen=M|Num=X|Cas=X|Neg=N|Var=1
+N	N	Gen=M|Num=X|Cas=X|Neg=N|Var=8
+N	N	Gen=N|Num=P|Cas=1|Neg=A
+N	N	Gen=N|Num=P|Cas=1|Neg=A|Sem=G
+N	N	Gen=N|Num=P|Cas=1|Neg=A|Sem=K
+N	N	Gen=N|Num=P|Cas=1|Neg=A|Sem=R
+N	N	Gen=N|Num=P|Cas=1|Neg=A|Sem=U
+N	N	Gen=N|Num=P|Cas=1|Neg=A|Sem=m
+N	N	Gen=N|Num=P|Cas=1|Neg=A|Var=1
+N	N	Gen=N|Num=P|Cas=1|Neg=A|Var=2
+N	N	Gen=N|Num=P|Cas=1|Neg=A|Var=3
+N	N	Gen=N|Num=P|Cas=1|Neg=A|Var=6
+N	N	Gen=N|Num=P|Cas=1|Neg=A|Var=8
+N	N	Gen=N|Num=P|Cas=1|Neg=N
+N	N	Gen=N|Num=P|Cas=1|Neg=N|Var=1
+N	N	Gen=N|Num=P|Cas=1|Neg=N|Var=2
+N	N	Gen=N|Num=P|Cas=1|Neg=N|Var=3
+N	N	Gen=N|Num=P|Cas=1|Neg=N|Var=6
+N	N	Gen=N|Num=P|Cas=1|Neg=N|Var=8
+N	N	Gen=N|Num=P|Cas=2|Neg=A
+N	N	Gen=N|Num=P|Cas=2|Neg=A|Sem=G
+N	N	Gen=N|Num=P|Cas=2|Neg=A|Sem=K
+N	N	Gen=N|Num=P|Cas=2|Neg=A|Sem=R
+N	N	Gen=N|Num=P|Cas=2|Neg=A|Sem=U
+N	N	Gen=N|Num=P|Cas=2|Neg=A|Sem=m
+N	N	Gen=N|Num=P|Cas=2|Neg=A|Var=1
+N	N	Gen=N|Num=P|Cas=2|Neg=A|Var=2
+N	N	Gen=N|Num=P|Cas=2|Neg=A|Var=3
+N	N	Gen=N|Num=P|Cas=2|Neg=A|Var=6
+N	N	Gen=N|Num=P|Cas=2|Neg=A|Var=8
+N	N	Gen=N|Num=P|Cas=2|Neg=N
+N	N	Gen=N|Num=P|Cas=2|Neg=N|Var=1
+N	N	Gen=N|Num=P|Cas=2|Neg=N|Var=2
+N	N	Gen=N|Num=P|Cas=2|Neg=N|Var=3
+N	N	Gen=N|Num=P|Cas=2|Neg=N|Var=6
+N	N	Gen=N|Num=P|Cas=2|Neg=N|Var=8
+N	N	Gen=N|Num=P|Cas=3|Neg=A
+N	N	Gen=N|Num=P|Cas=3|Neg=A|Sem=m
+N	N	Gen=N|Num=P|Cas=3|Neg=A|Var=1
+N	N	Gen=N|Num=P|Cas=3|Neg=A|Var=2
+N	N	Gen=N|Num=P|Cas=3|Neg=A|Var=3
+N	N	Gen=N|Num=P|Cas=3|Neg=A|Var=6
+N	N	Gen=N|Num=P|Cas=3|Neg=A|Var=7
+N	N	Gen=N|Num=P|Cas=3|Neg=A|Var=8
+N	N	Gen=N|Num=P|Cas=3|Neg=N
+N	N	Gen=N|Num=P|Cas=3|Neg=N|Var=1
+N	N	Gen=N|Num=P|Cas=3|Neg=N|Var=2
+N	N	Gen=N|Num=P|Cas=3|Neg=N|Var=3
+N	N	Gen=N|Num=P|Cas=3|Neg=N|Var=6
+N	N	Gen=N|Num=P|Cas=3|Neg=N|Var=7
+N	N	Gen=N|Num=P|Cas=3|Neg=N|Var=8
+N	N	Gen=N|Num=P|Cas=4|Neg=A
+N	N	Gen=N|Num=P|Cas=4|Neg=A|Sem=m
+N	N	Gen=N|Num=P|Cas=4|Neg=A|Var=1
+N	N	Gen=N|Num=P|Cas=4|Neg=A|Var=2
+N	N	Gen=N|Num=P|Cas=4|Neg=A|Var=3
+N	N	Gen=N|Num=P|Cas=4|Neg=A|Var=6
+N	N	Gen=N|Num=P|Cas=4|Neg=A|Var=8
+N	N	Gen=N|Num=P|Cas=4|Neg=N
+N	N	Gen=N|Num=P|Cas=4|Neg=N|Var=1
+N	N	Gen=N|Num=P|Cas=4|Neg=N|Var=2
+N	N	Gen=N|Num=P|Cas=4|Neg=N|Var=3
+N	N	Gen=N|Num=P|Cas=4|Neg=N|Var=6
+N	N	Gen=N|Num=P|Cas=4|Neg=N|Var=8
+N	N	Gen=N|Num=P|Cas=5|Neg=A
+N	N	Gen=N|Num=P|Cas=5|Neg=A|Sem=m
+N	N	Gen=N|Num=P|Cas=5|Neg=A|Var=1
+N	N	Gen=N|Num=P|Cas=5|Neg=A|Var=2
+N	N	Gen=N|Num=P|Cas=5|Neg=A|Var=3
+N	N	Gen=N|Num=P|Cas=5|Neg=A|Var=6
+N	N	Gen=N|Num=P|Cas=5|Neg=A|Var=8
+N	N	Gen=N|Num=P|Cas=5|Neg=N
+N	N	Gen=N|Num=P|Cas=5|Neg=N|Var=1
+N	N	Gen=N|Num=P|Cas=5|Neg=N|Var=2
+N	N	Gen=N|Num=P|Cas=5|Neg=N|Var=3
+N	N	Gen=N|Num=P|Cas=5|Neg=N|Var=6
+N	N	Gen=N|Num=P|Cas=5|Neg=N|Var=8
+N	N	Gen=N|Num=P|Cas=6|Neg=A
+N	N	Gen=N|Num=P|Cas=6|Neg=A|Sem=m
+N	N	Gen=N|Num=P|Cas=6|Neg=A|Var=1
+N	N	Gen=N|Num=P|Cas=6|Neg=A|Var=2
+N	N	Gen=N|Num=P|Cas=6|Neg=A|Var=3
+N	N	Gen=N|Num=P|Cas=6|Neg=A|Var=6
+N	N	Gen=N|Num=P|Cas=6|Neg=A|Var=8
+N	N	Gen=N|Num=P|Cas=6|Neg=N
+N	N	Gen=N|Num=P|Cas=6|Neg=N|Var=1
+N	N	Gen=N|Num=P|Cas=6|Neg=N|Var=2
+N	N	Gen=N|Num=P|Cas=6|Neg=N|Var=3
+N	N	Gen=N|Num=P|Cas=6|Neg=N|Var=6
+N	N	Gen=N|Num=P|Cas=6|Neg=N|Var=8
+N	N	Gen=N|Num=P|Cas=7|Neg=A
+N	N	Gen=N|Num=P|Cas=7|Neg=A|Sem=G
+N	N	Gen=N|Num=P|Cas=7|Neg=A|Sem=m
+N	N	Gen=N|Num=P|Cas=7|Neg=A|Var=1
+N	N	Gen=N|Num=P|Cas=7|Neg=A|Var=2
+N	N	Gen=N|Num=P|Cas=7|Neg=A|Var=3
+N	N	Gen=N|Num=P|Cas=7|Neg=A|Var=6
+N	N	Gen=N|Num=P|Cas=7|Neg=A|Var=7
+N	N	Gen=N|Num=P|Cas=7|Neg=A|Var=8
+N	N	Gen=N|Num=P|Cas=7|Neg=N
+N	N	Gen=N|Num=P|Cas=7|Neg=N|Var=1
+N	N	Gen=N|Num=P|Cas=7|Neg=N|Var=2
+N	N	Gen=N|Num=P|Cas=7|Neg=N|Var=3
+N	N	Gen=N|Num=P|Cas=7|Neg=N|Var=6
+N	N	Gen=N|Num=P|Cas=7|Neg=N|Var=7
+N	N	Gen=N|Num=P|Cas=7|Neg=N|Var=8
+N	N	Gen=N|Num=P|Cas=X|Neg=A
+N	N	Gen=N|Num=P|Cas=X|Neg=A|Sem=K
+N	N	Gen=N|Num=P|Cas=X|Neg=A|Sem=m
+N	N	Gen=N|Num=P|Cas=X|Neg=A|Var=1
+N	N	Gen=N|Num=P|Cas=X|Neg=A|Var=8
+N	N	Gen=N|Num=P|Cas=X|Neg=A|Var=8|Sem=K
+N	N	Gen=N|Num=P|Cas=X|Neg=A|Var=8|Sem=m
+N	N	Gen=N|Num=P|Cas=X|Neg=N
+N	N	Gen=N|Num=P|Cas=X|Neg=N|Var=1
+N	N	Gen=N|Num=P|Cas=X|Neg=N|Var=8
+N	N	Gen=N|Num=S|Cas=1|Neg=A
+N	N	Gen=N|Num=S|Cas=1|Neg=A|Sem=G
+N	N	Gen=N|Num=S|Cas=1|Neg=A|Sem=K
+N	N	Gen=N|Num=S|Cas=1|Neg=A|Sem=R
+N	N	Gen=N|Num=S|Cas=1|Neg=A|Sem=S
+N	N	Gen=N|Num=S|Cas=1|Neg=A|Sem=U
+N	N	Gen=N|Num=S|Cas=1|Neg=A|Sem=Y
+N	N	Gen=N|Num=S|Cas=1|Neg=A|Sem=m
+N	N	Gen=N|Num=S|Cas=1|Neg=A|Var=1
+N	N	Gen=N|Num=S|Cas=1|Neg=A|Var=2
+N	N	Gen=N|Num=S|Cas=1|Neg=A|Var=6
+N	N	Gen=N|Num=S|Cas=1|Neg=A|Var=8
+N	N	Gen=N|Num=S|Cas=1|Neg=N
+N	N	Gen=N|Num=S|Cas=1|Neg=N|Var=1
+N	N	Gen=N|Num=S|Cas=1|Neg=N|Var=2
+N	N	Gen=N|Num=S|Cas=1|Neg=N|Var=6
+N	N	Gen=N|Num=S|Cas=1|Neg=N|Var=8
+N	N	Gen=N|Num=S|Cas=2|Neg=A
+N	N	Gen=N|Num=S|Cas=2|Neg=A|Sem=G
+N	N	Gen=N|Num=S|Cas=2|Neg=A|Sem=H
+N	N	Gen=N|Num=S|Cas=2|Neg=A|Sem=K
+N	N	Gen=N|Num=S|Cas=2|Neg=A|Sem=R
+N	N	Gen=N|Num=S|Cas=2|Neg=A|Sem=Y
+N	N	Gen=N|Num=S|Cas=2|Neg=A|Sem=m
+N	N	Gen=N|Num=S|Cas=2|Neg=A|Var=1
+N	N	Gen=N|Num=S|Cas=2|Neg=A|Var=2
+N	N	Gen=N|Num=S|Cas=2|Neg=A|Var=3
+N	N	Gen=N|Num=S|Cas=2|Neg=A|Var=6
+N	N	Gen=N|Num=S|Cas=2|Neg=A|Var=8
+N	N	Gen=N|Num=S|Cas=2|Neg=N
+N	N	Gen=N|Num=S|Cas=2|Neg=N|Var=1
+N	N	Gen=N|Num=S|Cas=2|Neg=N|Var=2
+N	N	Gen=N|Num=S|Cas=2|Neg=N|Var=3
+N	N	Gen=N|Num=S|Cas=2|Neg=N|Var=6
+N	N	Gen=N|Num=S|Cas=2|Neg=N|Var=8
+N	N	Gen=N|Num=S|Cas=3|Neg=A
+N	N	Gen=N|Num=S|Cas=3|Neg=A|Sem=G
+N	N	Gen=N|Num=S|Cas=3|Neg=A|Sem=K
+N	N	Gen=N|Num=S|Cas=3|Neg=A|Sem=Y
+N	N	Gen=N|Num=S|Cas=3|Neg=A|Sem=m
+N	N	Gen=N|Num=S|Cas=3|Neg=A|Var=1
+N	N	Gen=N|Num=S|Cas=3|Neg=A|Var=2
+N	N	Gen=N|Num=S|Cas=3|Neg=A|Var=3
+N	N	Gen=N|Num=S|Cas=3|Neg=A|Var=6
+N	N	Gen=N|Num=S|Cas=3|Neg=A|Var=8
+N	N	Gen=N|Num=S|Cas=3|Neg=N
+N	N	Gen=N|Num=S|Cas=3|Neg=N|Var=1
+N	N	Gen=N|Num=S|Cas=3|Neg=N|Var=2
+N	N	Gen=N|Num=S|Cas=3|Neg=N|Var=3
+N	N	Gen=N|Num=S|Cas=3|Neg=N|Var=6
+N	N	Gen=N|Num=S|Cas=3|Neg=N|Var=8
+N	N	Gen=N|Num=S|Cas=4|Neg=A
+N	N	Gen=N|Num=S|Cas=4|Neg=A|Sem=G
+N	N	Gen=N|Num=S|Cas=4|Neg=A|Sem=K
+N	N	Gen=N|Num=S|Cas=4|Neg=A|Sem=R
+N	N	Gen=N|Num=S|Cas=4|Neg=A|Sem=m
+N	N	Gen=N|Num=S|Cas=4|Neg=A|Sem=o
+N	N	Gen=N|Num=S|Cas=4|Neg=A|Var=1
+N	N	Gen=N|Num=S|Cas=4|Neg=A|Var=2
+N	N	Gen=N|Num=S|Cas=4|Neg=A|Var=6
+N	N	Gen=N|Num=S|Cas=4|Neg=A|Var=8
+N	N	Gen=N|Num=S|Cas=4|Neg=N
+N	N	Gen=N|Num=S|Cas=4|Neg=N|Var=1
+N	N	Gen=N|Num=S|Cas=4|Neg=N|Var=2
+N	N	Gen=N|Num=S|Cas=4|Neg=N|Var=6
+N	N	Gen=N|Num=S|Cas=4|Neg=N|Var=8
+N	N	Gen=N|Num=S|Cas=5|Neg=A
+N	N	Gen=N|Num=S|Cas=5|Neg=A|Sem=G
+N	N	Gen=N|Num=S|Cas=5|Neg=A|Sem=m
+N	N	Gen=N|Num=S|Cas=5|Neg=A|Var=1
+N	N	Gen=N|Num=S|Cas=5|Neg=A|Var=2
+N	N	Gen=N|Num=S|Cas=5|Neg=A|Var=6
+N	N	Gen=N|Num=S|Cas=5|Neg=A|Var=8
+N	N	Gen=N|Num=S|Cas=5|Neg=N
+N	N	Gen=N|Num=S|Cas=5|Neg=N|Var=1
+N	N	Gen=N|Num=S|Cas=5|Neg=N|Var=2
+N	N	Gen=N|Num=S|Cas=5|Neg=N|Var=6
+N	N	Gen=N|Num=S|Cas=5|Neg=N|Var=8
+N	N	Gen=N|Num=S|Cas=6|Neg=A
+N	N	Gen=N|Num=S|Cas=6|Neg=A|Sem=G
+N	N	Gen=N|Num=S|Cas=6|Neg=A|Sem=K
+N	N	Gen=N|Num=S|Cas=6|Neg=A|Sem=R
+N	N	Gen=N|Num=S|Cas=6|Neg=A|Sem=S
+N	N	Gen=N|Num=S|Cas=6|Neg=A|Sem=U
+N	N	Gen=N|Num=S|Cas=6|Neg=A|Sem=Y
+N	N	Gen=N|Num=S|Cas=6|Neg=A|Sem=m
+N	N	Gen=N|Num=S|Cas=6|Neg=A|Var=1
+N	N	Gen=N|Num=S|Cas=6|Neg=A|Var=1|Sem=G
+N	N	Gen=N|Num=S|Cas=6|Neg=A|Var=1|Sem=m
+N	N	Gen=N|Num=S|Cas=6|Neg=A|Var=2
+N	N	Gen=N|Num=S|Cas=6|Neg=A|Var=6
+N	N	Gen=N|Num=S|Cas=6|Neg=A|Var=7
+N	N	Gen=N|Num=S|Cas=6|Neg=A|Var=8
+N	N	Gen=N|Num=S|Cas=6|Neg=N
+N	N	Gen=N|Num=S|Cas=6|Neg=N|Var=1
+N	N	Gen=N|Num=S|Cas=6|Neg=N|Var=2
+N	N	Gen=N|Num=S|Cas=6|Neg=N|Var=6
+N	N	Gen=N|Num=S|Cas=6|Neg=N|Var=7
+N	N	Gen=N|Num=S|Cas=6|Neg=N|Var=8
+N	N	Gen=N|Num=S|Cas=7|Neg=A
+N	N	Gen=N|Num=S|Cas=7|Neg=A|Sem=G
+N	N	Gen=N|Num=S|Cas=7|Neg=A|Sem=K
+N	N	Gen=N|Num=S|Cas=7|Neg=A|Sem=S
+N	N	Gen=N|Num=S|Cas=7|Neg=A|Sem=m
+N	N	Gen=N|Num=S|Cas=7|Neg=A|Var=1
+N	N	Gen=N|Num=S|Cas=7|Neg=A|Var=2
+N	N	Gen=N|Num=S|Cas=7|Neg=A|Var=6
+N	N	Gen=N|Num=S|Cas=7|Neg=A|Var=8
+N	N	Gen=N|Num=S|Cas=7|Neg=A|Var=8|Sem=G
+N	N	Gen=N|Num=S|Cas=7|Neg=A|Var=8|Sem=m
+N	N	Gen=N|Num=S|Cas=7|Neg=N
+N	N	Gen=N|Num=S|Cas=7|Neg=N|Var=1
+N	N	Gen=N|Num=S|Cas=7|Neg=N|Var=2
+N	N	Gen=N|Num=S|Cas=7|Neg=N|Var=6
+N	N	Gen=N|Num=S|Cas=7|Neg=N|Var=8
+N	N	Gen=N|Num=S|Cas=X|Neg=A
+N	N	Gen=N|Num=S|Cas=X|Neg=A|Sem=E
+N	N	Gen=N|Num=S|Cas=X|Neg=A|Sem=G
+N	N	Gen=N|Num=S|Cas=X|Neg=A|Sem=K
+N	N	Gen=N|Num=S|Cas=X|Neg=A|Sem=m
+N	N	Gen=N|Num=S|Cas=X|Neg=A|Var=8
+N	N	Gen=N|Num=S|Cas=X|Neg=N
+N	N	Gen=N|Num=S|Cas=X|Neg=N|Var=8
+N	N	Gen=N|Num=X|Cas=X|Neg=A
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Sem=G
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Sem=K
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Sem=R
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Sem=S
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Sem=Y
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Sem=m
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Sem=w
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=1
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=2
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=2|Sem=G
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=2|Sem=m
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=8
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=G
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=K
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=R
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=g
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=m
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=w
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=8|Sem=y
+N	N	Gen=N|Num=X|Cas=X|Neg=A|Var=9
+N	N	Gen=N|Num=X|Cas=X|Neg=N
+N	N	Gen=N|Num=X|Cas=X|Neg=N|Var=1
+N	N	Gen=N|Num=X|Cas=X|Neg=N|Var=2
+N	N	Gen=N|Num=X|Cas=X|Neg=N|Var=8
+N	N	Gen=N|Num=X|Cas=X|Neg=N|Var=9
+N	N	Gen=X|Num=P|Cas=X|Neg=A
+N	N	Gen=X|Num=P|Cas=X|Neg=A|Sem=K
+N	N	Gen=X|Num=P|Cas=X|Neg=A|Sem=m
+N	N	Gen=X|Num=P|Cas=X|Neg=N
+N	N	Gen=X|Num=S|Cas=X|Neg=A
+N	N	Gen=X|Num=S|Cas=X|Neg=A|Sem=K
+N	N	Gen=X|Num=S|Cas=X|Neg=A|Sem=R
+N	N	Gen=X|Num=S|Cas=X|Neg=A|Sem=m
+N	N	Gen=X|Num=S|Cas=X|Neg=N
+N	N	Gen=X|Num=X|Cas=X|Neg=A
+N	N	Gen=X|Num=X|Cas=X|Neg=A|Sem=G
+N	N	Gen=X|Num=X|Cas=X|Neg=A|Sem=K
+N	N	Gen=X|Num=X|Cas=X|Neg=A|Sem=R
+N	N	Gen=X|Num=X|Cas=X|Neg=A|Sem=S
+N	N	Gen=X|Num=X|Cas=X|Neg=A|Sem=Y
+N	N	Gen=X|Num=X|Cas=X|Neg=A|Sem=m
+N	N	Gen=X|Num=X|Cas=X|Neg=A|Var=8
+N	N	Gen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=G
+N	N	Gen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=K
+N	N	Gen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=R
+N	N	Gen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=S
+N	N	Gen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=Y
+N	N	Gen=X|Num=X|Cas=X|Neg=A|Var=8|Sem=m
+N	N	Gen=X|Num=X|Cas=X|Neg=N
+N	N	Gen=X|Num=X|Cas=X|Neg=N|Var=8
+P	0	_
+P	1	Gen=F|Num=D|Cas=7|PGe=F|PNu=S|Per=3
+P	1	Gen=F|Num=D|Cas=7|PGe=F|PNu=S|Per=3|Var=2
+P	1	Gen=F|Num=S|Cas=X|PGe=F|PNu=S|Per=3
+P	1	Gen=F|Num=S|Cas=X|PGe=F|PNu=S|Per=3|Var=2
+P	1	Gen=I|Num=S|Cas=4|PGe=F|PNu=S|Per=3
+P	1	Gen=I|Num=S|Cas=4|PGe=F|PNu=S|Per=3|Var=2
+P	1	Gen=M|Num=S|Cas=4|PGe=F|PNu=S|Per=3
+P	1	Gen=M|Num=S|Cas=4|PGe=F|PNu=S|Per=3|Var=2
+P	1	Gen=N|Num=S|Cas=4|PGe=F|PNu=S|Per=3
+P	1	Gen=N|Num=S|Cas=4|PGe=F|PNu=S|Per=3|Var=2
+P	1	Gen=X|Num=P|Cas=1|PGe=F|PNu=S|Per=3
+P	1	Gen=X|Num=P|Cas=1|PGe=F|PNu=S|Per=3|Var=2
+P	1	Gen=X|Num=P|Cas=2|PGe=F|PNu=S|Per=3
+P	1	Gen=X|Num=P|Cas=2|PGe=F|PNu=S|Per=3|Var=2
+P	1	Gen=X|Num=P|Cas=3|PGe=F|PNu=S|Per=3
+P	1	Gen=X|Num=P|Cas=3|PGe=F|PNu=S|Per=3|Var=2
+P	1	Gen=X|Num=P|Cas=4|PGe=F|PNu=S|Per=3
+P	1	Gen=X|Num=P|Cas=4|PGe=F|PNu=S|Per=3|Var=2
+P	1	Gen=X|Num=P|Cas=6|PGe=F|PNu=S|Per=3
+P	1	Gen=X|Num=P|Cas=6|PGe=F|PNu=S|Per=3|Var=2
+P	1	Gen=X|Num=P|Cas=7|PGe=F|PNu=S|Per=3
+P	1	Gen=X|Num=P|Cas=7|PGe=F|PNu=S|Per=3|Var=2
+P	1	Gen=X|Num=X|Cas=X|PGe=X|PNu=P|Per=3
+P	1	Gen=X|Num=X|Cas=X|PGe=X|PNu=P|Per=3|Var=2
+P	1	Gen=X|Num=X|Cas=X|PGe=Z|PNu=S|Per=3
+P	1	Gen=X|Num=X|Cas=X|PGe=Z|PNu=S|Per=3|Var=2
+P	1	Gen=Z|Num=S|Cas=1|PGe=F|PNu=S|Per=3
+P	1	Gen=Z|Num=S|Cas=1|PGe=F|PNu=S|Per=3|Var=2
+P	1	Gen=Z|Num=S|Cas=2|PGe=F|PNu=S|Per=3
+P	1	Gen=Z|Num=S|Cas=2|PGe=F|PNu=S|Per=3|Var=2
+P	1	Gen=Z|Num=S|Cas=3|PGe=F|PNu=S|Per=3
+P	1	Gen=Z|Num=S|Cas=3|PGe=F|PNu=S|Per=3|Var=2
+P	1	Gen=Z|Num=S|Cas=6|PGe=F|PNu=S|Per=3
+P	1	Gen=Z|Num=S|Cas=6|PGe=F|PNu=S|Per=3|Var=2
+P	1	Gen=Z|Num=S|Cas=7|PGe=F|PNu=S|Per=3
+P	1	Gen=Z|Num=S|Cas=7|PGe=F|PNu=S|Per=3|Var=2
+P	4	Gen=F|Num=D|Cas=7
+P	4	Gen=F|Num=D|Cas=7|Var=6
+P	4	Gen=F|Num=P|Cas=1
+P	4	Gen=F|Num=P|Cas=1|Var=6
+P	4	Gen=F|Num=P|Cas=4
+P	4	Gen=F|Num=P|Cas=4|Var=6
+P	4	Gen=F|Num=S|Cas=1
+P	4	Gen=F|Num=S|Cas=1|Var=3
+P	4	Gen=F|Num=S|Cas=1|Var=6
+P	4	Gen=F|Num=S|Cas=2
+P	4	Gen=F|Num=S|Cas=2|Var=6
+P	4	Gen=F|Num=S|Cas=3
+P	4	Gen=F|Num=S|Cas=3|Var=6
+P	4	Gen=F|Num=S|Cas=4
+P	4	Gen=F|Num=S|Cas=4|Var=6
+P	4	Gen=F|Num=S|Cas=6
+P	4	Gen=F|Num=S|Cas=6|Var=6
+P	4	Gen=F|Num=S|Cas=7
+P	4	Gen=F|Num=S|Cas=7|Var=6
+P	4	Gen=I|Num=P|Cas=1
+P	4	Gen=I|Num=P|Cas=1|Var=6
+P	4	Gen=I|Num=S|Cas=4
+P	4	Gen=I|Num=S|Cas=4|Var=6
+P	4	Gen=M|Num=P|Cas=1
+P	4	Gen=M|Num=P|Cas=1|Var=6
+P	4	Gen=M|Num=S|Cas=4
+P	4	Gen=M|Num=S|Cas=4|Var=6
+P	4	Gen=N|Num=P|Cas=1
+P	4	Gen=N|Num=P|Cas=1|Var=6
+P	4	Gen=N|Num=P|Cas=1|Var=7
+P	4	Gen=N|Num=P|Cas=4
+P	4	Gen=N|Num=P|Cas=4|Var=6
+P	4	Gen=N|Num=S|Cas=1
+P	4	Gen=N|Num=S|Cas=1|Var=6
+P	4	Gen=N|Num=S|Cas=4
+P	4	Gen=N|Num=S|Cas=4|Var=6
+P	4	Gen=X|Num=D|Cas=7
+P	4	Gen=X|Num=P|Cas=2
+P	4	Gen=X|Num=P|Cas=2|Var=6
+P	4	Gen=X|Num=P|Cas=3
+P	4	Gen=X|Num=P|Cas=3|Var=6
+P	4	Gen=X|Num=P|Cas=6
+P	4	Gen=X|Num=P|Cas=6|Var=6
+P	4	Gen=X|Num=P|Cas=7
+P	4	Gen=X|Num=P|Cas=7|Var=6
+P	4	Gen=X|Num=P|Cas=7|Var=7
+P	4	Gen=X|Num=X|Cas=X
+P	4	Gen=Y|Num=P|Cas=4
+P	4	Gen=Y|Num=P|Cas=4|Var=6
+P	4	Gen=Y|Num=S|Cas=1
+P	4	Gen=Y|Num=S|Cas=1|Var=3
+P	4	Gen=Y|Num=S|Cas=1|Var=6
+P	4	Gen=Z|Num=S|Cas=2
+P	4	Gen=Z|Num=S|Cas=2|Var=6
+P	4	Gen=Z|Num=S|Cas=3
+P	4	Gen=Z|Num=S|Cas=3|Var=6
+P	4	Gen=Z|Num=S|Cas=6
+P	4	Gen=Z|Num=S|Cas=6|Var=6
+P	4	Gen=Z|Num=S|Cas=7
+P	4	Gen=Z|Num=S|Cas=7|Var=6
+P	5	Gen=F|Num=S|Cas=2|Per=3
+P	5	Gen=F|Num=S|Cas=3|Per=3
+P	5	Gen=F|Num=S|Cas=4|Per=3
+P	5	Gen=F|Num=S|Cas=4|Per=3|Var=6
+P	5	Gen=F|Num=S|Cas=6|Per=3
+P	5	Gen=F|Num=S|Cas=7|Per=3
+P	5	Gen=N|Num=S|Cas=4|Per=3
+P	5	Gen=X|Num=P|Cas=2|Per=3
+P	5	Gen=X|Num=P|Cas=3|Per=3
+P	5	Gen=X|Num=P|Cas=4|Per=3
+P	5	Gen=X|Num=P|Cas=6|Per=3
+P	5	Gen=X|Num=P|Cas=7|Per=3
+P	5	Gen=Z|Num=S|Cas=2|Per=3
+P	5	Gen=Z|Num=S|Cas=2|Per=3|Var=1
+P	5	Gen=Z|Num=S|Cas=3|Per=3
+P	5	Gen=Z|Num=S|Cas=4|Per=3
+P	5	Gen=Z|Num=S|Cas=4|Per=3|Var=1
+P	5	Gen=Z|Num=S|Cas=6|Per=3
+P	5	Gen=Z|Num=S|Cas=7|Per=3
+P	6	Num=X|Cas=2
+P	6	Num=X|Cas=3
+P	6	Num=X|Cas=4
+P	6	Num=X|Cas=6
+P	6	Num=X|Cas=7
+P	7	Num=S|Cas=3
+P	7	Num=S|Cas=3|Per=2
+P	7	Num=S|Cas=4
+P	7	Num=S|Cas=4|Per=2
+P	7	Num=X|Cas=3
+P	7	Num=X|Cas=4
+P	8	Gen=F|Num=D|Cas=7
+P	8	Gen=F|Num=D|Cas=7|Var=6
+P	8	Gen=F|Num=P|Cas=1|Var=1
+P	8	Gen=F|Num=P|Cas=4|Var=1
+P	8	Gen=F|Num=S|Cas=1|Var=1
+P	8	Gen=F|Num=S|Cas=2
+P	8	Gen=F|Num=S|Cas=2|Var=1
+P	8	Gen=F|Num=S|Cas=2|Var=6
+P	8	Gen=F|Num=S|Cas=3
+P	8	Gen=F|Num=S|Cas=3|Var=1
+P	8	Gen=F|Num=S|Cas=3|Var=6
+P	8	Gen=F|Num=S|Cas=4
+P	8	Gen=F|Num=S|Cas=4|Var=1
+P	8	Gen=F|Num=S|Cas=4|Var=6
+P	8	Gen=F|Num=S|Cas=5|Var=1
+P	8	Gen=F|Num=S|Cas=6
+P	8	Gen=F|Num=S|Cas=6|Var=1
+P	8	Gen=F|Num=S|Cas=6|Var=6
+P	8	Gen=F|Num=S|Cas=7
+P	8	Gen=F|Num=S|Cas=7|Var=1
+P	8	Gen=H|Num=P|Cas=1
+P	8	Gen=H|Num=P|Cas=5
+P	8	Gen=H|Num=P|Cas=5|Var=7
+P	8	Gen=H|Num=S|Cas=1
+P	8	Gen=H|Num=S|Cas=5
+P	8	Gen=I|Num=P|Cas=1
+P	8	Gen=I|Num=P|Cas=1|Var=1
+P	8	Gen=I|Num=P|Cas=1|Var=7
+P	8	Gen=I|Num=P|Cas=5
+P	8	Gen=I|Num=P|Cas=5|Var=1
+P	8	Gen=I|Num=P|Cas=5|Var=7
+P	8	Gen=I|Num=S|Cas=4
+P	8	Gen=I|Num=S|Cas=4|Var=6
+P	8	Gen=M|Num=P|Cas=1
+P	8	Gen=M|Num=P|Cas=1|Var=1
+P	8	Gen=M|Num=P|Cas=5
+P	8	Gen=M|Num=P|Cas=5|Var=1
+P	8	Gen=M|Num=S|Cas=4
+P	8	Gen=M|Num=S|Cas=4|Var=6
+P	8	Gen=N|Num=P|Cas=1|Var=1
+P	8	Gen=N|Num=P|Cas=4|Var=1
+P	8	Gen=N|Num=P|Cas=5|Var=1
+P	8	Gen=N|Num=S|Cas=1|Var=1
+P	8	Gen=N|Num=S|Cas=4
+P	8	Gen=N|Num=S|Cas=4|Var=1
+P	8	Gen=N|Num=S|Cas=5|Var=1
+P	8	Gen=X|Num=P|Cas=2
+P	8	Gen=X|Num=P|Cas=2|Var=6
+P	8	Gen=X|Num=P|Cas=3
+P	8	Gen=X|Num=P|Cas=3|Var=6
+P	8	Gen=X|Num=P|Cas=4
+P	8	Gen=X|Num=P|Cas=4|Var=7
+P	8	Gen=X|Num=P|Cas=6
+P	8	Gen=X|Num=P|Cas=6|Var=6
+P	8	Gen=X|Num=P|Cas=7
+P	8	Gen=Y|Num=P|Cas=4|Var=1
+P	8	Gen=Y|Num=S|Cas=1
+P	8	Gen=Y|Num=S|Cas=1|Var=6
+P	8	Gen=Y|Num=S|Cas=5
+P	8	Gen=Y|Num=S|Cas=5|Var=6
+P	8	Gen=Z|Num=S|Cas=2
+P	8	Gen=Z|Num=S|Cas=2|Var=6
+P	8	Gen=Z|Num=S|Cas=3
+P	8	Gen=Z|Num=S|Cas=3|Var=6
+P	8	Gen=Z|Num=S|Cas=6
+P	8	Gen=Z|Num=S|Cas=6|Var=6
+P	8	Gen=Z|Num=S|Cas=6|Var=7
+P	8	Gen=Z|Num=S|Cas=7
+P	8	Gen=Z|Num=S|Cas=7|Var=6
+P	9	Gen=F|Num=S|Cas=2
+P	9	Gen=F|Num=S|Cas=2|Var=2
+P	9	Gen=F|Num=S|Cas=3
+P	9	Gen=F|Num=S|Cas=3|Var=2
+P	9	Gen=F|Num=S|Cas=4
+P	9	Gen=F|Num=S|Cas=4|Var=2
+P	9	Gen=F|Num=S|Cas=6
+P	9	Gen=F|Num=S|Cas=6|Var=2
+P	9	Gen=F|Num=S|Cas=7
+P	9	Gen=F|Num=S|Cas=7|Var=2
+P	9	Gen=N|Num=S|Cas=4
+P	9	Gen=N|Num=S|Cas=4|Var=2
+P	9	Gen=X|Num=P|Cas=2
+P	9	Gen=X|Num=P|Cas=2|Var=2
+P	9	Gen=X|Num=P|Cas=3
+P	9	Gen=X|Num=P|Cas=3|Var=2
+P	9	Gen=X|Num=P|Cas=4
+P	9	Gen=X|Num=P|Cas=4|Var=2
+P	9	Gen=X|Num=P|Cas=6
+P	9	Gen=X|Num=P|Cas=6|Var=2
+P	9	Gen=X|Num=P|Cas=7
+P	9	Gen=X|Num=P|Cas=7|Var=2
+P	9	Gen=Z|Num=S|Cas=2
+P	9	Gen=Z|Num=S|Cas=2|Var=1
+P	9	Gen=Z|Num=S|Cas=2|Var=2
+P	9	Gen=Z|Num=S|Cas=2|Var=3
+P	9	Gen=Z|Num=S|Cas=3
+P	9	Gen=Z|Num=S|Cas=3|Var=2
+P	9	Gen=Z|Num=S|Cas=4
+P	9	Gen=Z|Num=S|Cas=4|Var=1
+P	9	Gen=Z|Num=S|Cas=4|Var=2
+P	9	Gen=Z|Num=S|Cas=4|Var=3
+P	9	Gen=Z|Num=S|Cas=6
+P	9	Gen=Z|Num=S|Cas=6|Var=2
+P	9	Gen=Z|Num=S|Cas=7
+P	9	Gen=Z|Num=S|Cas=7|Var=2
+P	D	Gen=F|Num=D|Cas=7
+P	D	Gen=F|Num=D|Cas=7|Var=2
+P	D	Gen=F|Num=D|Cas=7|Var=5
+P	D	Gen=F|Num=D|Cas=7|Var=6
+P	D	Gen=F|Num=P|Cas=1
+P	D	Gen=F|Num=P|Cas=1|Var=5
+P	D	Gen=F|Num=P|Cas=1|Var=6
+P	D	Gen=F|Num=P|Cas=2
+P	D	Gen=F|Num=P|Cas=3
+P	D	Gen=F|Num=P|Cas=4
+P	D	Gen=F|Num=P|Cas=4|Var=5
+P	D	Gen=F|Num=P|Cas=4|Var=6
+P	D	Gen=F|Num=P|Cas=6
+P	D	Gen=F|Num=P|Cas=7
+P	D	Gen=F|Num=S|Cas=1
+P	D	Gen=F|Num=S|Cas=1|Var=5
+P	D	Gen=F|Num=S|Cas=1|Var=6
+P	D	Gen=F|Num=S|Cas=1|Var=8
+P	D	Gen=F|Num=S|Cas=2
+P	D	Gen=F|Num=S|Cas=2|Var=5
+P	D	Gen=F|Num=S|Cas=2|Var=6
+P	D	Gen=F|Num=S|Cas=2|Var=8
+P	D	Gen=F|Num=S|Cas=3
+P	D	Gen=F|Num=S|Cas=3|Var=5
+P	D	Gen=F|Num=S|Cas=3|Var=6
+P	D	Gen=F|Num=S|Cas=3|Var=8
+P	D	Gen=F|Num=S|Cas=4
+P	D	Gen=F|Num=S|Cas=4|Var=5
+P	D	Gen=F|Num=S|Cas=4|Var=6
+P	D	Gen=F|Num=S|Cas=4|Var=8
+P	D	Gen=F|Num=S|Cas=6
+P	D	Gen=F|Num=S|Cas=6|Var=5
+P	D	Gen=F|Num=S|Cas=6|Var=6
+P	D	Gen=F|Num=S|Cas=6|Var=8
+P	D	Gen=F|Num=S|Cas=7
+P	D	Gen=F|Num=S|Cas=7|Var=5
+P	D	Gen=F|Num=S|Cas=7|Var=6
+P	D	Gen=F|Num=S|Cas=7|Var=8
+P	D	Gen=I|Num=P|Cas=1
+P	D	Gen=I|Num=P|Cas=1|Var=5
+P	D	Gen=I|Num=P|Cas=1|Var=6
+P	D	Gen=I|Num=P|Cas=2
+P	D	Gen=I|Num=P|Cas=3
+P	D	Gen=I|Num=P|Cas=4
+P	D	Gen=I|Num=P|Cas=4|Var=5
+P	D	Gen=I|Num=P|Cas=4|Var=6
+P	D	Gen=I|Num=P|Cas=6
+P	D	Gen=I|Num=P|Cas=7
+P	D	Gen=I|Num=S|Cas=1|Var=8
+P	D	Gen=I|Num=S|Cas=2
+P	D	Gen=I|Num=S|Cas=2|Var=8
+P	D	Gen=I|Num=S|Cas=3
+P	D	Gen=I|Num=S|Cas=3|Var=8
+P	D	Gen=I|Num=S|Cas=4
+P	D	Gen=I|Num=S|Cas=4|Var=5
+P	D	Gen=I|Num=S|Cas=4|Var=6
+P	D	Gen=I|Num=S|Cas=4|Var=8
+P	D	Gen=I|Num=S|Cas=6
+P	D	Gen=I|Num=S|Cas=6|Var=8
+P	D	Gen=I|Num=S|Cas=7
+P	D	Gen=I|Num=S|Cas=7|Var=8
+P	D	Gen=M|Num=P|Cas=1
+P	D	Gen=M|Num=P|Cas=1|Var=1
+P	D	Gen=M|Num=P|Cas=1|Var=5
+P	D	Gen=M|Num=P|Cas=1|Var=6
+P	D	Gen=M|Num=P|Cas=2
+P	D	Gen=M|Num=P|Cas=3
+P	D	Gen=M|Num=P|Cas=4
+P	D	Gen=M|Num=P|Cas=4|Var=5
+P	D	Gen=M|Num=P|Cas=4|Var=6
+P	D	Gen=M|Num=P|Cas=6
+P	D	Gen=M|Num=P|Cas=7
+P	D	Gen=M|Num=S|Cas=1
+P	D	Gen=M|Num=S|Cas=1|Var=8
+P	D	Gen=M|Num=S|Cas=2
+P	D	Gen=M|Num=S|Cas=2|Var=8
+P	D	Gen=M|Num=S|Cas=3
+P	D	Gen=M|Num=S|Cas=3|Var=8
+P	D	Gen=M|Num=S|Cas=4
+P	D	Gen=M|Num=S|Cas=4|Var=5
+P	D	Gen=M|Num=S|Cas=4|Var=6
+P	D	Gen=M|Num=S|Cas=4|Var=8
+P	D	Gen=M|Num=S|Cas=6|Var=8
+P	D	Gen=M|Num=S|Cas=7
+P	D	Gen=M|Num=S|Cas=7|Var=8
+P	D	Gen=N|Num=P|Cas=1
+P	D	Gen=N|Num=P|Cas=1|Var=5
+P	D	Gen=N|Num=P|Cas=1|Var=6
+P	D	Gen=N|Num=P|Cas=2
+P	D	Gen=N|Num=P|Cas=3
+P	D	Gen=N|Num=P|Cas=4
+P	D	Gen=N|Num=P|Cas=4|Var=5
+P	D	Gen=N|Num=P|Cas=4|Var=6
+P	D	Gen=N|Num=P|Cas=6
+P	D	Gen=N|Num=P|Cas=7
+P	D	Gen=N|Num=S|Cas=1
+P	D	Gen=N|Num=S|Cas=1|Sem=m
+P	D	Gen=N|Num=S|Cas=1|Var=2
+P	D	Gen=N|Num=S|Cas=1|Var=5
+P	D	Gen=N|Num=S|Cas=1|Var=6
+P	D	Gen=N|Num=S|Cas=1|Var=8
+P	D	Gen=N|Num=S|Cas=2
+P	D	Gen=N|Num=S|Cas=2|Var=8
+P	D	Gen=N|Num=S|Cas=3
+P	D	Gen=N|Num=S|Cas=3|Var=8
+P	D	Gen=N|Num=S|Cas=4
+P	D	Gen=N|Num=S|Cas=4|Var=2
+P	D	Gen=N|Num=S|Cas=4|Var=5
+P	D	Gen=N|Num=S|Cas=4|Var=6
+P	D	Gen=N|Num=S|Cas=4|Var=8
+P	D	Gen=N|Num=S|Cas=6
+P	D	Gen=N|Num=S|Cas=6|Var=8
+P	D	Gen=N|Num=S|Cas=7
+P	D	Gen=N|Num=S|Cas=7|Var=8
+P	D	Gen=X|Num=P|Cas=2
+P	D	Gen=X|Num=P|Cas=2|Var=1
+P	D	Gen=X|Num=P|Cas=2|Var=2
+P	D	Gen=X|Num=P|Cas=2|Var=5
+P	D	Gen=X|Num=P|Cas=2|Var=6
+P	D	Gen=X|Num=P|Cas=3
+P	D	Gen=X|Num=P|Cas=3|Var=1
+P	D	Gen=X|Num=P|Cas=3|Var=2
+P	D	Gen=X|Num=P|Cas=3|Var=5
+P	D	Gen=X|Num=P|Cas=3|Var=6
+P	D	Gen=X|Num=P|Cas=6
+P	D	Gen=X|Num=P|Cas=6|Var=1
+P	D	Gen=X|Num=P|Cas=6|Var=2
+P	D	Gen=X|Num=P|Cas=6|Var=5
+P	D	Gen=X|Num=P|Cas=6|Var=6
+P	D	Gen=X|Num=P|Cas=7
+P	D	Gen=X|Num=P|Cas=7|Var=2
+P	D	Gen=X|Num=P|Cas=7|Var=5
+P	D	Gen=X|Num=P|Cas=7|Var=6
+P	D	Gen=X|Num=P|Cas=X
+P	D	Gen=X|Num=P|Cas=X|Var=8
+P	D	Gen=X|Num=S|Cas=1
+P	D	Gen=X|Num=S|Cas=2
+P	D	Gen=X|Num=S|Cas=3
+P	D	Gen=X|Num=S|Cas=4
+P	D	Gen=X|Num=S|Cas=6
+P	D	Gen=X|Num=S|Cas=7
+P	D	Gen=X|Num=S|Cas=X
+P	D	Gen=X|Num=S|Cas=X|Var=8
+P	D	Gen=X|Num=X|Cas=X
+P	D	Gen=X|Num=X|Cas=X|Var=8
+P	D	Gen=Y|Num=S|Cas=1
+P	D	Gen=Y|Num=S|Cas=1|Var=5
+P	D	Gen=Y|Num=S|Cas=1|Var=6
+P	D	Gen=Y|Num=S|Cas=4
+P	D	Gen=Z|Num=S|Cas=2
+P	D	Gen=Z|Num=S|Cas=2|Var=5
+P	D	Gen=Z|Num=S|Cas=2|Var=6
+P	D	Gen=Z|Num=S|Cas=3
+P	D	Gen=Z|Num=S|Cas=3|Var=5
+P	D	Gen=Z|Num=S|Cas=3|Var=6
+P	D	Gen=Z|Num=S|Cas=6
+P	D	Gen=Z|Num=S|Cas=6|Var=1
+P	D	Gen=Z|Num=S|Cas=6|Var=2
+P	D	Gen=Z|Num=S|Cas=6|Var=5
+P	D	Gen=Z|Num=S|Cas=6|Var=6
+P	D	Gen=Z|Num=S|Cas=7
+P	D	Gen=Z|Num=S|Cas=7|Var=5
+P	D	Gen=Z|Num=S|Cas=7|Var=6
+P	E	Cas=1
+P	E	Cas=2
+P	E	Cas=3
+P	E	Cas=4
+P	E	Cas=6
+P	E	Cas=7
+P	H	Gen=Z|Num=S|Cas=2|Per=3
+P	H	Gen=Z|Num=S|Cas=3|Per=3
+P	H	Gen=Z|Num=S|Cas=4|Per=3
+P	H	Num=S|Cas=2|Per=1
+P	H	Num=S|Cas=2|Per=2
+P	H	Num=S|Cas=3|Per=1
+P	H	Num=S|Cas=3|Per=2
+P	H	Num=S|Cas=4|Per=1
+P	H	Num=S|Cas=4|Per=2
+P	J	Gen=F|Num=D|Cas=7
+P	J	Gen=F|Num=P|Cas=1
+P	J	Gen=F|Num=P|Cas=4
+P	J	Gen=F|Num=S|Cas=1
+P	J	Gen=F|Num=S|Cas=1|Var=2
+P	J	Gen=F|Num=S|Cas=2
+P	J	Gen=F|Num=S|Cas=2|Var=2
+P	J	Gen=F|Num=S|Cas=3
+P	J	Gen=F|Num=S|Cas=3|Var=2
+P	J	Gen=F|Num=S|Cas=4
+P	J	Gen=F|Num=S|Cas=4|Var=2
+P	J	Gen=F|Num=S|Cas=6
+P	J	Gen=F|Num=S|Cas=7
+P	J	Gen=F|Num=S|Cas=7|Var=2
+P	J	Gen=I|Num=P|Cas=1
+P	J	Gen=I|Num=S|Cas=4
+P	J	Gen=I|Num=S|Cas=4|Var=2
+P	J	Gen=M|Num=P|Cas=1
+P	J	Gen=M|Num=S|Cas=4
+P	J	Gen=M|Num=S|Cas=4|Var=2
+P	J	Gen=N|Num=P|Cas=1
+P	J	Gen=N|Num=P|Cas=4
+P	J	Gen=N|Num=S|Cas=1
+P	J	Gen=N|Num=S|Cas=1|Var=2
+P	J	Gen=N|Num=S|Cas=4
+P	J	Gen=N|Num=S|Cas=4|Var=2
+P	J	Gen=X|Num=P|Cas=1
+P	J	Gen=X|Num=P|Cas=1|Var=2
+P	J	Gen=X|Num=P|Cas=2
+P	J	Gen=X|Num=P|Cas=2|Var=2
+P	J	Gen=X|Num=P|Cas=3
+P	J	Gen=X|Num=P|Cas=3|Var=2
+P	J	Gen=X|Num=P|Cas=4
+P	J	Gen=X|Num=P|Cas=4|Var=2
+P	J	Gen=X|Num=P|Cas=6
+P	J	Gen=X|Num=P|Cas=7
+P	J	Gen=X|Num=P|Cas=7|Var=2
+P	J	Gen=Y|Num=P|Cas=4
+P	J	Gen=Y|Num=S|Cas=1
+P	J	Gen=Y|Num=S|Cas=1|Var=2
+P	J	Gen=Z|Num=S|Cas=2
+P	J	Gen=Z|Num=S|Cas=2|Var=1
+P	J	Gen=Z|Num=S|Cas=2|Var=2
+P	J	Gen=Z|Num=S|Cas=2|Var=3
+P	J	Gen=Z|Num=S|Cas=3
+P	J	Gen=Z|Num=S|Cas=3|Var=2
+P	J	Gen=Z|Num=S|Cas=4|Var=1
+P	J	Gen=Z|Num=S|Cas=4|Var=3
+P	J	Gen=Z|Num=S|Cas=6
+P	J	Gen=Z|Num=S|Cas=7
+P	J	Gen=Z|Num=S|Cas=7|Var=2
+P	K	Gen=M|Cas=1
+P	K	Gen=M|Cas=1|Per=2
+P	K	Gen=M|Cas=1|Var=1
+P	K	Gen=M|Cas=1|Var=2
+P	K	Gen=M|Cas=2
+P	K	Gen=M|Cas=2|Per=2
+P	K	Gen=M|Cas=2|Var=2
+P	K	Gen=M|Cas=3
+P	K	Gen=M|Cas=3|Per=2
+P	K	Gen=M|Cas=3|Var=2
+P	K	Gen=M|Cas=4
+P	K	Gen=M|Cas=4|Per=2
+P	K	Gen=M|Cas=4|Var=2
+P	K	Gen=M|Cas=6
+P	K	Gen=M|Cas=6|Per=2
+P	K	Gen=M|Cas=6|Var=2
+P	K	Gen=M|Cas=7
+P	K	Gen=M|Cas=7|Per=2
+P	K	Gen=M|Cas=7|Var=2
+P	L	Gen=F|Num=D|Cas=7
+P	L	Gen=F|Num=P|Cas=1
+P	L	Gen=F|Num=P|Cas=1|Var=6
+P	L	Gen=F|Num=P|Cas=4
+P	L	Gen=F|Num=P|Cas=5
+P	L	Gen=F|Num=S|Cas=1
+P	L	Gen=F|Num=S|Cas=2
+P	L	Gen=F|Num=S|Cas=3
+P	L	Gen=F|Num=S|Cas=4
+P	L	Gen=F|Num=S|Cas=5
+P	L	Gen=F|Num=S|Cas=5|Var=1
+P	L	Gen=F|Num=S|Cas=6
+P	L	Gen=F|Num=S|Cas=7
+P	L	Gen=I|Num=P|Cas=1
+P	L	Gen=I|Num=P|Cas=1|Var=6
+P	L	Gen=I|Num=P|Cas=5
+P	L	Gen=I|Num=S|Cas=4
+P	L	Gen=I|Num=S|Cas=4|Var=1
+P	L	Gen=M|Num=P|Cas=1
+P	L	Gen=M|Num=P|Cas=1|Var=6
+P	L	Gen=M|Num=P|Cas=5
+P	L	Gen=M|Num=S|Cas=4
+P	L	Gen=N|Num=P|Cas=1
+P	L	Gen=N|Num=P|Cas=1|Var=6
+P	L	Gen=N|Num=P|Cas=4
+P	L	Gen=N|Num=P|Cas=5
+P	L	Gen=N|Num=S|Cas=1
+P	L	Gen=N|Num=S|Cas=1|Var=1
+P	L	Gen=N|Num=S|Cas=1|Var=6
+P	L	Gen=N|Num=S|Cas=4
+P	L	Gen=N|Num=S|Cas=4|Sem=m
+P	L	Gen=N|Num=S|Cas=4|Var=1
+P	L	Gen=N|Num=S|Cas=4|Var=6
+P	L	Gen=N|Num=S|Cas=5
+P	L	Gen=N|Num=S|Cas=5|Var=1
+P	L	Gen=X|Num=P|Cas=2
+P	L	Gen=X|Num=P|Cas=3
+P	L	Gen=X|Num=P|Cas=6
+P	L	Gen=X|Num=P|Cas=7
+P	L	Gen=X|Num=P|Cas=7|Var=6
+P	L	Gen=X|Num=X|Cas=X
+P	L	Gen=X|Num=X|Cas=X|Sem=K
+P	L	Gen=X|Num=X|Cas=X|Sem=m
+P	L	Gen=X|Num=X|Cas=X|Var=8
+P	L	Gen=Y|Num=P|Cas=4
+P	L	Gen=Y|Num=S|Cas=1
+P	L	Gen=Y|Num=S|Cas=1|Var=1
+P	L	Gen=Y|Num=S|Cas=4
+P	L	Gen=Y|Num=S|Cas=5
+P	L	Gen=Y|Num=S|Cas=5|Var=1
+P	L	Gen=Z|Num=S|Cas=2
+P	L	Gen=Z|Num=S|Cas=3
+P	L	Gen=Z|Num=S|Cas=6
+P	L	Gen=Z|Num=S|Cas=7
+P	P	Gen=F|Num=P|Cas=1|Per=3
+P	P	Gen=F|Num=P|Cas=2|Per=3
+P	P	Gen=F|Num=P|Cas=3|Per=3
+P	P	Gen=F|Num=P|Cas=4|Per=3
+P	P	Gen=F|Num=P|Cas=6|Per=3
+P	P	Gen=F|Num=P|Cas=7|Per=3
+P	P	Gen=F|Num=P|Cas=X|Per=3
+P	P	Gen=F|Num=S|Cas=1|Per=3
+P	P	Gen=F|Num=S|Cas=2|Per=3
+P	P	Gen=F|Num=S|Cas=3|Per=3
+P	P	Gen=F|Num=S|Cas=4|Per=3
+P	P	Gen=F|Num=S|Cas=6|Per=3
+P	P	Gen=F|Num=S|Cas=7|Per=3
+P	P	Gen=F|Num=S|Cas=X|Per=3
+P	P	Gen=I|Num=P|Cas=1|Per=3
+P	P	Gen=I|Num=P|Cas=2|Per=3
+P	P	Gen=I|Num=P|Cas=3|Per=3
+P	P	Gen=I|Num=P|Cas=4|Per=3
+P	P	Gen=I|Num=P|Cas=6|Per=3
+P	P	Gen=I|Num=P|Cas=7|Per=3
+P	P	Gen=I|Num=S|Cas=2|Per=3
+P	P	Gen=I|Num=S|Cas=3|Per=3
+P	P	Gen=I|Num=S|Cas=4|Per=3
+P	P	Gen=I|Num=S|Cas=6|Per=3
+P	P	Gen=I|Num=S|Cas=7|Per=3
+P	P	Gen=M|Num=P|Cas=1|Per=3
+P	P	Gen=M|Num=P|Cas=2|Per=3
+P	P	Gen=M|Num=P|Cas=3|Per=3
+P	P	Gen=M|Num=P|Cas=4|Per=3
+P	P	Gen=M|Num=P|Cas=6|Per=3
+P	P	Gen=M|Num=P|Cas=7|Per=3
+P	P	Gen=M|Num=P|Cas=X|Per=3
+P	P	Gen=M|Num=S|Cas=1|Per=3
+P	P	Gen=M|Num=S|Cas=1|Per=3|Sem=R
+P	P	Gen=M|Num=S|Cas=1|Per=3|Sem=m
+P	P	Gen=M|Num=S|Cas=2|Per=3
+P	P	Gen=M|Num=S|Cas=3|Per=3
+P	P	Gen=M|Num=S|Cas=4|Per=3
+P	P	Gen=M|Num=S|Cas=6|Per=3
+P	P	Gen=M|Num=S|Cas=7|Per=3
+P	P	Gen=M|Num=S|Cas=X|Per=3
+P	P	Gen=N|Num=P|Cas=1|Per=3
+P	P	Gen=N|Num=P|Cas=2|Per=3
+P	P	Gen=N|Num=P|Cas=3|Per=3
+P	P	Gen=N|Num=P|Cas=4|Per=3
+P	P	Gen=N|Num=P|Cas=7|Per=3
+P	P	Gen=N|Num=P|Cas=X|Per=3
+P	P	Gen=N|Num=S|Cas=1|Per=3
+P	P	Gen=N|Num=S|Cas=2|Per=3
+P	P	Gen=N|Num=S|Cas=4|Per=3
+P	P	Gen=N|Num=S|Cas=6|Per=3
+P	P	Gen=N|Num=S|Cas=7|Per=3
+P	P	Gen=N|Num=S|Cas=X|Per=3
+P	P	Gen=N|Num=S|Cas=X|Per=3|Sem=R
+P	P	Gen=N|Num=S|Cas=X|Per=3|Sem=m
+P	P	Gen=X|Num=P|Cas=1|Per=3
+P	P	Gen=X|Num=P|Cas=2|Per=3
+P	P	Gen=X|Num=P|Cas=3|Per=3
+P	P	Gen=X|Num=P|Cas=4|Per=3
+P	P	Gen=X|Num=P|Cas=7|Per=3
+P	P	Gen=X|Num=P|Cas=X|Per=3
+P	P	Gen=X|Num=S|Cas=3|Per=3
+P	P	Gen=Y|Num=S|Cas=1|Per=3
+P	P	Gen=Y|Num=S|Cas=2|Per=3
+P	P	Gen=Y|Num=S|Cas=4|Per=3
+P	P	Gen=Z|Num=S|Cas=2|Per=3|Var=1
+P	P	Gen=Z|Num=S|Cas=3|Per=3
+P	P	Gen=Z|Num=S|Cas=4|Per=3|Var=2
+P	P	Gen=Z|Num=S|Cas=7|Per=3
+P	P	Num=P|Cas=1|Per=1
+P	P	Num=P|Cas=1|Per=2
+P	P	Num=P|Cas=2|Per=1
+P	P	Num=P|Cas=2|Per=2
+P	P	Num=P|Cas=3|Per=1
+P	P	Num=P|Cas=3|Per=2
+P	P	Num=P|Cas=4|Per=1
+P	P	Num=P|Cas=4|Per=2
+P	P	Num=P|Cas=5|Per=1
+P	P	Num=P|Cas=5|Per=2
+P	P	Num=P|Cas=6|Per=1
+P	P	Num=P|Cas=6|Per=2
+P	P	Num=P|Cas=7|Per=1
+P	P	Num=P|Cas=7|Per=1|Var=6
+P	P	Num=P|Cas=7|Per=2
+P	P	Num=P|Cas=X|Per=1
+P	P	Num=P|Cas=X|Per=2
+P	P	Num=S|Cas=1|Per=1
+P	P	Num=S|Cas=1|Per=2
+P	P	Num=S|Cas=1|Per=2|Ten=P|Neg=A|Voi=A
+P	P	Num=S|Cas=2|Per=1
+P	P	Num=S|Cas=2|Per=2
+P	P	Num=S|Cas=3|Per=1
+P	P	Num=S|Cas=3|Per=2
+P	P	Num=S|Cas=4|Per=1
+P	P	Num=S|Cas=4|Per=2
+P	P	Num=S|Cas=4|Per=2|Sem=m
+P	P	Num=S|Cas=5|Per=1
+P	P	Num=S|Cas=5|Per=2
+P	P	Num=S|Cas=5|Per=2|Sem=R
+P	P	Num=S|Cas=5|Per=2|Sem=m
+P	P	Num=S|Cas=6|Per=1
+P	P	Num=S|Cas=6|Per=2
+P	P	Num=S|Cas=7|Per=1
+P	P	Num=S|Cas=7|Per=2
+P	P	Num=S|Cas=X|Per=1
+P	P	Num=S|Cas=X|Per=2
+P	P	Num=X|Cas=X|Per=2
+P	Q	Cas=1
+P	Q	Cas=1|Var=9
+P	Q	Cas=2
+P	Q	Cas=2|Var=9
+P	Q	Cas=3
+P	Q	Cas=3|Var=9
+P	Q	Cas=4
+P	Q	Cas=4|Var=9
+P	Q	Cas=6
+P	Q	Cas=6|Var=9
+P	Q	Cas=7
+P	Q	Cas=7|Var=9
+P	Q	Cas=X
+P	Q	Cas=X|Var=9
+P	S	Gen=F|Num=D|Cas=7|PGe=F|PNu=S|Per=3
+P	S	Gen=F|Num=D|Cas=7|PNu=P|Per=1
+P	S	Gen=F|Num=D|Cas=7|PNu=P|Per=2
+P	S	Gen=F|Num=D|Cas=7|PNu=S|Per=1
+P	S	Gen=F|Num=D|Cas=7|PNu=S|Per=1|Var=6
+P	S	Gen=F|Num=D|Cas=7|PNu=S|Per=2
+P	S	Gen=F|Num=D|Cas=7|PNu=S|Per=2|Var=6
+P	S	Gen=F|Num=P|Cas=1|PNu=S|Per=1|Var=1
+P	S	Gen=F|Num=P|Cas=1|PNu=S|Per=2|Var=1
+P	S	Gen=F|Num=P|Cas=4|PNu=S|Per=1|Var=1
+P	S	Gen=F|Num=P|Cas=4|PNu=S|Per=2|Var=1
+P	S	Gen=F|Num=P|Cas=X|PNu=P|Per=1
+P	S	Gen=F|Num=P|Cas=X|PNu=S|Per=1
+P	S	Gen=F|Num=P|Cas=X|PNu=X|Per=1
+P	S	Gen=F|Num=S|Cas=1|PNu=S|Per=1|Var=1
+P	S	Gen=F|Num=S|Cas=1|PNu=S|Per=2|Var=1
+P	S	Gen=F|Num=S|Cas=2|PNu=P|Per=1
+P	S	Gen=F|Num=S|Cas=2|PNu=P|Per=2
+P	S	Gen=F|Num=S|Cas=2|PNu=S|Per=1
+P	S	Gen=F|Num=S|Cas=2|PNu=S|Per=1|Var=1
+P	S	Gen=F|Num=S|Cas=2|PNu=S|Per=1|Var=6
+P	S	Gen=F|Num=S|Cas=2|PNu=S|Per=2
+P	S	Gen=F|Num=S|Cas=2|PNu=S|Per=2|Var=1
+P	S	Gen=F|Num=S|Cas=2|PNu=S|Per=2|Var=6
+P	S	Gen=F|Num=S|Cas=3|PNu=P|Per=1
+P	S	Gen=F|Num=S|Cas=3|PNu=P|Per=2
+P	S	Gen=F|Num=S|Cas=3|PNu=S|Per=1
+P	S	Gen=F|Num=S|Cas=3|PNu=S|Per=1|Var=1
+P	S	Gen=F|Num=S|Cas=3|PNu=S|Per=1|Var=6
+P	S	Gen=F|Num=S|Cas=3|PNu=S|Per=2
+P	S	Gen=F|Num=S|Cas=3|PNu=S|Per=2|Var=1
+P	S	Gen=F|Num=S|Cas=3|PNu=S|Per=2|Var=6
+P	S	Gen=F|Num=S|Cas=4|PNu=P|Per=1
+P	S	Gen=F|Num=S|Cas=4|PNu=P|Per=1|Var=6
+P	S	Gen=F|Num=S|Cas=4|PNu=P|Per=2
+P	S	Gen=F|Num=S|Cas=4|PNu=P|Per=2|Var=6
+P	S	Gen=F|Num=S|Cas=4|PNu=S|Per=1
+P	S	Gen=F|Num=S|Cas=4|PNu=S|Per=1|Var=1
+P	S	Gen=F|Num=S|Cas=4|PNu=S|Per=1|Var=6
+P	S	Gen=F|Num=S|Cas=4|PNu=S|Per=2
+P	S	Gen=F|Num=S|Cas=4|PNu=S|Per=2|Var=1
+P	S	Gen=F|Num=S|Cas=4|PNu=S|Per=2|Var=6
+P	S	Gen=F|Num=S|Cas=5|PNu=S|Per=1|Var=1
+P	S	Gen=F|Num=S|Cas=5|PNu=S|Per=2|Var=1
+P	S	Gen=F|Num=S|Cas=6|PNu=P|Per=1
+P	S	Gen=F|Num=S|Cas=6|PNu=P|Per=2
+P	S	Gen=F|Num=S|Cas=6|PNu=S|Per=1
+P	S	Gen=F|Num=S|Cas=6|PNu=S|Per=1|Var=1
+P	S	Gen=F|Num=S|Cas=6|PNu=S|Per=1|Var=6
+P	S	Gen=F|Num=S|Cas=6|PNu=S|Per=2
+P	S	Gen=F|Num=S|Cas=6|PNu=S|Per=2|Var=1
+P	S	Gen=F|Num=S|Cas=6|PNu=S|Per=2|Var=6
+P	S	Gen=F|Num=S|Cas=7|PNu=P|Per=1
+P	S	Gen=F|Num=S|Cas=7|PNu=P|Per=2
+P	S	Gen=F|Num=S|Cas=7|PNu=S|Per=1
+P	S	Gen=F|Num=S|Cas=7|PNu=S|Per=1|Var=1
+P	S	Gen=F|Num=S|Cas=7|PNu=S|Per=2
+P	S	Gen=F|Num=S|Cas=7|PNu=S|Per=2|Var=1
+P	S	Gen=F|Num=S|Cas=X|PGe=F|PNu=S|Per=3
+P	S	Gen=F|Num=S|Cas=X|PNu=P|Per=1
+P	S	Gen=F|Num=S|Cas=X|PNu=P|Per=1|Sem=m
+P	S	Gen=F|Num=S|Cas=X|PNu=S|Per=1
+P	S	Gen=F|Num=S|Cas=X|PNu=X|Per=1
+P	S	Gen=H|Num=P|Cas=1|PNu=P|Per=1
+P	S	Gen=H|Num=P|Cas=1|PNu=P|Per=2
+P	S	Gen=H|Num=P|Cas=1|PNu=S|Per=1
+P	S	Gen=H|Num=P|Cas=1|PNu=S|Per=2
+P	S	Gen=H|Num=P|Cas=5|PNu=S|Per=1
+P	S	Gen=H|Num=P|Cas=5|PNu=S|Per=1|Var=7
+P	S	Gen=H|Num=P|Cas=5|PNu=S|Per=2
+P	S	Gen=H|Num=P|Cas=5|PNu=S|Per=2|Var=7
+P	S	Gen=H|Num=S|Cas=1|PNu=P|Per=1
+P	S	Gen=H|Num=S|Cas=1|PNu=P|Per=2
+P	S	Gen=H|Num=S|Cas=1|PNu=S|Per=1
+P	S	Gen=H|Num=S|Cas=1|PNu=S|Per=2
+P	S	Gen=H|Num=S|Cas=5|PNu=P|Per=1
+P	S	Gen=H|Num=S|Cas=5|PNu=P|Per=2
+P	S	Gen=H|Num=S|Cas=5|PNu=S|Per=1
+P	S	Gen=H|Num=S|Cas=5|PNu=S|Per=2
+P	S	Gen=I|Num=P|Cas=1|PNu=P|Per=1
+P	S	Gen=I|Num=P|Cas=1|PNu=P|Per=2
+P	S	Gen=I|Num=P|Cas=1|PNu=S|Per=1
+P	S	Gen=I|Num=P|Cas=1|PNu=S|Per=1|Var=1
+P	S	Gen=I|Num=P|Cas=1|PNu=S|Per=1|Var=7
+P	S	Gen=I|Num=P|Cas=1|PNu=S|Per=2
+P	S	Gen=I|Num=P|Cas=1|PNu=S|Per=2|Var=1
+P	S	Gen=I|Num=P|Cas=1|PNu=S|Per=2|Var=7
+P	S	Gen=I|Num=P|Cas=5|PNu=S|Per=1
+P	S	Gen=I|Num=P|Cas=5|PNu=S|Per=1|Var=1
+P	S	Gen=I|Num=P|Cas=5|PNu=S|Per=1|Var=7
+P	S	Gen=I|Num=P|Cas=5|PNu=S|Per=2
+P	S	Gen=I|Num=P|Cas=5|PNu=S|Per=2|Var=1
+P	S	Gen=I|Num=P|Cas=5|PNu=S|Per=2|Var=7
+P	S	Gen=I|Num=P|Cas=X|PNu=P|Per=1
+P	S	Gen=I|Num=P|Cas=X|PNu=S|Per=1
+P	S	Gen=I|Num=P|Cas=X|PNu=X|Per=1
+P	S	Gen=I|Num=S|Cas=4|PGe=F|PNu=S|Per=3
+P	S	Gen=I|Num=S|Cas=4|PNu=P|Per=1
+P	S	Gen=I|Num=S|Cas=4|PNu=P|Per=2
+P	S	Gen=I|Num=S|Cas=4|PNu=S|Per=1
+P	S	Gen=I|Num=S|Cas=4|PNu=S|Per=1|Var=6
+P	S	Gen=I|Num=S|Cas=4|PNu=S|Per=2
+P	S	Gen=I|Num=S|Cas=4|PNu=S|Per=2|Var=6
+P	S	Gen=I|Num=S|Cas=X|PNu=P|Per=1
+P	S	Gen=I|Num=S|Cas=X|PNu=S|Per=1
+P	S	Gen=I|Num=S|Cas=X|PNu=X|Per=1
+P	S	Gen=M|Num=P|Cas=1|PNu=P|Per=1
+P	S	Gen=M|Num=P|Cas=1|PNu=P|Per=2
+P	S	Gen=M|Num=P|Cas=1|PNu=S|Per=1
+P	S	Gen=M|Num=P|Cas=1|PNu=S|Per=1|Var=1
+P	S	Gen=M|Num=P|Cas=1|PNu=S|Per=1|Var=7
+P	S	Gen=M|Num=P|Cas=1|PNu=S|Per=2
+P	S	Gen=M|Num=P|Cas=1|PNu=S|Per=2|Var=1
+P	S	Gen=M|Num=P|Cas=5|PNu=P|Per=1
+P	S	Gen=M|Num=P|Cas=5|PNu=P|Per=2
+P	S	Gen=M|Num=P|Cas=5|PNu=S|Per=1
+P	S	Gen=M|Num=P|Cas=5|PNu=S|Per=1|Var=1
+P	S	Gen=M|Num=P|Cas=5|PNu=S|Per=1|Var=7
+P	S	Gen=M|Num=P|Cas=5|PNu=S|Per=2
+P	S	Gen=M|Num=P|Cas=5|PNu=S|Per=2|Var=1
+P	S	Gen=M|Num=P|Cas=X|PNu=P|Per=1
+P	S	Gen=M|Num=P|Cas=X|PNu=S|Per=1
+P	S	Gen=M|Num=P|Cas=X|PNu=X|Per=1
+P	S	Gen=M|Num=S|Cas=4|PGe=F|PNu=S|Per=3
+P	S	Gen=M|Num=S|Cas=4|PNu=P|Per=1
+P	S	Gen=M|Num=S|Cas=4|PNu=P|Per=2
+P	S	Gen=M|Num=S|Cas=4|PNu=S|Per=1
+P	S	Gen=M|Num=S|Cas=4|PNu=S|Per=1|Var=6
+P	S	Gen=M|Num=S|Cas=4|PNu=S|Per=2
+P	S	Gen=M|Num=S|Cas=4|PNu=S|Per=2|Var=6
+P	S	Gen=M|Num=S|Cas=X|PNu=P|Per=1
+P	S	Gen=M|Num=S|Cas=X|PNu=S|Per=1
+P	S	Gen=M|Num=S|Cas=X|PNu=X|Per=1
+P	S	Gen=N|Num=P|Cas=1|PNu=S|Per=1|Var=1
+P	S	Gen=N|Num=P|Cas=1|PNu=S|Per=2|Var=1
+P	S	Gen=N|Num=P|Cas=4|PNu=S|Per=1|Var=1
+P	S	Gen=N|Num=P|Cas=4|PNu=S|Per=2|Var=1
+P	S	Gen=N|Num=P|Cas=5|PNu=S|Per=1|Var=1
+P	S	Gen=N|Num=P|Cas=5|PNu=S|Per=2|Var=1
+P	S	Gen=N|Num=P|Cas=X|PNu=P|Per=1
+P	S	Gen=N|Num=P|Cas=X|PNu=S|Per=1
+P	S	Gen=N|Num=P|Cas=X|PNu=X|Per=1
+P	S	Gen=N|Num=S|Cas=1|PNu=S|Per=1|Var=1
+P	S	Gen=N|Num=S|Cas=1|PNu=S|Per=2|Var=1
+P	S	Gen=N|Num=S|Cas=4|PGe=F|PNu=S|Per=3
+P	S	Gen=N|Num=S|Cas=4|PNu=P|Per=1
+P	S	Gen=N|Num=S|Cas=4|PNu=P|Per=2
+P	S	Gen=N|Num=S|Cas=4|PNu=S|Per=1
+P	S	Gen=N|Num=S|Cas=4|PNu=S|Per=1|Var=1
+P	S	Gen=N|Num=S|Cas=4|PNu=S|Per=2
+P	S	Gen=N|Num=S|Cas=4|PNu=S|Per=2|Var=1
+P	S	Gen=N|Num=S|Cas=5|PNu=S|Per=1|Var=1
+P	S	Gen=N|Num=S|Cas=5|PNu=S|Per=2|Var=1
+P	S	Gen=N|Num=S|Cas=X|PNu=P|Per=1
+P	S	Gen=N|Num=S|Cas=X|PNu=S|Per=1
+P	S	Gen=N|Num=S|Cas=X|PNu=X|Per=1
+P	S	Gen=X|Num=P|Cas=1|PGe=F|PNu=S|Per=3
+P	S	Gen=X|Num=P|Cas=2|PGe=F|PNu=S|Per=3
+P	S	Gen=X|Num=P|Cas=2|PNu=P|Per=1
+P	S	Gen=X|Num=P|Cas=2|PNu=P|Per=2
+P	S	Gen=X|Num=P|Cas=2|PNu=S|Per=1
+P	S	Gen=X|Num=P|Cas=2|PNu=S|Per=1|Var=6
+P	S	Gen=X|Num=P|Cas=2|PNu=S|Per=2
+P	S	Gen=X|Num=P|Cas=2|PNu=S|Per=2|Var=6
+P	S	Gen=X|Num=P|Cas=3|PGe=F|PNu=S|Per=3
+P	S	Gen=X|Num=P|Cas=3|PNu=P|Per=1
+P	S	Gen=X|Num=P|Cas=3|PNu=P|Per=2
+P	S	Gen=X|Num=P|Cas=3|PNu=S|Per=1
+P	S	Gen=X|Num=P|Cas=3|PNu=S|Per=1|Var=6
+P	S	Gen=X|Num=P|Cas=3|PNu=S|Per=2
+P	S	Gen=X|Num=P|Cas=3|PNu=S|Per=2|Var=6
+P	S	Gen=X|Num=P|Cas=4|PGe=F|PNu=S|Per=3
+P	S	Gen=X|Num=P|Cas=4|PNu=P|Per=1
+P	S	Gen=X|Num=P|Cas=4|PNu=P|Per=2
+P	S	Gen=X|Num=P|Cas=4|PNu=S|Per=1
+P	S	Gen=X|Num=P|Cas=4|PNu=S|Per=1|Var=7
+P	S	Gen=X|Num=P|Cas=4|PNu=S|Per=2
+P	S	Gen=X|Num=P|Cas=4|PNu=S|Per=2|Var=7
+P	S	Gen=X|Num=P|Cas=5|PGe=F|PNu=S|Per=3
+P	S	Gen=X|Num=P|Cas=6|PGe=F|PNu=S|Per=3
+P	S	Gen=X|Num=P|Cas=6|PNu=P|Per=1
+P	S	Gen=X|Num=P|Cas=6|PNu=P|Per=2
+P	S	Gen=X|Num=P|Cas=6|PNu=S|Per=1
+P	S	Gen=X|Num=P|Cas=6|PNu=S|Per=1|Var=6
+P	S	Gen=X|Num=P|Cas=6|PNu=S|Per=2
+P	S	Gen=X|Num=P|Cas=6|PNu=S|Per=2|Var=6
+P	S	Gen=X|Num=P|Cas=7|PGe=F|PNu=S|Per=3
+P	S	Gen=X|Num=P|Cas=7|PGe=F|PNu=S|Per=3|Var=6
+P	S	Gen=X|Num=P|Cas=7|PNu=P|Per=1
+P	S	Gen=X|Num=P|Cas=7|PNu=P|Per=1|Var=6
+P	S	Gen=X|Num=P|Cas=7|PNu=P|Per=2
+P	S	Gen=X|Num=P|Cas=7|PNu=P|Per=2|Var=6
+P	S	Gen=X|Num=P|Cas=7|PNu=S|Per=1
+P	S	Gen=X|Num=P|Cas=7|PNu=S|Per=2
+P	S	Gen=X|Num=X|Cas=X|PGe=N|PNu=S|Per=3
+P	S	Gen=X|Num=X|Cas=X|PGe=X|PNu=P|Per=3
+P	S	Gen=X|Num=X|Cas=X|PGe=Y|PNu=S|Per=3
+P	S	Gen=X|Num=X|Cas=X|PGe=Z|PNu=S|Per=3
+P	S	Gen=X|Num=X|Cas=X|PNu=P|Per=1
+P	S	Gen=X|Num=X|Cas=X|PNu=S|Per=1
+P	S	Gen=X|Num=X|Cas=X|PNu=X|Per=2
+P	S	Gen=X|Num=X|Cas=X|PNu=X|Per=2|Sem=R
+P	S	Gen=X|Num=X|Cas=X|PNu=X|Per=2|Sem=m
+P	S	Gen=Y|Num=P|Cas=4|PNu=S|Per=1|Var=1
+P	S	Gen=Y|Num=P|Cas=4|PNu=S|Per=1|Var=7
+P	S	Gen=Y|Num=P|Cas=4|PNu=S|Per=2|Var=1
+P	S	Gen=Y|Num=S|Cas=1|PNu=P|Per=1
+P	S	Gen=Y|Num=S|Cas=1|PNu=P|Per=2
+P	S	Gen=Y|Num=S|Cas=1|PNu=S|Per=1
+P	S	Gen=Y|Num=S|Cas=1|PNu=S|Per=1|Var=6
+P	S	Gen=Y|Num=S|Cas=1|PNu=S|Per=2
+P	S	Gen=Y|Num=S|Cas=1|PNu=S|Per=2|Var=6
+P	S	Gen=Y|Num=S|Cas=5|PNu=P|Per=1
+P	S	Gen=Y|Num=S|Cas=5|PNu=P|Per=2
+P	S	Gen=Y|Num=S|Cas=5|PNu=S|Per=1
+P	S	Gen=Y|Num=S|Cas=5|PNu=S|Per=1|Var=6
+P	S	Gen=Y|Num=S|Cas=5|PNu=S|Per=2
+P	S	Gen=Y|Num=S|Cas=5|PNu=S|Per=2|Var=6
+P	S	Gen=Z|Num=S|Cas=1|PGe=F|PNu=S|Per=3
+P	S	Gen=Z|Num=S|Cas=2|PGe=F|PNu=S|Per=3
+P	S	Gen=Z|Num=S|Cas=2|PNu=P|Per=1
+P	S	Gen=Z|Num=S|Cas=2|PNu=P|Per=2
+P	S	Gen=Z|Num=S|Cas=2|PNu=S|Per=1
+P	S	Gen=Z|Num=S|Cas=2|PNu=S|Per=1|Var=6
+P	S	Gen=Z|Num=S|Cas=2|PNu=S|Per=2
+P	S	Gen=Z|Num=S|Cas=2|PNu=S|Per=2|Var=6
+P	S	Gen=Z|Num=S|Cas=3|PGe=F|PNu=S|Per=3
+P	S	Gen=Z|Num=S|Cas=3|PNu=P|Per=1
+P	S	Gen=Z|Num=S|Cas=3|PNu=P|Per=2
+P	S	Gen=Z|Num=S|Cas=3|PNu=S|Per=1
+P	S	Gen=Z|Num=S|Cas=3|PNu=S|Per=1|Var=6
+P	S	Gen=Z|Num=S|Cas=3|PNu=S|Per=2
+P	S	Gen=Z|Num=S|Cas=3|PNu=S|Per=2|Var=6
+P	S	Gen=Z|Num=S|Cas=5|PGe=F|PNu=S|Per=3
+P	S	Gen=Z|Num=S|Cas=6|PGe=F|PNu=S|Per=3
+P	S	Gen=Z|Num=S|Cas=6|PNu=P|Per=1
+P	S	Gen=Z|Num=S|Cas=6|PNu=P|Per=2
+P	S	Gen=Z|Num=S|Cas=6|PNu=S|Per=1
+P	S	Gen=Z|Num=S|Cas=6|PNu=S|Per=1|Var=6
+P	S	Gen=Z|Num=S|Cas=6|PNu=S|Per=1|Var=7
+P	S	Gen=Z|Num=S|Cas=6|PNu=S|Per=2
+P	S	Gen=Z|Num=S|Cas=6|PNu=S|Per=2|Var=6
+P	S	Gen=Z|Num=S|Cas=6|PNu=S|Per=2|Var=7
+P	S	Gen=Z|Num=S|Cas=7|PGe=F|PNu=S|Per=3
+P	S	Gen=Z|Num=S|Cas=7|PNu=P|Per=1
+P	S	Gen=Z|Num=S|Cas=7|PNu=P|Per=1|Var=6
+P	S	Gen=Z|Num=S|Cas=7|PNu=P|Per=1|Var=8
+P	S	Gen=Z|Num=S|Cas=7|PNu=P|Per=2
+P	S	Gen=Z|Num=S|Cas=7|PNu=P|Per=2|Var=6
+P	S	Gen=Z|Num=S|Cas=7|PNu=S|Per=1
+P	S	Gen=Z|Num=S|Cas=7|PNu=S|Per=1|Var=6
+P	S	Gen=Z|Num=S|Cas=7|PNu=S|Per=2
+P	S	Gen=Z|Num=S|Cas=7|PNu=S|Per=2|Var=6
+P	W	Cas=1
+P	W	Cas=2
+P	W	Cas=2|Var=2
+P	W	Cas=3
+P	W	Cas=3|Var=2
+P	W	Cas=4
+P	W	Cas=6
+P	W	Cas=6|Var=2
+P	W	Cas=7
+P	W	Cas=7|Var=2
+P	W	Cas=X
+P	W	Gen=F|Num=D|Cas=7
+P	W	Gen=F|Num=D|Cas=7|Var=6
+P	W	Gen=F|Num=P|Cas=1
+P	W	Gen=F|Num=P|Cas=1|Var=6
+P	W	Gen=F|Num=P|Cas=4
+P	W	Gen=F|Num=P|Cas=4|Var=6
+P	W	Gen=F|Num=P|Cas=5
+P	W	Gen=F|Num=P|Cas=5|Var=6
+P	W	Gen=F|Num=S|Cas=1
+P	W	Gen=F|Num=S|Cas=2
+P	W	Gen=F|Num=S|Cas=2|Var=6
+P	W	Gen=F|Num=S|Cas=3
+P	W	Gen=F|Num=S|Cas=3|Var=6
+P	W	Gen=F|Num=S|Cas=4
+P	W	Gen=F|Num=S|Cas=5
+P	W	Gen=F|Num=S|Cas=6
+P	W	Gen=F|Num=S|Cas=6|Var=6
+P	W	Gen=F|Num=S|Cas=7
+P	W	Gen=I|Num=P|Cas=1
+P	W	Gen=I|Num=P|Cas=1|Var=6
+P	W	Gen=I|Num=P|Cas=5
+P	W	Gen=I|Num=P|Cas=5|Var=6
+P	W	Gen=I|Num=S|Cas=4
+P	W	Gen=I|Num=S|Cas=4|Var=6
+P	W	Gen=M|Cas=1
+P	W	Gen=M|Cas=2
+P	W	Gen=M|Cas=3
+P	W	Gen=M|Cas=4
+P	W	Gen=M|Cas=6
+P	W	Gen=M|Cas=7
+P	W	Gen=M|Num=P|Cas=1
+P	W	Gen=M|Num=P|Cas=1|Var=6
+P	W	Gen=M|Num=P|Cas=5
+P	W	Gen=M|Num=P|Cas=5|Var=6
+P	W	Gen=M|Num=S|Cas=4
+P	W	Gen=M|Num=S|Cas=4|Var=6
+P	W	Gen=N|Num=P|Cas=1
+P	W	Gen=N|Num=P|Cas=1|Var=6
+P	W	Gen=N|Num=P|Cas=1|Var=7
+P	W	Gen=N|Num=P|Cas=4
+P	W	Gen=N|Num=P|Cas=4|Var=6
+P	W	Gen=N|Num=P|Cas=5
+P	W	Gen=N|Num=P|Cas=5|Var=6
+P	W	Gen=N|Num=S|Cas=1
+P	W	Gen=N|Num=S|Cas=1|Var=6
+P	W	Gen=N|Num=S|Cas=4
+P	W	Gen=N|Num=S|Cas=4|Var=6
+P	W	Gen=N|Num=S|Cas=5
+P	W	Gen=N|Num=S|Cas=5|Var=6
+P	W	Gen=X|Num=P|Cas=2
+P	W	Gen=X|Num=P|Cas=2|Var=6
+P	W	Gen=X|Num=P|Cas=3
+P	W	Gen=X|Num=P|Cas=3|Var=6
+P	W	Gen=X|Num=P|Cas=6
+P	W	Gen=X|Num=P|Cas=6|Var=6
+P	W	Gen=X|Num=P|Cas=7
+P	W	Gen=X|Num=P|Cas=7|Var=6
+P	W	Gen=X|Num=P|Cas=7|Var=7
+P	W	Gen=Y|Num=P|Cas=4
+P	W	Gen=Y|Num=P|Cas=4|Var=6
+P	W	Gen=Y|Num=S|Cas=1
+P	W	Gen=Y|Num=S|Cas=1|Var=6
+P	W	Gen=Y|Num=S|Cas=5
+P	W	Gen=Y|Num=S|Cas=5|Var=6
+P	W	Gen=Z|Num=S|Cas=2
+P	W	Gen=Z|Num=S|Cas=2|Var=6
+P	W	Gen=Z|Num=S|Cas=3
+P	W	Gen=Z|Num=S|Cas=3|Var=6
+P	W	Gen=Z|Num=S|Cas=6
+P	W	Gen=Z|Num=S|Cas=6|Var=6
+P	W	Gen=Z|Num=S|Cas=6|Var=7
+P	W	Gen=Z|Num=S|Cas=7
+P	W	Gen=Z|Num=S|Cas=7|Var=6
+P	Y	_
+P	Z	Cas=1
+P	Z	Cas=1|Var=1
+P	Z	Cas=1|Var=2
+P	Z	Cas=1|Var=4
+P	Z	Cas=2
+P	Z	Cas=2|Var=1
+P	Z	Cas=2|Var=2
+P	Z	Cas=3
+P	Z	Cas=3|Var=1
+P	Z	Cas=3|Var=2
+P	Z	Cas=4
+P	Z	Cas=4|Var=1
+P	Z	Cas=4|Var=2
+P	Z	Cas=4|Var=4
+P	Z	Cas=5
+P	Z	Cas=5|Var=1
+P	Z	Cas=5|Var=2
+P	Z	Cas=6
+P	Z	Cas=6|Var=1
+P	Z	Cas=6|Var=2
+P	Z	Cas=7
+P	Z	Cas=7|Var=1
+P	Z	Cas=7|Var=2
+P	Z	Gen=F|Num=D|Cas=7
+P	Z	Gen=F|Num=D|Cas=7|Var=1
+P	Z	Gen=F|Num=D|Cas=7|Var=6
+P	Z	Gen=F|Num=P|Cas=1
+P	Z	Gen=F|Num=P|Cas=1|Var=1
+P	Z	Gen=F|Num=P|Cas=1|Var=6
+P	Z	Gen=F|Num=P|Cas=4
+P	Z	Gen=F|Num=P|Cas=4|Var=1
+P	Z	Gen=F|Num=P|Cas=4|Var=6
+P	Z	Gen=F|Num=P|Cas=5
+P	Z	Gen=F|Num=P|Cas=5|Var=1
+P	Z	Gen=F|Num=P|Cas=5|Var=6
+P	Z	Gen=F|Num=S|Cas=1
+P	Z	Gen=F|Num=S|Cas=1|Var=1
+P	Z	Gen=F|Num=S|Cas=1|Var=6
+P	Z	Gen=F|Num=S|Cas=2
+P	Z	Gen=F|Num=S|Cas=2|Var=1
+P	Z	Gen=F|Num=S|Cas=2|Var=6
+P	Z	Gen=F|Num=S|Cas=3
+P	Z	Gen=F|Num=S|Cas=3|Var=1
+P	Z	Gen=F|Num=S|Cas=3|Var=6
+P	Z	Gen=F|Num=S|Cas=4
+P	Z	Gen=F|Num=S|Cas=4|Var=1
+P	Z	Gen=F|Num=S|Cas=4|Var=6
+P	Z	Gen=F|Num=S|Cas=5
+P	Z	Gen=F|Num=S|Cas=5|Var=1
+P	Z	Gen=F|Num=S|Cas=5|Var=6
+P	Z	Gen=F|Num=S|Cas=6
+P	Z	Gen=F|Num=S|Cas=6|Var=1
+P	Z	Gen=F|Num=S|Cas=6|Var=6
+P	Z	Gen=F|Num=S|Cas=7
+P	Z	Gen=F|Num=S|Cas=7|Var=1
+P	Z	Gen=F|Num=S|Cas=7|Var=6
+P	Z	Gen=I|Num=P|Cas=1
+P	Z	Gen=I|Num=P|Cas=1|Var=1
+P	Z	Gen=I|Num=P|Cas=1|Var=6
+P	Z	Gen=I|Num=P|Cas=5
+P	Z	Gen=I|Num=P|Cas=5|Var=1
+P	Z	Gen=I|Num=P|Cas=5|Var=6
+P	Z	Gen=I|Num=S|Cas=4
+P	Z	Gen=I|Num=S|Cas=4|Var=1
+P	Z	Gen=I|Num=S|Cas=4|Var=6
+P	Z	Gen=I|Num=S|Cas=6|Var=7
+P	Z	Gen=M|Cas=1
+P	Z	Gen=M|Cas=1|Var=1
+P	Z	Gen=M|Cas=2
+P	Z	Gen=M|Cas=2|Var=1
+P	Z	Gen=M|Cas=3
+P	Z	Gen=M|Cas=3|Var=1
+P	Z	Gen=M|Cas=4
+P	Z	Gen=M|Cas=4|Var=1
+P	Z	Gen=M|Cas=5
+P	Z	Gen=M|Cas=5|Var=1
+P	Z	Gen=M|Cas=6
+P	Z	Gen=M|Cas=6|Var=1
+P	Z	Gen=M|Cas=7
+P	Z	Gen=M|Cas=7|Var=1
+P	Z	Gen=M|Num=P|Cas=1
+P	Z	Gen=M|Num=P|Cas=1|Var=1
+P	Z	Gen=M|Num=P|Cas=1|Var=6
+P	Z	Gen=M|Num=P|Cas=5
+P	Z	Gen=M|Num=P|Cas=5|Var=1
+P	Z	Gen=M|Num=P|Cas=5|Var=6
+P	Z	Gen=M|Num=S|Cas=4
+P	Z	Gen=M|Num=S|Cas=4|Var=1
+P	Z	Gen=M|Num=S|Cas=4|Var=6
+P	Z	Gen=M|Num=S|Cas=6|Var=7
+P	Z	Gen=N|Num=P|Cas=1
+P	Z	Gen=N|Num=P|Cas=1|Var=1
+P	Z	Gen=N|Num=P|Cas=1|Var=6
+P	Z	Gen=N|Num=P|Cas=4
+P	Z	Gen=N|Num=P|Cas=4|Var=1
+P	Z	Gen=N|Num=P|Cas=4|Var=6
+P	Z	Gen=N|Num=P|Cas=5
+P	Z	Gen=N|Num=P|Cas=5|Var=1
+P	Z	Gen=N|Num=P|Cas=5|Var=6
+P	Z	Gen=N|Num=S|Cas=1
+P	Z	Gen=N|Num=S|Cas=1|Var=1
+P	Z	Gen=N|Num=S|Cas=1|Var=6
+P	Z	Gen=N|Num=S|Cas=4
+P	Z	Gen=N|Num=S|Cas=4|Var=1
+P	Z	Gen=N|Num=S|Cas=4|Var=6
+P	Z	Gen=N|Num=S|Cas=5
+P	Z	Gen=N|Num=S|Cas=5|Var=1
+P	Z	Gen=N|Num=S|Cas=5|Var=6
+P	Z	Gen=N|Num=S|Cas=6|Var=7
+P	Z	Gen=X|Num=P|Cas=2
+P	Z	Gen=X|Num=P|Cas=2|Var=1
+P	Z	Gen=X|Num=P|Cas=2|Var=6
+P	Z	Gen=X|Num=P|Cas=3
+P	Z	Gen=X|Num=P|Cas=3|Var=1
+P	Z	Gen=X|Num=P|Cas=3|Var=6
+P	Z	Gen=X|Num=P|Cas=6
+P	Z	Gen=X|Num=P|Cas=6|Var=1
+P	Z	Gen=X|Num=P|Cas=6|Var=6
+P	Z	Gen=X|Num=P|Cas=7
+P	Z	Gen=X|Num=P|Cas=7|Var=1
+P	Z	Gen=X|Num=P|Cas=7|Var=6
+P	Z	Gen=X|Num=P|Cas=7|Var=7
+P	Z	Gen=X|Num=X|Cas=X
+P	Z	Gen=Y|Num=P|Cas=4
+P	Z	Gen=Y|Num=P|Cas=4|Var=1
+P	Z	Gen=Y|Num=P|Cas=4|Var=6
+P	Z	Gen=Y|Num=S|Cas=1
+P	Z	Gen=Y|Num=S|Cas=1|Var=1
+P	Z	Gen=Y|Num=S|Cas=1|Var=6
+P	Z	Gen=Y|Num=S|Cas=2
+P	Z	Gen=Y|Num=S|Cas=3
+P	Z	Gen=Y|Num=S|Cas=5
+P	Z	Gen=Y|Num=S|Cas=5|Var=1
+P	Z	Gen=Y|Num=S|Cas=5|Var=6
+P	Z	Gen=Z|Num=S|Cas=2
+P	Z	Gen=Z|Num=S|Cas=2|Var=1
+P	Z	Gen=Z|Num=S|Cas=2|Var=6
+P	Z	Gen=Z|Num=S|Cas=3
+P	Z	Gen=Z|Num=S|Cas=3|Var=1
+P	Z	Gen=Z|Num=S|Cas=3|Var=6
+P	Z	Gen=Z|Num=S|Cas=6
+P	Z	Gen=Z|Num=S|Cas=6|Var=1
+P	Z	Gen=Z|Num=S|Cas=6|Var=6
+P	Z	Gen=Z|Num=S|Cas=6|Var=7
+P	Z	Gen=Z|Num=S|Cas=7
+P	Z	Gen=Z|Num=S|Cas=7|Var=1
+P	Z	Gen=Z|Num=S|Cas=7|Var=6
+R	F	_
+R	R	Cas=1
+R	R	Cas=1|Var=8
+R	R	Cas=2
+R	R	Cas=2|Var=1
+R	R	Cas=2|Var=3
+R	R	Cas=2|Var=8
+R	R	Cas=3
+R	R	Cas=3|Var=8
+R	R	Cas=4
+R	R	Cas=4|Var=8
+R	R	Cas=6
+R	R	Cas=7
+R	R	Cas=7|Var=8
+R	R	Cas=X
+R	R	Cas=X|Sem=G
+R	R	Cas=X|Sem=K
+R	R	Cas=X|Sem=R
+R	R	Cas=X|Sem=S
+R	R	Cas=X|Sem=Y
+R	R	Cas=X|Sem=m
+R	R	Cas=X|Var=8
+R	V	Cas=1
+R	V	Cas=2
+R	V	Cas=2|Var=1
+R	V	Cas=3
+R	V	Cas=3|Var=1
+R	V	Cas=4
+R	V	Cas=4|Var=1
+R	V	Cas=6
+R	V	Cas=7
+T	T	Sem=K
+T	T	Sem=S
+T	T	Sem=m
+T	T	Var=1
+T	T	Var=8
+T	T	_
+V	B	Num=P|Per=1|Ten=F|Neg=A|Voi=A
+V	B	Num=P|Per=1|Ten=F|Neg=A|Voi=A|Var=6
+V	B	Num=P|Per=1|Ten=F|Neg=A|Voi=A|Var=7
+V	B	Num=P|Per=1|Ten=F|Neg=A|Voi=A|Var=8
+V	B	Num=P|Per=1|Ten=F|Neg=N|Voi=A
+V	B	Num=P|Per=1|Ten=F|Neg=N|Voi=A|Var=6
+V	B	Num=P|Per=1|Ten=F|Neg=N|Voi=A|Var=7
+V	B	Num=P|Per=1|Ten=F|Neg=N|Voi=A|Var=8
+V	B	Num=P|Per=1|Ten=P|Neg=A|Voi=A
+V	B	Num=P|Per=1|Ten=P|Neg=A|Voi=A|Var=1
+V	B	Num=P|Per=1|Ten=P|Neg=A|Voi=A|Var=2
+V	B	Num=P|Per=1|Ten=P|Neg=A|Voi=A|Var=3
+V	B	Num=P|Per=1|Ten=P|Neg=A|Voi=A|Var=6
+V	B	Num=P|Per=1|Ten=P|Neg=A|Voi=A|Var=7
+V	B	Num=P|Per=1|Ten=P|Neg=N|Voi=A
+V	B	Num=P|Per=1|Ten=P|Neg=N|Voi=A|Var=1
+V	B	Num=P|Per=1|Ten=P|Neg=N|Voi=A|Var=2
+V	B	Num=P|Per=1|Ten=P|Neg=N|Voi=A|Var=3
+V	B	Num=P|Per=1|Ten=P|Neg=N|Voi=A|Var=6
+V	B	Num=P|Per=1|Ten=P|Neg=N|Voi=A|Var=7
+V	B	Num=P|Per=2|Ten=F|Neg=A|Voi=A
+V	B	Num=P|Per=2|Ten=F|Neg=A|Voi=A|Var=7
+V	B	Num=P|Per=2|Ten=F|Neg=N|Voi=A
+V	B	Num=P|Per=2|Ten=F|Neg=N|Voi=A|Var=7
+V	B	Num=P|Per=2|Ten=P|Neg=A|Voi=A
+V	B	Num=P|Per=2|Ten=P|Neg=A|Voi=A|Var=1
+V	B	Num=P|Per=2|Ten=P|Neg=A|Voi=A|Var=2
+V	B	Num=P|Per=2|Ten=P|Neg=A|Voi=A|Var=3
+V	B	Num=P|Per=2|Ten=P|Neg=A|Voi=A|Var=6
+V	B	Num=P|Per=2|Ten=P|Neg=N|Voi=A
+V	B	Num=P|Per=2|Ten=P|Neg=N|Voi=A|Var=1
+V	B	Num=P|Per=2|Ten=P|Neg=N|Voi=A|Var=2
+V	B	Num=P|Per=2|Ten=P|Neg=N|Voi=A|Var=3
+V	B	Num=P|Per=2|Ten=P|Neg=N|Voi=A|Var=6
+V	B	Num=P|Per=3|Ten=F|Neg=A|Voi=A
+V	B	Num=P|Per=3|Ten=F|Neg=A|Voi=A|Var=1
+V	B	Num=P|Per=3|Ten=F|Neg=A|Voi=A|Var=7
+V	B	Num=P|Per=3|Ten=F|Neg=N|Voi=A
+V	B	Num=P|Per=3|Ten=F|Neg=N|Voi=A|Var=1
+V	B	Num=P|Per=3|Ten=F|Neg=N|Voi=A|Var=7
+V	B	Num=P|Per=3|Ten=P|Neg=A|Voi=A
+V	B	Num=P|Per=3|Ten=P|Neg=A|Voi=A|Sem=m
+V	B	Num=P|Per=3|Ten=P|Neg=A|Voi=A|Var=1
+V	B	Num=P|Per=3|Ten=P|Neg=A|Voi=A|Var=2
+V	B	Num=P|Per=3|Ten=P|Neg=A|Voi=A|Var=3
+V	B	Num=P|Per=3|Ten=P|Neg=A|Voi=A|Var=4
+V	B	Num=P|Per=3|Ten=P|Neg=A|Voi=A|Var=5
+V	B	Num=P|Per=3|Ten=P|Neg=A|Voi=A|Var=6
+V	B	Num=P|Per=3|Ten=P|Neg=A|Voi=A|Var=7
+V	B	Num=P|Per=3|Ten=P|Neg=N|Voi=A
+V	B	Num=P|Per=3|Ten=P|Neg=N|Voi=A|Var=1
+V	B	Num=P|Per=3|Ten=P|Neg=N|Voi=A|Var=2
+V	B	Num=P|Per=3|Ten=P|Neg=N|Voi=A|Var=3
+V	B	Num=P|Per=3|Ten=P|Neg=N|Voi=A|Var=4
+V	B	Num=P|Per=3|Ten=P|Neg=N|Voi=A|Var=5
+V	B	Num=P|Per=3|Ten=P|Neg=N|Voi=A|Var=6
+V	B	Num=P|Per=3|Ten=P|Neg=N|Voi=A|Var=7
+V	B	Num=S|Per=1|Ten=F|Neg=A|Voi=A
+V	B	Num=S|Per=1|Ten=F|Neg=A|Voi=A|Var=1
+V	B	Num=S|Per=1|Ten=F|Neg=A|Voi=A|Var=7
+V	B	Num=S|Per=1|Ten=F|Neg=N|Voi=A
+V	B	Num=S|Per=1|Ten=F|Neg=N|Voi=A|Var=1
+V	B	Num=S|Per=1|Ten=F|Neg=N|Voi=A|Var=7
+V	B	Num=S|Per=1|Ten=P|Neg=A|Voi=A
+V	B	Num=S|Per=1|Ten=P|Neg=A|Voi=A|Sem=m
+V	B	Num=S|Per=1|Ten=P|Neg=A|Voi=A|Var=1
+V	B	Num=S|Per=1|Ten=P|Neg=A|Voi=A|Var=2
+V	B	Num=S|Per=1|Ten=P|Neg=A|Voi=A|Var=3
+V	B	Num=S|Per=1|Ten=P|Neg=A|Voi=A|Var=4
+V	B	Num=S|Per=1|Ten=P|Neg=A|Voi=A|Var=6
+V	B	Num=S|Per=1|Ten=P|Neg=A|Voi=A|Var=7
+V	B	Num=S|Per=1|Ten=P|Neg=N|Voi=A
+V	B	Num=S|Per=1|Ten=P|Neg=N|Voi=A|Var=1
+V	B	Num=S|Per=1|Ten=P|Neg=N|Voi=A|Var=2
+V	B	Num=S|Per=1|Ten=P|Neg=N|Voi=A|Var=3
+V	B	Num=S|Per=1|Ten=P|Neg=N|Voi=A|Var=4
+V	B	Num=S|Per=1|Ten=P|Neg=N|Voi=A|Var=6
+V	B	Num=S|Per=2|Ten=F|Neg=A|Voi=A
+V	B	Num=S|Per=2|Ten=F|Neg=A|Voi=A|Var=7
+V	B	Num=S|Per=2|Ten=F|Neg=N|Voi=A
+V	B	Num=S|Per=2|Ten=F|Neg=N|Voi=A|Var=7
+V	B	Num=S|Per=2|Ten=P|Neg=A|Voi=A
+V	B	Num=S|Per=2|Ten=P|Neg=A|Voi=A|Var=1
+V	B	Num=S|Per=2|Ten=P|Neg=A|Voi=A|Var=2
+V	B	Num=S|Per=2|Ten=P|Neg=A|Voi=A|Var=3
+V	B	Num=S|Per=2|Ten=P|Neg=A|Voi=A|Var=6
+V	B	Num=S|Per=2|Ten=P|Neg=A|Voi=A|Var=7
+V	B	Num=S|Per=2|Ten=P|Neg=N|Voi=A
+V	B	Num=S|Per=2|Ten=P|Neg=N|Voi=A|Var=1
+V	B	Num=S|Per=2|Ten=P|Neg=N|Voi=A|Var=2
+V	B	Num=S|Per=2|Ten=P|Neg=N|Voi=A|Var=3
+V	B	Num=S|Per=2|Ten=P|Neg=N|Voi=A|Var=6
+V	B	Num=S|Per=3|Ten=F|Neg=A|Voi=A
+V	B	Num=S|Per=3|Ten=F|Neg=A|Voi=A|Var=7
+V	B	Num=S|Per=3|Ten=F|Neg=N|Voi=A
+V	B	Num=S|Per=3|Ten=F|Neg=N|Voi=A|Var=7
+V	B	Num=S|Per=3|Ten=P|Neg=A|Voi=A
+V	B	Num=S|Per=3|Ten=P|Neg=A|Voi=A|Sem=m
+V	B	Num=S|Per=3|Ten=P|Neg=A|Voi=A|Var=1
+V	B	Num=S|Per=3|Ten=P|Neg=A|Voi=A|Var=2
+V	B	Num=S|Per=3|Ten=P|Neg=A|Voi=A|Var=3
+V	B	Num=S|Per=3|Ten=P|Neg=A|Voi=A|Var=4
+V	B	Num=S|Per=3|Ten=P|Neg=A|Voi=A|Var=5
+V	B	Num=S|Per=3|Ten=P|Neg=A|Voi=A|Var=6
+V	B	Num=S|Per=3|Ten=P|Neg=A|Voi=A|Var=7
+V	B	Num=S|Per=3|Ten=P|Neg=A|Voi=A|Var=8
+V	B	Num=S|Per=3|Ten=P|Neg=N|Voi=A
+V	B	Num=S|Per=3|Ten=P|Neg=N|Voi=A|Var=1
+V	B	Num=S|Per=3|Ten=P|Neg=N|Voi=A|Var=2
+V	B	Num=S|Per=3|Ten=P|Neg=N|Voi=A|Var=3
+V	B	Num=S|Per=3|Ten=P|Neg=N|Voi=A|Var=4
+V	B	Num=S|Per=3|Ten=P|Neg=N|Voi=A|Var=5
+V	B	Num=S|Per=3|Ten=P|Neg=N|Voi=A|Var=6
+V	B	Num=S|Per=3|Ten=P|Neg=N|Voi=A|Var=7
+V	B	Num=X|Per=X|Ten=F|Neg=A|Voi=A
+V	B	Num=X|Per=X|Ten=F|Neg=N|Voi=A
+V	B	Num=X|Per=X|Ten=P|Neg=A|Voi=A
+V	B	Num=X|Per=X|Ten=P|Neg=A|Voi=A|Sem=m
+V	B	Num=X|Per=X|Ten=P|Neg=N|Voi=A
+V	c	Num=P|Per=1
+V	c	Num=P|Per=1|Var=6
+V	c	Num=P|Per=2
+V	c	Num=S|Per=1
+V	c	Num=S|Per=1|Var=6
+V	c	Num=S|Per=2
+V	c	Num=X|Per=3
+V	e	Gen=H|Num=S|Neg=A
+V	e	Gen=H|Num=S|Neg=A|Var=2
+V	e	Gen=H|Num=S|Neg=N
+V	e	Gen=H|Num=S|Neg=N|Var=2
+V	e	Gen=X|Num=P|Neg=A
+V	e	Gen=X|Num=P|Neg=A|Var=2
+V	e	Gen=X|Num=P|Neg=N
+V	e	Gen=X|Num=P|Neg=N|Var=2
+V	e	Gen=Y|Num=S|Neg=A
+V	e	Gen=Y|Num=S|Neg=N
+V	f	Neg=A
+V	f	Neg=A|Sem=K
+V	f	Neg=A|Sem=R
+V	f	Neg=A|Sem=m
+V	f	Neg=A|Var=1
+V	f	Neg=A|Var=2
+V	f	Neg=A|Var=3
+V	f	Neg=A|Var=4
+V	f	Neg=A|Var=6
+V	f	Neg=A|Var=8
+V	f	Neg=N
+V	f	Neg=N|Var=1
+V	f	Neg=N|Var=2
+V	f	Neg=N|Var=3
+V	f	Neg=N|Var=4
+V	f	Neg=N|Var=6
+V	i	Num=P|Per=1|Neg=A
+V	i	Num=P|Per=1|Neg=A|Var=1
+V	i	Num=P|Per=1|Neg=A|Var=2
+V	i	Num=P|Per=1|Neg=A|Var=3
+V	i	Num=P|Per=1|Neg=A|Var=6
+V	i	Num=P|Per=1|Neg=N
+V	i	Num=P|Per=1|Neg=N|Var=1
+V	i	Num=P|Per=1|Neg=N|Var=2
+V	i	Num=P|Per=1|Neg=N|Var=3
+V	i	Num=P|Per=1|Neg=N|Var=6
+V	i	Num=P|Per=2|Neg=A
+V	i	Num=P|Per=2|Neg=A|Var=1
+V	i	Num=P|Per=2|Neg=A|Var=2
+V	i	Num=P|Per=2|Neg=A|Var=3
+V	i	Num=P|Per=2|Neg=A|Var=6
+V	i	Num=P|Per=2|Neg=A|Var=7
+V	i	Num=P|Per=2|Neg=N
+V	i	Num=P|Per=2|Neg=N|Var=1
+V	i	Num=P|Per=2|Neg=N|Var=2
+V	i	Num=P|Per=2|Neg=N|Var=3
+V	i	Num=P|Per=2|Neg=N|Var=6
+V	i	Num=P|Per=2|Neg=N|Var=7
+V	i	Num=P|Per=3|Neg=A|Var=1
+V	i	Num=P|Per=3|Neg=A|Var=2
+V	i	Num=P|Per=3|Neg=A|Var=3
+V	i	Num=P|Per=3|Neg=A|Var=4
+V	i	Num=P|Per=3|Neg=A|Var=9
+V	i	Num=P|Per=3|Neg=N|Var=1
+V	i	Num=P|Per=3|Neg=N|Var=2
+V	i	Num=P|Per=3|Neg=N|Var=3
+V	i	Num=P|Per=3|Neg=N|Var=4
+V	i	Num=P|Per=3|Neg=N|Var=9
+V	i	Num=S|Per=2|Neg=A
+V	i	Num=S|Per=2|Neg=A|Var=1
+V	i	Num=S|Per=2|Neg=A|Var=2
+V	i	Num=S|Per=2|Neg=A|Var=6
+V	i	Num=S|Per=2|Neg=A|Var=7
+V	i	Num=S|Per=2|Neg=A|Var=8
+V	i	Num=S|Per=2|Neg=N
+V	i	Num=S|Per=2|Neg=N|Var=1
+V	i	Num=S|Per=2|Neg=N|Var=2
+V	i	Num=S|Per=2|Neg=N|Var=6
+V	i	Num=S|Per=2|Neg=N|Var=7
+V	i	Num=S|Per=3|Neg=A
+V	i	Num=S|Per=3|Neg=A|Var=2
+V	i	Num=S|Per=3|Neg=A|Var=3
+V	i	Num=S|Per=3|Neg=A|Var=4
+V	i	Num=S|Per=3|Neg=A|Var=9
+V	i	Num=S|Per=3|Neg=N
+V	i	Num=S|Per=3|Neg=N|Var=2
+V	i	Num=S|Per=3|Neg=N|Var=3
+V	i	Num=S|Per=3|Neg=N|Var=4
+V	i	Num=S|Per=3|Neg=N|Var=9
+V	i	Num=X|Per=2|Neg=A
+V	i	Num=X|Per=2|Neg=N
+V	m	Gen=H|Num=S|Neg=A
+V	m	Gen=H|Num=S|Neg=A|Var=4
+V	m	Gen=H|Num=S|Neg=N
+V	m	Gen=H|Num=S|Neg=N|Var=4
+V	m	Gen=X|Num=P|Neg=A
+V	m	Gen=X|Num=P|Neg=A|Var=4
+V	m	Gen=X|Num=P|Neg=N
+V	m	Gen=X|Num=P|Neg=N|Var=4
+V	m	Gen=Y|Num=S|Neg=A
+V	m	Gen=Y|Num=S|Neg=A|Var=4
+V	m	Gen=Y|Num=S|Neg=N
+V	m	Gen=Y|Num=S|Neg=N|Var=4
+V	p	Gen=F|Num=S|Per=2|Ten=R|Neg=A|Voi=A
+V	p	Gen=F|Num=S|Per=2|Ten=R|Neg=A|Voi=A|Var=1
+V	p	Gen=F|Num=S|Per=2|Ten=R|Neg=A|Voi=A|Var=6
+V	p	Gen=F|Num=S|Per=2|Ten=R|Neg=N|Voi=A
+V	p	Gen=F|Num=S|Per=2|Ten=R|Neg=N|Voi=A|Var=1
+V	p	Gen=F|Num=S|Per=2|Ten=R|Neg=N|Voi=A|Var=6
+V	p	Gen=M|Num=P|Per=X|Ten=R|Neg=A|Voi=A
+V	p	Gen=M|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=1
+V	p	Gen=M|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=3
+V	p	Gen=M|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=6
+V	p	Gen=M|Num=P|Per=X|Ten=R|Neg=N|Voi=A
+V	p	Gen=M|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=1
+V	p	Gen=M|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=3
+V	p	Gen=M|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=6
+V	p	Gen=N|Num=S|Per=2|Ten=R|Neg=A|Voi=A
+V	p	Gen=N|Num=S|Per=2|Ten=R|Neg=A|Voi=A|Var=1
+V	p	Gen=N|Num=S|Per=2|Ten=R|Neg=A|Voi=A|Var=6
+V	p	Gen=N|Num=S|Per=2|Ten=R|Neg=N|Voi=A
+V	p	Gen=N|Num=S|Per=2|Ten=R|Neg=N|Voi=A|Var=1
+V	p	Gen=N|Num=S|Per=2|Ten=R|Neg=N|Voi=A|Var=6
+V	p	Gen=N|Num=S|Per=X|Ten=R|Neg=A|Voi=A
+V	p	Gen=N|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=1
+V	p	Gen=N|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=3
+V	p	Gen=N|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=6
+V	p	Gen=N|Num=S|Per=X|Ten=R|Neg=N|Voi=A
+V	p	Gen=N|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=1
+V	p	Gen=N|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=3
+V	p	Gen=N|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=6
+V	p	Gen=Q|Num=W|Per=X|Ten=R|Neg=A|Voi=A
+V	p	Gen=Q|Num=W|Per=X|Ten=R|Neg=A|Voi=A|Var=1
+V	p	Gen=Q|Num=W|Per=X|Ten=R|Neg=A|Voi=A|Var=3
+V	p	Gen=Q|Num=W|Per=X|Ten=R|Neg=A|Voi=A|Var=6
+V	p	Gen=Q|Num=W|Per=X|Ten=R|Neg=N|Voi=A
+V	p	Gen=Q|Num=W|Per=X|Ten=R|Neg=N|Voi=A|Var=1
+V	p	Gen=Q|Num=W|Per=X|Ten=R|Neg=N|Voi=A|Var=3
+V	p	Gen=Q|Num=W|Per=X|Ten=R|Neg=N|Voi=A|Var=6
+V	p	Gen=T|Num=P|Per=X|Ten=R|Neg=A|Voi=A
+V	p	Gen=T|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=1
+V	p	Gen=T|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=3
+V	p	Gen=T|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=6
+V	p	Gen=T|Num=P|Per=X|Ten=R|Neg=N|Voi=A
+V	p	Gen=T|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=1
+V	p	Gen=T|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=3
+V	p	Gen=T|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=6
+V	p	Gen=X|Num=P|Per=X|Ten=R|Neg=A|Voi=A
+V	p	Gen=X|Num=P|Per=X|Ten=R|Neg=N|Voi=A
+V	p	Gen=X|Num=S|Per=X|Ten=R|Neg=A|Voi=A
+V	p	Gen=X|Num=S|Per=X|Ten=R|Neg=N|Voi=A
+V	p	Gen=X|Num=X|Per=X|Ten=R|Neg=A|Voi=A
+V	p	Gen=X|Num=X|Per=X|Ten=R|Neg=A|Voi=A|Sem=m
+V	p	Gen=X|Num=X|Per=X|Ten=R|Neg=N|Voi=A
+V	p	Gen=Y|Num=S|Per=2|Ten=R|Neg=A|Voi=A
+V	p	Gen=Y|Num=S|Per=2|Ten=R|Neg=A|Voi=A|Var=1
+V	p	Gen=Y|Num=S|Per=2|Ten=R|Neg=A|Voi=A|Var=6
+V	p	Gen=Y|Num=S|Per=2|Ten=R|Neg=N|Voi=A
+V	p	Gen=Y|Num=S|Per=2|Ten=R|Neg=N|Voi=A|Var=1
+V	p	Gen=Y|Num=S|Per=2|Ten=R|Neg=N|Voi=A|Var=6
+V	p	Gen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A
+V	p	Gen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=1
+V	p	Gen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=6
+V	p	Gen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=8
+V	p	Gen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=9
+V	p	Gen=Y|Num=S|Per=X|Ten=R|Neg=N|Voi=A
+V	p	Gen=Y|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=1
+V	p	Gen=Y|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=6
+V	p	Gen=Y|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=8
+V	q	Gen=M|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=2
+V	q	Gen=M|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=3
+V	q	Gen=M|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=7
+V	q	Gen=M|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=2
+V	q	Gen=M|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=3
+V	q	Gen=M|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=7
+V	q	Gen=N|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=2
+V	q	Gen=N|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=3
+V	q	Gen=N|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=7
+V	q	Gen=N|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=2
+V	q	Gen=N|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=3
+V	q	Gen=N|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=7
+V	q	Gen=Q|Num=W|Per=X|Ten=R|Neg=A|Voi=A|Var=2
+V	q	Gen=Q|Num=W|Per=X|Ten=R|Neg=A|Voi=A|Var=3
+V	q	Gen=Q|Num=W|Per=X|Ten=R|Neg=A|Voi=A|Var=7
+V	q	Gen=Q|Num=W|Per=X|Ten=R|Neg=N|Voi=A|Var=2
+V	q	Gen=Q|Num=W|Per=X|Ten=R|Neg=N|Voi=A|Var=3
+V	q	Gen=Q|Num=W|Per=X|Ten=R|Neg=N|Voi=A|Var=7
+V	q	Gen=T|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=2
+V	q	Gen=T|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=3
+V	q	Gen=T|Num=P|Per=X|Ten=R|Neg=A|Voi=A|Var=7
+V	q	Gen=T|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=2
+V	q	Gen=T|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=3
+V	q	Gen=T|Num=P|Per=X|Ten=R|Neg=N|Voi=A|Var=7
+V	q	Gen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=2
+V	q	Gen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=3
+V	q	Gen=Y|Num=S|Per=X|Ten=R|Neg=A|Voi=A|Var=7
+V	q	Gen=Y|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=2
+V	q	Gen=Y|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=3
+V	q	Gen=Y|Num=S|Per=X|Ten=R|Neg=N|Voi=A|Var=7
+V	s	Gen=F|Num=S|Cas=4|Per=X|Ten=X|Neg=A|Voi=P
+V	s	Gen=F|Num=S|Cas=4|Per=X|Ten=X|Neg=A|Voi=P|Var=2
+V	s	Gen=F|Num=S|Cas=4|Per=X|Ten=X|Neg=N|Voi=P
+V	s	Gen=F|Num=S|Cas=4|Per=X|Ten=X|Neg=N|Voi=P|Var=2
+V	s	Gen=F|Num=S|Per=2|Ten=H|Neg=A|Voi=P
+V	s	Gen=F|Num=S|Per=2|Ten=H|Neg=A|Voi=P|Var=2
+V	s	Gen=F|Num=S|Per=2|Ten=H|Neg=N|Voi=P
+V	s	Gen=F|Num=S|Per=2|Ten=H|Neg=N|Voi=P|Var=2
+V	s	Gen=M|Num=P|Per=X|Ten=X|Neg=A|Voi=P
+V	s	Gen=M|Num=P|Per=X|Ten=X|Neg=A|Voi=P|Var=2
+V	s	Gen=M|Num=P|Per=X|Ten=X|Neg=N|Voi=P
+V	s	Gen=M|Num=P|Per=X|Ten=X|Neg=N|Voi=P|Var=2
+V	s	Gen=N|Num=S|Per=2|Ten=H|Neg=A|Voi=P
+V	s	Gen=N|Num=S|Per=2|Ten=H|Neg=A|Voi=P|Var=2
+V	s	Gen=N|Num=S|Per=2|Ten=H|Neg=N|Voi=P
+V	s	Gen=N|Num=S|Per=2|Ten=H|Neg=N|Voi=P|Var=2
+V	s	Gen=N|Num=S|Per=X|Ten=X|Neg=A|Voi=P
+V	s	Gen=N|Num=S|Per=X|Ten=X|Neg=A|Voi=P|Var=2
+V	s	Gen=N|Num=S|Per=X|Ten=X|Neg=N|Voi=P
+V	s	Gen=N|Num=S|Per=X|Ten=X|Neg=N|Voi=P|Var=2
+V	s	Gen=Q|Num=W|Per=X|Ten=X|Neg=A|Voi=P
+V	s	Gen=Q|Num=W|Per=X|Ten=X|Neg=A|Voi=P|Var=2
+V	s	Gen=Q|Num=W|Per=X|Ten=X|Neg=N|Voi=P
+V	s	Gen=Q|Num=W|Per=X|Ten=X|Neg=N|Voi=P|Var=2
+V	s	Gen=T|Num=P|Per=X|Ten=X|Neg=A|Voi=P
+V	s	Gen=T|Num=P|Per=X|Ten=X|Neg=A|Voi=P|Var=2
+V	s	Gen=T|Num=P|Per=X|Ten=X|Neg=N|Voi=P
+V	s	Gen=T|Num=P|Per=X|Ten=X|Neg=N|Voi=P|Var=2
+V	s	Gen=Y|Num=S|Per=2|Ten=H|Neg=A|Voi=P
+V	s	Gen=Y|Num=S|Per=X|Ten=X|Neg=A|Voi=P
+V	s	Gen=Y|Num=S|Per=X|Ten=X|Neg=A|Voi=P|Var=2
+V	s	Gen=Y|Num=S|Per=X|Ten=X|Neg=N|Voi=P
+V	s	Gen=Y|Num=S|Per=X|Ten=X|Neg=N|Voi=P|Var=2
+V	t	Num=P|Per=1|Ten=F|Neg=A|Voi=A|Var=2
+V	t	Num=P|Per=1|Ten=F|Neg=A|Voi=A|Var=3
+V	t	Num=P|Per=1|Ten=F|Neg=N|Voi=A|Var=2
+V	t	Num=P|Per=1|Ten=F|Neg=N|Voi=A|Var=3
+V	t	Num=P|Per=1|Ten=P|Neg=A|Voi=A|Var=2
+V	t	Num=P|Per=1|Ten=P|Neg=A|Voi=A|Var=3
+V	t	Num=P|Per=1|Ten=P|Neg=N|Voi=A|Var=2
+V	t	Num=P|Per=1|Ten=P|Neg=N|Voi=A|Var=3
+V	t	Num=P|Per=2|Ten=F|Neg=A|Voi=A|Var=2
+V	t	Num=P|Per=2|Ten=F|Neg=N|Voi=A|Var=2
+V	t	Num=P|Per=2|Ten=P|Neg=A|Voi=A|Var=2
+V	t	Num=P|Per=2|Ten=P|Neg=N|Voi=A|Var=2
+V	t	Num=P|Per=3|Ten=F|Neg=A|Voi=A|Var=2
+V	t	Num=P|Per=3|Ten=F|Neg=A|Voi=A|Var=3
+V	t	Num=P|Per=3|Ten=F|Neg=N|Voi=A|Var=2
+V	t	Num=P|Per=3|Ten=F|Neg=N|Voi=A|Var=3
+V	t	Num=P|Per=3|Ten=P|Neg=A|Voi=A|Var=2
+V	t	Num=P|Per=3|Ten=P|Neg=A|Voi=A|Var=3
+V	t	Num=P|Per=3|Ten=P|Neg=A|Voi=A|Var=9
+V	t	Num=P|Per=3|Ten=P|Neg=N|Voi=A|Var=2
+V	t	Num=P|Per=3|Ten=P|Neg=N|Voi=A|Var=3
+V	t	Num=P|Per=3|Ten=P|Neg=N|Voi=A|Var=9
+V	t	Num=S|Per=1|Ten=F|Neg=A|Voi=A|Var=2
+V	t	Num=S|Per=1|Ten=F|Neg=A|Voi=A|Var=3
+V	t	Num=S|Per=1|Ten=F|Neg=N|Voi=A|Var=2
+V	t	Num=S|Per=1|Ten=F|Neg=N|Voi=A|Var=3
+V	t	Num=S|Per=1|Ten=P|Neg=A|Voi=A|Var=2
+V	t	Num=S|Per=1|Ten=P|Neg=A|Voi=A|Var=3
+V	t	Num=S|Per=1|Ten=P|Neg=N|Voi=A|Var=2
+V	t	Num=S|Per=1|Ten=P|Neg=N|Voi=A|Var=3
+V	t	Num=S|Per=2|Ten=F|Neg=A|Voi=A|Var=2
+V	t	Num=S|Per=2|Ten=F|Neg=N|Voi=A|Var=2
+V	t	Num=S|Per=2|Ten=P|Neg=A|Voi=A|Var=2
+V	t	Num=S|Per=2|Ten=P|Neg=N|Voi=A|Var=2
+V	t	Num=S|Per=3|Ten=F|Neg=A|Voi=A|Var=2
+V	t	Num=S|Per=3|Ten=F|Neg=N|Voi=A|Var=2
+V	t	Num=S|Per=3|Ten=P|Neg=A|Voi=A|Var=2
+V	t	Num=S|Per=3|Ten=P|Neg=N|Voi=A|Var=2
+V	~	_
+X	@	Sem=G
+X	@	Sem=m
+X	@	Var=0
+X	@	Var=1
+X	@	_
+X	X	Var=8
+X	X	_
+X	x	Sem=K
+X	x	Sem=m
+X	x	_
+Z	#	_
+Z	:	_
 end_of_list
     ;
+    # Protect from editors that replace tabs by spaces.
+    $list =~ s/ \s+/\t/sg;
     my @list = split(/\r?\n/, $list);
     pop(@list) if($list[$#list] eq "");
     return \@list;

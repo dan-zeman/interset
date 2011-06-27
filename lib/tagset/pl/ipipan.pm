@@ -32,8 +32,8 @@ sub decode
     # rzeczownik deprecjatywny = depreciative noun
     # (possible explanation:)
     # This paper deals with the Polish construction ìi≈õƒá w so≈Çdaty [be drafted; lit. become a so≈Çdat (solider)]î,
-    # which is grammatically atypical: it is not clear what the value of its noun constituentís case is. The point
-    # of departure for the analysis is Igor Mel'ƒçukís paper about the parallel Russian construction. (The Polish
+    # which is grammatically atypical: it is not clear what the value of its noun constituent‚Äôs case is. The point
+    # of departure for the analysis is Igor Mel'ƒçuk‚Äôs paper about the parallel Russian construction. (The Polish
     # construction was borrowed from Russian during the Russian rule on Polish territory.) The solution is similar
     # to that for Russian: ìso≈Çdatyî in this expression is an atypical (non-virile or depreciative) accusative form.
     # Additionally, some similar expressions consisting of a preposition and a noun form analogous to ìso≈Çdatyî are
@@ -426,7 +426,7 @@ sub encode
     # przymiotnik = adjective ((Feliks) Koneczny, znakomitego, dzisiejszego, liczne, Polskim)
     elsif($pos eq 'adj')
     {
-        if($f{tagset} eq 'pl::ipipan' && $f{other}{pos} eq 'winien')
+        if($f{tagset} eq 'pl::ipipan' && $f{other}{pos} eq 'winien' || $f{aspect} eq 'imp')
         {
             $tag = 'winien';
             $tag .= ':'.encode_number($f);
@@ -461,7 +461,7 @@ sub encode
     {
         # predykatyw = predicative (to, mo≈ºna, wiadomo, warto, potrzeba)
         # non-verb part of speech (demonstrative pronoun, adverb etc.) replacing clause-main verb (and sometimes the subject at the same time)
-        if($f{tagset} eq 'pl::ipipan' && $f{other}{pos} eq 'pred')
+        if($f{tagset} eq 'pl::ipipan' && $f{other}{pos} eq 'pred' || $f{aspect} eq '')
         {
             $tag = 'pred';
         }

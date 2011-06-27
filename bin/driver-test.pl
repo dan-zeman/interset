@@ -12,6 +12,8 @@ sub usage
     print STDERR ("  -a: test all known drivers but no pairs of drivers\n");
     print STDERR ("  -A: test all known drivers and all pairs of drivers\n");
     print STDERR ("  -d: debug mode (list tags being tested)\n");
+    print STDERR ("  -o: print known tags together with unknown tags created by stripping the 'other' feature\n");
+    print STDERR ("  -O: same as -o but without additional info, i.e. directly copyable to the list() function\n");
 }
 
 use utf8;
@@ -33,7 +35,7 @@ select($old_fh);
 $all = 0;
 $all_conversions = 0;
 $debug = 0;
-GetOptions('a' => \$all, 'A' => \$all_conversions, 'debug' => \$debug);
+GetOptions('a' => \$all, 'A' => \$all_conversions, 'debug' => \$debug, 'o' => \$list_other, 'O' => \$list_other_plain);
 # Get the list of all drivers if needed.
 if($all || $all_conversions)
 {
@@ -88,171 +90,108 @@ else
 
 
 #------------------------------------------------------------------------------
-# Tests that encode(decode(tag))=tag for all tags in list().
+# Tests a single driver.
 #------------------------------------------------------------------------------
 sub test
 {
     my $driver = shift; # e.g. "cs::pdt"
     my $starttime = time();
     print("Testing $driver ...");
-    my $n_tags = 0;
+    my ($decode, $encode, $listf) = tagset::common::get_driver_functions($driver);
+    my $list = &{$listf}();
+    my $n_tags = scalar(@{$list});
+    print(" $n_tags tags");
+    # Hash the known tags so that we can query whether a tag is known.
+    my %known;
+    foreach my $tag (@{$list})
+    {
+        $known{$tag}++;
+    }
+    # We will collect unknown tags created by erasing 'other' and encoding again.
+    my %unknown;
+    # We will also collect known tags after erasing 'other' and encoding again.
+    my %other_survivors;
     my $n_errors = 0;
     my $n_other = 0;
-    # Note: We could also eval() just the "use" statement (and possibly the list(), decode() and encode() calls).
-    # Enclosing the eval code in single quotes would prevent any "$" and "@" from being interpreted.
-    # However, we still want the ${driver} to be interpreted.
-    my $eval = <<_end_of_eval_
+    foreach my $tag (@{$list})
     {
-        use tagset::${driver};
-        my \$list = tagset::${driver}::list();
-        foreach my \$tag (\@{\$list})
+        if($debug)
         {
-            if(\$debug)
+            print STDERR ("Now testing tag $tag\n");
+        }
+        # Decode the tag and create the Interset feature structure.
+        my $f = &{$decode}($tag);
+        my $sfs = tagset::common::feature_structure_to_text($f);
+        # Collect statistics how many tags set the 'other' feature.
+        $n_other++ if($f->{other} ne "");
+        # Test that the decoder sets only known features and values.
+        my $errors = is_known($f);
+        if(scalar(@{$errors}))
+        {
+            print("Error: unknown features or values after decoding \"$tag\"\n");
+            foreach my $e (@{$errors})
             {
-                print STDERR ("Now testing tag \$tag\n");
+                print(" ", $e);
             }
-            my \$f = tagset::${driver}::decode(\$tag);
-            \$n_other++ if(\$f->{other} ne "");
-            my \$errors = is_known(\$f);
-            if(scalar(\@{\$errors}))
-            {
-                print("Error: unknown features or values after decoding \\"\$tag\\"\n");
-                foreach my \$e (\@{\$errors})
-                {
-                    print(" ", \$e);
-                }
-                print("\n");
-                \$n_errors++;
-            }
-            my \$tag1 = tagset::${driver}::encode(\$f);
-            if(\$tag1 ne \$tag)
-            {
-                print("\n\n") if(\$n_errors==0);
-                print("Error: encode(decode(x)) != x\n");
-                print(" src = \\"\$tag\\"\n");
-                print(" tgt = \\"\$tag1\\"\n");
-                print(" sfs = ", tagset::common::feature_structure_to_text(\$f), "\n");
-                print("\n");
-                \$n_errors++;
-            }
-            \$n_tags++;
+            print("\n");
+            $n_errors++;
+        }
+        # Test that encode(decode(tag))=tag (reproducibility).
+        my $tag1 = &{$encode}($f);
+        if($tag1 ne $tag)
+        {
+            print("\n\n") if($n_errors==0);
+            print("Error: encode(decode(x)) != x\n");
+            print(" src = \"$tag\"\n");
+            print(" tgt = \"$tag1\"\n");
+            print(" sfs = $sfs\n");
+            print("\n");
+            $n_errors++;
+        }
+        # Decoding a tag, removing information stored in the 'other' feature and
+        # encoding should render a known tag (a default one if the original tag cannot
+        # be completely restored because of the missing information). This is important
+        # for figuring out the permitted feature combinations when converting from a
+        # different tagset.
+        delete($f->{other});
+        my $tag2 = &{$encode}($f);
+        # Is the resulting tag known?
+        if(!exists($known{$tag2}))
+        {
+            print("\n\n") if($n_errors==0);
+            print("Error: encode(decode(x)-other) gives an unknown tag\n");
+            print(" src = $tag\n");
+            print(" tgt = $tag2\n");
+            print(" sfs = $sfs\n");
+            print("\n");
+            $n_errors++;
+            $unknown{$tag2}++;
+        }
+        else
+        {
+            $other_survivors{$tag2}++;
         }
     }
-_end_of_eval_
-    ;
-    if($debug)
+    # We can print the list of all tags including the unknown ones but normally we do not want to.
+    if($list_other || $list_other_plain)
     {
-        print STDERR ($eval);
+        my @known = keys(%known);
+        my @unknown = keys(%unknown);
+        list_known_and_unknown_tags(\@known, \@unknown, $list_other_plain, $decode);
     }
-    eval($eval);
-    if($@)
-    {
-        confess("$@\nEval failed");
-    }
-    $n_errors += test_other_survival($driver);
     if($n_errors)
     {
         confess("Tested $n_tags tags, found $n_errors errors.\n");
     }
     else
     {
-        print(" $n_tags tags OK\n");
+        print(" OK\n");
         print("$n_other tags use the 'other' feature.\n");
+        my $n_other_survivors = scalar(keys(%other_survivors));
+        print("$n_other_survivors tags are independent on 'other' (they survive encode(decode(x)-other)).\n");
     }
     print("Duration ", duration($starttime), ".\n");
     return $n_errors;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Decoding a tag, removing information stored in the 'other' feature and
-# encoding should render a known tag (a default one if the original tag cannot
-# be completely restored because of the missing information). This is important
-# for figuring out the permitted feature combinations when converting from a
-# different tagset.
-#------------------------------------------------------------------------------
-sub test_other_survival
-{
-    my $driver = shift; # e.g. 'cs::pdt'
-    my ($decode, $encode, $list) = tagset::common::get_driver_functions($driver);
-    my $known = &{$list}();
-    my %known;
-    foreach my $tag (@{$known})
-    {
-        $known{$tag}++;
-    }
-    my $n_errors = 0;
-    foreach my $tag0 (@{$known})
-    {
-        my $f = &{$decode}($tag0);
-        my $sfs = tagset::common::feature_structure_to_text($f);
-        delete($f->{other});
-        my $tag1 = &{$encode}($f);
-        # Is the resulting tag known?
-        if(!exists($known{$tag1}))
-        {
-            print("\n\n") if($n_errors==0);
-            print("Error: encode(decode(x)-other) gives an unknown tag\n");
-            print(" src = $tag0\n");
-            print(" tgt = $tag1\n");
-            print(" sfs = $sfs\n");
-            print("\n");
-            $n_errors++;
-        }
-    }
-    # We can print the list of all tags including the unknown ones but normally we do not want to.
-    if(0)
-    {
-        # Tohle volání je tu z historických důvodů, ale teď je zbytečné, stačilo by nahoře posbírat značky, u kterých nastala chyba.
-        my $unknown = tagset::common::list_unknown_other_resistant_tags($known, $decode, $encode);
-        my $plain = 0;
-        list_known_and_unknown_tags($known, $unknown, $plain);
-    }
-    return $n_errors;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Takes a list of known tags and a list of unknown tags, merges them and prints
-# the resulting list with explanatory feature structures. If the known tags
-# have just been collected from a corpus (which probably means that other tags
-# may exist and be valid), the joint list helps decide whether the unknown tags
-# seem reasonable and may be added to the list of known tags.
-#------------------------------------------------------------------------------
-sub list_known_and_unknown_tags
-{
-    my $known = shift; # reference to array
-    my $unknown = shift; # reference to array
-    # Plain list means without UNK flags and feature structures.
-    # Plain list is suitable for directly copying to the list() function in the driver.
-    my $plain = shift; # boolean
-    # Merge known and unknown tags into one list but remember the knownness.
-    my @all = sort(@{$known}, @{$unknown});
-    my %unknown;
-    unless($plain)
-    {
-        foreach my $tag (@{$unknown})
-        {
-            $unknown{$tag}++;
-        }
-    }
-    foreach my $tag (@all)
-    {
-        if($plain)
-        {
-            print("$tag\n");
-        }
-        else
-        {
-            print(exists($unknown{$tag}) ? 'UNK   ' : '      ');
-            print($tag);
-            my $f = &{$decode}($tag);
-            print('   ', tagset::common::feature_structure_to_text($f));
-            print("\n");
-        }
-    }
 }
 
 
@@ -289,6 +228,8 @@ sub test_conversion
     }
     # Remember used target tags so that we can evaluate information loss.
     my %t2hits;
+    # We will collect unknown tags created by erasing 'other' and encoding again.
+    my %unknown;
     # Convert all tagset 1 tags to tagset 2 and check whether the result is permitted.
     foreach my $src (@{$list1})
     {
@@ -317,8 +258,17 @@ sub test_conversion
             print("The target tag is not known in the target tagset.\n\n");
 #            die();
             $n_errors++;
+            $unknown{$tgt}++;
         }
         $n_tags++;
+    }
+    # We can print the list of all tags including the unknown ones but normally we do not want to.
+    if($list_other || $list_other_plain)
+    {
+        my @known = keys(%tagset2);
+        my @unknown = keys(%unknown);
+        my ($decode, $encode, $listf) = tagset::common::get_driver_functions($driver2);
+        list_known_and_unknown_tags(\@known, \@unknown, $list_other_plain, $decode);
     }
     if($n_errors)
     {
@@ -355,6 +305,57 @@ sub test_conversion
         }
     }
     print("Duration ", duration($starttime), ".\n");
+}
+
+
+
+#------------------------------------------------------------------------------
+# Takes a list of known tags and a list of unknown tags, merges them and prints
+# the resulting list with explanatory feature structures. If the known tags
+# have just been collected from a corpus (which probably means that other tags
+# may exist and be valid), the joint list helps decide whether the unknown tags
+# seem reasonable and may be added to the list of known tags.
+#------------------------------------------------------------------------------
+sub list_known_and_unknown_tags
+{
+    my $known = shift; # reference to array
+    my $unknown = shift; # reference to array
+    # Plain list means without UNK flags and feature structures.
+    # Plain list is suitable for directly copying to the list() function in the driver.
+    my $plain = shift; # boolean
+    my $decode = shift; # reference to function
+    # Merge known and unknown tags into one list but remember the knownness.
+    my %unknown;
+    unless($plain)
+    {
+        foreach my $tag (@{$unknown})
+        {
+            $unknown{$tag}++;
+        }
+    }
+    # Merge and remove duplicates if any.
+    # Neither of known and unknown should contain duplicates and the lists should not overlap but let's check it, it is not guaranteed.
+    my %map;
+    foreach my $tag (@{$known}, @{$unknown})
+    {
+        $map{$tag}++;
+    }
+    my @all = sort(keys(%map));
+    foreach my $tag (@all)
+    {
+        if($plain)
+        {
+            print("$tag\n");
+        }
+        else
+        {
+            print(exists($unknown{$tag}) ? 'UNK   ' : '      ');
+            print($tag);
+            my $f = &{$decode}($tag);
+            print('   ', tagset::common::feature_structure_to_text($f));
+            print("\n");
+        }
+    }
 }
 
 

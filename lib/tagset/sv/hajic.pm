@@ -532,7 +532,8 @@ sub encode
     {
         if($f{tagset} eq "sv::hajic" && $f{other} eq "no degree" ||
            $f{abbr} eq "abbr" ||
-           $f{pos} eq "adv" && $f{prontype} =~ m/^(int|rel)$/)
+           $f{pos} eq "adv" && $f{prontype} =~ m/^(int|rel)$/ ||
+           $f{pos} eq 'adv' && ($f{abbr} eq 'abbr' || $f{hyph} eq 'hyph'))
         {
             $tag .= "0";
         }

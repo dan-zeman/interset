@@ -1194,9 +1194,9 @@ sub encode_clitic_s
 {
     my $f = shift; # reference to hash
     my $c;
-    if($f->{tagset} eq 'cs::multext')
+    if($f->{tagset} eq 'cs::multext' && $f->{other}{clitic_s} eq 'y')
     {
-        $c = $f->{other}{clitic_s};
+        $c = 'y';
     }
     # Clitic_s is obligatory for pronouns.
     # It is also obligatory for participles and infinitives (!) but not other verb forms.
