@@ -1,12 +1,12 @@
 #!/usr/bin/perl
 # Prepares corpus index for browsing tag examples.
-# Copyright © 2010 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2010, 2011 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
 use utf8;
 sub usage
 {
-    print STDERR ("Usage: perl index_examples.pl corpus-name [-format conll2006|pmk] < corpus.conll\n");
+    print STDERR ("Usage: perl index_examples.pl corpus-name [-format conll2006|csts|pmk] < corpus\n");
     print STDERR ("       Currently will write to the pre-defined CGI path.\n");
 }
 
@@ -24,6 +24,13 @@ if(scalar(@ARGV)<1)
     die;
 }
 $corpusname = shift(@ARGV);
+# Windows command line will not expand wildcards automatically.
+if(grep {m/\*/} (@ARGV))
+{
+    my @soubory = map {glob($_)} (@ARGV);
+    @ARGV = @soubory;
+    print STDERR (join(' ', @soubory), "\n");
+}
 # Read the corpus. This part depends on the input corpus format.
 # The block defines the scope of the reference to the original document so that it can be freed.
 {
@@ -32,6 +39,10 @@ $corpusname = shift(@ARGV);
     if($format eq 'pmk')
     {
         $document = read_document_pmk();
+    }
+    elsif($format eq 'csts')
+    {
+        $document = read_document_csts();
     }
     else # conll2006 is the default format
     {
@@ -322,6 +333,7 @@ sub read_document_conll_2006
 
 #------------------------------------------------------------------------------
 # CoNLL 2006 format: Remember the sentence just read.
+# Actually the very same function can also be used for the CSTS format.
 #------------------------------------------------------------------------------
 sub end_of_sentence_conll_2006
 {
@@ -336,6 +348,40 @@ sub end_of_sentence_conll_2006
     );
     push(@{$document}, \%sentence);
     splice(@{$sentence});
+}
+
+
+
+#------------------------------------------------------------------------------
+# Reads a document in the CSTS format. Does not fully parse the SGML syntax.
+# Expects one token per line.
+#------------------------------------------------------------------------------
+sub read_document_csts
+{
+    my @document;
+    my @sentence;
+    while(<>)
+    {
+        # Remove line break.
+        s/\r?\n$//;
+        # Beginning of a new sentence.
+        if(m/<s( .*)?>/)
+        {
+            # We may want to rename this function as it works with both formats.
+            end_of_sentence_conll_2006(\@document, \@sentence);
+        }
+        # Token line. Note that there will be more or fewer elements in some CSTS files. Currently only tested on Russian Dependency Treebank / DZ.
+        elsif(m/<f(?: .*)?>([^<]*)<l(?: .*)?>([^<]*)<t(?: .*)?>([^<]*)/)
+        {
+            my $form = $1;
+            my $lemma = $2;
+            my $tag = $3;
+            push(@sentence, [$form, $lemma, $tag]);
+        }
+    }
+    # We may want to rename this function as it works with both formats.
+    end_of_sentence_conll_2006(\@document, \@sentence);
+    return \@document;
 }
 
 
