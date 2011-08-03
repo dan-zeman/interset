@@ -31,6 +31,9 @@ if(grep {m/\*/} (@ARGV))
     @ARGV = @soubory;
     print STDERR (join(' ', @soubory), "\n");
 }
+# On Dan's laptop, write directly to the CGI path. Anywhere else, write to the current folder.
+my $laptop_path = 'C:/Documents and Settings/Dan/Dokumenty/Web/cgi/tags';
+my $target_path = (-d $laptop_path) ? "$laptop_path/$corpusname" : "./$corpusname";
 # Read the corpus. This part depends on the input corpus format.
 # The block defines the scope of the reference to the original document so that it can be freed.
 {
@@ -99,7 +102,6 @@ if(0)
 }
 print STDERR ("Building the indexes...\n");
 ($fhash, $lhash, $thash) = build_index(\@document);
-my $target_path = "C:/Documents and Settings/Dan/Dokumenty/Web/cgi/tags/$corpusname";
 if(! -d $target_path)
 {
     mkdir($target_path) or die("Cannot create folder $target_path: $!\n");

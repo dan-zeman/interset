@@ -117,31 +117,46 @@ sub decode
             $f{animateness} = 'anim';
         }
         # Case
-        elsif($p eq 'ИМ')
+        elsif($p eq 'ИМ') # Именительный / Номинатив (Nominative)
         {
             $f{case} = 'nom';
         }
-        elsif($p eq 'РОД')
+        elsif($p eq 'РОД') # Родительный / Генитив (Genitive)
         {
             $f{case} = 'gen';
         }
-        elsif($p eq 'ДАТ')
+        elsif($p eq 'ПАРТ') # Количественно-отделительный (партитив, или второй родительный) (Partitive) [not in Russian schools]
+        {
+            # Subcase of РОД. Occasionally the word form differs if the genitive
+            # is used for the noun describing a whole in relation to parts;
+            # these forms may also be preferred with mass nouns.
+            # «нет сахара» vs. «положить сахару»
+            $f{case} = 'gen';
+        }
+        elsif($p eq 'ДАТ') # Дательный / Датив (Dative)
         {
             $f{case} = 'dat';
         }
-        elsif($p eq 'ВИН')
+        elsif($p eq 'ВИН') # Винительный / Аккузатив (Accusative)
         {
             $f{case} = 'acc';
         }
-        elsif($p eq 'ЗВ') # only one word type: "Господи"
+        elsif($p eq 'ЗВ') # only one word type: "Господи" # Звательный (вокатив) (Vocative) [not in Russian schools]
         {
             $f{case} = 'voc';
         }
-        elsif($p eq 'ПР')
+        elsif($p eq 'ПР') # Предложный / Препозитив (Prepositional) [in Russian schools taught as the last one after instrumental?]
         {
             $f{case} = 'loc';
         }
-        elsif($p eq 'ТВОР')
+        elsif($p eq 'МЕСТН') # [not in Russian schools]
+        {
+            # Subcase of ПР. ПР is used for two meanings: 'about what?' (о чём?) and 'where?' (где?).
+            # The word forms of the two meanings mostly overlap but there are about 100 words whose forms differ:
+            # «о шкафе» — «в шкафу»
+            $f{case} = 'loc';
+        }
+        elsif($p eq 'ТВОР') # Творительный / Аблатив (объединяет инструментатив [Instrumental], локатив и аблатив)
         {
             $f{case} = 'ins';
         }
