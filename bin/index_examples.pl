@@ -4,10 +4,16 @@
 # License: GNU GPL
 
 use utf8;
+my $laptop_path = 'C:/Users/Dan/Documents/Web/cgi/tags';
+my $format = 'conll2006'; # default
 sub usage
 {
     print STDERR ("Usage: perl index_examples.pl corpus-name [-format conll2006|csts|pmk] < corpus\n");
-    print STDERR ("       Currently will write to the pre-defined CGI path.\n");
+    print STDERR ("       -format ... input corpus format; values: conll2006|csts|pmk; default: conll2006\n");
+    print STDERR ("       -o ........ output path\n");
+    print STDERR ("                   Because Dan is currently the only user of this script, the default is specific on Dan's laptop:\n");
+    print STDERR ("                   If '$laptop_path' exists, it is the default output path.\n");
+    print STDERR ("                   Otherwise, the current folder is the default output path.\n");
 }
 
 use open ":utf8";
@@ -16,14 +22,19 @@ binmode(STDOUT, ":utf8");
 binmode(STDERR, ":utf8");
 use Getopt::Long;
 
-$format = 'conll2006'; # default
-GetOptions('format=s' => \$format);
+GetOptions
+(
+    'format=s' => \$format,
+    'output=s' => \$outdir
+);
 if(scalar(@ARGV)<1)
 {
     usage();
     die;
 }
 $corpusname = shift(@ARGV);
+# On Dan's laptop, write directly to the CGI path. Anywhere else, write to the current folder.
+my $target_path = $outdir ? "$outdir/$corpusname" : (-d $laptop_path) ? "$laptop_path/$corpusname" : "./$corpusname";
 # Windows command line will not expand wildcards automatically.
 if(grep {m/\*/} (@ARGV))
 {
@@ -31,9 +42,6 @@ if(grep {m/\*/} (@ARGV))
     @ARGV = @soubory;
     print STDERR (join(' ', @soubory), "\n");
 }
-# On Dan's laptop, write directly to the CGI path. Anywhere else, write to the current folder.
-my $laptop_path = 'C:/Documents and Settings/Dan/Dokumenty/Web/cgi/tags';
-my $target_path = (-d $laptop_path) ? "$laptop_path/$corpusname" : "./$corpusname";
 # Read the corpus. This part depends on the input corpus format.
 # The block defines the scope of the reference to the original document so that it can be freed.
 {
