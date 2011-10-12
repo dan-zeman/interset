@@ -51,7 +51,7 @@ BEGIN
         "gender"       => ["masc", "fem", "com", "neut"],
         "animateness"  => ["anim", "nhum", "inan"],
         "number"       => ["sing", "dual", "plu", "ptan", "coll"],
-        "case"         => ["nom", "gen", "dat", "acc", "voc", "loc", "ins"],
+        "case"         => ["nom", "gen", "dat", "acc", "voc", "loc", "ins", "ist", "abl", "par", "ess", "tra", "com", "abe", "ine", "ela", "ill", "ade", "all"],
         "prepcase"     => ["npr", "pre"],
         "degree"       => ["pos", "comp", "sup", "abs"],
         "person"       => [1, 2, 3],
@@ -68,7 +68,7 @@ BEGIN
         "foreign"      => ["foreign"],
         "abbr"         => ["abbr"],
         "hyph"         => ["hyph"],
-        "style"        => ["arch", "form", "norm", "coll", "vulg"],
+        "style"        => ["arch", "form", "norm", "coll", "vrnc", "slng", "derg", "vulg"],
         "typo"         => ["typo"],
         "variant"      => ["short", "long", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
         "tagset"       => [""],
@@ -414,7 +414,18 @@ BEGIN
             ["gen"],
             ["loc"],
             ["ins"],
-            ["voc"]
+            ["voc"],
+            ["abl", "loc"],
+            ["par", "gen"],
+            ["ess"],
+            ["tra"],
+            ["com", "ins"],
+            ["abe"],
+            ["ine", "loc"],
+            ["ela", "loc"],
+            ["ill", "loc"],
+            ["ade", "loc"],
+            ["all", "loc"]
         ],
         "prepcase" =>
         [
@@ -492,7 +503,10 @@ BEGIN
             ["form"],
             ["arch", "form"],
             ["coll"],
-            ["vulg", "coll"]
+            ["vrnc"],
+            ["slng"],
+            ["derg", "coll"],
+            ["vulg", "derg"]
         ],
         "typo" =>
         [
