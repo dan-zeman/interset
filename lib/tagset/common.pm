@@ -62,7 +62,7 @@ BEGIN
         "verbform"     => ["fin", "inf", "sup", "part", "trans", "ger"],
         "mood"         => ["ind", "imp", "cnd", "sub", "jus"],
         "tense"        => ["past", "pres", "fut"],
-        "subtense"     => ["aor", "imp", "ppq"],
+        "subtense"     => ["aor", "imp", "pqp"],
         "aspect"       => ["imp", "perf"],
         "voice"        => ["act", "pass"],
         "foreign"      => ["foreign"],
@@ -477,7 +477,7 @@ BEGIN
         [
             ["aor"],
             ["imp"],
-            ["ppq"]
+            ["pqp"]
         ],
         "aspect" =>
         [
