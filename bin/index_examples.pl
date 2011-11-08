@@ -8,8 +8,8 @@ my $laptop_path = 'C:/Users/Dan/Documents/Web/cgi/tags';
 my $format = 'conll2006'; # default
 sub usage
 {
-    print STDERR ("Usage: perl index_examples.pl corpus-name [-format conll2006|csts|pmk] < corpus\n");
-    print STDERR ("       -format ... input corpus format; values: conll2006|csts|pmk; default: conll2006\n");
+    print STDERR ("Usage: perl index_examples.pl corpus-name [-format conll2006|conll2009|csts|pmk] < corpus\n");
+    print STDERR ("       -format ... input corpus format; values: conll2006|conll2009|csts|pmk; default: conll2006\n");
     print STDERR ("       -o ........ output path\n");
     print STDERR ("                   Because Dan is currently the only user of this script, the default is specific on Dan's laptop:\n");
     print STDERR ("                   If '$laptop_path' exists, it is the default output path.\n");
@@ -45,7 +45,6 @@ if(grep {m/\*/} (@ARGV))
 # Read the corpus. This part depends on the input corpus format.
 # The block defines the scope of the reference to the original document so that it can be freed.
 {
-    # CoNLL 2006 data format.
     my $document;
     if($format eq 'pmk')
     {
@@ -54,6 +53,10 @@ if(grep {m/\*/} (@ARGV))
     elsif($format eq 'csts')
     {
         $document = read_document_csts();
+    }
+    elsif($format eq 'conll2009')
+    {
+        $document = read_document_conll_2009();
     }
     else # conll2006 is the default format
     {
@@ -332,6 +335,39 @@ sub read_document_conll_2006
             my $form = $columns[1];
             my $lemma = $columns[2];
             my $tag = "$columns[3]\t$columns[4]\t$columns[5]";
+            push(@sentence, [$form, $lemma, $tag]);
+        }
+    }
+    end_of_sentence_conll_2006(\@document, \@sentence);
+    return \@document;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Reads a document in the CoNLL 2009 format.
+#------------------------------------------------------------------------------
+sub read_document_conll_2009
+{
+    my @document;
+    my @sentence;
+    while(<>)
+    {
+        # Remove line break.
+        s/\r?\n$//;
+        # Empty line marks end of sentence.
+        if(m/^\s*$/)
+        {
+            # The end_of_sentence function is identical for CoNLL 2006 and 2009.
+            end_of_sentence_conll_2006(\@document, \@sentence);
+        }
+        # Non-empty line describes a token.
+        else
+        {
+            my @columns = split(/\t/, $_);
+            my $form = $columns[1];
+            my $lemma = $columns[2];
+            my $tag = "$columns[4]\t$columns[6]";
             push(@sentence, [$form, $lemma, $tag]);
         }
     }
