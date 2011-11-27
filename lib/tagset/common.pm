@@ -60,7 +60,7 @@ BEGIN
         "possnumber"   => ["sing", "dual", "plu"],
         "subcat"       => ["intr", "tran"],
         "verbform"     => ["fin", "inf", "sup", "part", "trans", "ger"],
-        "mood"         => ["ind", "imp", "cnd", "sub", "jus"],
+        "mood"         => ["ind", "imp", "cnd", "pot", "sub", "jus", "qot"],
         "tense"        => ["past", "pres", "fut"],
         "subtense"     => ["aor", "imp", "pqp"],
         "aspect"       => ["imp", "perf"],
@@ -466,8 +466,10 @@ BEGIN
             ["ind"],
             ["imp"],
             ["cnd", "sub"],
+            ["pot", "cnd"],
             ["sub", "cnd", "jus"],
-            ["jus", "sub"]
+            ["jus", "sub"],
+            ["qot", "ind"]
         ],
         "tense" =>
         [
