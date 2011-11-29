@@ -51,7 +51,7 @@ BEGIN
         "gender"       => ["masc", "fem", "com", "neut"],
         "animateness"  => ["anim", "nhum", "inan"],
         "number"       => ["sing", "dual", "plu", "ptan", "coll"],
-        "case"         => ["nom", "gen", "dat", "acc", "voc", "loc", "ins", "ist", "abl", "par", "ess", "tra", "com", "abe", "ine", "ela", "ill", "ade", "all", "add", "ter"],
+        "case"         => ["nom", "gen", "dat", "acc", "voc", "loc", "ins", "ist", "abl", "par", "ess", "tra", "com", "abe", "ine", "ela", "ill", "ade", "all", "lat", "add", "ter", "abs", "erg", "cau", "ben"],
         "prepcase"     => ["npr", "pre"],
         "degree"       => ["pos", "comp", "sup", "abs"],
         "person"       => [1, 2, 3],
@@ -410,12 +410,12 @@ BEGIN
         [
             ["nom"],
             ["acc"],
-            ["dat"],
+            ["dat", "ben"],
             ["gen"],
             ["loc"],
             ["ins"],
             ["voc"],
-            ["abl", "loc"],
+            ["abl", "lat", "loc"],
             ["par", "gen"],
             ["ess"],
             ["tra"],
@@ -423,11 +423,16 @@ BEGIN
             ["abe"],
             ["ine", "loc"],
             ["ela", "loc"],
-            ["ill", "loc"],
+            ["ill", "lat", "loc"],
             ["add", "ill"],
             ["ade", "loc"],
-            ["all", "loc"],
-            ["ter", "ill"]
+            ["all", "lat", "loc"],
+            ["lat", "all", "loc"],
+            ["ter", "ill"],
+            ["abs", "nom", "acc"],
+            ["erg", "nom"],
+            ["cau"],
+            ["ben", "dat"]
         ],
         "prepcase" =>
         [
