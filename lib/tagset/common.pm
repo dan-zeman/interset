@@ -63,7 +63,7 @@ BEGIN
         "mood"         => ["ind", "imp", "cnd", "pot", "sub", "jus", "qot"],
         "tense"        => ["past", "pres", "fut"],
         "subtense"     => ["aor", "imp", "pqp"],
-        "aspect"       => ["imp", "perf"],
+        "aspect"       => ["imp", "perf", "pro"],
         "voice"        => ["act", "pass"],
         "foreign"      => ["foreign"],
         "abbr"         => ["abbr"],
@@ -491,7 +491,8 @@ BEGIN
         "aspect" =>
         [
             ["imp"],
-            ["perf"]
+            ["perf"],
+            ["pro"]
         ],
         "voice" =>
         [
