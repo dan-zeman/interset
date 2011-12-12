@@ -27,7 +27,7 @@ BEGIN
         "gender", "animateness", "number", "case", "prepcase", "degree",
         "person", "politeness", "possgender", "possnumber",
         "subcat", "verbform", "mood", "tense", "subtense", "voice", "aspect",
-        "foreign", "abbr", "hyph", "style", "typo", "variant",
+        "foreign", "abbr", "hyph", "echo", "style", "typo", "variant",
         "tagset", "other"
     );
     %known_values =
@@ -68,6 +68,7 @@ BEGIN
         "foreign"      => ["foreign"],
         "abbr"         => ["abbr"],
         "hyph"         => ["hyph"],
+        "echo"         => ["rdp", "ech"],
         "style"        => ["arch", "form", "norm", "coll", "vrnc", "slng", "derg", "vulg"],
         "typo"         => ["typo"],
         "variant"      => ["short", "long", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -173,7 +174,7 @@ BEGIN
     # features.
     @features =
     (
-        "pos", "abbr", "hyph", "subcat", "verbform", "mood",
+        "pos", "abbr", "hyph", "echo", "subcat", "verbform", "mood",
         "prontype", "numtype", "numform", "numvalue", "advtype", "punctype", "puncside", "subpos", "synpos",
         "poss", "reflex", "degree", "negativeness", "definiteness",
         "person", "tense", "voice", "aspect", "subtense",
@@ -506,6 +507,11 @@ BEGIN
         "hyph" =>
         [
             ["hyph"]
+        ],
+        "echo" =>
+        [
+            ["rdp", "ech"],
+            ["ech", "rdp"]
         ],
         "style" =>
         [

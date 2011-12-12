@@ -8,7 +8,7 @@ my $laptop_path = 'C:/Users/Dan/Documents/Web/cgi/tags';
 my $format = 'conll2006'; # default
 sub usage
 {
-    print STDERR ("Usage: perl index_examples.pl corpus-name [-format conll2006|conll2009|csts|pmk] < corpus\n");
+    print STDERR ("Usage: perl index_examples.pl corpus-name [-format conll2006|icon|conll2009|csts|pmk] < corpus\n");
     print STDERR ("       -format ... input corpus format; values: conll2006|conll2009|csts|pmk; default: conll2006\n");
     print STDERR ("       -o ........ output path\n");
     print STDERR ("                   Because Dan is currently the only user of this script, the default is specific on Dan's laptop:\n");
@@ -57,6 +57,23 @@ if(grep {m/\*/} (@ARGV))
     elsif($format eq 'conll2009')
     {
         $document = read_document_conll_2009();
+    }
+    elsif($format eq 'icon')
+    {
+        $document = read_document_conll_2006();
+        foreach my $sentence (@{$document})
+        {
+            foreach my $t (@{$sentence->{tokens}})
+            {
+                my $tag = $t->[2];
+                my ($cpos, $pos, $feat) = split(/\t/, $tag);
+                my @features = split(/\|/, $feat);
+                # Discard features that do not belong to the morphosyntactic tag.
+                # Note that 'cat' belongs there but it is redundant because its copy is in the $pos column.
+                @features = grep {!m/^(lex|cat|vpos|posn|name|chunkId|chunkType)-/} (@features);
+                $t->[2] = join("\t", $cpos, $pos, join('|', @features));
+            }
+        }
     }
     else # conll2006 is the default format
     {
