@@ -25,7 +25,7 @@ BEGIN
         "pos", "subpos", "prontype", "numtype", "numform", "numvalue", "advtype", "punctype", "puncside", "synpos",
         "poss", "reflex", "negativeness", "definiteness",
         "gender", "animateness", "number", "case", "prepcase", "degree",
-        "person", "politeness", "possgender", "possnumber",
+        "person", "politeness", "possgender", "possperson", "possnumber",
         "subcat", "verbform", "mood", "tense", "subtense", "voice", "aspect",
         "foreign", "abbr", "hyph", "echo", "style", "typo", "variant",
         "tagset", "other"
@@ -37,7 +37,7 @@ BEGIN
                            "aux", "cop", "mod", "verbconj", "mod", "ex", "voc", "post", "circ", "preppron", "comprep",
                            "coor", "sub", "comp", "emp", "res", "inf", "vbp"],
         "prontype"     => ["prs", "rcp", "int", "rel", "dem", "neg", "ind", "tot"],
-        "numtype"      => ["card", "ord", "mult", "frac", "gen"],
+        "numtype"      => ["card", "ord", "mult", "frac", "gen", "dist"],
         "numform"      => ["word", "digit", "roman"],
         "numvalue"     => ["1", "2", "3"],
         "advtype"      => ["man", "loc", "tim", "deg", "cau"],
@@ -51,12 +51,15 @@ BEGIN
         "gender"       => ["masc", "fem", "com", "neut"],
         "animateness"  => ["anim", "nhum", "inan"],
         "number"       => ["sing", "dual", "plu", "ptan", "coll"],
-        "case"         => ["nom", "gen", "dat", "acc", "voc", "loc", "ins", "ist", "abl", "par", "ess", "tra", "com", "abe", "ine", "ela", "ill", "ade", "all", "lat", "add", "ter", "abs", "erg", "cau", "ben"],
+        "case"         => ["nom", "gen", "dat", "acc", "voc", "loc", "ins", "ist",
+                           "abl", "del", "par", "dis", "ess", "tra", "com", "abe", "ine", "ela", "ill", "ade", "all", "sub", "sup", "lat",
+                           "add", "tem", "ter", "abs", "erg", "cau", "ben"],
         "prepcase"     => ["npr", "pre"],
         "degree"       => ["pos", "comp", "sup", "abs"],
         "person"       => [1, 2, 3],
         "politeness"   => ["inf", "pol"],
         "possgender"   => ["masc", "fem", "com", "neut"],
+        "possperson"   => [1, 2, 3],
         "possnumber"   => ["sing", "dual", "plu"],
         "subcat"       => ["intr", "tran"],
         "verbform"     => ["fin", "inf", "sup", "part", "trans", "ger"],
@@ -179,7 +182,7 @@ BEGIN
         "poss", "reflex", "degree", "negativeness", "definiteness",
         "person", "tense", "voice", "aspect", "subtense",
         "gender", "animateness", "number", "case", "prepcase",
-        "politeness", "possgender", "possnumber",
+        "politeness", "possgender", "possperson", "possnumber",
         "foreign", "style", "typo", "variant", "tagset", "other"
     );
     # Security check: all known features should be on the priority list, and
@@ -301,7 +304,8 @@ BEGIN
             ["ord", "", "card"],
             ["mult", "card"],
             ["frac", "card"],
-            ["gen", "card"]
+            ["gen", "card"],
+            ["dist", "card"]
         ],
         "numform" =>
         [
@@ -413,11 +417,13 @@ BEGIN
             ["acc"],
             ["dat", "ben"],
             ["gen"],
-            ["loc"],
+            ["loc", "ine", "ade", "sup", "tem"],
             ["ins"],
             ["voc"],
-            ["abl", "lat", "loc"],
+            ["abl", "del", "lat", "loc"],
+            ["del", "abl", "lat", "loc"],
             ["par", "gen"],
+            ["dis"],
             ["ess"],
             ["tra"],
             ["com", "ins"],
@@ -426,9 +432,12 @@ BEGIN
             ["ela", "loc"],
             ["ill", "lat", "loc"],
             ["add", "ill"],
-            ["ade", "loc"],
-            ["all", "lat", "loc"],
-            ["lat", "all", "loc"],
+            ["ade", "sup", "loc"],
+            ["sup", "ade", "loc"],
+            ["all", "sub", "lat", "loc"],
+            ["sub", "all", "lat", "loc"],
+            ["lat", "all", "sub", "loc"],
+            ["tem", "loc"],
             ["ter", "ill"],
             ["abs", "nom", "acc"],
             ["erg", "nom"],
@@ -448,6 +457,12 @@ BEGIN
             ["abs"]
         ],
         "person" =>
+        [
+            ["3"],
+            ["1"],
+            ["2"]
+        ],
+        "possperson" =>
         [
             ["3"],
             ["1"],
