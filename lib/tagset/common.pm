@@ -25,7 +25,7 @@ BEGIN
         "pos", "subpos", "prontype", "numtype", "numform", "numvalue", "advtype", "punctype", "puncside", "synpos",
         "poss", "reflex", "negativeness", "definiteness",
         "gender", "animateness", "number", "case", "prepcase", "degree",
-        "person", "politeness", "possgender", "possperson", "possnumber",
+        "person", "politeness", "possgender", "possperson", "possnumber", "possednumber",
         "subcat", "verbform", "mood", "tense", "subtense", "voice", "aspect",
         "foreign", "abbr", "hyph", "echo", "style", "typo", "variant",
         "tagset", "other"
@@ -61,6 +61,7 @@ BEGIN
         "possgender"   => ["masc", "fem", "com", "neut"],
         "possperson"   => [1, 2, 3],
         "possnumber"   => ["sing", "dual", "plu"],
+        "possednumber" => ["sing", "dual", "plu"],
         "subcat"       => ["intr", "tran"],
         "verbform"     => ["fin", "inf", "sup", "part", "trans", "ger"],
         "mood"         => ["ind", "imp", "cnd", "pot", "sub", "jus", "qot"],
@@ -182,7 +183,7 @@ BEGIN
         "poss", "reflex", "degree", "negativeness", "definiteness",
         "person", "tense", "voice", "aspect", "subtense",
         "gender", "animateness", "number", "case", "prepcase",
-        "politeness", "possgender", "possperson", "possnumber",
+        "politeness", "possgender", "possperson", "possnumber", "possednumber",
         "foreign", "style", "typo", "variant", "tagset", "other"
     );
     # Security check: all known features should be on the priority list, and
@@ -406,6 +407,12 @@ BEGIN
             ["coll", "sing"]
         ],
         "possnumber" =>
+        [
+            ["sing"],
+            ["dual", "plu"],
+            ["plu"]
+        ],
+        "possednumber" =>
         [
             ["sing"],
             ["dual", "plu"],
