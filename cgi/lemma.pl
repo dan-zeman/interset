@@ -10,7 +10,7 @@ binmode(STDOUT, ":utf8");
 binmode(STDERR, ":utf8");
 use URI::Escape;
 # Let Apache know where Dan's libraries are.
-use lib 'C:/Users/Dan/Documents/Lingvistika/lib';
+use lib 'C:/Users/Dan/Dokumenty/lib';
 use lib '/home/zeman/lib';
 use dzcgi; # Dan's library for CGI parameters
 
