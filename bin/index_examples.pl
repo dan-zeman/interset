@@ -351,6 +351,9 @@ sub read_document_conll_2006
             my @columns = split(/\t/, $_);
             my $form = $columns[1];
             my $lemma = $columns[2];
+            # Remove features that are not part of morphosyntactic tag.
+            # Persian Dependency Treebank: sentence ID.
+            $columns[5] =~ s/(^|\|)senID=\d+//;
             my $tag = "$columns[3]\t$columns[4]\t$columns[5]";
             push(@sentence, [$form, $lemma, $tag]);
         }
