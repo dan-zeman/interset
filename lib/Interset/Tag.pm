@@ -4,49 +4,51 @@
 # Copyright © 2012 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
-package Interset::Tag;
+package Lingua::Interset::Tag;
 use utf8;
 use open ':utf8';
+use namespace::autoclean;
 use Moose;
+our $VERSION; BEGIN { $VERSION = "2.00" }
 
 
 
-has pos          => ( is => 'rw' );
-has subpos       => ( is => 'rw' );
-has prontype     => ( is => 'rw' );
-has numtype      => ( is => 'rw' );
-has numform      => ( is => 'rw' );
-has numvalue     => ( is => 'rw' );
-has advtype      => ( is => 'rw' );
-has punctype     => ( is => 'rw' );
-has puncside     => ( is => 'rw' );
-has synpos       => ( is => 'rw' );
-has poss         => ( is => 'rw' );
-has reflex       => ( is => 'rw' );
-has negativeness => ( is => 'rw' );
-has definiteness => ( is => 'rw' );
-has gender       => ( is => 'rw' );
-has animateness  => ( is => 'rw' );
-has number       => ( is => 'rw' );
-has case         => ( is => 'rw' );
-has prepcase     => ( is => 'rw' );
-has degree       => ( is => 'rw' );
-has subcat       => ( is => 'rw' );
-has verbform     => ( is => 'rw' );
-has mood         => ( is => 'rw' );
-has tense        => ( is => 'rw' );
-has subtense     => ( is => 'rw' );
-has voice        => ( is => 'rw' );
-has aspect       => ( is => 'rw' );
-has foreign      => ( is => 'rw' );
-has abbr         => ( is => 'rw' );
-has hyph         => ( is => 'rw' );
-has echo         => ( is => 'rw' );
-has style        => ( is => 'rw' );
-has typo         => ( is => 'rw' );
-has variant      => ( is => 'rw' );
-has tagset       => ( is => 'rw' );
-has other        => ( is => 'rw' );
+has pos          => ( is => 'rw', default => '' );
+has subpos       => ( is => 'rw', default => '' );
+has prontype     => ( is => 'rw', default => '' );
+has numtype      => ( is => 'rw', default => '' );
+has numform      => ( is => 'rw', default => '' );
+has numvalue     => ( is => 'rw', default => '' );
+has advtype      => ( is => 'rw', default => '' );
+has punctype     => ( is => 'rw', default => '' );
+has puncside     => ( is => 'rw', default => '' );
+has synpos       => ( is => 'rw', default => '' );
+has poss         => ( is => 'rw', default => '' );
+has reflex       => ( is => 'rw', default => '' );
+has negativeness => ( is => 'rw', default => '' );
+has definiteness => ( is => 'rw', default => '' );
+has gender       => ( is => 'rw', default => '' );
+has animateness  => ( is => 'rw', default => '' );
+has number       => ( is => 'rw', default => '' );
+has case         => ( is => 'rw', default => '' );
+has prepcase     => ( is => 'rw', default => '' );
+has degree       => ( is => 'rw', default => '' );
+has subcat       => ( is => 'rw', default => '' );
+has verbform     => ( is => 'rw', default => '' );
+has mood         => ( is => 'rw', default => '' );
+has tense        => ( is => 'rw', default => '' );
+has subtense     => ( is => 'rw', default => '' );
+has voice        => ( is => 'rw', default => '' );
+has aspect       => ( is => 'rw', default => '' );
+has foreign      => ( is => 'rw', default => '' );
+has abbr         => ( is => 'rw', default => '' );
+has hyph         => ( is => 'rw', default => '' );
+has echo         => ( is => 'rw', default => '' );
+has style        => ( is => 'rw', default => '' );
+has typo         => ( is => 'rw', default => '' );
+has variant      => ( is => 'rw', default => '' );
+has tagset       => ( is => 'rw', default => '' );
+has other        => ( is => 'rw', default => '' );
 
 
 
@@ -54,7 +56,7 @@ has other        => ( is => 'rw' );
 
 =over
 
-=item Interset::Tag
+=item Lingua::Interset::Tag
 
 DZ Interset is a universal framework for reading, writing, converting and
 interpreting part-of-speech and morphosyntactic tags from multiple tagsets

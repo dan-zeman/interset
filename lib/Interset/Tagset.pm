@@ -3,10 +3,12 @@
 # Copyright © 2012 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
-package Interset::Tagset;
+package Lingua::Interset::Tagset;
 use utf8;
 use open ':utf8';
+use namespace::autoclean;
 use Moose;
+our $VERSION; BEGIN { $VERSION = "2.00" }
 
 
 
@@ -14,7 +16,7 @@ use Moose;
 
 =over
 
-=item Interset::Tagset
+=item Lingua::Interset::Tagset
 
 DZ Interset is a universal framework for reading, writing, converting and
 interpreting part-of-speech and morphosyntactic tags from multiple tagsets
