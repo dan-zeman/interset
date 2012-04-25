@@ -15,10 +15,10 @@ our $VERSION; BEGIN { $VERSION = "2.00" }
 
 # Should the features have their own classes, too?
 # Pluses:
-# + We could bind all properties of one feature tighter (its name, its priority, list of values, list of default value changes).
+# + We could bind all properties of one feature tighter (its name, its priority, list of values and their intuitive ordering, list of default value changes).
 # + There would be more space for additional services such as documentation and examples of the feature values.
 # Minuses:
-# - It is good to have them all together here. Better overall picture, mutual relations checking etc.
+# - It is good to have them all together here. Better overall picture, mutual relations checking etc. If they are spread across 30 files, the picture will be lost.
 # - Handling classes might turn out to be more complicated than handling simple attributes?
 # - Perhaps efficiency issues?
 # These are the features and values defined in DZ Interset:
@@ -117,6 +117,81 @@ has 'style'        => ( is  => 'rw', default => '',
 has 'tagset'       => ( is  => 'rw', default => '',
                         isa => subtype as 'Str', where { m/^([a-z]+::[a-z]+)?$/ }, message { "'$_' does not look like a tagset identifier ('lang::corpus')." } );
 has 'other'        => ( is  => 'rw', default => '' );
+
+
+
+#---------------------------------------------------------------------------------
+# Create a hash of ordering values to assist sorting feature values "intuitively".
+# For example, singular is intuitively before but alphabetically after plural.
+# Intuitive sorting will be useful when displaying a list of values.
+#---------------------------------------------------------------------------------
+my %order_values;
+BUILD
+{
+    # Taken from DZ Interset 1: The intuitive ordering is defined by the array of
+    # known values. This is a bad solution because we have to maintain the list of
+    # values in at least two places: here and in the Moose enums above.
+    my %known_values =
+    (
+        "pos"          => ["noun", "adj", "num", "verb", "adv", "prep", "conj", "part", "int", "punc"],
+        "subpos"       => ["prop", "class", "pdt", "det", "art",
+                           "aux", "cop", "mod", "verbconj", "mod", "ex", "voc", "post", "circ", "preppron", "comprep",
+                           "coor", "sub", "comp", "emp", "res", "inf", "vbp"],
+        "prontype"     => ["prs", "rcp", "int", "rel", "dem", "neg", "ind", "tot"],
+        "numtype"      => ["card", "ord", "mult", "frac", "gen", "dist"],
+        "numform"      => ["word", "digit", "roman"],
+        "numvalue"     => ["1", "2", "3"],
+        "advtype"      => ["man", "loc", "tim", "deg", "cau"],
+        "punctype"     => ["peri", "qest", "excl", "quot", "brck", "comm", "colo", "semi", "dash", "symb", "root"],
+        "puncside"     => ["ini", "fin"],
+        "synpos"       => ["subst", "attr", "adv", "pred"],
+        "poss"         => ["poss"],
+        "reflex"       => ["reflex"],
+        "negativeness" => ["pos", "neg"],
+        "definiteness" => ["ind", "def", "red", "com"],
+        "gender"       => ["masc", "fem", "com", "neut"],
+        "animateness"  => ["anim", "nhum", "inan"],
+        "number"       => ["sing", "dual", "plu", "ptan", "coll"],
+        "case"         => ["nom", "gen", "dat", "acc", "voc", "loc", "ins", "ist",
+                           "abl", "del", "par", "dis", "ess", "tra", "com", "abe", "ine", "ela", "ill", "ade", "all", "sub", "sup", "lat",
+                           "add", "tem", "ter", "abs", "erg", "cau", "ben"],
+        "prepcase"     => ["npr", "pre"],
+        "degree"       => ["pos", "comp", "sup", "abs"],
+        "person"       => [1, 2, 3],
+        "politeness"   => ["inf", "pol"],
+        "possgender"   => ["masc", "fem", "com", "neut"],
+        "possperson"   => [1, 2, 3],
+        "possnumber"   => ["sing", "dual", "plu"],
+        "possednumber" => ["sing", "dual", "plu"],
+        "subcat"       => ["intr", "tran"],
+        "verbform"     => ["fin", "inf", "sup", "part", "trans", "ger"],
+        "mood"         => ["ind", "imp", "cnd", "pot", "sub", "jus", "qot"],
+        "tense"        => ["past", "pres", "fut"],
+        "subtense"     => ["aor", "imp", "pqp"],
+        "aspect"       => ["imp", "perf", "pro"],
+        "voice"        => ["act", "pass"],
+        "foreign"      => ["foreign"],
+        "abbr"         => ["abbr"],
+        "hyph"         => ["hyph"],
+        "echo"         => ["rdp", "ech"],
+        "style"        => ["arch", "form", "norm", "coll", "vrnc", "slng", "derg", "vulg"],
+        "typo"         => ["typo"],
+        "variant"      => ["short", "long", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "tagset"       => [""],
+        "other"        => [""],
+    );
+    for(my $i = 0; $i<=$#known_features; $i++)
+    {
+        my $feature = $known_features[$i];
+        $order_values{$feature}{''} = ($i+1)*1000;
+        my @values = @{$known_values{$feature}};
+        for(my $j = 0; $j<=$#values; $j++)
+        {
+            my $value = $values[$j];
+            $order_values{$feature}{$value} = ($i+1)*1000+($j+1);
+        }
+    }
+}
 
 
 
