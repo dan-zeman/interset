@@ -8,7 +8,50 @@ use utf8;
 use open ':utf8';
 use namespace::autoclean;
 use Moose;
+use Lingua::Interset::FeatureStructure;
 our $VERSION; BEGIN { $VERSION = "2.00" }
+
+
+
+###!!! A temporary toy example.
+my %postable =
+(
+    '.'     => ['pos' => 'punc', 'punctype' => 'peri'],
+    ','     => ['pos' => 'punc', 'punctype' => 'comm'],
+    '-LRB-' => ['pos' => 'punc', 'punctype' => 'brck', 'puncside' => 'ini'],
+    '-RRB-' => ['pos' => 'punc', 'punctype' => 'brck', 'puncside' => 'fin'],
+    '``'    => ['pos' => 'punc', 'punctype' => 'quot', 'puncside' => 'ini'],
+    "''"    => ['pos' => 'punc', 'punctype' => 'quot', 'puncside' => 'fin'],
+    ':'     => ['pos' => 'punc'],
+    '$'     => ['pos' => 'punc', 'punctype' => 'symb', 'other' => 'currency'],
+    '\#'    => ['pos' => 'punc', 'other' => '\#'],
+    'AFX'   => ['pos' => 'adj',  'hyph' => 'hyph'],
+    'CC'    => ['pos' => 'conj', 'conjtype' => 'coor'],
+);
+
+
+
+#------------------------------------------------------------------------------
+# Decodes a physical tag (string) and returns the corresponding feature
+# structure.
+#------------------------------------------------------------------------------
+sub decode
+{
+    my $self = shift;
+    my $tag = shift;
+    my $fs = Lingua::Interset::FeatureStructure->new();
+    ###!!! A temporary toy example.
+    $self->tagset('en::penn');
+    my $assignments = $postable{$tag};
+    if($assignments)
+    {
+        for(my $i = 0; $i<=$#{$assignments}; $i += 2)
+        {
+            $fs->set($assignments->[$i], $assignments->[$i+1]);
+        }
+    }
+    return $fs;
+}
 
 
 

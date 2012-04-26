@@ -823,6 +823,35 @@ has 'other'        => ( is  => 'rw', default => '' );
 
 
 
+#------------------------------------------------------------------------------
+# Named setters for each feature are nice but we also need a generic setter
+# that takes both the feature name and value.
+#------------------------------------------------------------------------------
+sub set
+{
+    my $self = shift;
+    my $feature = shift;
+    my $value = shift;
+    # Validation of the arguments is not automatic in this case. We must take care of it! ###!!!
+    my $old = $self->{$feature};
+    $self->{$feature} = $value;
+    return $old;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Analogically, get() is a generic feature value getter.
+#------------------------------------------------------------------------------
+sub get
+{
+    my $self = shift;
+    my $feature = shift;
+    return $self->{$feature};
+}
+
+
+
 #---------------------------------------------------------------------------------
 # Create a hash of ordering values to assist sorting feature values "intuitively".
 # For example, singular is intuitively before but alphabetically after plural.
