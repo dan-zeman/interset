@@ -9,6 +9,7 @@ use utf8;
 use open ':utf8';
 use namespace::autoclean;
 use Moose;
+use Carp;
 our $VERSION; BEGIN { $VERSION = "2.00" }
 
 
@@ -74,7 +75,7 @@ our $VERSION; BEGIN { $VERSION = "2.00" }
 # 6. If unsuccessful and the second dimension has only one member (the value to replace), check empty value as replacement.
 # 7. If unsuccessful, try to find replacement in the first dimension (respect ordering).
 
-my @matrix =
+my %matrix =
 (
     # Main part of speech
     ###!!! RENAME prep to adp (adposition)?
@@ -724,102 +725,121 @@ my @matrix =
 
 
 
-# These are the features and values defined in DZ Interset:
-has 'pos'          => ( is  => 'rw', default => '',
-                        isa => enum ['noun', 'adj', 'num', 'verb', 'adv', 'prep', 'conj', 'part', 'int', ''] ); ###!!! RENAME prep to adp (adposition)?
-has 'subpos'       => ( is  => 'rw', default => '',
-                        isa => enum ['mod', 'ex', 'voc', 'post', 'circ', 'preppron', 'comprep', 'emp', 'res', 'inf', 'vbp', ''] );
-has 'nountype'     => ( is  => 'rw', default => '',
-                        isa => enum ['com', 'prop', 'class', ''] ); ###!!! NEW FEATURE (from subpos)
-has 'adjtype'      => ( is  => 'rw', default => '',
-                        isa => enum ['pdt', 'det', 'art', ''] ); ###!!! NEW FEATURE (from subpos)
-has 'prontype'     => ( is  => 'rw', default => '',
-                        isa => enum ['prn', 'prs', 'rcp', 'int', 'rel', 'dem', 'neg', 'ind', 'tot', ''] ); ###!!! NEW VALUE prn ... pronominal, without knowing the exact type
-has 'numtype'      => ( is  => 'rw', default => '',
-                        isa => enum ['card', 'ord', 'mult', 'frac', 'gen', 'dist', ''] );
-has 'numform'      => ( is  => 'rw', default => ''
-                        isa => enum ['word', 'digit', 'roman', ''] );
-has 'numvalue'     => ( is  => 'rw', default => '',
-                        isa => enum ['1', '2', '3', ''] );
-has 'verbtype'     => ( is  => 'rw', default => '',
-                        isa => enum ['aux', 'cop', 'mod', 'verbconj', ''] ); ###!!! NEW FEATURE (from subpos)
-has 'advtype'      => ( is  => 'rw', default => '',
-                        isa => enum ['man', 'loc', 'tim', 'deg', 'cau', ''] );
-has 'conjtype'     => ( is  => 'rw', default => '',
-                        isa => enum ['coor', 'sub', 'comp', ''] ); ###!!! NEW FEATURE (from subpos)
-has 'punctype'     => ( is  => 'rw', default => '',
-                        isa => enum ['peri', 'qest', 'excl', 'quot', 'brck', 'comm', 'colo', 'semi', 'dash', 'symb', 'root', ''] );
-has 'puncside'     => ( is  => 'rw', default => '',
-                        isa => enum ['ini', 'fin', ''] );
-has 'synpos'       => ( is  => 'rw', default => '',
-                        isa => enum ['subst', 'attr', 'adv', 'pred', ''] ); ###!!! DO WE STILL NEED THIS?
-# For the following group of almost-boolean attributes I am not sure what would be the best internal representation.
-# However, regardless the representation, I would like the setter (writer) method to accept boolean values (zero/nonzero), too.
-has 'poss'         => ( is  => 'rw', default => '',
-                        isa => enum ['poss', ''] ); ###!!! OR yes-no-empty? But I do not think it would be practical.
-has 'reflex'       => ( is  => 'rw', default => '',
-                        isa => enum ['reflex', ''] ); ###!!! OR yes-no-empty? But I do not think it would be practical.
-has 'foreign'      => ( is  => 'rw', default => '',
-                        isa => enum ['foreign', ''] ); ###!!! OR yes-no-empty? But I do not think it would be practical.
-has 'abbr'         => ( is  => 'rw', default => '',
-                        isa => enum ['abbr', ''] ); ###!!! OR yes-no-empty? But I do not think it would be practical.
-has 'hyph'         => ( is  => 'rw', default => '',
-                        isa => enum ['hyph', ''] ); ###!!! OR yes-no-empty? But I do not think it would be practical.
-has 'typo'         => ( is  => 'rw', default => '',
-                        isa => enum ['typo', ''] ); ###!!! OR yes-no-empty? But I do not think it would be practical.
-has 'echo'         => ( is  => 'rw', default => '',
-                        isa => enum ['rdp', 'ech', ''] );
-has 'negativeness' => ( is  => 'rw', default => '',
-                        isa => enum ['pos', 'neg', ''] );
-has 'definiteness' => ( is  => 'rw', default => '',
-                        isa => enum ['ind', 'def', 'red', 'com', ''] );
-has 'gender'       => ( is  => 'rw', default => '',
-                        isa => enum ['masc', 'fem', 'com', 'neut', ''] );
-has 'animateness'  => ( is  => 'rw', default => '',
-                        isa => enum ['anim', 'nhum', 'inan', ''] );
-has 'number'       => ( is  => 'rw', default => '',
-                        isa => enum ['sing', 'dual', 'plu', 'ptan', 'coll', ''] );
-has 'case'         => ( is  => 'rw', default => '',
-                        isa => enum ['nom', 'gen', 'dat', 'acc', 'voc', 'loc', 'ins', 'ist',
-                                     'abl', 'del', 'par', 'dis', 'ess', 'tra', 'com', 'abe', 'ine', 'ela', 'ill', 'ade', 'all', 'sub', 'sup', 'lat',
-                                     'add', 'tem', 'ter', 'abs', 'erg', 'cau', 'ben', ''] );
-has 'prepcase'     => ( is  => 'rw', default => '',
-                        isa => enum ['npr', 'pre', ''] );
-has 'degree'       => ( is  => 'rw', default => '',
-                        isa => enum ['pos', 'comp', 'sup', 'abs', ''] );
-has 'person'       => ( is  => 'rw', default => '',
-                        isa => enum ['1', '2', '3', ''] );
-has 'politeness'   => ( is  => 'rw', default => '',
-                        isa => enum ['inf', 'pol', ''] );
-has 'possgender'   => ( is  => 'rw', default => '',
-                        isa => enum ['masc', 'fem', 'com', 'neut', ''] );
-has 'possperson'   => ( is  => 'rw', default => '',
-                        isa => enum ['1', '2', '3', ''] );
-has 'possnumber'   => ( is  => 'rw', default => '',
-                        isa => enum ['sing', 'dual', 'plu', ''] );
-has 'possednumber' => ( is  => 'rw', default => '',
-                        isa => enum ['sing', 'dual', 'plu', ''] );
-has 'subcat'       => ( is  => 'rw', default => '',
-                        isa => enum ['intr', 'tran', ''] );
-has 'verbform'     => ( is  => 'rw', default => '',
-                        isa => enum ['fin', 'inf', 'sup', 'part', 'trans', 'ger', ''] ); ###!!! Combine this feature with mood? Mood always implies verbform=fin.
-has 'mood'         => ( is  => 'rw', default => '',
-                        isa => enum ['ind', 'imp', 'cnd', 'pot', 'sub', 'jus', 'qot', ''] );
-has 'tense'        => ( is  => 'rw', default => '',
-                        isa => enum ['past', 'pres', 'fut', ''] );
-has 'subtense'     => ( is  => 'rw', default => '',
-                        isa => enum ['aor', 'imp', 'pqp', ''] ); ###!!! Combine this feature with tense? There are other hierarchical features anyway (case, number...)
-has 'voice'        => ( is  => 'rw', default => '',
-                        isa => enum ['act', 'pass', ''] );
-has 'aspect'       => ( is  => 'rw', default => '',
-                        isa => enum ['imp', 'perf', 'pro', ''] );
-has 'variant'      => ( is  => 'rw', default => '',
-                        isa => enum ['short', 'long', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ''] );
-has 'style'        => ( is  => 'rw', default => '',
-                        isa => enum ['arch', 'form', 'norm', 'coll', 'vrnc', 'slng', 'derg', 'vulg', ''] );
-has 'tagset'       => ( is  => 'rw', default => '',
-                        isa => subtype as 'Str', where { m/^([a-z]+::[a-z]+)?$/ }, message { "'$_' does not look like a tagset identifier ('lang::corpus')." } );
+# Define the features as Moose attributes.
+foreach my $feature (keys(%matrix))
+{
+    unless($feature =~ m/^(tagset|other)$/)
+    {
+        has $feature => (is => 'rw', default => '');
+    }
+}
+has 'tagset'       => ( is  => 'rw', default => '' );
+#                        isa => { subtype as 'Str', where { m/^([a-z]+::[a-z]+)?$/ }, message { "'$_' does not look like a tagset identifier ('lang::corpus')." } } );
 has 'other'        => ( is  => 'rw', default => '' );
+
+
+
+#------------------------------------------------------------------------------
+# Static function. Returns the list of known features (in print order).
+#------------------------------------------------------------------------------
+sub known_features
+{
+    return keys(%matrix);
+}
+
+
+
+#------------------------------------------------------------------------------
+# Static function. Returns the list of known values (in print order) of
+# a feature. Dies if asked about an unknown feature.
+#------------------------------------------------------------------------------
+sub known_values
+{
+    my $feature = shift;
+    if(exists($matrix{$feature}))
+    {
+        return @{$matrix{$feature}{values}};
+    }
+    else
+    {
+        confess("Unknown feature $feature");
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Static function. Tells whether a string is the name of a known feature.
+#------------------------------------------------------------------------------
+sub feature_valid
+{
+    my $feature = shift;
+    my @known_features = known_features();
+    return scalar(grep {$_ eq $feature} (@known_features));
+}
+
+
+
+#------------------------------------------------------------------------------
+# Static function. Tells for a given feature-value pair whether both the
+# feature and the value are known and valid. References to lists of valid
+# values are also valid. Does not die when the feature is not valid.
+#------------------------------------------------------------------------------
+sub value_valid
+{
+    my $feature = shift;
+    my $value = shift;
+    # Avoid warnings if feature is not defined.
+    if(!defined($feature))
+    {
+        return 0;
+    }
+    # Value of the 'other' feature can be anything.
+    elsif($feature eq 'other')
+    {
+        return 1;
+    }
+    # For the 'tagset' feature, a regular expression is used instead of a list of values.
+    elsif($feature eq 'tagset')
+    {
+        return $value =~ m/^[a-z]+::[a-z]+$/;
+    }
+    # Other known features all have their lists of values (including the empty string).
+    else
+    {
+        return 0 unless(feature_valid($feature));
+        my @known_values = known_values($feature);
+        # If the value is a list of values, each of them must be valid.
+        my $ref = ref($value);
+        if($ref eq 'ARRAY')
+        {
+            foreach my $svalue (@{$value})
+            {
+                # No nested arrays are expected.
+                if(ref($svalue) ne '')
+                {
+                    return 0;
+                }
+                else
+                {
+                    return 0 unless(grep {$_ eq $svalue} (@known_values));
+                }
+            }
+            # All values tested successfully.
+            return 1;
+        }
+        # Single value.
+        elsif($ref eq '')
+        {
+            return scalar(grep {$_ eq $value} (@known_values));
+        }
+        # No other references expected.
+        else
+        {
+            return 0;
+        }
+    }
+}
 
 
 
@@ -852,77 +872,80 @@ sub get
 
 
 
-#---------------------------------------------------------------------------------
-# Create a hash of ordering values to assist sorting feature values "intuitively".
-# For example, singular is intuitively before but alphabetically after plural.
-# Intuitive sorting will be useful when displaying a list of values.
-#---------------------------------------------------------------------------------
-my %order_values;
-BUILD
+#------------------------------------------------------------------------------
+# Sets several features at once. Takes list of value assignments, i.e. an array
+# of an even number of elements (feature1, value1, feature2, value2...)
+# This is useful when defining decoders from physical tagsets. Typically, one
+# wants to define a table of assignments for each part of speech or input
+# feature:
+# 'CC' => ['pos' => 'conj', 'conjtype' => 'coor']
+#------------------------------------------------------------------------------
+sub multiset
 {
-    # Taken from DZ Interset 1: The intuitive ordering is defined by the array of
-    # known values. This is a bad solution because we have to maintain the list of
-    # values in at least two places: here and in the Moose enums above.
-    my %known_values =
-    (
-        "pos"          => ["noun", "adj", "num", "verb", "adv", "prep", "conj", "part", "int", "punc"],
-        "subpos"       => ["prop", "class", "pdt", "det", "art",
-                           "aux", "cop", "mod", "verbconj", "mod", "ex", "voc", "post", "circ", "preppron", "comprep",
-                           "coor", "sub", "comp", "emp", "res", "inf", "vbp"],
-        "prontype"     => ["prs", "rcp", "int", "rel", "dem", "neg", "ind", "tot"],
-        "numtype"      => ["card", "ord", "mult", "frac", "gen", "dist"],
-        "numform"      => ["word", "digit", "roman"],
-        "numvalue"     => ["1", "2", "3"],
-        "advtype"      => ["man", "loc", "tim", "deg", "cau"],
-        "punctype"     => ["peri", "qest", "excl", "quot", "brck", "comm", "colo", "semi", "dash", "symb", "root"],
-        "puncside"     => ["ini", "fin"],
-        "synpos"       => ["subst", "attr", "adv", "pred"],
-        "poss"         => ["poss"],
-        "reflex"       => ["reflex"],
-        "negativeness" => ["pos", "neg"],
-        "definiteness" => ["ind", "def", "red", "com"],
-        "gender"       => ["masc", "fem", "com", "neut"],
-        "animateness"  => ["anim", "nhum", "inan"],
-        "number"       => ["sing", "dual", "plu", "ptan", "coll"],
-        "case"         => ["nom", "gen", "dat", "acc", "voc", "loc", "ins", "ist",
-                           "abl", "del", "par", "dis", "ess", "tra", "com", "abe", "ine", "ela", "ill", "ade", "all", "sub", "sup", "lat",
-                           "add", "tem", "ter", "abs", "erg", "cau", "ben"],
-        "prepcase"     => ["npr", "pre"],
-        "degree"       => ["pos", "comp", "sup", "abs"],
-        "person"       => [1, 2, 3],
-        "politeness"   => ["inf", "pol"],
-        "possgender"   => ["masc", "fem", "com", "neut"],
-        "possperson"   => [1, 2, 3],
-        "possnumber"   => ["sing", "dual", "plu"],
-        "possednumber" => ["sing", "dual", "plu"],
-        "subcat"       => ["intr", "tran"],
-        "verbform"     => ["fin", "inf", "sup", "part", "trans", "ger"],
-        "mood"         => ["ind", "imp", "cnd", "pot", "sub", "jus", "qot"],
-        "tense"        => ["past", "pres", "fut"],
-        "subtense"     => ["aor", "imp", "pqp"],
-        "aspect"       => ["imp", "perf", "pro"],
-        "voice"        => ["act", "pass"],
-        "foreign"      => ["foreign"],
-        "abbr"         => ["abbr"],
-        "hyph"         => ["hyph"],
-        "echo"         => ["rdp", "ech"],
-        "style"        => ["arch", "form", "norm", "coll", "vrnc", "slng", "derg", "vulg"],
-        "typo"         => ["typo"],
-        "variant"      => ["short", "long", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-        "tagset"       => [""],
-        "other"        => [""],
-    );
-    for(my $i = 0; $i<=$#known_features; $i++)
+    my $self = shift;
+    my @assignments = @_;
+    for(my $i = 0; $i<=$#assignments; $i += 2)
     {
-        my $feature = $known_features[$i];
-        $order_values{$feature}{''} = ($i+1)*1000;
-        my @values = @{$known_values{$feature}};
-        for(my $j = 0; $j<=$#values; $j++)
-        {
-            my $value = $values[$j];
-            $order_values{$feature}{$value} = ($i+1)*1000+($j+1);
-        }
+        $self->set($assignments[$i], $assignments[$i+1]);
     }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Generates text from contents of feature structure so it can be printed.
+#------------------------------------------------------------------------------
+sub as_string
+{
+    my $self = shift;
+    my @assignments = map
+    {
+        my $f = $_;
+        my $v = $self->{$f};
+        if($f eq 'other')
+        {
+            $v = structure_to_string($v);
+        }
+        elsif(ref($v) eq 'ARRAY')
+        {
+            $v = join("|", map {"\"$_\""} @{$v});
+        }
+        else
+        {
+            $v = "\"$v\"";
+        }
+        "$f=$v";
+    }
+    (grep{$self->{$_} ne ''}(known_features()));
+    return "[".join(', ', @assignments)."]";
+}
+
+
+
+#------------------------------------------------------------------------------
+# Recursively converts a structure to string describing a Perl constant.
+# Useful for using eval.
+#------------------------------------------------------------------------------
+sub structure_to_string
+{
+    my $source = shift;
+    my $string;
+    my $ref = ref($source);
+    if($ref eq 'ARRAY')
+    {
+        $string = "[".join(", ", map{structure_to_string($_)}(@{$source}))."]";
+    }
+    elsif($ref eq 'HASH')
+    {
+        $string = "{".join(", ", map{structure_to_string($_)." => ".structure_to_string($source->{$_})}(keys(%{$source})))."}";
+    }
+    else
+    {
+        $string = $source;
+        $string =~ s/([\\"\$\@])/\\$1/g;
+        $string = "\"$string\"";
+    }
+    return $string;
 }
 
 

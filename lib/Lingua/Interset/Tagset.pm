@@ -41,14 +41,11 @@ sub decode
     my $tag = shift;
     my $fs = Lingua::Interset::FeatureStructure->new();
     ###!!! A temporary toy example.
-    $self->tagset('en::penn');
+    $fs->tagset('en::penn');
     my $assignments = $postable{$tag};
     if($assignments)
     {
-        for(my $i = 0; $i<=$#{$assignments}; $i += 2)
-        {
-            $fs->set($assignments->[$i], $assignments->[$i+1]);
-        }
+        $fs->multiset(@{$assignments});
     }
     return $fs;
 }
