@@ -52,6 +52,55 @@ sub decode
 
 
 
+#------------------------------------------------------------------------------
+# Returns reference to list of known tags.
+#------------------------------------------------------------------------------
+sub list
+{
+    my $self = shift;
+    my @list = sort(keys(%postable));
+    return \@list;
+}
+
+
+
+###############################################################################
+# COLLECTING PERMITTED FEATURE VALUES OF A TAGSET
+###############################################################################
+
+
+
+#------------------------------------------------------------------------------
+# Filters a list of tags so that the resulting list contains only tags that
+# can result from conversion from a different tagset. These tags do not depend
+# on the 'other' feature. It is not to say that decoding them necessarily
+# leaves the feature empty. However, these tags are default with respect to the
+# feature, so if the feature is not available, encoder picks the default tag.
+#
+# Note that it is not guaranteed that the resulting list is a subset of the
+# original list. It is possible, though undesirable, that decode -> strip other
+# -> encode creates an unknown tag.
+#------------------------------------------------------------------------------
+sub list_other_resistant_tags
+{
+    my $self = shift;
+    my $list0 = shift; # reference to array
+    my $decode = shift; # reference to driver-specific decoding function
+    my $encode = shift; # reference to driver-specific encoding function
+    my %result;
+    foreach my $tag0 (@{$list0})
+    {
+        my $fs = $self->decode($tag0);
+        $fs->other('');
+        my $tag1 = $self->encode($fs);
+        $result{$tag1}++;
+    }
+    my @list1 = sort(keys(%result));
+    return \@list1;
+}
+
+
+
 1;
 
 =over
