@@ -9,6 +9,7 @@ use open ':utf8';
 use namespace::autoclean;
 use Moose;
 use Lingua::Interset::FeatureStructure;
+use Lingua::Interset::Trie;
 our $VERSION; BEGIN { $VERSION = "2.00" }
 
 
@@ -97,6 +98,50 @@ sub list_other_resistant_tags
     }
     my @list1 = sort(keys(%result));
     return \@list1;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Reads a list of tags, decodes each tag, converts all array values to scalars
+# (by sorting and joining them), remembers permitted feature structures in a
+# trie. Returns a reference to the trie.
+#------------------------------------------------------------------------------
+sub get_permitted_structures
+{
+    my $self = shift;
+    # Can we consider tags that require setting the 'other' feature?
+    my $no_other = shift;
+    my $list = $self->list();
+    my $trie = Lingua::Interset::Trie->new();
+    # Make sure that the list of possible tags is not empty.
+    # If it is, the driver's list() function is probably not implemented.
+    unless(scalar(@{$list}))
+    {
+        confess('Cannot figure out the permitted values because the list of possible tags is empty');
+    }
+    my @features = Lingua::Interset::FeatureStructure::priority_features();
+    foreach my $tag (@{$list})
+    {
+        my $fs = $self->decode($tag);
+        # If required, skip tags that set the 'other' feature.
+        ###!!! Alternatively, we need not skip the tag.
+        ###!!! Instead, strip the 'other' information, make sure that we have a valid tag (by encoding and decoding once more),
+        ###!!! then add feature values to the tree.
+        next if($no_other && exists($fs->{other}));
+        # Loop over known features (in the order of feature priority).
+        my $pointer = $trie;
+        foreach my $f (@features)
+        {
+            # Make sure the value is not an array.
+            ###!!! This ugly code is a pre-Moose relict. Instead of a static function, we should have a method of $fs that returns scalarized value of a particular named feature.
+            my $v = Lingua::Interset::FeatureStructure::array_to_scalar_value($fs->{$f});
+            # Supply tag only if this is the last feature in the list.
+            my $t = $f eq $features[$#features] ? $tag : undef;
+            $pointer = $trie->add_value($pointer, $v, $t);
+        }
+    }
+    return $trie;
 }
 
 

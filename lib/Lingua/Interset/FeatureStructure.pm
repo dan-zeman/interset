@@ -101,7 +101,7 @@ my %matrix =
     ###!!! This feature will probably be dissolved into several POS-specific features or something.
     'subpos' =>
     {
-        'priority' => 20,
+        'priority' => 190,
         'values' => ['mod', 'ex', 'voc', 'post', 'circ', 'preppron', 'comprep', 'emp', 'res', 'inf', 'vbp', ''],
         'replacements' =>
         [
@@ -122,7 +122,7 @@ my %matrix =
     ###!!! NEW FEATURE (from subpos)
     'nountype' =>
     {
-        'priority' => 30,
+        'priority' => 80,
         'values' => ['com', 'prop', 'class', ''],
         'replacements' =>
         [
@@ -135,7 +135,7 @@ my %matrix =
     ###!!! NEW FEATURE (from subpos)
     'adjtype' =>
     {
-        'priority' => 40,
+        'priority' => 90,
         'values' => ['pdt', 'det', 'art', ''],
         'replacements' =>
         [
@@ -148,7 +148,7 @@ my %matrix =
     ###!!! NEW VALUE prn ... pronominal, without knowing the exact type
     'prontype' =>
     {
-        'priority' => 50,
+        'priority' => 100,
         'values' => ['prn', 'prs', 'rcp', 'int', 'rel', 'dem', 'neg', 'ind', 'tot', ''],
         'replacements' =>
         [
@@ -169,7 +169,7 @@ my %matrix =
     ###!!! We may want to consider restricting pos = 'num' to cardinal numbers.
     'numtype' =>
     {
-        'priority' => 60,
+        'priority' => 110,
         'values' => ['card', 'ord', 'mult', 'frac', 'gen', 'dist', ''],
         'replacements' =>
         [
@@ -184,7 +184,7 @@ my %matrix =
     # Presentation form of numerals.
     'numform' =>
     {
-        'priority' => 70,
+        'priority' => 120,
         'values' => ['word', 'digit', 'roman', ''],
         'replacements' =>
         [
@@ -197,7 +197,7 @@ my %matrix =
     # Some low-value numerals in some languages behave differently.
     'numvalue' =>
     {
-        'priority' => 80,
+        'priority' => 130,
         'values' => ['1', '2', '3', ''],
         'replacements' =>
         [
@@ -210,7 +210,7 @@ my %matrix =
     ###!!! NEW FEATURE (from subpos)
     'verbtype' =>
     {
-        'priority' => 90,
+        'priority' => 140,
         'values' => ['aux', 'cop', 'mod', 'verbconj', ''],
         'replacements' =>
         [
@@ -223,7 +223,7 @@ my %matrix =
     # Semantic type of adverb.
     'advtype' =>
     {
-        'priority' => 100,
+        'priority' => 150,
         'values' => ['man', 'loc', 'tim', 'deg', 'cau', ''],
         'replacements' =>
         [
@@ -238,7 +238,7 @@ my %matrix =
     ###!!! NEW FEATURE (from subpos)
     'conjtype' =>
     {
-        'priority' => 110,
+        'priority' => 160,
         'values' => ['coor', 'sub', 'comp', ''],
         'replacements' =>
         [
@@ -250,7 +250,7 @@ my %matrix =
     # Punctuation type.
     'punctype' =>
     {
-        'priority' => 120,
+        'priority' => 170,
         'values' => ['peri', 'qest', 'excl', 'quot', 'brck', 'comm', 'colo', 'semi', 'dash', 'symb', 'root', ''],
         'replacements' =>
         [
@@ -270,7 +270,7 @@ my %matrix =
     # Distinction between opening and closing brackets and other paired punctuation.
     'puncside' =>
     {
-        'priority' => 130,
+        'priority' => 180,
         'values' => ['ini', 'fin', ''],
         'replacements' =>
         [
@@ -286,7 +286,7 @@ my %matrix =
     # Before removing the feature we should analyze all existing tagsets to see which tagsets set synpos and where.
     'synpos' =>
     {
-        'priority' => 140,
+        'priority' => 200,
         'values' => ['subst', 'attr', 'adv', 'pred', ''],
         'replacements' =>
         [
@@ -303,7 +303,7 @@ my %matrix =
     # Possessivity.
     'poss' =>
     {
-        'priority' => 150,
+        'priority' => 210,
         'values' => ['poss', ''], ###!!! OR yes-no-empty? But I do not think it would be practical.
         'replacements' =>
         [
@@ -313,7 +313,7 @@ my %matrix =
     # Reflexivity.
     'reflex' =>
     {
-        'priority' => 160,
+        'priority' => 220,
         'values' => ['reflex', ''], ###!!! OR yes-no-empty? But I do not think it would be practical.
         'replacements' =>
         [
@@ -323,7 +323,7 @@ my %matrix =
     # Foreign word? (Not a loanword but a quotation from a foreign language.)
     'foreign' =>
     {
-        'priority' => 170,
+        'priority' => 400,
         'values' => ['foreign', ''], ###!!! OR yes-no-empty? But I do not think it would be practical.
         'replacements' =>
         [
@@ -333,7 +333,7 @@ my %matrix =
     # Abbreviation?
     'abbr' =>
     {
-        'priority' => 180,
+        'priority' => 20,
         'values' => ['abbr', ''], ###!!! OR yes-no-empty? But I do not think it would be practical.
         'replacements' =>
         [
@@ -345,7 +345,7 @@ my %matrix =
     # Whether this is the first or the second part depends on the original tagset and language.
     'hyph' =>
     {
-        'priority' => 190,
+        'priority' => 30,
         'values' => ['hyph', ''], ###!!! OR yes-no-empty? But I do not think it would be practical.
         'replacements' =>
         [
@@ -355,7 +355,7 @@ my %matrix =
     # Is this / does this word contain a typo?
     'typo' =>
     {
-        'priority' => 200,
+        'priority' => 430,
         'values' => ['typo', ''], ###!!! OR yes-no-empty? But I do not think it would be practical.
         'replacements' =>
         [
@@ -365,7 +365,7 @@ my %matrix =
     # Is this a reduplicated or echo word?
     'echo' =>
     {
-        'priority' => 210,
+        'priority' => 40,
         'values' => ['rdp', 'ech', ''],
         'replacements' =>
         [
@@ -376,7 +376,7 @@ my %matrix =
     # Negativeness (presence of negative morpheme in languages and word classes where applicable).
     'negativeness' =>
     {
-        'priority' => 220,
+        'priority' => 240,
         'values' => ['pos', 'neg', ''],
         'replacements' =>
         [
@@ -387,7 +387,7 @@ my %matrix =
     # Definiteness (or state in Arabic).
     'definiteness' =>
     {
-        'priority' => 230,
+        'priority' => 250,
         'values' => ['ind', 'def', 'red', 'com', ''],
         'replacements' =>
         [
@@ -400,7 +400,7 @@ my %matrix =
     # Gender.
     'gender' =>
     {
-        'priority' => 240,
+        'priority' => 300,
         'values' => ['masc', 'fem', 'com', 'neut', ''],
         'replacements' =>
         [
@@ -413,7 +413,7 @@ my %matrix =
     # Animateness (considered part of gender in some tagsets, but still orthogonal).
     'animateness' =>
     {
-        'priority' => 250,
+        'priority' => 310,
         'values' => ['anim', 'nhum', 'inan', ''],
         'replacements' =>
         [
@@ -425,7 +425,7 @@ my %matrix =
     # Grammatical number.
     'number' =>
     {
-        'priority' => 260,
+        'priority' => 320,
         'values' => ['sing', 'dual', 'plu', 'ptan', 'coll', ''],
         'replacements' =>
         [
@@ -439,7 +439,7 @@ my %matrix =
     # Grammatical case.
     'case' =>
     {
-        'priority' => 270,
+        'priority' => 330,
         'values' => ['nom', 'gen', 'dat', 'acc', 'voc', 'loc', 'ins', 'ist',
                      'abl', 'del', 'par', 'dis', 'ess', 'tra', 'com', 'abe', 'ine', 'ela', 'ill', 'ade', 'all', 'sub', 'sup', 'lat',
                      'add', 'tem', 'ter', 'abs', 'erg', 'cau', 'ben', ''],
@@ -481,7 +481,7 @@ my %matrix =
     # Typically applies to personal pronouns, e.g. in Czech and Portuguese.
     'prepcase' =>
     {
-        'priority' => 280,
+        'priority' => 340,
         'values' => ['npr', 'pre', ''],
         'replacements' =>
         [
@@ -492,7 +492,7 @@ my %matrix =
     # Degree of comparison.
     'degree' =>
     {
-        'priority' => 290,
+        'priority' => 230,
         'values' => ['pos', 'comp', 'sup', 'abs', ''],
         'replacements' =>
         [
@@ -505,7 +505,7 @@ my %matrix =
     # Person.
     'person' =>
     {
-        'priority' => 300,
+        'priority' => 260,
         'values' => ['1', '2', '3', ''],
         'replacements' =>
         [
@@ -517,7 +517,7 @@ my %matrix =
     # Politeness, formal vs. informal word forms.
     'politeness' =>
     {
-        'priority' => 310,
+        'priority' => 350,
         'values' => ['inf', 'pol', ''],
         'replacements' =>
         [
@@ -528,7 +528,7 @@ my %matrix =
     # Possessor's gender. (The gender feature typically holds the possession's gender in this case.)
     'possgender' =>
     {
-        'priority' => 320,
+        'priority' => 360,
         'values' => ['masc', 'fem', 'com', 'neut', ''],
         'replacements' =>
         [
@@ -542,7 +542,7 @@ my %matrix =
     # Used e.g. in Hungarian where possessive morphemes can be attached to possessed nouns ("apple-mine").
     'possperson' =>
     {
-        'priority' => 330,
+        'priority' => 370,
         'values' => ['1', '2', '3', ''],
         'replacements' =>
         [
@@ -554,7 +554,7 @@ my %matrix =
     # Possessor's number.
     'possnumber' =>
     {
-        'priority' => 340,
+        'priority' => 380,
         'values' => ['sing', 'dual', 'plu', ''],
         'replacements' =>
         [
@@ -568,7 +568,7 @@ my %matrix =
     # 1. its own grammatical number; 2. number of its possessor; 3. number of its possession.
     'possednumber' =>
     {
-        'priority' => 350,
+        'priority' => 390,
         'values' => ['sing', 'dual', 'plu', ''],
         'replacements' =>
         [
@@ -582,7 +582,7 @@ my %matrix =
     # However, real verb subcategorization is in fact much more complex.
     'subcat' =>
     {
-        'priority' => 360,
+        'priority' => 50,
         'values' => ['intr', 'tran', ''],
         'replacements' =>
         [
@@ -598,7 +598,7 @@ my %matrix =
     # trans (transgressive, properties of both verbs and adverbs)
     'verbform' =>
     {
-        'priority' => 370,
+        'priority' => 60,
         'values' => ['fin', 'inf', 'sup', 'part', 'trans', 'ger', ''],
         'replacements' =>
         [
@@ -613,7 +613,7 @@ my %matrix =
     # Mood.
     'mood' =>
     {
-        'priority' => 380,
+        'priority' => 70,
         'values' => ['ind', 'imp', 'cnd', 'pot', 'sub', 'jus', 'qot', ''],
         'replacements' =>
         [
@@ -631,7 +631,7 @@ my %matrix =
     ###!!! There are other hierarchical features anyway (case, number...)
     'tense' =>
     {
-        'priority' => 390,
+        'priority' => 270,
         'values' => ['pres', 'fut', 'past', 'aor', 'imp', 'pqp', ''],
         'replacements' =>
         [
@@ -646,7 +646,7 @@ my %matrix =
     # Voice.
     'voice' =>
     {
-        'priority' => 400,
+        'priority' => 280,
         'values' => ['act', 'pass', ''],
         'replacements' =>
         [
@@ -657,7 +657,7 @@ my %matrix =
     # Aspect (lexical or grammatical; but see also the 'imp' tense).
     'aspect' =>
     {
-        'priority' => 410,
+        'priority' => 290,
         'values' => ['imp', 'perf', 'pro', ''],
         'replacements' =>
         [
@@ -671,7 +671,7 @@ my %matrix =
     # Aspect (lexical or grammatical; but see also the 'imp' tense).
     'variant' =>
     {
-        'priority' => 420,
+        'priority' => 440,
         'values' => ['short', 'long', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ''],
         'replacements' =>
         [
@@ -694,7 +694,7 @@ my %matrix =
     # (e.g. standard and colloquial suffix of the same lemma, cf. Czech "zelený" vs. "zelenej").
     'style' =>
     {
-        'priority' => 430,
+        'priority' => 420,
         'values' => ['arch', 'form', 'norm', 'coll', 'vrnc', 'slng', 'derg', 'vulg', ''],
         'replacements' =>
         [
@@ -745,6 +745,20 @@ has 'other'        => ( is  => 'rw', default => '' );
 sub known_features
 {
     return keys(%matrix);
+}
+
+
+
+#------------------------------------------------------------------------------
+# Static function. Returns the list of features according to their priority
+# (used when enforcing permitted feature-value combinations during strict
+# encoding).
+#------------------------------------------------------------------------------
+sub priority_features
+{
+    my @features = keys(%matrix);
+    @features = sort {$matrix{$a}{priority} <=> $matrix{$b}{priority}} (@features);
+    return @features;
 }
 
 
@@ -946,6 +960,57 @@ sub structure_to_string
         $string = "\"$string\"";
     }
     return $string;
+}
+
+
+
+###############################################################################
+# GENERIC FEATURE STRUCTURE MANIPULATION
+# The following section contains feature-structure-related static functions,
+# not methods (no $self parameter is expected).
+###############################################################################
+
+
+
+#------------------------------------------------------------------------------
+# Compares two values, scalars or arrays, whether they are equal or not.
+#------------------------------------------------------------------------------
+sub iseq
+{
+    my $a = shift;
+    my $b = shift;
+    if(ref($a) ne ref($b))
+    {
+        return 0;
+    }
+    elsif(ref($a) eq 'ARRAY')
+    {
+        return array_to_scalar_value($a) eq array_to_scalar_value($b);
+    }
+    else
+    {
+        return $a eq $b;
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Converts array values to scalars. Sorts the array and combines all elements
+# in one string, using the vertical bar as delimiter. Does not care about
+# occurrences of vertical bars inside the elements (there should be none
+# anyway).
+#------------------------------------------------------------------------------
+sub array_to_scalar_value
+{
+    my $value = shift;
+    if(ref($value) eq 'ARRAY')
+    {
+        # The sorting helps to ensure that values from two arrays with the same
+        # elements will be stringwise identical.
+        $value = join('|', sort(@{$value}));
+    }
+    return $value;
 }
 
 
