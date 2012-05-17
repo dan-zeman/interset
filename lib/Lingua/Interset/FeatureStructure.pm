@@ -887,6 +887,45 @@ sub get
 
 
 #------------------------------------------------------------------------------
+# Similar to get but always returns scalar. If there is an array of disjoint
+# values, it does not pick just one. Instead, it sorts all values and joins
+# them using the vertical bar. Example: 'masc|fem'.
+###!!! Do we need set_joined(), too?
+#------------------------------------------------------------------------------
+sub get_joined
+{
+    my $self = shift;
+    my $feature = shift;
+    return array_to_scalar_value($self->get($feature));
+}
+
+
+
+#------------------------------------------------------------------------------
+# Similar to get but always returns list of values. If there is an array of
+# disjoint values, this is the list. If there is a single value (empty or not),
+# this value is the only member of the list.
+#------------------------------------------------------------------------------
+sub get_list
+{
+    my $self = shift;
+    my $feature = shift;
+    my $value = $self->get($feature);
+    my @list;
+    if(ref($value) eq 'ARRAY')
+    {
+        @list = @{$value};
+    }
+    else
+    {
+        @list = ($value);
+    }
+    return @list;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Sets several features at once. Takes list of value assignments, i.e. an array
 # of an even number of elements (feature1, value1, feature2, value2...)
 # This is useful when defining decoders from physical tagsets. Typically, one

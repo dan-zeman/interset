@@ -134,14 +134,50 @@ sub get_permitted_structures
         foreach my $f (@features)
         {
             # Make sure the value is not an array.
-            ###!!! This ugly code is a pre-Moose relict. Instead of a static function, we should have a method of $fs that returns scalarized value of a particular named feature.
-            my $v = Lingua::Interset::FeatureStructure::array_to_scalar_value($fs->{$f});
+            my $v = $fs->get_joined($f);
             # Supply tag only if this is the last feature in the list.
             my $t = $f eq $features[$#features] ? $tag : undef;
             $pointer = $trie->add_value($pointer, $v, $t);
         }
     }
     return $trie;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Reads a list of tags, decodes each tag and remembers occurrences of feature
+# values. Builds a hash of permitted feature values for this tagset:
+# ($hash{$feature}{$value} != 0) => tagset permits $value of $feature
+#------------------------------------------------------------------------------
+sub get_permitted_values
+{
+    my $self = shift;
+    my $list = $self->list();
+    my $decode = shift; # reference to the driver-specific decode function
+    my $permitted_values = shift; # hash reference
+    # Make sure that the list of possible tags is not empty.
+    # If it is, probably the driver's list() function is not implemented.
+    unless(scalar(@{$list}))
+    {
+        die("Cannot figure out the permitted values because the list of possible tags is empty.\n");
+    }
+    my @features = Lingua::Interset::FeatureStructure::priority_features();
+    my %values;
+    foreach my $tag (@{$list})
+    {
+        my $fs = $self->decode($tag);
+        foreach my $f (@features)
+        {
+            # Make sure the value is always a list of values.
+            my @v = $fs->get_list($f);
+            foreach my $v (@v)
+            {
+                $values{$f}{$v}++;
+            }
+        }
+    }
+    return \%values;
 }
 
 
