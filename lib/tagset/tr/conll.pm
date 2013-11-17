@@ -213,7 +213,7 @@ sub decode
         # +Hastily ... do hastily ... examples: aliverdi, doluverdi, gidiverdi
         # +EverSince ... have been doing ever since ... no occurrence
         # +Almost ... almost did but did not ... no occurrence
-        # +Stay ... stayed frozen whlie doing ... just two examples: şaşakalm?şt?k, uyuyakalm?şt? (Google translates the latter as "fallen asleep")
+        # +Stay ... stayed frozen whlie doing ... just two examples: şaşakalmıştık, uyuyakalmıştı (Google translates the latter as "fallen asleep")
         # +Start ... start doing immediately ... no occurrence
         ###!!! Loganathan's solution of marking the verbs as auxiliaries is not ideal. These are normal verb stems but with additional morphemes.
         $f{subpos} = "aux" if $feature eq "Caus";
@@ -225,13 +225,9 @@ sub decode
         $f{subpos} = "aux" if $feature eq "EverSince";
         $f{subpos} = "aux" if $feature eq "Almost";
 
-        # desire / wish
-        $f{subpos} = "aux" if $feature eq "Desr";
-        $f{subpos} = "aux" if $feature eq "Neces";
-        $f{subpos} = "aux" if $feature eq "Opt";
-
         # The "Pres" tag is not frequent.
         # It occurs with "Verb Zero" more often than with "Verb Verb". It often occurs with copulae ("Cop").
+        # According to documentation, it is intended for predicative nominals or adjectives.
         # Pres|Cop|A3sg examples: vardır (there are), yoktur (there is no), demektir (means), sebzedir, nedir (what is the)
         $f{tense} = "pres" if $feature eq "Pres";
         # The "Fut" tag can be combined with "Past" and occasionally with "Narr".
@@ -250,7 +246,11 @@ sub decode
         # hence it is used when the fact of a past event, as such, is not important;
         # in particular, the inferential past is used when one did not actually witness the past event.
         # A newspaper will generally use the di-past, because it is authoritative.
-        $f{tense} = "past" if $feature eq "Narr";
+        if($feature eq 'Narr')
+        {
+            $f{tense} = 'past';
+            $f{subtense} = 'nar';
+        }
         # Pos|Aor|A3sg examples: olur (will), gerekir (must), yeter (is enough), alır (takes), gelir (income)
         # Pos|Aor|Narr|A3sg examples: olurmuş (bustled), inanırmış, severmiş (loved), yaşarmış (lived), bitermiş
         # Pos|Aor|Past|A3sg examples: olurdu (would), otururdu (sat), yapardı (would), bilirdi (knew), derdi (used to say)
@@ -267,85 +267,56 @@ sub decode
         # Pos|Prog1|A3sg examples: diyor (is saying), geliyor (is coming), oluyor (is being), yapıyor (is doing), biliyor (is knowing)
         # Pos|Prog1|Past|A3sg examples: geliyordu (was coming), oturuyordu (was sitting), bakıyordu, oluyordu, titriyordu
         # Pos|Prog1|Narr|A3sg examples: oluyormuş (was happening), bakıyormuş (was staring), çırpınıyormuş, yaşıyormuş, istiyormuş
-        $f{subpos} = "aux" if $feature eq "Prog1";
+        $f{aspect} = "prog" if $feature eq "Prog1";
         # Pos|Prog2|A3sg examples: oturmakta (is sitting), kapamakta (is closing), soymakta (is peeling), kullanmakta, taşımakta
-        $f{subpos} = "aux" if $feature eq "Prog2"; 
+        if($feature eq 'Prog2')
+        {
+            $f{aspect} = 'prog';
+            $f{variant} = 2;
+        }
+        # mood: wish-must case (dilek-şart kipi)
+        # Pos|Imp|A2sg examples: var (be), gerek (need), bak (look), kapa (expand), anlat (tell)
+        $f{mood} = "imp" if $feature eq "Imp";
+        # Pos|Neces|A3sg examples: olmalı (should be), almalı (should buy), sağlamalı (should provide), kapsamalı (should cover)
+        $f{mood} = "nec" if $feature eq "Neces";
+        # Optative mood (indicates a wish or hope). "May you have a long life! If only I were rich!"
+        # Oflazer: "Let me/him/her do..." / "Kéž by ..."
+        # Pos|Opt|A3sg examples: diye (if only said), sevine (if only exulted), güle (if only laughed), ola (if only were), otura (if only sat)
+        $f{mood} = "opt" if $feature eq "Opt";
+        ###!!! What's the difference between Desr and Cond?
+        # Pos|Desr|A3sg examples: olsa (wants to be), ise, varsa, istese (if wanted), bıraksa (wants to leave)
+        $f{mood} = "des" if $feature eq "Desr";
         # Pos|Aor|Cond|A3sg examples: verirse (if), isterse, kalırsa (if remains), başlarsa (if begins), derse
         # Pos|Fut|Cond|A3sg example: olacaksa (if will)
         # Pos|Narr|Cond|A3sg example: oturmuşsa
         # Pos|Past|Cond|A3sg example: olduysa (if (would have been)), uyuduysa
         # Pos|Prog1|Cond|A3sg examples: geliyorsa (would be coming), öpüyorsa, uyuşuyorsa, seviyorsa (would be loving)
         $f{mood} = "cnd" if $feature eq "Cond";
-        # Pos|Imp|A2sg examples: var (be), gerek (need), bak (look), kapa (expand), anlat (tell)
-        $f{mood} = "imp" if $feature eq "Imp";
 
         # negativeness
+        # Pos|Prog1|A3sg examples: diyor (is saying), geliyor (is coming), oluyor (is being), yapıyor (is doing), biliyor (is knowing)
+        # Neg|Prog1|A3sg examples: olmuyor (is not), tutmuyor (does not match), bilmiyor (does not know), gerekmiyor, benzemiyor
         $f{negativeness} = "pos" if $feature eq "Pos";;
         $f{negativeness} = "neg" if $feature eq "Neg";;
 
         # voice
+        # Pass|Pos|Past|A3sg examples: belirtildi (was said), söylendi (was told), istendi (was asked), öğrenildi (was learned), kaldırıldı
         $f{voice} = "pass" if $feature eq "Pass";
+        # Reflex|Pos|Prog1|A3sg example: hazırlanıyor (is preparing itself)
         $f{reflex} = 'reflex' if($feature eq 'Reflex');
+        # Recip|Pos|Past|A3sg example: karıştı (confused each other?)
+        $f{voice} = 'rcp' if($feature eq 'Recip');
+
+        # Copula in Turkish is not an independent word. It is a bound morpheme (tur/tır/tir/dur etc.)
+        # It is not clear to me though, what meaning it adds when attached to a verb.
+        # Pos|Narr|Cop|A3sg examples: olmuştur (has been), açmıştır (has led), ulaşmıştır (has reached), başlamıştır, gelmiştir
+        # Pos|Prog1|Cop|A3sg examples: oturuyordur (is sitting), öpüyordur (is kissing), tanıyordur (knows)
+        # Pos|Fut|Cop|A3sg examples: olacaktır (will), akacaktır (will flow), alacaktır (will take), çarpacaktır, görecektir
+        $f{subpos} = 'cop' if($feature eq 'Cop');
 
     }
     return \%f;
 }
-
-
-
-my %enfeatable =
-(
-    'gender' =>
-    {
-        'masc' => 'Ma',
-        'fem'  => 'Fe',
-        'neut' => 'Ne'
-    },
-    'number' =>
-    {
-        'sing' => 'sg',
-        'plu'  => 'pl'
-    },
-    'case' =>
-    {
-        'nom' => 'Nom',
-        'gen' => 'Gen',
-        'acc' => 'Acc',
-        'abl' => 'Abl',
-        'dat' => 'Dat',
-        'loc' => 'Loc',
-        'ins' => 'Ins'
-    },
-    'degree' =>
-    {
-        'comp' => 'Cp',
-        'sup'  => 'Su'
-    },
-    'mood' =>
-    {
-        'cnd' => 'Cond',
-        'imp' => 'Imp'
-    },
-    'tense' =>
-    {
-        'past' => 'Past',
-        'pres' => 'Pres',
-        'fut'  => 'Fut'
-    },
-    'voice' =>
-    {
-        'pass' => 'Pass'
-    },
-    'negativeness' =>
-    {
-        'pos' => 'Pos',
-        'neg' => 'Neg'
-    },
-    'reflex' =>
-    {
-        'reflex' => 'Reflex'
-    }
-);
 
 
 
@@ -427,26 +398,147 @@ sub encode
     {
     }
     # Add the features to the part of speech.
-    my @features;
-    foreach my $feature ('reflex', 'negativeness', 'tense')
+    my $features = encode_features(\%f);
+    $tag .= "\t$features";
+    return $tag;
+}
+
+
+
+my %enfeatable =
+(
+    'gender' =>
     {
-        if(exists($enfeatable{$feature}{$f{$feature}}))
-        {
-            push(@features, $enfeatable{$feature}{$f{$feature}});
-        }
+        'masc' => 'Ma',
+        'fem'  => 'Fe',
+        'neut' => 'Ne'
+    },
+    'number' =>
+    {
+        'sing' => 'sg',
+        'plu'  => 'pl'
+    },
+    'case' =>
+    {
+        'nom' => 'Nom',
+        'gen' => 'Gen',
+        'acc' => 'Acc',
+        'abl' => 'Abl',
+        'dat' => 'Dat',
+        'loc' => 'Loc',
+        'ins' => 'Ins'
+    },
+    'degree' =>
+    {
+        'comp' => 'Cp',
+        'sup'  => 'Su'
+    },
+    'mood' =>
+    {
+        'cnd' => 'Cond',
+        'imp' => 'Imp',
+        'nec' => 'Neces',
+        'des' => 'Desr',
+        'opt' => 'Opt'
+    },
+    'tense' =>
+    {
+        'past' => 'Past',
+        'pres' => 'Pres',
+        'fut'  => 'Fut'
+    },
+    'subtense' =>
+    {
+        'nar' => 'Narr'
+    },
+    'voice' =>
+    {
+        'pass' => 'Pass',
+        'rcp'  => 'Recip'
+    },
+    'negativeness' =>
+    {
+        'pos' => 'Pos',
+        'neg' => 'Neg'
+    },
+    'reflex' =>
+    {
+        'reflex' => 'Reflex'
     }
-    if($f{person} =~ m/^[123]$/ && $f{number} =~ m/^(sing|plu)$/)
+);
+
+
+
+#------------------------------------------------------------------------------
+# Takes feature hash.
+# Returns feature string.
+#------------------------------------------------------------------------------
+sub encode_features
+{
+    my $f = shift;
+    # Add the features to the part of speech.
+    my @features;
+    foreach my $feature ('voice', 'reflex', 'negativeness', 'aspect', 'mood', 'tense', 'copula', 'agreement')
     {
-        my $agreement = "A$f{person}$enfeatable{number}{$f{number}}";
-        push(@features, $agreement);
+        if($feature eq 'tense')
+        {
+            if($f->{subtense} eq 'aor')
+            {
+                push(@features, 'Aor');
+            }
+            if($f->{subtense} =~ m/^(nar)$/)
+            {
+                push(@features, 'Narr');
+            }
+            elsif($f->{tense} =~ m/^(past|pres|fut)$/)
+            {
+                push(@features, $enfeatable{tense}{$f->{tense}});
+            }
+        }
+        elsif($feature eq 'aspect')
+        {
+            if($f->{aspect} eq 'prog')
+            {
+                if($f->{variant} eq '2')
+                {
+                    push(@features, 'Prog2');
+                }
+                else
+                {
+                    push(@features, 'Prog1');
+                }
+            }
+        }
+        elsif($feature eq 'copula')
+        {
+            if($f->{subpos} eq 'cop')
+            {
+                push(@features, 'Cop');
+            }
+        }
+        elsif($feature eq 'agreement')
+        {
+            if($f->{person} =~ m/^[123]$/ && $f->{number} =~ m/^(sing|plu)$/)
+            {
+                my $agreement = "A$f->{person}$enfeatable{number}{$f->{number}}";
+                push(@features, $agreement);
+            }
+        }
+        else
+        {
+            my $value = $f->{$feature};
+            if(exists($enfeatable{$feature}{$value}))
+            {
+                push(@features, $enfeatable{$feature}{$value});
+            }
+        }
     }
     my $features = join("|", @features);
     if($features eq "")
     {
         $features = "_";
     }
-    $tag .= "\t$features";
-    return $tag;
+    return $features;
 }
 
 
@@ -1043,7 +1135,7 @@ Verb	Verb	Able|Aor|A1sg
 Verb	Verb	Able|Aor|A2pl
 Verb	Verb	Able|Aor|A2sg
 Verb	Verb	Able|Aor|A3pl
-Verb	Verb	Able|Aor|A3pl|Past
+Verb	Verb	Able|Aor|Past|A3pl
 Verb	Verb	Able|Aor|A3sg
 Verb	Verb	Able|Aor|Cond|A3sg
 Verb	Verb	Able|Aor|Narr|A3sg
@@ -1052,11 +1144,11 @@ Verb	Verb	Able|Aor|Past|A1sg
 Verb	Verb	Able|Aor|Past|A3sg
 Verb	Verb	Able|Desr|A1pl
 Verb	Verb	Able|Desr|A1sg
-Verb	Verb	Able|Desr|A3pl|Past
+Verb	Verb	Able|Desr|Past|A3pl
 Verb	Verb	Able|Desr|Past|A3sg
 Verb	Verb	Able|Fut|A1sg
 Verb	Verb	Able|Fut|A3pl
-Verb	Verb	Able|Fut|A3pl|Past
+Verb	Verb	Able|Fut|Past|A3pl
 Verb	Verb	Able|Fut|A3sg
 Verb	Verb	Able|Fut|Cop|A3sg
 Verb	Verb	Able|Fut|Past|A1pl
@@ -1073,7 +1165,7 @@ Verb	Verb	Able|Neg|Aor|A1sg
 Verb	Verb	Able|Neg|Aor|A2pl
 Verb	Verb	Able|Neg|Aor|A2sg
 Verb	Verb	Able|Neg|Aor|A3pl
-Verb	Verb	Able|Neg|Aor|A3pl|Past
+Verb	Verb	Able|Neg|Aor|Past|A3pl
 Verb	Verb	Able|Neg|Aor|A3sg
 Verb	Verb	Able|Neg|Aor|Cond|A1sg
 Verb	Verb	Able|Neg|Aor|Cond|A2pl
@@ -1102,7 +1194,7 @@ Verb	Verb	Able|Neg|Prog1|A1sg
 Verb	Verb	Able|Neg|Prog1|A2pl
 Verb	Verb	Able|Neg|Prog1|A2sg
 Verb	Verb	Able|Neg|Prog1|A3pl
-Verb	Verb	Able|Neg|Prog1|A3pl|Past
+Verb	Verb	Able|Neg|Prog1|Past|A3pl
 Verb	Verb	Able|Neg|Prog1|A3sg
 Verb	Verb	Able|Neg|Prog1|Past|A1sg
 Verb	Verb	Able|Neg|Prog1|Past|A3sg
@@ -1149,7 +1241,7 @@ Verb	Verb	Become|Neg|Aor
 Verb	Verb	Become|Neg|Aor|A3sg
 Verb	Verb	Become|Neg|Imp|A2sg
 Verb	Verb	Become|Pos
-Verb	Verb	Become|Pos|Aor|A3pl|Past
+Verb	Verb	Become|Pos|Aor|Past|A3pl
 Verb	Verb	Become|Pos|Aor|A3sg
 Verb	Verb	Become|Pos|Desr|A3sg
 Verb	Verb	Become|Pos|Narr|A3sg
@@ -1160,7 +1252,7 @@ Verb	Verb	Become|Pos|Past|A2sg
 Verb	Verb	Become|Pos|Past|A3sg
 Verb	Verb	Become|Pos|Prog1|A1pl
 Verb	Verb	Become|Pos|Prog1|A2sg
-Verb	Verb	Become|Pos|Prog1|A3pl|Past
+Verb	Verb	Become|Pos|Prog1|Past|A3pl
 Verb	Verb	Become|Pos|Prog1|A3sg
 Verb	Verb	Become|Pos|Prog1|Past|A3sg
 Verb	Verb	Caus
@@ -1178,7 +1270,7 @@ Verb	Verb	Caus|Pos|Aor|A1pl
 Verb	Verb	Caus|Pos|Aor|A1sg
 Verb	Verb	Caus|Pos|Aor|A2pl
 Verb	Verb	Caus|Pos|Aor|A3pl
-Verb	Verb	Caus|Pos|Aor|A3pl|Cond
+Verb	Verb	Caus|Pos|Aor|Cond|A3pl
 Verb	Verb	Caus|Pos|Aor|A3sg
 Verb	Verb	Caus|Pos|Aor|Past|A3sg
 Verb	Verb	Caus|Pos|Desr|A1sg
@@ -1196,8 +1288,8 @@ Verb	Verb	Caus|Pos|Narr
 Verb	Verb	Caus|Pos|Narr|A1pl
 Verb	Verb	Caus|Pos|Narr|A2sg
 Verb	Verb	Caus|Pos|Narr|A3pl
-Verb	Verb	Caus|Pos|Narr|A3pl|Cop
-Verb	Verb	Caus|Pos|Narr|A3pl|Past
+Verb	Verb	Caus|Pos|Narr|Cop|A3pl
+Verb	Verb	Caus|Pos|Narr|Past|A3pl
 Verb	Verb	Caus|Pos|Narr|A3sg
 Verb	Verb	Caus|Pos|Narr|Cop|A3sg
 Verb	Verb	Caus|Pos|Narr|Past|A1pl
@@ -1216,7 +1308,7 @@ Verb	Verb	Caus|Pos|Past|A3sg
 Verb	Verb	Caus|Pos|Prog1|A1sg
 Verb	Verb	Caus|Pos|Prog1|A2sg
 Verb	Verb	Caus|Pos|Prog1|A3pl
-Verb	Verb	Caus|Pos|Prog1|A3pl|Past
+Verb	Verb	Caus|Pos|Prog1|Past|A3pl
 Verb	Verb	Caus|Pos|Prog1|A3sg
 Verb	Verb	Caus|Pos|Prog1|Narr|A3sg
 Verb	Verb	Caus|Pos|Prog1|Past|A1sg
@@ -1240,7 +1332,7 @@ Verb	Verb	Neg|Aor|A1sg
 Verb	Verb	Neg|Aor|A2pl
 Verb	Verb	Neg|Aor|A2sg
 Verb	Verb	Neg|Aor|A3pl
-Verb	Verb	Neg|Aor|A3pl|Past
+Verb	Verb	Neg|Aor|Past|A3pl
 Verb	Verb	Neg|Aor|A3sg
 Verb	Verb	Neg|Aor|Cond|A1pl
 Verb	Verb	Neg|Aor|Cond|A1sg
@@ -1271,7 +1363,7 @@ Verb	Verb	Neg|Imp|A3sg
 Verb	Verb	Neg|Narr
 Verb	Verb	Neg|Narr|A1sg
 Verb	Verb	Neg|Narr|A3pl
-Verb	Verb	Neg|Narr|A3pl|Past
+Verb	Verb	Neg|Narr|Past|A3pl
 Verb	Verb	Neg|Narr|A3sg
 Verb	Verb	Neg|Narr|Cop|A3sg
 Verb	Verb	Neg|Narr|Past|A1pl
@@ -1293,9 +1385,9 @@ Verb	Verb	Neg|Prog1|A1sg
 Verb	Verb	Neg|Prog1|A2pl
 Verb	Verb	Neg|Prog1|A2sg
 Verb	Verb	Neg|Prog1|A3pl
-Verb	Verb	Neg|Prog1|A3pl|Cond
-Verb	Verb	Neg|Prog1|A3pl|Narr
-Verb	Verb	Neg|Prog1|A3pl|Past
+Verb	Verb	Neg|Prog1|Cond|A3pl
+Verb	Verb	Neg|Prog1|Narr|A3pl
+Verb	Verb	Neg|Prog1|Past|A3pl
 Verb	Verb	Neg|Prog1|A3sg
 Verb	Verb	Neg|Prog1|Cond|A1sg
 Verb	Verb	Neg|Prog1|Cond|A2pl
@@ -1343,7 +1435,7 @@ Verb	Verb	Pass|Pos|Fut|Past|A3sg
 Verb	Verb	Pass|Pos|Imp|A3sg
 Verb	Verb	Pass|Pos|Narr
 Verb	Verb	Pass|Pos|Narr|A2sg
-Verb	Verb	Pass|Pos|Narr|A3pl|Past
+Verb	Verb	Pass|Pos|Narr|Past|A3pl
 Verb	Verb	Pass|Pos|Narr|A3sg
 Verb	Verb	Pass|Pos|Narr|Cond|A3sg
 Verb	Verb	Pass|Pos|Narr|Cop|A3sg
@@ -1376,9 +1468,9 @@ Verb	Verb	Pos|Aor|A1sg
 Verb	Verb	Pos|Aor|A2pl
 Verb	Verb	Pos|Aor|A2sg
 Verb	Verb	Pos|Aor|A3pl
-Verb	Verb	Pos|Aor|A3pl|Cond
-Verb	Verb	Pos|Aor|A3pl|Narr
-Verb	Verb	Pos|Aor|A3pl|Past
+Verb	Verb	Pos|Aor|Cond|A3pl
+Verb	Verb	Pos|Aor|Narr|A3pl
+Verb	Verb	Pos|Aor|Past|A3pl
 Verb	Verb	Pos|Aor|A3sg
 Verb	Verb	Pos|Aor|Cond|A1pl
 Verb	Verb	Pos|Aor|Cond|A1sg
@@ -1391,12 +1483,16 @@ Verb	Verb	Pos|Aor|Past|A1pl
 Verb	Verb	Pos|Aor|Past|A1sg
 Verb	Verb	Pos|Aor|Past|A2sg
 Verb	Verb	Pos|Aor|Past|A3sg
+Verb	Verb	Pos|Cond|Fut|A2sg
+Verb	Verb	Pos|Cond|Fut|A3sg
+Verb	Verb	Pos|Cond|Past|A2sg
+Verb	Verb	Pos|Cond|Past|A3sg
 Verb	Verb	Pos|Desr|A1pl
 Verb	Verb	Pos|Desr|A1sg
 Verb	Verb	Pos|Desr|A2pl
 Verb	Verb	Pos|Desr|A2sg
 Verb	Verb	Pos|Desr|A3pl
-Verb	Verb	Pos|Desr|A3pl|Past
+Verb	Verb	Pos|Desr|Past|A3pl
 Verb	Verb	Pos|Desr|A3sg
 Verb	Verb	Pos|Desr|Past|A1sg
 Verb	Verb	Pos|Desr|Past|A2pl
@@ -1407,11 +1503,9 @@ Verb	Verb	Pos|Fut|A1sg
 Verb	Verb	Pos|Fut|A2pl
 Verb	Verb	Pos|Fut|A2sg
 Verb	Verb	Pos|Fut|A3pl
-Verb	Verb	Pos|Fut|A3pl|Narr
-Verb	Verb	Pos|Fut|A3pl|Past
+Verb	Verb	Pos|Fut|Narr|A3pl
+Verb	Verb	Pos|Fut|Past|A3pl
 Verb	Verb	Pos|Fut|A3sg
-Verb	Verb	Pos|Fut|Cond|A2sg
-Verb	Verb	Pos|Fut|Cond|A3sg
 Verb	Verb	Pos|Fut|Cop|A3sg
 Verb	Verb	Pos|Fut|Narr|A3sg
 Verb	Verb	Pos|Fut|Past|A1pl
@@ -1429,9 +1523,9 @@ Verb	Verb	Pos|Narr|A1sg|Cop
 Verb	Verb	Pos|Narr|A2pl
 Verb	Verb	Pos|Narr|A2sg
 Verb	Verb	Pos|Narr|A3pl
-Verb	Verb	Pos|Narr|A3pl|Cond
-Verb	Verb	Pos|Narr|A3pl|Cop
-Verb	Verb	Pos|Narr|A3pl|Past
+Verb	Verb	Pos|Narr|Cond|A3pl
+Verb	Verb	Pos|Narr|Cop|A3pl
+Verb	Verb	Pos|Narr|Past|A3pl
 Verb	Verb	Pos|Narr|A3sg
 Verb	Verb	Pos|Narr|Cond|A3sg
 Verb	Verb	Pos|Narr|Cop|A3sg
@@ -1456,17 +1550,15 @@ Verb	Verb	Pos|Past|A1pl
 Verb	Verb	Pos|Past|A1sg
 Verb	Verb	Pos|Past|A2pl
 Verb	Verb	Pos|Past|A2sg
-Verb	Verb	Pos|Past|A2sg|Cond
 Verb	Verb	Pos|Past|A3pl
 Verb	Verb	Pos|Past|A3sg
-Verb	Verb	Pos|Past|Cond|A3sg
 Verb	Verb	Pos|Prog1|A1pl
 Verb	Verb	Pos|Prog1|A1sg
 Verb	Verb	Pos|Prog1|A2pl
 Verb	Verb	Pos|Prog1|A2sg
 Verb	Verb	Pos|Prog1|A3pl
-Verb	Verb	Pos|Prog1|A3pl|Narr
-Verb	Verb	Pos|Prog1|A3pl|Past
+Verb	Verb	Pos|Prog1|Narr|A3pl
+Verb	Verb	Pos|Prog1|Past|A3pl
 Verb	Verb	Pos|Prog1|A3sg
 Verb	Verb	Pos|Prog1|Cond|A1pl
 Verb	Verb	Pos|Prog1|Cond|A1sg
@@ -1508,8 +1600,8 @@ Verb	Verb	Stay|Narr|Past|A1pl
 Verb	Verb	Stay|Narr|Past|A3sg
 Verb	Zero	_
 Verb	Zero	A3e
-Verb	Zero	A3pl|Narr
-Verb	Zero	A3pl|Past
+Verb	Zero	Narr|A3pl
+Verb	Zero	Past|A3pl
 Verb	Zero	A3sg
 Verb	Zero	Cond|A1sg
 Verb	Zero	Cond|A3sg
@@ -1530,7 +1622,7 @@ Verb	Zero	Pres|A2pl
 Verb	Zero	Pres|A2pl|Cop
 Verb	Zero	Pres|A2sg
 Verb	Zero	Pres|A3pl
-Verb	Zero	Pres|A3pl|Cop
+Verb	Zero	Pres|Cop|A3pl
 Verb	Zero	Pres|Cop|A3pl
 Verb	Zero	Pres|Cop|A3sg
 end_of_list
