@@ -178,16 +178,45 @@ sub decode
     my @features = split(/\|/, $features);
     foreach my $feature (@features)
     {
-        # subordinating conjunctions ###!!! and adverbs?!
-        $f{subpos} = 'sub' if $feature eq 'When';
-        $f{subpos} = 'sub' if $feature eq 'AfterDoingSo';
-        $f{subpos} = 'sub' if $feature eq 'SinceDoingSo';
-        $f{subpos} = 'sub' if $feature eq 'As';
-        $f{subpos} = 'sub' if $feature eq 'ByDoingSo';
-        $f{subpos} = 'sub' if $feature eq 'While';
-        $f{subpos} = 'sub' if $feature eq 'AsIf';
-        $f{subpos} = 'sub' if $feature eq 'WithoutHavingDoneSo';
-        $f{subpos} = 'sub' if $feature eq 'Since';
+        # Adjectives
+        # Adj Adj _ examples: büyük (big), yeni (new), iyi (good), aynı (same), çok (many)
+        # Adj Adj Agt examples: üretici (manufacturing), ürkütücü (scary), rahatlatıcı (relaxing), yakıcı (burning), barışçı (pacific)
+        # Adj Adj AsIf examples: böylece (so that), onca (all that), delice (insane), aptalca (stupid), çılgınca (wild)
+        # Adj Adj FitFor examples: dolarlık (in dollars), yıllık (annual), saatlik (hourly), trilyonluk (trillions worth), liralık (in pounds)
+        # Adj Adj InBetween example: uluslararası (international)
+        # Adj Adj JustLike example: konyakımsı (just like brandy), redingotumsu (just like redingot)
+        # Adj Adj Rel examples: önceki (previous), arasındaki (in-between), içindeki (intra-), üzerindeki (upper), öteki (other)
+        # Adj Adj Related examples: ideolojik (ideological), teknolojik (technological), meteorolojik (meteorological), bilimsel (scientific), psikolojik (psychological)
+        # Adj Adj With examples: önemli (important), ilgili (related), vadeli (forward), yaşlı (elderly), yararlı (helpful)
+        # Adj Adj Without examples: sessiz (quiet), savunmasız (vulnerable), anlamsız (meaningless), gereksiz (unnecessary), rahatsız (uncomfortable)
+        if($feature =~ m/^(Agt|AsIf|FitFor|InBetween|JustLike|Rel|Related|With|Without)$/)
+        {
+            # Merge adjtype and advtype into one feature so that we do not have to distinguish them later on encoding.
+            $f{other}{advtype} = $feature;
+        }
+
+        # Adverbs
+        # The non-"_" non-Ly non-Since adverbs seem to be derived from verbs, i.e. they could be called adverbial participles (transgressives).
+        # Adv Adv _ examples: daha (more), çok (very), en (most), bile (even), hiç (never)
+        # Adv Adv Ly examples: hafifçe (slightly), rahatça (easily), iyice (thoroughly), öylece (just), aptalca (stupidly)
+        # Adv Adv Since examples: yıldır (for years), yıllardır (for years), saattir (for hours)
+        # Adv Adv AfterDoingSo examples: gidip (having gone), gelip (having come), deyip (having said), kesip (having cut out), çıkıp (having gotten out)
+        # Adv Adv As examples: istemedikçe (unless you want to), arttıkça (as increases), konuştukça (as you talk), oldukça (rather), gördükçe (as you see)
+        # Adv Adv AsIf examples: güneşiymişçesine, okumuşçasına (as if reads), etmişçesine, taparcasına (as if worships), okşarcasına (as if strokes)
+        # Adv Adv ByDoingSo examples: olarak (by being), diyerek (by saying), belirterek (by specifying), koşarak (by running), çekerek (by pulling)
+        # Adv Adv SinceDoingSo examples: olalı (since being), geleli (since coming), dönüşeli (since returning), başlayalı (since starting), kapılalı
+        # Adv Adv When examples: görünce (when/on seeing), deyince (when we say), olunca (when), açılınca (when opening), gelince (when coming)
+        # Adv Adv While examples: giderken (en route), konuşurken (while talking), derken (while saying), çıkarken (on the way out), varken (when there is)
+        # Adv Adv WithoutHavingDoneSo examples: olmadan (without being), düşünmeden (without thinking), geçirmeden (without passing), çıkarmadan (without removing), almadan (without taking)
+        if($feature =~ m/^(AfterDoingSo|As|AsIf|ByDoingSo|SinceDoingSo|When|While|WithoutHavingDoneSo)$/)
+        {
+            $f{verbform} = 'trans';
+            $f{other}{advtype} = $feature;
+        }
+        elsif($feature =~ m/^(Ly|Since)$/)
+        {
+            $f{other}{advtype} = $feature;
+        }
 
         # gender
         $f{gender} = "masc" if $feature eq "Ma";
@@ -617,7 +646,7 @@ sub encode_features
     my $f = shift;
     # Add the features to the part of speech.
     my @features;
-    foreach my $feature ('voice', 'reflex', 'negativeness', 'aspect', 'mood', 'tense', 'copula', 'agreement', 'possagreement', 'case')
+    foreach my $feature ('voice', 'reflex', 'negativeness', 'aspect', 'mood', 'tense', 'copula', 'agreement', 'possagreement', 'case', 'advtype')
     {
         # There are reflexive pronouns and reflexive verbs. For pronouns, reflexivity is treated as POS, not FEAT.
         if($feature eq 'reflex' && $f->{pos} ne 'verb')
@@ -695,6 +724,13 @@ sub encode_features
                 push(@features, $outfeature);
             }
         }
+        elsif($feature eq 'advtype')
+        {
+            if(exists($f->{other}{advtype}))
+            {
+                push(@features, $f->{other}{advtype});
+            }
+        }
         else
         {
             my $value = $f->{$feature};
@@ -753,14 +789,12 @@ Adv	Adv	_
 Adv	Adv	AfterDoingSo
 Adv	Adv	As
 Adv	Adv	AsIf
-Adv	Adv	AsLongAs
 Adv	Adv	ByDoingSo
 Adv	Adv	Ly
 Adv	Adv	Since
 Adv	Adv	SinceDoingSo
 Adv	Adv	When
 Adv	Adv	While
-Adv	Adv	WithoutBeingAbleToHaveDoneSo
 Adv	Adv	WithoutHavingDoneSo
 Conj	Conj	_
 Det	Det	_
