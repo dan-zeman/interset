@@ -65,10 +65,10 @@ BEGIN
         "subcat"       => ["intr", "tran"],
         "verbform"     => ["fin", "inf", "sup", "part", "trans", "ger"],
         "mood"         => ["ind", "imp", "cnd", "pot", "sub", "jus", "qot", "opt", "des", "nec"],
-        "tense"        => ["past", "pres", "fut"],
-        "subtense"     => ["aor", "imp", "nar", "pqp"],
+        "tense"        => ["past", "narr", "pres", "fut"],
+        "subtense"     => ["aor", "imp", "pqp"],
         "aspect"       => ["imp", "perf", "pro", "prog"],
-        "voice"        => ["act", "pass", "rcp"],
+        "voice"        => ["act", "pass", "rcp", "cau"],
         "foreign"      => ["foreign"],
         "abbr"         => ["abbr"],
         "hyph"         => ["hyph"],
@@ -506,13 +506,13 @@ BEGIN
         [
             ["pres"],
             ["fut"],
-            ["past"]
+            ["past", "narr"],
+            ["narr", "past"]
         ],
         "subtense" =>
         [
             ["aor"],
             ["imp"],
-            ["nar"],
             ["pqp"]
         ],
         "aspect" =>
@@ -526,7 +526,8 @@ BEGIN
         [
             ["act"],
             ["pass"],
-            ["rcp"]
+            ["rcp"],
+            ["cau"]
         ],
         "abbr" =>
         [

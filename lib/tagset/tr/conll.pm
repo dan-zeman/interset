@@ -216,7 +216,6 @@ sub decode
         # +Stay ... stayed frozen whlie doing ... just two examples: şaşakalmıştık, uyuyakalmıştı (Google translates the latter as "fallen asleep")
         # +Start ... start doing immediately ... no occurrence
         ###!!! Loganathan's solution of marking the verbs as auxiliaries is not ideal. These are normal verb stems but with additional morphemes.
-        $f{subpos} = "aux" if $feature eq "Caus";
         $f{subpos} = "aux" if $feature eq "Able";
         $f{subpos} = "aux" if $feature eq "Repeat";
         $f{subpos} = "aux" if $feature eq "Start";
@@ -224,6 +223,9 @@ sub decode
         $f{subpos} = "aux" if $feature eq "Stay";
         $f{subpos} = "aux" if $feature eq "EverSince";
         $f{subpos} = "aux" if $feature eq "Almost";
+        # Verbs derived from nouns or adjectives:
+        1 if($feature eq 'Acquire'); # to acquire the noun
+        1 if($feature eq 'Become'); # to become the noun
 
         # The "Pres" tag is not frequent.
         # It occurs with "Verb Zero" more often than with "Verb Verb". It often occurs with copulae ("Cop").
@@ -236,7 +238,22 @@ sub decode
         $f{tense} = "fut" if $feature eq "Fut";
         # Pos|Past|A3sg examples: dedi (said), oldu (was), söyledi (said), geldi (came), sordu (asked)
         # Pos|Prog1|Past|A3sg examples: geliyordu (was coming), oturuyordu (was sitting), bakıyordu, oluyordu, titriyordu
-        $f{tense} = "past" if $feature eq "Past";
+        if($feature eq 'Past')
+        {
+            # Is it combined with another tense? At most two tenses can be combined together.
+            if($f{tense} eq 'narr')
+            {
+                $f{tense} = ['narr', 'past'];
+            }
+            elsif($f{tense} eq 'fut')
+            {
+                $f{tense} = ['fut', 'past'];
+            }
+            else
+            {
+                $f{tense} = 'past';
+            }
+        }
         # Pos|Narr|A3sg examples: olmuş (was), demiş (said), bayılmış (fainted), gelmiş (came), çıkmış (emerged)
         # Pos|Narr|Past|A3sg examples: başlamıştı (started), demişti (said), gelmişti (was), geçmişti (passed), kalkmıştı (sailed)
         # Pos|Prog1|Narr|A3sg examples: oluyormuş (was happening), bakıyormuş (was staring), çırpınıyormuş, yaşıyormuş, istiyormuş
@@ -248,12 +265,15 @@ sub decode
         # A newspaper will generally use the di-past, because it is authoritative.
         if($feature eq 'Narr')
         {
-            $f{tense} = 'past';
-            $f{subtense} = 'nar';
-            ###!!! Vyskytuje se i kombinace "Narr|Past", i když nevím, co znamená.
-            ###!!! Rád bych ji zaznamenal jako pole hodnot, čili tense = ['past', 'narr'].
-            ###!!! V tom případě ale musím hodnotu nar(r) přestěhovat ze subtense do tense.
-            ###!!! Stejně chci výhledově subtense zrušit.
+            # Is it combined with another tense? At most two tenses can be combined together.
+            if($f{tense} eq 'fut')
+            {
+                $f{tense} = ['fut', 'narr'];
+            }
+            else
+            {
+                $f{tense} = 'narr';
+            }
         }
         # Pos|Aor|A3sg examples: olur (will), gerekir (must), yeter (is enough), alır (takes), gelir (income)
         # Pos|Aor|Narr|A3sg examples: olurmuş (bustled), inanırmış, severmiş (loved), yaşarmış (lived), bitermiş
@@ -310,6 +330,13 @@ sub decode
         $f{reflex} = 'reflex' if($feature eq 'Reflex');
         # Recip|Pos|Past|A3sg example: karıştı (confused each other?)
         $f{voice} = 'rcp' if($feature eq 'Recip');
+        # Caus ... causative
+        # Oflazer's documentation classifies this as a value of the voice feature.
+        # Caus|Pos|Narr|A3sg examples: bastırmış (suppressed), bitirmiş (completed), oluşturmuş (created), çoğaltmış (multiplied), çıkartmış (issued)
+        # Caus|Pos|Past|A3sg examples: belirtti (said), bildirdi (reported), uzattı (extended), indirdi (reduced), sürdürdü (continued)
+        # Caus|Pos|Prog1|A3sg examples: karıştırıyor (is confusing), korkutuyor (is scaring), geçiriyor (is taking), koparıyor (is breaking), döktürüyor
+        # Caus|Pos|Prog1|Past|A3sg examples: karıştırıyordu (was scooping), geçiriyordu (was giving), dolduruyordu (was filling), sürdürüyordu (was continuing), azaltıyordu (was diminishing)
+        $f{voice} = "cau" if $feature eq "Caus";
 
         # Copula in Turkish is not an independent word. It is a bound morpheme (tur/tır/tir/dur etc.)
         # It is not clear to me though, what meaning it adds when attached to a verb.
@@ -448,17 +475,15 @@ my %enfeatable =
     'tense' =>
     {
         'past' => 'Past',
+        'narr' => 'Narr',
         'pres' => 'Pres',
         'fut'  => 'Fut'
-    },
-    'subtense' =>
-    {
-        'nar' => 'Narr'
     },
     'voice' =>
     {
         'pass' => 'Pass',
-        'rcp'  => 'Recip'
+        'rcp'  => 'Recip',
+        'cau'  => 'Caus'
     },
     'negativeness' =>
     {
@@ -490,11 +515,12 @@ sub encode_features
             {
                 push(@features, 'Aor');
             }
-            if($f->{subtense} =~ m/^(nar)$/)
+            # Aorist can be combined with Past or Narr.
+            if(ref($f->{tense}) eq 'ARRAY' && $f->{tense}[0] =~ m/^(fut|narr)$/ && $f->{tense}[1] =~ m/^(narr|past)$/)
             {
-                push(@features, 'Narr');
+                push(@features, $enfeatable{tense}{$f->{tense}[0]}, $enfeatable{tense}{$f->{tense}[1]});
             }
-            elsif($f->{tense} =~ m/^(past|pres|fut)$/)
+            elsif($f->{tense} =~ m/^(past|narr|pres|fut)$/)
             {
                 push(@features, $enfeatable{tense}{$f->{tense}});
             }
@@ -1141,7 +1167,7 @@ Verb	Verb	Able|Aor|A2sg
 Verb	Verb	Able|Aor|A3pl
 Verb	Verb	Able|Aor|Past|A3pl
 Verb	Verb	Able|Aor|A3sg
-Verb	Verb	Able|Aor|Cond|A3sg
+Verb	Verb	Able|Cond|Aor|A3sg
 Verb	Verb	Able|Aor|Narr|A3sg
 Verb	Verb	Able|Aor|Past|A1pl
 Verb	Verb	Able|Aor|Past|A1sg
@@ -1171,8 +1197,8 @@ Verb	Verb	Able|Neg|Aor|A2sg
 Verb	Verb	Able|Neg|Aor|A3pl
 Verb	Verb	Able|Neg|Aor|Past|A3pl
 Verb	Verb	Able|Neg|Aor|A3sg
-Verb	Verb	Able|Neg|Aor|Cond|A1sg
-Verb	Verb	Able|Neg|Aor|Cond|A2pl
+Verb	Verb	Able|Neg|Cond|Aor|A1sg
+Verb	Verb	Able|Neg|Cond|Aor|A2pl
 Verb	Verb	Able|Neg|Aor|Narr|A3sg
 Verb	Verb	Able|Neg|Aor|Past|A1sg
 Verb	Verb	Able|Neg|Aor|Past|A3sg
@@ -1274,7 +1300,7 @@ Verb	Verb	Caus|Pos|Aor|A1pl
 Verb	Verb	Caus|Pos|Aor|A1sg
 Verb	Verb	Caus|Pos|Aor|A2pl
 Verb	Verb	Caus|Pos|Aor|A3pl
-Verb	Verb	Caus|Pos|Aor|Cond|A3pl
+Verb	Verb	Caus|Pos|Cond|Aor|A3pl
 Verb	Verb	Caus|Pos|Aor|A3sg
 Verb	Verb	Caus|Pos|Aor|Past|A3sg
 Verb	Verb	Caus|Pos|Desr|A1sg
@@ -1338,10 +1364,10 @@ Verb	Verb	Neg|Aor|A2sg
 Verb	Verb	Neg|Aor|A3pl
 Verb	Verb	Neg|Aor|Past|A3pl
 Verb	Verb	Neg|Aor|A3sg
-Verb	Verb	Neg|Aor|Cond|A1pl
-Verb	Verb	Neg|Aor|Cond|A1sg
-Verb	Verb	Neg|Aor|Cond|A2pl
-Verb	Verb	Neg|Aor|Cond|A3sg
+Verb	Verb	Neg|Cond|Aor|A1pl
+Verb	Verb	Neg|Cond|Aor|A1sg
+Verb	Verb	Neg|Cond|Aor|A2pl
+Verb	Verb	Neg|Cond|Aor|A3sg
 Verb	Verb	Neg|Aor|Narr|A3sg
 Verb	Verb	Neg|Aor|Past|A1sg
 Verb	Verb	Neg|Aor|Past|A3sg
@@ -1380,7 +1406,7 @@ Verb	Verb	Neg|Opt|A3sg
 Verb	Verb	Neg|Past|A1pl
 Verb	Verb	Neg|Past|A1sg
 Verb	Verb	Neg|Past|A2pl
-Verb	Verb	Neg|Past|A2pl|Cond
+Verb	Verb	Neg|Cond|Past|A2pl
 Verb	Verb	Neg|Past|A2sg
 Verb	Verb	Neg|Past|A3pl
 Verb	Verb	Neg|Past|A3sg
@@ -1427,8 +1453,8 @@ Verb	Verb	Pass|Pos|Aor|A1sg
 Verb	Verb	Pass|Pos|Aor|A2sg
 Verb	Verb	Pass|Pos|Aor|A3pl
 Verb	Verb	Pass|Pos|Aor|A3sg
-Verb	Verb	Pass|Pos|Aor|Cond|A1sg
-Verb	Verb	Pass|Pos|Aor|Cond|A3sg
+Verb	Verb	Pass|Pos|Cond|Aor|A1sg
+Verb	Verb	Pass|Pos|Cond|Aor|A3sg
 Verb	Verb	Pass|Pos|Aor|Narr|A3sg
 Verb	Verb	Pass|Pos|Aor|Past|A3sg
 Verb	Verb	Pass|Pos|Desr|A3sg
@@ -1441,7 +1467,7 @@ Verb	Verb	Pass|Pos|Narr
 Verb	Verb	Pass|Pos|Narr|A2sg
 Verb	Verb	Pass|Pos|Narr|Past|A3pl
 Verb	Verb	Pass|Pos|Narr|A3sg
-Verb	Verb	Pass|Pos|Narr|Cond|A3sg
+Verb	Verb	Pass|Pos|Cond|Narr|A3sg
 Verb	Verb	Pass|Pos|Narr|Cop|A3sg
 Verb	Verb	Pass|Pos|Narr|Past|A3sg
 Verb	Verb	Pass|Pos|Neces|A3sg
@@ -1472,15 +1498,15 @@ Verb	Verb	Pos|Aor|A1sg
 Verb	Verb	Pos|Aor|A2pl
 Verb	Verb	Pos|Aor|A2sg
 Verb	Verb	Pos|Aor|A3pl
-Verb	Verb	Pos|Aor|Cond|A3pl
+Verb	Verb	Pos|Cond|Aor|A3pl
 Verb	Verb	Pos|Aor|Narr|A3pl
 Verb	Verb	Pos|Aor|Past|A3pl
 Verb	Verb	Pos|Aor|A3sg
-Verb	Verb	Pos|Aor|Cond|A1pl
-Verb	Verb	Pos|Aor|Cond|A1sg
-Verb	Verb	Pos|Aor|Cond|A2pl
-Verb	Verb	Pos|Aor|Cond|A2sg
-Verb	Verb	Pos|Aor|Cond|A3sg
+Verb	Verb	Pos|Cond|Aor|A1pl
+Verb	Verb	Pos|Cond|Aor|A1sg
+Verb	Verb	Pos|Cond|Aor|A2pl
+Verb	Verb	Pos|Cond|Aor|A2sg
+Verb	Verb	Pos|Cond|Aor|A3sg
 Verb	Verb	Pos|Aor|Narr|A1sg
 Verb	Verb	Pos|Aor|Narr|A3sg
 Verb	Verb	Pos|Aor|Past|A1pl
@@ -1523,15 +1549,15 @@ Verb	Verb	Pos|Imp|A3sg
 Verb	Verb	Pos|Narr
 Verb	Verb	Pos|Narr|A1pl
 Verb	Verb	Pos|Narr|A1sg
-Verb	Verb	Pos|Narr|A1sg|Cop
+Verb	Verb	Pos|Narr|Cop|A1sg
 Verb	Verb	Pos|Narr|A2pl
 Verb	Verb	Pos|Narr|A2sg
 Verb	Verb	Pos|Narr|A3pl
-Verb	Verb	Pos|Narr|Cond|A3pl
+Verb	Verb	Pos|Cond|Narr|A3pl
 Verb	Verb	Pos|Narr|Cop|A3pl
 Verb	Verb	Pos|Narr|Past|A3pl
 Verb	Verb	Pos|Narr|A3sg
-Verb	Verb	Pos|Narr|Cond|A3sg
+Verb	Verb	Pos|Cond|Narr|A3sg
 Verb	Verb	Pos|Narr|Cop|A3sg
 Verb	Verb	Pos|Narr|Past|A1pl
 Verb	Verb	Pos|Narr|Past|A1sg
@@ -1637,7 +1663,7 @@ end_of_list
     pop(@list) if($list[$#list] eq "");
     ###!!!
     # Temporarily exclude from tests tags that contain unsupported features.
-    @list = grep {$_ !~ m/(Zero|Able|Hastily|Stay)/} (@list);
+    @list = grep {$_ !~ m/(Zero|Able|Hastily|Stay|Become|Acquire)/} (@list);
     ###!!!
     return \@list;
 }
