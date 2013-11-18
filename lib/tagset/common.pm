@@ -497,7 +497,10 @@ BEGIN
             ["pot", "cnd"],
             ["sub", "cnd", "jus"],
             ["jus", "sub"],
-            ["qot", "ind"]
+            ["qot", "ind"],
+            ["opt", "des", "nec", "ind"],
+            ["des", "opt", "nec", "ind"],
+            ["nec", "des", "opt", "ind"]
         ],
         "tense" =>
         [
@@ -509,18 +512,21 @@ BEGIN
         [
             ["aor"],
             ["imp"],
+            ["nar"],
             ["pqp"]
         ],
         "aspect" =>
         [
             ["imp"],
             ["perf"],
-            ["pro"]
+            ["pro"],
+            ["prog", "imp"]
         ],
         "voice" =>
         [
             ["act"],
-            ["pass"]
+            ["pass"],
+            ["rcp"]
         ],
         "abbr" =>
         [

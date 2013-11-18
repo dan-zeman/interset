@@ -250,6 +250,10 @@ sub decode
         {
             $f{tense} = 'past';
             $f{subtense} = 'nar';
+            ###!!! Vyskytuje se i kombinace "Narr|Past", i když nevím, co znamená.
+            ###!!! Rád bych ji zaznamenal jako pole hodnot, čili tense = ['past', 'narr'].
+            ###!!! V tom případě ale musím hodnotu nar(r) přestěhovat ze subtense do tense.
+            ###!!! Stejně chci výhledově subtense zrušit.
         }
         # Pos|Aor|A3sg examples: olur (will), gerekir (must), yeter (is enough), alır (takes), gelir (income)
         # Pos|Aor|Narr|A3sg examples: olurmuş (bustled), inanırmış, severmiş (loved), yaşarmış (lived), bitermiş
