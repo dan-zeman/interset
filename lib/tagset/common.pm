@@ -37,7 +37,7 @@ BEGIN
                            "aux", "cop", "mod", "verbconj", "mod", "ex", "voc", "post", "circ", "preppron", "comprep",
                            "coor", "sub", "comp", "emp", "res", "inf", "vbp"],
         "prontype"     => ["prs", "rcp", "int", "rel", "dem", "neg", "ind", "tot"],
-        "numtype"      => ["card", "ord", "mult", "frac", "gen", "dist"],
+        "numtype"      => ["card", "ord", "mult", "frac", "gen", "dist", "range"],
         "numform"      => ["word", "digit", "roman"],
         "numvalue"     => ["1", "2", "3"],
         "advtype"      => ["man", "loc", "tim", "deg", "cau"],
@@ -306,7 +306,8 @@ BEGIN
             ["mult", "card"],
             ["frac", "card"],
             ["gen", "card"],
-            ["dist", "card"]
+            ["dist", "card"],
+            ["range", "card"]
         ],
         "numform" =>
         [
