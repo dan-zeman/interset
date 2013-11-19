@@ -9,6 +9,45 @@ use open ':utf8';
 
 
 
+###!!! Tato tabulka se zatím nepoužívá, ale brzy na ni přejdu.
+my %postable =
+(
+    'Noun Noun'      => ['pos' => 'noun'],
+    'Noun Prop'      => ['pos' => 'noun', 'subpos' => 'prop'],
+    'Noun Zero'      => ['pos' => 'noun', 'other' => {'zero' => 1}],
+    'Noun NInf'      => ['pos' => 'noun', 'verbform' => 'inf'],
+    'Noun NFutPart'  => ['pos' => 'noun', 'verbform' => 'part', 'tense' => 'fut'],
+    'Noun NPresPart' => ['pos' => 'noun', 'verbform' => 'part', 'tense' => 'pres'],
+    'Noun NPastPart' => ['pos' => 'noun', 'verbform' => 'part', 'tense' => 'past'],
+    'Pron PersP'     => ['pos' => 'noun', 'prontype' => 'prs'],
+    'Pron ReflexP'   => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex'],
+    'Pron Pron'      => ['pos' => 'noun', 'prontype' => 'rcp'],
+    'Pron DemonsP'   => ['pos' => 'noun', 'prontype' => 'dem'],
+    'Pron QuesP'     => ['pos' => 'noun', 'prontype' => 'int'],
+    'Adj Adj'        => ['pos' => 'adj'],
+    'Adj Zero'       => ['pos' => 'adj', 'other' => {'zero' => 1}],
+    'Adj AFutPart'   => ['pos' => 'adj', 'verbform' => 'part', 'tense' => 'fut'],
+    'Adj APresPart'  => ['pos' => 'adj', 'verbform' => 'part', 'tense' => 'pres'],
+    'Adj APastPart'  => ['pos' => 'adj', 'verbform' => 'part', 'tense' => 'past'],
+    'Det Det'        => ['pos' => 'adj', 'subpos' => 'det'],
+    'Num Card'       => ['pos' => 'num', 'numtype' => 'card'],
+    'Num Ord'        => ['pos' => 'num', 'numtype' => 'ord'],
+    'Num Distrib'    => ['pos' => 'num', 'numtype' => 'dist'],
+    'Num Range'      => ['pos' => 'num', 'numtype' => 'range'],
+    'Num Real'       => ['pos' => 'num', 'numform' => 'digit'],
+    'Verb Verb'      => ['pos' => 'verb'],
+    'Verb Zero'      => ['pos' => 'verb', 'other' => {'zero' => 1}],
+    'Adv Adv'        => ['pos' => 'adv'],
+    'Postp Postp'    => ['pos' => 'prep'],
+    'Conj Conj'      => ['pos' => 'conj'],
+    'Ques Ques'      => ['pos' => 'part', 'prontype' => 'int'],
+    'Dup Dup'        => ['pos' => '', 'echo' => 'rdp'],
+    'Interj Interj'  => ['pos' => 'int'],
+    'Punc Punc'      => ['pos' => 'punc']
+);
+
+
+
 #------------------------------------------------------------------------------
 # Takes tag string.
 # Returns feature hash.
