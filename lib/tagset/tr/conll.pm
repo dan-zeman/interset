@@ -22,6 +22,7 @@ sub decode
     my ($pos, $subpos, $features) = split(/\s+/, $tag);
 
     # nouns
+    # Noun Noun A3sg|Pnon|Nom examples: şey (thing), gün (day), zaman (time), kadın (woman), yıl (year)
     if($pos eq 'Noun')
     {
         $f{pos} = "noun";
@@ -1051,9 +1052,6 @@ Noun	Noun	Ness|A3sg|Pnon|Gen
 Noun	Noun	Ness|A3sg|Pnon|Ins
 Noun	Noun	Ness|A3sg|Pnon|Loc
 Noun	Noun	Ness|A3sg|Pnon|Nom
-Noun	Noun	NotState|A3sg|Pnon|Dat
-Noun	Noun	NotState|A3sg|Pnon|Nom
-Noun	Noun	Time|A3sg|Pnon|Loc
 Noun	NPastPart	A3pl|P1sg|Abl
 Noun	NPastPart	A3pl|P1sg|Acc
 Noun	NPastPart	A3pl|P1sg|Dat
@@ -1833,7 +1831,7 @@ end_of_list
     pop(@list) if($list[$#list] eq "");
     ###!!!
     # Temporarily exclude from tests tags that contain unsupported features.
-    @list = grep {$_ !~ m/(Zero|Able|Hastily|Stay|Become|Acquire|Agt|Dim|Inf2|Inf3|Ness|NotState|Time)/} (@list);
+    @list = grep {$_ !~ m/(Zero|Able|Hastily|Stay|Become|Acquire|Agt|Dim|Inf2|Inf3|Ness)/} (@list);
     ###!!!
     return \@list;
 }
