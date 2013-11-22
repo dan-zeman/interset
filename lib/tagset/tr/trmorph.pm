@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 # Interset driver for the TRmorph Turkish tags
+# This one works with the new TRmorph version as of fall 2013.
 # Copyright © 2013 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
@@ -9,89 +10,176 @@ use open ':utf8';
 
 
 
-###!!! The symbols used in TRmorph 0.2.2 are described in $TRMORPH/doc/symbols.
-###!!! But not all of them! For instance, one of the analyses returned for 'olmak'
-###!!! contains '<vinf>', which is not documented in doc/symbols (although it is
-###!!! not difficult to guess that it denotes the infinitive).
+# The symbols are documented in
+# Çağrı Çöltekin (2013, draft October 12): 'TRmorph: A morphological analyzer for Turkish'
+# https://github.com/coltekin/TRmorph/blob/master/doc/trmorph-manual.pdf
 my %symtable =
 (
-    '1p' => ['person' => '1', 'number' => 'plu'], # A1pl
-    '1s' => ['person' => '1', 'number' => 'sing'], # A1sg
-    '2p' => ['person' => '2', 'number' => 'plu'], # A2pl
-    '2s' => ['person' => '2', 'number' => 'sing'], # A2sg
-    '3p' => ['person' => '3', 'number' => 'plu'], # A3pl
-    '3s' => ['person' => '3', 'number' => 'sing'], # A3sg
-    'abil' => [], # Able (gör-<b>ebil</b> `to be able to see')
-    'abl' => ['case' => 'abl'], # Abl
-    'acc' => ['case' => 'acc'], # Acc
-    'adj' => ['pos' => 'adj'], # Adj
-    'adur' => [], # Repeat (not very productive)
-    'adv' => ['pos' => 'adv'], # Adv
-    'agel' => [], # EverSince (not very productive)
-    'agor' => [], # Repeat (not very productive)
-    'akal' => [], # Stay (not very productive)
-    'akoy' => [], # Start (not very productive)
-    'ayaz' => [], # Almost (not very productive)
-    'caus' => ['voice' => 'cau'], # Caus (can be attached to the same stem multiple times: yika-<b>t</b>-<b>tır</b> `to make someone have (something) washed')
-    'cnjadv' => ['pos' => 'adv', 'subpos' => 'coor'], # Conjunctive adverb (discourse connective)
-    'cnjcoo' => ['pos' => 'conj', 'subpos' => 'coor'], # Coordinating conjunction
-    'cnjsub' => ['pos' => 'conj', 'subpos' => 'sub'], # Subordinating conjunction
-    'cpl_di' => ['tense' => 'past'], # Past copula (gel-iyor `he/she/it is coming', gel-iyor-<b>du</b> `he/she/it was coming')
-    'cpl_ken' => ['pos' => 'adv'], # Makes adverbs. Behaves like a copula (gel-iyor-<b>ken</b> `while she/you/I/we/.. is/are coming')
-    'cpl_mis' => ['tense' => 'narr'], # Evidential copula (gel-iyor `he/she/it is coming', gel-iyor-<b>muş</b> `(it is said that) he/she/it was coming')
-    'cpl_sa' => ['mood' => 'cond'], # Conditional copula (gel-iyor `he/she/it is coming', gel-iyor-<b>sa</b> `if he/she/it is coming')
-    'cv' => [], # Converb markers (see more notes in doc; gör-<b>mek</b> için gittim `I went in order to see')
-    'dat' => ['case' => 'dat'], # Dat
-    'dem' => ['prontype' => 'dem'],
-    'dir' => [], # Cop (see more notes in doc)
-    'exist' => ['subpos' => 'ex'], # Existential particle 'var'
-    'gen' => ['case' => 'gen'], # Gen
-    'ij' => ['pos' => 'int'], # Interj
-    'ins' => ['case' => 'ins'], # Ins
-    'iver' => [], # Hastily
-    'ki' => [], # Rel
-    'loc' => ['case' => 'loc'], # Loc
-    'locp' => [], # Locative pronoun (only three words)
-    'n' => ['pos' => 'noun'], # Noun
-    'neg' => ['negativeness' => 'neg'], # Neg
-    'nexist' => ['subpos' => 'ex', 'negativeness' => 'neg'], # Negative Existential particle `yok'
-    'not' => ['pos' => 'part', 'negativeness' => 'neg'], # Negative marker `değil'
-    'np' => ['pos' => 'noun', 'subpos' => 'prop'], # Noun Prop
-    'num' => ['pos' => 'num'], # Number
-    'p1p' => ['poss' => 'poss', 'possperson' => '1', 'possnumber' => 'plu'], # POS1P
-    'p1s' => ['poss' => 'poss', 'possperson' => '1', 'possnumber' => 'sing'], # POS1S
-    'p2p' => ['poss' => 'poss', 'possperson' => '2', 'possnumber' => 'plu'], # POS2P
-    'p2s' => ['poss' => 'poss', 'possperson' => '2', 'possnumber' => 'sing'], # POS2S
-    'p3p' => ['poss' => 'poss', 'possperson' => '3', 'possnumber' => 'plu'], # POS3P
-    'p3s' => ['poss' => 'poss', 'possperson' => '3', 'possnumber' => 'sing'], # POS3S
-    'part_acak' => ['verbform' => 'part'], # Participle marker
-    'part_dik' => ['verbform' => 'part'], # Participle marker (gör-<b>düğ</b>-üm film `the movie that I saw')
-    'part_yan' => ['verbform' => 'part'], # Participle marker
-    'pass' => ['voice' => 'pass'], # Pass (sev-<b>il</b> `to be loved')
-    'pers' => ['pos' => 'noun', 'prontype' => 'prs'],
-    'pl' => ['number' => 'plu'], # PL
-    'pnct' => ['pos' => 'punc'], # Punc
-    'postp' => ['pos' => 'prep', 'sub' => 'post'], # Postp
-    'prn' => ['pos' => 'noun', 'prontype' => 'prs'], # Pronoun
-    'qst' => ['pos' => 'noun', 'prontype' => 'int'], # Question particle that acts like pronoun. Göksel & Kerlaske (2005) call it "interrogative pronoun".
-    'rec' => ['voice' => 'rcp'], # Recip (sev `to love' -> sev-<b>iş</b> `to love each other' or `make love')
-    'ref' => ['reflex' => 'reflex'], # Refl (yıka `to wash' -> yıka-<b>n</b> `to wash oneself')
-    't_aor' => ['subtense' => 'aor'], # Aor (gör-<b>ür</b> `he/she/it sees (something)')
-    't_cond' => ['mood' => 'des'], # Oflazer: Desr. But Çöltekin calls it Conditional (gör-<b>se</b> `if he/she/it sees')
-    't_cont' => ['aspect' => 'prog'], # Prog1 (gör-<b>üyor</b> `he/she/it is seeing (something)')
-    't_fut' => ['tense' => 'fut'], # Fut (gör-<b>ecek</b> `he/she/it will se (something)')
-    't_makta' => ['aspect' => 'prog'], # Prog2; This is similar to t_cont, but used less frequently. Most of the time it is used in formal situations, and has a more definite progressive sense (-yor can be used for future events as well). (gör-<b>mekte</b> `he/she/it is seeing (something)')
-    't_narr' => ['tense' => 'narr'], # Narr (gör-<b>müş</b> `it is evident/said that he/she/it saw (something)')
-    't_obl' => ['mood' => 'nec'], # Neces (gör-<b>meli</b> `he/she/it must see (something)')
-    't_opt' => ['mood' => 'opt'], # Opt (Çöltekin's documentation says that Oflazer's equivalent is Imp. Is that a mistake?) (bitir-<b>e</b> `(I) wish/hope/order that he/she/it finishes')
-    't_past' => ['tense' => 'past'], # Past (gör-<b>dü</b> `he/she/it saw (something)')
-    'v' => ['pos' => 'verb'], # Verb
-    'vaux' => ['pos' => 'verb', 'subpos' => 'aux'], # Auxiliary verb
-    'vn_acak' => ['pos' => 'noun'], # Verbal noun marker. It forms noun clauses from non-finite verbs (adam ol-<b>acak</b> çocuk =??? `child that will become man'???)
-    'vn_dik' => ['pos' => 'noun'], # Verbal noun marker.
-    'vn_ma' => ['pos' => 'noun'], # Verbal noun marker.
-    'vn_mak' => ['pos' => 'noun'], # Verbal noun marker (gör-<b>mey</b>-e gittim `I went to see')
-    'vn_yis' => ['pos' => 'noun'], # Verbal noun marker.
+    # Part of speech tags
+    'Alpha' => [], ###!!! Symbols of the alphabet
+    'Adj' => ['pos' => 'adj'],
+    'Adj:partial' => ['pos' => 'adj', 'hyph' => 'hyph'], # Part of multi-word adjective
+    'Adv' => ['pos' => 'adv'],
+    'Adv:qst' => ['pos' => 'adv', 'prontype' => 'int'],
+    'Adv:partial' => ['pos' => 'adv', 'hyph' => 'hyph'], # Part of multi-word adverb, e.g. "apar topar" = "hurriedly"
+    'Cnj' => ['pos' => 'conj'],
+    'Cnj:coo' => ['pos' => 'conj', 'subpos' => 'coor'],
+    'Cnj:adv' => ['pos' => 'conj'], ###!!!
+    'Cnj:sub' => ['pos' => 'conj', 'subpos' => 'sub'], # Only three borrowings from Persian: "ki", "eğer", "şayet"
+    'Cnj:partial' => ['pos' => 'conj', 'hyph' => 'hyph'], # Part of multi-word conjunction, e.g. "ya ... ya" = "either ... or"
+    'Cnj:coo:partial' => ['pos' => 'conj', 'subpos' => 'coor', 'hyph' => 'hyph'], # Part of multi-word conjunction, e.g. "ya ... ya" = "either ... or"
+    'Det' => ['pos' => 'adj', 'subpos' => 'det'],
+    'Det:def' => ['pos' => 'adj', 'subpos' => 'det', 'definiteness' => 'def', 'prontype' => 'dem'],
+    'Det:indef' => ['pos' => 'adj', 'subpos' => 'det', 'definiteness' => 'ind', 'prontype' => 'ind'],
+    'Det:qst' => ['pos' => 'adj', 'subpos' => 'det', 'prontype' => 'int'], # "ne kadar" = "how much", "hangi" = "which"
+    'Exist' => ['pos' => 'verb', 'subpos' => 'exist'], # Existential verbs/particles "var" and "yok"
+    'Exist:neg' => ['pos' => 'verb', 'subpos' => 'exist', 'negativeness' => 'neg'], # Negative existential verb/particle "yok"
+    'Ij' => ['pos' => 'int'],
+    'N' => ['pos' => 'noun'],
+    'N:prop' => ['pos' => 'noun', 'subpos' => 'prop'],
+    'N:abbr' => ['pos' => 'noun', 'abbr' => 'abbr'],
+    'N:prop:abbr' => ['pos' => 'noun', 'subpos' => 'prop', 'abbr' => 'abbr'],
+    'N:partial' => ['pos' => 'noun', 'hyph' => 'hyph'], # Part of multi-word noun
+    'Not' => ['pos' => 'part', 'negativeness' => 'neg'], # Negative marker "değil"
+    'Num' => ['pos' => 'num'],
+    'Num:ara' => ['pos' => 'num', 'numform' => 'digit'],
+    'Num:rom' => ['pos' => 'num', 'numform' => 'roman'],
+    'Num:qst' => ['pos' => 'num', 'numtype' => 'card', 'prontype' => 'int'], # "kaç" = "how many"
+    'Onom' => [], # Onomatopoeia ###!!!
+    'Postp' => ['pos' => 'prep', 'subpos' => 'post'],
+    'Postp:adj' => ['pos' => 'prep', 'subpos' => 'post', 'synpos' => 'attr'], # Postpositional phrase acts as adjective
+    'Postp:adv' => ['pos' => 'prep', 'subpos' => 'post', 'synpos' => 'adv'], # Postpositional phrase acts as adverb
+    'Postp:ablC' => ['pos' => 'prep', 'subpos' => 'post', 'case' => 'abl'],
+    'Postp:accC' => ['pos' => 'prep', 'subpos' => 'post', 'case' => 'acc'],
+    'Postp:datC' => ['pos' => 'prep', 'subpos' => 'post', 'case' => 'dat'],
+    'Postp:genC' => ['pos' => 'prep', 'subpos' => 'post', 'case' => 'gen'],
+    'Postp:insC' => ['pos' => 'prep', 'subpos' => 'post', 'case' => 'ins'],
+    'Postp:liC' => ['pos' => 'prep', 'subpos' => 'post'], ###!!! Requires the noun to have suffix "-li" or "-siz". These are not case markers.
+    'Postp:nomC' => ['pos' => 'prep', 'subpos' => 'post', 'case' => 'nom'],
+    'Prn' => ['pos' => 'noun', 'prontype' => 'prs'], # Pronoun (not necessarily personal but this is the default non-empty value)
+    'Prn:pers' => ['pos' => 'noun', 'prontype' => 'prs'],
+    'Prn:pers:1s' => ['pos' => 'noun', 'prontype' => 'prs', 'person' => '1', 'number' => 'sing'], # I
+    'Prn:pers:2s' => ['pos' => 'noun', 'prontype' => 'prs', 'person' => '2', 'number' => 'sing'], # thou
+    'Prn:pers:3s' => ['pos' => 'noun', 'prontype' => 'prs', 'person' => '3', 'number' => 'sing'], # he/she/it
+    'Prn:pers:1p' => ['pos' => 'noun', 'prontype' => 'prs', 'person' => '1', 'number' => 'plu'], # we
+    'Prn:pers:2p' => ['pos' => 'noun', 'prontype' => 'prs', 'person' => '2', 'number' => 'plu'], # you
+    'Prn:pers:3p' => ['pos' => 'noun', 'prontype' => 'prs', 'person' => '3', 'number' => 'plu'], # they
+    'Prn:refl' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex'], # "kendi" = "oneself"
+    'Prn:dem' => ['pos' => 'noun', 'prontype' => 'dem'],
+    'Prn:locp' => ['pos' => 'noun', 'advtype' => 'loc'],
+    'Prn:qst' => ['pos' => 'noun', 'prontype' => 'int'],
+    'Prn:pers:qst' => ['pos' => 'noun', 'prontype' => 'int', 'animateness' => 'anim'], ###!!! Example is "kim" = "who"
+    'Punc' => ['pos' => 'punc'],
+    'Q' => ['pos' => 'part', 'prontype' => 'int'], # Question particle "mi"
+    'q' => ['pos' => 'part', 'prontype' => 'int'], # Question particle "mi" put into one token with the verb (the token contains space)
+    'V' => ['pos' => 'verb'],
+    'V:partial' => ['pos' => 'verb', 'hyph' => 'hyph'], # Part of multi-word verb
+    # Derivational tags. They should be followed by a new POS tag.
+    '0' => [], # Zero derivation
+    'ki' => [], # The suffix "-ki" creates adjectives from genitive or locative nouns.
+    # Verb from verb derivations
+    'abil' => [], ###!!! ability ("-abil") ("görebil" = "to be able to see")
+    'iver' => [], ###!!! immediacy ("-iver") Hastily ("giriverir" = "he/she/it bounces"; "girer" = "he/she/it enters")
+    'agel' => [], ###!!! habitual/long term ("-agel") EverSince (not very productive)
+    'adur' => [], ###!!! repetition/continuity ("-adur") # Repeat (not very productive)
+    'ayaz' => [], ###!!! almost ("-ayaz") Almost (not very productive)
+    'akal' => [], ###!!! stop/freeze in action ("-akal") Stay (not very productive) ("şaşakalmıştık" = "we were astonished"; "şaşmıştık" = "we were surprised")
+    'agor' => [], ###!!! somewhat like <iver> ("-agör") Repeat (not very productive)
+    # Subordinating suffixes. They attach to an untensed verb and make them head of subordinated clause.
+    # TRmorph treats them as derivational suffixes, therefore they are followed by a new POS tag (<N>, <Adj> or <Adv>).
+    # Verbal nouns. These suffixes create relative clauses that behave like nouns (subjects or objects).
+    'vn:inf' => ['pos' => 'noun', 'verbform' => 'inf'], # Infinitive ("-ma", "-mak")
+    'vn:yis' => ['pos' => 'noun'], # ("-iş")
+    'vn:past' => ['pos' => 'noun', 'verbform' => 'part', 'tense' => 'past'], # Past nominal participle ("-dik")
+    'vn:pres' => ['pos' => 'noun', 'verbform' => 'part', 'tense' => 'pres'], # Present nominal participle ("-an")
+    'vn:fut' => ['pos' => 'noun', 'verbform' => 'part', 'tense' => 'fut'], # Future nominal participle ("-acak")
+    # (Adjectival) participles. These suffixes create relative clauses that behave like adjectives (attributes).
+    'part:past' => ['pos' => 'adj', 'verbform' => 'part', 'tense' => 'past'], # Past participle ("-dik")
+    'part:pres' => ['pos' => 'adj', 'verbform' => 'part', 'tense' => 'pres'], # Present participle ("-an")
+    'part:fut' => ['pos' => 'adj', 'verbform' => 'part', 'tense' => 'fut'], # Future participle ("-acak")
+    # Converbs. These suffixes create relative clauses that behave like adverbs (adverbials).
+    'cv:ip' => [], ###!!! ("-ip")
+    'cv:meksizin' => [], ###!!! ("-meksizin")
+    'cv:ince' => [], ###!!! ("-ince")
+    'cv:erek' => [], ###!!! ("-erek")
+    'cv:eli' => [], ###!!! ("-eli")
+    'cv:dikce' => [], ###!!! ("-dikçe")
+    'cv:esiye' => [], ###!!! ("-esiye")
+    'cv:den' => [], ###!!! ("-den")
+    'cv:cesine' => [], ###!!! ("-cesine")
+    'cv:ya' => [], ###!!! ("-a")
+    'cv:ken' => [], ###!!! ("-ken")
+    # Other derivations
+    # <li> and <siz>: see under inflectional tags for cases.
+    # <dir>: see copulae
+    'lik' => [], ###!!! noun -> noun, adjective -> noun, adverb -> noun
+    'dim' => [], ###!!! noun -> noun ("-cik", "-cak", "-cağiz")
+    'ci' => [], ###!!! noun -> noun, noun -> adjective
+    'arasi' => [], ###!!! noun -> adjective
+    'imsi' => [], ###!!! noun -> adjective
+    'ca' => [], ###!!! noun/adverb -> adverb, adjective/number -> adjective
+    'yici' => [], ###!!! verb -> adjective
+    'cil' => [], ###!!! noun -> adjective
+    'gil' => [], ###!!! noun -> noun
+    'lan' => [], ###!!! adjective -> verb
+    'las' => [], ###!!! noun -> verb, adjective -> verb
+    'yis' => [], ###!!! verb -> noun
+    'esi' => [], ###!!! verb -> adjective
+    'sal' => [], ###!!! noun -> adjective
+    'la' => [], ###!!! noun -> verb, onomatopoeia -> verb
+    # Inflectional tags
+    'pl' => ['number' => 'plu'], # "-lar"
+    'p1s' => ['poss' => 'poss', 'possperson' => '1', 'possnumber' => 'sing'], # "-im" ("my")
+    'p2s' => ['poss' => 'poss', 'possperson' => '2', 'possnumber' => 'sing'], # "-in" ("your")
+    'p3s' => ['poss' => 'poss', 'possperson' => '3', 'possnumber' => 'sing'], # "-si" ("his/her/its")
+    'p1p' => ['poss' => 'poss', 'possperson' => '1', 'possnumber' => 'plu'], # "-imiz" ("our")
+    'p2p' => ['poss' => 'poss', 'possperson' => '2', 'possnumber' => 'plu'], # "-iniz" ("your")
+    'p3p' => ['poss' => 'poss', 'possperson' => '3', 'possnumber' => 'plu'], # "-lari" ("their")
+    'acc' => ['case' => 'acc'], # "-i" (accusative)
+    'dat' => ['case' => 'dat'], # "-a" (dative)
+    'abl' => ['case' => 'abl'], # "-dan" (ablative)
+    'loc' => ['case' => 'loc'], # "-da" (locative)
+    'gen' => ['case' => 'gen'], # "-in" (genitive)
+    'ins' => ['case' => 'ins'], # "-la" (instrumental)
+    'li' => [], ###!!! suffix "-li" is not a case marker but it behaves so and occupies the case slot; also a derivational suffix noun -> adj/adv
+    'siz' => [], ###!!! suffix "-siz" is not a case marker but it behaves so and occupies the case slot; also a derivational suffix noun -> adj/adv
+    'ncomp' => [], ###!!! optional tag, disabled by default; marks the head of multi-word noun compounds; e.g. "at arabası" = "horse carriage", the suffix "-sı" marks the head of the compound (but it is ambiguous and could be also interpreted as possessive suffix)
+    # Any nominal can become predicate with one of the copular suffixes "-di", "-miş", "-sa" or "-(y)".
+    # Example: "öğrenci" = "student"; "öğrenciydik" = "we were students"; "öğrenciymişler" = "they were students";
+    # "öğrenciysen" = "if you are a student"; "öğrenciyim" = "I am a student"
+    # Copular suffixes create verbs from nouns, so they are accompanied by <V>.
+    # (In fact, there is first a zero derivation of verb from noun, then the copula, as in "<N><0><V><cpl:past><1p>".)
+    'cpl:pres' => ['tense' => 'pres'], # "öğrenciyim" = "I am a student"
+    'cpl:past' => ['tense' => 'past'], # "öğrenciydik" = "we were students"
+    'cpl:evid' => ['tense' => 'narr'], # "öğrenciymişler" = "they [reportedly] were students"
+    'cpl:cond' => ['mood' => 'cond'], # "öğrenciysen" = "if you are a student"
+    '1s' => ['person' => '1', 'number' => 'sing'], # "öğrenciyim" = "I am a student"
+    '2s' => ['person' => '2', 'number' => 'sing'], # "öğrenciysen" = "if you are a student"
+    '3s' => ['person' => '3', 'number' => 'sing'], # "öğretmen" = "he/she is a teacher"
+    '1p' => ['person' => '1', 'number' => 'plu'], # "öğrenciydik" = "we were students"
+    '2p' => ['person' => '2', 'number' => 'plu'], #
+    '3p' => ['person' => '3', 'number' => 'plu'], # "doktor" = "they are doctors"
+    'dir' => [], ###!!! Göksel and Kerslake (2005) call this "generalizing modality marker"; it substitutes overt copula, it is common with 3s, disambiguates between noun and predicate readings; <dir> can also be a derivation from noun to adverb
+    'dist' => ['pos' => 'num', 'numtype' => 'dist'], # distributive numeral: "birer" = "one each"; "ikişer" = "two each"
+    'ord' => ['pos' => 'num', 'numtype' => 'ord'], # ordinal number: "birinci" = "first"; "ikinci" = "second"
+    'perc' => [], ###!!! Percent sign ("%") before a number is treated like a prefix and tagged "<perc>".
+    # Verbal voice suffixes (TRmorph treats them as derivations and adds a <V> tag after them.)
+    'rfl' => ['reflex' => 'reflex'],
+    'rcp' => ['voice' => 'rcp'],
+    'caus' => ['voice' => 'caus'], # This suffix can be used repetitively.
+    'pass' => ['voice' => 'pass'],
+    'neg' => ['negativeness' => 'neg'], # Negative suffix "-ma" in verbs. Nominal predicates use the particle "değil" instead.
+    # Tense/aspect/modality suffixes for verbs
+    'evid' => ['tense' => 'narr'], # Evidential past (perfective) ("-miş")
+    'fut' => ['tense' => 'fut'], # Future ("-acak")
+    'obl' => ['mood' => 'nec'], # Obligative ("-mali")
+    'impf' => [], ###!!! Imperfective ("-makta")
+    'cont' => ['aspect' => 'prog'], # Imperfective ("-yor")
+    'past' => ['tense' => 'past'], # Past ("-di")
+    'cond' => ['mood' => 'cond'], # Conditional ("-sa")
+    'opt' => ['mood' => 'opt'], # Optative ("-a")
+    'imp' => ['mood' => 'imp'], # Imperative ("-")
+    'aor' => ['subtense' => 'aor'], # Aorist ("-ar", "-ir" etc.)
 );
 
 
