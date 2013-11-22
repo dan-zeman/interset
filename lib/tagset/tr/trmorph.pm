@@ -173,7 +173,7 @@ my %symtable =
     'evid' => ['tense' => 'narr'], # Evidential past (perfective) ("-miş")
     'fut' => ['tense' => 'fut'], # Future ("-acak")
     'obl' => ['mood' => 'nec'], # Obligative ("-mali")
-    'impf' => [], ###!!! Imperfective ("-makta")
+    'impf' => ['aspect' => 'prog'], ###!!! Imperfective ("-makta")
     'cont' => ['aspect' => 'prog'], # Imperfective ("-yor")
     'past' => ['tense' => 'past'], # Past ("-di")
     'cond' => ['mood' => 'cond'], # Conditional ("-sa")
