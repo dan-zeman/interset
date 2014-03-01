@@ -1109,31 +1109,28 @@ sub encode
         }
         elsif($f{verbform} eq "part")
         {
-            if($f{voice} eq "act")
-            {
-                if($f{subpos} eq "verbconj")
-                {
-                    $tag[1] = "q";
-                }
-                else
-                {
-                    $tag[1] = "p";
-                }
-            }
-            elsif($f{voice} eq "pass")
+            if($f{voice} eq "pass")
             {
                 $tag[1] = "s";
+            }
+            elsif($f{subpos} eq "verbconj")
+            {
+                $tag[1] = "q";
+            }
+            else # default is active past/conditional participle
+            {
+                $tag[1] = "p";
             }
         }
         elsif($f{verbform} eq "trans")
         {
-            if($f{tense} eq "pres")
-            {
-                $tag[1] = "e";
-            }
-            elsif($f{tense} eq "past")
+            if($f{tense} eq "past")
             {
                 $tag[1] = "m";
+            }
+            else # default is present transgressive
+            {
+                $tag[1] = "e";
             }
         }
         elsif($f{abbr} eq "abbr")
