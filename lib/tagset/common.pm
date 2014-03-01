@@ -1,16 +1,17 @@
 #!/usr/bin/perl
 # Module with service functions for tagset drivers.
-# Copyright © 2007-2011 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2007-2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 # 4.4.2009: numtype and numvalue separated from subpos, new generic numerals
 # 5.4.2009: advtype separated from subpos
+# 1.3.2014: new feature morphpos
 
 package tagset::common;
 use utf8;
-use open ":utf8";
-binmode(STDIN, ":utf8");
-binmode(STDOUT, ":utf8");
-binmode(STDERR, ":utf8");
+use open ':utf8';
+binmode(STDIN, ':utf8');
+binmode(STDOUT, ':utf8');
+binmode(STDERR, ':utf8');
 use Carp; # confess()
 
 
@@ -22,7 +23,7 @@ BEGIN
 {
     @known_features =
     (
-        "pos", "subpos", "prontype", "numtype", "numform", "numvalue", "advtype", "punctype", "puncside", "synpos",
+        "pos", "subpos", "prontype", "numtype", "numform", "numvalue", "advtype", "punctype", "puncside", "synpos", "morphpos",
         "poss", "reflex", "negativeness", "definiteness",
         "gender", "animateness", "number", "case", "prepcase", "degree",
         "person", "politeness", "possgender", "possperson", "possnumber", "possednumber",
@@ -44,6 +45,7 @@ BEGIN
         "punctype"     => ["peri", "qest", "excl", "quot", "brck", "comm", "colo", "semi", "dash", "symb", "root"],
         "puncside"     => ["ini", "fin"],
         "synpos"       => ["subst", "attr", "adv", "pred"],
+        "morphpos"     => ["noun", "adj", "pron", "num", "adv", "mix", "def"],
         "poss"         => ["poss"],
         "reflex"       => ["reflex"],
         "negativeness" => ["pos", "neg"],
@@ -179,7 +181,7 @@ BEGIN
     @features =
     (
         "pos", "abbr", "hyph", "echo", "subcat", "verbform", "mood",
-        "prontype", "numtype", "numform", "numvalue", "advtype", "punctype", "puncside", "subpos", "synpos",
+        "prontype", "numtype", "numform", "numvalue", "advtype", "punctype", "puncside", "subpos", "synpos", "morphpos",
         "poss", "reflex", "degree", "negativeness", "definiteness",
         "person", "tense", "voice", "aspect", "subtense",
         "gender", "animateness", "number", "case", "prepcase",
@@ -354,6 +356,15 @@ BEGIN
             ["attr"],
             ["adv"],
             ["pred"]
+        ],
+        "morphpos" =>
+        [
+            ["mix"],
+            ["noun"],
+            ["adj"],
+            ["pron"],
+            ["num"],
+            ["def"]
         ],
         "poss" =>
         [

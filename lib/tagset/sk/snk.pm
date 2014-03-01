@@ -9,117 +9,196 @@ use open ':utf8';
 
 
 
-my %postable =
-(
-    # noun / substantívum (slovo, ryba, ústav, muž)
-    'S' => ['pos' => 'noun'],
-    # adjective / adjektívum (milý, svieži, priateľkin, psí)
-    'A' => ['pos' => 'adj'],
-    # pronoun / pronominum (akýkoľvek, onen, jeho, kadiaľ)
-    'P' => ['pos' => 'noun', 'prontype' => 'prs'], ###!!! nutno dole rozpracovat lépe!
-    # numeral / numerále (jeden, dva, raz, sto, prvý, dvojmo)
-    'N' => ['pos' => 'num'],
-    # verb / verbum (klásť, čítať, vidieť, činiť)
-    'V' => ['pos' => 'verb'],
-    # participle / particípium (robiaci, sediaci, naložený, zohriaty)
-    'G' => ['pos' => 'verb', 'verbform' => 'part'],
-    # adverb / adverbium (prísne, milo, pravidelne, prázdno)
-    'D' => ['pos' => 'adv'],
-    # preposition / prepozícia (po, pre, na, do, cez, medzi)
-    'E' => ['pos' => 'prep'],
-    # conjunction / konjunkcia (a, ale, alebo, či, pretože, že)
-    'O' => ['pos' => 'conj'],
-    # particle / partikula (azda, nuž, bodaj, sotva, áno, nie)
-    'T' => ['pos' => 'part'],
-    # interjection / interjekcia (fíha, bác, bums, dokelu, ahoj, cveng, plesk)
-    'J' => ['pos' => 'int'],
-    # reflexive pronoun/particle / reflexívum (sa, si)
-    'R' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex'],
-    # conditional morpheme / kondicionálová morféma (by)
-    'Y' => ['pos' => 'verb', 'mood' => 'cnd'],
-    # abbreviation / abreviácie, značky (km, kg, atď., H2O, SND)
-    'W' => ['abbr' => 'abbr'],
-    # punctuation / interpunkcia (., !, (, ), +)
-    'Z' => ['pos' => 'punc'],
-    # unidentifiable part of speech / neurčiteľný slovný druh (bielo(-čierny), New (York))
-    ###!!! We could use 'hyph' => 'hyph' but this class also contains completely different token types (New from New York).
-    'Q' => ['hyph' => 'hyph'],
-    # non-word element / neslovný element (XXXX, -------)
-    '#' => [],
-    # citation in foreign language / citátový výraz (šaj pes dovakeras, take it easy!, náměstí)
-    '%' => ['foreign' => 'foreign'],
-    # digit / číslica (8, 14000, 3 (razy))
-    '0' => ['pos' => 'num', 'numform' => 'digit']
-);
+# Global tables used during decoding must be enclosed in a BEGIN block
+# so that they are available down in the last BEGIN block where permitted combinations are figured out.
+# Note that the tables may not cover everything. Complex phenomena may be solved by if-else statements in the code.
+BEGIN
+{
+    %postable =
+    (
+        # noun / substantívum (slovo, ryba, ústav, muž)
+        'S' => ['pos' => 'noun'],
+        # adjective / adjektívum (milý, svieži, priateľkin, psí)
+        'A' => ['pos' => 'adj'],
+        # pronoun / pronominum (akýkoľvek, onen, jeho, kadiaľ)
+        'P' => ['pos' => 'noun', 'prontype' => 'prs'], ###!!! nutno dole rozpracovat lépe!
+        # numeral / numerále (jeden, dva, raz, sto, prvý, dvojmo)
+        'N' => ['pos' => 'num'],
+        # verb / verbum (klásť, čítať, vidieť, činiť)
+        'V' => ['pos' => 'verb'],
+        # participle / particípium (robiaci, sediaci, naložený, zohriaty)
+        'G' => ['pos' => 'verb', 'verbform' => 'part'],
+        # adverb / adverbium (prísne, milo, pravidelne, prázdno)
+        'D' => ['pos' => 'adv'],
+        # preposition / prepozícia (po, pre, na, do, cez, medzi)
+        'E' => ['pos' => 'prep'],
+        # conjunction / konjunkcia (a, ale, alebo, či, pretože, že)
+        'O' => ['pos' => 'conj'],
+        # particle / partikula (azda, nuž, bodaj, sotva, áno, nie)
+        'T' => ['pos' => 'part'],
+        # interjection / interjekcia (fíha, bác, bums, dokelu, ahoj, cveng, plesk)
+        'J' => ['pos' => 'int'],
+        # reflexive pronoun/particle / reflexívum (sa, si)
+        'R' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex'],
+        # conditional morpheme / kondicionálová morféma (by)
+        'Y' => ['pos' => 'verb', 'mood' => 'cnd'],
+        # abbreviation / abreviácie, značky (km, kg, atď., H2O, SND)
+        'W' => ['abbr' => 'abbr'],
+        # punctuation / interpunkcia (., !, (, ), +)
+        'Z' => ['pos' => 'punc'],
+        # unidentifiable part of speech / neurčiteľný slovný druh (bielo(-čierny), New (York))
+        ###!!! We could use 'hyph' => 'hyph' but this class also contains completely different token types (New from New York).
+        'Q' => ['hyph' => 'hyph'],
+        # non-word element / neslovný element (XXXX, -------)
+        '#' => [],
+        # citation in foreign language / citátový výraz (šaj pes dovakeras, take it easy!, náměstí)
+        '%' => ['foreign' => 'foreign'],
+        # digit / číslica (8, 14000, 3 (razy))
+        '0' => ['pos' => 'num', 'numform' => 'digit']
+    );
 
 
 
-# Some feature values would conflict with part-of-speech values (e.g. 'S', 'A').
-# However, values acrosss different features (other than POS) are unique, therefore we do not have to keep track of position within the tag.
-my %featable =
-(
-    # paradigm / paradigma
-    'S' => ['synpos' => 'subst'], # substantívna (chlap, žena, srdce; P: koľkátka, všetučko; N: nula, milión, státisíce, raz)
-    'A' => ['synpos' => 'attr'], # adjektívna (hlavný, vedúci, Mastný, vstupné; A: pekný, cudzí; P: aký, ktorá, inakšie; N: jediný, prvý, dvojitý, mnohonásobný, obojaký)
-    'P' => [], ###!!! zámenná (ja, ty, my, vy, seba, sebe)
-    'N' => [], ###!!! číslovková (dva, dvaja, oba, obaja, obidva, tri, štyri)
-    'D' => ['synpos' => 'adv'], # príslovková (P: ako, kam, kde, kade, vtedy, začo; N: prvýkrát, sedemkrát, dvojmo, neraz, mnohorako)
-    'F' => [], ###!!! zmiešaná (kuli, gazdiná; A: otcov, matkin; P: on, ona, ono, kto, ten, môj, všetok, čo, žiaden; N: jeden, jedna, jedno)
-    'U' => [], ###!!! neúplná (kanoe, kupé; A: super, nanič, hoden, rád, rada; P: koľko, jeho, jej, ich; N: sto, tisíc, päť, šesť, dvanásť, dvoje)
-    # gender / rod
-    'm' => ['gender' => 'masc', 'animateness' => 'anim'], # mužský životný (hrdina, hlavný, Mastný)
-    'i' => ['gender' => 'masc', 'animateness' => 'inan'], # mužský neživotný (strom, rýľ)
-    'f' => ['gender' => 'fem'], # ženský (ulica, pani, vedúca)
-    'n' => ['gender' => 'neut'], # stredný (mesto, vysvedčenie, dievča, mláďa)
-    'h' => [], # všeobecný (ja, ty, my, vy, seba; V: vy ste prišli)
-    'o' => [], # neurčený / neurčiteľný (V: (chlapi, ženy i deti) sa tešili)
-    # number / číslo
-    's' => ['number' => 'sing'], # jednotné (slovo, ryba, ústav, muž)
-    'p' => ['number' => 'plu'], # množné (slová, ryby, ústavy, muži, mužovia)
-    # case / pád
-    '1' => ['case' => 'nom'], # nominatív (pán, vedúci, matka)
-    '2' => ['case' => 'gen'], # genitív (pána, vedúceho, matky)
-    '3' => ['case' => 'dat'], # datív (pánovi, vedúcemu, matke)
-    '4' => ['case' => 'acc'], # akuzatív (pána, vedúceho, matku)
-    '5' => ['case' => 'voc'], # vokatív (pane, mami, Táni, oci)
-    '6' => ['case' => 'loc'], # lokál (pánovi, mame, mori)
-    '7' => ['case' => 'ins'], # inštrumentál (pánom, vedúcim, matkou)
-    # degree of comparison / stupeň
-    'x' => ['degree' => 'pos'], # pozitív (vzácny, drahá, otcov; D: draho, vzácne)
-    'y' => ['degree' => 'comp'], # komparatív (vzácnejší, drahší, drevenejší; D: drahšie, vzácnejšie)
-    'z' => ['degree' => 'sup'], # superlatív (najvzácnejší, najdrahší, najdrevenejší; D: najdrahšie, najvzácnejšie)
-    # agglutination / aglutinovanosť
-    'g' => ['subpos' => 'preppron'], # aglutinované (preňho, naňho, oň, zaň, doň)
-    # verbal form / slovesná forma
-    'I' => ['verbform' => 'inf'], # infinitív (byť, hriať, volať, viesť, hovoriť)
-    'K' => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pres'], # prézent indikatív (je, hreje, volá, vedie, hovorí)
-    'M' => ['verbform' => 'fin', 'mood' => 'imp'], # imperatív (buď, hrej, volajte, veďte, hovor)
-    'H' => ['verbform' => 'trans'], # prechodník (súc, hrejúc, volajúc, vedúc, hovoriac)
-    'L' => ['verbform' => 'part', 'tense' => 'past'], # l-ové príčastie (bol, hrialo, volali, viedla, hovorili)
-    'B' => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'fut'], # futúrum (budem, budeš, bude, budeme, budete, budú, poletím, povedú
-    # aspect / vid
-    'd' => ['aspect' => 'perf'], # dokonavý (zohrejem, zavolám, povieme)
-    'e' => ['aspect' => 'imp'], # nedokonavý (budem hriať, volala som, bola by hovorila)
-    'j' => ['aspect' => ['imp', 'perf']], # obojvidové sloveso (aplikovať, počuť)
-    # person / osoba
-    'a' => ['person' => 1], # prvá (som, sme, hrejme, volali sme, budem hovoriť)
-    'b' => ['person' => 2], # druhá (si, ste, hriali ste, volajte, budeš viesť, hovoril by si)
-    'c' => ['person' => 3], # tretia (je, sú, hrejú, volalo, povedie, hovoria)
-    # negation / negácia
-    '+' => ['negativeness' => 'pos'], # afirmácia (prichádzať, priateliť sa, rásť)
-    '-' => ['negativeness' => 'neg'], # negácia (nebyť, neprichádzať, nepriateliť sa, nebáť sa)
-    # participle type / druh
-    'k' => ['voice' => 'act'], # aktívne (pracujúci, visiaci, píšuci, platiaci)
-    't' => ['voice' => 'pass'], # pasívne (robený, kosený, obratý, zožatý)
-    # preposition form / forma
-    'v' => ['subpos' => 'voc'], # vokalizovaná (so, zo, odo, podo)
-    'u' => [], # nevokalizovaná (s, z, od, pod, prostredníctvom)
-    # conditional conjunction or particle / kondicionálnosť
-    'Y' => ['mood' => 'cnd'], # kondicionálnosť (O: aby, keby, čoby, žeby; T: kiežby, žeby)
-    # optional appendix
-    ':r' => ['subpos' => 'prop'], # vlastné meno (Emil, Molnárová, Vysoké, Tatry, Slovenské (národné divadlo))
-    ':q' => ['typo' => 'typo'], # chybný zápis (papeirníctvo, zhrzený)
-);
+    # Some feature values would conflict with part-of-speech values (e.g. 'S', 'A').
+    # However, values acrosss different features (other than POS) are unique, therefore we do not have to keep track of position within the tag.
+    %featable =
+    (
+        # paradigm / paradigma
+        'S' => ['morphpos' => 'noun'], # substantívna (chlap, žena, srdce; P: koľkátka, všetučko; N: nula, milión, státisíce, raz)
+        'A' => ['morphpos' => 'adj'], # adjektívna (hlavný, vedúci, Mastný, vstupné; A: pekný, cudzí; P: aký, ktorá, inakšie; N: jediný, prvý, dvojitý, mnohonásobný, obojaký)
+        'P' => ['morphpos' => 'pron'], # zámenná (ja, ty, my, vy, seba, sebe)
+        'N' => ['morphpos' => 'num'], # číslovková (dva, dvaja, oba, obaja, obidva, tri, štyri)
+        'D' => ['morphpos' => 'adv'], # príslovková (P: ako, kam, kde, kade, vtedy, začo; N: prvýkrát, sedemkrát, dvojmo, neraz, mnohorako)
+        'F' => ['morphpos' => 'mix'], # zmiešaná (kuli, gazdiná; A: otcov, matkin; P: on, ona, ono, kto, ten, môj, všetok, čo, žiaden; N: jeden, jedna, jedno)
+        'U' => ['morphpos' => 'def'], # neúplná (kanoe, kupé; A: super, nanič, hoden, rád, rada; P: koľko, jeho, jej, ich; N: sto, tisíc, päť, šesť, dvanásť, dvoje)
+        # gender / rod
+        'm' => ['gender' => 'masc', 'animateness' => 'anim'], # mužský životný (hrdina, hlavný, Mastný)
+        'i' => ['gender' => 'masc', 'animateness' => 'inan'], # mužský neživotný (strom, rýľ)
+        'f' => ['gender' => 'fem'], # ženský (ulica, pani, vedúca)
+        'n' => ['gender' => 'neut'], # stredný (mesto, vysvedčenie, dievča, mláďa)
+        'h' => [], # všeobecný (ja, ty, my, vy, seba; V: vy ste prišli)
+        'o' => [], # neurčený / neurčiteľný (V: (chlapi, ženy i deti) sa tešili)
+        # number / číslo
+        's' => ['number' => 'sing'], # jednotné (slovo, ryba, ústav, muž)
+        'p' => ['number' => 'plu'], # množné (slová, ryby, ústavy, muži, mužovia)
+        # case / pád
+        '1' => ['case' => 'nom'], # nominatív (pán, vedúci, matka)
+        '2' => ['case' => 'gen'], # genitív (pána, vedúceho, matky)
+        '3' => ['case' => 'dat'], # datív (pánovi, vedúcemu, matke)
+        '4' => ['case' => 'acc'], # akuzatív (pána, vedúceho, matku)
+        '5' => ['case' => 'voc'], # vokatív (pane, mami, Táni, oci)
+        '6' => ['case' => 'loc'], # lokál (pánovi, mame, mori)
+        '7' => ['case' => 'ins'], # inštrumentál (pánom, vedúcim, matkou)
+        # degree of comparison / stupeň
+        'x' => ['degree' => 'pos'], # pozitív (vzácny, drahá, otcov; D: draho, vzácne)
+        'y' => ['degree' => 'comp'], # komparatív (vzácnejší, drahší, drevenejší; D: drahšie, vzácnejšie)
+        'z' => ['degree' => 'sup'], # superlatív (najvzácnejší, najdrahší, najdrevenejší; D: najdrahšie, najvzácnejšie)
+        # agglutination / aglutinovanosť
+        'g' => ['subpos' => 'preppron'], # aglutinované (preňho, naňho, oň, zaň, doň)
+        # verbal form / slovesná forma
+        'I' => ['verbform' => 'inf'], # infinitív (byť, hriať, volať, viesť, hovoriť)
+        'K' => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pres'], # prézent indikatív (je, hreje, volá, vedie, hovorí)
+        'M' => ['verbform' => 'fin', 'mood' => 'imp'], # imperatív (buď, hrej, volajte, veďte, hovor)
+        'H' => ['verbform' => 'trans'], # prechodník (súc, hrejúc, volajúc, vedúc, hovoriac)
+        'L' => ['verbform' => 'part', 'tense' => 'past'], # l-ové príčastie (bol, hrialo, volali, viedla, hovorili)
+        'B' => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'fut'], # futúrum (budem, budeš, bude, budeme, budete, budú, poletím, povedú)
+        # aspect / vid
+        'd' => ['aspect' => 'perf'], # dokonavý (zohrejem, zavolám, povieme)
+        'e' => ['aspect' => 'imp'], # nedokonavý (budem hriať, volala som, bola by hovorila)
+        'j' => ['aspect' => ['imp', 'perf']], # obojvidové sloveso (aplikovať, počuť)
+        # person / osoba
+        'a' => ['person' => 1], # prvá (som, sme, hrejme, volali sme, budem hovoriť)
+        'b' => ['person' => 2], # druhá (si, ste, hriali ste, volajte, budeš viesť, hovoril by si)
+        'c' => ['person' => 3], # tretia (je, sú, hrejú, volalo, povedie, hovoria)
+        # negation / negácia
+        '+' => ['negativeness' => 'pos'], # afirmácia (prichádzať, priateliť sa, rásť)
+        '-' => ['negativeness' => 'neg'], # negácia (nebyť, neprichádzať, nepriateliť sa, nebáť sa)
+        # participle type / druh
+        'k' => ['voice' => 'act'], # aktívne (pracujúci, visiaci, píšuci, platiaci)
+        't' => ['voice' => 'pass'], # pasívne (robený, kosený, obratý, zožatý)
+        # preposition form / forma
+        'v' => ['subpos' => 'voc'], # vokalizovaná (so, zo, odo, podo)
+        'u' => [], # nevokalizovaná (s, z, od, pod, prostredníctvom)
+        # conditional conjunction or particle / kondicionálnosť
+        'Y' => ['mood' => 'cnd'], # kondicionálnosť (O: aby, keby, čoby, žeby; T: kiežby, žeby)
+        # optional appendix
+        ':r' => ['subpos' => 'prop'], # vlastné meno (Emil, Molnárová, Vysoké, Tatry, Slovenské (národné divadlo))
+        ':q' => ['typo' => 'typo'], # chybný zápis (papeirníctvo, zhrzený)
+    );
+
+
+
+    # Table for encoding.
+    %enfeatable =
+    (
+        'pos' =>
+        {
+            'noun' => 'S', ###!!! or 'P'
+            'adj'  => 'A',
+            'num'  => 'N',
+            'verb' => 'V',
+            'adv'  => 'D',
+            'prep' => 'E',
+            'conj' => 'O',
+            'part' => 'T',
+            'int'  => 'J',
+            'punc' => 'Z'
+        },
+        'morphpos' =>
+        {
+            'noun' => 'S',
+            'adj'  => 'A',
+            'pron' => 'P',
+            'num'  => 'N',
+            'adv'  => 'D',
+            'mix'  => 'F',
+            'def'  => 'U'
+        },
+        'gender' =>
+        {
+            'masc' => 'm', ###!!! or 'i', see animateness
+            'fem'  => 'f',
+            'neut' => 'n'
+        },
+        'number' =>
+        {
+            'sing' => 's',
+            'plu'  => 'p'
+        },
+        'case' =>
+        {
+            'nom' => '1',
+            'gen' => '2',
+            'dat' => '3',
+            'acc' => '4',
+            'voc' => '5',
+            'loc' => '6',
+            'ins' => '7'
+        },
+        'degree' =>
+        {
+            'pos'  => 'x',
+            'comp' => 'y',
+            'sup'  => 'z'
+        },
+        'person' =>
+        {
+            '1' => 'a',
+            '2' => 'b',
+            '3' => 'c'
+        },
+        'voice' =>
+        {
+            'act'  => 'k',
+            'pass' => 't'
+        },
+        'negativeness' =>
+        {
+            'pos' => '+',
+            'neg' => '-'
+        }
+    );
+}
 
 
 
@@ -172,6 +251,40 @@ sub decode
 
 #------------------------------------------------------------------------------
 # Takes feature hash.
+# Returns combined code for gender and animateness.
+#------------------------------------------------------------------------------
+sub encode_gender
+{
+    my $f = shift;
+    if($f->{gender} eq 'fem')
+    {
+        return 'f';
+    }
+    elsif($f->{gender} eq 'neut')
+    {
+        return 'n';
+    }
+    elsif($f->{gender} eq 'masc')
+    {
+        if($f->{animateness} eq 'inan')
+        {
+            return 'i';
+        }
+        else
+        {
+            return 'm';
+        }
+    }
+    else
+    {
+        return 'h';
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Takes feature hash.
 # Returns tag string.
 #------------------------------------------------------------------------------
 sub encode
@@ -184,7 +297,182 @@ sub encode
     my $f = tagset::common::enforce_permitted_joint($f0, $permitted);
     my %f = %{$f}; # This is not a deep copy but $f already refers to a deep copy of the original %{$f0}.
     my $tag;
-    ###!!! NOT YET IMPLEMENTED
+    # Part of speech; special cases first.
+    if($f{foreign} eq 'foreign')
+    {
+        $tag = '%';
+    }
+    elsif($f{abbr} eq 'abbr')
+    {
+        $tag = 'W';
+    }
+    elsif($f{hyph} eq 'hyph')
+    {
+        $tag = 'Q';
+    }
+    elsif($f{numform} eq 'digit')
+    {
+        $tag = '0';
+    }
+    elsif($f{prontype} ne '')
+    {
+        if($f{reflex} eq 'reflex')
+        {
+            $tag = 'R';
+        }
+        else
+        {
+            $tag = 'P';
+            # Encode pronoun features: paradigm, gender, number, case.
+            $tag .= $enfeatable{morphpos}{$f{morphpos}};
+            unless($f{morphpos} eq 'adv')
+            {
+                $tag .= encode_gender($f);
+                $tag .= $enfeatable{number}{$f{number}};
+                $tag .= $enfeatable{case}{$f{case}};
+                $tag .= 'g' if($f{subpos} eq 'preppron');
+            }
+        }
+    }
+    elsif($f{verbform} eq 'part' && $f{tense} ne 'past')
+    {
+        $tag = 'G';
+        # Encode participial features: voice, gender, number, case, degree.
+        $tag .= $enfeatable{voice}{$f{voice}};
+        $tag .= encode_gender($f);
+        $tag .= $enfeatable{number}{$f{number}};
+        $tag .= $enfeatable{case}{$f{case}};
+        $tag .= $enfeatable{degree}{$f{degree}};
+    }
+    # The rest is driven by the value of $f{pos} at the first place.
+    elsif($f{pos} eq 'noun')
+    {
+        $tag = 'S';
+        # Encode noun features: paradigm, gender, number, case.
+        $tag .= $enfeatable{morphpos}{$f{morphpos}};
+        unless($f{morphpos} eq 'adv')
+        {
+            $tag .= encode_gender($f);
+            $tag .= $enfeatable{number}{$f{number}};
+            $tag .= $enfeatable{case}{$f{case}};
+        }
+    }
+    elsif($f{pos} eq 'adj')
+    {
+        $tag = 'A';
+        # Encode adjectival features: paradigm, gender, number, case, degree.
+        $tag .= $enfeatable{morphpos}{$f{morphpos}};
+        unless($f{morphpos} eq 'adv')
+        {
+            $tag .= encode_gender($f);
+            $tag .= $enfeatable{number}{$f{number}};
+            $tag .= $enfeatable{case}{$f{case}};
+            $tag .= $enfeatable{degree}{$f{degree}};
+        }
+    }
+    elsif($f{pos} eq 'num')
+    {
+        $tag = 'N';
+        # Encode numeral features: paradigm, gender, number, case.
+        $tag .= $enfeatable{morphpos}{$f{morphpos}};
+        unless($f{morphpos} eq 'adv')
+        {
+            $tag .= encode_gender($f);
+            $tag .= $enfeatable{number}{$f{number}};
+            $tag .= $enfeatable{case}{$f{case}};
+        }
+    }
+    elsif($f{pos} eq 'verb')
+    {
+        if($f{mood} eq 'cnd')
+        {
+            $tag = 'Y';
+        }
+        else
+        {
+            my $show_gender = 0;
+            if($f{mood} eq 'imp')
+            {
+                $tag = 'VM';
+            }
+            elsif($f{mood} eq 'ind')
+            {
+                if($f{tense} eq 'fut')
+                {
+                    $tag = 'VB';
+                }
+                else
+                {
+                    $tag = 'VK';
+                }
+            }
+            elsif($f{verbform} eq 'trans')
+            {
+                $tag = 'VH';
+            }
+            elsif($f{verbform} eq 'part')
+            {
+                $tag = 'VL';
+                $show_gender = 1;
+            }
+            else # infinitive is default
+            {
+                $tag = 'VI';
+            }
+            # Encode verbal features: aspect, number, person, negativeness.
+            if($f{aspect} eq 'imp')
+            {
+                $tag .= 'e';
+            }
+            elsif($f{aspect} eq 'perf')
+            {
+                $tag .= 'd';
+            }
+            else # dual aspect is default
+            {
+                $tag .= 'j';
+            }
+            $tag .= $enfeatable{number}{$f{number}};
+            $tag .= $enfeatable{person}{$f{person}};
+            $tag .= encode_gender($f) if($show_gender);
+            $tag .= $enfeatable{negativeness}{$f{negativeness}};
+        }
+    }
+    elsif($f{pos} eq 'adv')
+    {
+        $tag = 'D';
+        $tag .= $enfeatable{degree}{$f{degree}};
+    }
+    elsif($f{pos} eq 'prep')
+    {
+        $tag = 'E';
+        $tag .= $f{subpos} eq 'voc' ? 'v' : 'u';
+        $tag .= $enfeatable{case}{$f{case}};
+    }
+    elsif($f{pos} eq 'conj')
+    {
+        $tag = 'O';
+        if($f{mood} eq 'cnd')
+        {
+            $tag .= 'Y';
+        }
+    }
+    elsif($f{pos} eq 'part')
+    {
+        $tag = 'T';
+        if($f{mood} eq 'cnd')
+        {
+            $tag .= 'Y';
+        }
+    }
+    elsif(exists($enfeatable{pos}{$f{pos}}))
+    {
+        $tag = $enfeatable{pos}{$f{pos}};
+    }
+    else
+    {
+        $tag = '#';
+    }
     return $tag;
 }
 
@@ -192,8 +480,8 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
-# Got this list from Johanka. There are 1458 tags.
-# 1458
+# Got this list from Johanka and cleaned it a bit There are 1457 tags.
+# 1457
 #------------------------------------------------------------------------------
 sub list
 {
@@ -1503,7 +1791,6 @@ VKdsb+
 VKdsc-
 VKdsc+
 VKe-
-Vke-
 VKepa-
 VKepa+
 VKepb-
