@@ -357,13 +357,13 @@ sub decode
         elsif($feature eq "PS/MQP")
         {
             $f{tense} = "past";
-            $f{subtense} = ["imp", "ppq"];
+            $f{subtense} = ["imp", "pqp"];
         }
         # pluperfect
         elsif($feature eq "MQP")
         {
             $f{tense} = "past";
-            $f{subtense} = "ppq";
+            $f{subtense} = "pqp";
         }
         # future
         elsif($feature eq "FUT")
@@ -833,7 +833,7 @@ sub encode
     }
     elsif($f{tense} eq "past")
     {
-        if($f{subtense} eq "ppq")
+        if($f{subtense} eq "pqp")
         {
             push(@features, "MQP");
         }
@@ -841,7 +841,7 @@ sub encode
         {
             push(@features, "IMPF");
         }
-        elsif(ref($f{subtense}) eq "ARRAY" && join(", ", @{$f{subtense}}) eq "imp, ppq")
+        elsif(ref($f{subtense}) eq "ARRAY" && join(", ", @{$f{subtense}}) eq "imp, pqp")
         {
             push(@features, "PS/MQP");
         }
