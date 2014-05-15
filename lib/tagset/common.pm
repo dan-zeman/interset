@@ -1948,7 +1948,8 @@ sub print_permitted_values
 
 
 #------------------------------------------------------------------------------
-# Debugging function. Prints permitted feature value combinations to STDERR.
+# Debugging function. Returns permitted feature values in a form suitable for
+# printing.
 #------------------------------------------------------------------------------
 sub get_permitted_combinations_as_text
 {

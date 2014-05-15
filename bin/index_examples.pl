@@ -30,7 +30,7 @@ GetOptions
 if(scalar(@ARGV)<1)
 {
     usage();
-    die;
+    die("Missing mandatory argument: name of the corpus");
 }
 $corpusname = shift(@ARGV);
 # On Dan's laptop, write directly to the CGI path. Anywhere else, write to the current folder.

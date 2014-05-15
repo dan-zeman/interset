@@ -5,7 +5,7 @@
 
 package tagset::sk::snk;
 use utf8;
-use open ':utf8';
+use tagset::common;
 
 
 
