@@ -1801,23 +1801,8 @@ sub find_drivers
 sub decode
 {
     my $driver = shift; # e.g. "cs::pdt"
-    my $tag = shift;
-    $tag =~ s/([\\"\$\@])/\\$1/g;
-    my $eval = <<_end_of_eval_
-    {
-        use tagset::${driver};
-        my \$fs = tagset::${driver}::decode("$tag");
-        return \%{\$fs};
-    }
-_end_of_eval_
-    ;
-    print("$eval\n") if($debug && 0);
-    my %fs = eval($eval);
-    if($@)
-    {
-        confess("$@\nEval failed");
-    }
-    return \%fs;
+    my $decode = get_decode_function($driver);
+    return &{$decode}(@_);
 }
 
 
@@ -1828,23 +1813,8 @@ _end_of_eval_
 sub encode
 {
     my $driver = shift; # e.g. "cs::pdt"
-    my $fs = shift;
-    my $fstring = structure_to_string($fs);
-    my $eval = <<_end_of_eval_
-    {
-        use tagset::${driver};
-        my \$tag = tagset::${driver}::encode($fstring);
-        return \$tag;
-    }
-_end_of_eval_
-    ;
-    print("$eval\n") if($debug && 0);
-    my $tag = eval($eval);
-    if($@)
-    {
-        confess("$@\nEval failed");
-    }
-    return $tag;
+    my $encode = get_encode_function($driver);
+    return &{$encode}(@_);
 }
 
 
@@ -1855,21 +1825,8 @@ _end_of_eval_
 sub list
 {
     my $driver = shift; # e.g. "cs::pdt"
-    my $eval = <<_end_of_eval_
-    {
-        use tagset::${driver};
-        my \$list_eval = tagset::${driver}::list();
-        return \@{\$list_eval};
-    }
-_end_of_eval_
-    ;
-    print("$eval\n") if($debug && 0);
-    my @list = eval($eval);
-    if($@)
-    {
-        confess("$@\nEval failed");
-    }
-    return \@list;
+    my $list = get_list_function($driver);
+    return &{$list}(@_);
 }
 
 
