@@ -192,7 +192,7 @@ DZ Interset is a universal framework for reading, writing, converting and
 interpreting part-of-speech and morphosyntactic tags from multiple tagsets
 of many different natural languages.
 
-The C<Tagset> class defines is the inheritance root for all classes describing
+The C<Tagset> class is the inheritance root for all classes describing
 physical tagsets (strings of characters). It defines decoding of tags, encoding
 and list of known tags.
 

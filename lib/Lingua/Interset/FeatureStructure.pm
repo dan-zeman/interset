@@ -668,7 +668,6 @@ my %matrix =
     },
     # Variant. Used in some tagsets to distinguish between forms of the same lemma that would otherwise get the same tag.
     # The meaning of the values is not and cannot be universal, not even within the scope of one tagset.
-    # Aspect (lexical or grammatical; but see also the 'imp' tense).
     'variant' =>
     {
         'priority' => 440,
