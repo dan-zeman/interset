@@ -195,6 +195,23 @@ sub decode
 
 
 
+#################!!!!!!!!!!!!!!!!!!!!!!
+sub encode_strict
+{
+    my $self = shift;
+    my $fs = shift; # Lingua::Interset::FeatureStructure
+    ###!!! We should create this structure lazily and cache it.
+    #my $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode);
+    my $permitted = $self->get_permitted_structures();
+    ###!!!
+    my $f = tagset::common::enforce_permitted_joint($f0, $permitted);
+    my %f = %{$f}; # This is not a deep copy but $f already refers to a deep copy of the original %{$f0}.
+    ###!!!
+    return $self->encode($fs);
+}
+
+
+
 #------------------------------------------------------------------------------
 # Takes feature structure and returns the corresponding physical tag (string).
 #------------------------------------------------------------------------------
