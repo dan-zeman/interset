@@ -196,6 +196,297 @@ sub decode
 
 
 #------------------------------------------------------------------------------
+# Takes feature structure and returns the corresponding physical tag (string).
+#------------------------------------------------------------------------------
+sub encode
+{
+    my $self = shift;
+    my $fs = shift; # Lingua::Interset::FeatureStructure
+
+
+
+    ##########!!!!!!!!!!!!!!!!!!
+    my $f = shift;
+    my %f = %{$f}; # this is not a deep copy! We must not modify the contents!
+    my $nonstrict = shift; # strict is default
+    $strict = !$nonstrict;
+    ##########!!!!!!!!!!!!!!!!!!
+
+
+
+    my $tag = '';
+    my $pos = $fs->pos();
+    my $prontype = $fs->prontype();
+    # Foreign words without respect to part of speech.
+    if($fs->foreign())
+    {
+        $tag = 'FW';
+    }
+    # Separated affixes.
+    elsif($fs->hyph())
+    {
+        $tag = 'AFX';
+    }
+    # Pronouns, determiners and pronominal adverbs.
+    elsif($prontype =~ m/^(rel|int)$/)
+    {
+        # WDT WP WP$ WRB
+        if($pos eq 'adv')
+        {
+            $tag = 'WRB';
+        }
+        elsif($fs->poss())
+        {
+            $tag = 'WP$';
+        }
+        elsif($pos eq 'adj')
+        {
+            $tag = 'WDT';
+        }
+        else
+        {
+            $tag = 'WP';
+        }
+    }
+    elsif($prontype ne '')
+    {
+        # PRP PRP$
+        if($fs->poss())
+        {
+            $tag = 'PRP$';
+        }
+        else
+        {
+            $tag = 'PRP';
+        }
+    }
+    elsif($pos eq 'noun')
+    {
+        # NN NNS NNP NNPS
+        if($fs->nountype() eq 'prop')
+        {
+            if($fs->number() eq 'plu')
+            {
+                $tag = 'NNPS';
+            }
+            else
+            {
+                $tag = 'NNP';
+            }
+        }
+        else
+        {
+            if($fs->number() eq 'plu')
+            {
+                $tag = 'NNS';
+            }
+            else
+            {
+                $tag = 'NN';
+            }
+        }
+    }
+    elsif($pos eq 'adj')
+    {
+        # DT PDT JJ JJR JJS
+        if($pos eq 'adj')
+        {
+            if($fs->adjtype() eq 'det')
+            {
+                $tag = 'DT';
+            }
+            elsif($fs->adjtype() eq 'pdt')
+            {
+                $tag = 'PDT';
+            }
+            elsif($fs->degree() eq 'sup')
+            {
+                $tag = 'JJS';
+            }
+            elsif($fs->degree() eq 'comp')
+            {
+                $tag = 'JJR';
+            }
+            else
+            {
+                $tag = 'JJ';
+            }
+        }
+    }
+    elsif($pos eq 'num')
+    {
+        # CD; ordinal numbers are adjectives JJ
+        if($fs->numtype() eq 'card')
+        {
+            $tag = 'CD';
+        }
+        else
+        {
+            ###!!! multiplicative and some ordinal numerals behave more like adverbs; see the synpos?
+            $tag = 'JJ';
+        }
+    }
+    elsif($pos eq 'verb')
+    {
+        # MD VB VBD VBG VBN VBP VBZ
+        if($fs->verbtype() eq 'mod')
+        {
+            $tag = 'MD';
+        }
+        elsif($fs->verbform() eq 'part')
+        {
+            if($fs->tense() eq 'pres' || $fs->aspect() =~ m/^(imp|pro)$/)
+            {
+                $tag = 'VBG';
+            }
+            else
+            {
+                $tag = 'VBN';
+            }
+        }
+        elsif($fs->tense() eq 'past')
+        {
+            $tag = 'VBD';
+        }
+        elsif($fs->tense() eq 'pres' && $fs->number() eq 'sing')
+        {
+            if($fs->person() == 3)
+            {
+                $tag = 'VBZ';
+            }
+            else
+            {
+                $tag = 'VBP';
+            }
+        }
+        else
+        {
+            $tag = 'VB';
+        }
+    }
+    elsif($pos eq 'adv')
+    {
+        # EX RB RBR RBS
+        if($fs->subpos() eq 'ex')
+        {
+            $tag = 'EX';
+        }
+        elsif($fs->degree() eq 'sup')
+        {
+            $tag = 'RBS';
+        }
+        elsif($fs->degree() eq 'comp')
+        {
+            $tag = 'RBR';
+        }
+        else
+        {
+            $tag = 'RB';
+        }
+    }
+    elsif($pos eq 'prep')
+    {
+        # IN (TO)
+        $tag = 'IN';
+    }
+    elsif($pos eq 'conj')
+    {
+        # CC (IN)
+        if($fs->conjtype() eq 'sub')
+        {
+            $tag = 'IN';
+        }
+        else
+        {
+            $tag = 'CC';
+        }
+    }
+    elsif($pos eq 'part')
+    {
+        # RP TO POS
+        if($fs->poss())
+        {
+            $tag = 'POS';
+        }
+        elsif($fs->verbform() eq 'inf' || $fs->subpos() eq 'inf')
+        {
+            $tag = 'TO';
+        }
+        else
+        {
+            $tag = 'RP';
+        }
+    }
+    elsif($pos eq 'int')
+    {
+        $tag = 'UH';
+    }
+    elsif($fs->tagset() eq 'en::penn' && $fs->other() eq 'currency')
+    {
+        $tag = '$';
+    }
+    elsif($pos eq 'punc')
+    {
+        # LS # . , -LRB- -RRB- `` '' HYPH SYM :
+        if($fs->numtype() eq 'ord')
+        {
+            $tag = 'LS';
+        }
+        elsif($fs->tagset() eq 'en::penn' && $fs->other() eq "\#")
+        {
+            $tag = "\#";
+        }
+        elsif($fs->punctype() =~ m/^(peri|qest|excl)$/)
+        {
+            $tag = '.';
+        }
+        elsif($fs->punctype() eq 'comm')
+        {
+            $tag = ',';
+        }
+        elsif($fs->punctype() eq 'brck')
+        {
+            if($fs->puncside() eq 'fin')
+            {
+                $tag = '-RRB-';
+            }
+            else
+            {
+                $tag = '-LRB-';
+            }
+        }
+        elsif($fs->punctype() eq 'quot')
+        {
+            if($fs->puncside() eq 'fin')
+            {
+                $tag = "''";
+            }
+            else
+            {
+                $tag = "``";
+            }
+        }
+        elsif($fs->punctype() eq 'dash')
+        {
+            # This tag is new in PennBioIE. In older data hyphens are tagged ":".
+            $tag = 'HYPH';
+        }
+        else
+        {
+            $tag = ':';
+        }
+    }
+    # punctuation and unknown elements
+    else
+    {
+        $tag = 'NIL';
+    }
+    return $tag;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Returns reference to list of known tags.
 # 25.3.2009: added new tags HYPH, AFX from PennBioIE, 2005 (HYPH appears in the CoNLL 2009 data)
 #
