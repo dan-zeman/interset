@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 # The main class of DZ Interset 2.0.
 # It defines all morphosyntactic features and their values.
-# Copyright © 2012 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2008-2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
 package Lingua::Interset::FeatureStructure;
@@ -75,7 +75,10 @@ our $VERSION; BEGIN { $VERSION = "2.00" }
 # 6. If unsuccessful and the second dimension has only one member (the value to replace), check empty value as replacement.
 # 7. If unsuccessful, try to find replacement in the first dimension (respect ordering).
 
-my %matrix =
+# Since the order of the hash keys is important (it encodes the print order of the features),
+# also store the hash as array (we will subsequently separate the keys from the values).
+my @_matrix;
+my %matrix = @_matrix =
 (
     # Main part of speech
     ###!!! RENAME prep to adp (adposition)?
@@ -721,6 +724,7 @@ my %matrix =
         'priority' => 9999,
     }
 );
+my @features_in_print_order = grep {ref($_) eq ''} @_matrix;
 
 
 
@@ -743,7 +747,7 @@ has 'other'        => ( is  => 'rw', default => '' );
 #------------------------------------------------------------------------------
 sub known_features
 {
-    return keys(%matrix);
+    return @features_in_print_order;
 }
 
 
