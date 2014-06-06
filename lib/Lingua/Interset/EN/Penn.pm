@@ -6,8 +6,7 @@
 # 25.3.2009: new tag NIL appears in CoNLL 2009 English data for tokens &, $, %
 # 6.6.2014: moved to the new object-oriented Interset
 
-package Lingua::Interset::Tagset::EN::Penn;
-extends Lingua::Interset::Tagset;
+package Lingua::Interset::EN::Penn;
 use utf8;
 use open ':utf8';
 use namespace::autoclean;
@@ -15,6 +14,7 @@ use Moose;
 use Lingua::Interset::FeatureStructure;
 use Lingua::Interset::Trie;
 our $VERSION; BEGIN { $VERSION = "2.00" }
+extends 'Lingua::Interset::Tagset';
 
 
 
@@ -220,7 +220,7 @@ sub list
 
 =over
 
-=item Lingua::Interset::Tagset::EN::Penn
+=item Lingua::Interset::EN::Penn
 
 Interset driver for the part-of-speech tagset of the Penn Treebank.
 
