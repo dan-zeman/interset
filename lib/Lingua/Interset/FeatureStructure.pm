@@ -1007,6 +1007,227 @@ sub structure_to_string
 
 
 ###############################################################################
+# ENFORCING PERMITTED (EXPECTED) VALUES IN FEATURE STRUCTURES
+###############################################################################
+
+
+
+#------------------------------------------------------------------------------
+# Preprocesses the lists of replacement values defined above in the %matrix.
+# In the original tagset::common module, this code was in the BEGIN block and
+# it created the global hash %defaults1 from %defaults.
+#------------------------------------------------------------------------------
+sub preprocess_list_of_replacements
+{
+    my %defaults1;
+    # Loop over features.
+    my @keys = keys(%matrix);
+    foreach my $feature (@keys)
+    {
+        # For each feature, there is an array of arrays.
+        # The first member of each second-order array is the value to replace.
+        # The rest (if any) are the preferred replacements for this particular value.
+        # First of all, collect preferred replacements for all values of this feature.
+        my %map;
+        foreach my $valarray (@{$matrix{$feature}{replacements}})
+        {
+            my $value = $valarray->[0];
+            $map{$value}{$value}++;
+            my @backoff;
+            # Add all preferred replacements (if any) to the list.
+            for(my $i = 1; $i<=$#{$valarray}; $i++)
+            {
+                push(@backoff, $valarray->[$i]);
+                # Remember all values that have been added as replacements of $value.
+                $map{$value}{$valarray->[$i]}++;
+            }
+            $defaults1{$feature}{$value} = \@backoff;
+        }
+        # The primary list of values constitutes the sequence of replacements for the empty value.
+        foreach my $valarray (@{$defaults{$feature}})
+        {
+            my $replacement = $valarray->[0];
+            unless($map{''}{$replacement} || $replacement eq '')
+            {
+                push(@{$defaults1{$feature}{''}}, $replacement);
+                $map{''}{$replacement}++;
+            }
+        }
+        # If a value had preferred replacements, add replacements of the last preferred replacement. Check loops!
+        # Loop over values again.
+        foreach my $value (keys(%{$defaults1{$feature}}))
+        {
+            # Remember all visited values to prevent loops!
+            my %visited;
+            $visited{$value}++;
+            # Find the last preferred replacement, if any.
+            my $last;
+            for(;;)
+            {
+                my $new_last;
+                if(scalar(@{$defaults1{$feature}{$value}}))
+                {
+                    $last = $defaults1{$feature}{$value}[$#{$defaults1{$feature}{$value}}];
+                }
+                # Unless the last preferred replacement has been visited, try to find its replacements.
+                if($last)
+                {
+                    unless($visited{$last})
+                    {
+                        $visited{$last}++;
+                        my @replacements_of_last = @{$defaults1{$feature}{$last}};
+                        # If $last has replacements that $value does not have, add them to $value.
+                        foreach my $replacement (@replacements_of_last)
+                        {
+                            unless($map{$value}{$replacement} || $replacement eq $value)
+                            {
+                                push(@{$defaults1{$feature}{$value}}, $replacement);
+                                $map{$value}{$replacement}++;
+                                $new_last++;
+                            }
+                        }
+                    }
+                }
+                # If no $last has been found or if it has been visited, break the loop.
+                last unless($new_last);
+            }
+            # The empty value and all other unvisited values are the next replacements to consider.
+            foreach my $valarray ('', @{$defaults{$feature}})
+            {
+                my $replacement = $valarray->[0];
+                unless($map{$value}{$replacement} || $replacement eq $value)
+                {
+                    push(@{$defaults1{$feature}{$value}}, $replacement);
+                    $map{$value}{$replacement}++;
+                }
+            }
+            # Debugging: print the complete list of replacements.
+            # print STDERR ("$feature: $value:\t", join(', ', @{$defaults1{$feature}{$value}}), "\n");
+        }
+    }
+    return \%defaults1;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Compares two arrays of values. Prefers precision over recall. Accepts that
+# value X can serve as replacement of value Y, and counts it as 1/N occurrences
+# of Y. Replacements are retrieved from the global %matrix.
+#------------------------------------------------------------------------------
+sub get_similarity_of_arrays
+{
+    my $feature = shift; # feature name needed to find default values
+    my $srch = shift; # array reference
+    my $eval = shift; # array reference
+    ###!!! Chtělo by to nějak dotáhnout, aby se tenhle kód volal jen jednou na začátku při inicializaci modulu.
+    my $defaults = preprocess_list_of_replacements();
+    ###!!! Konec kódu na špatném místě.
+    # For each scalar searched, get replacement array (beginning with the scalar itself).
+    my @menu; # 2-dimensional matrix
+    for(my $i = 0; $i<=$#{$srch}; $i++)
+    {
+        push(@{$menu[$i]}, $srch->[$i]);
+        push(@{$menu[$i]}, @{$defaults->{$feature}{$srch->[$i]}});
+    }
+    # Look for menu values in array being evaluated. If not found, look for replacements.
+    my @found; # srch values matched to something in eval
+    my @used; # eval values identified as something searched for
+    my $n_found = 0; # how many srch values have been found
+    my $n_used = 0; # how many eval values have been used
+    my $n_srch = scalar(@{$srch});
+    my $n_eval = scalar(@{$eval});
+    my $score = 0; # number of hits, weighed (replacement is not a full hit, original value is)
+    if(@menu)
+    {
+        # Loop over levels of replacement.
+        for(my $i = 0; $i<=$#{$menu[0]} && $n_found<$n_srch && $n_used<$n_eval; $i++)
+        {
+            # Loop over searched values.
+            for(my $j = 0; $j<=$#menu && $n_found<$n_srch && $n_used<$n_eval; $j++)
+            {
+                next if($found[$j]);
+                # Look for i-th replacement of j-th value in the evaluated array.
+                for(my $k = 0; $k<=$#{$eval}; $k++)
+                {
+                    if(!$used[$k] && $eval->[$k] eq $menu[$j][$i])
+                    {
+                        $found[$j]++;
+                        $used[$k]++;
+                        $n_found++;
+                        $n_used++;
+                        # Add reward for this level of replacement.
+                        # (What fraction of an occurrence are we going to count for this?)
+                        $score += 1/($i+1);
+                        last;
+                    }
+                }
+            }
+        }
+    }
+    # Use the score to compute precision and recall.
+    my $p = $score/$n_srch if($n_srch);
+    my $r = $score/$n_eval if($n_eval);
+    # Prefer precision over recall.
+    my $result = (2*$p+$r)/3;
+    return $result;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Selects the most suitable replacement. Can deal with arrays of values.
+#------------------------------------------------------------------------------
+sub select_replacement
+{
+    my $feature = shift; # feature name needed to get default replacements of a value
+    my $value = shift; # scalar or array reference
+    my $permitted = shift; # hash reference; keys are permitted values; array values joint
+    # The "tagset" and "other" features are special. All values are permitted.
+    if($feature =~ m/^(tagset|other)$/)
+    {
+        return $value;
+    }
+    # If value is not an array, make it an array.
+    my @values = ref($value) eq 'ARRAY' ? @{$value} : ($value);
+    # Convert every permitted value to an array as well.
+    my @permitted = keys(%{$permitted});
+    if(!scalar(@permitted))
+    {
+        print STDERR ("Feature = $feature\n");
+        print STDERR ("Value to replace = ", array_to_scalar_value($value), "\n");
+        confess("Cannot select a replacement if no values are permitted.\n");
+    }
+    my %suitability;
+    foreach my $p (@permitted)
+    {
+        # Warning: split converts empty values to empty array but we want array with one empty element.
+        my @pvalues = split(/\|/, $p);
+        $pvalues[0] = '' unless(@pvalues);
+        # Get suitability evaluation for $p.
+        $suitability{$p} = get_similarity_of_arrays($feature, \@values, \@pvalues);
+    }
+    # Return the most suitable permitted value.
+    @permitted = sort {$suitability{$b} <=> $suitability{$a}} (@permitted);
+    # If the replacement is an array, return a reference to it.
+    my @repl = split(/\|/, $permitted[0]);
+    if(scalar(@repl)==0)
+    {
+        return '';
+    }
+    elsif(scalar(@repl)==1)
+    {
+        return $repl[0];
+    }
+    else
+    {
+        return \@repl;
+    }
+}
+
+
+
+###############################################################################
 # GENERIC FEATURE STRUCTURE MANIPULATION
 # The following section contains feature-structure-related static functions,
 # not methods (no $self parameter is expected).
