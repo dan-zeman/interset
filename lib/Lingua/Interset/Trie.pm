@@ -13,6 +13,10 @@ our $VERSION; BEGIN { $VERSION = "2.00" }
 
 
 
+has root_hash ( isa => 'HashRef', is => 'rw', default => {} );
+
+
+
 #------------------------------------------------------------------------------
 # Adds a feature value to the trie. It does not need to know the feature name.
 # It takes the feature value and the pointer to the trie level corresponding to

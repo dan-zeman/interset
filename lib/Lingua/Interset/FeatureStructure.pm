@@ -1227,6 +1227,29 @@ sub select_replacement
 
 
 
+#------------------------------------------------------------------------------
+# Makes sure that a feature structure complies with the permitted combinations
+# recorded in a trie. Replaces feature values if needed.
+#------------------------------------------------------------------------------
+sub enforce_permitted_values
+{
+    my $self = shift;
+    my $trie = shift; # Lingua::Interset::Trie
+    ###!!! my $fs1 = duplicate($fs0); ######################################### Asi by si volající měl strukturu zazálohovat sám, pokud to potřebuje, ne?
+    my @features = known_features();
+    foreach my $f (@features)
+    {
+        unless(exists($trie->{$fs1->{$f}}))
+        {
+            $fs1->{$f} = select_replacement($f, $fs1->{$f}, $trie);
+        }
+        $trie = advance_trie_pointer($f, $fs1->{$f}, $trie);
+    }
+    return $fs1;
+}
+
+
+
 ###############################################################################
 # GENERIC FEATURE STRUCTURE MANIPULATION
 # The following section contains feature-structure-related static functions,
