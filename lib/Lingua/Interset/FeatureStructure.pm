@@ -1080,7 +1080,7 @@ sub preprocess_list_of_replacements
             $defaults1{$feature}{$value} = \@backoff;
         }
         # The primary list of values constitutes the sequence of replacements for the empty value.
-        foreach my $valarray (@{$defaults{$feature}})
+        foreach my $valarray (@{$matrix{$feature}{replacements}})
         {
             my $replacement = $valarray->[0];
             unless($map{''}{$replacement} || $replacement eq '')
@@ -1128,7 +1128,7 @@ sub preprocess_list_of_replacements
                 last unless($new_last);
             }
             # The empty value and all other unvisited values are the next replacements to consider.
-            foreach my $valarray ('', @{$defaults{$feature}})
+            foreach my $valarray ([''], @{$matrix{$feature}{replacements}})
             {
                 my $replacement = $valarray->[0];
                 unless($map{$value}{$replacement} || $replacement eq $value)

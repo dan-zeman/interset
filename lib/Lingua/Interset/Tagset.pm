@@ -65,6 +65,7 @@ sub encode_strict
 {
     my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
+    confess('Undefined Interset feature structure') if(!defined($fs));
     # We are going to damage the feature structure so we should make its copy first.
     # The caller may still need the original structure!
     my $fs1 = $fs->duplicate();
@@ -84,8 +85,8 @@ sub encode_strict
 sub list
 {
     my $self = shift;
-    my @list = sort(keys(%postable));
-    return \@list;
+    ###!!! Should we rather confess() here?
+    return undef;
 }
 
 
@@ -155,7 +156,7 @@ sub get_permitted_structures
         ###!!! then add feature values to the tree.
         next if($no_other && exists($fs->{other}));
         # Loop over known features (in the order of feature priority).
-        my $pointer = $trie;
+        my $pointer = $trie->root_hash();
         foreach my $f (@features)
         {
             # Make sure the value is not an array.

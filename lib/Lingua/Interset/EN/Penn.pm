@@ -202,18 +202,6 @@ sub encode
 {
     my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
-
-
-
-    ##########!!!!!!!!!!!!!!!!!!
-    my $f = shift;
-    my %f = %{$f}; # this is not a deep copy! We must not modify the contents!
-    my $nonstrict = shift; # strict is default
-    $strict = !$nonstrict;
-    ##########!!!!!!!!!!!!!!!!!!
-
-
-
     my $tag = '';
     my $pos = $fs->pos();
     my $prontype = $fs->prontype();
