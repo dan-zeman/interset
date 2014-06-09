@@ -13,7 +13,8 @@ our $VERSION; BEGIN { $VERSION = "2.00" }
 
 
 
-has root_hash ( isa => 'HashRef', is => 'rw', default => {} );
+has root_hash ( isa => 'HashRef',  is => 'rw', default => {} );
+has features  ( isa => 'ArrayRef', is => 'rw', required => 1 );
 
 
 

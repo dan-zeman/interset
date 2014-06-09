@@ -72,10 +72,8 @@ sub encode_strict
     #my $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode);
     my $permitted = $self->get_permitted_structures();
     ###!!!
-    my $f = tagset::common::enforce_permitted_joint($f0, $permitted);
-    my %f = %{$f}; # This is not a deep copy but $f already refers to a deep copy of the original %{$f0}.
-    ###!!!
-    return $self->encode($fs);
+    $fs1->enforce_permitted_values($permitted);
+    return $self->encode($fs1);
 }
 
 
@@ -140,7 +138,6 @@ sub get_permitted_structures
     # Can we consider tags that require setting the 'other' feature?
     my $no_other = shift;
     my $list = $self->list();
-    my $trie = Lingua::Interset::Trie->new();
     # Make sure that the list of possible tags is not empty.
     # If it is, the driver's list() function is probably not implemented.
     unless(scalar(@{$list}))
@@ -148,6 +145,7 @@ sub get_permitted_structures
         confess('Cannot figure out the permitted values because the list of possible tags is empty');
     }
     my @features = Lingua::Interset::FeatureStructure::priority_features();
+    my $trie = Lingua::Interset::Trie->new('features' => \@features);
     foreach my $tag (@{$list})
     {
         my $fs = $self->decode($tag);

@@ -1272,8 +1272,12 @@ sub enforce_permitted_values
     my $self = shift;
     my $trie = shift; # Lingua::Interset::Trie
     my $pointer = shift; # reference to a hash inside the trie, not necessarily the root hash
-    ###!!! my $fs1 = duplicate($fs0); ######################################### Asi by si volající měl strukturu zazálohovat sám, pokud to potřebuje, ne?
-    my @features = known_features();
+    if(!defined($pointer))
+    {
+        $pointer = $trie->root_hash();
+    }
+    my $features = $trie->features();
+    my @features = @{$features};
     foreach my $feature (@features)
     {
         my $value = $self->get($feature);
@@ -1352,24 +1356,32 @@ sub array_to_scalar_value
 sub duplicate
 {
     my $self = shift;
+    my $srchash = $self->get_hash();
+    my $tgthash = duplicate_recursive($srchash);
     my $duplicate = new Lingua::Interset::FeatureStructure();
-    my $source = $self->get_hash();
+    $duplicate->set_hash($tgthash);
+    return $duplicate;
+}
+sub duplicate_recursive
+{
+    my $source = shift;
+    my $duplicate;
     my $ref = ref($source);
-    if($ref eq "ARRAY")
+    if($ref eq 'ARRAY')
     {
         my @new_array;
         foreach my $element (@{$source})
         {
-            push(@new_array, duplicate($element));
+            push(@new_array, duplicate_recursive($element));
         }
         $duplicate = \@new_array;
     }
-    elsif($ref eq "HASH")
+    elsif($ref eq 'HASH')
     {
         my %new_hash;
         foreach my $key (keys(%{$source}))
         {
-            $new_hash{$key} = duplicate($source->{$key});
+            $new_hash{$key} = duplicate_recursive($source->{$key});
         }
         $duplicate = \%new_hash;
     }
