@@ -929,6 +929,42 @@ sub get_list
 
 
 #------------------------------------------------------------------------------
+# Creates a hash of all features and their values. Returns a reference to the
+# hash.
+#------------------------------------------------------------------------------
+sub get_hash
+{
+    my $self = shift;
+    my %fs;
+    foreach my $feature ($self->known_features())
+    {
+        $fs{$feature} = $self->get($feature);
+    }
+    return \%fs;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Takes a reference to a hash of features and their values. Sets the values of
+# the features in $self. Unknown features and values are ignored. Known
+# features that are not set in the hash will be (re-)set to empty values in
+# $self.
+#------------------------------------------------------------------------------
+sub set_hash
+{
+    my $self = shift;
+    my $fs = shift;
+    foreach my $feature ($self->known_features())
+    {
+        my $value = defined($fs->{$feature}) ? $fs->{$feature} : '';
+        $self->set($feature, $value);
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
 # Sets several features at once. Takes list of value assignments, i.e. an array
 # of an even number of elements (feature1, value1, feature2, value2...)
 # This is useful when defining decoders from physical tagsets. Typically, one
@@ -1256,7 +1292,7 @@ sub enforce_permitted_values
 ###############################################################################
 # GENERIC FEATURE STRUCTURE MANIPULATION
 # The following section contains feature-structure-related static functions,
-# not methods (no $self parameter is expected).
+# not just methods (no $self parameter is expected).
 ###############################################################################
 
 
@@ -1300,6 +1336,48 @@ sub array_to_scalar_value
         $value = join('|', sort(@{$value}));
     }
     return $value;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Creates a deep copy of a feature structure. If there is a reference to an
+# array of values, a copy of the array is created and the copy is referenced
+# from the new structure, rather than just copying the reference to the old
+# array. The same holds for the "other" feature, which can contain references
+# to arrays and / or hashes nested in unlimited number of levels. In fact, this
+# function could be used for any nested structures, not just feature
+# structures.
+#------------------------------------------------------------------------------
+sub duplicate
+{
+    my $self = shift;
+    my $duplicate = new Lingua::Interset::FeatureStructure();
+    my $source = $self->get_hash();
+    my $ref = ref($source);
+    if($ref eq "ARRAY")
+    {
+        my @new_array;
+        foreach my $element (@{$source})
+        {
+            push(@new_array, duplicate($element));
+        }
+        $duplicate = \@new_array;
+    }
+    elsif($ref eq "HASH")
+    {
+        my %new_hash;
+        foreach my $key (keys(%{$source}))
+        {
+            $new_hash{$key} = duplicate($source->{$key});
+        }
+        $duplicate = \%new_hash;
+    }
+    else
+    {
+        $duplicate = $source;
+    }
+    return $duplicate;
 }
 
 

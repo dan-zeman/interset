@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 # A trie-like structure for DZ Interset features and their values.
-# Copyright © 2012 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2012, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
 package Lingua::Interset::Trie;

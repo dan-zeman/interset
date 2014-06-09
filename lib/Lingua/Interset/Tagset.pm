@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 # The root class for all physical tagsets covered by DZ Interset 2.0.
-# Copyright © 2012 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2012, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
 package Lingua::Interset::Tagset;
@@ -45,6 +45,37 @@ sub encode
     ###!!! Should we rather confess() here?
     my $tag = '_INTERSET_ENCODE_NOT_IMPLEMENTED_';
     return $tag;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Takes feature structure and returns the corresponding physical tag (string).
+# Unlike encode(), this method ensures that the result is a known tag of the
+# target tagset. Positional tagsets allow in principle encoding feature-value
+# combination that never occur in the original corpus but may make sense when
+# converted from another tagset. Strict encoding can block this if desired.
+# Note however, that using strict encoding may result in unnecessary loss or
+# bias of information. For example, Interset says that it's the third person
+# but strict encoding may realize that only first or second persons occur with
+# the combination of values that have been processed before: then you will get
+# the first person on the output!
+#------------------------------------------------------------------------------
+sub encode_strict
+{
+    my $self = shift;
+    my $fs = shift; # Lingua::Interset::FeatureStructure
+    # We are going to damage the feature structure so we should make its copy first.
+    # The caller may still need the original structure!
+    my $fs1 = $fs->duplicate();
+    ###!!! We should create this structure lazily and cache it.
+    #my $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode);
+    my $permitted = $self->get_permitted_structures();
+    ###!!!
+    my $f = tagset::common::enforce_permitted_joint($f0, $permitted);
+    my %f = %{$f}; # This is not a deep copy but $f already refers to a deep copy of the original %{$f0}.
+    ###!!!
+    return $self->encode($fs);
 }
 
 
