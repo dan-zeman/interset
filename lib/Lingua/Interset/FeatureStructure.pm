@@ -1235,17 +1235,20 @@ sub enforce_permitted_values
 {
     my $self = shift;
     my $trie = shift; # Lingua::Interset::Trie
+    my $pointer = shift; # reference to a hash inside the trie, not necessarily the root hash
     ###!!! my $fs1 = duplicate($fs0); ######################################### Asi by si volající měl strukturu zazálohovat sám, pokud to potřebuje, ne?
     my @features = known_features();
-    foreach my $f (@features)
+    foreach my $feature (@features)
     {
-        unless(exists($trie->{$fs1->{$f}}))
+        my $value = $self->get($feature);
+        unless(exists($pointer->{$value}))
         {
-            $fs1->{$f} = select_replacement($f, $fs1->{$f}, $trie);
+            my $replacement = select_replacement($feature, $value, $pointer);
+            $self->set($feature, $replacement);
+            $value = $replacement;
         }
-        $trie = advance_trie_pointer($f, $fs1->{$f}, $trie);
+        $trie->advance_pointer($pointer, $feature, $value);
     }
-    return $fs1;
 }
 
 
