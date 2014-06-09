@@ -82,6 +82,56 @@ sub advance_pointer
 
 
 
+#------------------------------------------------------------------------------
+# Debugging function. Returns permitted feature values in a form suitable for
+# printing.
+#------------------------------------------------------------------------------
+sub as_string
+{
+    my $self = shift;
+    my $fs = new Lingua::Interset::FeatureStructure();
+    return $self->get_permitted_combinations_as_text_recursion($fs, 0, $self->root_hash());
+}
+
+
+
+#------------------------------------------------------------------------------
+# Recursive part of printing permitted feature value combinations.
+#------------------------------------------------------------------------------
+sub get_permitted_combinations_as_text_recursion
+{
+    my $self = shift;
+    my $fs0 = shift; # Lingua::Interset::FeatureStructure
+    my $i = shift; # index of the next feature to process
+    my $pointer = shift; # reference to the current hash in the trie
+    my @features = @{$self->features()};
+    return if($i>$#features);
+    my $string;
+    # Loop through permitted values of the next feature.
+    my @values = sort(keys(%{$pointer}));
+    foreach my $value (@values)
+    {
+        # Add the value of the next feature to the feature structure.
+        my $fs1 = $fs0->duplicate();
+        $fs1->set($features[$i], $value);
+        # If this is the last feature, print the feature structure.
+        if($i==$#features)
+        {
+            $string .= '[';
+            $string .= join(',', map {"$_=\"".$fs1->get($_)."\""} (grep {$fs1->get($_) ne ''} (@features)));
+            $string .= "]\n";
+        }
+        # Otherwise, go to the next feature.
+        else
+        {
+            $string .= $self->get_permitted_combinations_as_text_recursion($fs1, $i+1, $pointer->{$value});
+        }
+    }
+    return $string;
+}
+
+
+
 1;
 
 =over
