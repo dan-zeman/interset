@@ -749,6 +749,27 @@ has 'other'        => ( is  => 'rw', default => '' );
 
 
 #------------------------------------------------------------------------------
+# Shortcuts for some frequent tests people want to do against Interset.
+#------------------------------------------------------------------------------
+sub is_noun {my $self = shift; return $self->pos() eq 'noun';}
+sub is_adjective {my $self = shift; return $self->pos() eq 'adj';}
+sub is_pronoun {my $self = shift; return $self->prontype() ne '';}
+sub is_numeral {my $self = shift; return $self->pos() eq 'num';}
+sub is_verb {my $self = shift; return $self->pos() eq 'verb';}
+sub is_adverb {my $self = shift; return $self->pos() eq 'adv';}
+sub is_preposition {my $self = shift; return $self->pos() eq 'prep';}
+sub is_conjunction {my $self = shift; return $self->pos() eq 'conj';}
+sub is_coordinator {my $self = shift; return $self->pos() eq 'conj' && $self->conjtype() eq 'coor';}
+sub is_subordinator {my $self = shift; return $self->pos() eq 'conj' && $self->conjtype() eq 'sub';}
+sub is_particle {my $self = shift; return $self->pos() eq 'part';}
+sub is_interjection {my $self = shift; return $self->pos() eq 'int';}
+sub is_punctuation {my $self = shift; return $self->pos() eq 'punc';}
+sub is_foreign {my $self = shift; return $self->foreign() eq 'foreign';}
+sub is_typo {my $self = shift; return $self->typo() eq 'typo';}
+
+
+
+#------------------------------------------------------------------------------
 # Static function. Returns the list of known features (in print order).
 #------------------------------------------------------------------------------
 sub known_features
