@@ -1276,18 +1276,25 @@ sub enforce_permitted_values
     {
         $pointer = $trie->root_hash();
     }
+    my $debug = 0;
     my $features = $trie->features();
     my @features = @{$features};
     foreach my $feature (@features)
     {
         my $value = $self->get($feature);
+        print("$feature: ", join(', ', map {"'$_' => '$pointer->{$_}'"} sort keys(%{$pointer})), "\n") if($debug);
         unless(exists($pointer->{$value}))
         {
             my $replacement = select_replacement($feature, $value, $pointer);
+            print("$feature: '$value' => '$replacement'\n") if($debug);
             $self->set($feature, $replacement);
             $value = $replacement;
         }
-        $trie->advance_pointer($pointer, $feature, $value);
+        elsif($debug)
+        {
+            print("$feature: '$value' is ok\n");
+        }
+        $pointer = $trie->advance_pointer($pointer, $feature, $value);
     }
 }
 

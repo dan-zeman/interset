@@ -117,9 +117,7 @@ sub get_permitted_combinations_as_text_recursion
         # If this is the last feature, print the feature structure.
         if($i==$#features)
         {
-            $string .= '[';
-            $string .= join(',', map {"$_=\"".$fs1->get($_)."\""} (grep {$fs1->get($_) ne ''} (@features)));
-            $string .= "]\n";
+            $string .= $fs1->as_string()."\n";
         }
         # Otherwise, go to the next feature.
         else
