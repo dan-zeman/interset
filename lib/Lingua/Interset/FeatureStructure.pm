@@ -726,6 +726,11 @@ my %matrix = @_matrix =
     }
 );
 my @features_in_print_order = grep {ref($_) eq ''} @_matrix;
+# The list of replacements (defaults) will be derived from the above matrix.
+# Same as the matrix, it will be a class-static variable that will not depend on any particular object.
+# It will be created lazily on the first demand, using the function _preprocess_list_of_replacements();
+# to ensure the lazy creation, it should be accessed using get_replacements().
+my $replacements = undef;
 
 
 
@@ -1050,12 +1055,32 @@ sub structure_to_string
 
 
 #------------------------------------------------------------------------------
+# Returns the set of replacement values for the case a feature value is not
+# permitted in a given context. The set is derived from the feature matrix
+# above. It is a hash{feature}{value0}, leading to a list of values that can be
+# used to replace the value0, ordered by priority.
+#------------------------------------------------------------------------------
+sub get_replacements
+{
+    if(!defined($replacements))
+    {
+        $replacements = _preprocess_list_of_replacements();
+    }
+    return $replacements;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Preprocesses the lists of replacement values defined above in the %matrix.
 # In the original tagset::common module, this code was in the BEGIN block and
 # it created the global hash %defaults1 from %defaults.
 #------------------------------------------------------------------------------
-sub preprocess_list_of_replacements
+sub _preprocess_list_of_replacements
 {
+    # This is a lazy attribute and the builder can be called anytime, even
+    # from map() or grep(). Avoid damaging the caller's $_!
+    local $_;
     my %defaults1;
     # Loop over features.
     my @keys = keys(%matrix);
@@ -1157,9 +1182,7 @@ sub get_similarity_of_arrays
     my $feature = shift; # feature name needed to find default values
     my $srch = shift; # array reference
     my $eval = shift; # array reference
-    ###!!! Chtělo by to nějak dotáhnout, aby se tenhle kód volal jen jednou na začátku při inicializaci modulu.
-    my $defaults = preprocess_list_of_replacements();
-    ###!!! Konec kódu na špatném místě.
+    my $defaults = get_replacements();
     # For each scalar searched, get replacement array (beginning with the scalar itself).
     my @menu; # 2-dimensional matrix
     for(my $i = 0; $i<=$#{$srch}; $i++)

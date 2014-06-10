@@ -15,8 +15,8 @@ our $VERSION; BEGIN { $VERSION = "2.00" }
 
 
 
-has 'permitted_structures' => ( isa => 'Lingua::Interset::Trie', is => 'rw' );
-has 'permitted_values' => ( isa => 'HashRef', is => 'rw' );
+has 'permitted_structures' => ( isa => 'Lingua::Interset::Trie', is => 'ro', builder => '_build_permitted_structures', lazy => 1 );
+has 'permitted_values' => ( isa => 'HashRef', is => 'ro', builder => '_build_permitted_values', lazy => 1 );
 
 
 
@@ -75,7 +75,7 @@ sub encode_strict
     # We are going to damage the feature structure so we should make its copy first.
     # The caller may still need the original structure!
     my $fs1 = $fs->duplicate();
-    my $permitted = $self->get_permitted_structures();
+    my $permitted = $self->permitted_structures();
     $fs1->enforce_permitted_values($permitted);
     return $self->encode($fs1);
 }
@@ -132,97 +132,89 @@ sub list_other_resistant_tags
 
 
 #------------------------------------------------------------------------------
-# Returns the reference to the trie description of permitted feature structures
-# (Lingua::Interset::Trie). The trie is constructed lazily on the first demand.
-# Reads a list of tags, decodes each tag, converts all array values to scalars
-# (by sorting and joining them), remembers permitted feature structures in a
-# trie. Returns a reference to the trie.
+# Creates the trie description of all permitted feature structures (Lingua::
+# Interset::Trie) and returns a reference to it. The trie is constructed lazily
+# on the first demand. The builder reads the list of known tags, decodes each
+# tag, converts all array values to scalars (by sorting and joining them) and
+# remembers permitted feature structures in the trie.
 #------------------------------------------------------------------------------
-sub get_permitted_structures
+sub _build_permitted_structures
 {
     my $self = shift;
-    # Can we consider tags that require setting the 'other' feature?
-    my $no_other = shift;
-    if(defined($self->{permitted_structures}))
+    my $no_other = shift; ###!!!
+    # This is a lazy attribute and the builder can be called anytime, even
+    # from map() or grep(). Avoid damaging the caller's $_!
+    local $_;
+    my $list = $self->list();
+    # Make sure that the list of possible tags is not empty.
+    # If it is, the driver's list() function is probably not implemented.
+    unless(scalar(@{$list}))
     {
-        return $self->{permitted_structures};
+        confess('Cannot figure out the permitted values because the list of possible tags is empty');
     }
-    else
+    my @features = Lingua::Interset::FeatureStructure::priority_features();
+    my $trie = Lingua::Interset::Trie->new('features' => \@features);
+    foreach my $tag (@{$list})
     {
-        my $list = $self->list();
-        # Make sure that the list of possible tags is not empty.
-        # If it is, the driver's list() function is probably not implemented.
-        unless(scalar(@{$list}))
+        my $fs = $self->decode($tag);
+        # If required, skip tags that set the 'other' feature.
+        ###!!! Alternatively, we need not skip the tag.
+        ###!!! Instead, strip the 'other' information, make sure that we have a valid tag (by encoding and decoding once more),
+        ###!!! then add feature values to the tree.
+        next if($no_other && $fs->other());
+        # Loop over known features (in the order of feature priority).
+        my $pointer = $trie->root_hash();
+        foreach my $f (@features)
         {
-            confess('Cannot figure out the permitted values because the list of possible tags is empty');
+            # Make sure the value is not an array.
+            my $v = $fs->get_joined($f);
+            # Supply tag only if this is the last feature in the list.
+            my $t = $f eq $features[$#features] ? $tag : undef;
+            $pointer = $trie->add_value($pointer, $v, $t);
         }
-        my @features = Lingua::Interset::FeatureStructure::priority_features();
-        my $trie = Lingua::Interset::Trie->new('features' => \@features);
-        foreach my $tag (@{$list})
-        {
-            my $fs = $self->decode($tag);
-            # If required, skip tags that set the 'other' feature.
-            ###!!! Alternatively, we need not skip the tag.
-            ###!!! Instead, strip the 'other' information, make sure that we have a valid tag (by encoding and decoding once more),
-            ###!!! then add feature values to the tree.
-            next if($no_other && exists($fs->{other}));
-            # Loop over known features (in the order of feature priority).
-            my $pointer = $trie->root_hash();
-            foreach my $f (@features)
-            {
-                # Make sure the value is not an array.
-                my $v = $fs->get_joined($f);
-                # Supply tag only if this is the last feature in the list.
-                my $t = $f eq $features[$#features] ? $tag : undef;
-                $pointer = $trie->add_value($pointer, $v, $t);
-            }
-        }
-        $self->{permitted_structures} = $trie;
-        return $trie;
     }
+    return $trie;
 }
 
 
 
 #------------------------------------------------------------------------------
-# Reads a list of tags, decodes each tag and remembers occurrences of feature
-# values. Builds a hash of permitted feature values for this tagset:
+# Creates a hash of permitted feature values for this tagset:
 # ($hash{$feature}{$value} != 0) => tagset permits $value of $feature
+# Note that a value that is permitted in one context may not be permitted in
+# another. Unlike in permitted_structures, this hash just ignores context.
+# The builder reads a list of tags, decodes each tag and remembers occurrences
+# of feature values in the hash. It returns a reference to the hash.
 #------------------------------------------------------------------------------
-sub get_permitted_values
+sub _build_permitted_values
 {
     my $self = shift;
-    if(defined($self->{permitted_values}))
+    # This is a lazy attribute and the builder can be called anytime, even
+    # from map() or grep(). Avoid damaging the caller's $_!
+    local $_;
+    my $list = $self->list();
+    # Make sure that the list of possible tags is not empty.
+    # If it is, probably the driver's list() function is not implemented.
+    unless(scalar(@{$list}))
     {
-        return $self->{permitted_values};
+        confess('Cannot figure out the permitted values because the list of possible tags is empty');
     }
-    else
+    my @features = Lingua::Interset::FeatureStructure::priority_features();
+    my %values;
+    foreach my $tag (@{$list})
     {
-        my $list = $self->list();
-        # Make sure that the list of possible tags is not empty.
-        # If it is, probably the driver's list() function is not implemented.
-        unless(scalar(@{$list}))
+        my $fs = $self->decode($tag);
+        foreach my $f (@features)
         {
-            confess("Cannot figure out the permitted values because the list of possible tags is empty");
-        }
-        my @features = Lingua::Interset::FeatureStructure::priority_features();
-        my %values;
-        foreach my $tag (@{$list})
-        {
-            my $fs = $self->decode($tag);
-            foreach my $f (@features)
+            # Make sure the value is always a list of values.
+            my @v = $fs->get_list($f);
+            foreach my $v (@v)
             {
-                # Make sure the value is always a list of values.
-                my @v = $fs->get_list($f);
-                foreach my $v (@v)
-                {
-                    $values{$f}{$v}++;
-                }
+                $values{$f}{$v}++;
             }
         }
-        $self->{permitted_values} = \%values;
-        return $self->{permitted_values};
     }
+    return \%values;
 }
 
 
