@@ -166,9 +166,9 @@ sub get_driver_hash
 #------------------------------------------------------------------------------
 sub decode
 {
-    my $tagset = shift; # e.g. "cs::pdt"
-    my $driver = get_driver_object($tagset);
-    return $driver->decode(@_);
+    my $driver = shift; # e.g. "cs::pdt"
+    my $decode = get_decode_function($driver);
+    return &{$decode}(@_);
 }
 
 
@@ -178,22 +178,9 @@ sub decode
 #------------------------------------------------------------------------------
 sub encode
 {
-    my $tagset = shift; # e.g. "cs::pdt"
-    my $driver = get_driver_object($tagset);
-    return $driver->encode(@_);
-}
-
-
-
-#------------------------------------------------------------------------------
-# Encodes a tag using a particular driver and strict encoding (only known
-# tags).
-#------------------------------------------------------------------------------
-sub encode_strict
-{
-    my $tagset = shift; # e.g. "cs::pdt"
-    my $driver = get_driver_object($tagset);
-    return $driver->encode_strict(@_);
+    my $driver = shift; # e.g. "cs::pdt"
+    my $encode = get_encode_function($driver);
+    return &{$encode}(@_);
 }
 
 
@@ -203,9 +190,42 @@ sub encode_strict
 #------------------------------------------------------------------------------
 sub list
 {
+    my $driver = shift; # e.g. "cs::pdt"
+    my $list = get_list_function($driver);
+    return &{$list}(@_);
+}
+
+
+
+#------------------------------------------------------------------------------
+# Returns the reference to the decode(), encode() and list() functions of a
+# particular driver.
+#------------------------------------------------------------------------------
+sub get_driver_functions
+{
     my $tagset = shift; # e.g. "cs::pdt"
-    my $driver = get_driver_object($tagset);
-    return $driver->list(@_);
+    my $driver_hash = get_driver_hash();
+    if(!exists($driver_hash->{$tagset}))
+    {
+        confess("Unknown tagset driver '$tagset'");
+    }
+    my $package = $driver_hash->{$tagset}{package};
+    my $eval = <<_end_of_eval_
+    {
+        use ${package};
+        my \$decode = \\&${package}::decode;
+        my \$encode = \\&${package}::encode;
+        my \$list = \\&${package}::list;
+        return (\$decode, \$encode, \$list);
+    }
+_end_of_eval_
+    ;
+    my ($decode, $encode, $list) = eval($eval);
+    if($@)
+    {
+        confess("$@\nEval failed");
+    }
+    return ($decode, $encode, $list);
 }
 
 
@@ -221,42 +241,73 @@ sub get_driver_object
     {
         confess("Unknown tagset driver '$tagset'");
     }
-    # We will cache the driver objects for tagsets. We do not want to construct them again and again.
-    if(!defined($driver_hash->{$tagset}{driver}))
+    my $package = $driver_hash->{$tagset}{package};
+    my $eval;
+    if($driver_hash->{$tagset}{old})
     {
-        my $package = $driver_hash->{$tagset}{package};
-        my $eval;
-        if($driver_hash->{$tagset}{old})
+        $eval = <<_end_of_old_eval_
         {
-            $eval = <<_end_of_old_eval_
-            {
-                use ${package};
-                use Lingua::Interset::OldTagsetDriver;
-                my \$object = Lingua::Interset::OldTagsetDriver->new(driver => '${tagset}');
-                return \$object;
-            }
+            use ${package};
+            use Lingua::Interset::OldTagsetDriver;
+            my \$object = Lingua::Interset::OldTagsetDriver->new(driver => '${tagset}');
+            return \$object;
+        }
 _end_of_old_eval_
-            ;
-        }
-        else # new driver
-        {
-            $eval = <<_end_of_eval_
-            {
-                use ${package};
-                my \$object = ${package}->new();
-                return \$object;
-            }
-_end_of_eval_
-            ;
-        }
-        my $object = eval($eval);
-        if($@)
-        {
-            confess("$@\nEval failed");
-        }
-        $driver_hash->{$tagset}{driver} = $object;
+        ;
     }
-    return $driver_hash->{$tagset}{driver};
+    else # new driver
+    {
+        $eval = <<_end_of_eval_
+        {
+            use ${package};
+            my \$object = ${package}->new();
+            return \$object;
+        }
+_end_of_eval_
+        ;
+    }
+    my $object = eval($eval);
+    if($@)
+    {
+        confess("$@\nEval failed");
+    }
+    return $object;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Returns the reference to the decode() function of a particular driver.
+#------------------------------------------------------------------------------
+sub get_decode_function
+{
+    my $driver = shift; # e.g. "cs::pdt"
+    my ($decode, $encode, $list) = get_driver_functions($driver);
+    return $decode;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Returns the reference to the encode() function of a particular driver.
+#------------------------------------------------------------------------------
+sub get_encode_function
+{
+    my $driver = shift; # e.g. "cs::pdt"
+    my ($decode, $encode, $list) = get_driver_functions($driver);
+    return $encode;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Returns the reference to the list() function of a particular driver.
+#------------------------------------------------------------------------------
+sub get_list_function
+{
+    my $driver = shift; # e.g. "cs::pdt"
+    my ($decode, $encode, $list) = get_driver_functions($driver);
+    return $list;
 }
 
 
