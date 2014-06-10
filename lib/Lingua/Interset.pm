@@ -231,6 +231,40 @@ _end_of_eval_
 
 
 #------------------------------------------------------------------------------
+# Creates and returns a tagset driver object for a given tagset.
+#------------------------------------------------------------------------------
+sub get_driver_object
+{
+    my $tagset = shift; # e.g. "cs::pdt"
+    my $driver_hash = get_driver_hash();
+    if(!exists($driver_hash->{$tagset}))
+    {
+        confess("Unknown tagset driver '$tagset'");
+    }
+    if($driver_hash->{$tagset}{old})
+    {
+        confess("Driver objects can currently be instantiated only for the new drivers, not for '$tagset'");
+    }
+    my $package = $driver_hash->{$tagset}{package};
+    my $eval = <<_end_of_eval_
+    {
+        use ${package};
+        my \$object = ${package}->new();
+        return \$object;
+    }
+_end_of_eval_
+    ;
+    my $object = eval($eval);
+    if($@)
+    {
+        confess("$@\nEval failed");
+    }
+    return $object;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Returns the reference to the decode() function of a particular driver.
 #------------------------------------------------------------------------------
 sub get_decode_function
