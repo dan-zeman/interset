@@ -184,7 +184,7 @@ sub decode
     my $self = shift;
     my $tag = shift;
     my $fs = Lingua::Interset::FeatureStructure->new();
-    $fs->tagset('en::penn');
+    $fs->set_tagset('en::penn');
     my $assignments = $postable{$tag};
     if($assignments)
     {

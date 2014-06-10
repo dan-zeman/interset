@@ -8,6 +8,7 @@ use utf8;
 use open ':utf8';
 use namespace::autoclean;
 use Moose;
+use MooseX::SemiAffordanceAccessor; # attribute x is written using set_x($value) and read using x()
 use Carp;
 our $VERSION; BEGIN { $VERSION = "2.00" }
 
@@ -153,6 +154,3 @@ The trie can store features in any order.
 =back
 
 =cut
-
-# Copyright © 2012 Dan Zeman <zeman@ufal.mff.cuni.cz>
-# This file is distributed under the GNU General Public License v3. See doc/COPYING.txt.

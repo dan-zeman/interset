@@ -8,6 +8,7 @@ use utf8;
 use open ':utf8';
 use namespace::autoclean;
 use Moose;
+use MooseX::SemiAffordanceAccessor; # attribute x is written using set_x($value) and read using x()
 use Lingua::Interset::FeatureStructure;
 use Lingua::Interset::Trie;
 our $VERSION; BEGIN { $VERSION = "2.00" }
@@ -34,7 +35,7 @@ sub decode
         'error' => 'Not implemented. Lingua::Interset::Tagset::decode() must be overridden in the tagset driver.',
         'tag' => $tag
     );
-    $fs->other(\%other);
+    $fs->set_other(\%other);
     return $fs;
 }
 
@@ -120,7 +121,7 @@ sub list_other_resistant_tags
     foreach my $tag0 (@{$list0})
     {
         my $fs = $self->decode($tag0);
-        $fs->other('');
+        $fs->set_other('');
         my $tag1 = $self->encode($fs);
         $result{$tag1}++;
     }
@@ -243,6 +244,3 @@ and list of known tags.
 =back
 
 =cut
-
-# Copyright © 2012 Dan Zeman <zeman@ufal.mff.cuni.cz>
-# This file is distributed under the GNU General Public License v3. See doc/COPYING.txt.
