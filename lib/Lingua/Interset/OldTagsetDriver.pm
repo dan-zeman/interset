@@ -68,7 +68,7 @@ _end_of_eval_
         $attr->{list_function} = $list;
     }
     return $attr;
-}
+};
 
 
 
