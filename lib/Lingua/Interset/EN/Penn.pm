@@ -46,7 +46,7 @@ my %postable =
     '$'     => ['pos' => 'punc', 'punctype' => 'symb', 'other' => 'currency'],
     # channel
     # example: #
-    '\#'    => ['pos' => 'punc', 'other' => '\#'],
+    "\#"    => ['pos' => 'punc', 'other' => "\#"],
     # "common postmodifiers of biomedical entities such as genes" (Blitzer, MdDonald, Pereira, Proc of EMNLP 2006, Sydney)
     # Example 1: "anti-CYP2E1-IgG" is tokenized and tagged as "anti/AFX -/HYPH CYP2E1-IgG/NN".
     # Example 2: "mono- and diglycerides" is tokenized and tagged as "mono/AFX -/HYPH and/CC di/AFX glycerides/NNS".
@@ -459,12 +459,16 @@ sub encode
             # This tag is new in PennBioIE. In older data hyphens are tagged ":".
             $tag = 'HYPH';
         }
+        elsif($fs->punctype() eq 'symb')
+        {
+            $tag = 'SYM';
+        }
         else
         {
             $tag = ':';
         }
     }
-    # punctuation and unknown elements
+    # unknown elements (also punctuation in some corpora)
     else
     {
         $tag = 'NIL';
