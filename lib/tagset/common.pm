@@ -1050,6 +1050,55 @@ sub single_values
 
 
 #------------------------------------------------------------------------------
+# Creates a deep copy of a feature structure. If there is a reference to an
+# array of values, a copy of the array is created and the copy is referenced
+# from the new structure, rather than just copying the reference to the old
+# array. The same holds for the "other" feature, which can contain references
+# to arrays and / or hashes nested in unlimited number of levels. In fact, this
+# function could be used for any nested structures, not just feature
+# structures.
+#------------------------------------------------------------------------------
+sub duplicate
+{
+    my $source = shift;
+    my $duplicate;
+    my $ref = ref($source);
+    if($ref eq "ARRAY")
+    {
+        my @new_array;
+        foreach my $element (@{$source})
+        {
+            push(@new_array, duplicate($element));
+        }
+        $duplicate = \@new_array;
+    }
+    elsif($ref eq "HASH")
+    {
+        my %new_hash;
+        foreach my $key (keys(%{$source}))
+        {
+            $new_hash{$key} = duplicate($source->{$key});
+        }
+        $duplicate = \%new_hash;
+    }
+    else
+    {
+        $duplicate = $source;
+    }
+    return $duplicate;
+}
+
+
+
+###############################################################################
+# MERGING FEATURE STRUCTURES
+# (These functions do not seem to have been used anywhere but I am not removing
+# them yet because they might turn out useful later on.)
+###############################################################################
+
+
+
+#------------------------------------------------------------------------------
 # Searches a set of feature structures for pairs of compatible structures that
 # can be merged. Merges as many as possible and returns a new set of feature
 # structures. (The new set can contain references to structures of the old set
@@ -1172,47 +1221,6 @@ sub merge_two_feature_structures
         $fs->{$differing_feature} = merge_values($fs1->{$differing_feature}, $fs2->{$differing_feature});
     }
     return $fs;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Creates a deep copy of a feature structure. If there is a reference to an
-# array of values, a copy of the array is created and the copy is referenced
-# from the new structure, rather than just copying the reference to the old
-# array. The same holds for the "other" feature, which can contain references
-# to arrays and / or hashes nested in unlimited number of levels. In fact, this
-# function could be used for any nested structures, not just feature
-# structures.
-#------------------------------------------------------------------------------
-sub duplicate
-{
-    my $source = shift;
-    my $duplicate;
-    my $ref = ref($source);
-    if($ref eq "ARRAY")
-    {
-        my @new_array;
-        foreach my $element (@{$source})
-        {
-            push(@new_array, duplicate($element));
-        }
-        $duplicate = \@new_array;
-    }
-    elsif($ref eq "HASH")
-    {
-        my %new_hash;
-        foreach my $key (keys(%{$source}))
-        {
-            $new_hash{$key} = duplicate($source->{$key});
-        }
-        $duplicate = \%new_hash;
-    }
-    else
-    {
-        $duplicate = $source;
-    }
-    return $duplicate;
 }
 
 
