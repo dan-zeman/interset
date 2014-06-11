@@ -751,31 +751,6 @@ sub get_permitted_structures_joint
 
 
 #------------------------------------------------------------------------------
-# Reads a list of tags, decodes each tag and remembers occurrences of feature
-# values. Builds a list of permitted feature values for this tagset.
-#------------------------------------------------------------------------------
-sub get_permitted_values
-{
-    my $list = shift;
-    my $decode = shift; # reference to the driver-specific decode function
-    my $permitted_values = shift; # hash reference
-    my $permitted_combinations = shift; # hash (trie root) reference
-    # Make sure that the list of possible tags is not empty.
-    # If it is, probably the driver's list() function is not implemented.
-    unless(scalar(@{$list}))
-    {
-        die("Cannot figure out the permitted values because the list of possible tags is empty.\n");
-    }
-    foreach my $tag (@{$list})
-    {
-        my $fs = &{$decode}($tag);
-        permit_feature_value_recursion($fs, 0, $permitted_values, $permitted_combinations, $tag);
-    }
-}
-
-
-
-#------------------------------------------------------------------------------
 # Remembers the value(s) of the first feature as permitted and recursively
 # calls itself for subsequent values. The recursion is needed for the case that
 # one feature has an array of values.
