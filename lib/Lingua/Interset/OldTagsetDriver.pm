@@ -82,6 +82,7 @@ sub decode
     my $tag = shift;
     my $fs = Lingua::Interset::FeatureStructure->new();
     my $fs_hash = &{$self->decode_function()}($tag);
+    translate($fs_hash, 12);
     $fs->set_hash($fs_hash);
     return $fs;
 }
@@ -96,6 +97,7 @@ sub encode
     my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $fs_hash = $fs->get_hash();
+    translate($fs_hash, 21);
     # Call non-strict ("1") encoding of the old driver. We use a different method ("encode_strict") for strict encoding now.
     my $tag = &{$self->encode_function()}($fs_hash, 1);
     return $tag;
@@ -110,6 +112,55 @@ sub list
 {
     my $self = shift;
     return &{$self->list_function()}();
+}
+
+
+
+#------------------------------------------------------------------------------
+# Some features and values changed between Interset 1.0 and 2.0. The feature
+# space has been changing during whole history of Interset and tagset drivers
+# had to be adjusted to each change; however, we are not going to adapt old
+# drivers to features new in 2.0 (instead, the whole drivers should be ported).
+# We must thus translate the changed features while this temporary envelope to
+# old drivers is used.
+#------------------------------------------------------------------------------
+sub translate
+{
+    my $hash = shift; # hash reference, not Lingua::Interset::FeatureStructure
+    my $direction = shift; # 12 or 21 ... from version 1 to 2 or from 2 to 1
+    if($direction != 12 && $direction != 21)
+    {
+        confess("Direction is neither 12 nor 21");
+    }
+    my @translations =
+    (
+        ['subpos', 'prop' => 'nountype', 'prop'],
+        ['subpos', 'det' => 'adjtype', 'det'],
+        ['subpos', 'coor' => 'conjtype', 'coor'],
+        ['subpos', 'sub' => 'conjtype', 'sub'],
+    );
+    foreach my $feature (keys(%{$hash}))
+    {
+        foreach my $translation (@translations)
+        {
+            my ($sf, $sv, $tf, $tv);
+            if($direction==12)
+            {
+                ($sf, $sv, $tf, $tv) = @{$translation};
+            }
+            elsif($direction==21)
+            {
+                ($tf, $tv, $sf, $sv) = @{$translation};
+            }
+            # Translate.
+            if(defined($hash->{$sf}) && $hash->{$sf} eq $sv)
+            {
+                delete($hash->{$sf});
+                $hash->{$tf} = $tv;
+            }
+        }
+    }
+    return $hash;
 }
 
 
