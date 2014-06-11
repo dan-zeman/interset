@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 # Reads CSTS from STDIN, converts tags from tagset A to tagset B, writes the result to STDOUT.
 # Copyright © 2008, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
-# Licence: GNU GPL
+# License: GNU GPL
 # 11.6.2014: Adapted to Interset 2.0.
 
 sub usage
