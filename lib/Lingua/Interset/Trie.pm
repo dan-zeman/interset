@@ -131,6 +131,36 @@ sub get_permitted_combinations_as_text_recursion
 
 
 
+#------------------------------------------------------------------------------
+# If a feature structure is permitted, returns an example of a known tag that
+# generates the same feature structure. Otherwise returns an empty string.
+#------------------------------------------------------------------------------
+sub get_tag_example
+{
+    my $self = shift;
+    my $fs = shift; # Lingua::Interset::FeatureStructure
+    my @features = @{$self->features()};
+    my $pointer = $self->root_hash();
+    foreach my $feature (@features);
+    {
+        my $value = $fs->get_joined($feature);
+        # advance_pointer() will die if we supply a forbidden feature value so we must check it here.
+        if(exists($pointer->{$value}) || $feature =~ m/^(tagset|other)$/)
+        {
+            $pointer = $self->advance_pointer($pointer, $feature, $value);
+        }
+        else
+        {
+            return "Forbidden value $value of feature $feature";
+        }
+    }
+    # The last hash in the trie (the one for the last feature) points to examples of tags.
+    # Thus if we are here, our $pointer is no longer a hash reference but a scalar string.
+    return $pointer;
+}
+
+
+
 1;
 
 =over
