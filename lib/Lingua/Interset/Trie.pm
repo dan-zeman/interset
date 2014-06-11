@@ -141,7 +141,7 @@ sub get_tag_example
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my @features = @{$self->features()};
     my $pointer = $self->root_hash();
-    foreach my $feature (@features);
+    foreach my $feature (@features)
     {
         my $value = $fs->get_joined($feature);
         # advance_pointer() will die if we supply a forbidden feature value so we must check it here.
