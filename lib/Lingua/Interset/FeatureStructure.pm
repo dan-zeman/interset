@@ -10,7 +10,10 @@ use open ':utf8';
 use namespace::autoclean;
 use Moose;
 use MooseX::SemiAffordanceAccessor; # attribute x is written using set_x($value) and read using x()
-use Carp;
+# Allow the user to import static functions into their namespace by stating
+# use Lingua::Interset::FeatureStructure qw(feature_valid value_valid);
+use Exporter::Easy ( OK => [ 'feature_valid', 'value_valid' ] );
+use Carp; # confess()
 our $VERSION; BEGIN { $VERSION = "2.00" }
 
 

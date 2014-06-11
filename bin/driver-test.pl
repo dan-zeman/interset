@@ -1,7 +1,8 @@
-#!/usr/bin/perl
-# Tagset service functions.
-# (c) 2007 Dan Zeman <zeman@ufal.mff.cuni.cz>
-# Licence: GNU GPL
+#!/usr/bin/env perl
+# Tests integrity of DZ Interset drivers.
+# Copyright © 2007, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# License: GNU GPL
+# 11.6.2014: Adapted to Interset 2.0.
 
 sub usage
 {
@@ -17,13 +18,14 @@ sub usage
 }
 
 use utf8;
-use open ":utf8";
-binmode(STDIN, ":utf8");
-binmode(STDOUT, ":utf8");
-binmode(STDERR, ":utf8");
+use open ':utf8';
+binmode(STDIN,  ':utf8');
+binmode(STDOUT, ':utf8');
+binmode(STDERR, ':utf8');
 use Getopt::Long qw(:config no_ignore_case bundling);
 use Carp; # confess()
-use tagset::common;
+use Lingua::Interset qw(find_drivers get_driver_object);
+use Lingua::Interset::FeatureStructure qw(feature_valid value_valid);
 
 # Autoflush after every Perl statement.
 $old_fh = select(STDOUT);
@@ -39,7 +41,7 @@ GetOptions('a' => \$all, 'A' => \$all_conversions, 'debug' => \$debug, 'o' => \$
 # Get the list of all drivers if needed.
 if($all || $all_conversions)
 {
-    $drivers = tagset::common::find_drivers();
+    $drivers = find_drivers();
     $conversions = $all_conversions;
 }
 else
@@ -51,11 +53,18 @@ else
 if(scalar(@{$drivers})==0)
 {
     usage();
-    my $drivers = tagset::common::find_drivers();
+    my $drivers = find_drivers();
     if(scalar(@{$drivers}))
     {
         print STDERR ("\nThe following tagset drivers are available on this system:\n");
-        print STDERR (join("", map {"$_\n"} sort @{$drivers}));
+        foreach my $driver (@{$drivers})
+        {
+            print STDERR ("\t$driver->{tagset}\t$driver->{path}\t$driver->{package}\n");
+        }
+        my $n_drivers = scalar(@{$drivers});
+        print STDERR ("Total $n_drivers drivers.\n");
+        my $driver_hash = Lingua::Interset::get_driver_hash();
+        print("Total ", scalar(keys(%{$driver_hash})), " tagsets.\n");
     }
     else
     {
@@ -94,11 +103,11 @@ else
 #------------------------------------------------------------------------------
 sub test
 {
-    my $driver = shift; # e.g. "cs::pdt"
+    my $tagset = shift; # e.g. "cs::pdt"
     my $starttime = time();
     print("Testing $driver ...");
-    my ($decode, $encode, $listf) = tagset::common::get_driver_functions($driver);
-    my $list = &{$listf}();
+    my $driver = get_driver_object($tagset);
+    my $list = $driver->list();
     my $n_tags = scalar(@{$list});
     print(" $n_tags tags");
     # Hash the known tags so that we can query whether a tag is known.
@@ -120,10 +129,10 @@ sub test
             print STDERR ("Now testing tag $tag\n");
         }
         # Decode the tag and create the Interset feature structure.
-        my $f = &{$decode}($tag);
-        my $sfs = tagset::common::feature_structure_to_text($f);
+        my $f = $driver->decode($tag);
+        my $sfs = $f->as_string();
         # Collect statistics how many tags set the 'other' feature.
-        $n_other++ if($f->{other} ne "");
+        $n_other++ if($f->other() ne '');
         # Test that the decoder sets only known features and values.
         my $errors = is_known($f);
         if(scalar(@{$errors}))
@@ -131,13 +140,13 @@ sub test
             print("Error: unknown features or values after decoding \"$tag\"\n");
             foreach my $e (@{$errors})
             {
-                print(" ", $e);
+                print(' ', $e);
             }
             print("\n");
             $n_errors++;
         }
         # Test that encode(decode(tag))=tag (reproducibility).
-        my $tag1 = &{$encode}($f);
+        my $tag1 = $driver->encode($f);
         if($tag1 ne $tag)
         {
             print("\n\n") if($n_errors==0);
@@ -153,8 +162,8 @@ sub test
         # be completely restored because of the missing information). This is important
         # for figuring out the permitted feature combinations when converting from a
         # different tagset.
-        delete($f->{other});
-        my $tag2 = &{$encode}($f);
+        $f->set_other('');
+        my $tag2 = $driver->encode($f);
         # Is the resulting tag known?
         if(!exists($known{$tag2}))
         {
@@ -177,7 +186,7 @@ sub test
     {
         my @known = keys(%known);
         my @unknown = keys(%unknown);
-        list_known_and_unknown_tags(\@known, \@unknown, $list_other_plain, $decode);
+        list_known_and_unknown_tags(\@known, \@unknown, $list_other_plain, $driver);
     }
     if($n_errors)
     {
@@ -202,22 +211,24 @@ sub test
 #------------------------------------------------------------------------------
 sub test_conversion
 {
-    my $driver1 = shift;
-    my $driver2 = shift;
+    my $tagset1 = shift;
+    my $tagset2 = shift;
     my $starttime = time();
-    print("Testing conversion from $driver1 to $driver2.\n");
+    my $driver1 = get_driver_object($tagset1);
+    my $driver2 = get_driver_object($tagset2);
+    print("Testing conversion from $tagset1 to $tagset2.\n");
     my $n_tags = 0;
     my $n_errors = 0;
-    my $list1 = tagset::common::list($driver1);
-    my $list2 = tagset::common::list($driver2);
+    my $list1 = $driver1->list();
+    my $list2 = $driver2->list();
     if(scalar(@{$list1})==0)
     {
-        print("List of known tags of $driver1 is empty. Nothing to test.\n");
+        print("List of known tags of $tagset1 is empty. Nothing to test.\n");
         return 0;
     }
     if(scalar(@{$list2})==0)
     {
-        print("List of known tags of $driver2 is empty. Nothing to test.\n");
+        print("List of known tags of $tagset2 is empty. Nothing to test.\n");
         return 0;
     }
     # Hash list 2 so that we can check which tags are permitted.
@@ -233,15 +244,15 @@ sub test_conversion
     # Convert all tagset 1 tags to tagset 2 and check whether the result is permitted.
     foreach my $src (@{$list1})
     {
-        my $fs = tagset::common::decode($driver1, $src);
-        my $tgt = tagset::common::encode($driver2, $fs);
+        my $fs = $driver1->decode($src);
+        my $tgt = $driver2->encode($fs);
         $t2hits{$tgt}++;
         if($debug)
         {
             my $fs1 = correct($driver2, $fs);
             print("Source tag = $src\n");
-            print("Features   = ", tagset::common::feature_structure_to_text($fs), "\n");
-            print("Corrected  = ", tagset::common::feature_structure_to_text($fs1), "\n");
+            print("Features   = ", $fs->as_string(), "\n");
+            print("Corrected  = ", $fs1->as_string(), "\n");
             print("Target tag = $tgt\n");
             print("\n");
         }
@@ -250,9 +261,8 @@ sub test_conversion
             my $fs1 = correct($driver2, $fs);
             print("\n\n") if($n_errors==0);
             print("Source tag = $src\n");
-            print("Features   = ", tagset::common::structure_to_string($fs), "\n");
-            print("Features   = ", tagset::common::feature_structure_to_text($fs), "\n");
-            print("Corrected  = ", tagset::common::feature_structure_to_text($fs1), "\n");
+            print("Features   = ", $fs->as_string(), "\n");
+            print("Corrected  = ", $fs1->as_string(), "\n");
             print("Example    = ", get_tag_example($driver2, $fs1), "\n");
             print("Target tag = $tgt\n");
             print("The target tag is not known in the target tagset.\n\n");
@@ -274,7 +284,7 @@ sub test_conversion
     {
         # Repeat the initial message. It may not be visible now after all the error messages
         # and we may not know what conversion test this was.
-        print("Tested conversion from $driver1 to $driver2.\n");
+        print("Tested conversion from $tagset1 to $tagset2.\n");
         print("Tested $n_tags tags, found $n_errors errors.\n");
         confess();
     }
@@ -323,7 +333,7 @@ sub list_known_and_unknown_tags
     # Plain list means without UNK flags and feature structures.
     # Plain list is suitable for directly copying to the list() function in the driver.
     my $plain = shift; # boolean
-    my $decode = shift; # reference to function
+    my $driver = shift; # Lingua::Interset::Tagset
     # Merge known and unknown tags into one list but remember the knownness.
     my %unknown;
     unless($plain)
@@ -351,8 +361,8 @@ sub list_known_and_unknown_tags
         {
             print(exists($unknown{$tag}) ? 'UNK   ' : '      ');
             print($tag);
-            my $f = &{$decode}($tag);
-            print('   ', tagset::common::feature_structure_to_text($f));
+            my $f = $driver->decode($tag);
+            print('   ', $f->as_string());
             print("\n");
         }
     }
@@ -365,34 +375,26 @@ sub list_known_and_unknown_tags
 #------------------------------------------------------------------------------
 sub is_known
 {
-    my $fs = shift; # feature structure (hash reference)
+    my $fs = shift; # Lingua::Interset::FeatureStructure
     my @errors;
     # Does the structure contain only known features?
+    ###!!! Unknown features and values should be caught directly in the FeatureStructure object.
+    ###!!! It should not be possible to set them. However, such check is yet to be implemented.
+    ###!!! As a temporary hack, we abuse the fact that objects are implemented as hashes and
+    ###!!! access the hash of FeatureStructure directly.
     foreach my $f (keys(%{$fs}))
     {
-        if(!exists($tagset::common::known{$f}))
+        if(!feature_valid($f))
         {
             push(@errors, "Unknown feature $f.\n");
         }
         else
         {
             # Do the features have only known values?
-            # Empty value is always known and tagset and other can have any value.
-            my @values;
-            if(ref($fs->{$f}) eq "ARRAY")
+            my $v = $fs->{$f};
+            if(!value_valid($f, $v))
             {
-                @values = @{$fs->{$f}};
-            }
-            else
-            {
-                @values = ($fs->{$f});
-            }
-            foreach my $v (@values)
-            {
-                if(!exists($tagset::common::known{$f}{$v}) && $v ne "" && $f ne "tagset" && $f ne "other")
-                {
-                    push(@errors, "Unknown value $v of feature $f.\n");
-                }
+                push(@errors, "Unknown value $v of feature $f.\n");
             }
         }
     }
@@ -403,35 +405,15 @@ sub is_known
 
 #------------------------------------------------------------------------------
 # Corrects a feature structure to comply with a driver's expectations. Mimics
-# what drivers usually do to perform strict encoding. Works only with drivers
-# that BEGIN with collecting the permitted structures.
+# what drivers usually do to perform strict encoding.
 #------------------------------------------------------------------------------
 sub correct
 {
-    my $driver = shift; # e.g. "cs::pdt"
-    my $fs0 = shift; # hash reference (feature structure)
-    my $fs1;
-    my $eval = <<_end_of_eval_
-    {
-        use tagset::${driver};
-        my \$permitted = \$tagset::${driver}::permitted;
-        if(scalar(keys(\%{\$permitted})))
-        {
-            \$fs1 = tagset::common::enforce_permitted_joint(\$fs0, \$tagset::${driver}::permitted);
-        }
-        else
-        {
-            \$fs1 = tagset::common::duplicate(\$fs0);
-        }
-    }
-_end_of_eval_
-    ;
-    print("$eval\n") if($debug && 0);
-    my %fs = eval($eval);
-    if($@)
-    {
-        confess("$@\nEval failed");
-    }
+    my $driver = shift; # Lingua::Interset::Tagset
+    my $fs0 = shift; # Lingua::Interset::FeatureStructure
+    my $fs1 = $fs0->duplicate();
+    my $permitted = $driver->permitted_structures();
+    $fs1->enforce_permitted_values($permitted);
     return $fs1;
 }
 
@@ -439,34 +421,13 @@ _end_of_eval_
 
 #------------------------------------------------------------------------------
 # Retrieves a tag example for a feature structure permitted by a driver.
-# Works only with drivers that BEGIN with collecting the permitted structures.
 #------------------------------------------------------------------------------
 sub get_tag_example
 {
-    my $driver = shift; # e.g. "cs::pdt"
-    my $fs = shift; # hash reference (feature structure)
-    my $tag;
-    my $eval = <<_end_of_eval_
-    {
-        use tagset::${driver};
-        my \$permitted = \$tagset::${driver}::permitted;
-        if(scalar(keys(\%{\$permitted})))
-        {
-            \$tag = tagset::common::get_tag_example(\$fs, \$permitted);
-        }
-        else
-        {
-            \$tag = "Empty list of permitted feature structures.";
-        }
-    }
-_end_of_eval_
-    ;
-    print("$eval\n") if($debug && 0);
-    eval($eval);
-    if($@)
-    {
-        confess("$@\nEval failed");
-    }
+    my $driver = shift; # Lingua::Interset::Tagset
+    my $fs = shift; # Lingua::Interset::FeatureStructure
+    my $permitted = $driver->permitted_structures();
+    my $tag = $permitted->get_tag_example($fs);
     return $tag;
 }
 
