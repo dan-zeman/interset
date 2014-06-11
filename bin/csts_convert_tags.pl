@@ -1,7 +1,8 @@
 #!/usr/bin/perl
 # Reads CSTS from STDIN, converts tags from tagset A to tagset B, writes the result to STDOUT.
-# (c) 2008 Dan Zeman <zeman@ufal.mff.cuni.cz>
-# License: GNU GPL
+# Copyright © 2008, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Licence: GNU GPL
+# 11.6.2014: Adapted to Interset 2.0.
 
 sub usage
 {
@@ -9,21 +10,24 @@ sub usage
 }
 
 use utf8;
-use open ":utf8";
+use open ':utf8';
 use Getopt::Long;
-use tagset::common;
-binmode(STDIN, ":utf8");
-binmode(STDOUT, ":utf8");
-binmode(STDERR, ":utf8");
+use Lingua::Interset qw(get_driver_object);
+binmode(STDIN,  ':utf8');
+binmode(STDOUT, ':utf8');
+binmode(STDERR, ':utf8');
 
 # Get options.
-GetOptions('from=s' => \$driver1, 'to=s' => \$driver2);
-if($driver1 eq "" || $driver2 eq "")
+GetOptions('from=s' => \$tagset1, 'to=s' => \$tagset2);
+if($tagset1 eq '' || $tagset2 eq '')
 {
     usage();
     die();
 }
 
+my $driver1 = get_driver_object($tagset1);
+my $driver2 = get_driver_object($tagset2);
+my %cache;
 while(<>)
 {
     # Erase original tag immediately. It is difficult to use in subsequent regular
@@ -38,8 +42,8 @@ while(<>)
         }
         else
         {
-            my $features = tagset::common::decode($driver1, $tag1);
-            $tag2 = tagset::common::encode($driver2, $features);
+            my $fs = $driver1->decode($tag1);
+            $tag2 = $driver2->encode($fs);
         }
         s/<_tag_to_change_>/<t>$tag2/;
     }
