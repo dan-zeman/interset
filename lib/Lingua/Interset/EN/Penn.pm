@@ -506,6 +506,3 @@ Interset driver for the part-of-speech tagset of the Penn Treebank.
 =back
 
 =cut
-
-# Copyright © 2006, 2009, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
-# This file is distributed under the GNU General Public License v3. See doc/COPYING.txt.

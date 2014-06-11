@@ -9,6 +9,9 @@ use open ':utf8';
 use namespace::autoclean;
 use Moose;
 use MooseX::SemiAffordanceAccessor; # attribute x is written using set_x($value) and read using x()
+# Allow the user to import the core functions into their namespace by stating
+# use Lingua::Interset qw(decode encode list);
+use Exporter::Easy ( OK => [ 'decode', 'encode', 'encode_strict', 'list', 'find_drivers', 'get_driver_object' ] );
 our $VERSION; BEGIN { $VERSION = "2.00" }
 
 
