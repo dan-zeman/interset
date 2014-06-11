@@ -89,7 +89,7 @@ my %matrix = @_matrix =
     'pos' =>
     {
         'priority' => 10,
-        'values'   => ['noun', 'adj', 'num', 'verb', 'adv', 'prep', 'conj', 'part', 'int', ''],
+        'values'   => ['noun', 'adj', 'num', 'verb', 'adv', 'prep', 'conj', 'part', 'int', 'punc', ''],
         'replacements' =>
         [
             ['part'        ],
