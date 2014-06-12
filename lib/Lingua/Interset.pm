@@ -1,7 +1,5 @@
-#!/usr/bin/env perl
-# Meta-functions of DZ Interset.
-# Copyright © 2007-2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
-# License: GNU GPL
+# ABSTRACT: DZ Interset is a universal morphosyntactic feature set to which all tagsets of all corpora/languages can be mapped.
+# Copyright © 2007-2014 Univerzita Karlova v Praze / Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset;
 use utf8;
@@ -12,7 +10,6 @@ use MooseX::SemiAffordanceAccessor; # attribute x is written using set_x($value)
 # Allow the user to import the core functions into their namespace by stating
 # use Lingua::Interset qw(decode encode list);
 use Exporter::Easy ( OK => [ 'decode', 'encode', 'encode_strict', 'list', 'find_drivers', 'get_driver_object' ] );
-our $VERSION; BEGIN { $VERSION = "2.00" }
 
 
 
