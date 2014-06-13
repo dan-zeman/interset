@@ -165,14 +165,19 @@ sub translate
 
 1;
 
-=over
+=head1 SYNOPSIS
 
-=item Lingua::Interset::OldTagsetDriver
+  # (No need to
+  #     use tagset::en::conll;
+  # here. It will be taken care of within OldTagsetDriver.)
+  use Lingua::Interset::OldTagsetDriver;
+  my $driver = Lingua::Interset::OldTagsetDriver->new(driver => 'en::conll');
+  my $fs = $driver->decode("NN\tNN\t_");
+
+=head1 DESCRIPTION
 
 Provides object envelope for an old, non-object-oriented driver from Interset 1.0.
 This makes the old drivers at least partially usable until they are fully ported to Interset 2.0.
 Note however that the old drivers use Interset features and/or values that have been changed in the new version.
-
-=back
 
 =cut

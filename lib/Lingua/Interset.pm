@@ -264,8 +264,6 @@ _end_of_eval_
 
 1;
 
-=pod
-
 =head1 SYNOPSIS
 
   use Lingua::Interset qw(decode encode);
@@ -302,12 +300,12 @@ L<https://wiki.ufal.ms.mff.cuni.cz/user:zeman:interset>.
 
 =func decode()
 
-Takes tagset id and a tag in that tagset. Returns a C<Lingua::Interset::FeatureStructure> object
+Takes tagset id and a tag in that tagset. Returns a L<Lingua::Interset::FeatureStructure> object
 with corresponding feature values set.
 
 =func encode()
 
-Takes tagset id and a C<Lingua::Interset::FeatureStructure> object.
+Takes tagset id and a L<Lingua::Interset::FeatureStructure> object.
 Returns the tag in the given tagset that corresponds to the feature values.
 Note that some features may be ignored because they cannot be represented
 in the given tagset.

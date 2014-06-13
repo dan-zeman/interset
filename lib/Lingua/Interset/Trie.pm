@@ -161,9 +161,17 @@ sub get_tag_example
 
 1;
 
-=over
+=head1 SYNOPSIS
 
-=item Lingua::Interset::Trie
+  use Lingua::Interset::EN::Penn;
+
+  my $ts = Lingua::Interset::EN::Penn->new();
+  # Get a Lingua::Interset::Trie object $permitted and print all feature structures
+  # that the tagset en::penn can generate.
+  my $permitted = $ts->permitted_structures();
+  print($permitted->as_string(), "----------\n");
+
+=head1 DESCRIPTION
 
 The C<Trie> class defines a trie-like data structure for DZ Interset features
 and their values. It is an auxiliary data structure that an outside user should
@@ -178,7 +186,5 @@ The trie assumes that features are ordered according to their priority.
 However, the priorities are defined outside the trie, by default in the
 FeatureStructure class, or they may be overriden in a Tagset subclass.
 The trie can store features in any order.
-
-=back
 
 =cut

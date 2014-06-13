@@ -499,12 +499,19 @@ sub list
 
 1;
 
-=over
+=head1 SYNOPSIS
 
-=item Lingua::Interset::EN::Penn
+  use Lingua::Interset::EN::Penn;
+  my $driver = Lingua::Interset::EN::Penn->new();
+  my $fs = $driver->decode('NN');
+
+or
+
+  use Lingua::Interset qw(decode);
+  my $fs = decode('en::penn', 'NN');
+
+=head1 DESCRIPTION
 
 Interset driver for the part-of-speech tagset of the Penn Treebank.
-
-=back
 
 =cut

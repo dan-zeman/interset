@@ -218,18 +218,48 @@ sub _build_permitted_values
 
 1;
 
-=over
 
-=item Lingua::Interset::Tagset
+=head1 SYNOPSIS
+
+  package Lingua::Interset::MY::Tagset;
+  use Moose;
+  extends 'Lingua::Interset::Tagset';
+  use Lingua::Interset::FeatureStructure;
+
+  sub decode
+  {
+      my $self = shift;
+      my $tag = shift;
+      my $fs = Lingua::Interset::FeatureStructure->new();
+      ...
+      return $fs;
+  }
+
+  sub encode
+  {
+      my $self = shift;
+      my $fs = shift; # Lingua::Interset::FeatureStructure
+      my $tag;
+      ...
+      return $tag;
+  }
+
+  sub list
+  {
+      my $self = shift;
+      return ['NOUN', 'VERB', 'OTHER'];
+  }
+
+  1;
+
+=head1 DESCRIPTION
 
 DZ Interset is a universal framework for reading, writing, converting and
 interpreting part-of-speech and morphosyntactic tags from multiple tagsets
 of many different natural languages.
 
 The C<Tagset> class is the inheritance root for all classes describing
-physical tagsets (strings of characters). It defines decoding of tags, encoding
+physical tagsets (sets of strings of characters). It defines decoding of tags, encoding
 and list of known tags.
-
-=back
 
 =cut

@@ -1450,17 +1450,23 @@ sub duplicate_recursive
 
 1;
 
-=over
+=head1 SYNOPSIS
 
-=item Lingua::Interset::FeatureStructure
+  use Lingua::Interset::FeatureStructure;
+
+  print(Lingua::Interset::FeatureStructure->known_features(), "\n");
+
+=head1 DESCRIPTION
 
 DZ Interset is a universal framework for reading, writing, converting and
 interpreting part-of-speech and morphosyntactic tags from multiple tagsets
 of many different natural languages.
 
 The C<FeatureStructure> class defines all morphosyntactic features and their values used
-in DZ Interset.
+in DZ Interset. An object of this class represents a morphosyntactic tag
+for a natural language word.
 
-=back
+More information is given at the DZ Interset project page,
+L<https://wiki.ufal.ms.mff.cuni.cz/user:zeman:interset:features>.
 
 =cut
