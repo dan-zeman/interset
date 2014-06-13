@@ -1,7 +1,5 @@
-#!/usr/bin/env perl
 # A trie-like structure for DZ Interset features and their values.
 # Copyright © 2012, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
-# License: GNU GPL
 
 package Lingua::Interset::Trie;
 use utf8;
@@ -10,7 +8,6 @@ use namespace::autoclean;
 use Moose;
 use MooseX::SemiAffordanceAccessor; # attribute x is written using set_x($value) and read using x()
 use Carp;
-our $VERSION; BEGIN { $VERSION = "2.00" }
 
 
 

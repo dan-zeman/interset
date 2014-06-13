@@ -1,7 +1,5 @@
-#!/usr/bin/env perl
 # The root class for all physical tagsets covered by DZ Interset 2.0.
 # Copyright © 2012, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
-# License: GNU GPL
 
 package Lingua::Interset::Tagset;
 use utf8;
@@ -11,7 +9,6 @@ use Moose;
 use MooseX::SemiAffordanceAccessor; # attribute x is written using set_x($value) and read using x()
 use Lingua::Interset::FeatureStructure;
 use Lingua::Interset::Trie;
-our $VERSION; BEGIN { $VERSION = "2.00" }
 
 
 

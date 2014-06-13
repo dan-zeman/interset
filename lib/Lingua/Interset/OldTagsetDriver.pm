@@ -1,8 +1,6 @@
-#!/usr/bin/env perl
 # A temporary envelope that provides access to the old (Interset 1.0) drivers from Interset 2.0.
 # Once all the old drivers are ported to Interset 2.0, this module will be removed.
 # Copyright © 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
-# License: GNU GPL
 
 package Lingua::Interset::OldTagsetDriver;
 use utf8;
@@ -11,7 +9,6 @@ use namespace::autoclean;
 use Moose;
 use Lingua::Interset;
 use Lingua::Interset::FeatureStructure;
-our $VERSION; BEGIN { $VERSION = "2.00" }
 extends 'Lingua::Interset::Tagset';
 
 

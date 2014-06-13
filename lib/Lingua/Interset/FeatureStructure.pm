@@ -1,8 +1,6 @@
-#!/usr/bin/env perl
 # The main class of DZ Interset 2.0.
 # It defines all morphosyntactic features and their values.
 # Copyright © 2008-2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
-# License: GNU GPL
 
 package Lingua::Interset::FeatureStructure;
 use utf8;
@@ -14,7 +12,6 @@ use MooseX::SemiAffordanceAccessor; # attribute x is written using set_x($value)
 # use Lingua::Interset::FeatureStructure qw(feature_valid value_valid);
 use Exporter::Easy ( OK => [ 'feature_valid', 'value_valid' ] );
 use Carp; # confess()
-our $VERSION; BEGIN { $VERSION = "2.00" }
 
 
 
