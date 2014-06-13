@@ -264,14 +264,60 @@ _end_of_eval_
 
 1;
 
-=over
+=pod
 
-=item Lingua::Interset
+=head1 SYNOPSIS
+
+  use Lingua::Interset qw(decode encode);
+
+  my $tag1 = 'NN'; # in the English Penn Treebank, "NN" means "noun"
+  my $feature_structure = decode('en::penn', $tag1);
+  print($feature_structure->as_string(), "\n");
+  $feature_structure->set_number('plu');
+  my $tag2 = encode('en::penn', $feature_structure);
+  print("$tag2\n");
+
+=head1 DESCRIPTION
 
 DZ Interset is a universal framework for reading, writing, converting and
 interpreting part-of-speech and morphosyntactic tags from multiple tagsets
 of many different natural languages.
 
-=back
+Individual tagsets are mapped to the Interset using specialized modules
+called I<tagset drivers>. Every driver must implement three methods:
+C<decode>, C<encode> and C<list>.
+
+The main module, C<Lingua::Interset>, provides parameterized access to the
+drivers and their methods. Instead of having to C<use> particular modules
+(which would mean you know in advance what tagsets your program will be
+working with) you just specify the tagset giving its I<identifier> as a parameter.
+Tagset ids are derived from Perl package names but they are always all-lowercase.
+Most tagsets are taylored for one language and their id has two components (separated by C<::>):
+the ISO 639 code of the language, and a part to distinguish various tagsets for the language.
+This second component may be some sort of abbreviated name of the corpus where the tagset is used,
+for example.
+
+More information is given at the DZ Interset project page,
+L<https://wiki.ufal.ms.mff.cuni.cz/user:zeman:interset>.
+
+=func decode()
+
+Takes tagset id and a tag in that tagset. Returns a C<Lingua::Interset::FeatureStructure> object
+with corresponding feature values set.
+
+=func encode()
+
+Takes tagset id and a C<Lingua::Interset::FeatureStructure> object.
+Returns the tag in the given tagset that corresponds to the feature values.
+Note that some features may be ignored because they cannot be represented
+in the given tagset.
+
+=func list()
+
+Takes tagset id and returns the reference to the list of all known tags of that tagset.
+This is not directly needed to decode, encode or convert tags but it is very useful
+for testing and advanced operations over the tagset.
+Note however that many tagset drivers contain only an approximate list,
+created by collecting tag occurrences in some corpus.
 
 =cut
