@@ -380,24 +380,9 @@ sub is_known
     # Does the structure contain only known features?
     ###!!! Unknown features and values should be caught directly in the FeatureStructure object.
     ###!!! It should not be possible to set them. However, such check is yet to be implemented.
-    ###!!! As a temporary hack, we abuse the fact that objects are implemented as hashes and
-    ###!!! access the hash of FeatureStructure directly.
-    foreach my $f (keys(%{$fs}))
-    {
-        if(!feature_valid($f))
-        {
-            push(@errors, "Unknown feature $f.\n");
-        }
-        else
-        {
-            # Do the features have only known values?
-            my $v = $fs->{$f};
-            if(!value_valid($f, $v))
-            {
-                push(@errors, "Unknown value $v of feature $f.\n");
-            }
-        }
-    }
+    ###!!! As a temporary hack, FeatureStructure provides a validation method that accesses
+    ###!!! directly the hash of the object.
+    $fs->is_valid(\@errors);
     return \@errors;
 }
 
