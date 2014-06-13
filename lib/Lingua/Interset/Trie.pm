@@ -1,7 +1,8 @@
-# A trie-like structure for DZ Interset features and their values.
+# ABSTRACT: A trie-like structure for DZ Interset features and their values.
 # Copyright © 2012, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Trie;
+
 use utf8;
 use open ':utf8';
 use namespace::autoclean;

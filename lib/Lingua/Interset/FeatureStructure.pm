@@ -1,8 +1,9 @@
-# The main class of DZ Interset 2.0.
+# ABSTRACT: The main class of DZ Interset 2.0.
 # It defines all morphosyntactic features and their values.
 # Copyright © 2008-2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::FeatureStructure;
+
 use utf8;
 use open ':utf8';
 use namespace::autoclean;
@@ -1247,8 +1248,9 @@ sub get_similarity_of_arrays
         }
     }
     # Use the score to compute precision and recall.
-    my $p = $score/$n_srch if($n_srch);
-    my $r = $score/$n_eval if($n_eval);
+    my ($p, $r);
+    $p = $score/$n_srch if($n_srch);
+    $r = $score/$n_eval if($n_eval);
     # Prefer precision over recall.
     my $result = (2*$p+$r)/3;
     return $result;

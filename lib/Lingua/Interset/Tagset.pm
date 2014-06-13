@@ -1,7 +1,8 @@
-# The root class for all physical tagsets covered by DZ Interset 2.0.
+# ABSTRACT: The root class for all physical tagsets covered by DZ Interset 2.0.
 # Copyright © 2012, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset;
+
 use utf8;
 use open ':utf8';
 use namespace::autoclean;
@@ -86,7 +87,6 @@ sub list
 {
     my $self = shift;
     ###!!! Should we rather confess() here?
-    return undef;
 }
 
 

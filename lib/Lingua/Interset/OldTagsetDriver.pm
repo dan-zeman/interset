@@ -1,8 +1,9 @@
-# A temporary envelope that provides access to the old (Interset 1.0) drivers from Interset 2.0.
+# ABSTRACT: A temporary envelope that provides access to the old (Interset 1.0) drivers from Interset 2.0.
 # Once all the old drivers are ported to Interset 2.0, this module will be removed.
 # Copyright © 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::OldTagsetDriver;
+
 use utf8;
 use open ':utf8';
 use namespace::autoclean;
@@ -54,7 +55,7 @@ around BUILDARGS => sub
         }
 _end_of_eval_
         ;
-        my ($decode, $encode, $list) = eval($eval);
+        my ($decode, $encode, $list) = eval {$eval};
         if($@)
         {
             confess("$@\nEval failed");

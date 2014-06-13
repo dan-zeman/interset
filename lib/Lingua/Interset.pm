@@ -2,10 +2,11 @@
 # Copyright © 2007-2014 Univerzita Karlova v Praze / Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset;
+
 use utf8;
 use open ':utf8';
 use namespace::autoclean;
-use Moose;
+use Moose 2.1205;
 use MooseX::SemiAffordanceAccessor; # attribute x is written using set_x($value) and read using x()
 # Allow the user to import the core functions into their namespace by stating
 # use Lingua::Interset qw(decode encode list);
@@ -249,7 +250,7 @@ _end_of_old_eval_
 _end_of_eval_
             ;
         }
-        my $object = eval($eval);
+        my $object = eval {$eval};
         if($@)
         {
             confess("$@\nEval failed");

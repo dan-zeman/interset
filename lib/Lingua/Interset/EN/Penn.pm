@@ -1,10 +1,11 @@
-# Driver for the tagset of the Penn Treebank.
+# ABSTRACT: Driver for the tagset of the Penn Treebank.
 # Copyright © 2006, 2009, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # 25.3.2009: added new tags HYPH, AFX from PennBioIE, 2005 (HYPH appears in the CoNLL 2009 data)
 # 25.3.2009: new tag NIL appears in CoNLL 2009 English data for tokens &, $, %
 # 6.6.2014: moved to the new object-oriented Interset
 
 package Lingua::Interset::EN::Penn;
+
 use utf8;
 use open ':utf8';
 use namespace::autoclean;
