@@ -71,7 +71,7 @@ my %postable =
     # preposition or subordinating conjunction
     # examples: in, on, because
     # We could create array of "prep" and "conj/sub" but arrays generally complicate things and the benefit is uncertain.
-    'IN'    => ['pos' => 'prep'],
+    'IN'    => ['pos' => 'adp'],
     # adjective
     # examples: good
     'JJ'    => ['pos' => 'adj', 'degree' => 'pos'],
@@ -370,7 +370,7 @@ sub encode
             $tag = 'RB';
         }
     }
-    elsif($pos eq 'prep')
+    elsif($pos eq 'adp')
     {
         # IN (TO)
         $tag = 'IN';

@@ -131,6 +131,10 @@ sub test
         my @errors = $driver->test_tag($tag, \$n_other, \%other_survivors);
         foreach my $error (@errors)
         {
+            if($n_errors==0)
+            {
+                print("\n\n");
+            }
             print("$error\n");
         }
         $n_errors += @errors;

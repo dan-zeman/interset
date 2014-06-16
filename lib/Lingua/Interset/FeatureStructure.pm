@@ -83,11 +83,10 @@ my @_matrix;
 my %matrix = @_matrix =
 (
     # Main part of speech
-    ###!!! RENAME prep to adp (adposition)?
     'pos' =>
     {
         'priority' => 10,
-        'values'   => ['noun', 'adj', 'num', 'verb', 'adv', 'prep', 'conj', 'part', 'int', 'punc', ''],
+        'values'   => ['noun', 'adj', 'num', 'verb', 'adv', 'adp', 'conj', 'part', 'int', 'punc', ''],
         'replacements' =>
         [
             ['part'        ],
@@ -97,7 +96,7 @@ my %matrix = @_matrix =
             ['adj',  'noun'],
             ['num',  'adj' ],
             ['adv'         ],
-            ['prep', 'adv' ],
+            ['adp',  'adv' ],
             ['conj', 'prep'],
             ['int'         ]
         ],
@@ -107,16 +106,11 @@ my %matrix = @_matrix =
     'subpos' =>
     {
         'priority' => 190,
-        'values' => ['mod', 'ex', 'voc', 'post', 'circ', 'preppron', 'comprep', 'emp', 'res', 'inf', 'vbp', ''],
+        'values' => ['mod', 'ex', 'emp', 'res', 'inf', 'vbp', ''],
         'replacements' =>
         [
             ['mod'],
             ['ex'],
-            ['voc'],
-            ['post'],
-            ['circ'],
-            ['preppron'],
-            ['comprep'],
             ['emp'],
             ['res'],
             ['inf'],
@@ -233,6 +227,21 @@ my %matrix = @_matrix =
             ['tim'],
             ['deg'],
             ['cau']
+        ],
+    },
+    # Special type of adposition if applicable and if known.
+    'adpostype' =>
+    {
+        'priority' => 155,
+        'values' => ['prep', 'post', 'circ', 'voc', 'preppron', 'comprep', ''],
+        'replacements' =>
+        [
+            ['prep'],
+            ['post'],
+            ['circ'],
+            ['voc'],
+            ['preppron'],
+            ['comprep']
         ],
     },
     # Conjunction type.
@@ -627,8 +636,6 @@ my %matrix = @_matrix =
         ],
     },
     # Tense.
-    ###!!! In contrast to DZ Interset 1, the subtense feature is now incorporated here.
-    ###!!! There are other hierarchical features anyway (case, number...)
     'tense' =>
     {
         'priority' => 270,
