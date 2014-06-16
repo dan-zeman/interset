@@ -326,24 +326,6 @@ sub list_known_and_unknown_tags
 
 
 #------------------------------------------------------------------------------
-# Check whether a feature structure contains only known features and values.
-#------------------------------------------------------------------------------
-sub is_known
-{
-    my $fs = shift; # Lingua::Interset::FeatureStructure
-    my @errors;
-    # Does the structure contain only known features?
-    ###!!! Unknown features and values should be caught directly in the FeatureStructure object.
-    ###!!! It should not be possible to set them. However, such check is yet to be implemented.
-    ###!!! As a temporary hack, FeatureStructure provides a validation method that accesses
-    ###!!! directly the hash of the object.
-    $fs->is_valid(\@errors);
-    return \@errors;
-}
-
-
-
-#------------------------------------------------------------------------------
 # Corrects a feature structure to comply with a driver's expectations. Mimics
 # what drivers usually do to perform strict encoding.
 #------------------------------------------------------------------------------
