@@ -1,4 +1,129 @@
 {{$NEXT}}
 
+Feature changes:
+* pos value 'prep' (preposition) renamed to 'adp' (adposition).
+* the remaining values of the subpos feature dissolved into advtype and two
+  new features, adpostype and parttype.
+
+Interface:
+* various tools for driver testing
+
 2.001     2014-06-13 17:56:05+02:00 Europe/Prague
 
+Complete rewrite of Interset. The old Perl interface was not object-oriented.
+The modules resided under the “tagset” namespace (yes, all lowercase). The new
+modules are object-oriented (using Moose) and the new namespace is Lingua::
+Interset. And it is available at the CPAN.
+
+There are the following modules:
+* Lingua::Interset
+* Lingua::Interset::FeatureStructure
+* Lingua::Interset::Tagset
+* Lingua::Interset::OldTagsetDriver
+* Lingua::Interset::Trie
+
+Drivers:
+* Initially, only the 'en::penn' driver has been ported to Interset 2 (see the
+  module Lingua::Interset::EN::Penn). The other drivers will be ported
+  gradually. In the meantime, the old implementations (tagset::*) can be
+  accessed through a wrapper class, Lingua::Interset::OldTagsetDriver.
+  (The wrapper is shipped together with Interset 2 but the old drivers are not.
+  They are still downloadable from the Interset wiki.)
+
+Feature changes:
+* Several new features were split from the subpos feature: nountype, adjtype,
+  verbtype and conjtype. This is a logical extension of the previously created
+  prontype, advtype etc.
+* The features tense and subtense have been merged. Their separation in the
+  early years of Interset was driven by problems with encoding tagsets that
+  lacked specialized tenses; later on however, Interset got the algorithms for
+  strict encoding and feature replacement. Now there are other features whose
+  values form a hierarchy, so it seems logical to treat tenses the same way.
+
+-------------------------------------------------------------------------------
+Interset 2 (above) is distributed through the CPAN as Lingua::Interset and its
+versions are tracked rigorously. Versions < 2 vere numbered less rigorously and
+there were fewer official releases. (Though internally, I was using Subversion
+since fall 2007 to spring 2014, and there are SVN revision numbers.)
+
+As many other projects, Interset has gone through its “Dark Age” when it was
+not yet clear whether it would eventually be published. There was no
+distinction between versions and releases, and versions were not numbered
+anyway. However, there were some milestones, which are described below and
+which I have numbered for convenience.
+
+1.2
+
+27 June 2011. New drivers: Prague Spoken Corpus (Pražský mluvený korpus, PMK)
+long and short tags (cs::pmkdl and cs::pmkkr). Arabic CoNLL 2007 slightly
+differs from CoNLL 2006, so there is now ar::conll2007.
+
+New test: For all tags in all drivers now must hold that deleting the value of
+the other feature does not lead to an unknown tag. This should greatly improve
+chances of finding permitted feature combinations when converting from one
+tagset to another.
+
+New usage: Interset in Treex (TectoMT).
+
+1.1
+
+8 September 2009. Three new incarnations of Czech, English and German CoNLL
+tagsets, reflecting the 2009 changes in format. Most interestingly, German
+tags now contain morphosyntactic features. Thanks to Saša Rosen, who tries to
+use DZ Interset together with a multi-language parallel corpus called
+Intercorp, we also created a driver for the IPI PAN Polish corpus, which in
+turn caused one systemic change: o-tags (those setting the other feature) can
+now be ignored when the driver is scanning the possible feature-value
+combinations. And there is a new web interface to DZ Interset.
+
+1.0
+
+February 2009. Petr Pořízka and Markus Schäfer used DZ Interset in MorphCon, a
+GUI tool for conversion of Czech morphological tags. They wrote a driver for
+the Czech ajka tagset (a morphological analyzer from Masaryk University, Brno).
+MorphCon has been presented at a bohemistic conference in Brno (see
+References). Dan added a driver for the Czech tags of the Multext East
+multilingual corpus.
+
+Various maintenance changes took place, too. Version control has been migrated
+to network-accessible (though not publicly accessible) SVN repository, together
+with Trac project management interface. Website now includes information on
+licensing, references and this version history. From now on, I intend to
+distinguish revisions from numbered releases.
+
+0.5
+
+May 2008. DZ Interset was first presented at the Language Resoruces and
+Evaluation Conference (LREC) in Marrakech, Morocco (see References). At that
+time, new drivers for the German Stuttgart-Tübingen Tagset and the Portuguese
+Floresta/CoNLL tagset (extremly noisy, huh!) were present.
+
+At the time around LREC, a major change in the feature pool started to
+crystallize. The diametrically different approaches to tagging of pronouns and
+determiners led me to remove these categories from the top-level part-of-speech
+set and transform them to special cases of nouns and adjectives. Such approach
+had already been taken a year before for Bulgarian but now I wanted to unify it
+across languages. In the end of 2008, all drivers already reflected the changed
+policy. The state of pronouns may further change in future, as this is a rather
+controversial issue. On the other hand, a similar change may be needed for
+numerals, too.
+
+0.2
+
+Spring 2007. I struggled to convert tagsets of several CoNLL shared task
+treebanks in order to improve the accuracy of a parser that relied on
+understanding the information in the tags. It became apparent how big the
+differences between various tagging approaches are. Also, some corpora
+contained tags that were noisy or not very well defined. Arabic, Bulgarian,
+Chinese, Czech and English CoNLL tagsets were added (Czech and English are just
+reformatted PDT and Penn tags, respectively).
+
+0.1
+
+Summer 2006. My first unified approach to conversions among the Prague
+Dependency Treebank tagset, Penn TreeBank tagset, Swedish Mamba tagset (CoNLL
+2006 treebank), Danish Parole tagset (CoNLL 2006 treebank), and the tagset of
+the Swedish adaptation of Jan Hajič's tagger. Tag conversions were crucial part
+of my experiments with cross-language parser adaptation (see References). My
+thanks go to Philip Resnik for the early comments during our discussions at the
+University of Maryland.
