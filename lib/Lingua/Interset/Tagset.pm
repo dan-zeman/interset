@@ -216,7 +216,96 @@ sub _build_permitted_values
 
 
 
+###############################################################################
+# TESTING AND DEBUGGING THE DRIVER
+###############################################################################
+
+
+
+#------------------------------------------------------------------------------
+# Tells whether a tag is known to this tagset driver in the sense that it is
+# returned by the list() method. Being an unknown tag does not mean that it
+# cannot be decoded!
+#------------------------------------------------------------------------------
+sub is_known_tag
+{
+    my $self = shift;
+    my $tag = shift;
+    ###!!! This test would be faster if we had a hash of known tags.
+    ###!!! (It will only matter for large tagsets if they are queried many times.)
+    ###!!! We could create a hash when this method is invoked the first time.
+    ###!!! Then we would keep it as a cache.
+    my $list = $self->list();
+    my $ok = grep {$_ eq $tag} (@{$list});
+    return $ok;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Tests processing a particular tag (presumably a known one, from the list()
+# method). Checks that decoding the tag sets only known features and values
+# and that no information gets lost when we encode the feature structure again.
+#------------------------------------------------------------------------------
+sub test_tag
+{
+    my $self = shift;
+    my $tag = shift;
+    # Optional reference to the variable where we count tags that set 'other'.
+    my $n_other = shift;
+    # Optional reference to the hash where we collect tags that survive removing the value of 'other'.
+    my $other_survivors = shift;
+    my @errors;
+    my $n_errors = 0;
+    # Decode the tag and create the Interset feature structure.
+    my $f = $self->decode($tag);
+    my $sfs = $f->as_string();
+    # Test that the decoder sets only known features and values.
+    # Test whether decoding the tag yields a valid feature structure (all features and values are valid).
+    $f->is_valid(\@errors);
+    if($f->other() ne '')
+    {
+        ${$n_other}++;
+    }
+    # Test that encode(decode(tag))=tag (reproducibility).
+    my $tag1 = $self->encode($f);
+    if($tag1 ne $tag)
+    {
+        my $message = "Error: encode(decode(x)) != x\n";
+        $message .= " src = \"$tag\"\n";
+        $message .= " tgt = \"$tag1\"\n";
+        $message .= " sfs = $sfs\n";
+        push(@errors, $message);
+        $n_errors++;
+    }
+    # Decoding a tag, removing information stored in the 'other' feature and
+    # encoding should render a known tag (a default one if the original tag cannot
+    # be completely restored because of the missing information). This is important
+    # for figuring out the permitted feature combinations when converting from a
+    # different tagset.
+    $f->set_other('');
+    my $tag2 = $self->encode($f);
+    # Is the resulting tag known?
+    if(!$self->is_known_tag($tag2))
+    {
+        my $message = "Error: encode(decode(x)-other) gives an unknown tag\n";
+        $message .= " src = \"$tag\"\n";
+        $message .= " tgt = \"$tag1\"\n";
+        $message .= " sfs = $sfs\n";
+        push(@errors, $message);
+        $n_errors++;
+    }
+    elsif(defined($other_survivors))
+    {
+        $other_survivors->{$tag2}++;
+    }
+    return @errors;
+}
+
+
+
 1;
+
 
 
 =head1 SYNOPSIS

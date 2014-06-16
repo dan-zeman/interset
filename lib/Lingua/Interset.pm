@@ -6,7 +6,7 @@ package Lingua::Interset;
 use utf8;
 use open ':utf8';
 use namespace::autoclean;
-use Moose 2.1205;
+use Moose 2;
 use MooseX::SemiAffordanceAccessor; # attribute x is written using set_x($value) and read using x()
 # Allow the user to import the core functions into their namespace by stating
 # use Lingua::Interset qw(decode encode list);
@@ -102,7 +102,7 @@ sub _find_drivers
                         my $driver = $file;
                         if(-f $fpath && $driver =~ s/\.pm$//)
                         {
-                            my $driver_uppercased = "$sd::$driver";
+                            my $driver_uppercased = $sd.'::'.$driver;
                             my $driver_lowercased = lc($driver_uppercased);
                             my %record =
                             (
@@ -250,14 +250,19 @@ _end_of_old_eval_
 _end_of_eval_
             ;
         }
-        my $object = eval {$eval};
+        my $object = eval $eval;
         if($@)
         {
             confess("$@\nEval failed");
         }
         $driver_hash->{$tagset}{driver} = $object;
     }
-    return $driver_hash->{$tagset}{driver};
+    my $object = $driver_hash->{$tagset}{driver};
+    if(!defined($object) || ref($object) !~ m/^Lingua::Interset::/)
+    {
+        confess("Did not succeed in creating driver object for '$tagset' (".ref($object)."/$object)");
+    }
+    return $object;
 }
 
 

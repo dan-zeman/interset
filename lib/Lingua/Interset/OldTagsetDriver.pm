@@ -55,7 +55,7 @@ around BUILDARGS => sub
         }
 _end_of_eval_
         ;
-        my ($decode, $encode, $list) = eval {$eval};
+        my ($decode, $encode, $list) = eval $eval;
         if($@)
         {
             confess("$@\nEval failed");

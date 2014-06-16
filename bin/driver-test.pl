@@ -128,58 +128,13 @@ sub test
         {
             print STDERR ("Now testing tag $tag\n");
         }
-        # Decode the tag and create the Interset feature structure.
-        my $f = $driver->decode($tag);
-        my $sfs = $f->as_string();
-        # Collect statistics how many tags set the 'other' feature.
-        $n_other++ if($f->other() ne '');
-        # Test that the decoder sets only known features and values.
-        my $errors = is_known($f);
-        if(scalar(@{$errors}))
+        my @errors = $driver->test_tag($tag, \$n_other, \%other_survivors);
+        foreach my $error (@errors)
         {
-            print("Error: unknown features or values after decoding \"$tag\"\n");
-            foreach my $e (@{$errors})
-            {
-                print(' ', $e);
-            }
-            print("\n");
-            $n_errors++;
+            print("$error\n");
         }
-        # Test that encode(decode(tag))=tag (reproducibility).
-        my $tag1 = $driver->encode($f);
-        if($tag1 ne $tag)
-        {
-            print("\n\n") if($n_errors==0);
-            print("Error: encode(decode(x)) != x\n");
-            print(" src = \"$tag\"\n");
-            print(" tgt = \"$tag1\"\n");
-            print(" sfs = $sfs\n");
-            print("\n");
-            $n_errors++;
-        }
-        # Decoding a tag, removing information stored in the 'other' feature and
-        # encoding should render a known tag (a default one if the original tag cannot
-        # be completely restored because of the missing information). This is important
-        # for figuring out the permitted feature combinations when converting from a
-        # different tagset.
-        $f->set_other('');
-        my $tag2 = $driver->encode($f);
-        # Is the resulting tag known?
-        if(!exists($known{$tag2}))
-        {
-            print("\n\n") if($n_errors==0);
-            print("Error: encode(decode(x)-other) gives an unknown tag\n");
-            print(" src = $tag\n");
-            print(" tgt = $tag2\n");
-            print(" sfs = $sfs\n");
-            print("\n");
-            $n_errors++;
-            $unknown{$tag2}++;
-        }
-        else
-        {
-            $other_survivors{$tag2}++;
-        }
+        $n_errors += @errors;
+        ###!!! By moving the test to the Tagset module we lost updating the %unknown hash.
     }
     # We can print the list of all tags including the unknown ones but normally we do not want to.
     if($list_other || $list_other_plain)
