@@ -124,7 +124,6 @@ my %matrix = @_matrix =
         ],
     },
     # Special type of noun if applicable and if known.
-    ###!!! NEW FEATURE (from subpos)
     'nountype' =>
     {
         'priority' => 80,
@@ -137,7 +136,6 @@ my %matrix = @_matrix =
         ],
     },
     # Special type of adjective if applicable and if known.
-    ###!!! NEW FEATURE (from subpos)
     'adjtype' =>
     {
         'priority' => 90,
@@ -150,7 +148,6 @@ my %matrix = @_matrix =
         ],
     },
     # Pronominality and its type for nouns (pronouns), adjectives (determiners), numerals, adverbs etc.
-    ###!!! NEW VALUE prn ... pronominal, without knowing the exact type
     'prontype' =>
     {
         'priority' => 100,
@@ -212,7 +209,6 @@ my %matrix = @_matrix =
         ],
     },
     # Special type of verb if applicable and if known.
-    ###!!! NEW FEATURE (from subpos)
     'verbtype' =>
     {
         'priority' => 140,
@@ -240,7 +236,6 @@ my %matrix = @_matrix =
         ],
     },
     # Conjunction type.
-    ###!!! NEW FEATURE (from subpos)
     'conjtype' =>
     {
         'priority' => 160,
@@ -637,14 +632,15 @@ my %matrix = @_matrix =
     'tense' =>
     {
         'priority' => 270,
-        'values' => ['pres', 'fut', 'past', 'aor', 'imp', 'pqp', ''],
+        'values' => ['pres', 'fut', 'past', 'aor', 'imp', 'nar', 'pqp', ''],
         'replacements' =>
         [
             ['pres'],
             ['fut'],
-            ['past', 'aor', 'imp'],
+            ['past', 'aor', 'imp', 'nar'],
             ['aor', 'past'],
             ['imp', 'past'],
+            ['nar', 'past'],
             ['pqp', 'past']
         ],
     },
