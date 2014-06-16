@@ -9,7 +9,7 @@ binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 # We must declare in advance how many tests we are going to perform.
-use Test::More tests => 6;
+use Test::More tests => 7;
 
 # Test en::penn, the only tagset driver shipped with the first subversion of Interset 2.0.
 use Lingua::Interset::EN::Penn;
@@ -28,3 +28,11 @@ ok($fs->number() eq 'sing', 'is singular');
 $fs->set_number('plu');
 my $tag = $ts->encode($fs);
 ok(defined($tag) && $tag eq 'NNS', 'encoded tag');
+# Run standard driver tests.
+# They will be counted together as one test here because test plans exceeding 254 tests may pose problems.
+my @errors = $ts->test();
+if(@errors)
+{
+    print STDERR (join('', @errors), "\n");
+}
+ok(!@errors, 'en::penn driver integrity test');

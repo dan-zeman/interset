@@ -304,6 +304,26 @@ sub test_tag
 
 
 
+#------------------------------------------------------------------------------
+# Takes all tags in the tagset and tests their processing by the driver.
+# Returns a list of printable error messages. An empty list means the test was
+# passed successfully.
+#------------------------------------------------------------------------------
+sub test
+{
+    my $self = shift;
+    my $list = $self->list();
+    my @errors;
+    foreach my $tag (@{$list})
+    {
+        my @tag_errors = $driver->test_tag($tag, \$n_other, \%other_survivors);
+        push(@errors, @tag_errors) if(@tag_errors);
+    }
+    return @errors;
+}
+
+
+
 1;
 
 
