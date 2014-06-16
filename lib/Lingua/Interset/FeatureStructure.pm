@@ -101,22 +101,6 @@ my %matrix = @_matrix =
             ['int'         ]
         ],
     },
-    # Subpart of speech.
-    ###!!! This feature will probably be dissolved into several POS-specific features or something.
-    'subpos' =>
-    {
-        'priority' => 190,
-        'values' => ['mod', 'ex', 'emp', 'res', 'inf', 'vbp', ''],
-        'replacements' =>
-        [
-            ['mod'],
-            ['ex'],
-            ['emp'],
-            ['res'],
-            ['inf'],
-            ['vbp']
-        ],
-    },
     # Special type of noun if applicable and if known.
     'nountype' =>
     {
@@ -219,14 +203,17 @@ my %matrix = @_matrix =
     'advtype' =>
     {
         'priority' => 150,
-        'values' => ['man', 'loc', 'tim', 'deg', 'cau', ''],
+        'values' => ['man', 'loc', 'tim', 'deg', 'cau', 'mod', 'adadj', 'ex', ''],
         'replacements' =>
         [
             ['man'],
             ['loc'],
             ['tim'],
             ['deg'],
-            ['cau']
+            ['cau'],
+            ['mod'],
+            ['adadj'],
+            ['ex']
         ],
     },
     # Special type of adposition if applicable and if known.
@@ -254,6 +241,20 @@ my %matrix = @_matrix =
             ['coor'],
             ['sub'],
             ['comp'],
+        ],
+    },
+    # Particle type.
+    'parttype' =>
+    {
+        'priority' => 165,
+        'values' => ['mod', 'emp', 'res', 'inf', 'vbp', ''],
+        'replacements' =>
+        [
+            ['mod'],
+            ['emp'],
+            ['res'],
+            ['inf'],
+            ['vbp']
         ],
     },
     # Punctuation type.

@@ -60,7 +60,7 @@ my %postable =
     'DT'    => ['pos' => 'adj', 'adjtype' => 'det', 'synpos' => 'attr'],
     # existential there
     # examples: there
-    'EX'    => ['pos' => 'adv', 'subpos' => 'ex'],
+    'EX'    => ['pos' => 'adv', 'advtype' => 'ex'],
     # foreign word
     # examples: kašpárek
     'FW'    => ['foreign' => 'foreign'],
@@ -135,7 +135,7 @@ my %postable =
     # to
     # examples: to
     # Both the infinitival marker "to" and the preposition "to" get this tag.
-    'TO'    => ['pos' => 'part', 'subpos' => 'inf', 'verbform' => 'inf'],
+    'TO'    => ['pos' => 'part', 'parttype' => 'inf', 'verbform' => 'inf'],
     # interjection
     # examples: uh
     'UH'    => ['pos' => 'int'],
@@ -353,7 +353,7 @@ sub encode
     elsif($pos eq 'adv')
     {
         # EX RB RBR RBS
-        if($fs->subpos() eq 'ex')
+        if($fs->advtype() eq 'ex')
         {
             $tag = 'EX';
         }
@@ -394,7 +394,7 @@ sub encode
         {
             $tag = 'POS';
         }
-        elsif($fs->verbform() eq 'inf' || $fs->subpos() eq 'inf')
+        elsif($fs->verbform() eq 'inf' || $fs->parttype() eq 'inf')
         {
             $tag = 'TO';
         }
