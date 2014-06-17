@@ -22,19 +22,23 @@ has 'permitted_values' => ( isa => 'HashRef', is => 'ro', builder => '_build_per
 # Decodes a physical tag (string) and returns the corresponding feature
 # structure.
 #------------------------------------------------------------------------------
+=method decode()
+
+  my $fs  = $driver->decode ($tag);
+
+Takes a tag (string) and returns a L<Lingua::Interset::FeatureStructure> object
+with corresponding feature values set.
+
+Every derived class must implement this method.
+The C<Tagset> class contains an empty implementation,
+which will throw an exception if inherited and called.
+
+=cut
 sub decode
 {
     my $self = shift;
     my $tag = shift;
-    my $fs = Lingua::Interset::FeatureStructure->new();
-    ###!!! Should we rather confess() here?
-    my %other =
-    (
-        'error' => 'Not implemented. Lingua::Interset::Tagset::decode() must be overridden in the tagset driver.',
-        'tag' => $tag
-    );
-    $fs->set_other(\%other);
-    return $fs;
+    confess('Not implemented. A derived class must provide implementation of the decode() method');
 }
 
 
@@ -42,13 +46,25 @@ sub decode
 #------------------------------------------------------------------------------
 # Takes feature structure and returns the corresponding physical tag (string).
 #------------------------------------------------------------------------------
+=method encode()
+
+  my $tag = $driver->encode ($fs);
+
+Takes a L<Lingua::Interset::FeatureStructure> object and
+returns the tag (string) in the given tagset that corresponds to the feature values.
+Note that some features may be ignored because they cannot be represented
+in the given tagset.
+
+Every derived class must implement this method.
+The C<Tagset> class contains an empty implementation,
+which will throw an exception if inherited and called.
+
+=cut
 sub encode
 {
     my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
-    ###!!! Should we rather confess() here?
-    my $tag = '_INTERSET_ENCODE_NOT_IMPLEMENTED_';
-    return $tag;
+    confess('Not implemented. A derived class must provide implementation of the encode() method');
 }
 
 
@@ -65,6 +81,34 @@ sub encode
 # the combination of values that have been processed before: then you will get
 # the first person on the output!
 #------------------------------------------------------------------------------
+=func encode_strict()
+
+  my $tag = $driver->encode_strict ($fs);
+
+Takes a feature structure (L<Lingua::Interset::FeatureStructure>) and
+returns a tag that matches the contents of the feature structure.
+
+Unlike C<encode()>, C<encode_strict()> always returns a I<known tag>, i.e.
+one that is returned by the C<list()> method of the Tagset object. Many tagsets
+consist of I<structured> tags, i.e. they can be defined as a compact representation
+of a feature structure (a set of attribute-value pairs). It is in principle possible
+to encode such combinations of features and values that did not appear in the original
+tagset. For example, a tagset for Czech is unlikely to contain a tag saying that
+a word is preposition and at the same time setting non-empty value for gender.
+Yet it is possible to create such a tag because the tagset encodes part of speech
+and gender independently.
+
+If this is undesirable behavior, the application should call C<encode_strict()>
+instead of C<encode()>. Then it will be guaranteed that the resulting tag is one
+of those returned by C<list()>. Nevertheless, think twice whether you really need
+the guarantee, as it does not come for free. The necessity to replace forbidden
+feature values by permitted ones may sometimes lead to surprising or confusing
+results.
+
+This method is implemented directly within the Tagset class,
+relying on custom implementations of C<list()>, C<decode()> and C<encode()>.
+
+=cut
 sub encode_strict
 {
     my $self = shift;
@@ -83,10 +127,25 @@ sub encode_strict
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
 #------------------------------------------------------------------------------
+=method list()
+
+  my $list_of_tags = $driver->list();
+
+Returns the reference to the list of all known tags in this particular tagset.
+This is not directly needed to decode, encode or convert tags but it is very useful
+for testing and advanced operations over the tagset.
+Note however that many tagset drivers contain only an approximate list,
+created by collecting tag occurrences in some corpus.
+
+Every derived class must implement this method.
+The C<Tagset> class contains an empty implementation,
+which will throw an exception if inherited and called.
+
+=cut
 sub list
 {
     my $self = shift;
-    ###!!! Should we rather confess() here?
+    confess('Not implemented. A derived class must provide implementation of the list() method');
 }
 
 
