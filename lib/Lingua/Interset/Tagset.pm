@@ -430,4 +430,25 @@ The C<Tagset> class is the inheritance root for all classes describing
 physical tagsets (sets of strings of characters). It defines decoding of tags, encoding
 and list of known tags.
 
+=attr permitted_structures
+
+A L<Lingua::Interset::Trie> object that represents all feature structures
+permitted by this tagset. These are structures that result from decoding
+one of the I<known tags> returned by the C<list()> method.
+
+This data structure is used to implement strict encoding (see the C<encode_strict()> method).
+
+=attr permitted_values
+
+Reference to a hash that contains all feature values set by the C<decode()> method
+for at least one of the I<known tags>.
+If the tagset permits C<$value> of C<$feature>, then
+
+  $driver->permitted_values->{$feature}{$value} != 0
+
+Note that a value that is permitted in one context may not be permitted in
+another.
+(For example, I<plural number> could be allowed for a I<noun> but not for an I<adverb>.)
+Unlike in C<permitted_structures>, this hash just ignores context.
+
 =cut
