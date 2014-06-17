@@ -81,7 +81,7 @@ sub encode
 # the combination of values that have been processed before: then you will get
 # the first person on the output!
 #------------------------------------------------------------------------------
-=func encode_strict()
+=method encode_strict()
 
   my $tag = $driver->encode_strict ($fs);
 
@@ -105,7 +105,7 @@ the guarantee, as it does not come for free. The necessity to replace forbidden
 feature values by permitted ones may sometimes lead to surprising or confusing
 results.
 
-This method is implemented directly within the Tagset class,
+This method is implemented directly within the C<Tagset> class,
 relying on custom implementations of C<list()>, C<decode()> and C<encode()>.
 
 =cut
