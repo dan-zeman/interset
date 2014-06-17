@@ -316,7 +316,7 @@ The objects are cached and if you call this function several times for the same
 tagset, you will always get the reference to the same object. Tagset objects
 do not have variable state, so it probably does not make sense to have several
 different driver objects for the same tagset. If you want to get a different
-object, you must call C<new()>, e.g. C<Lingua::Interset::EN::Penn->new()>.
+object, you must call C<new()>, e.g. C<< Lingua::Interset::EN::Penn->new() >>.
 
 =cut
 sub get_driver_object
