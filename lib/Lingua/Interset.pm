@@ -190,6 +190,31 @@ sub encode
 # Encodes a tag using a particular driver and strict encoding (only known
 # tags).
 #------------------------------------------------------------------------------
+=func encode_strict($tagset, $fs)
+
+A generic interface to the C<encode_strict()> method of L<Lingua::Interset::Tagset>.
+Takes tagset id and a feature structure (L<Lingua::Interset::FeatureStructure>).
+Returns a tag of the identified tagset that matches the contents of the feature
+structure.
+
+Unlike C<encode()>, C<encode_strict()> always returns a I<known tag>, i.e.
+one that is returned by the C<list()> method of the Tagset object. Many tagsets
+consist of I<structured> tags, i.e. they can be defined as a compact representation
+of a feature structure (a set of attribute-value pairs). It is in principle possible
+to encode such combinations of features and values that did not appear in the original
+tagset. For example, a tagset for Czech is unlikely to contain a tag saying that
+a word is preposition and at the same time setting non-empty value for gender.
+Yet it is possible to create such a tag because the tagset encodes part of speech
+and gender independently.
+
+If this is undesirable behavior, the application should call C<encode_strict()>
+instead of C<encode()>. Then it will be guaranteed that the resulting tag is one
+of those returned by C<list()>. Nevertheless, think twice whether you really need
+the guarantee, as it does not come for free. The necessity to replace forbidden
+feature values by permitted ones may sometimes lead to surprising or confusing
+results.
+
+=cut
 sub encode_strict
 {
     my $tagset = shift; # e.g. "cs::pdt"

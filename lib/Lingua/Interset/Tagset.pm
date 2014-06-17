@@ -316,7 +316,7 @@ sub test
     my @errors;
     foreach my $tag (@{$list})
     {
-        my @tag_errors = $driver->test_tag($tag, \$n_other, \%other_survivors);
+        my @tag_errors = $self->test_tag($tag);
         push(@errors, @tag_errors) if(@tag_errors);
     }
     return @errors;
