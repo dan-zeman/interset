@@ -514,4 +514,10 @@ or
 
 Interset driver for the part-of-speech tagset of the Penn Treebank.
 
+=head1 SEE ALSO
+
+L<Lingua::Interset>
+L<Lingua::Interset::Tagset>,
+L<Lingua::Interset::FeatureStructure>
+
 =cut

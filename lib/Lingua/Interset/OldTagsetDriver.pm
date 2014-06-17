@@ -74,6 +74,14 @@ _end_of_eval_
 # Decodes a physical tag (string) and returns the corresponding feature
 # structure.
 #------------------------------------------------------------------------------
+=method decode()
+
+  my $fs  = $driver->decode ($tag);
+
+Takes a tag (string) and returns a L<Lingua::Interset::FeatureStructure> object
+with corresponding feature values set.
+
+=cut
 sub decode
 {
     my $self = shift;
@@ -90,6 +98,16 @@ sub decode
 #------------------------------------------------------------------------------
 # Takes feature structure and returns the corresponding physical tag (string).
 #------------------------------------------------------------------------------
+=method encode()
+
+  my $tag = $driver->encode ($fs);
+
+Takes a L<Lingua::Interset::FeatureStructure> object and
+returns the tag (string) in the given tagset that corresponds to the feature values.
+Note that some features may be ignored because they cannot be represented
+in the given tagset.
+
+=cut
 sub encode
 {
     my $self = shift;
@@ -106,6 +124,17 @@ sub encode
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
 #------------------------------------------------------------------------------
+=method list()
+
+  my $list_of_tags = $driver->list();
+
+Returns the reference to the list of all known tags in this particular tagset.
+This is not directly needed to decode, encode or convert tags but it is very useful
+for testing and advanced operations over the tagset.
+Note however that many tagset drivers contain only an approximate list,
+created by collecting tag occurrences in some corpus.
+
+=cut
 sub list
 {
     my $self = shift;
@@ -179,5 +208,10 @@ sub translate
 Provides object envelope for an old, non-object-oriented driver from Interset 1.0.
 This makes the old drivers at least partially usable until they are fully ported to Interset 2.0.
 Note however that the old drivers use Interset features and/or values that have been changed in the new version.
+
+=head1 SEE ALSO
+
+L<Lingua::Interset::Tagset>,
+L<Lingua::Interset::FeatureStructure>
 
 =cut

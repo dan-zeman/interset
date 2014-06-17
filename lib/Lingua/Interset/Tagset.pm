@@ -451,4 +451,10 @@ another.
 (For example, I<plural number> could be allowed for a I<noun> but not for an I<adverb>.)
 Unlike in C<permitted_structures>, this hash just ignores context.
 
+=head1 SEE ALSO
+
+L<Lingua::Interset>,
+L<Lingua::Interset::FeatureStructure>,
+L<Lingua::Interset::Trie>
+
 =cut

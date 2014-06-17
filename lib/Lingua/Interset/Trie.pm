@@ -187,4 +187,8 @@ However, the priorities are defined outside the trie, by default in the
 FeatureStructure class, or they may be overriden in a Tagset subclass.
 The trie can store features in any order.
 
+=head1 SEE ALSO
+
+L<Lingua::Interset::Tagset>,
+
 =cut
