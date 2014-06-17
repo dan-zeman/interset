@@ -8,6 +8,10 @@ Feature changes:
 Interface:
 * various tools for driver testing
 
+Improved documentation of the modules.
+
+
+
 2.001     2014-06-13 17:56:05+02:00 Europe/Prague
 
 Complete rewrite of Interset. The old Perl interface was not object-oriented.
@@ -40,6 +44,8 @@ Feature changes:
   strict encoding and feature replacement. Now there are other features whose
   values form a hierarchy, so it seems logical to treat tenses the same way.
 
+
+
 -------------------------------------------------------------------------------
 Interset 2 (above) is distributed through the CPAN as Lingua::Interset and its
 versions are tracked rigorously. Versions < 2 vere numbered less rigorously and
@@ -51,6 +57,8 @@ not yet clear whether it would eventually be published. There was no
 distinction between versions and releases, and versions were not numbered
 anyway. However, there were some milestones, which are described below and
 which I have numbered for convenience.
+
+
 
 1.2
 
@@ -65,6 +73,8 @@ tagset to another.
 
 New usage: Interset in Treex (TectoMT).
 
+
+
 1.1
 
 8 September 2009. Three new incarnations of Czech, English and German CoNLL
@@ -75,6 +85,8 @@ Intercorp, we also created a driver for the IPI PAN Polish corpus, which in
 turn caused one systemic change: o-tags (those setting the other feature) can
 now be ignored when the driver is scanning the possible feature-value
 combinations. And there is a new web interface to DZ Interset.
+
+
 
 1.0
 
@@ -90,6 +102,8 @@ to network-accessible (though not publicly accessible) SVN repository, together
 with Trac project management interface. Website now includes information on
 licensing, references and this version history. From now on, I intend to
 distinguish revisions from numbered releases.
+
+
 
 0.5
 
@@ -108,6 +122,8 @@ policy. The state of pronouns may further change in future, as this is a rather
 controversial issue. On the other hand, a similar change may be needed for
 numerals, too.
 
+
+
 0.2
 
 Spring 2007. I struggled to convert tagsets of several CoNLL shared task
@@ -117,6 +133,8 @@ differences between various tagging approaches are. Also, some corpora
 contained tags that were noisy or not very well defined. Arabic, Bulgarian,
 Chinese, Czech and English CoNLL tagsets were added (Czech and English are just
 reformatted PDT and Penn tags, respectively).
+
+
 
 0.1
 
