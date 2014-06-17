@@ -31,6 +31,36 @@ my $driver_hash = undef; # indexed by tagset id
 # Tries to enumerate existing tagset drivers. Searches for relevant folders in
 # @INC paths.
 #------------------------------------------------------------------------------
+=func find_drivers()
+
+  my $list_of_drivers = find_drivers ();
+
+This function searches relevant folders in C<@INC> for installed Interset
+drivers for tagsets.
+It looks both for the new Interset 2 drivers (e.g. C<Lingua::Interset::EN::Penn>)
+and for the old Interset 1 drivers (e.g. C<tagset::en::penn>).
+It returns a reference to an array of hash references.
+Every hash in the list contains the following fields
+(here with example values):
+
+  my %record =
+  (
+      'old'     => 1, # 1 or 0 ... old or new driver?
+      'tagset'  => 'en::penn', # tagset id
+      'package' => 'Lingua::Interset::EN::Penn', # this is what you 'use' or 'require' in your code
+      'path'    => '/home/zeman/perl5/lib/Lingua/Interset/EN/Penn.pm' # path where it is installed
+  );
+
+Note that you may find more than one package for the same tagset id.
+This function will list all of them.
+When you ask Interset to do something with a tagset (e.g. C<decode ('en::penn', $tag)>),
+Interset will select one of the available packages for you.
+It will prefer new drivers over the old ones.
+If you have two old or two new drivers, their priority will be decided by Perl
+and it should correspond to the order of your C<$PERL5LIB> environment variable.
+To avoid confusion, it is recommended that you have each package installed only once.
+
+=cut
 sub find_drivers
 {
     if(!defined($driver_list))
@@ -165,6 +195,15 @@ sub get_driver_hash
 #------------------------------------------------------------------------------
 # Decodes a tag using a particular driver.
 #------------------------------------------------------------------------------
+=func decode()
+
+  my $fs  = decode ('en::penn', 'NNS');
+
+A generic interface to the C<decode()> method of L<Lingua::Interset::Tagset>.
+Takes tagset id and a tag in that tagset. Returns a L<Lingua::Interset::FeatureStructure> object
+with corresponding feature values set.
+
+=cut
 sub decode
 {
     my $tagset = shift; # e.g. "cs::pdt"
@@ -177,6 +216,18 @@ sub decode
 #------------------------------------------------------------------------------
 # Encodes a tag using a particular driver.
 #------------------------------------------------------------------------------
+=func encode()
+
+  my $fs  = decode ('en::penn', 'NNS');
+  my $tag = encode ('en::conll', $fs);
+
+A generic interface to the C<encode()> method of L<Lingua::Interset::Tagset>.
+Takes tagset id and a L<Lingua::Interset::FeatureStructure> object.
+Returns the tag in the given tagset that corresponds to the feature values.
+Note that some features may be ignored because they cannot be represented
+in the given tagset.
+
+=cut
 sub encode
 {
     my $tagset = shift; # e.g. "cs::pdt"
@@ -230,6 +281,18 @@ sub encode_strict
 #------------------------------------------------------------------------------
 # Lists all tags of a tag set.
 #------------------------------------------------------------------------------
+=func list()
+
+  my $list_of_tags = list ('en::penn');
+
+A generic interface to the C<list()> method of L<Lingua::Interset::Tagset>.
+Takes tagset id and returns the reference to the list of all known tags of that tagset.
+This is not directly needed to decode, encode or convert tags but it is very useful
+for testing and advanced operations over the tagset.
+Note however that many tagset drivers contain only an approximate list,
+created by collecting tag occurrences in some corpus.
+
+=cut
 sub list
 {
     my $tagset = shift; # e.g. "cs::pdt"
@@ -242,6 +305,20 @@ sub list
 #------------------------------------------------------------------------------
 # Creates and returns a tagset driver object for a given tagset.
 #------------------------------------------------------------------------------
+=func get_driver_object()
+
+  my $driver = get_driver_object ('en::penn');
+
+A generic accessor to installed Interset drivers of tagsets.
+Takes tagset id and returns a L<Lingua::Interset::Tagset> object.
+
+The objects are cached and if you call this function several times for the same
+tagset, you will always get the reference to the same object. Tagset objects
+do not have variable state, so it probably does not make sense to have several
+different driver objects for the same tagset. If you want to get a different
+object, you must call C<new()>, e.g. C<Lingua::Interset::EN::Penn->new()>.
+
+=cut
 sub get_driver_object
 {
     my $tagset = shift; # e.g. "cs::pdt"
@@ -330,25 +407,5 @@ for example.
 
 More information is given at the DZ Interset project page,
 L<https://wiki.ufal.ms.mff.cuni.cz/user:zeman:interset>.
-
-=func decode()
-
-Takes tagset id and a tag in that tagset. Returns a L<Lingua::Interset::FeatureStructure> object
-with corresponding feature values set.
-
-=func encode()
-
-Takes tagset id and a L<Lingua::Interset::FeatureStructure> object.
-Returns the tag in the given tagset that corresponds to the feature values.
-Note that some features may be ignored because they cannot be represented
-in the given tagset.
-
-=func list()
-
-Takes tagset id and returns the reference to the list of all known tags of that tagset.
-This is not directly needed to decode, encode or convert tags but it is very useful
-for testing and advanced operations over the tagset.
-Note however that many tagset drivers contain only an approximate list,
-created by collecting tag occurrences in some corpus.
 
 =cut
