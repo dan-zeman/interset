@@ -190,7 +190,10 @@ sub encode
 # Encodes a tag using a particular driver and strict encoding (only known
 # tags).
 #------------------------------------------------------------------------------
-=func encode_strict($tagset, $fs)
+=func encode_strict()
+
+  my $fs  = decode ('en::penn', 'NNS');
+  my $tag = encode_strict ('en::conll', $fs);
 
 A generic interface to the C<encode_strict()> method of L<Lingua::Interset::Tagset>.
 Takes tagset id and a feature structure (L<Lingua::Interset::FeatureStructure>).
