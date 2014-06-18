@@ -1005,25 +1005,129 @@ A generic setter for any feature. These two statements do the same thing:
   $fs->set ('pos', 'noun');
   $fs->set_pos ('noun');
 
-The C<set()> method returns the previous value of the feature.
-
-If you want to set multiple values of a feature, you have to provide an array
-reference:
+If you want to set multiple values of a feature, there are several ways to do it:
 
   $fs->set ('tense', ['pres', 'fut']);
+  $fs->set ('tense', 'pres', 'fut');
+  $fs->set ('tense', 'pres|fut');
 
-means that the word is either in present or in future tense.
+All of the above mean that the word is either in present or in future tense.
+
+Note that the 'other' feature behaves differently.
+Its value can be structured, C<set()> will keep the structure and will not try to interpret it.
 
 =cut
 sub set
 {
     my $self = shift;
     my $feature = shift;
-    my $value = shift;
+    my @values = @_;
+    confess('Missing value') if(!@values);
+    return $self->set_other(map {_duplicate_recursive($_)} @values) if($feature eq 'other');
+    my @values1;
+    foreach my $value (@values)
+    {
+        if(ref($value) eq 'ARRAY')
+        {
+            foreach my $subvalue (@{$value})
+            {
+                # No unlimited recursion. Referenced arrays are not supposed to contain subarrays.
+                confess('Plain scalar expected') unless(ref($subvalue) eq '');
+                push(@values1, $subvalue);
+            }
+        }
+        elsif($value =~ m/\|/)
+        {
+            my @subvalues = split(/\|/, $value);
+            push(@values1, @subvalues);
+        }
+        else
+        {
+            push(@values1, $value);
+        }
+    }
+    # Current Interset convention is that multi-values are stored as array references.
+    # The above copying solves two problems:
+    # 1. multiple ways for the user to provide the values
+    # 2. if the user provides array reference, the array will not be shared but copied
+    my $value;
+    if(scalar(@values1)>1)
+    {
+        $value = \@values1;
+    }
+    elsif(scalar(@values1)==1)
+    {
+        $value = $values1[0];
+    }
+    else
+    {
+        confess('Missing value');
+    }
     # Validation of the arguments is not automatic in this case. We must take care of it! ###!!!
-    my $old = $self->{$feature};
     $self->{$feature} = $value;
-    return $old;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Sets several features at once. Takes list of value assignments, i.e. an array
+# of an even number of elements (feature1, value1, feature2, value2...)
+# This is useful when defining decoders from physical tagsets. Typically, one
+# wants to define a table of assignments for each part of speech or input
+# feature:
+# 'CC' => ['pos' => 'conj', 'conjtype' => 'coor']
+#------------------------------------------------------------------------------
+=method multiset()
+
+  $fs->multiset ('pos' => 'conj', 'conjtype' => 'coor');
+
+Sets several features at once.
+Takes a list of value assignments, i.e. an array of an even number of elements
+(feature1, value1, feature2, value2, ...)
+This is useful when defining decoders from physical tagsets.
+Typically, one wants to define a table of assignments for each part of speech or input feature:
+
+  'CC' => ['pos' => 'conj', 'conjtype' => 'coor']
+
+=cut
+sub multiset
+{
+    my $self = shift;
+    my @assignments = @_;
+    for(my $i = 0; $i<=$#assignments; $i += 2)
+    {
+        $self->set($assignments[$i], $assignments[$i+1]);
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Takes a reference to a hash of features and their values. Sets the values of
+# the features in $self. Unknown features and values are ignored. Known
+# features that are not set in the hash will be (re-)set to empty values in
+# $self.
+#------------------------------------------------------------------------------
+=method set_hash()
+
+  my %hash = ('pos' => 'noun', 'number' => 'plu');
+  $fs->set_hash (\%hash);
+
+Takes a reference to a hash of features and their values.
+Sets the values of the features in this C<FeatureStructure>.
+Unknown features are ignored.
+Known features that are not set in the hash will be (re-)set to empty values.
+
+=cut
+sub set_hash
+{
+    my $self = shift;
+    my $fs = shift;
+    foreach my $feature ($self->known_features())
+    {
+        my $value = defined($fs->{$feature}) ? $fs->{$feature} : '';
+        $self->set($feature, $value);
+    }
 }
 
 
@@ -1038,15 +1142,16 @@ A generic getter for any feature. These two statements do the same thing:
   $pos = $fs->get ('pos');
   $pos = $fs->pos();
 
-Be warned that you can get an array reference if the feature has multiple
-values.
+Be warned that B<you can get an array reference> if the feature has multiple
+values. It is probably better to use one of the alternative C<get...()> functions
+where it is better defined what you can get.
 
 =cut
 sub get
 {
     my $self = shift;
     my $feature = shift;
-    return $self->{$feature};
+    return _duplicate_recursive($self->{$feature});
 }
 
 
@@ -1055,13 +1160,15 @@ sub get
 # Similar to get but always returns scalar. If there is an array of disjoint
 # values, it does not pick just one. Instead, it sorts all values and joins
 # them using the vertical bar. Example: 'masc|fem'.
-###!!! Do we need set_joined(), too?
 #------------------------------------------------------------------------------
 =method get_joined()
 
 Similar to C<get()> but always returns scalar.
-If there is an array of disjoint values, it sorts them and
-joins them using the vertical bar. Example: C<'masc|fem'>.
+If there is an array of disjoint values, it sorts them alphabetically and
+joins them using the vertical bar. Example: C<'fem|masc'>.
+The sorting makes comparisons easier;
+it is assumed that the actual ordering is not significant
+and that C<'fem|masc'> is identical to C<'masc|fem'>.
 
 =cut
 sub get_joined
@@ -1083,6 +1190,8 @@ sub get_joined
 Similar to get but always returns list of values.
 If there is an array of disjoint values, this is the list.
 If there is a single value (empty or not), this value will be the only member of the list.
+
+Unlike in C<get_joined()>, this method does I<not sort> the list before returning it.
 
 =cut
 sub get_list
@@ -1125,69 +1234,6 @@ sub get_hash
         $fs{$feature} = $self->get($feature);
     }
     return \%fs;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Takes a reference to a hash of features and their values. Sets the values of
-# the features in $self. Unknown features and values are ignored. Known
-# features that are not set in the hash will be (re-)set to empty values in
-# $self.
-#------------------------------------------------------------------------------
-=method set_hash()
-
-  my %hash = ('pos' => 'noun', 'number' => 'plu');
-  $fs->set_hash (\%hash);
-
-Takes a reference to a hash of features and their values.
-Sets the values of the features in this C<FeatureStructure>.
-Unknown features are ignored.
-Known features that are not set in the hash will be (re-)set to empty values.
-
-=cut
-sub set_hash
-{
-    my $self = shift;
-    my $fs = shift;
-    foreach my $feature ($self->known_features())
-    {
-        my $value = defined($fs->{$feature}) ? $fs->{$feature} : '';
-        $self->set($feature, $value);
-    }
-}
-
-
-
-#------------------------------------------------------------------------------
-# Sets several features at once. Takes list of value assignments, i.e. an array
-# of an even number of elements (feature1, value1, feature2, value2...)
-# This is useful when defining decoders from physical tagsets. Typically, one
-# wants to define a table of assignments for each part of speech or input
-# feature:
-# 'CC' => ['pos' => 'conj', 'conjtype' => 'coor']
-#------------------------------------------------------------------------------
-=method multiset()
-
-  $fs->multiset ('pos' => 'conj', 'conjtype' => 'coor');
-
-Sets several features at once.
-Takes a list of value assignments, i.e. an array of an even number of elements
-(feature1, value1, feature2, value2, ...)
-This is useful when defining decoders from physical tagsets.
-Typically, one wants to define a table of assignments for each part of speech or input feature:
-
-  'CC' => ['pos' => 'conj', 'conjtype' => 'coor']
-
-=cut
-sub multiset
-{
-    my $self = shift;
-    my @assignments = @_;
-    for(my $i = 0; $i<=$#assignments; $i += 2)
-    {
-        $self->set($assignments[$i], $assignments[$i+1]);
-    }
 }
 
 
@@ -1659,12 +1705,12 @@ sub duplicate
 {
     my $self = shift;
     my $srchash = $self->get_hash();
-    my $tgthash = duplicate_recursive($srchash);
+    my $tgthash = _duplicate_recursive($srchash);
     my $duplicate = new Lingua::Interset::FeatureStructure();
     $duplicate->set_hash($tgthash);
     return $duplicate;
 }
-sub duplicate_recursive
+sub _duplicate_recursive
 {
     my $source = shift;
     my $duplicate;
@@ -1674,7 +1720,7 @@ sub duplicate_recursive
         my @new_array;
         foreach my $element (@{$source})
         {
-            push(@new_array, duplicate_recursive($element));
+            push(@new_array, _duplicate_recursive($element));
         }
         $duplicate = \@new_array;
     }
@@ -1683,7 +1729,7 @@ sub duplicate_recursive
         my %new_hash;
         foreach my $key (keys(%{$source}))
         {
-            $new_hash{$key} = duplicate_recursive($source->{$key});
+            $new_hash{$key} = _duplicate_recursive($source->{$key});
         }
         $duplicate = \%new_hash;
     }
