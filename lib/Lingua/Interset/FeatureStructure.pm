@@ -756,20 +756,50 @@ has 'other'        => ( is  => 'rw', default => '' );
 #------------------------------------------------------------------------------
 # Shortcuts for some frequent tests people want to do against Interset.
 #------------------------------------------------------------------------------
+=method is_noun()
+=cut
 sub is_noun {my $self = shift; return $self->pos() eq 'noun';}
+=method is_adjective()
+=cut
 sub is_adjective {my $self = shift; return $self->pos() eq 'adj';}
+=method is_pronoun()
+=cut
 sub is_pronoun {my $self = shift; return $self->prontype() ne '';}
+=method is_numeral()
+=cut
 sub is_numeral {my $self = shift; return $self->pos() eq 'num';}
+=method is_verb()
+=cut
 sub is_verb {my $self = shift; return $self->pos() eq 'verb';}
+=method is_adverb()
+=cut
 sub is_adverb {my $self = shift; return $self->pos() eq 'adv';}
-sub is_preposition {my $self = shift; return $self->pos() eq 'prep';}
+=method is_adposition()
+=cut
+sub is_adposition {my $self = shift; return $self->pos() eq 'adp';}
+=method is_conjunction()
+=cut
 sub is_conjunction {my $self = shift; return $self->pos() eq 'conj';}
+=method is_coordinator()
+=cut
 sub is_coordinator {my $self = shift; return $self->pos() eq 'conj' && $self->conjtype() eq 'coor';}
+=method is_subordinator()
+=cut
 sub is_subordinator {my $self = shift; return $self->pos() eq 'conj' && $self->conjtype() eq 'sub';}
+=method is_particle()
+=cut
 sub is_particle {my $self = shift; return $self->pos() eq 'part';}
+=method is_interjection()
+=cut
 sub is_interjection {my $self = shift; return $self->pos() eq 'int';}
+=method is_punctuation()
+=cut
 sub is_punctuation {my $self = shift; return $self->pos() eq 'punc';}
+=method is_foreign()
+=cut
 sub is_foreign {my $self = shift; return $self->foreign() eq 'foreign';}
+=method is_typo()
+=cut
 sub is_typo {my $self = shift; return $self->typo() eq 'typo';}
 
 
@@ -777,6 +807,11 @@ sub is_typo {my $self = shift; return $self->typo() eq 'typo';}
 #------------------------------------------------------------------------------
 # Static function. Returns the list of known features (in print order).
 #------------------------------------------------------------------------------
+=func known_features()
+
+Returns the list of known feature names in print order.
+
+=cut
 sub known_features
 {
     return @features_in_print_order;
@@ -789,6 +824,13 @@ sub known_features
 # (used when enforcing permitted feature-value combinations during strict
 # encoding).
 #------------------------------------------------------------------------------
+=func priority_features()
+
+Returns the list of known features ordered according to their default priority.
+The priority is used in L<Lingua::Interset::Trie> when one looks for the closest
+matching permitted structure.
+
+=cut
 sub priority_features
 {
     my @features = keys(%matrix);
@@ -802,6 +844,12 @@ sub priority_features
 # Static function. Returns the list of known values (in print order) of
 # a feature. Dies if asked about an unknown feature.
 #------------------------------------------------------------------------------
+=func known_values()
+
+Returns the list of known values of a feature, in print order.
+Dies if asked about an unknown feature.
+
+=cut
 sub known_values
 {
     my $feature = shift;
@@ -820,6 +868,12 @@ sub known_values
 #------------------------------------------------------------------------------
 # Static function. Tells whether a string is the name of a known feature.
 #------------------------------------------------------------------------------
+=func feature_valid()
+
+Takes a string and returns a nonzero value if the string is a name of a known
+feature.
+
+=cut
 sub feature_valid
 {
     my $feature = shift;
@@ -834,6 +888,13 @@ sub feature_valid
 # feature and the value are known and valid. References to lists of valid
 # values are also valid. Does not die when the feature is not valid.
 #------------------------------------------------------------------------------
+=func value_valid()
+
+Takes two scalars, C<$feature> and C<$value>. Tells whether they are a valid
+(known) pair of feature name and value. A reference to a list of valid values
+is also a valid value. This function does not die when the feature is not valid.
+
+=cut
 sub value_valid
 {
     my $feature = shift;
@@ -934,6 +995,23 @@ sub is_valid
 # Named setters for each feature are nice but we also need a generic setter
 # that takes both the feature name and value.
 #------------------------------------------------------------------------------
+=method set()
+
+A generic setter for any feature. These two statements do the same thing:
+
+  $fs->set ('pos', 'noun');
+  $fs->set_pos ('noun');
+
+The C<set()> method returns the previous value of the feature.
+
+If you want to set multiple values of a feature, you have to provide an array
+reference:
+
+  $fs->set ('tense', ['pres', 'fut']);
+
+means that the word is either in present or in future tense.
+
+=cut
 sub set
 {
     my $self = shift;
@@ -950,6 +1028,17 @@ sub set
 #------------------------------------------------------------------------------
 # Analogically, get() is a generic feature value getter.
 #------------------------------------------------------------------------------
+=method get()
+
+A generic getter for any feature. These two statements do the same thing:
+
+  $pos = $fs->get ('pos');
+  $pos = $fs->pos();
+
+Be warned that you can get an array reference if the feature has multiple
+values.
+
+=cut
 sub get
 {
     my $self = shift;
@@ -965,6 +1054,13 @@ sub get
 # them using the vertical bar. Example: 'masc|fem'.
 ###!!! Do we need set_joined(), too?
 #------------------------------------------------------------------------------
+=method get_joined()
+
+Similar to C<get()> but always returns scalar.
+If there is an array of disjoint values, it sorts them and
+joins them using the vertical bar. Example: C<'masc|fem'>.
+
+=cut
 sub get_joined
 {
     my $self = shift;
@@ -979,6 +1075,13 @@ sub get_joined
 # disjoint values, this is the list. If there is a single value (empty or not),
 # this value is the only member of the list.
 #------------------------------------------------------------------------------
+=method get_list()
+
+Similar to get but always returns list of values.
+If there is an array of disjoint values, this is the list.
+If there is a single value (empty or not), this value will be the only member of the list.
+
+=cut
 sub get_list
 {
     my $self = shift;
@@ -1002,6 +1105,14 @@ sub get_list
 # Creates a hash of all features and their values. Returns a reference to the
 # hash.
 #------------------------------------------------------------------------------
+=method get_hash()
+
+  my $hashref = $fs->get_hash();
+
+Creates a hash of all features and their values.
+Returns a reference to the hash.
+
+=cut
 sub get_hash
 {
     my $self = shift;
@@ -1021,6 +1132,17 @@ sub get_hash
 # features that are not set in the hash will be (re-)set to empty values in
 # $self.
 #------------------------------------------------------------------------------
+=method set_hash()
+
+  my %hash = ('pos' => 'noun', 'number' => 'plu');
+  $fs->set_hash (\%hash);
+
+Takes a reference to a hash of features and their values.
+Sets the values of the features in this C<FeatureStructure>.
+Unknown features are ignored.
+Known features that are not set in the hash will be (re-)set to empty values.
+
+=cut
 sub set_hash
 {
     my $self = shift;
@@ -1042,6 +1164,19 @@ sub set_hash
 # feature:
 # 'CC' => ['pos' => 'conj', 'conjtype' => 'coor']
 #------------------------------------------------------------------------------
+=method multiset()
+
+  $fs->multiset ('pos' => 'conj', 'conjtype' => 'coor');
+
+Sets several features at once.
+Takes a list of value assignments, i.e. an array of an even number of elements
+(feature1, value1, feature2, value2, ...)
+This is useful when defining decoders from physical tagsets.
+Typically, one wants to define a table of assignments for each part of speech or input feature:
+
+  'CC' => ['pos' => 'conj', 'conjtype' => 'coor']
+
+=cut
 sub multiset
 {
     my $self = shift;
@@ -1057,6 +1192,11 @@ sub multiset
 #------------------------------------------------------------------------------
 # Generates text from contents of feature structure so it can be printed.
 #------------------------------------------------------------------------------
+=method as_string()
+
+Generates a textual representation of the feature structure so it can be printed.
+
+=cut
 sub as_string
 {
     my $self = shift;
@@ -1088,6 +1228,12 @@ sub as_string
 # Recursively converts a structure to string describing a Perl constant.
 # Useful for using eval.
 #------------------------------------------------------------------------------
+=func structure_to_string()
+
+Recursively converts a structure to a string.
+The string uses Perl syntax for constant structures, so it can be used in eval.
+
+=cut
 sub structure_to_string
 {
     my $source = shift;
@@ -1124,6 +1270,25 @@ sub structure_to_string
 # above. It is a hash{feature}{value0}, leading to a list of values that can be
 # used to replace the value0, ordered by priority.
 #------------------------------------------------------------------------------
+=func get_replacements()
+
+  my $replacements = Lingua::Interset::FeatureStructure->get_replacements();
+  my $rep_adverb = $replacements->{pos}{adverb};
+  foreach my $r (@{$rep_adverb})
+  {
+      if(...)
+      {
+          # This replacement matches our constraints, let's use it.
+          return $r;
+      }
+  }
+
+Returns the set of replacement values for the case a feature value is not
+permitted in a given context.
+It is a hash{feature}{value0}, leading to a list of values that can be
+used to replace the value0, ordered by priority.
+
+=cut
 sub get_replacements
 {
     if(!defined($replacements))
@@ -1356,6 +1521,17 @@ sub select_replacement
 # Makes sure that a feature structure complies with the permitted combinations
 # recorded in a trie. Replaces feature values if needed.
 #------------------------------------------------------------------------------
+=method enforce_permitted_values()
+
+  $fs->enforce_permitted_values ($permitted_trie);
+
+Makes sure that a feature structure complies with the permitted combinations
+recorded in a trie.
+Takes a L<Lingua::Interset::Trie> object as a parameter.
+Replaces feature values if needed.
+(Note that even the empty value may or may not be permitted.)
+
+=cut
 sub enforce_permitted_values
 {
     my $self = shift;
@@ -1400,6 +1576,15 @@ sub enforce_permitted_values
 #------------------------------------------------------------------------------
 # Compares two values, scalars or arrays, whether they are equal or not.
 #------------------------------------------------------------------------------
+=func iseq()
+
+  if (Lingua::Interset::FeatureStructure->iseq ($a, $b)) { ... }
+
+Compares two values, scalars or arrays, whether they are equal or not.
+Takes two parameters.
+Each of them can be a scalar or an array reference.
+
+=cut
 sub iseq
 {
     my $a = shift;
@@ -1426,6 +1611,17 @@ sub iseq
 # occurrences of vertical bars inside the elements (there should be none
 # anyway).
 #------------------------------------------------------------------------------
+=func array_to_scalar_value()
+
+Converts array values to scalars. Sorts the array and combines all elements
+in one string, using the vertical bar as delimiter. Does not care about
+occurrences of vertical bars inside the elements (there should be none
+anyway).
+
+Takes an array reference as parameter.
+If the parameter turns out to be a plain scalar, the function just returns it.
+
+=cut
 sub array_to_scalar_value
 {
     my $value = shift;
@@ -1449,6 +1645,13 @@ sub array_to_scalar_value
 # function could be used for any nested structures, not just feature
 # structures.
 #------------------------------------------------------------------------------
+=method duplicate()
+
+Returns a new C<Lingua::Interset::FeatureStructure> object that is
+a duplicate of the current structure.
+Makes sure that a deep copy is constructed if there are any complex feature values.
+
+=cut
 sub duplicate
 {
     my $self = shift;
