@@ -121,7 +121,7 @@ sub conll_to_pdt
                 $features_conll->{$1} = $2;
             }
         }
-        foreach my $name qw(Gen Num Cas PGe PNu Per Ten Gra Neg Voi Rs1 Rs2 Var)
+        foreach my $name (qw(Gen Num Cas PGe PNu Per Ten Gra Neg Voi Rs1 Rs2 Var))
         {
             if($features_conll->{$name} ne "")
             {
@@ -147,7 +147,7 @@ sub pdt_to_conll
     $tag =~ s/^(.)(.)//;
     my ($pos, $subpos) = ($1, $2);
     my @features_conll;
-    foreach my $name qw(Gen Num Cas PGe PNu Per Ten Gra Neg Voi Rs1 Rs2 Var)
+    foreach my $name (qw(Gen Num Cas PGe PNu Per Ten Gra Neg Voi Rs1 Rs2 Var))
     {
         $tag =~ s/^(.)//;
         if($1 ne "-")

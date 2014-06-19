@@ -733,7 +733,7 @@ sub encode
     }
     if($f{tagset} eq "pt::conll")
     {
-        foreach my $feature qw(DERP DERS ident error fmc ks n prop prp diff)
+        foreach my $feature (qw(DERP DERS ident error fmc ks n prop prp diff))
         {
             my $feature1 = "<$feature>";
             if($f{other}{$feature1})
@@ -741,7 +741,7 @@ sub encode
                 push(@features, $feature1);
             }
         }
-        foreach my $coord qw(acc advl advo advs app ger inf oc pass pcv piv postad postnom pred prenom prparg sc subj vfin fmc)
+        foreach my $coord (qw(acc advl advo advs app ger inf oc pass pcv piv postad postnom pred prenom prparg sc subj vfin fmc))
         {
             my $feature = "<co-$coord>";
             if($f{other}{$feature})
