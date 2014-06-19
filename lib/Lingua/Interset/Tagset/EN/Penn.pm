@@ -57,10 +57,10 @@ my %postable =
     'CC'    => ['pos' => 'conj', 'conjtype' => 'coor'],
     # cardinal number
     # examples: one, two, three
-    'CD'    => ['pos' => 'num', 'numtype' => 'card', 'synpos' => 'attr', 'definiteness' => 'def'],
+    'CD'    => ['pos' => 'num', 'numtype' => 'card'],
     # determiner
     # examples: a, the, some
-    'DT'    => ['pos' => 'adj', 'adjtype' => 'det', 'synpos' => 'attr'],
+    'DT'    => ['pos' => 'adj', 'adjtype' => 'det'],
     # existential there
     # examples: there
     'EX'    => ['pos' => 'adv', 'advtype' => 'ex'],
@@ -111,10 +111,10 @@ my %postable =
     'POS'   => ['pos' => 'part', 'poss' => 'poss'],
     # personal pronoun
     # examples: I, you, he, she, it, we, they
-    'PRP'   => ['pos' => 'noun', 'prontype' => 'prs', 'synpos' => 'subst'],
+    'PRP'   => ['pos' => 'noun', 'prontype' => 'prs'],
     # possessive pronoun
     # examples: my, your, his, her, its, our, their
-    'PRP$'  => ['pos' => 'adj', 'prontype' => 'prs', 'poss' => 'poss', 'synpos' => 'attr'],
+    'PRP$'  => ['pos' => 'adj', 'prontype' => 'prs', 'poss' => 'poss'],
     # adverb
     # examples: here, tomorrow, easily
     'RB'    => ['pos' => 'adv'],
@@ -156,19 +156,19 @@ my %postable =
     'VBN'   => ['pos' => 'verb', 'verbform' => 'part', 'tense' => 'past', 'aspect' => 'perf'],
     # verb, non-3rd person singular present
     # examples: do, go, see, walk
-    'VBP'   => ['pos' => 'verb', 'verbform' => 'fin', 'tense' => 'pres', 'number' => 'sing', 'person' => [1, 2]],
+    'VBP'   => ['pos' => 'verb', 'verbform' => 'fin', 'tense' => 'pres', 'number' => 'sing', 'person' => '1|2'],
     # verb, 3rd person singular present
     # examples: does, goes, sees, walks
     'VBZ'   => ['pos' => 'verb', 'verbform' => 'fin', 'tense' => 'pres', 'number' => 'sing', 'person' => 3],
     # wh-determiner
     # examples: which
-    'WDT'   => ['pos' => 'adj', 'adjtype' => 'det', 'synpos' => 'attr', 'prontype' => 'int'],
+    'WDT'   => ['pos' => 'adj', 'adjtype' => 'det', 'prontype' => 'int'],
     # wh-pronoun
     # examples: who
-    'WP'    => ['pos' => 'noun', 'synpos' => 'subst', 'prontype' => 'int'],
+    'WP'    => ['pos' => 'noun', 'prontype' => 'int'],
     # possessive wh-pronoun
     # examples: whose
-    'WP$'   => ['pos' => 'adj', 'poss' => 'poss', 'synpos' => 'attr', 'prontype' => 'int'],
+    'WP$'   => ['pos' => 'adj', 'poss' => 'poss', 'prontype' => 'int'],
     # wh-adverb
     # examples: where, when, how
     'WRB'   => ['pos' => 'adv', 'prontype' => 'int'],
