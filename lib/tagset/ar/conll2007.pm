@@ -862,6 +862,7 @@ end_of_list
 #------------------------------------------------------------------------------
 BEGIN
 {
+    use tagset::common;
     # Store the hash reference in a global variable.
     $permitted = tagset::common::get_permitted_structures_joint(list(), \&decode);
 }

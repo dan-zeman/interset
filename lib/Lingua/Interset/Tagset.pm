@@ -254,7 +254,7 @@ sub _build_permitted_values
     my $list = $self->list();
     # Make sure that the list of possible tags is not empty.
     # If it is, probably the driver's list() function is not implemented.
-    unless(scalar(@{$list}))
+    unless(defined($list) && scalar(@{$list}))
     {
         confess('Cannot figure out the permitted values because the list of possible tags is empty');
     }

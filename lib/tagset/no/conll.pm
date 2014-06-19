@@ -148,6 +148,7 @@ my @tags = qw/adj adv <anf> clb det inf-merke interj <komma> konj
 
 sub decode {
     my ($pos, undef, $feats) = split m/\s+/msxo, $_[0];
+    $feats = '' if(!defined($feats));
     my @feats = split m/\|/msxo, $feats;
     my @ones = (1) x @feats; # XXX: Apparently (1) x @feats isn't legal as an arg to zip.
     my %feats = zip @feats, @ones;
