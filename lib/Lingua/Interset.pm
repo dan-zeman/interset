@@ -154,7 +154,7 @@ The objects are cached and if you call this function several times for the same
 tagset, you will always get the reference to the same object. Tagset objects
 do not have variable state, so it probably does not make sense to have several
 different driver objects for the same tagset. If you want to get a different
-object, you must call C<new()>, e.g. C<< Lingua::Interset::EN::Penn->new() >>.
+object, you must call C<new()>, e.g. C<< Lingua::Interset::Tagset::EN::Penn->new() >>.
 
 =cut
 sub get_driver_object
@@ -224,7 +224,7 @@ _end_of_eval_
 
 This function searches relevant folders in C<@INC> for installed Interset
 drivers for tagsets.
-It looks both for the new Interset 2 drivers (e.g. C<Lingua::Interset::EN::Penn>)
+It looks both for the new Interset 2 drivers (e.g. C<Lingua::Interset::Tagset::EN::Penn>)
 and for the old Interset 1 drivers (e.g. C<tagset::en::penn>).
 It returns a reference to an array of hash references.
 Every hash in the list contains the following fields
@@ -234,7 +234,7 @@ Every hash in the list contains the following fields
   (
       'old'     => 1, # 1 or 0 ... old or new driver?
       'tagset'  => 'en::penn', # tagset id
-      'package' => 'Lingua::Interset::EN::Penn', # this is what you 'use' or 'require' in your code
+      'package' => 'Lingua::Interset::Tagset::EN::Penn', # this is what you 'use' or 'require' in your code
       'path'    => '/home/zeman/perl5/lib/Lingua/Interset/EN/Penn.pm' # path where it is installed
   );
 
@@ -299,7 +299,7 @@ sub _find_drivers
         }
         # New drivers (Interset 2.0) are in the "Lingua/Interset" folder.
         # Not everything in this folder is a driver! But subfolders lead to drivers, the additional stuff are files, not folders.
-        my $lipath = "$path/Lingua/Interset";
+        my $lipath = "$path/Lingua/Interset/Tagset";
         if(-d $lipath)
         {
             opendir(DIR, $lipath) or confess("Cannot read folder $lipath: $!\n");
@@ -325,7 +325,7 @@ sub _find_drivers
                             (
                                 'old'     => 0,
                                 'tagset'  => $driver_lowercased,
-                                'package' => "Lingua::Interset::$driver_uppercased",
+                                'package' => "Lingua::Interset::Tagset::$driver_uppercased",
                                 'path'    => $fpath
                             );
                             push(@drivers, \%record);

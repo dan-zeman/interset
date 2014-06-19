@@ -1,13 +1,18 @@
 {{$NEXT}}
 
+Architecture change:
+* Tagset drivers moved one level down so that we can clearly distinguish them from other modules.
+  Lingua::Interset::EN::Penn became Lingua::Interset::Tagset::EN::Penn.
+
 Feature changes:
 * pos value 'prep' (preposition) renamed to 'adp' (adposition).
 * the remaining values of the subpos feature dissolved into advtype and two
   new features, adpostype and parttype.
 
 Interface:
-* various tools for driver testing
+* Various tools for driver testing
 * Empty implementations of decode(), encode() and list() in the Tagset class will now throw an exception if called.
+* Slightly changed semantics of the set...() and get...() methods in the FeatureStructure class.
 
 Improved documentation of the modules.
 

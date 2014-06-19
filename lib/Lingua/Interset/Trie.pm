@@ -204,9 +204,9 @@ sub get_tag_example
 
 =head1 SYNOPSIS
 
-  use Lingua::Interset::EN::Penn;
+  use Lingua::Interset::Tagset::EN::Penn;
 
-  my $ts = Lingua::Interset::EN::Penn->new();
+  my $ts = Lingua::Interset::Tagset::EN::Penn->new();
   # Get a Lingua::Interset::Trie object $permitted and print all feature structures
   # that the tagset en::penn can generate.
   my $permitted = $ts->permitted_structures();

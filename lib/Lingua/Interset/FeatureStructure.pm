@@ -100,7 +100,7 @@ my %matrix = @_matrix =
             ['num',  'adj' ],
             ['adv'         ],
             ['adp',  'adv' ],
-            ['conj', 'prep'],
+            ['conj', 'adp' ],
             ['int'         ]
         ],
     },
@@ -1415,6 +1415,10 @@ sub _preprocess_list_of_replacements
                     unless($visited{$last})
                     {
                         $visited{$last}++;
+                        if(ref($defaults1{$feature}{$last}) ne 'ARRAY')
+                        {
+                            confess("Something went wrong when preparing replacement values for feature '$feature' and value '$last'");
+                        }
                         my @replacements_of_last = @{$defaults1{$feature}{$last}};
                         # If $last has replacements that $value does not have, add them to $value.
                         foreach my $replacement (@replacements_of_last)
