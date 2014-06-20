@@ -1153,6 +1153,41 @@ sub set_hash
 
 
 #------------------------------------------------------------------------------
+# Takes a reference to a hash of features and their values. Sets the values of
+# the features in $self; does not touch values of features not mentioned in the
+# hash.
+#------------------------------------------------------------------------------
+=method merge_hash()
+
+  my %hash = ('pos' => 'noun', 'number' => 'plu');
+  $fs->merge_hash (\%hash);
+
+Takes a reference to a hash of features and their values.
+Sets the values of the features in this C<FeatureStructure>.
+Unknown features are ignored.
+Known features that are not set in the hash will be left untouched;
+this is the difference from C<set_hash()>.
+However, if the current value of a feature is non-empty and the hash contains
+a different non-empty value, the current value will be replaced by the one from
+the hash.
+
+=cut
+sub merge_hash
+{
+    my $self = shift;
+    my $fs = shift;
+    foreach my $feature ($self->known_features())
+    {
+        if(exists($fs->{$feature}) && defined($fs->{$feature}) && $fs->{$feature} ne '')
+        {
+            $self->set($feature, $fs->{$feature});
+        }
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
 # Analogically, get() is a generic feature value getter.
 #------------------------------------------------------------------------------
 =method get()
