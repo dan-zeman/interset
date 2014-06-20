@@ -1,5 +1,4 @@
-# ABSTRACT: The main class of DZ Interset 2.0.
-# It defines all morphosyntactic features and their values.
+# ABSTRACT: Definition of morphosyntactic features and their values.
 # Copyright © 2008-2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::FeatureStructure;
@@ -760,44 +759,46 @@ has 'other'        => ( is  => 'rw', default => '' );
 # Shortcuts for some frequent tests people want to do against Interset.
 #------------------------------------------------------------------------------
 =method is_noun()
+Also returns 1 if the C<pos> feature has multiple values and one of them is C<noun>, e.g.
+if C<get_joined('pos') eq 'noun|adj'>.
 =cut
-sub is_noun {my $self = shift; return $self->pos() eq 'noun';}
+sub is_noun {my $self = shift; return scalar(grep {$_ eq 'noun'} ($self->get_list('pos')));}
 =method is_adjective()
 =cut
-sub is_adjective {my $self = shift; return $self->pos() eq 'adj';}
+sub is_adjective {my $self = shift; return scalar(grep {$_ eq 'adj'} ($self->get_list('pos')));}
 =method is_pronoun()
 =cut
 sub is_pronoun {my $self = shift; return $self->prontype() ne '';}
 =method is_numeral()
 =cut
-sub is_numeral {my $self = shift; return $self->pos() eq 'num';}
+sub is_numeral {my $self = shift; return scalar(grep {$_ eq 'num'} ($self->get_list('pos')));}
 =method is_verb()
 =cut
-sub is_verb {my $self = shift; return $self->pos() eq 'verb';}
+sub is_verb {my $self = shift; return scalar(grep {$_ eq 'verb'} ($self->get_list('pos')));}
 =method is_adverb()
 =cut
-sub is_adverb {my $self = shift; return $self->pos() eq 'adv';}
+sub is_adverb {my $self = shift; return scalar(grep {$_ eq 'adv'} ($self->get_list('pos')));}
 =method is_adposition()
 =cut
-sub is_adposition {my $self = shift; return $self->pos() eq 'adp';}
+sub is_adposition {my $self = shift; return scalar(grep {$_ eq 'adp'} ($self->get_list('pos')));}
 =method is_conjunction()
 =cut
-sub is_conjunction {my $self = shift; return $self->pos() eq 'conj';}
+sub is_conjunction {my $self = shift; return scalar(grep {$_ eq 'conj'} ($self->get_list('pos')));}
 =method is_coordinator()
 =cut
-sub is_coordinator {my $self = shift; return $self->pos() eq 'conj' && $self->conjtype() eq 'coor';}
+sub is_coordinator {my $self = shift; return $self->is_conjunction() && $self->conjtype() eq 'coor';}
 =method is_subordinator()
 =cut
-sub is_subordinator {my $self = shift; return $self->pos() eq 'conj' && $self->conjtype() eq 'sub';}
+sub is_subordinator {my $self = shift; return $self->is_conjunction() && $self->conjtype() eq 'sub';}
 =method is_particle()
 =cut
-sub is_particle {my $self = shift; return $self->pos() eq 'part';}
+sub is_particle {my $self = shift; return scalar(grep {$_ eq 'part'} ($self->get_list('pos')));}
 =method is_interjection()
 =cut
-sub is_interjection {my $self = shift; return $self->pos() eq 'int';}
+sub is_interjection {my $self = shift; return scalar(grep {$_ eq 'int'} ($self->get_list('pos')));}
 =method is_punctuation()
 =cut
-sub is_punctuation {my $self = shift; return $self->pos() eq 'punc';}
+sub is_punctuation {my $self = shift; return scalar(grep {$_ eq 'punc'} ($self->get_list('pos')));}
 =method is_foreign()
 =cut
 sub is_foreign {my $self = shift; return $self->foreign() eq 'foreign';}
@@ -1036,6 +1037,7 @@ sub set
     confess('Missing value') if(!@values);
     return $self->set_other(map {_duplicate_recursive($_)} @values) if($feature eq 'other');
     my @values1;
+    my %values; # map values and do not add the same value twice
     foreach my $value (@values)
     {
         if(ref($value) eq 'ARRAY')
@@ -1044,23 +1046,30 @@ sub set
             {
                 # No unlimited recursion. Referenced arrays are not supposed to contain subarrays.
                 confess('Plain scalar expected') unless(ref($subvalue) eq '');
-                push(@values1, $subvalue);
+                push(@values1, $subvalue) unless($values{$subvalue});
+                $values{$subvalue}++;
             }
         }
         elsif($value =~ m/\|/)
         {
             my @subvalues = split(/\|/, $value);
-            push(@values1, @subvalues);
+            foreach my $subvalue (@subvalues)
+            {
+                push(@values1, $subvalue) unless($values{$subvalue});
+                $values{$subvalue}++;
+            }
         }
         else
         {
-            push(@values1, $value);
+            push(@values1, $value) unless($values{$value});
+            $values{$value}++;
         }
     }
     # Current Interset convention is that multi-values are stored as array references.
-    # The above copying solves two problems:
+    # The above copying solves three problems:
     # 1. multiple ways for the user to provide the values
     # 2. if the user provides array reference, the array will not be shared but copied
+    # 3. repeated occurrence of one value will not be allowed
     my $value;
     if(scalar(@values1)>1)
     {
@@ -1777,5 +1786,10 @@ for a natural language word.
 
 More information is given at the DZ Interset project page,
 L<https://wiki.ufal.ms.mff.cuni.cz/user:zeman:interset:features>.
+
+=head1 SEE ALSO
+
+L<Lingua::Interset>,
+L<Lingua::Interset::Tagset>
 
 =cut
