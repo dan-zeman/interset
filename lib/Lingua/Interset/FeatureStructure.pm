@@ -1251,7 +1251,11 @@ sub get_hash
     my %fs;
     foreach my $feature ($self->known_features())
     {
-        $fs{$feature} = $self->get($feature);
+        my $value = $self->get($feature);
+        if(defined($value) && $value ne '')
+        {
+            $fs{$feature} = $self->get($feature);
+        }
     }
     return \%fs;
 }
