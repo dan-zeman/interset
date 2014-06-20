@@ -229,7 +229,7 @@ my %matrix = @_matrix =
             ['prep'],
             ['post'],
             ['circ'],
-            ['voc'],
+            ['voc', 'prep'],
             ['preppron'],
             ['comprep']
         ],
