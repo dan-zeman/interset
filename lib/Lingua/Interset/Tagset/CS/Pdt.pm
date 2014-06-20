@@ -497,278 +497,423 @@ sub decode
 #------------------------------------------------------------------------------
 sub encode
 {
-    my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $tag = '';
-    my $pos = $fs->pos();
-    my $prontype = $fs->prontype();
-    # Foreign words without respect to part of speech.
-    if($fs->foreign())
+    # pos and subpos
+    # Pronouns must come first because they are at the same time also nouns or adjectives.
+    if($fs->is_pronoun())
     {
-        $tag = 'FW';
-    }
-    # Separated affixes.
-    elsif($fs->hyph())
-    {
-        $tag = 'AFX';
-    }
-    # Pronouns, determiners and pronominal adverbs.
-    elsif($prontype =~ m/^(rel|int)$/)
-    {
-        # WDT WP WP$ WRB
-        if($pos eq 'adv')
+        # possessive pronoun
+        if($fs->is_possessive())
         {
-            $tag = 'WRB';
-        }
-        elsif($fs->poss())
-        {
-            $tag = 'WP$';
-        }
-        elsif($pos eq 'adj')
-        {
-            $tag = 'WDT';
-        }
-        else
-        {
-            $tag = 'WP';
-        }
-    }
-    elsif($prontype ne '')
-    {
-        # PRP PRP$
-        if($fs->poss())
-        {
-            $tag = 'PRP$';
-        }
-        else
-        {
-            $tag = 'PRP';
-        }
-    }
-    elsif($pos eq 'noun')
-    {
-        # NN NNS NNP NNPS
-        if($fs->nountype() eq 'prop')
-        {
-            if($fs->number() eq 'plu')
+            if($fs->is_wh())
             {
-                $tag = 'NNPS';
+                $tag = 'P1';
+            }
+            elsif($fs->is_reflexive())
+            {
+                $tag = 'P8';
             }
             else
             {
-                $tag = 'NNP';
+                $tag = 'PS';
             }
         }
-        else
+        # personal pronoun
+        elsif($fs->adpostype() eq 'preppron')
         {
-            if($fs->number() eq 'plu')
+            if($fs->is_wh())
             {
-                $tag = 'NNS';
+                $tag = 'PY'; # oč, nač
             }
             else
             {
-                $tag = 'NN';
+                $tag = 'P0'; # oň, naň
             }
         }
-    }
-    elsif($pos eq 'adj')
-    {
-        # DT PDT JJ JJR JJS
-        if($pos eq 'adj')
+        elsif($fs->prontype() eq 'prs')
         {
-            if($fs->adjtype() eq 'det')
+            if(!$fs->is_reflexive())
             {
-                $tag = 'DT';
+                if($fs->prepcase() eq 'pre')
+                {
+                    # něj, němu, něho, něm, ním, ní, ni, nich, nim, ně, nich, nimi
+                    $tag = 'P5';
+                }
+                elsif($fs->variant() eq 'short')
+                {
+                    # mi, mě, ti, tě, mu
+                    $tag = 'PH';
+                }
+                else
+                {
+                    $tag = 'PP';
+                }
             }
-            elsif($fs->adjtype() eq 'pdt')
+            else # reflexive
             {
-                $tag = 'PDT';
+                if($fs->variant() eq 'short')
+                {
+                    # si, sis, se, ses
+                    $tag = 'P7';
+                }
+                else
+                {
+                    # sebe, sobě, sebou
+                    $tag = 'P6';
+                }
             }
-            elsif($fs->degree() eq 'sup')
+        }
+        # negative pronoun
+        elsif($fs->negativeness() eq 'neg' || $fs->prontype() eq 'neg')
+        {
+            $tag = 'PW';
+        }
+        # demonstrative pronoun
+        elsif($fs->prontype() eq 'dem')
+        {
+            $tag = 'PD';
+        }
+        # interrogative or relative pronoun
+        elsif($fs->prontype() eq 'rel')
+        {
+            if($fs->is_noun())
             {
-                $tag = 'JJS';
+                # což
+                $tag = 'PE';
             }
-            elsif($fs->degree() eq 'comp')
+            elsif($fs->prepcase() eq 'pre')
             {
-                $tag = 'JJR';
+                # něhož, němuž, nějž, němž, nímž, níž, niž
+                $tag = 'P9';
             }
             else
             {
-                $tag = 'JJ';
+                # jenž, jež, již, ...
+                $tag = 'PJ';
             }
         }
-    }
-    elsif($pos eq 'num')
-    {
-        # CD; ordinal numbers are adjectives JJ
-        if($fs->numtype() eq 'card')
+        elsif($fs->is_wh())
         {
-            $tag = 'CD';
-        }
-        else
-        {
-            ###!!! multiplicative and some ordinal numerals behave more like adverbs; see the synpos?
-            $tag = 'JJ';
-        }
-    }
-    elsif($pos eq 'verb')
-    {
-        # MD VB VBD VBG VBN VBP VBZ
-        if($fs->verbtype() eq 'mod')
-        {
-            $tag = 'MD';
-        }
-        elsif($fs->verbform() eq 'part')
-        {
-            if($fs->tense() eq 'pres' || $fs->aspect() =~ m/^(imp|pro)$/)
+            if($fs->is_noun())
             {
-                $tag = 'VBG';
+                # kdo, co
+                if($fs->gender() eq 'masc')
+                {
+                    $tag = 'PK';
+                }
+                else
+                {
+                    $tag = 'PQ';
+                }
             }
             else
             {
-                $tag = 'VBN';
+                # jaký, který, čí
+                $tag = 'P4';
             }
         }
-        elsif($fs->tense() eq 'past')
+        # totality (collective) pronoun
+        elsif($fs->prontype() eq 'tot')
         {
-            $tag = 'VBD';
+            $tag = 'PL';
         }
-        elsif($fs->tense() eq 'pres' && $fs->number() eq 'sing')
+        # indefinite pronoun
+        else
         {
-            if($fs->person() == 3)
+            $tag = 'PZ';
+        }
+    }
+    elsif($fs->is_noun())
+    {
+        if($fs->is_abbreviation() && $fs->variant() ne '8')
+        {
+            $tag = 'N;';
+        }
+        else
+        {
+            $tag = 'NN';
+        }
+    }
+    elsif($fs->is_adjective())
+    {
+        if($fs->is_abbreviation() && $fs->variant() ne '8')
+        {
+            $tag = 'A.';
+        }
+        elsif($fs->variant() eq 'short')
+        {
+            $tag = 'AC';
+        }
+        elsif($fs->is_possessive())
+        {
+            $tag = 'AU';
+        }
+        elsif($fs->is_participle() && $fs->is_past())
+        {
+            $tag = 'AM';
+        }
+        elsif($fs->is_participle())
+        {
+            $tag = 'AG';
+        }
+        elsif($fs->is_hyph())
+        {
+            $tag = 'A2';
+        }
+        elsif($fs->tagset() eq 'cs::pdt' && $fs->other() eq 'O' ||
+              $fs->case() eq '' && $fs->negativeness() eq '')
+        {
+            $tag = 'AO';
+        }
+        else
+        {
+            $tag = 'AA';
+        }
+    }
+
+
+
+    elsif($f{pos} eq "num")
+    {
+        $tag[0] = "C";
+        # subposes: 3=?adhjklnoruvwyz} ###{
+        if($f{abbr} eq "abbr" && $f{variant} ne "8")
+        {
+            $tag[1] = "3";
+        }
+        # digits
+        elsif($f{numform} eq "digit")
+        {
+            $tag[1] = "=";
+        }
+        elsif($f{numform} eq "roman")
+        { ###{
+            $tag[1] = "}";
+        }
+        elsif($f{numtype} eq "card")
+        {
+            if($f{prontype} =~ m/^(int|rel)$/ || ref($f{prontype}) eq "ARRAY" && grep {m/^(int|rel)$/} (@{$f{prontype}}))
             {
-                $tag = 'VBZ';
+                # kolik
+                $tag[1] = "?";
+            }
+            elsif($f{prontype} eq "ind")
+            {
+                # několik, mnoho, málo, tolik
+                $tag[1] = "a";
+            }
+            elsif($f{numvalue} =~ m/^[123]$/ || ref($f{numvalue}) eq 'ARRAY' && grep {m/^[123]$/} (@{$f{numvalue}}))
+            {
+                $tag[1] = "l";
             }
             else
             {
-                $tag = 'VBP';
+                $tag[1] = "n";
             }
         }
-        else
+        elsif($f{numtype} eq "ord")
         {
-            $tag = 'VB';
-        }
-    }
-    elsif($pos eq 'adv')
-    {
-        # EX RB RBR RBS
-        if($fs->advtype() eq 'ex')
-        {
-            $tag = 'EX';
-        }
-        elsif($fs->degree() eq 'sup')
-        {
-            $tag = 'RBS';
-        }
-        elsif($fs->degree() eq 'comp')
-        {
-            $tag = 'RBR';
-        }
-        else
-        {
-            $tag = 'RB';
-        }
-    }
-    elsif($pos eq 'adp')
-    {
-        # IN (TO)
-        $tag = 'IN';
-    }
-    elsif($pos eq 'conj')
-    {
-        # CC (IN)
-        if($fs->conjtype() eq 'sub')
-        {
-            $tag = 'IN';
-        }
-        else
-        {
-            $tag = 'CC';
-        }
-    }
-    elsif($pos eq 'part')
-    {
-        # RP TO POS
-        if($fs->poss())
-        {
-            $tag = 'POS';
-        }
-        elsif($fs->verbform() eq 'inf' || $fs->parttype() eq 'inf')
-        {
-            $tag = 'TO';
-        }
-        else
-        {
-            $tag = 'RP';
-        }
-    }
-    elsif($pos eq 'int')
-    {
-        $tag = 'UH';
-    }
-    elsif($fs->tagset() eq 'en::penn' && $fs->other() eq 'currency')
-    {
-        $tag = '$';
-    }
-    elsif($pos eq 'punc')
-    {
-        # LS # . , -LRB- -RRB- `` '' HYPH SYM :
-        if($fs->numtype() eq 'ord')
-        {
-            $tag = 'LS';
-        }
-        elsif($fs->tagset() eq 'en::penn' && $fs->other() eq "\#")
-        {
-            $tag = "\#";
-        }
-        elsif($fs->punctype() =~ m/^(peri|qest|excl)$/)
-        {
-            $tag = '.';
-        }
-        elsif($fs->punctype() eq 'comm')
-        {
-            $tag = ',';
-        }
-        elsif($fs->punctype() eq 'brck')
-        {
-            if($fs->puncside() eq 'fin')
+            if($f{prontype} =~ m/^(int|rel)$/ || ref($f{prontype}) eq "ARRAY" && grep {m/^(int|rel)$/} (@{$f{prontype}}))
             {
-                $tag = '-RRB-';
+                # kolikátý
+                $tag[1] = "z";
+            }
+            elsif($f{prontype} eq "ind")
+            {
+                # několikátý, mnohý, tolikátý
+                $tag[1] = "w";
             }
             else
             {
-                $tag = '-LRB-';
+                $tag[1] = "r";
             }
         }
-        elsif($fs->punctype() eq 'quot')
+        elsif($f{numtype} eq "mult")
         {
-            if($fs->puncside() eq 'fin')
+            if($f{prontype} =~ m/^(int|rel)$/ || ref($f{prontype}) eq "ARRAY" && grep {m/^(int|rel)$/} (@{$f{prontype}}))
             {
-                $tag = "''";
+                # kolikrát
+                $tag[1] = "u";
+            }
+            elsif($f{prontype} eq "ind")
+            {
+                # několikrát, mnohokrát, tolikrát
+                $tag[1] = "o";
             }
             else
             {
-                $tag = "``";
+                $tag[1] = "v";
             }
         }
-        elsif($fs->punctype() eq 'dash')
+        elsif($f{numtype} eq "frac")
         {
-            # This tag is new in PennBioIE. In older data hyphens are tagged ":".
-            $tag = 'HYPH';
+            $tag[1] = "y";
         }
-        elsif($fs->punctype() eq 'symb')
+        elsif($f{synpos} eq "subst")
         {
-            $tag = 'SYM';
+            $tag[1] = "j";
+        }
+        elsif($f{tagset} eq "cs::pdt" && $f{other} eq "k")
+        {
+            $tag[1] = "k";
+        }
+        elsif($f{tagset} eq "cs::pdt" && $f{other} eq "h" ||
+              $f{gender} eq 'masc' && $f{animateness} eq '' && $f{number} eq 'plu' && $f{case} eq 'acc')
+        {
+            $tag[1] = "h";
+        }
+        elsif($f{synpos} eq "attr")
+        {
+            $tag[1] = "d";
+        }
+    }
+    elsif($f{pos} eq "verb")
+    {
+        $tag[0] = "V";
+        # subposes: Bcefimpqst
+        if($f{verbform} eq "fin")
+        {
+            if($f{mood} eq "ind")
+            {
+                if($f{subpos} eq "verbconj")
+                {
+                    $tag[1] = "t";
+                }
+                else
+                {
+                    $tag[1] = "B";
+                }
+            }
+            elsif($f{mood} eq "imp")
+            {
+                $tag[1] = "i";
+            }
+            elsif($f{mood} eq "sub")
+            {
+                $tag[1] = "c";
+            }
+        }
+        elsif($f{verbform} eq "inf")
+        {
+            $tag[1] = "f";
+        }
+        elsif($f{verbform} eq "part")
+        {
+            if($f{voice} eq "pass")
+            {
+                $tag[1] = "s";
+            }
+            elsif($f{subpos} eq "verbconj")
+            {
+                $tag[1] = "q";
+            }
+            else # default is active past/conditional participle
+            {
+                $tag[1] = "p";
+            }
+        }
+        elsif($f{verbform} eq "trans")
+        {
+            if($f{tense} eq "past")
+            {
+                $tag[1] = "m";
+            }
+            else # default is present transgressive
+            {
+                $tag[1] = "e";
+            }
+        }
+        elsif($f{abbr} eq "abbr")
+        {
+            $tag[1] = "~";
+        }
+    }
+    elsif($f{pos} eq "adv")
+    {
+        $tag[0] = "D";
+        if($f{degree} ne "")
+        {
+            $tag[1] = "g";
+        }
+        elsif($f{abbr} eq "abbr" && $f{variant} ne "8")
+        {
+            $tag[1] = "!";
         }
         else
         {
-            $tag = ':';
+            $tag[1] = "b";
         }
     }
-    # unknown elements (also punctuation in some corpora)
+    elsif($f{pos} eq "prep")
+    {
+        $tag[0] = "R";
+        if($f{subpos} eq "comprep")
+        {
+            $tag[1] = "F";
+        }
+        elsif($f{subpos} eq "voc")
+        {
+            $tag[1] = "V";
+        }
+        else
+        {
+            $tag[1] = "R";
+        }
+    }
+    elsif($f{pos} eq "conj")
+    {
+        $tag[0] = "J";
+        if($f{subpos} eq "sub")
+        {
+            $tag[1] = ",";
+        }
+        elsif($f{tagset} eq "cs::pdt" && $f{other} eq "*")
+        {
+            $tag[1] = "*";
+        }
+        else # $f{subpos} eq "coor" is default
+        {
+            $tag[1] = "^";
+        }
+    }
+    elsif($f{pos} eq "part")
+    {
+        $tag[0] = "T";
+        $tag[1] = "T";
+    }
+    elsif($f{pos} eq "int")
+    {
+        $tag[0] = "I";
+        $tag[1] = "I";
+    }
+    elsif($f{pos} eq "punc")
+    {
+        $tag[0] = "Z";
+        if($f{punctype} eq "root")
+        {
+            $tag[1] = "#";
+        }
+        else
+        {
+            $tag[1] = ":";
+        }
+    }
     else
     {
-        $tag = 'NIL';
+        $tag[0] = "X";
+        if($f{tagset} eq "cs::pdt" && $f{other} =~ m/^[-X\@]$/)
+        {
+            $tag[1] = $f{other};
+        }
+        elsif($f{abbr} eq "abbr")
+        {
+            $tag[1] = "x";
+        }
+        else
+        {
+            $tag[1] = "\@";
+        }
     }
     return $tag;
 }

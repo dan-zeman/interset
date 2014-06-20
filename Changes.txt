@@ -3,6 +3,7 @@
 Interface:
 * is_noun() and similar methods should now work also with arrays of values.
 * The generic set() method of FeatureStructure will no longer allow multiple occurrences of the same value if multiple values are set.
+* Added various new is_...() methods in FeatureStructure.
 
 
 
