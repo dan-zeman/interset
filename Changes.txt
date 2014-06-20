@@ -9,6 +9,12 @@ Feature changes:
 * the remaining values of the subpos feature dissolved into advtype and two
   new features, adpostype and parttype.
 
+Drivers:
+* EN::Penn – fixed bug in decoding of VBP.
+* EN::Conll
+* EN::Conll2009
+  (Both are trivially derived from EN::Penn.)
+
 Interface:
 * Various tools for driver testing
 * Empty implementations of decode(), encode() and list() in the Tagset class will now throw an exception if called.
