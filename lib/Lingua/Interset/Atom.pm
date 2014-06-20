@@ -17,7 +17,7 @@ extends 'Lingua::Interset::Tagset';
 
 
 
-has 'feature' => ( isa => 'Str', is => 'ro', required => 1, documentation => 'Name of the surface feature the atom describes.' );
+has 'surfeature' => ( isa => 'Str', is => 'ro', required => 1, documentation => 'Name of the surface feature the atom describes.' );
 # Example of a decoding map:
 # { 'M' => ['gender' => 'masc', 'animateness' => 'anim'],
 #   'I' => ['gender' => 'masc', 'animateness' => 'inan'],
@@ -212,13 +212,16 @@ sub _list_step
 
   my $atom = Lingua::Interset::Atom->new
   (
-      'feature'    => 'gender',
+      'surfeature'    => 'gender',
       'decode_map' =>
+
           { 'M' => ['gender' => 'masc', 'animateness' => 'anim'],
             'I' => ['gender' => 'masc', 'animateness' => 'inan'],
             'F' => ['gender' => 'fem'],
             'N' => ['gender' => 'neut'] },
+
       'encode_map' =>
+
           { 'gender' => { 'masc' => { 'animateness' => { 'inan' => 'I',
                                                          '@'    => 'M' }},
                           'fem'  => 'F',
@@ -235,12 +238,12 @@ While Atom can be used to implement drivers of tagsets whose tags are not struct
 (such as en::penn or sv::mamba), they should also provide means of defining
 “sub-drivers” for individual surface features within drivers of complex tagsets.
 For example, the Czech tags in the Prague Dependency Treebank are always strings
-of 15 characters where I<i>-th position in the string encodes I<i>-th surface feature
+of 15 characters where the I<i>-th position in the string encodes the I<i>-th surface feature
 (which may or may not directly correspond to a feature in Interset).
 A driver for the PDT tagset could internally construct atomic drivers for PDT
 gender, number, case etc.
 
-=attr feature
+=attr surfeature
 
 Name of the surface feature the atom describes.
 If the atom describes a whole tagset, the tagset id could be stored here.
@@ -289,6 +292,9 @@ Example:
                                                  '@'    => 'M' }},
                   'fem'  => 'F',
                   '@'    => 'N' }}
+
+Note that in general it is not possible to automatically derive the C<encode_map> from the C<decode_map>
+or vice versa. However, there are simple instances of atoms where this is possible.
 
 =head1 SEE ALSO
 

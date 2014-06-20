@@ -250,6 +250,90 @@ my %postable =
 
 
 #------------------------------------------------------------------------------
+# Creates an atomic driver for gender and returns it.
+#------------------------------------------------------------------------------
+sub _create_atom_gender
+{
+    use Lingua::Interset::Atom;
+    my $atom = Lingua::Interset::Atom->new
+    (
+        'surfeature' => 'gender',
+        'decode_map' =>
+        {
+            'M' => ['gender' => 'masc', 'animateness' => 'anim'],
+            'I' => ['gender' => 'masc', 'animateness' => 'inan'],
+            'F' => ['gender' => 'fem'],
+            'N' => ['gender' => 'neut'],
+            'Y' => ['gender' => 'masc'],
+            'T' => ['gender' => 'masc|fem', 'animateness' => 'inan|'],
+            'W' => ['gender' => 'masc|neut', 'animateness' => 'inan|'],
+            'H' => ['gender' => 'fem|neut'],
+            'Q' => ['gender' => 'fem|neut'],
+            'Z' => ['gender' => 'masc|neut'],
+            'X' => []
+        },
+        'encode_map' =>
+
+            { 'gender' => { 'masc' => { 'animateness' => { 'inan' => 'I',
+                                                           '@'    => 'M' }},
+                            'fem'  => 'F',
+                            '@'    => 'N' }} ###!!! Tohle není celé! Ale musíme nejdřív vyřešit práci s poli v encode mapách!
+    );
+    return $atom;
+}
+
+
+
+sub _create_atom_number
+{
+    use Lingua::Interset::Atom;
+    my $atom = Lingua::Interset::Atom->new
+    (
+        'surfeature' => 'number',
+        'decode_map' =>
+        {
+            'S' => ['number' => 'sing'],
+            'D' => ['number' => 'dual'],
+            'P' => ['number' => 'plu'],
+            'W' => ['number' => 'sing|plu'],
+            'X' => []
+        },
+        'encode_map' =>
+
+            { 'number' => { 'dual' => 'D',
+                            'plu'  => 'P',
+                            '@'    => 'S' }} ###!!! Tohle není celé! Ale musíme nejdřív vyřešit práci s poli v encode mapách!
+    );
+    return $atom;
+}
+
+
+
+sub _create_atom_case
+{
+    use Lingua::Interset::SimpleAtom;
+    my $atom = Lingua::Interset::SimpleAtom->new
+    (
+        'surfeature' => 'case',
+        'intfeature' => 'case',
+        'simple_decode_map' =>
+        {
+            '1' => 'nom',
+            '2' => 'gen',
+            '3' => 'dat',
+            '4' => 'acc',
+            '5' => 'voc',
+            '6' => 'loc',
+            '7' => 'ins',
+            'X' => ''
+        }
+    );
+    return $atom;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Decodes a physical tag (string) and returns the corresponding feature
 # structure.
 #------------------------------------------------------------------------------
