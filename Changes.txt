@@ -1,5 +1,13 @@
 {{$NEXT}}
 
+Interface:
+* is_noun() and similar methods should now work also with arrays of values.
+* The generic set() method of FeatureStructure will no longer allow multiple occurrences of the same value if multiple values are set.
+
+
+
+2.002     2014-06-20 17:49:14+02:00 Europe/Prague
+
 Architecture change:
 * Tagset drivers moved one level down so that we can clearly distinguish them from other modules.
   Lingua::Interset::EN::Penn became Lingua::Interset::Tagset::EN::Penn.
@@ -8,6 +16,12 @@ Feature changes:
 * pos value 'prep' (preposition) renamed to 'adp' (adposition).
 * the remaining values of the subpos feature dissolved into advtype and two
   new features, adpostype and parttype.
+
+Drivers:
+* EN::Penn – fixed bug in decoding of VBP.
+* EN::Conll
+* EN::Conll2009
+  (Both are trivially derived from EN::Penn.)
 
 Interface:
 * Various tools for driver testing

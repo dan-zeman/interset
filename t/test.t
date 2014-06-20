@@ -12,8 +12,8 @@ binmode(STDERR, ':utf8');
 use Test::More tests => 7;
 
 # Test en::penn, the only tagset driver shipped with the first subversion of Interset 2.0.
-use Lingua::Interset::EN::Penn;
-my $ts = Lingua::Interset::EN::Penn->new();
+use Lingua::Interset::Tagset::EN::Penn;
+my $ts = Lingua::Interset::Tagset::EN::Penn->new();
 ok(defined($ts), 'tagset en::penn object defined');
 # List of tags in the tagset must not be empty.
 my $list = $ts->list();

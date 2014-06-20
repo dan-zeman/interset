@@ -156,7 +156,7 @@ my %postable =
     'VBN'   => ['pos' => 'verb', 'verbform' => 'part', 'tense' => 'past', 'aspect' => 'perf'],
     # verb, non-3rd person singular present
     # examples: do, go, see, walk
-    'VBP'   => ['pos' => 'verb', 'verbform' => 'fin', 'tense' => 'pres', 'number' => 'sing', 'person' => '1|2'],
+    'VBP'   => ['pos' => 'verb', 'verbform' => 'fin', 'tense' => 'pres'],
     # verb, 3rd person singular present
     # examples: does, goes, sees, walks
     'VBZ'   => ['pos' => 'verb', 'verbform' => 'fin', 'tense' => 'pres', 'number' => 'sing', 'person' => 3],
@@ -337,9 +337,9 @@ sub encode
         {
             $tag = 'VBD';
         }
-        elsif($fs->tense() eq 'pres' && $fs->number() eq 'sing')
+        elsif($fs->tense() eq 'pres')
         {
-            if($fs->person() == 3)
+            if($fs->number() eq 'sing' && $fs->person() == 3)
             {
                 $tag = 'VBZ';
             }
