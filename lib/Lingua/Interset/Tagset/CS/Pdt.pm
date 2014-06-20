@@ -476,18 +476,17 @@ sub decode
     ###!!! Usage of atoms is experimental. Later we will want to solve the parts of speech as atoms, too.
     my $atoms = $self->atoms();
     my @chars = split(//, $tag);
-    ###!!! We need a mechanism of merging feature structures returned by different atoms!
-    my $fsgender = $atoms->{gender}->decode($chars[2]);
-    my $fsnumber = $atoms->{number}->decode($chars[3]);
-    my $fscase   = $atoms->{case}->decode($chars[4]);
-    my $fspossge = $atoms->{possgender}->decode($chars[5]);
-    my $fspossnu = $atoms->{possnumber}->decode($chars[6]);
-    my $fsperson = $atoms->{person}->decode($chars[7]);
-    my $fstense  = $atoms->{tense}->decode($chars[8]);
-    my $fsdegree = $atoms->{degree}->decode($chars[9]);
-    my $fsnegati = $atoms->{negativeness}->decode($chars[10]);
-    my $fsvoice  = $atoms->{voice}->decode($chars[11]);
-    my $fsvarian = $atoms->{variant}->decode($chars[14]);
+    $atoms->{gender}->decode_and_merge($chars[2], $fs);
+    $atoms->{number}->decode_and_merge($chars[3], $fs);
+    $atoms->{case}->decode_and_merge($chars[4], $fs);
+    $atoms->{possgender}->decode_and_merge($chars[5], $fs);
+    $atoms->{possnumber}->decode_and_merge($chars[6], $fs);
+    $atoms->{person}->decode_and_merge($chars[7], $fs);
+    $atoms->{tense}->decode_and_merge($chars[8], $fs);
+    $atoms->{degree}->decode_and_merge($chars[9], $fs);
+    $atoms->{negativeness}->decode_and_merge($chars[10], $fs);
+    $atoms->{voice}->decode_and_merge($chars[11], $fs);
+    $atoms->{variant}->decode_and_merge($chars[14], $fs);
     return $fs;
 }
 

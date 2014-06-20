@@ -64,6 +64,32 @@ sub decode
 
 
 #------------------------------------------------------------------------------
+# Decodes a physical tag (string) and adds the feature values to an existing
+# feature structure.
+#------------------------------------------------------------------------------
+=method decode_and_merge()
+
+  my $fs  = $driver1->decode ($tag1);
+  $driver2->decode_and_merge ($tag2, $fs);
+
+Takes a tag (string) and a L<Lingua::Interset::FeatureStructure> object.
+Adds the feature values corresponding to the tag to the existing feature structure.
+
+=cut
+sub decode_and_merge
+{
+    my $self = shift;
+    my $tag = shift;
+    my $fs = shift; # Lingua::Interset::FeatureStructure
+    my $fs1 = $self->decode($tag);
+    my $hash = $fs1->get_hash();
+    $fs->merge_hash($hash);
+    return $fs;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Takes feature structure and returns the corresponding physical tag (string).
 #------------------------------------------------------------------------------
 =method encode()
