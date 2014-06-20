@@ -52,6 +52,7 @@ around BUILDARGS => sub
             $valuehash{$iv} = $sv; ###!!! a co default?
         }
         # Now add the references to the driver functions to the attribute hash.
+        $attr->{surfeature} = $attr->{intfeature};
         $attr->{decode_map} = \%dm;
         $attr->{encode_map} = \%em;
     }
@@ -68,7 +69,6 @@ around BUILDARGS => sub
 
   my $atom = Lingua::Interset::SimpleAtom->new
   (
-      'surfeature'        => 'case',
       'intfeature'        => 'case',
       'simple_decode_map' => { 1 => 'nom', 2 => 'gen', 3 => 'dat', 4 => 'acc', 5 => 'voc', 6 => 'loc', 7 => 'ins' }
   );
