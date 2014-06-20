@@ -1016,6 +1016,17 @@ All of the above mean that the word is either in present or in future tense.
 Note that the 'other' feature behaves differently.
 Its value can be structured, C<set()> will keep the structure and will not try to interpret it.
 
+Using generic C<set()> is more flexible than using specialized setters such as C<set_pos()>.
+Even if flexibility is not needed it is recommended to avoid the specialized setters and
+use the generic C<set()> method. If multiple values are set using an array reference,
+the specialized setters will not create a deep copy of the array, they will only copy
+the reference. Generic C<set()> will create a deep copy. The array will thus not be shared
+among several feature structures. If someone later retrieves the array reference
+via C<get()>, and decides to modify the array, they will probably expect to
+change only that particular feature structure and not others that happen to
+use the same array.
+
+
 =cut
 sub set
 {
@@ -1322,7 +1333,7 @@ sub structure_to_string
 =func get_replacements()
 
   my $replacements = Lingua::Interset::FeatureStructure->get_replacements();
-  my $rep_adverb = $replacements->{pos}{adverb};
+  my $rep_adverb = $replacements->{pos}{adv};
   foreach my $r (@{$rep_adverb})
   {
       if(...)
