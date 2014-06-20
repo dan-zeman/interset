@@ -1,5 +1,11 @@
 {{$NEXT}}
 
+Interface:
+* is_noun() and similar methods should now work also with arrays of values.
+* The generic set() method of FeatureStructure will no longer allow multiple occurrences of the same value if multiple values are set.
+
+
+
 2.002     2014-06-20 17:49:14+02:00 Europe/Prague
 
 Architecture change:

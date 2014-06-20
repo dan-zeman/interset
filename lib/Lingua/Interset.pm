@@ -235,7 +235,7 @@ Every hash in the list contains the following fields
       'old'     => 1, # 1 or 0 ... old or new driver?
       'tagset'  => 'en::penn', # tagset id
       'package' => 'Lingua::Interset::Tagset::EN::Penn', # this is what you 'use' or 'require' in your code
-      'path'    => '/home/zeman/perl5/lib/Lingua/Interset/EN/Penn.pm' # path where it is installed
+      'path'    => '/home/zeman/perl5/lib/Lingua/Interset/Tagset/EN/Penn.pm' # path where it is installed
   );
 
 Note that you may find more than one package for the same tagset id.
