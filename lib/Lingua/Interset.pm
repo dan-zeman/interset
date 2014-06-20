@@ -415,4 +415,9 @@ for example.
 More information is given at the DZ Interset project page,
 L<https://wiki.ufal.ms.mff.cuni.cz/user:zeman:interset>.
 
+=head1 SEE ALSO
+
+L<Lingua::Interset::FeatureStructure>,
+L<Lingua::Interset::Tagset>
+
 =cut
