@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+2.002     2014-06-20 17:49:14+02:00 Europe/Prague
+
 Architecture change:
 * Tagset drivers moved one level down so that we can clearly distinguish them from other modules.
   Lingua::Interset::EN::Penn became Lingua::Interset::Tagset::EN::Penn.
