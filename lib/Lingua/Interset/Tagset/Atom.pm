@@ -10,6 +10,7 @@ use utf8;
 use open ':utf8';
 use namespace::autoclean;
 use Moose;
+use MooseX::SemiAffordanceAccessor; # attribute x is written using set_x($value) and read using x()
 use Lingua::Interset;
 use Lingua::Interset::FeatureStructure;
 extends 'Lingua::Interset::Tagset';
@@ -79,11 +80,56 @@ sub encode
 {
     my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
-    my $fs_hash = $fs->get_hash();
-    translate($fs_hash, 21);
-    # Call non-strict ("1") encoding of the old driver. We use a different method ("encode_strict") for strict encoding now.
-    my $tag = &{$self->encode_function()}($fs_hash, 1);
-    return $tag;
+    my $map = $self->encode_map();
+    return _encoding_step($map, $fs);
+}
+
+
+
+#------------------------------------------------------------------------------
+# A recursive static function that takes encoding map (hash reference with one
+# feature name as the only key) and returns surface tag (string).
+#------------------------------------------------------------------------------
+sub _encoding_step
+{
+    my $map = shift; # reference to hash with only one key
+    my $fs = shift; # Lingua::Interset::FeatureStructure
+    # Example of an encoding map:
+    # The top-level hash must have just one key, a name of a known feature (it is a hash for cosmetic reasons).
+    # '@' denotes the default and will be translated to an else block
+    # { 'gender' => { 'masc' => { 'animateness' => { 'inan' => 'I',
+    #                                                '@'    => 'M' }},
+    #                 'fem'  => 'F',
+    #                 '@'    => 'N' }}
+    my @keys = keys(%{$map});
+    if(scalar(@keys)==1)
+    {
+        my $feature = $keys[0];
+        my $value = $fs->get_joined($feature); ###!!! Tohle je blbě! Pole chceme asi porovnávat jinak!
+        my $valuehash = $map->{$feature};
+        my $target = ''; # output string or next-level map
+        if(exists($valuehash->{$value}))
+        {
+            my $target = $valuehash->{$value};
+        }
+        elsif(exists($valuehash->{'@'}))
+        {
+            my $target = $valuehash->{'@'};
+        }
+        if(ref($target) eq 'HASH')
+        {
+            return _encoding_step($target, $fs);
+        }
+        else
+        {
+            return $target;
+        }
+    }
+    else
+    {
+        # Tagset drivers normally do not throw exceptions but if we are here it means we have badly designed code, not input data.
+        confess("The feature-level hash in encoding map must have just one key (feature name); instead, we have ".scalar(@keys).": ".join(', ', @keys));
+    }
 }
 
 
@@ -105,7 +151,55 @@ created by collecting tag occurrences in some corpus.
 sub list
 {
     my $self = shift;
-    return &{$self->list_function()}();
+    my $map = $self->encode_map();
+    my %tagset;
+    _list_step($map, \%tagset);
+    my @list = sort(keys(%tagset));
+    return \@list;
+}
+
+
+
+#------------------------------------------------------------------------------
+# A recursive static function that takes encoding map (hash reference with one
+# feature name as the only key) and a reference to a hash where we collect
+# results. It adds all tags reachable via the map to the collection.
+#------------------------------------------------------------------------------
+sub _list_step
+{
+    my $map = shift; # reference to hash with only one key
+    my $tagset = shift; # reference to hash where we collect surface tags
+    # Example of an encoding map:
+    # The top-level hash must have just one key, a name of a known feature (it is a hash for cosmetic reasons).
+    # '@' denotes the default and will be translated to an else block
+    # { 'gender' => { 'masc' => { 'animateness' => { 'inan' => 'I',
+    #                                                '@'    => 'M' }},
+    #                 'fem'  => 'F',
+    #                 '@'    => 'N' }}
+    my @keys = keys(%{$map});
+    if(scalar(@keys)==1)
+    {
+        my $feature = $keys[0];
+        my $valuehash = $map->{$feature};
+        my @values = keys(%{$valuehash});
+        foreach my $value (@values)
+        {
+            my $target = $valuehash->{$value};
+            if(ref($target) eq 'HASH')
+            {
+                _list_step($target, $tagset);
+            }
+            else
+            {
+                $tagset->{$target}++;
+            }
+        }
+    }
+    else
+    {
+        # Tagset drivers normally do not throw exceptions but if we are here it means we have badly designed code, not input data.
+        confess("The feature-level hash in encoding map must have just one key (feature name); instead, we have ".scalar(@keys).": ".join(', ', @keys));
+    }
 }
 
 
@@ -115,6 +209,21 @@ sub list
 =head1 SYNOPSIS
 
   use Lingua::Interset::Atom;
+
+  my $atom = Lingua::Interset::Atom->new
+  (
+      'feature'    => 'gender',
+      'decode_map' =>
+          { 'M' => ['gender' => 'masc', 'animateness' => 'anim'],
+            'I' => ['gender' => 'masc', 'animateness' => 'inan'],
+            'F' => ['gender' => 'fem'],
+            'N' => ['gender' => 'neut'] },
+      'encode_map' =>
+          { 'gender' => { 'masc' => { 'animateness' => { 'inan' => 'I',
+                                                         '@'    => 'M' }},
+                          'fem'  => 'F',
+                          '@'    => 'N' }}
+  );
 
 =head1 DESCRIPTION
 
@@ -130,6 +239,56 @@ of 15 characters where I<i>-th position in the string encodes I<i>-th surface fe
 (which may or may not directly correspond to a feature in Interset).
 A driver for the PDT tagset could internally construct atomic drivers for PDT
 gender, number, case etc.
+
+=attr feature
+
+Name of the surface feature the atom describes.
+If the atom describes a whole tagset, the tagset id could be stored here.
+The surface features may be structured differently from Interset,
+e.g. there might be an I<agreement> feature, which would map to the Interset features of
+C<person> and C<number>.
+
+=attr decode_map
+
+A compact description of mapping from the surface tags to the Interset feature values.
+It is a hash reference.
+Hash keys are surface tags.
+Hash values are references to arrays of assignments.
+The arrays must have even number of elements and every pair of elements is a feature-value pair.
+
+Example:
+
+  { 'M' => ['gender' => 'masc', 'animateness' => 'anim'],
+    'I' => ['gender' => 'masc', 'animateness' => 'inan'],
+    'F' => ['gender' => 'fem'],
+    'N' => ['gender' => 'neut'] }
+
+Vertical bars may be used to separate multiple values of one feature.
+The C<other> feature can have a structured value, so you can use standard Perl syntax to describe hash and/or array references.
+
+  { 'name_of_dog' => [ 'pos' => 'noun', 'nountype' => 'prop', 'other' => { 'named_entity_type' => 'dog' } ],
+    'wh_word'     => [ 'pos' => 'noun|adj|adv', 'prontype' => 'int|rel' ] }
+
+=attr encode_map
+
+A compact description of mapping from the Interset feature structure to the surface tags.
+It is a hash reference, possibly with nested hashes.
+The top-level hash must always have just one key, which is a name of an Interset feature.
+(It could be encoded without the hash but I believe that the whole map looks better this way.)
+
+The top-level key leads to a second-level hash, which is indexed by the values of the feature.
+It is not necessary that all possible values are listed.
+A special value C<@>, if present, means “everything else”.
+It is recommended to always mark the default value using C<@>.
+Even if we list all currently known values of the feature, new values may be introduced to Interset in future
+and we do not want to have to get back to all tagsets and update their encoding maps.
+
+Example:
+
+  { 'gender' => { 'masc' => { 'animateness' => { 'inan' => 'I',
+                                                 '@'    => 'M' }},
+                  'fem'  => 'F',
+                  '@'    => 'N' }}
 
 =head1 SEE ALSO
 
