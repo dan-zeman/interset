@@ -756,80 +756,6 @@ has 'other'        => ( is  => 'rw', default => '' );
 
 
 #------------------------------------------------------------------------------
-# Shortcuts for some frequent tests people want to do against Interset.
-#------------------------------------------------------------------------------
-=method is_noun()
-Also returns 1 if the C<pos> feature has multiple values and one of them is C<noun>, e.g.
-if C<get_joined('pos') eq 'noun|adj'>.
-=cut
-sub is_noun {my $self = shift; return scalar(grep {$_ eq 'noun'} ($self->get_list('pos')));}
-=method is_abbreviation()
-=cut
-sub is_abbreviation {my $self = shift; return $self->abbrev() eq 'abbrev';}
-=method is_adjective()
-=cut
-sub is_adjective {my $self = shift; return scalar(grep {$_ eq 'adj'} ($self->get_list('pos')));}
-=method is_adposition()
-=cut
-sub is_adposition {my $self = shift; return scalar(grep {$_ eq 'adp'} ($self->get_list('pos')));}
-=method is_adverb()
-=cut
-sub is_adverb {my $self = shift; return scalar(grep {$_ eq 'adv'} ($self->get_list('pos')));}
-=method is_conjunction()
-=cut
-sub is_conjunction {my $self = shift; return scalar(grep {$_ eq 'conj'} ($self->get_list('pos')));}
-=method is_coordinator()
-=cut
-sub is_coordinator {my $self = shift; return $self->is_conjunction() && $self->conjtype() eq 'coor';}
-=method is_foreign()
-=cut
-sub is_foreign {my $self = shift; return $self->foreign() eq 'foreign';}
-=method is_hyph()
-=cut
-sub is_hyph {my $self = shift; return $self->hyph() eq 'hyph';}
-=method is_interjection()
-=cut
-sub is_interjection {my $self = shift; return scalar(grep {$_ eq 'int'} ($self->get_list('pos')));}
-=method is_numeral()
-=cut
-sub is_numeral {my $self = shift; return scalar(grep {$_ eq 'num'} ($self->get_list('pos')));}
-=method is_participle()
-=cut
-sub is_participle {my $self = shift; return scalar(grep {$_ eq 'part'} ($self->get_list('verbform')));}
-=method is_particle()
-=cut
-sub is_particle {my $self = shift; return scalar(grep {$_ eq 'part'} ($self->get_list('pos')));}
-=method is_past()
-=cut
-sub is_past {my $self = shift; return scalar(grep {$_ eq 'past'} ($self->get_list('tense')));}
-=method is_possessive()
-=cut
-sub is_possessive {my $self = shift; return $self->poss() eq 'poss';}
-=method is_pronoun()
-=cut
-sub is_pronoun {my $self = shift; return $self->prontype() ne '';}
-=method is_punctuation()
-=cut
-sub is_punctuation {my $self = shift; return scalar(grep {$_ eq 'punc'} ($self->get_list('pos')));}
-=method is_reflexive()
-=cut
-sub is_reflexive {my $self = shift; return $self->reflex() eq 'reflex';}
-=method is_subordinator()
-=cut
-sub is_subordinator {my $self = shift; return $self->is_conjunction() && $self->conjtype() eq 'sub';}
-=method is_typo()
-=cut
-sub is_typo {my $self = shift; return $self->typo() eq 'typo';}
-=method is_verb()
-=cut
-sub is_verb {my $self = shift; return scalar(grep {$_ eq 'verb'} ($self->get_list('pos')));}
-=method is_wh()
-=cut
-sub is_wh {my $self = shift; return scalar(grep {m/^(int|rel)$/} ($self->get_list('prontype')));}
-
-
-
-#------------------------------------------------------------------------------
 # Static function. Returns the list of known features (in print order).
 #------------------------------------------------------------------------------
 =func known_features()
@@ -1315,6 +1241,118 @@ sub get_hash
     }
     return \%fs;
 }
+
+
+
+#------------------------------------------------------------------------------
+# Tests tagset + other features.
+#------------------------------------------------------------------------------
+=method get_other_for_tagset()
+
+  my $other = $fs->get_other_for_tagset ('cs::pdt');
+
+Takes a tagset id.
+If it matches the value of the C<tagset> feature, returns the value of the
+C<other> feature (it returns a deep copy, which the caller may freely modify).
+If the tagset id does not match, the method returns an empty string.
+
+=cut
+sub get_other_for_tagset
+{
+    my $self = shift;
+    my $tagset = shift;
+    if($self->tagset() eq $tagset)
+    {
+        return _duplicate_recursive($self->other());
+    }
+    else
+    {
+        return '';
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Shortcuts for some frequent tests people want to do against Interset.
+#------------------------------------------------------------------------------
+=method is_noun()
+Also returns 1 if the C<pos> feature has multiple values and one of them is C<noun>, e.g.
+if C<get_joined('pos') eq 'noun|adj'>.
+=cut
+sub is_noun {my $self = shift; return scalar(grep {$_ eq 'noun'} ($self->get_list('pos')));}
+=method is_abbreviation()
+=cut
+sub is_abbreviation {my $self = shift; return $self->abbrev() eq 'abbrev';}
+=method is_adjective()
+=cut
+sub is_adjective {my $self = shift; return scalar(grep {$_ eq 'adj'} ($self->get_list('pos')));}
+=method is_adposition()
+=cut
+sub is_adposition {my $self = shift; return scalar(grep {$_ eq 'adp'} ($self->get_list('pos')));}
+=method is_adverb()
+=cut
+sub is_adverb {my $self = shift; return scalar(grep {$_ eq 'adv'} ($self->get_list('pos')));}
+=method is_conjunction()
+=cut
+sub is_conjunction {my $self = shift; return scalar(grep {$_ eq 'conj'} ($self->get_list('pos')));}
+=method is_coordinator()
+=cut
+sub is_coordinator {my $self = shift; return $self->is_conjunction() && $self->conjtype() eq 'coor';}
+=method is_finite_verb()
+=cut
+sub is_finite_verb {my $self = shift; return scalar(grep {$_ eq 'fin'} ($self->get_list('verbform')));}
+=method is_foreign()
+=cut
+sub is_foreign {my $self = shift; return $self->foreign() eq 'foreign';}
+=method is_hyph()
+=cut
+sub is_hyph {my $self = shift; return $self->hyph() eq 'hyph';}
+=method is_infinitive()
+=cut
+sub is_infinitive {my $self = shift; return scalar(grep {$_ eq 'inf'} ($self->get_list('verbform')));}
+=method is_interjection()
+=cut
+sub is_interjection {my $self = shift; return scalar(grep {$_ eq 'int'} ($self->get_list('pos')));}
+=method is_numeral()
+=cut
+sub is_numeral {my $self = shift; return scalar(grep {$_ eq 'num'} ($self->get_list('pos')));}
+=method is_participle()
+=cut
+sub is_participle {my $self = shift; return scalar(grep {$_ eq 'part'} ($self->get_list('verbform')));}
+=method is_particle()
+=cut
+sub is_particle {my $self = shift; return scalar(grep {$_ eq 'part'} ($self->get_list('pos')));}
+=method is_past()
+=cut
+sub is_past {my $self = shift; return scalar(grep {$_ eq 'past'} ($self->get_list('tense')));}
+=method is_possessive()
+=cut
+sub is_possessive {my $self = shift; return $self->poss() eq 'poss';}
+=method is_pronoun()
+=cut
+sub is_pronoun {my $self = shift; return $self->prontype() ne '';}
+=method is_punctuation()
+=cut
+sub is_punctuation {my $self = shift; return scalar(grep {$_ eq 'punc'} ($self->get_list('pos')));}
+=method is_reflexive()
+=cut
+sub is_reflexive {my $self = shift; return $self->reflex() eq 'reflex';}
+=method is_subordinator()
+=cut
+sub is_subordinator {my $self = shift; return $self->is_conjunction() && $self->conjtype() eq 'sub';}
+=method is_transgressive()
+=cut
+sub is_transgressive {my $self = shift; return scalar(grep {$_ eq 'trans'} ($self->get_list('verbform')));}
+=method is_typo()
+=cut
+sub is_typo {my $self = shift; return $self->typo() eq 'typo';}
+=method is_verb()
+=cut
+sub is_verb {my $self = shift; return scalar(grep {$_ eq 'verb'} ($self->get_list('pos')));}
+=method is_wh()
+=cut
+sub is_wh {my $self = shift; return scalar(grep {m/^(int|rel)$/} ($self->get_list('prontype')));}
 
 
 
