@@ -881,8 +881,7 @@ feature.
 sub feature_valid
 {
     my $feature = shift;
-    my @known_features = known_features();
-    return scalar(grep {$_ eq $feature} (@known_features));
+    return exists($matrix{$feature}) ? 1 : 0;
 }
 
 
