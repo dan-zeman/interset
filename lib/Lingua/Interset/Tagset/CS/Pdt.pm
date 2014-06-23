@@ -906,6 +906,25 @@ sub encode
             $tag = 'X@';
         }
     }
+    ###!!! Následuje kódování jednotlivých rysů.
+    ###!!! Ještě ale musíme vyřešit, kdy vůbec něco kódovat, a kdy vypsat jen pomlčku!
+    my $atoms = $self->atoms();
+    $tag .= $atoms->{gender}->encode($fs);
+    $tag .= $atoms->{number}->encode($fs);
+    $tag .= $atoms->{case}->encode($fs);
+
+    my @chars = split(//, $tag);
+    $atoms->{gender}->decode_and_merge($chars[2], $fs);
+    $atoms->{number}->decode_and_merge($chars[3], $fs);
+    $atoms->{case}->decode_and_merge($chars[4], $fs);
+    $atoms->{possgender}->decode_and_merge($chars[5], $fs);
+    $atoms->{possnumber}->decode_and_merge($chars[6], $fs);
+    $atoms->{person}->decode_and_merge($chars[7], $fs);
+    $atoms->{tense}->decode_and_merge($chars[8], $fs);
+    $atoms->{degree}->decode_and_merge($chars[9], $fs);
+    $atoms->{negativeness}->decode_and_merge($chars[10], $fs);
+    $atoms->{voice}->decode_and_merge($chars[11], $fs);
+    $atoms->{variant}->decode_and_merge($chars[14], $fs);
     return $tag;
 }
 
