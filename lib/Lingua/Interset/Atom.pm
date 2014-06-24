@@ -12,7 +12,7 @@ use namespace::autoclean;
 use Moose;
 use MooseX::SemiAffordanceAccessor; # attribute x is written using set_x($value) and read using x()
 use Lingua::Interset;
-use Lingua::Interset::FeatureStructure;
+use Lingua::Interset::FeatureStructure qw(feature_valid);
 extends 'Lingua::Interset::Tagset';
 
 
@@ -131,16 +131,20 @@ sub _encoding_step
     if(scalar(@keys)==1)
     {
         my $feature = $keys[0];
+        if(!feature_valid($feature))
+        {
+            confess("Unknown feature '$feature'");
+        }
         my $value = $fs->get_joined($feature); ###!!! Tohle je blbě! Pole chceme asi porovnávat jinak!
         my $valuehash = $map->{$feature};
         my $target = ''; # output string or next-level map
         if(exists($valuehash->{$value}))
         {
-            my $target = $valuehash->{$value};
+            $target = $valuehash->{$value};
         }
         elsif(exists($valuehash->{'@'}))
         {
-            my $target = $valuehash->{'@'};
+            $target = $valuehash->{'@'};
         }
         if(ref($target) eq 'HASH')
         {

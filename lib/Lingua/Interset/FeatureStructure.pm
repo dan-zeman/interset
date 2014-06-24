@@ -152,15 +152,17 @@ my %matrix = @_matrix =
     'numtype' =>
     {
         'priority' => 110,
-        'values' => ['card', 'ord', 'mult', 'frac', 'gen', 'dist', ''],
+        'values' => ['card', 'ord', 'mult', 'frac', 'gen', 'sets', 'dist', 'range', ''],
         'replacements' =>
         [
             ['card', '', 'ord'],
             ['ord', '', 'card'],
-            ['mult', 'card'],
+            ['mult'],
             ['frac', 'card'],
             ['gen', 'card'],
-            ['dist', 'card']
+            ['sets', 'card'],
+            ['dist', 'card'],
+            ['range', 'card']
         ],
     },
     # Presentation form of numerals.
@@ -1298,6 +1300,9 @@ sub is_conjunction {my $self = shift; return scalar(grep {$_ eq 'conj'} ($self->
 =method is_coordinator()
 =cut
 sub is_coordinator {my $self = shift; return $self->is_conjunction() && $self->conjtype() eq 'coor';}
+=method is_dual()
+=cut
+sub is_dual {my $self = shift; return scalar(grep {$_ eq 'dual'} ($self->get_list('number')));}
 =method is_finite_verb()
 =cut
 sub is_finite_verb {my $self = shift; return scalar(grep {$_ eq 'fin'} ($self->get_list('verbform')));}
@@ -1315,7 +1320,7 @@ sub is_infinitive {my $self = shift; return scalar(grep {$_ eq 'inf'} ($self->ge
 sub is_interjection {my $self = shift; return scalar(grep {$_ eq 'int'} ($self->get_list('pos')));}
 =method is_numeral()
 =cut
-sub is_numeral {my $self = shift; return scalar(grep {$_ eq 'num'} ($self->get_list('pos')));}
+sub is_numeral {my $self = shift; return scalar(grep {$_ eq 'num'} ($self->get_list('pos'))) || $self->numtype() ne '';}
 =method is_participle()
 =cut
 sub is_participle {my $self = shift; return scalar(grep {$_ eq 'part'} ($self->get_list('verbform')));}
@@ -1328,6 +1333,9 @@ sub is_past {my $self = shift; return scalar(grep {$_ eq 'past'} ($self->get_lis
 =method is_possessive()
 =cut
 sub is_possessive {my $self = shift; return $self->poss() eq 'poss';}
+=method is_plural()
+=cut
+sub is_plural {my $self = shift; return scalar(grep {$_ eq 'plu'} ($self->get_list('number')));}
 =method is_pronoun()
 =cut
 sub is_pronoun {my $self = shift; return $self->prontype() ne '';}
@@ -1337,6 +1345,9 @@ sub is_punctuation {my $self = shift; return scalar(grep {$_ eq 'punc'} ($self->
 =method is_reflexive()
 =cut
 sub is_reflexive {my $self = shift; return $self->reflex() eq 'reflex';}
+=method is_singular()
+=cut
+sub is_singular {my $self = shift; return scalar(grep {$_ eq 'sing'} ($self->get_list('number')));}
 =method is_subordinator()
 =cut
 sub is_subordinator {my $self = shift; return $self->is_conjunction() && $self->conjtype() eq 'sub';}
@@ -1369,18 +1380,14 @@ sub as_string
     my @assignments = map
     {
         my $f = $_;
-        my $v = $self->{$f};
+        my $v;
         if($f eq 'other')
         {
-            $v = structure_to_string($v);
-        }
-        elsif(ref($v) eq 'ARRAY')
-        {
-            $v = join("|", map {"\"$_\""} @{$v});
+            $v = structure_to_string($self->{$f});
         }
         else
         {
-            $v = "\"$v\"";
+            $v = '"'.$self->get_joined($f).'"';
         }
         "$f=$v";
     }

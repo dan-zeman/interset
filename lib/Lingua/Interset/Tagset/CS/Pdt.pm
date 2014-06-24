@@ -21,239 +21,6 @@ has 'atoms' => ( isa => 'HashRef', is => 'ro', builder => '_create_atoms', lazy 
 
 
 
-my %postable =
-(
-    # noun
-    # examples: pán hrad žena růže město moře
-    'NN' => ['pos' => 'noun'],
-    # noun abbreviation
-    'N;' => ['pos' => 'noun', 'abbr' => 'abbr'],
-    # adjective
-    # examples: mladý jarní
-    'AA' => ['pos' => 'adj'],
-    # short form of adjective ("jmenný tvar")
-    # examples: mlád stár zdráv
-    'AC' => ['pos' => 'adj', 'variant' => 'short'],
-    # special adjectives: svůj, nesvůj, tentam
-    # svůj: other usage than possessive reflexive pronoun
-    'AO' => ['pos' => 'adj', 'other' => 'O'],
-    # possessive adjective
-    # examples: otcův matčin
-    'AU' => ['pos' => 'adj', 'poss' => 'poss'],
-    # adjective derived from present transgressive of verb
-    # examples: dělající
-    'AG' => ['pos' => 'adj', 'verbform' => 'part', 'tense' => 'pres', 'voice' => 'act', 'aspect' => 'imp'],
-    # adjective derived from past transgressive of verb
-    # examples: udělavší
-    'AM' => ['pos' => 'adj', 'verbform' => 'part', 'tense' => 'past', 'voice' => 'act', 'aspect' => 'perf'],
-    # first part of hyphenated compound adjective
-    # example: česko (in "česko-slovenský")
-    'A2' => ['pos' => 'adj', 'hyph' => 'hyph'],
-    # adjective abbreviation
-    # example: ml.
-    'A.' => ['pos' => 'adj', 'abbr' => 'abbr'],
-    # personal pronoun
-    # examples: já ty tys on ona ono my vy oni ony ona
-    'PP' => ['pos' => 'noun', 'prontype' => 'prs'],
-    # personal pronoun, short inflected variant
-    # examples: mě mi ti mu
-    'PH' => ['pos' => 'noun', 'prontype' => 'prs', 'variant' => 'short'],
-    # personal pronoun, inflected, special variant after preposition
-    # examples: něj němu něho ním ní ni nich nim ně nimi
-    'P5' => ['pos' => 'noun', 'prontype' => 'prs', 'prepcase' => 'pre'],
-    # compound preposition + personal pronoun
-    # examples: naň ("na něj")
-    'P0' => ['pos' => 'noun', 'prontype' => 'prs', 'adpostype' => 'preppron'],
-    # reflexive personal pronoun, long form
-    # examples: sebe sobě sebou
-    'P6' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex'],
-    # reflexive personal pronoun, short form
-    # examples: se si ses sis
-    'P7' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex', 'variant' => 'short'],
-    # possessive pronoun
-    # examples: můj tvůj jeho její náš váš jejich
-    'PS' => ['pos' => 'adj', 'prontype' => 'prs', 'poss' => 'poss'],
-    # reflexive possessive pronoun
-    # examples: svůj
-    'P8' => ['pos' => 'adj', 'prontype' => 'prs', 'poss' => 'poss', 'reflex' => 'reflex'],
-    # demonstrative pronoun
-    # examples: ten tento tenhle onen takový týž tentýž sám
-    ###!!! Syntactically they are often adjectives but not always ("to auto je moje" vs. "to je moje").
-    'PD' => ['pos' => 'adj', 'prontype' => 'dem', 'definiteness' => 'def'],
-    # interrogative or relative pronoun, animate
-    # examples: kdo kdož kdos
-    'PK' => ['pos' => 'noun', 'prontype' => 'int|rel', 'animateness' => 'anim'],
-    # interrogative or relative pronoun, inanimate
-    # examples: co copak cožpak
-    'PQ' => ['pos' => 'noun', 'prontype' => 'int|rel', 'animateness' => 'inan'],
-    # interrogative or relative compound of preposition and pronoun
-    # examples: oč nač zač
-    'PY' => ['pos' => 'noun', 'prontype' => 'int|rel', 'adpostype' => 'preppron'],
-    # interrogative or relative pronoun, attributive
-    # examples: jaký který čí
-    'P4' => ['pos' => 'adj', 'prontype' => 'int|rel'],
-    # relative pronoun
-    # examples: jenž jež již
-    'PJ' => ['pos' => 'noun', 'prontype' => 'rel', 'prepcase' => 'npr'],
-    # relative pronoun, special variant after preposition
-    # examples: něhož němuž nějž němž nímž
-    'P9' => ['pos' => 'noun', 'prontype' => 'rel', 'prepcase' => 'pre'],
-    # relative pronoun referring to clause
-    # example: což
-    'PE' => ['pos' => 'noun', 'prontype' => 'rel'],
-    # possessive relative pronoun
-    # examples: jehož jejíž
-    'P1' => ['pos' => 'adj', 'prontype' => 'rel', 'poss' => 'poss'],
-    # indefinite pronoun
-    # examples: někdo něco nějaký některý něčí ... kdokoli ... kdosi ...
-    'PZ' => ['pos' => 'noun|adj', 'prontype' => 'ind', 'definiteness' => 'ind'],
-    # totality pronoun
-    # examples: všechen sám
-    'PL' => ['pos' => 'noun', 'prontype' => 'tot', 'definiteness' => 'ind'],
-    # negative pronoun
-    # examples: nikdo nic nijaký ničí žádný
-    'PW' => ['pos' => 'noun|adj', 'prontype' => 'neg', 'negativeness' => 'neg'],
-    # cardinal number expressed by digits
-    # examples: 1 3,14 2014
-    'C=' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'digit'],
-    # cardinal number expressed by Roman numerals
-    # examples: MCMLXXI
-    # { ... syntax highlighting
-    'C}' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'roman'],
-    # cardinal numeral, low value (agrees with counted noun)
-    # examples: jeden dva tři čtyři
-    'Cl' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'word', 'numvalue' => '1|2|3'],
-    # cardinal numeral, high value (in nominative, accusative and vocative behaves like a noun and the counted noun must be in genitive)
-    # examples: pět šest sedm sto
-    'Cn' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'word'],
-    # interrogative or relative cardinal numeral
-    # example: kolik
-    'C?' => ['pos' => 'num', 'numtype' => 'card', 'prontype' => 'int|rel'],
-    # indefinite cardinal numeral (###!!! or demonstrative!)
-    # examples: několik mnoho málo kdovíkolik tolik
-    'Ca' => ['pos' => 'num', 'numtype' => 'card', 'prontype' => 'ind'],
-    # cardinal numeral, fraction denominator
-    # examples: polovina třetina čtvrtina setina tisícina
-    'Cy' => ['pos' => 'num', 'numtype' => 'frac'],
-    # generic cardinal numeral
-    # examples: čtvero patero desatero
-    'Cj' => ['pos' => 'num', 'numtype' => 'gen'],
-    # generic adjectival numeral (number of sets of things)
-    # examples: čtvery patery desatery
-    'Ck' => ['pos' => 'num', 'numtype' => 'gen', 'other' => 'k'],
-    # ordinal numeral
-    # examples: první druhý třetí stý tisící
-    ###!!! a co "poprvé", to není řadová číslovka?
-    'Cr' => ['pos' => 'adj', 'numtype' => 'ord'],
-    # interrogative or relative ordinal numeral
-    # examples: kolikátý
-    'Cz' => ['pos' => 'adj', 'numtype' => 'ord', 'prontype' => 'int|rel'],
-    # generic numeral "twofold"
-    # examples: jedny dvojí desaterý
-    'Cd' => ['pos' => 'adj', 'numtype' => 'gen'],
-    # generic numeral
-    # examples: jedny nejedny
-    'Ch' => ['pos' => 'adj', 'numtype' => 'gen', 'other' => 'h'],
-    # indefinite ordinal numeral
-    # examples: nejeden tolikátý
-    'Cw' => ['pos' => 'adj', 'numtype' => 'ord', 'prontype' => 'ind'],
-    # multiplicative numeral
-    # examples: jedenkrát dvakrát třikrát stokrát tisíckrát
-    'Cv' => ['pos' => 'adv', 'numtype' => 'mult'],
-    # interrogative or relative multiplicative numeral
-    # examples: kolikrát
-    'Cu' => ['pos' => 'adv', 'numtype' => 'mult', 'prontype' => 'int|rel'],
-    # indefinite multiplicative numeral
-    # examples: několikrát mnohokrát tolikrát
-    'Co' => ['pos' => 'adv', 'numtype' => 'mult', 'prontype' => 'ind'],
-    # numeral abbreviation
-    # examples: tis. mil.
-    'C3' => ['pos' => 'num', 'abbr' => 'abbr'],
-    # verb infinitive
-    # examples: nést dělat říci
-    'Vf' => ['pos' => 'verb', 'verbform' => 'inf'],
-    # finite verb, present or future indicative
-    # examples: nesu beru mažu půjdu
-    'VB' => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pres'], # tense may be later overwritten by 'fut'
-    # finite verb, present or future indicative with encliticized 'neboť'
-    # examples: dělámť děláť
-    'Vt' => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pres', 'voice' => 'act', 'verbtype' => 'verbconj'],
-    # verb imperative
-    # examples: nes dělej řekni
-    'Vi' => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'imp'],
-    # conditional auxiliary verb form (evolved from aorist of 'to be')
-    # examples: bych bys by bychom byste
-    'Vc' => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'sub'], ###!!! jaktože ne cond???
-    # verb active participle
-    # examples: dělal dělala dělalo dělali dělaly dělals dělalas ...
-    'Vp' => ['pos' => 'verb', 'verbform' => 'part', 'tense' => 'past', 'voice' => 'act'],
-    # verb active participle with encliticized 'neboť'
-    # examples: dělalť dělalať dělaloť ...
-    'Vq' => ['pos' => 'verb', 'verbform' => 'part', 'tense' => 'past', 'voice' => 'act', 'verbtype' => 'verbconj'],
-    # verb passive participle
-    # examples: dělán dělána děláno děláni dělány udělán udělána
-    'Vs' => ['pos' => 'verb', 'verbform' => 'part', 'voice' => 'pass'],
-    # verb present transgressive
-    # examples: nesa nesouc nesouce dělaje dělajíc dělajíce
-    'Ve' => ['pos' => 'verb', 'verbform' => 'trans', 'tense' => 'pres', 'aspect' => 'imp', 'voice' => 'act'],
-    # verb past transgressive
-    # examples: udělav udělavši udělavše přišed přišedši přišedše
-    'Vm' => ['pos' => 'verb', 'verbform' => 'trans', 'tense' => 'past', 'aspect' => 'perf', 'voice' => 'act'],
-    # verb abbreviation
-    # examples: srov.
-    'V~' => ['pos' => 'verb', 'abbr' => 'abbr'],
-    # adverb with degree of comparison and negativeness
-    # examples: málo chytře
-    'Dg' => ['pos' => 'adv'],
-    # adverb without degree of comparison and negativeness
-    # examples: kde kam kdy jak tady dnes
-    'Db' => ['pos' => 'adv'],
-    # adverb abbreviation
-    'D!' => ['pos' => 'adv', 'abbr' => 'abbr'],
-    # preposition
-    # examples: v pod k
-    'RR' => ['pos' => 'adp', 'adpostype' => 'prep'],
-    # vocalized preposition
-    # examples: ve pode ke ku
-    'RV' => ['pos' => 'adp', 'adpostype' => 'voc'],
-    # first part of compound preposition
-    # examples: nehledě na, vzhledem k
-    'RF' => ['pos' => 'adp', 'adpostype' => 'comprep'],
-    # coordinating conjunction
-    # examples: a i ani nebo ale avšak
-    'J^' => ['pos' => 'conj', 'conjtype' => 'coor'],
-    # subordinating conjunction
-    # examples: že, aby, zda, protože, přestože
-    'J,' => ['pos' => 'conj', 'conjtype' => 'sub'],
-    # mathematical conjunction (the word 'times' in 'five times')
-    # examples: krát
-    ###!!! create a new feature value???
-    'J*' => ['pos' => 'conj', 'conjtype' => 'coor', 'other' => '*'],
-    # particle
-    # examples: ať kéž nechť
-    'TT' => ['pos' => 'part'],
-    # interjection
-    # examples: haf bum bác
-    'II' => ['pos' => 'int'],
-    # punctuation
-    # examples: . ? ! , ; : -
-    'Z:' => ['pos' => 'punc'],
-    # artificial root node of the sentence
-    # examples: #
-    "Z\#" => ['pos' => 'punc', 'punctype' => 'root'],
-    # X: unknown part of speech
-    # unrecognized word form
-    'X@' => ['other' => '@'],
-    # word form recognized but tag is missing in dictionary
-    'XX' => ['other' => 'X'],
-    # - should never appear as subpos but it does, even in the list in b2800a.o2f
-    'X-' => ['other' => '-'],
-    # abbreviation of unknown part of speech
-    'Xx' => ['abbr' => 'abbr']
-);
-
-
-
 #------------------------------------------------------------------------------
 # Creates an atomic driver and returns it.
 #------------------------------------------------------------------------------
@@ -284,8 +51,246 @@ sub _create_simple_atom
 sub _create_atoms
 {
     my %atoms;
-    # 1. GENDER ####################
-    $atom{gender} = _create_atom
+    # 1. PART OF SPEECH ####################
+    $atoms{pos} = _create_atom
+    (
+        'surfeature' => 'pos',
+        'decode_map' =>
+        {
+            # noun
+            # examples: pán hrad žena růže město moře
+            'NN' => ['pos' => 'noun'],
+            # noun abbreviation
+            'N;' => ['pos' => 'noun', 'abbr' => 'abbr'],
+            # adjective
+            # examples: mladý jarní
+            'AA' => ['pos' => 'adj'],
+            # short form of adjective ("jmenný tvar")
+            # examples: mlád stár zdráv
+            'AC' => ['pos' => 'adj', 'variant' => 'short'],
+            # special adjectives: svůj, nesvůj, tentam
+            # svůj: other usage than possessive reflexive pronoun
+            'AO' => ['pos' => 'adj', 'other' => 'O'],
+            # possessive adjective
+            # examples: otcův matčin
+            'AU' => ['pos' => 'adj', 'poss' => 'poss'],
+            # adjective derived from present transgressive of verb
+            # examples: dělající
+            'AG' => ['pos' => 'adj', 'verbform' => 'part', 'tense' => 'pres', 'voice' => 'act', 'aspect' => 'imp'],
+            # adjective derived from past transgressive of verb
+            # examples: udělavší
+            'AM' => ['pos' => 'adj', 'verbform' => 'part', 'tense' => 'past', 'voice' => 'act', 'aspect' => 'perf'],
+            # first part of hyphenated compound adjective
+            # example: česko (in "česko-slovenský")
+            'A2' => ['pos' => 'adj', 'hyph' => 'hyph'],
+            # adjective abbreviation
+            # example: ml.
+            'A.' => ['pos' => 'adj', 'abbr' => 'abbr'],
+            # personal pronoun
+            # examples: já ty tys on ona ono my vy oni ony ona
+            'PP' => ['pos' => 'noun', 'prontype' => 'prs'],
+            # personal pronoun, short inflected variant
+            # examples: mě mi ti mu
+            'PH' => ['pos' => 'noun', 'prontype' => 'prs', 'variant' => 'short'],
+            # personal pronoun, inflected, special variant after preposition
+            # examples: něj němu něho ním ní ni nich nim ně nimi
+            'P5' => ['pos' => 'noun', 'prontype' => 'prs', 'prepcase' => 'pre'],
+            # compound preposition + personal pronoun
+            # examples: naň ("na něj")
+            'P0' => ['pos' => 'noun', 'prontype' => 'prs', 'adpostype' => 'preppron'],
+            # reflexive personal pronoun, long form
+            # examples: sebe sobě sebou
+            'P6' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex'],
+            # reflexive personal pronoun, short form
+            # examples: se si ses sis
+            'P7' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex', 'variant' => 'short'],
+            # possessive pronoun
+            # examples: můj tvůj jeho její náš váš jejich
+            'PS' => ['pos' => 'adj', 'prontype' => 'prs', 'poss' => 'poss'],
+            # reflexive possessive pronoun
+            # examples: svůj
+            'P8' => ['pos' => 'adj', 'prontype' => 'prs', 'poss' => 'poss', 'reflex' => 'reflex'],
+            # demonstrative pronoun
+            # examples: ten tento tenhle onen takový týž tentýž sám
+            ###!!! Syntactically they are often adjectives but not always ("to auto je moje" vs. "to je moje").
+            'PD' => ['pos' => 'adj', 'prontype' => 'dem', 'definiteness' => 'def'],
+            # interrogative or relative pronoun, animate
+            # examples: kdo kdož kdos
+            'PK' => ['pos' => 'noun', 'prontype' => 'int|rel', 'animateness' => 'anim'],
+            # interrogative or relative pronoun, inanimate
+            # examples: co copak cožpak
+            'PQ' => ['pos' => 'noun', 'prontype' => 'int|rel', 'animateness' => 'inan'],
+            # interrogative or relative compound of preposition and pronoun
+            # examples: oč nač zač
+            'PY' => ['pos' => 'noun', 'prontype' => 'int|rel', 'adpostype' => 'preppron'],
+            # interrogative or relative pronoun, attributive
+            # examples: jaký který čí
+            'P4' => ['pos' => 'adj', 'prontype' => 'int|rel'],
+            # relative pronoun
+            # examples: jenž jež již
+            'PJ' => ['pos' => 'noun', 'prontype' => 'rel', 'prepcase' => 'npr'],
+            # relative pronoun, special variant after preposition
+            # examples: něhož němuž nějž němž nímž
+            'P9' => ['pos' => 'noun', 'prontype' => 'rel', 'prepcase' => 'pre'],
+            # relative pronoun referring to clause
+            # example: což
+            'PE' => ['pos' => 'noun', 'prontype' => 'rel'],
+            # possessive relative pronoun
+            # examples: jehož jejíž
+            'P1' => ['pos' => 'adj', 'prontype' => 'rel', 'poss' => 'poss'],
+            # indefinite pronoun
+            # examples: někdo něco nějaký některý něčí ... kdokoli ... kdosi ...
+            'PZ' => ['pos' => 'noun|adj', 'prontype' => 'ind', 'definiteness' => 'ind'],
+            # totality pronoun
+            # examples: všechen sám
+            'PL' => ['pos' => 'noun', 'prontype' => 'tot', 'definiteness' => 'ind'],
+            # negative pronoun
+            # examples: nikdo nic nijaký ničí žádný
+            'PW' => ['pos' => 'noun|adj', 'prontype' => 'neg', 'negativeness' => 'neg'],
+            # cardinal number expressed by digits
+            # examples: 1 3,14 2014
+            'C=' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'digit'],
+            # cardinal number expressed by Roman numerals
+            # examples: MCMLXXI
+            # { ... syntax highlighting
+            'C}' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'roman'],
+            # cardinal numeral, low value (agrees with counted noun)
+            # examples: jeden dva tři čtyři
+            'Cl' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'word', 'numvalue' => '1|2|3'],
+            # cardinal numeral, high value (in nominative, accusative and vocative behaves like a noun and the counted noun must be in genitive)
+            # examples: pět šest sedm sto
+            'Cn' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'word'],
+            # interrogative or relative cardinal numeral
+            # example: kolik
+            'C?' => ['pos' => 'num', 'numtype' => 'card', 'prontype' => 'int|rel'],
+            # indefinite cardinal numeral (###!!! or demonstrative!)
+            # examples: několik mnoho málo kdovíkolik tolik
+            'Ca' => ['pos' => 'num', 'numtype' => 'card', 'prontype' => 'ind'],
+            # cardinal numeral, fraction denominator
+            # examples: polovina třetina čtvrtina setina tisícina
+            'Cy' => ['pos' => 'num', 'numtype' => 'frac'],
+            # generic cardinal numeral
+            # examples: čtvero patero desatero
+            'Cj' => ['pos' => 'num', 'numtype' => 'card|gen'],
+            # generic adjectival numeral (number of sets of things)
+            # examples: čtvery patery desatery
+            'Ck' => ['pos' => 'num', 'numtype' => 'sets'],
+            # ordinal numeral
+            # examples: první druhý třetí stý tisící
+            # (Note: "poprvé" is another type of ordinal numeral, it behaves syntactically as adverb.
+            # It is tagged 'Cv', together with multiplicative numerals ("jedenkrát"), which are also syntactic adverbs.)
+            'Cr' => ['pos' => 'adj', 'numtype' => 'ord'],
+            # interrogative or relative ordinal numeral
+            # examples: kolikátý
+            'Cz' => ['pos' => 'adj', 'numtype' => 'ord', 'prontype' => 'int|rel'],
+            # generic numeral "twofold"
+            # examples: jedny dvojí desaterý
+            'Cd' => ['pos' => 'adj', 'numtype' => 'gen'],
+            # generic numeral
+            # examples: jedny nejedny
+            'Ch' => ['pos' => 'adj', 'numtype' => 'gen', 'other' => 'h'],
+            # indefinite ordinal numeral
+            # examples: nejeden tolikátý
+            'Cw' => ['pos' => 'adj', 'numtype' => 'ord', 'prontype' => 'ind'],
+            # multiplicative numeral or adverbial ordinal numeral
+            # examples: jedenkrát dvakrát třikrát stokrát tisíckrát
+            # examples: poprvé podruhé potřetí posté potisící
+            'Cv' => ['pos' => 'adv', 'numtype' => 'mult'],
+            # interrogative or relative multiplicative numeral
+            # examples: kolikrát
+            'Cu' => ['pos' => 'adv', 'numtype' => 'mult', 'prontype' => 'int|rel'],
+            # indefinite multiplicative numeral
+            # examples: několikrát mnohokrát tolikrát
+            'Co' => ['pos' => 'adv', 'numtype' => 'mult', 'prontype' => 'ind'],
+            # numeral abbreviation
+            # examples: tis. mil.
+            'C3' => ['pos' => 'num', 'abbr' => 'abbr'],
+            # verb infinitive
+            # examples: nést dělat říci
+            'Vf' => ['pos' => 'verb', 'verbform' => 'inf'],
+            # finite verb, present or future indicative
+            # examples: nesu beru mažu půjdu
+            'VB' => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pres'], # tense may be later overwritten by 'fut'
+            # finite verb, present or future indicative with encliticized 'neboť'
+            # examples: dělámť děláť
+            'Vt' => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pres', 'voice' => 'act', 'verbtype' => 'verbconj'],
+            # verb imperative
+            # examples: nes dělej řekni
+            'Vi' => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'imp'],
+            # conditional auxiliary verb form (evolved from aorist of 'to be')
+            # examples: bych bys by bychom byste
+            'Vc' => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'sub'], ###!!! jaktože ne cond???
+            # verb active participle
+            # examples: dělal dělala dělalo dělali dělaly dělals dělalas ...
+            'Vp' => ['pos' => 'verb', 'verbform' => 'part', 'tense' => 'past', 'voice' => 'act'],
+            # verb active participle with encliticized 'neboť'
+            # examples: dělalť dělalať dělaloť ...
+            'Vq' => ['pos' => 'verb', 'verbform' => 'part', 'tense' => 'past', 'voice' => 'act', 'verbtype' => 'verbconj'],
+            # verb passive participle
+            # examples: dělán dělána děláno děláni dělány udělán udělána
+            'Vs' => ['pos' => 'verb', 'verbform' => 'part', 'voice' => 'pass'],
+            # verb present transgressive
+            # examples: nesa nesouc nesouce dělaje dělajíc dělajíce
+            'Ve' => ['pos' => 'verb', 'verbform' => 'trans', 'tense' => 'pres', 'aspect' => 'imp', 'voice' => 'act'],
+            # verb past transgressive
+            # examples: udělav udělavši udělavše přišed přišedši přišedše
+            'Vm' => ['pos' => 'verb', 'verbform' => 'trans', 'tense' => 'past', 'aspect' => 'perf', 'voice' => 'act'],
+            # verb abbreviation
+            # examples: srov.
+            'V~' => ['pos' => 'verb', 'abbr' => 'abbr'],
+            # adverb with degree of comparison and negativeness
+            # examples: málo chytře
+            'Dg' => ['pos' => 'adv'],
+            # adverb without degree of comparison and negativeness
+            # examples: kde kam kdy jak tady dnes
+            'Db' => ['pos' => 'adv'],
+            # adverb abbreviation
+            'D!' => ['pos' => 'adv', 'abbr' => 'abbr'],
+            # preposition
+            # examples: v pod k
+            'RR' => ['pos' => 'adp', 'adpostype' => 'prep'],
+            # vocalized preposition
+            # examples: ve pode ke ku
+            'RV' => ['pos' => 'adp', 'adpostype' => 'voc'],
+            # first part of compound preposition
+            # examples: nehledě na, vzhledem k
+            'RF' => ['pos' => 'adp', 'adpostype' => 'comprep'],
+            # coordinating conjunction
+            # examples: a i ani nebo ale avšak
+            'J^' => ['pos' => 'conj', 'conjtype' => 'coor'],
+            # subordinating conjunction
+            # examples: že, aby, zda, protože, přestože
+            'J,' => ['pos' => 'conj', 'conjtype' => 'sub'],
+            # mathematical conjunction (the word 'times' in 'five times')
+            # examples: krát
+            ###!!! create a new feature value???
+            'J*' => ['pos' => 'conj', 'conjtype' => 'coor', 'other' => '*'],
+            # particle
+            # examples: ať kéž nechť
+            'TT' => ['pos' => 'part'],
+            # interjection
+            # examples: haf bum bác
+            'II' => ['pos' => 'int'],
+            # punctuation
+            # examples: . ? ! , ; : -
+            'Z:' => ['pos' => 'punc'],
+            # artificial root node of the sentence
+            # examples: #
+            "Z\#" => ['pos' => 'punc', 'punctype' => 'root'],
+            # X: unknown part of speech
+            # unrecognized word form
+            'X@' => ['other' => '@'],
+            # word form recognized but tag is missing in dictionary
+            'XX' => ['other' => 'X'],
+            # - should never appear as subpos but it does, even in the list in b2800a.o2f
+            'X-' => ['other' => '-'],
+            # abbreviation of unknown part of speech
+            'Xx' => ['abbr' => 'abbr']
+        },
+        'encode_map' => {} # Encoding of part of speech must be solved directly in Perl code, it would be too complicated to do it here.
+    );
+    # 2. GENDER ####################
+    $atoms{gender} = _create_atom
     (
         'surfeature' => 'gender',
         'decode_map' =>
@@ -304,13 +309,21 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            { 'gender' => { 'masc' => { 'animateness' => { 'inan' => 'I',
-                                                           '@'    => 'M' }},
+            { 'gender' => { 'fem|masc'  => 'T',
+                            'fem|neut'  => { 'number' => { 'plu|sing' => 'Q',
+                                                           '@'        => 'H' }},
+                            'masc|neut' => { 'animateness' => { 'inan' => 'W',
+                                                                '@'    => 'Z' }},
+                            'masc'      => { 'animateness' => { ''     => 'Y',
+                                                                'inan' => 'I',
+                                                                '@'    => 'M' }},
                             'fem'  => 'F',
-                            '@'    => 'N' }} ###!!! Tohle není celé! Ale musíme nejdřív vyřešit práci s poli v encode mapách!
+                            'neut' => 'N' }} ###!!! Tohle není celé! Ale musíme nejdřív vyřešit práci s poli v encode mapách!
+                            ###!!! Je sice hezké, že se můžu zeptat na konkrétní multihodnotu, ale mohlo by to fungovat lépe.
+                            ###!!! Co když někdo bude mít multihodnotu, se kterou tady nepočítám, ale počítám s jedním z jejích dílčích hodnot?
     );
-    # 2. NUMBER ####################
-    $atom{number} = _create_atom
+    # 3. NUMBER ####################
+    $atoms{number} = _create_atom
     (
         'surfeature' => 'number',
         'decode_map' =>
@@ -323,12 +336,13 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            { 'number' => { 'dual' => 'D',
+            { 'number' => { 'plu|sing' => 'W',
+                            'dual' => 'D',
                             'plu'  => 'P',
-                            '@'    => 'S' }} ###!!! Tohle není celé! Ale musíme nejdřív vyřešit práci s poli v encode mapách!
+                            'sing' => 'S' }} ###!!! Tohle není celé! Ale musíme nejdřív vyřešit práci s poli v encode mapách!
     );
-    # 3. CASE ####################
-    $atom{case} = _create_simple_atom
+    # 4. CASE ####################
+    $atoms{case} = _create_simple_atom
     (
         'intfeature' => 'case',
         'simple_decode_map' =>
@@ -339,12 +353,11 @@ sub _create_atoms
             '4' => 'acc',
             '5' => 'voc',
             '6' => 'loc',
-            '7' => 'ins',
-            'X' => ''
+            '7' => 'ins'
         }
     );
-    # 4. POSSGENDER ####################
-    $atom{possgender} = _create_atom
+    # 5. POSSGENDER ####################
+    $atoms{possgender} = _create_atom
     (
         'surfeature' => 'possgender',
         'decode_map' =>
@@ -357,12 +370,14 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            { 'possgender' => { 'masc' => 'M',
+            { 'possgender' => { 'masc|neut' => 'Z',
+                                'masc' => { 'prontype' => { ''  => 'M',
+                                                            '@' => 'Y' }},
                                 'fem'  => 'F',
-                                '@'    => 'N' }} ###!!! Tohle není celé! Ale musíme nejdřív vyřešit práci s poli v encode mapách!
+                                'neut' => 'N' }} ###!!! Tohle není celé! Ale musíme nejdřív vyřešit práci s poli v encode mapách!
     );
-    # 5. POSSNUMBER ####################
-    $atom{possnumber} = _create_simple_atom
+    # 6. POSSNUMBER ####################
+    $atoms{possnumber} = _create_simple_atom
     (
         'intfeature' => 'possnumber',
         'simple_decode_map' =>
@@ -371,8 +386,8 @@ sub _create_atoms
             'P' => 'plu'
         }
     );
-    # 6. PERSON ####################
-    $atom{person} = _create_simple_atom
+    # 7. PERSON ####################
+    $atoms{person} = _create_simple_atom
     (
         'intfeature' => 'person',
         'simple_decode_map' =>
@@ -382,8 +397,8 @@ sub _create_atoms
             '3' => '3'
         }
     );
-    # 7. TENSE ####################
-    $atom{tense} = _create_atom
+    # 8. TENSE ####################
+    $atoms{tense} = _create_atom
     (
         'surfeature' => 'tense',
         'decode_map' =>
@@ -395,12 +410,16 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            { 'tense' => { 'past' => 'R',
-                           'fut'  => 'F',
-                           '@'    => 'P' }} ###!!! Tohle není celé! Ale musíme nejdřív vyřešit práci s poli v encode mapách!
+            # Do not encode tense of verbal adjectives and transgressives. Otherwise encode(decode(x)) will not equal to x.
+            { 'pos' => { 'adj' => '',
+                         '@'   => { 'verbform' => { 'trans' => '',
+                                    '@'     => { 'tense' => { 'past|pres' => 'H',
+                                                              'past' => 'R',
+                                                              'fut'  => 'F',
+                                                              'pres' => 'P' }}}}}} ###!!! Tohle není celé! Ale musíme nejdřív vyřešit práci s poli v encode mapách!
     );
-    # 8. DEGREE ####################
-    $atom{degree} = _create_simple_atom
+    # 9. DEGREE ####################
+    $atoms{degree} = _create_simple_atom
     (
         'intfeature' => 'degree',
         'simple_decode_map' =>
@@ -410,28 +429,41 @@ sub _create_atoms
             '3' => 'sup'
         }
     );
-    # 9. NEGATIVENESS ####################
-    $atom{negativeness} = _create_simple_atom
+    # 10. NEGATIVENESS ####################
+    $atoms{negativeness} = _create_atom
     (
-        'intfeature' => 'negativeness',
-        'simple_decode_map' =>
+        'surfeature' => 'negativeness',
+        'decode_map' =>
         {
-            'A' => 'pos',
-            'N' => 'neg'
-        }
+            'A' => ['negativeness' => 'pos'],
+            'N' => ['negativeness' => 'neg']
+        },
+        'encode_map' =>
+
+            # Do not encode negativeness of negative pronouns. Otherwise encode(decode(x)) will not equal to x.
+            { 'prontype' => { 'neg' => '',
+                              '@'   => { 'negativeness' => { 'pos' => 'A',
+                                                             'neg' => 'N' }}}}
     );
-    # 10. VOICE ####################
-    $atom{voice} = _create_simple_atom
+    # 11. VOICE ####################
+    $atoms{voice} = _create_atom
     (
-        'intfeature' => 'voice',
-        'simple_decode_map' =>
+        'surfeature' => 'voice',
+        'decode_map' =>
         {
-            'A' => 'act',
-            'P' => 'pass'
-        }
+            'A' => ['voice' => 'act'],
+            'P' => ['voice' => 'pass']
+        },
+        'encode_map' =>
+
+            # Do not encode voice of verbal adjectives and transgressives. Otherwise encode(decode(x)) will not equal to x.
+            { 'pos' => { 'adj' => '',
+                         '@'   => { 'verbform' => { 'trans' => '',
+                                                    '@'     => { 'voice' => { 'act'  => 'A',
+                                                                              'pass' => 'P' }}}}}}
     );
-    # 11. VARIANT ####################
-    $atom{variant} = _create_atom
+    # 12. VARIANT ####################
+    $atoms{variant} = _create_atom
     (
         'surfeature' => 'variant',
         'decode_map' =>
@@ -449,9 +481,19 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            { 'tense' => { 'past' => 'R',
-                           'fut'  => 'F',
-                           '@'    => 'P' }} ###!!! Tohle není celé! Ale musíme nejdřív vyřešit práci s poli v encode mapách!
+            { 'variant' => { '0' => '0',
+                             '1' => '1',
+                             '2' => '2',
+                             '3' => '3',
+                             '4' => '4',
+                             '5' => '5',
+                             '6' => '6',
+                             '7' => '7',
+                             '8' => '8',
+                             '9' => '9',
+                             # We cannot take abbreviation into account here because it would conflict with the old encoding of abbreviations in SUBPOS.
+                             '@' => { 'style' => { 'arch' => '2',
+                                                   'coll' => '5' }}}}
     );
     return \%atoms;
 }
@@ -468,14 +510,9 @@ sub decode
     my $tag = shift;
     my $fs = Lingua::Interset::FeatureStructure->new();
     $fs->set_tagset('cs::pdt');
-    my $assignments = $postable{$tag};
-    if($assignments)
-    {
-        $fs->multiset(@{$assignments});
-    }
-    ###!!! Usage of atoms is experimental. Later we will want to solve the parts of speech as atoms, too.
     my $atoms = $self->atoms();
     my @chars = split(//, $tag);
+    $atoms->{pos}->decode_and_merge($chars[0].$chars[1], $fs);
     $atoms->{gender}->decode_and_merge($chars[2], $fs);
     $atoms->{number}->decode_and_merge($chars[3], $fs);
     $atoms->{case}->decode_and_merge($chars[4], $fs);
@@ -497,190 +534,12 @@ sub decode
 #------------------------------------------------------------------------------
 sub encode
 {
+    my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $tag = '';
     # pos and subpos
-    # Pronouns must come first because they are at the same time also nouns or adjectives.
-    if($fs->is_pronoun())
-    {
-        # possessive pronoun
-        if($fs->is_possessive())
-        {
-            if($fs->is_wh())
-            {
-                # it has possgender if it is 3rd person
-                $tag = 'P1XXX?---------'; # jehož, jejíž, jejichž
-            }
-            elsif($fs->is_reflexive())
-            {
-                $tag = 'P8XXX----------'; # svůj
-            }
-            else
-            {
-                # it has possgender if it is 3rd person
-                $tag = 'PSXXX?X--------'; # můj, tvůj, jeho, její, náš, váš, jejich
-            }
-        }
-        # personal pronoun
-        elsif($fs->adpostype() eq 'preppron')
-        {
-            if($fs->is_wh())
-            {
-                $tag = 'PY-------------'; # oč, nač
-            }
-            else
-            {
-                $tag = 'P0-------------'; # oň, naň
-            }
-        }
-        elsif($fs->prontype() eq 'prs')
-        {
-            if(!$fs->is_reflexive())
-            {
-                if($fs->prepcase() eq 'pre')
-                {
-                    # něj, němu, něho, něm, ním, ní, ni, nich, nim, ně, nich, nimi
-                    $tag = 'P5XXX----------';
-                }
-                elsif($fs->variant() eq 'short')
-                {
-                    # mi, mě, ti, tě, mu
-                    $tag = 'PH--X----------';
-                }
-                else
-                {
-                    # já, ty, on, ona, ono, my, vy, oni, ony
-                    # it has gender if it is 3rd person
-                    $tag = 'PP?XX----------';
-                }
-            }
-            else # reflexive
-            {
-                if($fs->variant() eq 'short')
-                {
-                    # si, sis, se, ses
-                    $tag = 'P7--X----------';
-                }
-                else
-                {
-                    # sebe, sobě, sebou
-                    $tag = 'P6--X----------';
-                }
-            }
-        }
-        # negative pronoun
-        elsif($fs->negativeness() eq 'neg' || $fs->prontype() eq 'neg')
-        {
-            # nikdo, nic, nijaký, ničí, žádný
-            # it has gender and number if it is plural
-            $tag = 'PW??X----------';
-        }
-        # demonstrative pronoun
-        elsif($fs->prontype() eq 'dem')
-        {
-            # ten, tento, tenhle, onen, takový, týž, tentýž
-            $tag = 'PDXXX----------';
-        }
-        # interrogative or relative pronoun
-        elsif($fs->prontype() eq 'rel')
-        {
-            if($fs->is_noun())
-            {
-                # což
-                $tag = 'PE--X----------';
-            }
-            elsif($fs->prepcase() eq 'pre')
-            {
-                # něhož, němuž, nějž, němž, nímž, níž, niž
-                $tag = 'P9X-X----------';
-            }
-            else
-            {
-                # jenž, jež, již, ...
-                $tag = 'PJX-X----------';
-            }
-        }
-        elsif($fs->is_wh())
-        {
-            if($fs->is_noun())
-            {
-                # kdo, co
-                if($fs->gender() eq 'masc')
-                {
-                    $tag = 'PK--X----------';
-                }
-                else
-                {
-                    $tag = 'PQ--X----------';
-                }
-            }
-            else
-            {
-                # jaký, který, čí
-                $tag = 'P4XXX----------';
-            }
-        }
-        # totality (collective) pronoun
-        elsif($fs->prontype() eq 'tot')
-        {
-            # it has gender and number if it is plural or if it does not have case
-            $tag = 'PL??X----------';
-        }
-        # indefinite pronoun
-        else
-        {
-            # it has gender and number if it is plural or if it does not have case
-            $tag = 'PZ??X----------';
-        }
-    }
-    elsif($fs->is_noun())
-    {
-        if($fs->is_abbreviation() && $fs->variant() ne '8')
-        {
-            $tag = 'N;-------------';
-        }
-        else
-        {
-            $tag = 'NNXXX----------';
-        }
-    }
-    elsif($fs->is_adjective())
-    {
-        if($fs->is_abbreviation() && $fs->variant() ne '8')
-        {
-            $tag = 'A.-------------';
-        }
-        elsif($fs->variant() eq 'short')
-        {
-            $tag = 'ACXX-----------';
-        }
-        elsif($fs->is_possessive())
-        {
-            $tag = 'AUXXX----------';
-        }
-        elsif($fs->is_participle() && $fs->is_past())
-        {
-            $tag = 'AMXXX----------';
-        }
-        elsif($fs->is_participle())
-        {
-            $tag = 'AGXXX----------';
-        }
-        elsif($fs->is_hyph())
-        {
-            $tag = 'A2-------------';
-        }
-        elsif($fs->tagset() eq 'cs::pdt' && $fs->other() eq 'O' ||
-              $fs->case() eq '' && $fs->negativeness() eq '')
-        {
-            $tag = 'AOXX-----------';
-        }
-        else
-        {
-            $tag = 'AAXXX----------';
-        }
-    }
-    elsif($fs->is_numeral())
+    # Numerals and pronouns must come first because they can be at the same time also nouns or adjectives.
+    if($fs->is_numeral())
     {
         if($fs->is_abbreviation() && $fs->variant() ne '8')
         {
@@ -754,12 +613,12 @@ sub encode
             $tag = 'Cy-------------';
         }
         # generic numerals / druhové číslovky
-        elsif($fs->is_noun())
+        elsif($fs->get_joined('numtype') eq 'card|gen')
         {
             # čtvero, patero, desatero
             $tag = 'Cj-------------';
         }
-        elsif($fs->get_other_for_tagset('cs::pdt') eq 'k')
+        elsif($fs->numtype() eq 'sets')
         {
             # čtvery, patery, desatery
             $tag = 'Ck-------------';
@@ -776,9 +635,230 @@ sub encode
             $tag = 'CdX------------';
         }
     }
+    elsif($fs->is_pronoun())
+    {
+        # possessive pronoun
+        if($fs->is_possessive())
+        {
+            if($fs->is_wh())
+            {
+                # jehož, jejíž, jejichž
+                # it has possgender if it is 3rd person
+                if($fs->person() == 3)
+                {
+                    $tag = 'P1XXXX---------';
+                }
+                else
+                {
+                    $tag = 'P1XXX----------';
+                }
+            }
+            elsif($fs->is_reflexive())
+            {
+                # svůj
+                $tag = 'P8XXX----------';
+            }
+            else
+            {
+                # můj, tvůj, jeho, její, náš, váš, jejich
+                # it has possgender if it is 3rd person
+                if($fs->person() == 3)
+                {
+                    $tag = 'PSXXXXX--------';
+                }
+                else
+                {
+                    $tag = 'PSXXX-X--------';
+                }
+            }
+        }
+        # personal pronoun
+        elsif($fs->adpostype() eq 'preppron')
+        {
+            if($fs->is_wh())
+            {
+                $tag = 'PY-------------'; # oč, nač
+            }
+            else
+            {
+                $tag = 'P0-------------'; # oň, naň
+            }
+        }
+        elsif($fs->prontype() eq 'prs')
+        {
+            if(!$fs->is_reflexive())
+            {
+                if($fs->prepcase() eq 'pre')
+                {
+                    # něj, němu, něho, něm, ním, ní, ni, nich, nim, ně, nich, nimi
+                    $tag = 'P5XXX----------';
+                }
+                elsif($fs->variant() eq 'short')
+                {
+                    # mi, mě, ti, tě, mu
+                    $tag = 'PH--X----------';
+                }
+                else
+                {
+                    # já, ty, on, ona, ono, my, vy, oni, ony
+                    # it has gender if it is 3rd person
+                    if($fs->person() == 3)
+                    {
+                        $tag = 'PPXXX----------';
+                    }
+                    else
+                    {
+                        $tag = 'PP-XX----------';
+                    }
+                }
+            }
+            else # reflexive
+            {
+                if($fs->variant() eq 'short')
+                {
+                    # si, sis, se, ses
+                    $tag = 'P7-XX----------';
+                }
+                else
+                {
+                    # sebe, sobě, sebou
+                    $tag = 'P6-XX----------';
+                }
+            }
+        }
+        # negative pronoun
+        elsif($fs->negativeness() eq 'neg' || $fs->prontype() eq 'neg')
+        {
+            # nikdo, nic, nijaký, ničí, žádný
+            # it has gender and number if it is plural
+            if($fs->is_plural())
+            {
+                $tag = 'PWXXX----------';
+            }
+            else
+            {
+                $tag = 'PW--X----------';
+            }
+        }
+        # demonstrative pronoun
+        elsif($fs->prontype() eq 'dem')
+        {
+            # ten, tento, tenhle, onen, takový, týž, tentýž
+            $tag = 'PDXXX----------';
+        }
+        # interrogative or relative pronoun
+        elsif($fs->prontype() eq 'rel')
+        {
+            if($fs->gender() eq '' && !$fs->is_plural())
+            {
+                # což
+                $tag = 'PE--X----------';
+            }
+            elsif($fs->prepcase() eq 'pre')
+            {
+                # něhož, němuž, nějž, němž, nímž, níž, niž
+                $tag = 'P9X-X----------';
+            }
+            else
+            {
+                # jenž, jež, již, ...
+                $tag = 'PJX-X----------';
+            }
+        }
+        elsif($fs->is_wh())
+        {
+            if($fs->is_noun())
+            {
+                # kdo, co
+                if($fs->gender() eq 'masc')
+                {
+                    $tag = 'PK--X----------';
+                }
+                else
+                {
+                    $tag = 'PQ--X----------';
+                }
+            }
+            else
+            {
+                # jaký, který, čí
+                $tag = 'P4XXX----------';
+            }
+        }
+        # totality (collective) pronoun
+        elsif($fs->prontype() eq 'tot')
+        {
+            # it has gender and number if it is plural or if it does not have case
+            if($fs->is_plural() || $fs->case() eq '')
+            {
+                $tag = 'PLXXX----------';
+            }
+            else
+            {
+                $tag = 'PL--X----------';
+            }
+        }
+        # indefinite pronoun
+        # it has gender and number if it is plural or if it does not have case
+        elsif($fs->is_plural() || $fs->case() eq '')
+        {
+            $tag = 'PZXXX----------';
+        }
+        else
+        {
+            $tag = 'PZ--X----------';
+        }
+    }
+    elsif($fs->is_noun())
+    {
+        if($fs->is_abbreviation() && $fs->variant() ne '8')
+        {
+            $tag = 'N;-------------';
+        }
+        else
+        {
+            $tag = 'NNXXX----------';
+        }
+    }
+    elsif($fs->is_adjective())
+    {
+        if($fs->is_abbreviation() && $fs->variant() ne '8')
+        {
+            $tag = 'A.-------------';
+        }
+        elsif($fs->variant() eq 'short')
+        {
+            $tag = 'ACXX-----------';
+        }
+        elsif($fs->is_possessive())
+        {
+            $tag = 'AUXXX----------';
+        }
+        elsif($fs->is_participle() && $fs->is_past())
+        {
+            $tag = 'AMXXX----------';
+        }
+        elsif($fs->is_participle())
+        {
+            $tag = 'AGXXX----------';
+        }
+        elsif($fs->is_hyph())
+        {
+            $tag = 'A2-------------';
+        }
+        elsif($fs->tagset() eq 'cs::pdt' && $fs->other() eq 'O' ||
+              $fs->case() eq '' && $fs->negativeness() eq '')
+        {
+            $tag = 'AOXX-----------';
+        }
+        else
+        {
+            $tag = 'AAXXX----------';
+        }
+    }
     elsif($fs->is_verb())
     {
-        if($fs->is_abbreviation())
+        if($fs->is_abbreviation() && $fs->variant() ne '8')
         {
             $tag = 'V~-------------';
         }
@@ -870,7 +950,14 @@ sub encode
         if($fs->is_subordinator())
         {
             # it has number if it has (3rd) person
-            $tag = 'J,-?-----------';
+            if($fs->person() eq '3')
+            {
+                $tag = 'J,-X-----------';
+            }
+            else
+            {
+                $tag = 'J,-------------';
+            }
         }
         elsif($fs->get_other_for_tagset('cs::pdt') eq '*')
         {
@@ -903,13 +990,18 @@ sub encode
     else # default is unknown tag
     {
         my $other = $fs->get_other_for_tagset('cs::pdt');
-        if($fs->is_abbreviation())
+        # Unknown abbreviation can be encoded either as 'XX------------8' or as 'Xx-------------' but not as 'Xx------------8'.
+        if($fs->variant() eq '8')
         {
-            $tag = 'Xx-------------';
+            $tag = 'XX-------------';
         }
         elsif($other =~ m/^[-X\@]$/)
         {
             $tag = 'X'.$other.'-------------';
+        }
+        elsif($fs->is_abbreviation())
+        {
+            $tag = 'Xx-------------';
         }
         else
         {
@@ -920,12 +1012,12 @@ sub encode
     # The PDT tagset distinguishes unknown values ("X") and irrelevant features ("-").
     # Interset does not do this distinction but we have prepared the defaults for empty values above.
     my @tag = split(//, $tag);
+    my @features = ('pos', 'subpos', 'gender', 'number', 'case', 'possgender', 'possnumber', 'person', 'tense', 'degree', 'negativeness', 'voice', undef, undef, 'variant');
     my $atoms = $self->atoms();
-    my @atoms = map {$atoms->{$_}} (undef, undef, 'gender', 'number', 'case', 'possgender', 'possnumber', 'person', 'tense', 'degree', 'negativeness', 'voice', undef, undef, 'variant');
     for(my $i = 2; $i<15; $i++)
     {
         next if($i==12 || $i==13);
-        my $atag = $atoms[$i]->encode($fs);
+        my $atag = $atoms->{$features[$i]}->encode($fs);
         if($atag ne '')
         {
             $tag[$i] = $atag;

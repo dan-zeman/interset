@@ -56,6 +56,10 @@ around BUILDARGS => sub
         $attr->{decode_map} = \%dm;
         $attr->{encode_map} = \%em;
     }
+    else
+    {
+        confess("Missing attribute 'intfeature' or 'simple_decode_map'");
+    }
     return $attr;
 };
 

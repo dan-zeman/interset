@@ -345,14 +345,16 @@ sub test_tag
     # be completely restored because of the missing information). This is important
     # for figuring out the permitted feature combinations when converting from a
     # different tagset.
+    $f->set_tagset('');
     $f->set_other('');
     my $tag2 = $self->encode($f);
     # Is the resulting tag known?
     if(!$self->is_known_tag($tag2))
     {
+        my $sfs = $f->as_string();
         my $message = "Error: encode(decode(x)-other) gives an unknown tag\n";
         $message .= " src = \"$tag\"\n";
-        $message .= " tgt = \"$tag1\"\n";
+        $message .= " tgt = \"$tag2\"\n";
         $message .= " sfs = $sfs\n";
         push(@errors, $message);
         $n_errors++;
