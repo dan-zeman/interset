@@ -1282,7 +1282,7 @@ if C<get_joined('pos') eq 'noun|adj'>.
 sub is_noun {my $self = shift; return scalar(grep {$_ eq 'noun'} ($self->get_list('pos')));}
 =method is_abbreviation()
 =cut
-sub is_abbreviation {my $self = shift; return $self->abbrev() eq 'abbrev';}
+sub is_abbreviation {my $self = shift; return $self->abbr() eq 'abbr';}
 =method is_adjective()
 =cut
 sub is_adjective {my $self = shift; return scalar(grep {$_ eq 'adj'} ($self->get_list('pos')));}
