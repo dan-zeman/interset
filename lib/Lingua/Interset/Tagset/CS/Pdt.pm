@@ -508,15 +508,17 @@ sub encode
         {
             if($fs->is_wh())
             {
-                $tag = 'P1X'; # jehož, jejíž, jejichž
+                # it has possgender if it is 3rd person
+                $tag = 'P1XXX?---------'; # jehož, jejíž, jejichž
             }
             elsif($fs->is_reflexive())
             {
-                $tag = 'P8X'; # svůj
+                $tag = 'P8XXX----------'; # svůj
             }
             else
             {
-                $tag = 'PSX'; # můj, tvůj, jeho, její, náš, váš, jejich
+                # it has possgender if it is 3rd person
+                $tag = 'PSXXX?X--------'; # můj, tvůj, jeho, její, náš, váš, jejich
             }
         }
         # personal pronoun
@@ -524,11 +526,11 @@ sub encode
         {
             if($fs->is_wh())
             {
-                $tag = 'PY-'; # oč, nač
+                $tag = 'PY-------------'; # oč, nač
             }
             else
             {
-                $tag = 'P0-'; # oň, naň
+                $tag = 'P0-------------'; # oň, naň
             }
         }
         elsif($fs->prontype() eq 'prs')
@@ -538,18 +540,18 @@ sub encode
                 if($fs->prepcase() eq 'pre')
                 {
                     # něj, němu, něho, něm, ním, ní, ni, nich, nim, ně, nich, nimi
-                    $tag = 'P5X';
+                    $tag = 'P5XXX----------';
                 }
                 elsif($fs->variant() eq 'short')
                 {
                     # mi, mě, ti, tě, mu
-                    $tag = 'PH-';
+                    $tag = 'PH--X----------';
                 }
                 else
                 {
                     # já, ty, on, ona, ono, my, vy, oni, ony
                     # it has gender if it is 3rd person
-                    $tag = 'PP?';
+                    $tag = 'PP?XX----------';
                 }
             }
             else # reflexive
@@ -557,12 +559,12 @@ sub encode
                 if($fs->variant() eq 'short')
                 {
                     # si, sis, se, ses
-                    $tag = 'P7-';
+                    $tag = 'P7--X----------';
                 }
                 else
                 {
                     # sebe, sobě, sebou
-                    $tag = 'P6-';
+                    $tag = 'P6--X----------';
                 }
             }
         }
@@ -570,14 +572,14 @@ sub encode
         elsif($fs->negativeness() eq 'neg' || $fs->prontype() eq 'neg')
         {
             # nikdo, nic, nijaký, ničí, žádný
-            # it has gender if it is plural
-            $tag = 'PW?';
+            # it has gender and number if it is plural
+            $tag = 'PW??X----------';
         }
         # demonstrative pronoun
         elsif($fs->prontype() eq 'dem')
         {
             # ten, tento, tenhle, onen, takový, týž, tentýž
-            $tag = 'PDX';
+            $tag = 'PDXXX----------';
         }
         # interrogative or relative pronoun
         elsif($fs->prontype() eq 'rel')
@@ -585,17 +587,17 @@ sub encode
             if($fs->is_noun())
             {
                 # což
-                $tag = 'PE-';
+                $tag = 'PE--X----------';
             }
             elsif($fs->prepcase() eq 'pre')
             {
                 # něhož, němuž, nějž, němž, nímž, níž, niž
-                $tag = 'P9X';
+                $tag = 'P9X-X----------';
             }
             else
             {
                 # jenž, jež, již, ...
-                $tag = 'PJX';
+                $tag = 'PJX-X----------';
             }
         }
         elsif($fs->is_wh())
@@ -605,112 +607,112 @@ sub encode
                 # kdo, co
                 if($fs->gender() eq 'masc')
                 {
-                    $tag = 'PK-';
+                    $tag = 'PK--X----------';
                 }
                 else
                 {
-                    $tag = 'PQ-';
+                    $tag = 'PQ--X----------';
                 }
             }
             else
             {
                 # jaký, který, čí
-                $tag = 'P4X';
+                $tag = 'P4XXX----------';
             }
         }
         # totality (collective) pronoun
         elsif($fs->prontype() eq 'tot')
         {
-            # it has gender if it is plural or if it does not have case
-            $tag = 'PL?';
+            # it has gender and number if it is plural or if it does not have case
+            $tag = 'PL??X----------';
         }
         # indefinite pronoun
         else
         {
-            # it has gender if it is plural or if it does not have case
-            $tag = 'PZ?';
+            # it has gender and number if it is plural or if it does not have case
+            $tag = 'PZ??X----------';
         }
     }
     elsif($fs->is_noun())
     {
         if($fs->is_abbreviation() && $fs->variant() ne '8')
         {
-            $tag = 'N;-';
+            $tag = 'N;-------------';
         }
         else
         {
-            $tag = 'NNX';
+            $tag = 'NNXXX----------';
         }
     }
     elsif($fs->is_adjective())
     {
         if($fs->is_abbreviation() && $fs->variant() ne '8')
         {
-            $tag = 'A.-';
+            $tag = 'A.-------------';
         }
         elsif($fs->variant() eq 'short')
         {
-            $tag = 'ACX';
+            $tag = 'ACXX-----------';
         }
         elsif($fs->is_possessive())
         {
-            $tag = 'AUX';
+            $tag = 'AUXXX----------';
         }
         elsif($fs->is_participle() && $fs->is_past())
         {
-            $tag = 'AMX';
+            $tag = 'AMXXX----------';
         }
         elsif($fs->is_participle())
         {
-            $tag = 'AGX';
+            $tag = 'AGXXX----------';
         }
         elsif($fs->is_hyph())
         {
-            $tag = 'A2-';
+            $tag = 'A2-------------';
         }
         elsif($fs->tagset() eq 'cs::pdt' && $fs->other() eq 'O' ||
               $fs->case() eq '' && $fs->negativeness() eq '')
         {
-            $tag = 'AOX';
+            $tag = 'AOXX-----------';
         }
         else
         {
-            $tag = 'AAX';
+            $tag = 'AAXXX----------';
         }
     }
     elsif($fs->is_numeral())
     {
         if($fs->is_abbreviation() && $fs->variant() ne '8')
         {
-            $tag = 'C3-';
+            $tag = 'C3-------------';
         }
         elsif($fs->numform() eq 'digit')
         {
-            $tag = 'C=-';
+            $tag = 'C=-------------';
         }
         elsif($fs->numform() eq 'roman')
         { #{
-            $tag = 'C}-';
+            $tag = 'C}-------------';
         }
         elsif($fs->numtype() eq 'card')
         {
             if($fs->is_wh())
             {
                 # kolik
-                $tag = 'C?-';
+                $tag = 'C?-------------';
             }
             elsif($fs->prontype() eq 'ind')
             {
                 # několik, mnoho, málo, tolik
-                $tag = 'Ca-';
+                $tag = 'Ca--X----------';
             }
             elsif(scalar(grep {m/^[123]$/} ($fs->get_list('numvalue')))>=1)
             {
-                $tag = 'ClX';
+                $tag = 'ClX-X----------';
             }
             else
             {
-                $tag = 'Cn-';
+                $tag = 'Cn-XX----------';
             }
         }
         elsif($fs->numtype() eq 'ord')
@@ -718,16 +720,16 @@ sub encode
             if($fs->is_wh())
             {
                 # kolikátý
-                $tag = 'CzX';
+                $tag = 'CzXXX----------';
             }
             elsif($fs->prontype() eq 'ind')
             {
                 # několikátý, mnohý, tolikátý
-                $tag = 'CwX';
+                $tag = 'CwXXX----------';
             }
             else
             {
-                $tag = 'CrX';
+                $tag = 'CrXXX----------';
             }
         }
         elsif($fs->numtype() eq 'mult')
@@ -735,100 +737,100 @@ sub encode
             if($fs->is_wh())
             {
                 # kolikrát
-                $tag = 'Cu-';
+                $tag = 'Cu-------------';
             }
             elsif($fs->prontype() eq 'ind')
             {
                 # několikrát, mnohokrát, tolikrát
-                $tag = 'Co-';
+                $tag = 'Co-------------';
             }
             else
             {
-                $tag = 'Cv-'; ###!!! pozor tohle jsou i řadové číslovky příslovečné (poprvé, podruhé...)
+                $tag = 'Cv-------------'; ###!!! pozor tohle jsou i řadové číslovky příslovečné (poprvé, podruhé...)
             }
         }
         elsif($fs->numtype() eq 'frac')
         {
-            $tag = 'Cy-';
+            $tag = 'Cy-------------';
         }
         # generic numerals / druhové číslovky
         elsif($fs->is_noun())
         {
             # čtvero, patero, desatero
-            $tag = 'Cj-';
+            $tag = 'Cj-------------';
         }
         elsif($fs->get_other_for_tagset('cs::pdt') eq 'k')
         {
             # čtvery, patery, desatery
-            $tag = 'Ck-';
+            $tag = 'Ck-------------';
         }
         elsif($fs->get_other_for_tagset('cs::pdt') eq 'h' ||
               $fs->gender() eq 'masc' && $fs->animateness() eq '' && $fs->number() eq 'plu' && $fs->case() eq 'acc')
         {
             # jedny, nejedny
-            $tag = 'ChX';
+            $tag = 'ChX------------';
         }
         else
         {
             # jedny, dvojí, desaterý
-            $tag = 'CdX';
+            $tag = 'CdX------------';
         }
     }
     elsif($fs->is_verb())
     {
         if($fs->is_abbreviation())
         {
-            $tag = 'V~-';
+            $tag = 'V~-------------';
         }
         elsif($fs->is_infinitive())
         {
-            $tag = 'Vf-';
+            $tag = 'Vf-------------';
         }
         elsif($fs->is_participle())
         {
             if($fs->voice() eq 'pass')
             {
-                $tag = 'VsX';
+                $tag = 'VsXX---XX------';
             }
             elsif($fs->verbtype() eq 'verbconj')
             {
-                $tag = 'VqX';
+                $tag = 'VqXX---XX------';
             }
             else # default is active past/conditional participle
             {
-                $tag = 'VpX';
+                $tag = 'VpXX---XX------';
             }
         }
         elsif($fs->is_transgressive())
         {
             if($fs->tense() eq 'past')
             {
-                $tag = 'VmX';
+                $tag = 'VmX------------';
             }
             else # default is present transgressive
             {
-                $tag = 'VeX';
+                $tag = 'VeX------------';
             }
         }
         else # default is finite verb
         {
             if($fs->mood() eq 'imp')
             {
-                $tag = 'Vi-';
+                $tag = 'Vi-X---X-------';
             }
             elsif($fs->mood() eq 'sub')
             {
-                $tag = 'Vc-';
+                $tag = 'Vc-X---X-------';
             }
             else # indicative
             {
                 if($fs->verbtype() eq 'verbconj')
                 {
-                    $tag = 'Vt-';
+                    $tag = 'Vt-X---XX------';
                 }
                 else
                 {
-                    $tag = 'VB-';
+                    $tag = 'VB-X---XX------';
                 }
             }
         }
@@ -837,64 +839,65 @@ sub encode
     {
         if($fs->is_abbreviation() && $fs->variant() ne '8')
         {
-            $tag = 'D!-';
+            $tag = 'D!-------------';
         }
         elsif($fs->degree() ne '')
         {
-            $tag = 'Dg-';
+            $tag = 'Dg-------------';
         }
         else
         {
-            $tag = 'Db-';
+            $tag = 'Db-------------';
         }
     }
     elsif($fs->is_adposition())
     {
         if($fs->adpostype() eq 'comprep')
         {
-            $tag = 'RF-';
+            $tag = 'RF-------------';
         }
         elsif($fs->adpostype() eq 'voc')
         {
-            $tag = 'RV-';
+            $tag = 'RV--X----------';
         }
         else
         {
-            $tag = 'RR-';
+            $tag = 'RR--X----------';
         }
     }
     elsif($fs->is_conjunction())
     {
         if($fs->is_subordinator())
         {
-            $tag = 'J,-';
+            # it has number if it has (3rd) person
+            $tag = 'J,-?-----------';
         }
         elsif($fs->get_other_for_tagset('cs::pdt') eq '*')
         {
-            $tag = 'J*-';
+            $tag = 'J*-------------';
         }
         else # default is coordinating conjunction
         {
-            $tag = 'J^-';
+            $tag = 'J^-------------';
         }
     }
     elsif($fs->is_particle())
     {
-        $tag = 'TT-';
+        $tag = 'TT-------------';
     }
     elsif($fs->is_interjection())
     {
-        $tag = 'II-';
+        $tag = 'II-------------';
     }
     elsif($fs->is_punctuation())
     {
         if($fs->punctype() eq 'root')
         {
-            $tag = 'Z#-';
+            $tag = 'Z#-------------';
         }
         else
         {
-            $tag = 'Z:-';
+            $tag = 'Z:-------------';
         }
     }
     else # default is unknown tag
@@ -902,32 +905,33 @@ sub encode
         my $other = $fs->get_other_for_tagset('cs::pdt');
         if($fs->is_abbreviation())
         {
-            $tag = 'Xx-';
+            $tag = 'Xx-------------';
         }
         elsif($other =~ m/^[-X\@]$/)
         {
-            $tag = 'X'.$other.'-';
+            $tag = 'X'.$other.'-------------';
         }
         else
         {
-            $tag = 'X@-';
+            $tag = 'X@-------------';
         }
     }
-    ###!!! Následuje kódování jednotlivých rysů.
-    ###!!! Ještě ale musíme vyřešit, kdy vůbec něco kódovat, a kdy vypsat jen pomlčku!
-    ###!!! Co kdyby kodér pro slovní druh dodal i řetězec ostatních pozic, kde by bylo buď X (vyplnit) nebo pomlčka (nevyplnit)?
+    # Now encode the features.
+    # The PDT tagset distinguishes unknown values ("X") and irrelevant features ("-").
+    # Interset does not do this distinction but we have prepared the defaults for empty values above.
+    my @tag = split(//, $tag);
     my $atoms = $self->atoms();
-    $tag .= $atoms->{gender}->encode($fs);
-    $tag .= $atoms->{number}->encode($fs);
-    $tag .= $atoms->{case}->encode($fs);
-    $tag .= $atoms->{possgender}->encode($fs);
-    $tag .= $atoms->{possnumber}->encode($fs);
-    $tag .= $atoms->{person}->encode($fs);
-    $tag .= $atoms->{tense}->encode($fs);
-    $tag .= $atoms->{degree}->encode($fs);
-    $tag .= $atoms->{negativeness}->encode($fs);
-    $tag .= $atoms->{voice}->encode($fs);
-    $tag .= $atoms->{variant}->encode($fs);
+    my @atoms = map {$atoms->{$_}} (undef, undef, 'gender', 'number', 'case', 'possgender', 'possnumber', 'person', 'tense', 'degree', 'negativeness', 'voice', undef, undef, 'variant');
+    for(my $i = 2; $i<15; $i++)
+    {
+        next if($i==12 || $i==13);
+        my $atag = $atoms[$i]->encode($fs);
+        if($atag ne '')
+        {
+            $tag[$i] = $atag;
+        }
+    }
+    $tag = join('', @tag);
     return $tag;
 }
 
