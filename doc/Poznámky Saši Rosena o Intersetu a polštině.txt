@@ -1,0 +1,107 @@
+12.8.2009
+
+Ahoj Dane,
+
+konečně jsem se k tomu dostal. Omlouvám se, že ti toho píšu tolik najednou a dost neuspořádaně.
+
+Chtěl bych vymyslet něco pro ten paralelní projekt, atributy a tvůj InterSet by byl bezva, akorát
+je problém s korpusovým manažerem/bonitem, který neumí s atributy tak jako třeba Poliqarp. Tam se
+dá říct třeba [number=sg & case="nom|acc" & gender="m[123]"], i když se korpus krmí tagy v
+pozičním formátu, teda podle slovních druhů - viz níže. Takže se bojim, že aspoň v první fázi, než
+se v ČNK upgraduje na něco lepšího, by ty tagy byly stejně poziční, nebo spíš poziční podle
+slovního druhu, třeba noun:sg:acc:fem, a v angličtině by bylo jenom noun:sg. A nemuselo by v nich
+být všecko, co je v těch jazykově specifických, představuju si, že by tenhle tag byl u tokenů
+fyzicky navíc, vedle toho jazykově specifického, takový "easy tag".
+
+Jo, taky mě napadlo, že by se mohlo nechat na uživateli, jaký tagset chce použít, a "překládat"
+tag v dotazu a ve výsledku on the fly. Šlo by to vůbec kvůli rychlosti?
+
+Při tom prvním řešení by nám stačilo provádět "decoding", ale jak jsem se tak díval na první
+tagset, který mne napad, tak to vůbec není žádná prča. A to jsem si vybral polštinu, blízký jazyk,
+navíc s tagsetem, který bych líp nevymyslel (IPI PAN).
+
+Stručně (no, moc mi to nevyšlo...) popíšu problémy, v naději, že mi napovíš, co bys s tím proved
+ty sám. A přikládám xls fajl, kde jsem to zkoušel namapovat na DZ interset, zatím první pokus.
+Nebo mi můžeš taky říct, že si mám líp přečíst tu tvou wiki, já se vůbec nebudu zlobit, protože si
+tohle sepisuju taky pro sebe, abych nezapomněl. Nebo se na to můžem někdy sejít, kdyby se ti
+chtělo, já teď tady ale od soboty 15.8. až do 8. září nebudu (na mailu ale většinou jo), a pak
+bych zas potřeboval to co nejrychlejš to vyřešit, protože ten další týden je od 17.9. ta paralelní
+konference, kde bych o tom měl něco říct.
+
+1. Flexémy vs. lexémy
+
+IPI se drží toho, že gramatické třídy (slovní druhy) mají mít stejné kategorie, že dělení na
+klasické slovní druhy neobstojí. Zájmena a číslovky vycházejí tedy podle toho, jak se chovají
+syntakticky, jako substantiva nebo adjektiva, ovšem pokud nemají nějakou kategorii navíc, takže
+zůstanou základní číslovky a osobní zájmena. Gerundia mají negaci a vid, takže potřebují zvláštní
+kategorii. Podobně adjektivní participia.
+Problém: jak poznat, že něco je klasicky zájmeno/číslovka/..., když to má tag pro adjektivum? Dát
+jenom syntaktický slovní druh a příslušné kategorie? Jo, to by asi šlo...
+
+
+2. Tokenizace
+
+Świniaś, neboli "seš prase" - z toho jsou dva tokeny. Poszedłbym, neboli "šel bych", tokeny tři.
+Každý se značkou. Proń jsou taky dva. Taky je niósł, ale niosł+em, a niósł má agglt=nagl, niosł
+agglt=agl. Taky je spał+em ale spała+m, em má vocalicity=wok a m má vocalicity=nwok. Jak značkovat
+ś, (e)m, by (by se považuje za neskolonné)?
+
+3. Rody
+
+Polština rozlišuje v mužském rodě lidi, zvířata a věci. Přidat vedle kategorie životnosti ještě
+lidskost?
+
+4. Accommodability
+
+Číslovky se můžou v pádě shodovat s počítaným substantivem, nebo mu udělit gen.pl. V polštině je
+to složitější než v češtině, nejde to seknout podle číselné hodnoty číslovky.
+
+5. Spojená adjektiva a adjektiva po "po"
+
+Polsko-český (polsko je token), po česku (česku není substantivum) - tohle chybí v českém tagsetu
+
+6. Accentability
+
+mu vs. jemu apod. V intersetu je v českém driveru možnost subpos:clit, na wiki (interset:features)
+to není. Co dostane jemu, když mu má clit? V IPI se patří i "-ń" (to patří i do post-prep:praep,
+spolu s "něho, ním" atd.). V polštině navíc nejsou klitika českého (Wackernagelova) typu. Možná
+lepší dělit zájmena na silná a slabá? (I "mu" může mít v určité pozici přízvuk...)
+
+7. -no/-to
+
+Tohle my nemáme: chodzono tam często: chodilo se tam často. Kdyby se to značkovalo jako neutrum sg
+od trpného příčestí, tak se ztratí informace.
+
+8. winien
+
+Tohle považují za defektní sloveso a mají pro něj extra značku. Co s takovými individui?
+
+9. pred
+
+nutno, třeba - "je nutno", "bude třeba" - v českém tagsetu jako adverbium
+
+10. qub - částice, citoslovce, nestupňovatelná adverbia
+
+odpadkový koš, nesklonná co se nedaj dát jinam, co s tím?
+
+-----
+
+Díky moc za feedback libovolného druhu.
+
+Saša
+
+
+
+
+
+> Ahoj Sašo,
+>
+> ten můj systém na převody morfologických značek mezi jazyky je popsaný tady:
+>
+> https://wiki.ufal.ms.mff.cuni.cz/user:zeman:interset
+>
+> Momentálně to umí 18 sad značek pro 9 jazyků.
+>
+> Dan
+
+
