@@ -1,0 +1,119 @@
+Morfologické <l>morfologický <c>k2eAgMnPc4d1 <c>k2eAgInPc1d1 <c>k2eAgInPc4d1 <c>k2eAgInPc5d1 <c>k2eAgFnSc2d1 <c>k2eAgFnSc3d1 <c>k2eAgFnSc6d1 <c>k2eAgFnPc1d1 <c>k2eAgFnPc4d1 <c>k2eAgFnPc5d1 <c>k2eAgNnSc1d1 <c>k2eAgNnSc4d1 <c>k2eAgNnSc5d1 <c>k2eAgMnSc1d1wH <c>k2eAgMnSc5d1wH <c>k2eAgInSc1d1wH <c>k2eAgInSc4d1wH <c>k2eAgInSc5d1wH
+značky <l>značka <c>k1gFnPc1 <c>k1gFnPc4 <c>k1gFnPc5 <c>k1gFnSc2 <l>značky <c>k6eAd1
+jsou <l>být <c>k5eAaImIp3nP
+součástí <l>součást <c>k1gFnPc2 <c>k1gFnSc7
+výsledku <l>výsledek <c>k1gInSc2 <c>k1gInSc3 <c>k1gInSc5 <c>k1gInSc6
+( 
+výstupem <l>výstup <c>k1gInSc7
+) 
+morfologické <l>morfologický <c>k2eAgMnPc4d1 <c>k2eAgInPc1d1 <c>k2eAgInPc4d1 <c>k2eAgInPc5d1 <c>k2eAgFnSc2d1 <c>k2eAgFnSc3d1 <c>k2eAgFnSc6d1 <c>k2eAgFnPc1d1 <c>k2eAgFnPc4d1 <c>k2eAgFnPc5d1 <c>k2eAgNnSc1d1 <c>k2eAgNnSc4d1 <c>k2eAgNnSc5d1 <c>k2eAgMnSc1d1wH <c>k2eAgMnSc5d1wH <c>k2eAgInSc1d1wH <c>k2eAgInSc4d1wH <c>k2eAgInSc5d1wH
+analýzy <l>analýza <c>k1gFnPc1 <c>k1gFnPc4 <c>k1gFnPc5 <c>k1gFnSc2
+, 
+která <l>který <c>k3gNnPc1 <c>k3gNnPc4 <c>k3gFnSc1 <l>který <c>k3gNnPc1 <c>k3gNnPc4 <c>k3gFnSc1 <l>který <c>k3gNnPc1 <c>k3gNnPc4 <c>k3gFnSc1
+pracuje <l>pracovat <c>k5eAaImIp3nS <l>pracovat <c>k5eAaImSgInS <c>k5eAaImSgMnS
+s <l>s <c>k0 <l>s <c>k7 <l>s <c>k7 <l>s <c>k7 <l>s <c>kA
+izolovanými <l>izolovaný <c>k2eAgFnPc7d1 <c>k2eAgInPc7d1 <c>k2eAgMnPc7d1 <c>k2eAgNnPc7d1
+slovními <l>slovní <c>k2eAgMnPc7d1 <c>k2eAgInPc7d1 <c>k2eAgNnPc7d1 <c>k2eAgFnPc7d1
+tvary <l>tvarý <c>k2eAgMnPc4d1wH <c>k2eAgInPc1d1wH <c>k2eAgInPc4d1wH <c>k2eAgInPc5d1wH <c>k2eAgFnPc1d1wH <c>k2eAgFnPc4d1wH <c>k2eAgFnPc5d1wH <c>k2eAgNnSc1d1wH <c>k2eAgNnSc4d1wH <c>k2eAgNnSc5d1wH <c>k2eAgNnPc1d1wH <c>k2eAgNnPc4d1wH <c>k2eAgNnPc5d1wH <c>k2eAgMnPc1d1wH <c>k2eAgMnPc5d1wH <l>tvar <c>k1gInPc1 <c>k1gInPc4 <c>k1gInPc5 <c>k1gInPc7
+, 
+tedy <l>tedy <c>k8 <l>tedy <c>k9
+bez <l>bez <c>k1gInSc1 <c>k1gInSc4 <l>bez <c>k7
+ohledu <l>ohled <c>k1gInSc3 <c>k1gInSc6 <c>k1gInSc2
+na <l>na <c>k7 <l>na <c>k7
+jejich <l>jejich <c>k3p3gMnSc1 <c>k3p3gFnPc1 <c>k3p3gFnPc2 <c>k3p3gFnPc3 <c>k3p3gFnPc4 <c>k3p3gFnPc6 <c>k3p3gFnPc7 <c>k3p3gFnSc1 <c>k3p3gFnSc2 <c>k3p3gFnSc3 <c>k3p3gFnSc4 <c>k3p3gFnSc6 <c>k3p3gFnSc7 <c>k3p3gInPc1 <c>k3p3gInPc2 <c>k3p3gInPc3 <c>k3p3gInPc4 <c>k3p3gInPc6 <c>k3p3gInPc7 <c>k3p3gInSc1 <c>k3p3gInSc2 <c>k3p3gInSc3 <c>k3p3gInSc4 <c>k3p3gInSc6 <c>k3p3gInSc7 <c>k3p3gMnPc1 <c>k3p3gMnPc2 <c>k3p3gMnPc3 <c>k3p3gMnPc4 <c>k3p3gMnPc6 <c>k3p3gMnPc7 <c>k3p3gMnSc2 <c>k3p3gMnSc3 <c>k3p3gMnSc4 <c>k3p3gMnSc6 <c>k3p3gMnSc7 <c>k3p3gNnPc1 <c>k3p3gNnPc2 <c>k3p3gNnPc3 <c>k3p3gNnPc4 <c>k3p3gNnPc6 <c>k3p3gNnPc7 <c>k3p3gNnSc1 <c>k3p3gNnSc2 <c>k3p3gNnSc3 <c>k3p3gNnSc4 <c>k3p3gNnSc6 <c>k3p3gNnSc7
+kontext <l>kontext <c>k1gInSc1 <c>k1gInSc4
+. 
+Druhou <l>druhý <c>k4gFnSc4 <c>k4gFnSc7
+částí <l>část <c>k1gFnPc2 <c>k1gFnSc7
+výsledku <l>výsledek <c>k1gInSc2 <c>k1gInSc3 <c>k1gInSc5 <c>k1gInSc6
+je <l>být <c>k5eAaImIp3nS <l>on <c>k3p3gMnPc4 <c>k3p3gInPc4 <c>k3p3gNnSc4 <c>k3p3gNnPc4 <c>k3p3gFnPc4 <l>je <c>k0
+tzv <l>tzv <c>kA
+. 
+lemma <l>lemma <c>k1gFnSc1 <l>lemma <c>k1gNnSc1 <c>k1gNnSc4 <c>k1gNnSc5
+, 
+které <l>který <c>k3gMnSc1wH <c>k3gInSc1wH <c>k3gInSc4wH <l>který <c>k3gInPc1 <c>k3gMnPc4 <c>k3gInPc4 <c>k3gNnSc1 <c>k3gNnSc4 <c>k3gFnSc2 <c>k3gFnSc3 <c>k3gFnSc6 <c>k3gFnPc1 <c>k3gFnPc4 <l>který <c>k3gMnSc1wH <c>k3gInSc1wH <c>k3gInSc4wH <l>který <c>k3gInPc1 <c>k3gMnPc4 <c>k3gInPc4 <c>k3gNnSc1 <c>k3gNnSc4 <c>k3gFnSc2 <c>k3gFnSc3 <c>k3gFnSc6 <c>k3gFnPc1 <c>k3gFnPc4 <l>který <c>k3gMnSc1wH <c>k3gInSc1wH <c>k3gInSc4wH <l>který <c>k3gInPc1 <c>k3gMnPc4 <c>k3gInPc4 <c>k3gNnSc1 <c>k3gNnSc4 <c>k3gFnSc2 <c>k3gFnSc3 <c>k3gFnSc6 <c>k3gFnPc1 <c>k3gFnPc4
+identifikuje <l>identifikovat <c>k5eAaBmIp3nS <l>identifikovat <c>k5eAaImSgInS <c>k5eAaImSgMnS
+příslušnou <l>příslušný <c>k2eAgFnSc4d1 <c>k2eAgFnSc7d1
+abstraktní <l>abstraktní <c>k2eAgMnSc1d1 <c>k2eAgMnSc5d1 <c>k2eAgMnPc1d1 <c>k2eAgMnPc4d1 <c>k2eAgMnPc5d1 <c>k2eAgInSc1d1 <c>k2eAgInSc4d1 <c>k2eAgInSc5d1 <c>k2eAgInPc1d1 <c>k2eAgInPc4d1 <c>k2eAgInPc5d1 <c>k2eAgNnSc1d1 <c>k2eAgNnSc4d1 <c>k2eAgNnSc5d1 <c>k2eAgNnPc1d1 <c>k2eAgNnPc4d1 <c>k2eAgNnPc5d1 <c>k2eAgFnSc1d1 <c>k2eAgFnSc2d1 <c>k2eAgFnSc3d1 <c>k2eAgFnSc4d1 <c>k2eAgFnSc5d1 <c>k2eAgFnSc6d1 <c>k2eAgFnSc7d1 <c>k2eAgFnPc1d1 <c>k2eAgFnPc4d1 <c>k2eAgFnPc5d1
+lexikální <l>lexikální <c>k2eAgMnSc1d1 <c>k2eAgMnSc5d1 <c>k2eAgInPc1d1 <c>k2eAgNnPc1d1 <c>k2eAgFnPc1d1 <c>k2eAgMnPc4d1 <c>k2eAgInPc4d1 <c>k2eAgNnPc4d1 <c>k2eAgFnPc4d1 <c>k2eAgInPc5d1 <c>k2eAgNnPc5d1 <c>k2eAgFnPc5d1 <c>k2eAgInSc1d1 <c>k2eAgNnSc1d1 <c>k2eAgInSc4d1 <c>k2eAgNnSc4d1 <c>k2eAgInSc5d1 <c>k2eAgNnSc5d1 <c>k2eAgFnSc1d1 <c>k2eAgFnSc2d1 <c>k2eAgFnSc3d1 <c>k2eAgFnSc4d1 <c>k2eAgFnSc5d1 <c>k2eAgFnSc6d1 <c>k2eAgFnSc7d1 <c>k2eAgMnPc1d1 <c>k2eAgMnPc5d1
+jednotku <l>jednotka <c>k1gFnSc4
+, 
+někdy <l>někdy <c>k6eAd1
+i <l>i <c>k8 <l>i <c>k9
+včetně <l>včetně <c>k6eAd1 <l>včetně <c>k7
+jejího <l>její <c>k3p3gMnSc2 <c>k3p3gMnSc4 <c>k3p3gInSc2 <c>k3p3gNnSc2
+významu <l>význam <c>k1gInSc3 <c>k1gInSc6 <c>k1gInSc2
+, 
+ve <l>ve <c>k7 <l>ve <c>k7
+smyslu <l>smysl <c>k1gInSc3 <c>k1gInSc6 <c>k1gInSc2
+jednoznačné <l>jednoznačný <c>k2eAgMnPc4d1 <c>k2eAgInPc1d1 <c>k2eAgInPc4d1 <c>k2eAgInPc5d1 <c>k2eAgFnSc2d1 <c>k2eAgFnSc3d1 <c>k2eAgFnSc6d1 <c>k2eAgFnPc1d1 <c>k2eAgFnPc4d1 <c>k2eAgFnPc5d1 <c>k2eAgNnSc1d1 <c>k2eAgNnSc4d1 <c>k2eAgNnSc5d1 <c>k2eAgMnSc1d1wH <c>k2eAgMnSc5d1wH <c>k2eAgInSc1d1wH <c>k2eAgInSc4d1wH <c>k2eAgInSc5d1wH
+identifikace <l>identifikace <c>k1gFnSc1 <c>k1gFnPc1 <c>k1gFnPc4 <c>k1gFnPc5 <c>k1gFnSc2 <c>k1gFnSc5
+slovníkového <l>slovníkový <c>k2eAgMnSc4d1 <c>k2eAgMnSc2d1 <c>k2eAgInSc2d1 <c>k2eAgNnSc2d1
+hesla <l>heslo <c>k1gNnPc1 <c>k1gNnPc4 <c>k1gNnPc5 <c>k1gNnSc2
+. 
+V <l>v <c>k7 <l>v <c>k7 <l>V <c>kA
+opačném <l>opačný <c>k2eAgMnSc6d1 <c>k2eAgInSc6d1 <c>k2eAgNnSc6d1 <c>k2eAgFnPc3d1wH <c>k2eAgInPc3d1wH <c>k2eAgInSc7d1wH <c>k2eAgMnPc3d1wH <c>k2eAgMnSc7d1wH <c>k2eAgNnPc3d1wH <c>k2eAgNnSc7d1wH
+směru <l>směr <c>k1gInSc3 <c>k1gInSc6 <c>k1gInSc2
+, 
+tj <l>tj <c>kA
+. 
+pro <l>pro <c>k7
+syntézu <l>syntéza <c>k1gFnSc4
+slovních <l>slovní <c>k2eAgMnPc2d1 <c>k2eAgMnPc6d1 <c>k2eAgInPc2d1 <c>k2eAgInPc6d1 <c>k2eAgNnPc2d1 <c>k2eAgNnPc6d1 <c>k2eAgFnPc2d1 <c>k2eAgFnPc6d1
+tvarů <l>tvar <c>k1gInPc2
+, 
+je <l>být <c>k5eAaImIp3nS <l>on <c>k3p3gMnPc4 <c>k3p3gInPc4 <c>k3p3gNnSc4 <c>k3p3gNnPc4 <c>k3p3gFnPc4 <l>je <c>k0
+značka <l>značka <c>k1gFnSc1
+spolu <l>spol <c>k1gInSc3 <c>k1gInSc6 <c>k1gInSc2 <l>spolu <c>k6eAd1
+s <l>s <c>k0 <l>s <c>k7 <l>s <c>k7 <l>s <c>k7 <l>s <c>kA
+lemmatem <l>lemma <c>k1gNnSc7
+vstupem <l>vstup <c>k1gInSc7
+pro <l>pro <c>k7
+proceduru <l>procedura <c>k1gFnSc4
+tvorby <l>tvorba <c>k1gFnPc1 <c>k1gFnPc4 <c>k1gFnPc5 <c>k1gFnSc2
+( 
+opět <l>opět <c>k5eAaPmF <l>opět <c>k6eAd1
+izolovaného <l>izolovaný <c>k2eAgMnSc4d1 <c>k2eAgMnSc2d1 <c>k2eAgInSc2d1 <c>k2eAgNnSc2d1
+) 
+slovního <l>slovní <c>k2eAgMnSc2d1 <c>k2eAgMnSc4d1 <c>k2eAgInSc2d1 <c>k2eAgNnSc2d1
+tvaru <l>tvar <c>k1gInSc3 <c>k1gInSc6 <c>k1gInSc2
+. 
+Morfologická <l>morfologický <c>k2eAgFnSc1d1 <c>k2eAgFnSc5d1 <c>k2eAgNnPc1d1 <c>k2eAgNnPc4d1 <c>k2eAgNnPc5d1
+analýza <l>analýza <c>k1gFnSc1
+je <l>být <c>k5eAaImIp3nS <l>on <c>k3p3gMnPc4 <c>k3p3gInPc4 <c>k3p3gNnSc4 <c>k3p3gNnPc4 <c>k3p3gFnPc4 <l>je <c>k0
+obecně <l>obecnět <c>k5eAaImSgInS <c>k5eAaImSgMnS <l>obecně <c>k6eAd1 <l>obecně <c>k6eAd1
+nejednoznačná <l>jednoznačný <c>k2eNgFnSc1d1 <c>k2eNgFnSc5d1 <c>k2eNgNnPc1d1 <c>k2eNgNnPc4d1 <c>k2eNgNnPc5d1
+; 
+slovní <l>slovný <c>k2eAgMnPc1d1 <c>k2eAgMnPc5d1 <l>slovní <c>k2eAgMnSc1d1 <c>k2eAgMnSc5d1 <c>k2eAgInPc1d1 <c>k2eAgNnPc1d1 <c>k2eAgFnPc1d1 <c>k2eAgMnPc4d1 <c>k2eAgInPc4d1 <c>k2eAgNnPc4d1 <c>k2eAgFnPc4d1 <c>k2eAgInPc5d1 <c>k2eAgNnPc5d1 <c>k2eAgFnPc5d1 <c>k2eAgInSc1d1 <c>k2eAgNnSc1d1 <c>k2eAgInSc4d1 <c>k2eAgNnSc4d1 <c>k2eAgInSc5d1 <c>k2eAgNnSc5d1 <c>k2eAgFnSc1d1 <c>k2eAgFnSc2d1 <c>k2eAgFnSc3d1 <c>k2eAgFnSc4d1 <c>k2eAgFnSc5d1 <c>k2eAgFnSc6d1 <c>k2eAgFnSc7d1 <c>k2eAgMnPc1d1 <c>k2eAgMnPc5d1
+tvary <l>tvarý <c>k2eAgMnPc4d1wH <c>k2eAgInPc1d1wH <c>k2eAgInPc4d1wH <c>k2eAgInPc5d1wH <c>k2eAgFnPc1d1wH <c>k2eAgFnPc4d1wH <c>k2eAgFnPc5d1wH <c>k2eAgNnSc1d1wH <c>k2eAgNnSc4d1wH <c>k2eAgNnSc5d1wH <c>k2eAgNnPc1d1wH <c>k2eAgNnPc4d1wH <c>k2eAgNnPc5d1wH <c>k2eAgMnPc1d1wH <c>k2eAgMnPc5d1wH <l>tvar <c>k1gInPc1 <c>k1gInPc4 <c>k1gInPc5 <c>k1gInPc7
+, 
+brány <l>brát <c>k5eAaImNgFnP <c>k5eAaImNgInP <l>brána <c>k1gFnPc1 <c>k1gFnPc4 <c>k1gFnPc5 <c>k1gFnSc2 <l>brány <c>k1gFnPc1 <c>k1gFnPc4 <c>k1gFnPc5 <l>brán <c>k2eAgFnPc1d1 <c>k2eAgFnPc4d1 <c>k2eAgInPc1d1 <c>k2eAgInPc4d1 <c>k2eAgMnPc4d1
+izolovaně <l>izolovaně <c>k6eAd1
+a <l>a <c>k8 <l>a <c>k9
+bez <l>bez <c>k1gInSc1 <c>k1gInSc4 <l>bez <c>k7
+ohledu <l>ohled <c>k1gInSc3 <c>k1gInSc6 <c>k1gInSc2
+na <l>na <c>k7 <l>na <c>k7
+kontext <l>kontext <c>k1gInSc1 <c>k1gInSc4
+, 
+pochopitelně <l>pochopitelně <c>k6eAd1
+nemohou <l>moct <c>k5eNaImIp3nP
+být <l>být <c>k5eAaImF
+v <l>v <c>k7 <l>v <c>k7
+mnoha <l>mnoho <c>k4c2 <c>k4c3 <c>k4c6 <c>k4c7
+případech <l>případ <c>k1gInPc6
+jednoznačně <l>jednoznačně <c>k6eAd1
+určeny <l>určit <c>k5eAaPmNgFnP <c>k5eAaPmNgInP <l>určen <c>k2eAgFnPc1d1 <c>k2eAgFnPc4d1 <c>k2eAgInPc1d1 <c>k2eAgInPc4d1 <c>k2eAgMnPc4d1 <l>určený <c>k2eAgMnPc4d1wH <c>k2eAgInPc1d1wH <c>k2eAgInPc4d1wH <c>k2eAgInPc5d1wH <c>k2eAgFnPc1d1wH <c>k2eAgFnPc4d1wH <c>k2eAgFnPc5d1wH <c>k2eAgNnSc1d1wH <c>k2eAgNnSc4d1wH <c>k2eAgNnSc5d1wH <c>k2eAgNnPc1d1wH <c>k2eAgNnPc4d1wH <c>k2eAgNnPc5d1wH <c>k2eAgMnPc1d1wH <c>k2eAgMnPc5d1wH
+, 
+a <l>a <c>k8 <l>a <c>k9
+to <l>ten <c>k3gNnSc1 <c>k3gNnSc4 <l>to <c>k9
+jak <l>jak <c>k1gMnSc1 <l>jak <c>k8 <l>jak <c>k6eAd1 <l>jak <c>k6eAd1 <l>jak <c>k8 <l>jak <c>k9 <l>jak <c>k6eAd1
+z <l>z <c>k0 <l>z <c>k7
+hlediska <l>hledisko <c>k1gNnPc1 <c>k1gNnPc4 <c>k1gNnPc5 <c>k1gNnSc2
+lemmatu <l>lemma <c>k1gNnSc3 <c>k1gNnSc6 <c>k1gNnSc2
+, 
+tak <l>tak <c>k8 <l>tak <c>k0 <l>tak <c>k6eAd1 <l>tak <c>k8 <l>tak <c>k9
+z <l>z <c>k0 <l>z <c>k7
+hlediska <l>hledisko <c>k1gNnPc1 <c>k1gNnPc4 <c>k1gNnPc5 <c>k1gNnSc2
+morfologické <l>morfologický <c>k2eAgMnPc4d1 <c>k2eAgInPc1d1 <c>k2eAgInPc4d1 <c>k2eAgInPc5d1 <c>k2eAgFnSc2d1 <c>k2eAgFnSc3d1 <c>k2eAgFnSc6d1 <c>k2eAgFnPc1d1 <c>k2eAgFnPc4d1 <c>k2eAgFnPc5d1 <c>k2eAgNnSc1d1 <c>k2eAgNnSc4d1 <c>k2eAgNnSc5d1 <c>k2eAgMnSc1d1wH <c>k2eAgMnSc5d1wH <c>k2eAgInSc1d1wH <c>k2eAgInSc4d1wH <c>k2eAgInSc5d1wH
+značky <l>značka <c>k1gFnPc1 <c>k1gFnPc4 <c>k1gFnPc5 <c>k1gFnSc2 <l>značky <c>k6eAd1
+. 

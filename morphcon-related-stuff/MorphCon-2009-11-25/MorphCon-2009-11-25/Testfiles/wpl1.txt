@@ -1,0 +1,119 @@
+Morfologické	AAFP1----1A----,AAFP4----1A----,AAFP5----1A----,AAFS2----1A----,AAFS3----1A----,AAFS6----1A----,AAIP1----1A----,AAIP4----1A----,AAIP5----1A----,AAMP4----1A----,AANS1----1A----,AANS4----1A----,AANS5----1A----	morfologický
+značky	NNFP1-----A----,NNFP4-----A----,NNFP5-----A----,NNFS2-----A----	značka
+jsou	VB-P---3P-AA---	být
+součástí	NNFP2-----A----,NNFS7-----A----	součást
+výsledku	NNIS2-----A----,NNIS3-----A----,NNIS5-----A----,NNIS6-----A----	výsledek
+(	Z:-------------	(
+výstupem	NNIS7-----A----	výstup
+)	Z:-------------	)
+morfologické	AAFP1----1A----,AAFP4----1A----,AAFP5----1A----,AAFS2----1A----,AAFS3----1A----,AAFS6----1A----,AAIP1----1A----,AAIP4----1A----,AAIP5----1A----,AAMP4----1A----,AANS1----1A----,AANS4----1A----,AANS5----1A----	morfologický
+analýzy	NNFP1-----A----,NNFP4-----A----,NNFP5-----A----,NNFS2-----A----	analýza
+,	Z:-------------	,
+která	P4FS1----------,P4NP1----------,P4NP4----------	který
+pracuje	VB-S---3P-AA---,VeYS------A----	pracovat_:T
+s	RR--7----------	s-1	NNNXX-----A----	s-3_^(označení_pomocí_písmene)
+izolovanými	AAFP7----1A----,AAIP7----1A----,AAMP7----1A----,AANP7----1A----	izolovaný_^(*2t)
+slovními	AAFP7----1A----,AAIP7----1A----,AAMP7----1A----,AANP7----1A----	slovní
+tvary	NNIP1-----A----,NNIP4-----A----,NNIP5-----A----,NNIP7-----A----	tvar
+,	Z:-------------	,
+tedy	Db-------------	tedy
+bez	RR--2----------	bez-1	NNIS1-----A----,NNIS4-----A----	bez-2_^(okrasný_keř,_strom)
+ohledu	NNIS2-----A----,NNIS3-----A----,NNIS6-----A----	ohled
+na	RR--4----------,RR--6----------	na-1
+jejich	PSXXXXP3-------	jeho_^(přivlast.)
+kontext	NNIS1-----A----,NNIS4-----A----	kontext
+.	Z:-------------	.
+Druhou	AAFS4----1A----,AAFS7----1A----	druhý-1_^(jiný)
+částí	NNFP2-----A----,NNFS7-----A----	část
+výsledku	NNIS2-----A----,NNIS3-----A----,NNIS5-----A----,NNIS6-----A----	výsledek
+je	VB-S---3P-AA---	být	PPNS4--3-------,PPXP4--3-------	on-1_^(oni/ono)
+tzv	X5------------	tzv
+.	Z:-------------	.
+lemma	X5------------	lemma
+,	Z:-------------	,
+které	P4FP1----------,P4FP4----------,P4FS2----------,P4FS3----------,P4FS6----------,P4IP1----------,P4NS1----------,P4NS4----------,P4YP4----------	který
+identifikuje	VB-S---3P-AA---,VeYS------A----,VmYS------A---4	identifikovat_:T
+příslušnou	AAFS4----1A----,AAFS7----1A----	příslušný
+abstraktní	AAFP1----1A----,AAFP4----1A----,AAFP5----1A----,AAFS1----1A----,AAFS2----1A----,AAFS3----1A----,AAFS4----1A----,AAFS5----1A----,AAFS6----1A----,AAFS7----1A----,AAIP1----1A----,AAIP4----1A----,AAIP5----1A----,AAIS1----1A----,AAIS4----1A----,AAIS5----1A----,AAMP1----1A----,AAMP4----1A----,AAMP5----1A----,AAMS1----1A----,AAMS5----1A----,AANP1----1A----,AANP4----1A----,AANP5----1A----,AANS1----1A----,AANS4----1A----,AANS5----1A----	abstraktní
+lexikální	AAFP1----1A----,AAFP4----1A----,AAFP5----1A----,AAFS1----1A----,AAFS2----1A----,AAFS3----1A----,AAFS4----1A----,AAFS5----1A----,AAFS6----1A----,AAFS7----1A----,AAIP1----1A----,AAIP4----1A----,AAIP5----1A----,AAIS1----1A----,AAIS4----1A----,AAIS5----1A----,AAMP1----1A----,AAMP4----1A----,AAMP5----1A----,AAMS1----1A----,AAMS5----1A----,AANP1----1A----,AANP4----1A----,AANP5----1A----,AANS1----1A----,AANS4----1A----,AANS5----1A----	lexikální
+jednotku	NNFS4-----A----	jednotka
+,	Z:-------------	,
+někdy	Db-------------	někdy
+i	J^-------------	i-1
+včetně	Db-------------	včetně-1	RR--2----------	včetně-2
+jejího	PSMS4FS3-------,PSZS2FS3-------	jeho_^(přivlast.)
+významu	NNIS2-----A----,NNIS3-----A----,NNIS6-----A----	význam
+,	Z:-------------	,
+ve	RV--4----------,RV--6----------	v-1
+smyslu	NNIS2-----A----,NNIS3-----A----,NNIS6-----A----	smysl
+jednoznačné	AAFP1----1A----,AAFP4----1A----,AAFP5----1A----,AAFS2----1A----,AAFS3----1A----,AAFS6----1A----,AAIP1----1A----,AAIP4----1A----,AAIP5----1A----,AAMP4----1A----,AANS1----1A----,AANS4----1A----,AANS5----1A----	jednoznačný
+identifikace	NNFP1-----A----,NNFP4-----A----,NNFP5-----A----,NNFS1-----A----,NNFS2-----A----,NNFS5-----A----	identifikace
+slovníkového	AAIS2----1A----,AAMS2----1A----,AAMS4----1A----,AANS2----1A----	slovníkový
+hesla	NNNP1-----A----,NNNP4-----A----,NNNP5-----A----,NNNS2-----A----	heslo
+.	Z:-------------	.
+V	C}-------------	V-3`5	RR--4----------,RR--6----------	v-1	NNNXX-----A----	v-3_^(označení_pomocí_písmene)
+opačném	AAIS6----1A----,AAMS6----1A----,AANS6----1A----	opačný
+směru	NNIS2-----A----,NNIS3-----A----,NNIS6-----A----	směr
+,	Z:-------------	,
+tj	X5------------	tj
+.	Z:-------------	.
+pro	RR--4----------	pro-1
+syntézu	NNFS4-----A----	syntéza
+slovních	AAFP2----1A----,AAFP6----1A----,AAIP2----1A----,AAIP6----1A----,AAMP2----1A----,AAMP6----1A----,AANP2----1A----,AANP6----1A----	slovní
+tvarů	NNIP2-----A----	tvar
+,	Z:-------------	,
+je	VB-S---3P-AA---	být	PPNS4--3-------,PPXP4--3-------	on-1_^(oni/ono)
+značka	NNFS1-----A----	značka
+spolu	Db-------------	spolu
+s	RR--7----------	s-1	NNNXX-----A----	s-3_^(označení_pomocí_písmene)
+lemmatem	X5------------	lemmatem
+vstupem	NNIS7-----A----	vstup
+pro	RR--4----------	pro-1
+proceduru	NNFS4-----A----	procedura
+tvorby	NNFP1-----A----,NNFP4-----A----,NNFP5-----A----,NNFS2-----A----	tvorba
+(	Z:-------------	(
+opět	Db-------------	opět
+izolovaného	AAIS2----1A----,AAMS2----1A----,AAMS4----1A----,AANS2----1A----	izolovaný_^(*2t)
+)	Z:-------------	)
+slovního	AAIS2----1A----,AAMS2----1A----,AAMS4----1A----,AANS2----1A----	slovní
+tvaru	NNIS2-----A----,NNIS3-----A----,NNIS6-----A----	tvar
+.	Z:-------------	.
+Morfologická	AAFS1----1A----,AAFS5----1A----,AANP1----1A----,AANP4----1A----,AANP5----1A----	morfologický
+analýza	NNFS1-----A----	analýza
+je	VB-S---3P-AA---	být	PPNS4--3-------,PPXP4--3-------	on-1_^(oni/ono)
+obecně	Dg-------1A----	obecně_^(*1ý)
+nejednoznačná	AAFS1----1N----,AAFS5----1N----,AANP1----1N----,AANP4----1N----,AANP5----1N----	jednoznačný
+;	Z:-------------	;
+slovní	AAFP1----1A----,AAFP4----1A----,AAFP5----1A----,AAFS1----1A----,AAFS2----1A----,AAFS3----1A----,AAFS4----1A----,AAFS5----1A----,AAFS6----1A----,AAFS7----1A----,AAIP1----1A----,AAIP4----1A----,AAIP5----1A----,AAIS1----1A----,AAIS4----1A----,AAIS5----1A----,AAMP1----1A----,AAMP4----1A----,AAMP5----1A----,AAMS1----1A----,AAMS5----1A----,AANP1----1A----,AANP4----1A----,AANP5----1A----,AANS1----1A----,AANS4----1A----,AANS5----1A----	slovní
+tvary	NNIP1-----A----,NNIP4-----A----,NNIP5-----A----,NNIP7-----A----	tvar
+,	Z:-------------	,
+brány	NNFP1-----A----,NNFP4-----A----,NNFP5-----A----,NNFS2-----A----	brána	VsTP---XX-AP---	brát
+izolovaně	Dg-------1A----	izolovaně_^(*2t)
+a	J^-------------	a-1
+bez	RR--2----------	bez-1	NNIS1-----A----,NNIS4-----A----	bez-2_^(okrasný_keř,_strom)
+ohledu	NNIS2-----A----,NNIS3-----A----,NNIS6-----A----	ohled
+na	RR--4----------,RR--6----------	na-1
+kontext	NNIS1-----A----,NNIS4-----A----	kontext
+,	Z:-------------	,
+pochopitelně	Dg-------1A----	pochopitelně_^(*4)
+nemohou	VB-P---3P-NA--1	moci_^(mít_možnost_[něco_dělat])
+být	Vf--------A----	být
+v	RR--4----------,RR--6----------	v-1	NNNXX-----A----	v-3_^(označení_pomocí_písmene)
+mnoha	Ca--2----------,Ca--3----------,Ca--6----------,Ca--7----------	mnoho-1
+případech	NNIP6-----A----	případ
+jednoznačně	Dg-------1A----	jednoznačně_^(*1ý)
+určeny	VsTP---XX-AP---	určit
+,	Z:-------------	,
+a	J^-------------	a-1
+to	PDNS1----------,PDNS4----------	ten
+jak	NNMS1-----A----	jak-1_;L_^(živočich)	J,-------------	jak-2	Db-------------	jak-3
+z	RR--2----------	z-1
+hlediska	NNNP1-----A----,NNNP4-----A----,NNNP5-----A----,NNNS2-----A----	hledisko
+lemmatu	X5------------	lemmatu
+,	Z:-------------	,
+tak	J^-------------	tak-2	Db-------------	tak-3	NNFP2-----A----	taka-1_;L
+z	RR--2----------	z-1
+hlediska	NNNP1-----A----,NNNP4-----A----,NNNP5-----A----,NNNS2-----A----	hledisko
+morfologické	AAFP1----1A----,AAFP4----1A----,AAFP5----1A----,AAFS2----1A----,AAFS3----1A----,AAFS6----1A----,AAIP1----1A----,AAIP4----1A----,AAIP5----1A----,AAMP4----1A----,AANS1----1A----,AANS4----1A----,AANS5----1A----	morfologický
+značky	NNFP1-----A----,NNFP4-----A----,NNFP5-----A----,NNFS2-----A----	značka
+.	Z:-------------	.
