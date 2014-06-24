@@ -311,6 +311,8 @@ sub _create_atoms
 
             { 'gender' => { 'fem|masc'  => 'T',
                             'fem|neut'  => { 'number' => { 'plu|sing' => 'Q',
+                                                           'sing'     => 'H',
+                                                           'plu'      => 'H',
                                                            '@'        => 'H' }},
                             'masc|neut' => { 'animateness' => { 'inan' => 'W',
                                                                 '@'    => 'Z' }},
@@ -1018,6 +1020,12 @@ sub encode
     {
         next if($i==12 || $i==13);
         my $atag = $atoms->{$features[$i]}->encode($fs);
+        # If we got undef, there is something wrong with our encoding tables.
+        if(!defined($atag))
+        {
+            print STDERR ("\n", $fs->as_string(), "\n");
+            confess("Cannot encode '$features[$i]'");
+        }
         if($atag ne '')
         {
             $tag[$i] = $atag;

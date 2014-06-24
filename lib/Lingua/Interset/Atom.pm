@@ -137,15 +137,7 @@ sub _encoding_step
         }
         my $value = $fs->get_joined($feature); ###!!! Tohle je blbě! Pole chceme asi porovnávat jinak!
         my $valuehash = $map->{$feature};
-        my $target = ''; # output string or next-level map
-        if(exists($valuehash->{$value}))
-        {
-            $target = $valuehash->{$value};
-        }
-        elsif(exists($valuehash->{'@'}))
-        {
-            $target = $valuehash->{'@'};
-        }
+        my $target = _get_decision_for_value($value, $valuehash); # output string or next-level map
         if(ref($target) eq 'HASH')
         {
             return _encoding_step($target, $fs);
@@ -234,6 +226,90 @@ sub _list_step
 
 
 
+#------------------------------------------------------------------------------
+# Takes references to two one-dimensional arrays and returns their intersection
+# as a list. If an element occurs more than once in one of the arrays, it will
+# occur at most once in the result.
+#------------------------------------------------------------------------------
+sub intersection
+{
+    my $a = shift;
+    my $b = shift;
+    if(ref($a) ne 'ARRAY' || ref($b) ne 'ARRAY')
+    {
+        confess("Expected two array references as parameters");
+    }
+    my %bmap;
+    foreach my $belement (@{$b})
+    {
+        $bmap{$belement}++;
+    }
+    my @intersection;
+    my %imap;
+    foreach my $aelement (@{$a})
+    {
+        if(exists($bmap{$aelement}) && !exists($imap{$aelement}))
+        {
+            push(@intersection, $aelement);
+            $imap{$aelement}++;
+        }
+    }
+    return @intersection;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Takes a feature value and a hash indexed by feature values. A value can be a
+# list of values separated by vertical bars (e.g. 'masc|fem'). The function
+# first tries to find an exact match. If it fails, it takes all hash keys,
+# tries to interpret them as lists and find the value in the list (or, if the
+# value sought for is also a list, to find the largest intersection of the
+# lists). If it still fails, it looks for the hash key '@', which means
+# "everything else".
+#------------------------------------------------------------------------------
+sub _get_decision_for_value
+{
+    my $value = shift;
+    my $valuehash = shift;
+    if(exists($valuehash->{$value}))
+    {
+        return $valuehash->{$value};
+    }
+    else
+    {
+        # The sought value could be a list of values.
+        # One or more of the hash keys could also be lists of values.
+        my @keys = keys(%{$valuehash});
+        my $maxn = 0;
+        my $maxkey;
+        foreach my $key (@keys)
+        {
+            my @a = split(/\|/, $value);
+            my @b = split(/\|/, $key);
+            my @i = intersection(\@a, \@b);
+            my $n = scalar(@i);
+            if($n>$maxn)
+            {
+                $maxn = $n;
+                $maxkey = $key;
+            }
+        }
+        # Did we find anything?
+        if(defined($maxkey))
+        {
+            return $valuehash->{$maxkey};
+        }
+        # Do we at least have a default decision?
+        elsif(exists($valuehash->{'@'}))
+        {
+            return $valuehash->{'@'};
+        }
+    }
+}
+
+
+
 1;
 
 =head1 SYNOPSIS
@@ -315,13 +391,24 @@ A special value C<@>, if present, means “everything else”.
 It is recommended to always mark the default value using C<@>.
 Even if we list all currently known values of the feature, new values may be introduced to Interset in future
 and we do not want to have to get back to all tagsets and update their encoding maps.
+(On the other hand, if there are values that the C<decode()> method of the current atom
+does not generate but we still have a preferred output for them, the preference must
+be made explicit. For instance, if the language does not have the pluperfect tense,
+it may still define that it be encoded the same way as the past tense.)
+
+A feature may have a I<multi-value> (several values joined and separated by vertical
+bars). A value (multi- or not) is always first sought using the exact match. If the
+search fails, both the current feature value and the keys of the value hash are treated
+as lists of values and their largest intersection is sought for. If no overlap is found,
+the default C<@> decision is taken.
 
 Example:
 
-  { 'gender' => { 'masc' => { 'animateness' => { 'inan' => 'I',
-                                                 '@'    => 'M' }},
-                  'fem'  => 'F',
-                  '@'    => 'N' }}
+  { 'gender' => { 'masc'      => { 'animateness' => { 'inan' => 'I',
+                                                      '@'    => 'M' }},
+                  'fem|masc'  => 'T',
+                  'fem'       => 'F',
+                  '@'         => 'N' }}
 
 Note that in general it is not possible to automatically derive the C<encode_map> from the C<decode_map>
 or vice versa. However, there are simple instances of atoms where this is possible.
