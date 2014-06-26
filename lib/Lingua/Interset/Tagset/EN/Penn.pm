@@ -13,8 +13,6 @@ use utf8;
 use open ':utf8';
 use namespace::autoclean;
 use Moose;
-use Lingua::Interset::FeatureStructure;
-use Lingua::Interset::Trie;
 extends 'Lingua::Interset::Tagset';
 
 
