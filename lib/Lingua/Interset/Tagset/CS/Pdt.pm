@@ -23,8 +23,9 @@ has 'atoms' => ( isa => 'HashRef', is => 'ro', builder => '_create_atoms', lazy 
 #------------------------------------------------------------------------------
 # Creates an atomic driver and returns it.
 #------------------------------------------------------------------------------
-sub _create_atom
+sub create_atom
 {
+    my $self = shift;
     my @parameters = @_;
     my $atom = Lingua::Interset::Atom->new(@parameters);
     return $atom;
@@ -35,8 +36,9 @@ sub _create_atom
 #------------------------------------------------------------------------------
 # Creates a simple atomic driver and returns it.
 #------------------------------------------------------------------------------
-sub _create_simple_atom
+sub create_simple_atom
 {
+    my $self = shift;
     my @parameters = @_;
     my $atom = Lingua::Interset::SimpleAtom->new(@parameters);
     return $atom;
@@ -52,7 +54,7 @@ sub _create_atoms
     my $self = shift;
     my %atoms;
     # 1. PART OF SPEECH ####################
-    $atoms{pos} = _create_atom
+    $atoms{pos} = $self->create_atom
     (
         'surfeature' => 'pos',
         'decode_map' =>
@@ -289,7 +291,7 @@ sub _create_atoms
         'encode_map' => {} # Encoding of part of speech must be solved directly in Perl code, it would be too complicated to do it here.
     );
     # 2. GENDER ####################
-    $atoms{gender} = _create_atom
+    $atoms{gender} = $self->create_atom
     (
         'surfeature' => 'gender',
         'decode_map' =>
@@ -322,7 +324,7 @@ sub _create_atoms
                             'neut' => 'N' }}
     );
     # 3. NUMBER ####################
-    $atoms{number} = _create_atom
+    $atoms{number} = $self->create_atom
     (
         'surfeature' => 'number',
         'decode_map' =>
@@ -341,7 +343,7 @@ sub _create_atoms
                             'sing' => 'S' }}
     );
     # 4. CASE ####################
-    $atoms{case} = _create_simple_atom
+    $atoms{case} = $self->create_simple_atom
     (
         'intfeature' => 'case',
         'simple_decode_map' =>
@@ -356,7 +358,7 @@ sub _create_atoms
         }
     );
     # 5. POSSGENDER ####################
-    $atoms{possgender} = _create_atom
+    $atoms{possgender} = $self->create_atom
     (
         'surfeature' => 'possgender',
         'decode_map' =>
@@ -376,7 +378,7 @@ sub _create_atoms
                                 'neut' => 'N' }}
     );
     # 6. POSSNUMBER ####################
-    $atoms{possnumber} = _create_simple_atom
+    $atoms{possnumber} = $self->create_simple_atom
     (
         'intfeature' => 'possnumber',
         'simple_decode_map' =>
@@ -386,7 +388,7 @@ sub _create_atoms
         }
     );
     # 7. PERSON ####################
-    $atoms{person} = _create_simple_atom
+    $atoms{person} = $self->create_simple_atom
     (
         'intfeature' => 'person',
         'simple_decode_map' =>
@@ -397,7 +399,7 @@ sub _create_atoms
         }
     );
     # 8. TENSE ####################
-    $atoms{tense} = _create_atom
+    $atoms{tense} = $self->create_atom
     (
         'surfeature' => 'tense',
         'decode_map' =>
@@ -418,7 +420,7 @@ sub _create_atoms
                                                               'pres' => 'P' }}}}}}
     );
     # 9. DEGREE ####################
-    $atoms{degree} = _create_simple_atom
+    $atoms{degree} = $self->create_simple_atom
     (
         'intfeature' => 'degree',
         'simple_decode_map' =>
@@ -429,7 +431,7 @@ sub _create_atoms
         }
     );
     # 10. NEGATIVENESS ####################
-    $atoms{negativeness} = _create_atom
+    $atoms{negativeness} = $self->create_atom
     (
         'surfeature' => 'negativeness',
         'decode_map' =>
@@ -445,7 +447,7 @@ sub _create_atoms
                                                              'neg' => 'N' }}}}
     );
     # 11. VOICE ####################
-    $atoms{voice} = _create_atom
+    $atoms{voice} = $self->create_atom
     (
         'surfeature' => 'voice',
         'decode_map' =>
@@ -462,7 +464,7 @@ sub _create_atoms
                                                                               'pass' => 'P' }}}}}}
     );
     # 12. VARIANT ####################
-    $atoms{variant} = _create_atom
+    $atoms{variant} = $self->create_atom
     (
         'surfeature' => 'variant',
         'decode_map' =>

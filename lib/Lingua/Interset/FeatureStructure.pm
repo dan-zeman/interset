@@ -15,6 +15,7 @@ use MooseX::SemiAffordanceAccessor; # attribute x is written using set_x($value)
 # use Lingua::Interset::FeatureStructure qw(feature_valid value_valid);
 use Exporter::Easy ( OK => [ 'feature_valid', 'value_valid' ] );
 use Carp; # confess()
+use List::MoreUtils qw(any);
 
 
 
@@ -119,7 +120,7 @@ my %matrix = @_matrix =
     'nametype' =>
     {
         'priority' => 85,
-        'values' => ['geo', 'prs', 'giv', 'sur', 'nat', 'com', 'pro', ''],
+        'values' => ['geo', 'prs', 'giv', 'sur', 'nat', 'com', 'pro', 'oth', 'col', 'sci', 'che', 'med', 'tec', 'cel', 'gov', 'jus', 'fin', 'env', 'cul', 'spo', 'hob', ''],
         'replacements' =>
         [
             ['geo'],
@@ -128,7 +129,21 @@ my %matrix = @_matrix =
             ['sur', 'prs'],
             ['nat', 'prs'],
             ['com', 'pro'],
-            ['pro', 'com']
+            ['pro', 'com'],
+            ['oth'],
+            ['col'],
+            ['sci'],
+            ['che', 'sci'],
+            ['med'],
+            ['tec'],
+            ['cel', 'tec'],
+            ['gov'],
+            ['jus'],
+            ['fin'],
+            ['env'],
+            ['cul'],
+            ['spo'],
+            ['hob']
         ],
     },
     # Special type of adjective if applicable and if known.
@@ -1293,6 +1308,34 @@ sub get_other_for_tagset
 
 
 #------------------------------------------------------------------------------
+# Tests whether values of a feature contain one particular value. Useful if we
+# know that a feature may have array of values.
+#------------------------------------------------------------------------------
+=method contains()
+
+  $fs->set ('prontype', 'int|rel');
+  if($fs->contains ('prontype', 'int'))
+  {
+      print("One of the possible pronominal classes for this word is 'interrogative'.\n");
+  }
+
+Takes a feature and a value.
+Tests whether the given value is one of the current values of the feature.
+This function can be used instead of simple C<< if($fs->prontype() eq 'int') >>
+whenever we believe that arrays of values could occur.
+
+=cut
+sub contains
+{
+    my $self = shift;
+    my $feature = shift;
+    my $value = shift;
+    return any { $_ eq $value } ($self->get_list($feature));
+}
+
+
+
+#------------------------------------------------------------------------------
 # Shortcuts for some frequent tests people want to do against Interset.
 #------------------------------------------------------------------------------
 =method is_noun()
@@ -1357,6 +1400,9 @@ sub is_plural {my $self = shift; return scalar(grep {$_ eq 'plu'} ($self->get_li
 =method is_pronoun()
 =cut
 sub is_pronoun {my $self = shift; return $self->prontype() ne '';}
+=method is_proper_noun()
+=cut
+sub is_proper_noun {my $self = shift; return scalar(grep {$_ eq 'prop'} ($self->get_list('nountype')));}
 =method is_punctuation()
 =cut
 sub is_punctuation {my $self = shift; return scalar(grep {$_ eq 'punc'} ($self->get_list('pos')));}

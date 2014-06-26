@@ -23,7 +23,10 @@ sub decode
     my $self = shift;
     my $tag = shift;
     my $penn = _conll_to_penn($tag);
-    return $self->SUPER::decode($penn);
+    my $fs = $self->SUPER::decode($penn);
+    # Here we could set $fs->set_tagset('en::conll') but we will not so that all
+    # the descendants of en::penn can share the same feature structures.
+    return $fs;
 }
 
 
