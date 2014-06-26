@@ -239,12 +239,13 @@ my %matrix = @_matrix =
     'conjtype' =>
     {
         'priority' => 160,
-        'values' => ['coor', 'sub', 'comp', ''],
+        'values' => ['coor', 'sub', 'comp', 'oper', ''],
         'replacements' =>
         [
             ['coor'],
             ['sub'],
             ['comp'],
+            ['oper']
         ],
     },
     # Particle type.

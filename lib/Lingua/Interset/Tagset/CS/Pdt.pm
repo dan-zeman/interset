@@ -219,7 +219,7 @@ sub _create_atoms
             'Vi' => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'imp'],
             # conditional auxiliary verb form (evolved from aorist of 'to be')
             # examples: bych bys by bychom byste
-            'Vc' => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'sub'], ###!!! jaktože ne cond???
+            'Vc' => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'cnd'],
             # verb active participle
             # examples: dělal dělala dělalo dělali dělaly dělals dělalas ...
             'Vp' => ['pos' => 'verb', 'verbform' => 'part', 'tense' => 'past', 'voice' => 'act'],
@@ -263,8 +263,7 @@ sub _create_atoms
             'J,' => ['pos' => 'conj', 'conjtype' => 'sub'],
             # mathematical conjunction (the word 'times' in 'five times')
             # examples: krát
-            ###!!! create a new feature value???
-            'J*' => ['pos' => 'conj', 'conjtype' => 'coor', 'other' => '*'],
+            'J*' => ['pos' => 'conj', 'conjtype' => 'oper'],
             # particle
             # examples: ať kéž nechť
             'TT' => ['pos' => 'part'],
@@ -320,9 +319,7 @@ sub _create_atoms
                                                                 'inan' => 'I',
                                                                 '@'    => 'M' }},
                             'fem'  => 'F',
-                            'neut' => 'N' }} ###!!! Tohle není celé! Ale musíme nejdřív vyřešit práci s poli v encode mapách!
-                            ###!!! Je sice hezké, že se můžu zeptat na konkrétní multihodnotu, ale mohlo by to fungovat lépe.
-                            ###!!! Co když někdo bude mít multihodnotu, se kterou tady nepočítám, ale počítám s jedním z jejích dílčích hodnot?
+                            'neut' => 'N' }}
     );
     # 3. NUMBER ####################
     $atoms{number} = _create_atom
@@ -341,7 +338,7 @@ sub _create_atoms
             { 'number' => { 'plu|sing' => 'W',
                             'dual' => 'D',
                             'plu'  => 'P',
-                            'sing' => 'S' }} ###!!! Tohle není celé! Ale musíme nejdřív vyřešit práci s poli v encode mapách!
+                            'sing' => 'S' }}
     );
     # 4. CASE ####################
     $atoms{case} = _create_simple_atom
@@ -376,7 +373,7 @@ sub _create_atoms
                                 'masc' => { 'prontype' => { ''  => 'M',
                                                             '@' => 'Y' }},
                                 'fem'  => 'F',
-                                'neut' => 'N' }} ###!!! Tohle není celé! Ale musíme nejdřív vyřešit práci s poli v encode mapách!
+                                'neut' => 'N' }}
     );
     # 6. POSSNUMBER ####################
     $atoms{possnumber} = _create_simple_atom
@@ -418,7 +415,7 @@ sub _create_atoms
                                     '@'     => { 'tense' => { 'past|pres' => 'H',
                                                               'past' => 'R',
                                                               'fut'  => 'F',
-                                                              'pres' => 'P' }}}}}} ###!!! Tohle není celé! Ale musíme nejdřív vyřešit práci s poli v encode mapách!
+                                                              'pres' => 'P' }}}}}}
     );
     # 9. DEGREE ####################
     $atoms{degree} = _create_simple_atom
@@ -900,7 +897,7 @@ sub encode
             {
                 $tag = 'Vi-X---X-------';
             }
-            elsif($fs->mood() eq 'sub')
+            elsif($fs->mood() =~ m/^(cnd|sub)$/)
             {
                 $tag = 'Vc-X---X-------';
             }
@@ -961,7 +958,7 @@ sub encode
                 $tag = 'J,-------------';
             }
         }
-        elsif($fs->get_other_for_tagset('cs::pdt') eq '*')
+        elsif($fs->conjtype() eq 'oper')
         {
             $tag = 'J*-------------';
         }
