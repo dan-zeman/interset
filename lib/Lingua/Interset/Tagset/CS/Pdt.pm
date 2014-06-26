@@ -49,6 +49,7 @@ sub _create_simple_atom
 #------------------------------------------------------------------------------
 sub _create_atoms
 {
+    my $self = shift;
     my %atoms;
     # 1. PART OF SPEECH ####################
     $atoms{pos} = _create_atom

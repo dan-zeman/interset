@@ -115,6 +115,22 @@ my %matrix = @_matrix =
             ['class'],
         ],
     },
+    # Named entity type. Typically used together with nountype = 'prop'.
+    'nametype' =>
+    {
+        'priority' => 85,
+        'values' => ['geo', 'prs', 'giv', 'sur', 'nat', 'com', 'pro', ''],
+        'replacements' =>
+        [
+            ['geo'],
+            ['prs', 'giv', 'sur'],
+            ['giv', 'prs'],
+            ['sur', 'prs'],
+            ['nat', 'prs'],
+            ['com', 'pro'],
+            ['pro', 'com']
+        ],
+    },
     # Special type of adjective if applicable and if known.
     'adjtype' =>
     {
