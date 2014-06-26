@@ -146,9 +146,9 @@ my %matrix = @_matrix =
         ],
     },
     # Numeral types.
-    ###!!! Note that it is currently not guaranteed that pos eq 'num'. (Nor do I find such cross-feature implications desirable.)
-    ###!!! For instance, ordinal numbers are often classified as adjectives.
-    ###!!! We may want to consider restricting pos = 'num' to cardinal numbers.
+    # Note that it is not guaranteed that pos eq 'num'. Typically only cardinal numbers
+    # get 'num'. Others may have pos 'adj' (e.g. ordinal numerals) or 'adv' while their
+    # numtype value indicates that they have something to do with numbers.
     'numtype' =>
     {
         'priority' => 110,
