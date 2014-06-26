@@ -672,12 +672,13 @@ my %matrix = @_matrix =
     'aspect' =>
     {
         'priority' => 290,
-        'values' => ['imp', 'perf', 'pro', ''],
+        'values' => ['imp', 'perf', 'pro', 'prog', ''],
         'replacements' =>
         [
             ['imp'],
             ['perf'],
-            ['pro']
+            ['pro'],
+            ['prog']
         ],
     },
     # Variant. Used in some tagsets to distinguish between forms of the same lemma that would otherwise get the same tag.

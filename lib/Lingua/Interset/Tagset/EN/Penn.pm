@@ -46,7 +46,7 @@ my %postable =
     # channel
     # example: #
     "\#"    => ['pos' => 'punc', 'other' => "\#"],
-    # "common postmodifiers of biomedical entities such as genes" (Blitzer, MdDonald, Pereira, Proc of EMNLP 2006, Sydney)
+    # "common postmodifiers of biomedical entities such as genes" (Blitzer, McDonald, Pereira, Proc of EMNLP 2006, Sydney)
     # Example 1: "anti-CYP2E1-IgG" is tokenized and tagged as "anti/AFX -/HYPH CYP2E1-IgG/NN".
     # Example 2: "mono- and diglycerides" is tokenized and tagged as "mono/AFX -/HYPH and/CC di/AFX glycerides/NNS".
     'AFX'   => ['pos' => 'adj',  'hyph' => 'hyph'],
@@ -148,7 +148,7 @@ my %postable =
     'VBD'   => ['pos' => 'verb', 'verbform' => 'fin', 'tense' => 'past'],
     # verb, gerund or present participle
     # examples: doing, going, seeing, walking
-    'VBG'   => ['pos' => 'verb', 'verbform' => 'part', 'tense' => 'pres', 'aspect' => 'imp'], ###!!! now there is also aspect "pro", we should set it here
+    'VBG'   => ['pos' => 'verb', 'verbform' => 'part', 'tense' => 'pres', 'aspect' => 'prog'],
     # verb, past participle
     # examples: done, gone, seen, walked
     'VBN'   => ['pos' => 'verb', 'verbform' => 'part', 'tense' => 'past', 'aspect' => 'perf'],
@@ -309,7 +309,7 @@ sub encode
         }
         else
         {
-            ###!!! multiplicative and some ordinal numerals behave more like adverbs; see the synpos?
+            # Non-cardinal numerals should have pos = 'adj', 'adv' etc. but just in case they don't:
             $tag = 'JJ';
         }
     }
@@ -322,7 +322,7 @@ sub encode
         }
         elsif($fs->verbform() eq 'part')
         {
-            if($fs->tense() eq 'pres' || $fs->aspect() =~ m/^(imp|pro)$/)
+            if($fs->tense() eq 'pres' || $fs->aspect() =~ m/^(imp|prog)$/)
             {
                 $tag = 'VBG';
             }
