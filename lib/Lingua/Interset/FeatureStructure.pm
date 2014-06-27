@@ -1439,6 +1439,59 @@ sub is_wh {my $self = shift; return any {m/^(int|rel)$/} ($self->get_list('pront
 
 
 #------------------------------------------------------------------------------
+# Tests multiple Interset features simultaneously. Input is a list of feature-
+# value pairs, return value is 1 if the node matches all these values. This
+# function is an abbreviation for a series of get_iset() calls in an if
+# statement:
+#
+# if($node->match_iset('pos' => 'noun', 'gender' => 'masc')) { ... }
+#------------------------------------------------------------------------------
+=method matches()
+
+  if ($fs->matches ('pos' => 'noun', 'gender' => '!masc', 'number' => '~(dual|plu)'))
+  {
+      ...
+  }
+
+Tests multiple features simultaneously.
+Input is a list of feature-value pairs, return value is 1 if the structure matches all these values.
+This function is an abbreviation for a series of C<get_joined()> calls in an if statement.
+
+If the expected value is preceded by "!", the actual value must not be equal to the expected value.
+If the expected value is preceded by "~", then it is a regular expression which the actual value must match.
+If the expected value is preceded by "!~", then it is a regular expression which the actual value must not match.
+
+=cut
+sub matches
+{
+    my $self = shift;
+    my @req  = @_;
+    for ( my $i = 0; $i <= $#req; $i += 2 )
+    {
+        my $feature  = $req[$i];
+        my $expected = $req[$i+1];
+        confess("Undefined feature") unless ($feature);
+        my $value = $self->get_joined($feature);
+        my $comp =
+            $expected =~ s/^\!\~// ? 'nr' :
+            $expected =~ s/^\!//   ? 'ne' :
+            $expected =~ s/^\~//   ? 're' : 'eq';
+        if (
+            $comp eq 'eq' && $value ne $expected ||
+            $comp eq 'ne' && $value eq $expected ||
+            $comp eq 're' && $value !~ m/$expected/  ||
+            $comp eq 'nr' && $value =~ m/$expected/
+           )
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Generates text from contents of feature structure so it can be printed.
 #------------------------------------------------------------------------------
 =method as_string()

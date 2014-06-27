@@ -8,6 +8,7 @@ Interface:
 * Added various new is_...() methods in FeatureStructure.
 * is_noun() and similar methods should now work also with arrays of values.
 * The generic set() method of FeatureStructure will no longer allow multiple occurrences of the same value if multiple values are set.
+* New method FeatureStructure::matches() (for those familar with Treex: this is the $node->match_iset() method).
 
 Feature changes:
 * New numtype 'sets' for number of sets of things (Czech "čtvery boty" = "four pairs of shoes").
