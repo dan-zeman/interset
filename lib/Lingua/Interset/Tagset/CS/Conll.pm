@@ -117,8 +117,8 @@ sub encode
 # The values come from the CoNLL columns CPOS, POS and FEAT. For Czech, these
 # values are derived from the tagset of the Prague Dependency Treebank.
 # However, there is an additional feature called Sem that is derived from PDT
-# lemmas and that must be decoded and encoded separately. These functions
-# convert tags without the Sem feature.
+# lemmas and that must be decoded and encoded separately.
+# This function converts a PDT tag to CoNLL (minus Sem).
 #------------------------------------------------------------------------------
 sub _pdt_to_conll
 {
@@ -138,6 +138,12 @@ sub _pdt_to_conll
     $tag = "$pos\t$subpos\t$features";
     return $tag;
 }
+
+
+
+#------------------------------------------------------------------------------
+# This function converts a CoNLL tag (except the Sem feature) to PDT.
+#------------------------------------------------------------------------------
 sub _conll_to_pdt
 {
     my $tag = shift;
@@ -5406,9 +5412,10 @@ Thus this driver extends the C<cs::pdt> driver.
 
 =head1 SEE ALSO
 
-L<Lingua::Interset>
+L<Lingua::Interset>,
 L<Lingua::Interset::Tagset>,
 L<Lingua::Interset::Tagset::CS::Pdt>,
+L<Lingua::Interset::Tagset::CS::Conll>,
 L<Lingua::Interset::FeatureStructure>
 
 =cut

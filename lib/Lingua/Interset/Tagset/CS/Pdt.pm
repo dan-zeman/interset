@@ -5369,7 +5369,7 @@ Interset driver for the part-of-speech tagset of the Prague Dependency Treebank.
 
 =head1 SEE ALSO
 
-L<Lingua::Interset>
+L<Lingua::Interset>,
 L<Lingua::Interset::Tagset>,
 L<Lingua::Interset::FeatureStructure>
 

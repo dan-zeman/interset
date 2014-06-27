@@ -61,7 +61,7 @@ sub list
 # CoNLL tagsets in Interset are traditionally three values separated by tabs.
 # The values come from the CoNLL columns CPOS, POS and FEAT. For English,
 # these values are trivially derived from the tagset of the Penn Treebank.
-# These two functions translate Penn to Conll and back.
+# This function translates Penn tags to CoNLL.
 #------------------------------------------------------------------------------
 sub _penn_to_conll
 {
@@ -78,6 +78,12 @@ sub _penn_to_conll
     my $conll = "$penn2\t$penn\t_";
     return $conll;
 }
+
+
+
+#------------------------------------------------------------------------------
+# This function translates CoNLL tags to Penn.
+#------------------------------------------------------------------------------
 sub _conll_to_penn
 {
     my $conll = shift;
@@ -124,7 +130,7 @@ Thus this driver is only a translation layer above the C<en::penn> driver.
 
 =head1 SEE ALSO
 
-L<Lingua::Interset>
+L<Lingua::Interset>,
 L<Lingua::Interset::Tagset>,
 L<Lingua::Interset::Tagset::EN::Penn>,
 L<Lingua::Interset::FeatureStructure>
