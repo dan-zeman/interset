@@ -4,8 +4,9 @@ Architecture:
 * New classes Atom and SimpleAtom are special cases of Tagset driver, designed as sub-drivers for individual surface features.
 
 Interface:
-* is_noun() and similar methods should now work also with arrays of values.
+* FeatureStructure::multiset() renamed to add().
 * Added various new is_...() methods in FeatureStructure.
+* is_noun() and similar methods should now work also with arrays of values.
 * The generic set() method of FeatureStructure will no longer allow multiple occurrences of the same value if multiple values are set.
 
 Feature changes:

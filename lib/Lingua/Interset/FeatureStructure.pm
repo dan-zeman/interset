@@ -1078,9 +1078,9 @@ sub set
 # feature:
 # 'CC' => ['pos' => 'conj', 'conjtype' => 'coor']
 #------------------------------------------------------------------------------
-=method multiset()
+=method add()
 
-  $fs->multiset ('pos' => 'conj', 'conjtype' => 'coor');
+  $fs->add ('pos' => 'conj', 'conjtype' => 'coor');
 
 Sets several features at once.
 Takes a list of value assignments, i.e. an array of an even number of elements
@@ -1091,7 +1091,7 @@ Typically, one wants to define a table of assignments for each part of speech or
   'CC' => ['pos' => 'conj', 'conjtype' => 'coor']
 
 =cut
-sub multiset
+sub add
 {
     my $self = shift;
     my @assignments = @_;
@@ -1099,6 +1099,14 @@ sub multiset
     {
         $self->set($assignments[$i], $assignments[$i+1]);
     }
+}
+###!!! Backwards compatibility will be kept for a while.
+sub multiset
+{
+    my $self = shift;
+    my @args = @_;
+    print STDERR ("WARNING: FeatureStructure::multiset() is deprecated, use add() instead!\n");
+    return $self->add(@args);
 }
 
 

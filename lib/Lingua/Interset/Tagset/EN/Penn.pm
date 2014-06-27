@@ -187,7 +187,7 @@ sub decode
     my $assignments = $postable{$tag};
     if($assignments)
     {
-        $fs->multiset(@{$assignments});
+        $fs->add(@{$assignments});
     }
     return $fs;
 }

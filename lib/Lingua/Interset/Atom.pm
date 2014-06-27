@@ -56,7 +56,7 @@ sub decode
     my $assignments = $map->{$tag};
     if($assignments)
     {
-        $fs->multiset(@{$assignments});
+        $fs->add(@{$assignments});
     }
     return $fs;
 }
