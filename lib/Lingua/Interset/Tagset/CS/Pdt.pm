@@ -10,39 +10,11 @@ use utf8;
 use open ':utf8';
 use namespace::autoclean;
 use Moose;
-use Lingua::Interset::Atom;
-use Lingua::Interset::SimpleAtom;
 extends 'Lingua::Interset::Tagset';
 
 
 
 has 'atoms' => ( isa => 'HashRef', is => 'ro', builder => '_create_atoms', lazy => 1 );
-
-
-
-#------------------------------------------------------------------------------
-# Creates an atomic driver and returns it.
-#------------------------------------------------------------------------------
-sub create_atom
-{
-    my $self = shift;
-    my @parameters = @_;
-    my $atom = Lingua::Interset::Atom->new(@parameters);
-    return $atom;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Creates a simple atomic driver and returns it.
-#------------------------------------------------------------------------------
-sub create_simple_atom
-{
-    my $self = shift;
-    my @parameters = @_;
-    my $atom = Lingua::Interset::SimpleAtom->new(@parameters);
-    return $atom;
-}
 
 
 

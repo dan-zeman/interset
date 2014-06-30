@@ -21,6 +21,8 @@ has 'intfeature' => ( isa => 'Str', is => 'ro', required => 1, documentation => 
 # In this special case of Atom, decoding map is taken as a simple hash; Atom::(de|en)code_map will be automatically derived:
 # { 1 => 'nom', 2 => 'gen', 3 => 'dat', 4 => 'acc', 5 => 'voc', 6 => 'loc', 7 => 'ins' }
 has 'simple_decode_map' => ( isa => 'HashRef', is => 'ro', required => 1 );
+# If you want a simple de/encoding table with an additional default encoding rule, e.g. {'@' => '-'}, then set 'encode_default' => '-'.
+has 'encode_default' => ( isa => 'Str', is => 'ro', default => '' );
 
 
 
@@ -41,8 +43,8 @@ around BUILDARGS => sub
         # Construct decode_map in the form expected by Atom.
         my %dm;
         # Construct encode_map in the form expected by Atom.
-        my %em;
-        my %valuehash;
+        my %em;;
+        my %valuehash = ('@' => $attr->{encode_default});
         $em{$attr->{intfeature}} = \%valuehash;
         my @survalues = keys(%{$attr->{simple_decode_map}});
         foreach my $sv (@survalues)

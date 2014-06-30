@@ -13,6 +13,8 @@ use Moose;
 use MooseX::SemiAffordanceAccessor; # attribute x is written using set_x($value) and read using x()
 use Lingua::Interset::FeatureStructure;
 use Lingua::Interset::Trie;
+use Lingua::Interset::Atom;
+use Lingua::Interset::SimpleAtom;
 
 
 
@@ -149,6 +151,34 @@ sub list
 {
     my $self = shift;
     confess('Not implemented. A derived class must provide implementation of the list() method');
+}
+
+
+
+#------------------------------------------------------------------------------
+# Creates an atomic driver and returns it. Derived classes may want to use
+# atoms to define decoding and encoding of individual surface features.
+#------------------------------------------------------------------------------
+sub create_atom
+{
+    my $self = shift;
+    my @parameters = @_;
+    my $atom = Lingua::Interset::Atom->new(@parameters);
+    return $atom;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Creates a simple atomic driver and returns it. Derived classes may want to use
+# atoms to define decoding and encoding of individual surface features.
+#------------------------------------------------------------------------------
+sub create_simple_atom
+{
+    my $self = shift;
+    my @parameters = @_;
+    my $atom = Lingua::Interset::SimpleAtom->new(@parameters);
+    return $atom;
 }
 
 
