@@ -51,7 +51,7 @@ around BUILDARGS => sub
         {
             my $iv = $attr->{simple_decode_map}{$sv};
             $dm{$sv} = [$attr->{intfeature} => $iv];
-            $valuehash{$iv} = $sv; ###!!! a co default?
+            $valuehash{$iv} = $sv;
         }
         # Now add the references to the driver functions to the attribute hash.
         $attr->{surfeature} = $attr->{intfeature};
