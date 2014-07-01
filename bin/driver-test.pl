@@ -4,6 +4,14 @@
 # License: GNU GPL
 # 11.6.2014: Adapted to Interset 2.0.
 
+use strict;
+use warnings;
+use utf8;
+use open ':utf8';
+binmode(STDIN,  ':utf8');
+binmode(STDOUT, ':utf8');
+binmode(STDERR, ':utf8');
+
 sub usage
 {
     print STDERR ("Usage: driver-test.pl [-d] driver [driver2 [driver3...]]\n");
@@ -17,26 +25,25 @@ sub usage
     print STDERR ("  -O: same as -o but without additional info, i.e. directly copyable to the list() function\n");
 }
 
-use utf8;
-use open ':utf8';
-binmode(STDIN,  ':utf8');
-binmode(STDOUT, ':utf8');
-binmode(STDERR, ':utf8');
 use Getopt::Long qw(:config no_ignore_case bundling);
 use Carp; # confess()
 use Lingua::Interset qw(find_drivers get_driver_object);
 use Lingua::Interset::FeatureStructure qw(feature_valid value_valid);
 
 # Autoflush after every Perl statement.
-$old_fh = select(STDOUT);
+my $old_fh = select(STDOUT);
 $| = 1;
 select(STDERR);
 $| = 1;
 select($old_fh);
 # Get options.
-$all = 0;
-$all_conversions = 0;
-$debug = 0;
+my $all = 0;
+my $all_conversions = 0;
+my $drivers;
+my $conversions;
+my $debug = 0;
+my $list_other;
+my $list_other_plain;
 GetOptions('a' => \$all, 'A' => \$all_conversions, 'debug' => \$debug, 'o' => \$list_other, 'O' => \$list_other_plain);
 # Get the list of all drivers if needed.
 if($all || $all_conversions)
@@ -105,7 +112,7 @@ sub test
 {
     my $tagset = shift; # e.g. "cs::pdt"
     my $starttime = time();
-    print("Testing $driver ...");
+    print("Testing $tagset ...");
     my $driver = get_driver_object($tagset);
     my $list = $driver->list();
     my $n_tags = scalar(@{$list});
