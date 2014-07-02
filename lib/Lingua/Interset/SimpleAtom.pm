@@ -95,6 +95,11 @@ A compact description of mapping from the surface tags to the Interset feature v
 It is a hash reference.
 Hash keys are surface tags and hash values are the values of the corresponding Interset feature.
 
+=attr encode_default
+
+If you want a simple decoding/encoding table with an additional default encoding rule, e.g. C<< {'@' => '-'} >>, then set C<< 'encode_default' => '-' >>.
+By default, this attribute is set to the empty string.
+
 =head1 SEE ALSO
 
 L<Lingua::Interset::Atom>,

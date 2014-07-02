@@ -33,37 +33,37 @@ sub _create_atoms
         'decode_map' =>
         {
             # noun
-            # examples: pán hrad žena růže město moře
+            # examples: pán, hrad, žena, růže, město, moře
             'N' => ['pos' => 'noun'],
             # adjective
-            # examples: mladý jarní
+            # examples: mladý, jarní
             'A' => ['pos' => 'adj'],
             # pronoun
-            # examples: já ty on ona ono my vy oni ony ona
+            # examples: já, ty, on, ona, ono, my, vy, oni, ony
             'P' => ['prontype' => 'prn'],
             # numeral
-            # examples: jeden dva tři čtyři pět šest sedm osm devět deset
+            # examples: jeden, dva, tři, čtyři, pět, šest, sedm, osm, devět, deset
             'M' => ['pos' => 'num'],
             # verb
-            # examples: nese bere maže peče umře tiskne mine začne kryje kupuje prosí trpí sází dělá
+            # examples: nese, bere, maže, peče, umře, tiskne, mine, začne, kryje, kupuje, prosí, trpí, sází, dělá
             'V' => ['pos' => 'verb'],
             # adverb
-            # examples: kde kam kdy jak dnes vesele
+            # examples: kde, kam, kdy, jak, dnes, vesele
             'R' => ['pos' => 'adv'],
             # adposition
-            # examples: v pod k
+            # examples: v, pod, k
             'S' => ['pos' => 'adp', 'adpostype' => 'prep'],
             # conjunction
-            # examples: a i ani nebo ale avšak
+            # examples: a, i, ani, nebo, ale, avšak
             'C' => ['pos' => 'conj'],
             # particle
-            # examples: ať kéž nechť
+            # examples: ať, kéž, nechť
             'Q' => ['pos' => 'part'],
             # interjection
-            # examples: haf bum bác
+            # examples: haf, bum, bác
             'I' => ['pos' => 'int'],
             # abbreviation
-            # examples: atd. apod.
+            # examples: atd., apod.
             'Y' => ['abbr' => 'abbr'],
             # residual
             'X' => []

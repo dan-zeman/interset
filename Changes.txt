@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+Interface:
+* New attribute encode_default of class SimpleAtom.
+
 Drivers:
 * CS::Multext
 
