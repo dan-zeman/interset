@@ -740,16 +740,19 @@ my %matrix = @_matrix =
     'style' =>
     {
         'priority' => 420,
-        'values' => ['arch', 'form', 'norm', 'coll', 'vrnc', 'slng', 'derg', 'vulg', ''],
+        'values' => ['arch', 'rare', 'form', 'poet', 'norm', 'coll', 'vrnc', 'slng', 'expr', 'derg', 'vulg', ''],
         'replacements' =>
         [
             ['norm'],
             ['form'],
-            ['arch', 'form'],
+            ['rare', 'arch', 'form'],
+            ['arch', 'rare', 'form'],
             ['coll'],
+            ['poet'],
             ['vrnc'],
             ['slng'],
             ['derg', 'coll'],
+            ['expr', 'coll'],
             ['vulg', 'derg']
         ],
     },
