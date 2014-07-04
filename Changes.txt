@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+2.004     2014-07-04 16:29:33+02:00 Europe/Prague
+
 Interface:
 * New attribute encode_default of class SimpleAtom.
 
