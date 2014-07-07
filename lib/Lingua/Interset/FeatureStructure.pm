@@ -238,12 +238,13 @@ my %matrix = @_matrix =
     'advtype' =>
     {
         'priority' => 150,
-        'values' => ['man', 'loc', 'tim', 'deg', 'cau', 'mod', 'adadj', 'ex', ''],
+        'values' => ['man', 'loc', 'tim', 'sta', 'deg', 'cau', 'mod', 'adadj', 'ex', ''],
         'replacements' =>
         [
             ['man'],
             ['loc'],
             ['tim'],
+            ['sta'],
             ['deg'],
             ['cau'],
             ['mod'],
