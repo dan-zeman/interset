@@ -3,6 +3,9 @@
 Features:
 * New value of feature 'advtype': 'sta' (adverb of state, e.g. Czech "horko", "zima", "volno", "nanic").
 
+Drivers:
+* CS::Ajka
+
 
 
 2.004     2014-07-04 16:29:33+02:00 Europe/Prague
