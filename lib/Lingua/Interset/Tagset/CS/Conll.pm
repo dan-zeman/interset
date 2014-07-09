@@ -76,7 +76,7 @@ sub decode
         $fs->set_nountype('prop');
     }
     # Here we could set $fs->set_tagset('cs::conll') but we will not so that all
-    # the descendants of en::penn can share the same feature structures.
+    # the descendants of cs::pdt can share the same feature structures.
     # (The cs::conll feature structures are not identical to cs::pdt but they do
     # not add their own 'other' values and that matters.)
     return $fs;
