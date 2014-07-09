@@ -163,7 +163,9 @@ sub _encoding_step
         {
             confess("Unknown feature '$feature'");
         }
-        my $value = $fs->get_joined($feature); ###!!! Tohle je blbě! Pole chceme asi porovnávat jinak!
+        ###!!! If $feature is 'other' then we should call $fs->get_other_for_tagset($tagset) instead!
+        ###!!! The problem is that the Atom currently does not know in which tagset it is incorporated. Fix this!
+        my $value = $fs->get_joined($feature);
         my $valuehash = $map->{$feature};
         my $target = _get_decision_for_value($value, $valuehash); # output string or next-level map
         if(ref($target) eq 'HASH')

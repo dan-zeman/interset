@@ -43,7 +43,7 @@ sub _create_atoms
             'k2' => ['pos' => 'adj'],
             # pronoun
             # examples: já, ty, on, ona, ono, my, vy, oni, ony
-            'k3' => ['prontype' => 'prn'],
+            'k3' => ['pos' => 'noun|adj', 'prontype' => 'prn'],
             # numeral
             # examples: jeden, dva, tři, čtyři, pět, šest, sedm, osm, devět, deset
             'k4' => ['pos' => 'num'],
@@ -77,17 +77,19 @@ sub _create_atoms
         'encode_map' =>
 
              { 'abbr' => { 'abbr' => 'kA',
-                           '@'    => { 'numtype' => { '' => { 'prontype' => { '' => { 'pos' => { 'noun' => 'k1',
-                                                                                                 'adj'  => 'k2',
-                                                                                                 'num'  => 'k4',
-                                                                                                 'verb' => 'k5',
-                                                                                                 'adv'  => 'k6',
-                                                                                                 'adp'  => 'k7',
-                                                                                                 'conj' => { 'mood' => { 'cnd' => 'kY',
-                                                                                                                         '@'   => 'k8' }},
-                                                                                                 'part' => 'k9',
-                                                                                                 'int'  => 'k0' }},
-                                                                              '@' => 'k3' }},
+                           '@'    => { 'numtype' => { '' => { 'prontype' => { ''  => { 'pos' => { 'noun' => 'k1',
+                                                                                                  'adj'  => 'k2',
+                                                                                                  'num'  => 'k4',
+                                                                                                  'verb' => 'k5',
+                                                                                                  'adv'  => 'k6',
+                                                                                                  'adp'  => 'k7',
+                                                                                                  'conj' => { 'mood' => { 'cnd' => 'kY',
+                                                                                                                          '@'   => 'k8' }},
+                                                                                                  'part' => 'k9',
+                                                                                                  'int'  => 'k0' }},
+                                                                              '@' => { 'pos' => { 'num' => 'k4',
+                                                                                                  'adv' => 'k6',
+                                                                                                  '@'   => 'k3' }}}},
                                                       '@' => 'k4' }}}}
     );
     # SUBCLASS X ####################
@@ -99,10 +101,15 @@ sub _create_atoms
         'surfeature' => 'xtype_noun',
         'decode_map' =>
         {
+            # Special paradigm: "půl"
             # This feature applies to nouns even though one may argue that "půl" is numeral.
-            'xP' => ['other' => 'půl']
+            # There is no corresponding feature in Interset.
+            # We could use the 'other' feature but we do not need it because we can recognize this tag by empty values of gender, number and case.
+            'xP' => []
         },
-        'encode_map' => { 'other' => { 'půl' => 'xP' } }
+        'encode_map' =>
+
+            { 'gender' => { '' => { 'number' => { '' => { 'case' => { '' => 'xP' }}}}}}
     );
     $atoms{xk3} = $self->create_atom
     (
@@ -331,13 +338,24 @@ sub _create_atoms
             # Special value for common forms of surnames that denote all members of a family, e.g. "Novákovi" = "the Nováks", "the Novák family".
             # We abuse the Interset value 'com' that is normally used in Scandinavian languages that have only two genders, neutrum and utrum (common gender).
             # Examples: Novákových
-            'hR' => ['possgender' => 'com']
+            'hR' => ['possgender' => 'com'],
+            # For pronouns "kdo", "co", and their derivatives, there are two other values of the 'h' feature that have nothing to do with possessivity!
+            # We will only set animateness and not gender although we know that "kdo" is grammatically masculine animate and
+            # "co" is grammatically neuter. However, it is very difficult to figure out under which circumstances the encoded tag should contain hP or hT,
+            # and empty value of gender turns out to be the key clue. Without it, we would either not be able to preserve encode(decode(x))=x, or we would
+            # have to use the 'other' feature but then without it (e.g. for structures coming from other tagsets) we would produce unknown tags even in strict encoding.
+            # Person; examples: kdo, někdo, kdokoli, nikdo
+            'hP' => ['animateness' => 'anim'],
+            # Thing; examples: co, něco, cokoli, nic
+            'hT' => ['animateness' => 'inan']
         },
         'encode_map' =>
 
             { 'possgender' => { 'masc' => 'hM',
                                 'fem'  => 'hF',
-                                'com'  => 'hR' }}
+                                'com'  => 'hR',
+                                '@'    => { 'pos' => { 'noun' => { 'prontype' => { 'int|rel|ind|neg' => { 'number' => { 'sing' => { 'gender' => { '' => { 'animateness' => { 'anim' => 'hP',
+                                                                                                                                                                             'inan' => 'hT' }}}}}}}}}}}}
     );
     # NUMBER ####################
     $atoms{n} = $self->create_atom
@@ -435,7 +453,7 @@ sub _create_atoms
             'mB' => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'fut'],
             'mR' => ['verbform' => 'fin', 'mood' => 'imp'],
             'mC' => ['verbform' => 'fin', 'mood' => 'cnd'],
-            'mA' => ['verbform' => 'part', 'voice' => 'act', 'tense' => 'past', 'mood' => 'cnd'],
+            'mA' => ['verbform' => 'part', 'voice' => 'act', 'tense' => 'past'],
             'mN' => ['verbform' => 'part', 'voice' => 'pass'],
             'mS' => ['verbform' => 'trans', 'tense' => 'pres'],
             'mD' => ['verbform' => 'trans', 'tense' => 'past']
@@ -449,7 +467,8 @@ sub _create_atoms
                           '@'   => { 'verbform' => { 'part'  => { 'voice' => { 'pass' => 'mN',
                                                                                '@'    => 'mA' }},
                                                      'trans' => { 'tense' => { 'past' => 'mD',
-                                                                               '@'    => 'mS' }}}}}}
+                                                                               '@'    => 'mS' }},
+                                                     'inf'   => 'mF' }}}}
     );
     # CLITIC ####################
     # This feature is documented but it does not occur in the output of the current version of Majka.
@@ -539,7 +558,16 @@ sub decode
         {
             foreach my $value (@{$features{$feature}{valarray}})
             {
-                $atoms->{$kfeature}->decode_and_merge_soft($value, $fs);
+                if($kfeature eq 't')
+                {
+                    $atoms->{$kfeature}->decode_and_merge_soft($value, $fs);
+                }
+                else
+                {
+                    # Normally we need "hard merging". For instance, 'k3' will set prontype=prn,
+                    # later we see 'yQ' and we want to REWRITE prontype to 'int', not just merge prontype=prn|int!
+                    $atoms->{$kfeature}->decode_and_merge_hard($value, $fs);
+                }
             }
         }
     }
