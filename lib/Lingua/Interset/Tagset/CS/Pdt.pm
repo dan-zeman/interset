@@ -485,18 +485,18 @@ sub decode
     $fs->set_tagset('cs::pdt');
     my $atoms = $self->atoms();
     my @chars = split(//, $tag);
-    $atoms->{pos}->decode_and_merge($chars[0].$chars[1], $fs);
-    $atoms->{gender}->decode_and_merge($chars[2], $fs);
-    $atoms->{number}->decode_and_merge($chars[3], $fs);
-    $atoms->{case}->decode_and_merge($chars[4], $fs);
-    $atoms->{possgender}->decode_and_merge($chars[5], $fs);
-    $atoms->{possnumber}->decode_and_merge($chars[6], $fs);
-    $atoms->{person}->decode_and_merge($chars[7], $fs);
-    $atoms->{tense}->decode_and_merge($chars[8], $fs);
-    $atoms->{degree}->decode_and_merge($chars[9], $fs);
-    $atoms->{negativeness}->decode_and_merge($chars[10], $fs);
-    $atoms->{voice}->decode_and_merge($chars[11], $fs);
-    $atoms->{variant}->decode_and_merge($chars[14], $fs);
+    $atoms->{pos}->decode_and_merge_hard($chars[0].$chars[1], $fs);
+    $atoms->{gender}->decode_and_merge_hard($chars[2], $fs);
+    $atoms->{number}->decode_and_merge_hard($chars[3], $fs);
+    $atoms->{case}->decode_and_merge_hard($chars[4], $fs);
+    $atoms->{possgender}->decode_and_merge_hard($chars[5], $fs);
+    $atoms->{possnumber}->decode_and_merge_hard($chars[6], $fs);
+    $atoms->{person}->decode_and_merge_hard($chars[7], $fs);
+    $atoms->{tense}->decode_and_merge_hard($chars[8], $fs);
+    $atoms->{degree}->decode_and_merge_hard($chars[9], $fs);
+    $atoms->{negativeness}->decode_and_merge_hard($chars[10], $fs);
+    $atoms->{voice}->decode_and_merge_hard($chars[11], $fs);
+    $atoms->{variant}->decode_and_merge_hard($chars[14], $fs);
     return $fs;
 }
 

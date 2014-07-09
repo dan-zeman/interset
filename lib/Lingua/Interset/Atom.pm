@@ -67,23 +67,51 @@ sub decode
 # Decodes a physical tag (string) and adds the feature values to an existing
 # feature structure.
 #------------------------------------------------------------------------------
-=method decode_and_merge()
+=method decode_and_merge_hard()
 
   my $fs  = $driver1->decode ($tag1);
-  $driver2->decode_and_merge ($tag2, $fs);
+  $driver2->decode_and_merge_hard ($tag2, $fs);
 
 Takes a tag (string) and a L<Lingua::Interset::FeatureStructure> object.
 Adds the feature values corresponding to the tag to the existing feature structure.
+Replaces previous values in case of conflict.
 
 =cut
-sub decode_and_merge
+sub decode_and_merge_hard
 {
     my $self = shift;
     my $tag = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $fs1 = $self->decode($tag);
     my $hash = $fs1->get_hash();
-    $fs->merge_hash($hash);
+    $fs->merge_hash_hard($hash);
+    return $fs;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Decodes a physical tag (string) and adds the feature values to an existing
+# feature structure.
+#------------------------------------------------------------------------------
+=method decode_and_merge_soft()
+
+  my $fs  = $driver1->decode ($tag1);
+  $driver2->decode_and_merge_soft ($tag2, $fs);
+
+Takes a tag (string) and a L<Lingua::Interset::FeatureStructure> object.
+Adds the feature values corresponding to the tag to the existing feature structure.
+Merges lists of values in case a feature had already a value set.
+
+=cut
+sub decode_and_merge_soft
+{
+    my $self = shift;
+    my $tag = shift;
+    my $fs = shift; # Lingua::Interset::FeatureStructure
+    my $fs1 = $self->decode($tag);
+    my $hash = $fs1->get_hash();
+    $fs->merge_hash_soft($hash);
     return $fs;
 }
 

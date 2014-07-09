@@ -72,7 +72,7 @@ sub decode
     if($conll_features{Sem})
     {
         my $atoms = $self->atoms();
-        $atoms->{nametype}->decode_and_merge($conll_features{Sem}, $fs);
+        $atoms->{nametype}->decode_and_merge_hard($conll_features{Sem}, $fs);
         $fs->set_nountype('prop');
     }
     # Here we could set $fs->set_tagset('cs::conll') but we will not so that all

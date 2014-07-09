@@ -1150,10 +1150,10 @@ sub set_hash
 # the features in $self; does not touch values of features not mentioned in the
 # hash.
 #------------------------------------------------------------------------------
-=method merge_hash()
+=method merge_hash_hard()
 
   my %hash = ('pos' => 'noun', 'number' => 'plu');
-  $fs->merge_hash (\%hash);
+  $fs->merge_hash_hard (\%hash);
 
 Takes a reference to a hash of features and their values.
 Sets the values of the features in this C<FeatureStructure>.
@@ -1165,7 +1165,7 @@ a different non-empty value, the current value will be replaced by the one from
 the hash.
 
 =cut
-sub merge_hash
+sub merge_hash_hard
 {
     my $self = shift;
     my $fs = shift;
@@ -1174,6 +1174,61 @@ sub merge_hash
         if(exists($fs->{$feature}) && defined($fs->{$feature}) && $fs->{$feature} ne '')
         {
             $self->set($feature, $fs->{$feature});
+        }
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Takes a reference to a hash of features and their values. Sets the values of
+# the features in $self; does not touch values of features not mentioned in the
+# hash.
+#------------------------------------------------------------------------------
+=method merge_hash_soft()
+
+  my %hash = ('pos' => 'noun', 'number' => 'plu');
+  $fs->merge_hash_soft (\%hash);
+
+Takes a reference to a hash of features and their values.
+Sets the values of the features in this C<FeatureStructure>.
+Unknown features are ignored.
+Known features that are not set in the hash will be left untouched;
+this is the difference from C<set_hash()>.
+Known features that are set both in the hash and in this feature structure
+will be merged into a list of values (any single value will occur at most once).
+This is the difference from C<merge_hash_hard()>.
+
+=cut
+sub merge_hash_soft
+{
+    my $self = shift;
+    my $fs = shift;
+    foreach my $feature ($self->known_features())
+    {
+        if(exists($fs->{$feature}) && defined($fs->{$feature}) && $fs->{$feature} ne '')
+        {
+            my @current_values = $self->get_list($feature);
+            if(scalar(@current_values)>1 || scalar(@current_values)==1 && $current_values[0] ne '')
+            {
+                # The new value(s) may be given in multiple ways and the set() method has mechanisms to distinguish them.
+                # Let's normalize the input values by running them through set() first.
+                $self->set($feature, $fs->{$feature});
+                my @new_values = $self->get_list($feature);
+                # Merge the two lists of values.
+                my %map;
+                my @values = ();
+                foreach my $value (@current_values, @new_values)
+                {
+                    push(@values, $value) unless($map{$value});
+                    $map{$value}++;
+                }
+                $self->set($feature, \@values);
+            }
+            else # no previous value found
+            {
+                $self->set($feature, $fs->{$feature});
+            }
         }
     }
 }

@@ -622,14 +622,14 @@ sub decode
     my $atoms = $self->atoms();
     my $features = $self->feature_map();
     my @chars = split(//, $tag);
-    $atoms->{pos}->decode_and_merge($chars[0], $fs);
+    $atoms->{pos}->decode_and_merge_hard($chars[0], $fs);
     my @features;
     @features = @{$features->{$chars[0]}} if(defined($features->{$chars[0]}));
     for(my $i = 1; $i<=$#features; $i++)
     {
         if(defined($features[$i]) && defined($chars[$i]))
         {
-            $atoms->{$features[$i]}->decode_and_merge($chars[$i], $fs);
+            $atoms->{$features[$i]}->decode_and_merge_hard($chars[$i], $fs);
         }
     }
     return $fs;

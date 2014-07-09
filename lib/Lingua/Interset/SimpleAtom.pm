@@ -44,6 +44,8 @@ around BUILDARGS => sub
         my %dm;
         # Construct encode_map in the form expected by Atom.
         my %em;;
+        # The encode_default attribute has default value '' but it may not have been set yet.
+        $attr->{encode_default} = '' if(!defined($attr->{encode_default}));
         my %valuehash = ('@' => $attr->{encode_default});
         $em{$attr->{intfeature}} = \%valuehash;
         my @survalues = keys(%{$attr->{simple_decode_map}});

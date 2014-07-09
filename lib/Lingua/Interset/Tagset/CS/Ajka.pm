@@ -256,12 +256,12 @@ sub _create_atoms
         'surfeature' => 'advtype',
         'decode_map' =>
         {
-            # Adverb of degree, extent, quantity (příslovce míry).
-            # Examples: daleko, skrz, potud, hodně, tak, takhle, takto, spoustu, poněkud, bezmála
-            'tQ' => ['advtype' => 'deg'],
             # Adverb of regard (příslovce zřetele).
-            # Examples: místně
-            'tA' => ['other' => 'tA'],
+            ###!!! I have been able to find only one example: "místně". And it is tagged 'tAtM', i.e. it is also adverb of manner.
+            ###!!! I do not understand how the class 'tA' is defined and I have not dedicated an Interset value to it.
+            ###!!! Thus for the time being I decided to remove the tag that contains 'tA' from the list of known tags.
+            ###!!! The decoder will not die on it but it will silently ignore the 'tA' feature.
+            'tA' => [], # we could set other=>'tA' but then it would overwrite the co-occurring 'tM' feature.
             # Adverb of location (příslovce místa).
             # Examples: odtud, nazpátek, odjinud, vpravo, zdaleka, ven, pryč, daleko, skrz, blíž
             'tL' => ['advtype' => 'loc'],
@@ -274,6 +274,9 @@ sub _create_atoms
             # Adverb of manner (příslovce způsobu).
             # Examples: místně, bokem, ostře, matematicky, západně, skoro, tak, takhle, takto, nijak
             'tM' => ['advtype' => 'man'],
+            # Adverb of degree, extent, quantity (příslovce míry).
+            # Examples: daleko, skrz, potud, hodně, tak, takhle, takto, spoustu, poněkud, bezmála
+            'tQ' => ['advtype' => 'deg'],
             # Modal adverb (modální příslovce).
             # Examples: lze, možno, možná, načase, nutno, potřeba, radno, třeba, zapotřebí, dlužno
             'tD' => ['advtype' => 'mod'],
@@ -509,22 +512,35 @@ sub decode
     my $atoms = $self->atoms();
     # A tag is a sequence of feature-value pairs. Feature is a lowercase letter, value is an uppercase letter or a digit.
     # Example: k1gMnSc1
+    # Decompose the tag to individual feature-value pairs.
+    # Ordering of features is not guaranteed, thus it is safer to first read all features, then query them.
+    # Also, it is possible that a feature occurs repeatedly with different values (observed with the 't' feature).
     my @chars = split(//, $tag);
-    my %surfeatures;
+    my @features; # ordering of surface features
+    my %features; # lists of values of surface features
     for(my $i = 0; $i<=$#chars; $i += 2)
     {
         my $feature = $chars[$i]; # e.g. 'k'
         my $value = $feature.$chars[$i+1]; # e.g. 'k1'
-        $surfeatures{$feature} = $value;
+        push(@features, $feature) unless(exists($features{$feature}));
+        push(@{$features{$feature}{valarray}}, $value) unless(exists($features{$feature}{valhash}{$value}));
+        $features{$feature}{valhash}{$value}++;
+    }
+    # Decode the features in the order in which they appeared in the input.
+    foreach my $feature (@features)
+    {
         # Interpretation of the 'x' feature depends on the value of the 'k' feature.
-        # We assume that the 'k' feature appeared before the 'x' feature, although in theory the order is not guaranteed.
-        if($feature eq 'x')
+        my $kfeature = $feature;
+        if($kfeature eq 'x')
         {
-            $feature .= $surfeatures{'k'};
+            $kfeature .= join('', @{$features{'k'}{valarray}});
         }
-        if(exists($atoms->{$feature}))
+        if(exists($atoms->{$kfeature}))
         {
-            $atoms->{$feature}->decode_and_merge($value, $fs);
+            foreach my $value (@{$features{$feature}{valarray}})
+            {
+                $atoms->{$kfeature}->decode_and_merge_soft($value, $fs);
+            }
         }
     }
     return $fs;
@@ -560,7 +576,6 @@ sub encode
     foreach my $feature (@canonical)
     {
         # Interpretation of the 'x' feature depends on the value of the 'k' feature.
-        # We assume that the 'k' feature appeared before the 'x' feature, although in theory the order is not guaranteed.
         my $kfeature = $feature;
         if($feature eq 'x')
         {
@@ -568,13 +583,17 @@ sub encode
         }
         if(exists($atoms->{$kfeature}))
         {
-            my $value = $atoms->{$kfeature}->encode($fs);
+            my $value;
+            if($kfeature eq 't')
+            {
+                $value = $self->encode_t($fs, $atoms->{'t'});
+            }
+            else
+            {
+                $value = $atoms->{$kfeature}->encode($fs);
+            }
             if(defined($value) && $value ne '')
             {
-                if(length($value)!=2)
-                {
-                    confess("Encoder returned value '$value' for feature '$kfeature' and it is not two characters long");
-                }
                 $tag .= $value;
                 $surfeatures{$feature} = $value;
             }
@@ -586,13 +605,48 @@ sub encode
 
 
 #------------------------------------------------------------------------------
+# Encodes semantic type of adverb (the surface feature 't'). This feature
+# requires special treatment because it can have multiple values.
+#------------------------------------------------------------------------------
+sub encode_t
+{
+    my $self = shift;
+    my $fs = shift; # Lingua::Interset::FeatureStructure
+    my $atom_t = shift; # Lingua::Interset::Atom
+    my @values = $fs->get_list('advtype');
+    my $n = scalar(@values);
+    if($n==0)
+    {
+        return '';
+    }
+    elsif($n==1)
+    {
+        return $atom_t->encode($fs);
+    }
+    else # $n>1
+    {
+        my @tags = ();
+        foreach my $value (@values)
+        {
+            my $fs1 = $fs->duplicate();
+            $fs1->set('advtype', $value);
+            push(@tags, $atom_t->encode($fs1));
+        }
+        return join('', sort(@tags));
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
 # Returns reference to list of known tags.
 # I have no official list of tags that can be generated by Ajka or Majka.
 # I took the Czech text from PDT (CoNLL 2006), asked Majka to analyze all the
 # words, then took all lemmas and asked Majka to generate all possible word
 # forms for every lemma. The list contains all tags that appeared in output of
 # one or both the runs of Majka.
-# Count: 2177 Majka tags
+# Count: 2176 Majka tags
+# (it was 2177 before I removed the 'k6eAd1tAtM' tag)
 #------------------------------------------------------------------------------
 sub list
 {
@@ -2685,7 +2739,6 @@ k5eNaPmSgMnS     neskvě
 k5eNaPmSgNnP     neskvouce
 k5eNaPmSgNnS     neskvouc
 k6eAd1           tajemně
-k6eAd1tAtM       místně
 k6eAd1tCtLtTxD   odtud
 k6eAd1tCyQ       cože
 k6eAd1tD         třeba
