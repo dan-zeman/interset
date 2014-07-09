@@ -679,2190 +679,2186 @@ sub encode_t
 sub list
 {
     my $self = shift;
-    # There is an example word next to each tag.
-    # The examples are actually only comments and will not appear in the list returned by this method.
-    # (Yes, it would be more effective not to have them here. But this method is not going to be called repeatedly.)
-    ###!!! Možná bych ty příklady měl přece jen vyhodit a nechat si je někde jinde zvlášť.
     my $list = <<end_of_list
-k0               no
-k1gFnPc1         úspěšnosti
-k1gFnPc2         pochybností
-k1gFnPc3         radám
-k1gFnPc4         úspěšnosti
-k1gFnPc5         úspěšnosti
-k1gFnPc6         polích
-k1gFnPc7         specialitami
-k1gFnSc1         bomba
-k1gFnSc2         úspěšnosti
-k1gFnSc3         tečce
-k1gFnSc4         kombinézu
-k1gFnSc5         úspěšnosti
-k1gFnSc6         tečce
-k1gFnSc7         pochybností
-k1gInPc1         zabijáky
-k1gInPc2         významů
-k1gInPc3         pohledům
-k1gInPc4         zabijáky
-k1gInPc5         zabijáky
-k1gInPc6         hrbolech
-k1gInPc7         zabijáky
-k1gInSc1         katalyzátor
-k1gInSc2         driftu
-k1gInSc3         driftu
-k1gInSc4         katalyzátor
-k1gInSc5         povrchu
-k1gInSc6         driftu
-k1gInSc7         komunismem
-k1gMnPc1         pánové
-k1gMnPc2         ubožáků
-k1gMnPc3         architektům
-k1gMnPc4         zabijáky
-k1gMnPc5         pánové
-k1gMnPc6         hráčích
-k1gMnPc7         zabijáky
-k1gMnSc1         kojenec
-k1gMnSc2         poplatníka
-k1gMnSc3         běžkaři
-k1gMnSc4         poplatníka
-k1gMnSc5         pojištěný
-k1gMnSc6         běžkaři
-k1gMnSc7         pánem
-k1gNnPc1         toto
-k1gNnPc2         toto
-k1gNnPc3         toto
-k1gNnPc4         toto
-k1gNnPc5         toto
-k1gNnPc6         toto
-k1gNnPc7         toto
-k1gNnSc1         toto
-k1gNnSc2         toto
-k1gNnSc3         toto
-k1gNnSc4         toto
-k1gNnSc5         toto
-k1gNnSc6         toto
-k1gNnSc7         toto
-k1gRnPc1         Klausovi
-k1gRnPc2         Čechů
-k1gRnPc3         Klausovým
-k1gRnPc4         Klausovy
-k1gRnPc5         Klausovi
-k1gRnPc6         Havlových
-k1gRnPc7         Havlovými
-k1xP             čtvrti
-k2eAgFnPc1d1     žlučové
-k2eAgFnPc1d1hF   dceřiny
-k2eAgFnPc1d1hM   soupeřovy
-k2eAgFnPc1d1hR   Zelených
-k2eAgFnPc1d2     smysluplnější
-k2eAgFnPc1d3     nejvýznamnější
-k2eAgFnPc2d1     hygienických
-k2eAgFnPc2d1hF   dceřiných
-k2eAgFnPc2d1hM   malířových
-k2eAgFnPc2d1hR   Zelených
-k2eAgFnPc2d2     zásadnějších
-k2eAgFnPc2d3     nejslabších
-k2eAgFnPc3d1     poutavým
-k2eAgFnPc3d1hF   hereččiným
-k2eAgFnPc3d1hM   páně
-k2eAgFnPc3d1hR   Zelených
-k2eAgFnPc3d2     zásadnějším
-k2eAgFnPc3d3     nejstálejším
-k2eAgFnPc4d1     žlučové
-k2eAgFnPc4d1hF   dceřiny
-k2eAgFnPc4d1hM   soupeřovy
-k2eAgFnPc4d1hR   Zelených
-k2eAgFnPc4d2     smysluplnější
-k2eAgFnPc4d3     nejvýznamnější
-k2eAgFnPc5d1     žlučové
-k2eAgFnPc5d1hF   dceřiny
-k2eAgFnPc5d1hM   soupeřovy
-k2eAgFnPc5d1hR   Zelených
-k2eAgFnPc5d2     smysluplnější
-k2eAgFnPc5d3     nejvýznamnější
-k2eAgFnPc6d1     hygienických
-k2eAgFnPc6d1hF   dceřiných
-k2eAgFnPc6d1hM   malířových
-k2eAgFnPc6d1hR   Zelených
-k2eAgFnPc6d2     zásadnějších
-k2eAgFnPc6d3     nejslabších
-k2eAgFnPc7d1     užívanými
-k2eAgFnPc7d1hF   královninými
-k2eAgFnPc7d1hM   páně
-k2eAgFnPc7d1hR   Zelených
-k2eAgFnPc7d2     mladšími
-k2eAgFnPc7d3     nejžádanějšími
-k2eAgFnSc1d1     ošetřená
-k2eAgFnSc1d1hF   babiččina
-k2eAgFnSc1d1hM   hrdinova
-k2eAgFnSc1d1hR   Zelených
-k2eAgFnSc1d2     smysluplnější
-k2eAgFnSc1d3     nejvýznamnější
-k2eAgFnSc2d1     žlučové
-k2eAgFnSc2d1hF   dceřiny
-k2eAgFnSc2d1hM   soupeřovy
-k2eAgFnSc2d1hR   Zelených
-k2eAgFnSc2d2     smysluplnější
-k2eAgFnSc2d3     nejvýznamnější
-k2eAgFnSc3d1     žlučové
-k2eAgFnSc3d1hF   autorčině
-k2eAgFnSc3d1hM   soupeřově
-k2eAgFnSc3d1hR   Zelených
-k2eAgFnSc3d2     smysluplnější
-k2eAgFnSc3d3     nejvýznamnější
-k2eAgFnSc4d1     ovčí
-k2eAgFnSc4d1hF   autorčinu
-k2eAgFnSc4d1hM   básníkovu
-k2eAgFnSc4d1hR   Zelených
-k2eAgFnSc4d2     smysluplnější
-k2eAgFnSc4d3     nejvýznamnější
-k2eAgFnSc5d1     ošetřená
-k2eAgFnSc5d1hF   babiččina
-k2eAgFnSc5d1hM   hrdinova
-k2eAgFnSc5d1hR   Zelených
-k2eAgFnSc5d2     smysluplnější
-k2eAgFnSc5d3     nejvýznamnější
-k2eAgFnSc6d1     žlučové
-k2eAgFnSc6d1hF   autorčině
-k2eAgFnSc6d1hM   soupeřově
-k2eAgFnSc6d1hR   Zelených
-k2eAgFnSc6d2     smysluplnější
-k2eAgFnSc6d3     nejvýznamnější
-k2eAgFnSc7d1     ovčí
-k2eAgFnSc7d1hF   babiččinou
-k2eAgFnSc7d1hM   malířovou
-k2eAgFnSc7d1hR   Zelených
-k2eAgFnSc7d2     smysluplnější
-k2eAgFnSc7d3     nejvýznamnější
-k2eAgInPc1d1     žlučové
-k2eAgInPc1d1hF   dceřiny
-k2eAgInPc1d1hM   soupeřovy
-k2eAgInPc1d1hR   Zelených
-k2eAgInPc1d2     smysluplnější
-k2eAgInPc1d3     nejvýznamnější
-k2eAgInPc2d1     hygienických
-k2eAgInPc2d1hF   dceřiných
-k2eAgInPc2d1hM   malířových
-k2eAgInPc2d1hR   Zelených
-k2eAgInPc2d2     zásadnějších
-k2eAgInPc2d3     nejslabších
-k2eAgInPc3d1     poutavým
-k2eAgInPc3d1hF   hereččiným
-k2eAgInPc3d1hM   páně
-k2eAgInPc3d1hR   Zelených
-k2eAgInPc3d2     zásadnějším
-k2eAgInPc3d3     nejstálejším
-k2eAgInPc4d1     žlučové
-k2eAgInPc4d1hF   dceřiny
-k2eAgInPc4d1hM   soupeřovy
-k2eAgInPc4d1hR   Zelených
-k2eAgInPc4d2     smysluplnější
-k2eAgInPc4d3     nejvýznamnější
-k2eAgInPc5d1     žlučové
-k2eAgInPc5d1hF   dceřiny
-k2eAgInPc5d1hM   soupeřovy
-k2eAgInPc5d1hR   Zelených
-k2eAgInPc5d2     smysluplnější
-k2eAgInPc5d3     nejvýznamnější
-k2eAgInPc6d1     hygienických
-k2eAgInPc6d1hF   dceřiných
-k2eAgInPc6d1hM   malířových
-k2eAgInPc6d1hR   Zelených
-k2eAgInPc6d2     zásadnějších
-k2eAgInPc6d3     nejslabších
-k2eAgInPc7d1     užívanými
-k2eAgInPc7d1hF   královninými
-k2eAgInPc7d1hM   páně
-k2eAgInPc7d1hR   Zelených
-k2eAgInPc7d2     mladšími
-k2eAgInPc7d3     nejžádanějšími
-k2eAgInSc1d1     ovčí
-k2eAgInSc1d1hF   autorčin
-k2eAgInSc1d1hM   premiérův
-k2eAgInSc1d1hR   Zelených
-k2eAgInSc1d2     smysluplnější
-k2eAgInSc1d3     nejvýznamnější
-k2eAgInSc2d1     atraktivního
-k2eAgInSc2d1hF   babiččina
-k2eAgInSc2d1hM   hrdinova
-k2eAgInSc2d1hR   Zelených
-k2eAgInSc2d2     exponovanějšího
-k2eAgInSc2d3     nejbližšího
-k2eAgInSc3d1     hradeckému
-k2eAgInSc3d1hF   autorčinu
-k2eAgInSc3d1hM   básníkovu
-k2eAgInSc3d1hR   Zelených
-k2eAgInSc3d2     hlubšímu
-k2eAgInSc3d3     nejvyššímu
-k2eAgInSc4d1     ovčí
-k2eAgInSc4d1hF   autorčin
-k2eAgInSc4d1hM   premiérův
-k2eAgInSc4d1hR   Zelených
-k2eAgInSc4d2     smysluplnější
-k2eAgInSc4d3     nejvýznamnější
-k2eAgInSc5d1     ovčí
-k2eAgInSc5d1hF   autorčin
-k2eAgInSc5d1hM   premiérův
-k2eAgInSc5d1hR   Zelených
-k2eAgInSc5d2     smysluplnější
-k2eAgInSc5d3     nejvýznamnější
-k2eAgInSc6d1     kontrolním
-k2eAgInSc6d1hF   autorčině
-k2eAgInSc6d1hM   soupeřově
-k2eAgInSc6d1hR   Zelených
-k2eAgInSc6d2     zásadnějším
-k2eAgInSc6d3     nejstálejším
-k2eAgInSc7d1     poutavým
-k2eAgInSc7d1hF   hereččiným
-k2eAgInSc7d1hM   páně
-k2eAgInSc7d1hR   Zelených
-k2eAgInSc7d2     zásadnějším
-k2eAgInSc7d3     nejstálejším
-k2eAgMnPc1d1     čtrnáctiletí
-k2eAgMnPc1d1hF   autorčini
-k2eAgMnPc1d1hM   kamarádovi
-k2eAgMnPc1d1hR   Zelených
-k2eAgMnPc1d2     smysluplnější
-k2eAgMnPc1d3     nejvýznamnější
-k2eAgMnPc2d1     hygienických
-k2eAgMnPc2d1hF   dceřiných
-k2eAgMnPc2d1hM   malířových
-k2eAgMnPc2d1hR   Zelených
-k2eAgMnPc2d2     zásadnějších
-k2eAgMnPc2d3     nejslabších
-k2eAgMnPc3d1     poutavým
-k2eAgMnPc3d1hF   hereččiným
-k2eAgMnPc3d1hM   páně
-k2eAgMnPc3d1hR   Zelených
-k2eAgMnPc3d2     zásadnějším
-k2eAgMnPc3d3     nejstálejším
-k2eAgMnPc4d1     žlučové
-k2eAgMnPc4d1hF   dceřiny
-k2eAgMnPc4d1hM   soupeřovy
-k2eAgMnPc4d1hR   Zelených
-k2eAgMnPc4d2     smysluplnější
-k2eAgMnPc4d3     nejvýznamnější
-k2eAgMnPc5d1     čtrnáctiletí
-k2eAgMnPc5d1hF   autorčini
-k2eAgMnPc5d1hM   kamarádovi
-k2eAgMnPc5d1hR   Zelených
-k2eAgMnPc5d2     smysluplnější
-k2eAgMnPc5d3     nejvýznamnější
-k2eAgMnPc6d1     hygienických
-k2eAgMnPc6d1hF   dceřiných
-k2eAgMnPc6d1hM   malířových
-k2eAgMnPc6d1hR   Zelených
-k2eAgMnPc6d2     zásadnějších
-k2eAgMnPc6d3     nejslabších
-k2eAgMnPc7d1     užívanými
-k2eAgMnPc7d1hF   královninými
-k2eAgMnPc7d1hM   páně
-k2eAgMnPc7d1hR   Zelených
-k2eAgMnPc7d2     mladšími
-k2eAgMnPc7d3     nejžádanějšími
-k2eAgMnSc1d1     ovčí
-k2eAgMnSc1d1hF   autorčin
-k2eAgMnSc1d1hM   premiérův
-k2eAgMnSc1d1hR   Zelených
-k2eAgMnSc1d2     smysluplnější
-k2eAgMnSc1d3     nejvýznamnější
-k2eAgMnSc2d1     atraktivního
-k2eAgMnSc2d1hF   babiččina
-k2eAgMnSc2d1hM   hrdinova
-k2eAgMnSc2d1hR   Zelených
-k2eAgMnSc2d2     exponovanějšího
-k2eAgMnSc2d3     nejbližšího
-k2eAgMnSc3d1     hradeckému
-k2eAgMnSc3d1hF   autorčinu
-k2eAgMnSc3d1hM   básníkovu
-k2eAgMnSc3d1hR   Zelených
-k2eAgMnSc3d2     hlubšímu
-k2eAgMnSc3d3     nejvyššímu
-k2eAgMnSc4d1     atraktivního
-k2eAgMnSc4d1hF   babiččina
-k2eAgMnSc4d1hM   hrdinova
-k2eAgMnSc4d1hR   Zelených
-k2eAgMnSc4d2     exponovanějšího
-k2eAgMnSc4d3     nejbližšího
-k2eAgMnSc5d1     ovčí
-k2eAgMnSc5d1hF   autorčin
-k2eAgMnSc5d1hM   premiérův
-k2eAgMnSc5d1hR   Zelených
-k2eAgMnSc5d2     smysluplnější
-k2eAgMnSc5d3     nejvýznamnější
-k2eAgMnSc6d1     kontrolním
-k2eAgMnSc6d1hF   autorčině
-k2eAgMnSc6d1hM   soupeřově
-k2eAgMnSc6d1hR   Zelených
-k2eAgMnSc6d2     zásadnějším
-k2eAgMnSc6d3     nejstálejším
-k2eAgMnSc7d1     poutavým
-k2eAgMnSc7d1hF   hereččiným
-k2eAgMnSc7d1hM   páně
-k2eAgMnSc7d1hR   Zelených
-k2eAgMnSc7d2     zásadnějším
-k2eAgMnSc7d3     nejstálejším
-k2eAgNnPc1d1     ošetřená
-k2eAgNnPc1d1hF   babiččina
-k2eAgNnPc1d1hM   hrdinova
-k2eAgNnPc1d1hR   Zelených
-k2eAgNnPc1d2     smysluplnější
-k2eAgNnPc1d3     nejvýznamnější
-k2eAgNnPc2d1     hygienických
-k2eAgNnPc2d1hF   dceřiných
-k2eAgNnPc2d1hM   malířových
-k2eAgNnPc2d1hR   Zelených
-k2eAgNnPc2d2     zásadnějších
-k2eAgNnPc2d3     nejslabších
-k2eAgNnPc3d1     poutavým
-k2eAgNnPc3d1hF   hereččiným
-k2eAgNnPc3d1hM   páně
-k2eAgNnPc3d1hR   Zelených
-k2eAgNnPc3d2     zásadnějším
-k2eAgNnPc3d3     nejstálejším
-k2eAgNnPc4d1     ošetřená
-k2eAgNnPc4d1hF   babiččina
-k2eAgNnPc4d1hM   hrdinova
-k2eAgNnPc4d1hR   Zelených
-k2eAgNnPc4d2     smysluplnější
-k2eAgNnPc4d3     nejvýznamnější
-k2eAgNnPc5d1     ošetřená
-k2eAgNnPc5d1hF   babiččina
-k2eAgNnPc5d1hM   hrdinova
-k2eAgNnPc5d1hR   Zelených
-k2eAgNnPc5d2     smysluplnější
-k2eAgNnPc5d3     nejvýznamnější
-k2eAgNnPc6d1     hygienických
-k2eAgNnPc6d1hF   dceřiných
-k2eAgNnPc6d1hM   malířových
-k2eAgNnPc6d1hR   Zelených
-k2eAgNnPc6d2     zásadnějších
-k2eAgNnPc6d3     nejslabších
-k2eAgNnPc7d1     užívanými
-k2eAgNnPc7d1hF   královninými
-k2eAgNnPc7d1hM   páně
-k2eAgNnPc7d1hR   Zelených
-k2eAgNnPc7d2     mladšími
-k2eAgNnPc7d3     nejžádanějšími
-k2eAgNnSc1d1     podáno
-k2eAgNnSc1d1hF   královnino
-k2eAgNnSc1d1hM   primátorovo
-k2eAgNnSc1d1hR   Zelených
-k2eAgNnSc1d2     smysluplnější
-k2eAgNnSc1d3     nejvýznamnější
-k2eAgNnSc2d1     atraktivního
-k2eAgNnSc2d1hF   babiččina
-k2eAgNnSc2d1hM   hrdinova
-k2eAgNnSc2d1hR   Zelených
-k2eAgNnSc2d2     exponovanějšího
-k2eAgNnSc2d3     nejbližšího
-k2eAgNnSc3d1     hradeckému
-k2eAgNnSc3d1hF   autorčinu
-k2eAgNnSc3d1hM   básníkovu
-k2eAgNnSc3d1hR   Zelených
-k2eAgNnSc3d2     hlubšímu
-k2eAgNnSc3d3     nejvyššímu
-k2eAgNnSc4d1     podáno
-k2eAgNnSc4d1hF   královnino
-k2eAgNnSc4d1hM   primátorovo
-k2eAgNnSc4d1hR   Zelených
-k2eAgNnSc4d2     smysluplnější
-k2eAgNnSc4d3     nejvýznamnější
-k2eAgNnSc5d1     žlučové
-k2eAgNnSc5d1hF   královnino
-k2eAgNnSc5d1hM   primátorovo
-k2eAgNnSc5d1hR   Zelených
-k2eAgNnSc5d2     smysluplnější
-k2eAgNnSc5d3     nejvýznamnější
-k2eAgNnSc6d1     kontrolním
-k2eAgNnSc6d1hF   autorčině
-k2eAgNnSc6d1hM   soupeřově
-k2eAgNnSc6d1hR   Zelených
-k2eAgNnSc6d2     zásadnějším
-k2eAgNnSc6d3     nejstálejším
-k2eAgNnSc7d1     poutavým
-k2eAgNnSc7d1hF   hereččiným
-k2eAgNnSc7d1hM   páně
-k2eAgNnSc7d1hR   Zelených
-k2eAgNnSc7d2     zásadnějším
-k2eAgNnSc7d3     nejstálejším
-k2eNgFnPc1d1     neperspektivní
-k2eNgFnPc1d2     nepravdivější
-k2eNgFnPc1d3     nejnevhodnější
-k2eNgFnPc2d1     nevstřícných
-k2eNgFnPc2d2     nechudších
-k2eNgFnPc2d3     nejnebezpečnějších
-k2eNgFnPc3d1     nespisovným
-k2eNgFnPc3d2     nemocnějším
-k2eNgFnPc3d3     nejnechudším
-k2eNgFnPc4d1     neperspektivní
-k2eNgFnPc4d2     nepravdivější
-k2eNgFnPc4d3     nejnevhodnější
-k2eNgFnPc5d1     neperspektivní
-k2eNgFnPc5d2     nepravdivější
-k2eNgFnPc5d3     nejnevhodnější
-k2eNgFnPc6d1     nevstřícných
-k2eNgFnPc6d2     nechudších
-k2eNgFnPc6d3     nejnebezpečnějších
-k2eNgFnPc7d1     nemocnými
-k2eNgFnPc7d2     nebezpečnějšími
-k2eNgFnPc7d3     nejnechudšíma
-k2eNgFnSc1d1     nevymahatelná
-k2eNgFnSc1d2     nepravdivější
-k2eNgFnSc1d3     nejnevhodnější
-k2eNgFnSc2d1     neperspektivní
-k2eNgFnSc2d2     nepravdivější
-k2eNgFnSc2d3     nejnevhodnější
-k2eNgFnSc3d1     neperspektivní
-k2eNgFnSc3d2     nepravdivější
-k2eNgFnSc3d3     nejnevhodnější
-k2eNgFnSc4d1     nedostupnou
-k2eNgFnSc4d2     nepravdivější
-k2eNgFnSc4d3     nejnevhodnější
-k2eNgFnSc5d1     nevymahatelná
-k2eNgFnSc5d2     nepravdivější
-k2eNgFnSc5d3     nejnevhodnější
-k2eNgFnSc6d1     neperspektivní
-k2eNgFnSc6d2     nepravdivější
-k2eNgFnSc6d3     nejnevhodnější
-k2eNgFnSc7d1     nedostupnou
-k2eNgFnSc7d2     nepravdivější
-k2eNgFnSc7d3     nejnevhodnější
-k2eNgInPc1d1     neperspektivní
-k2eNgInPc1d2     nepravdivější
-k2eNgInPc1d3     nejnevhodnější
-k2eNgInPc2d1     nevstřícných
-k2eNgInPc2d2     nechudších
-k2eNgInPc2d3     nejnebezpečnějších
-k2eNgInPc3d1     nespisovným
-k2eNgInPc3d2     nemocnějším
-k2eNgInPc3d3     nejnechudším
-k2eNgInPc4d1     neperspektivní
-k2eNgInPc4d2     nepravdivější
-k2eNgInPc4d3     nejnevhodnější
-k2eNgInPc5d1     neperspektivní
-k2eNgInPc5d2     nepravdivější
-k2eNgInPc5d3     nejnevhodnější
-k2eNgInPc6d1     nevstřícných
-k2eNgInPc6d2     nechudších
-k2eNgInPc6d3     nejnebezpečnějších
-k2eNgInPc7d1     nemocnými
-k2eNgInPc7d2     nebezpečnějšími
-k2eNgInPc7d3     nejnechudšími
-k2eNgInSc1d1     neperspektivní
-k2eNgInSc1d2     nepravdivější
-k2eNgInSc1d3     nejnevhodnější
-k2eNgInSc2d1     nevázaného
-k2eNgInSc2d2     nepříznivějšího
-k2eNgInSc2d3     nejnepatrnějšího
-k2eNgInSc3d1     nebezpečnému
-k2eNgInSc3d2     nechudšímu
-k2eNgInSc3d3     nejnechudšímu
-k2eNgInSc4d1     neperspektivní
-k2eNgInSc4d2     nepravdivější
-k2eNgInSc4d3     nejnevhodnější
-k2eNgInSc5d1     neperspektivní
-k2eNgInSc5d2     nepravdivější
-k2eNgInSc5d3     nejnevhodnější
-k2eNgInSc6d1     nehybném
-k2eNgInSc6d2     nemocnějším
-k2eNgInSc6d3     nejnechudším
-k2eNgInSc7d1     nespisovným
-k2eNgInSc7d2     nemocnějším
-k2eNgInSc7d3     nejnechudším
-k2eNgMnPc1d1     netrpěliví
-k2eNgMnPc1d2     nepravdivější
-k2eNgMnPc1d3     nejnevhodnější
-k2eNgMnPc2d1     nevstřícných
-k2eNgMnPc2d2     nechudších
-k2eNgMnPc2d3     nejnebezpečnějších
-k2eNgMnPc3d1     nespisovným
-k2eNgMnPc3d2     nemocnějším
-k2eNgMnPc3d3     nejnechudším
-k2eNgMnPc4d1     neperspektivní
-k2eNgMnPc4d2     nepravdivější
-k2eNgMnPc4d3     nejnevhodnější
-k2eNgMnPc5d1     netrpěliví
-k2eNgMnPc5d2     nepravdivější
-k2eNgMnPc5d3     nejnevhodnější
-k2eNgMnPc6d1     nevstřícných
-k2eNgMnPc6d2     nechudších
-k2eNgMnPc6d3     nejnebezpečnějších
-k2eNgMnPc7d1     nemocnými
-k2eNgMnPc7d2     nebezpečnějšími
-k2eNgMnPc7d3     nejnechudšími
-k2eNgMnSc1d1     neperspektivní
-k2eNgMnSc1d2     nepravdivější
-k2eNgMnSc1d3     nejnevhodnější
-k2eNgMnSc2d1     nevázaného
-k2eNgMnSc2d2     nepříznivějšího
-k2eNgMnSc2d3     nejnepatrnějšího
-k2eNgMnSc3d1     nebezpečnému
-k2eNgMnSc3d2     nechudšímu
-k2eNgMnSc3d3     nejnechudšímu
-k2eNgMnSc4d1     nevázaného
-k2eNgMnSc4d2     nepříznivějšího
-k2eNgMnSc4d3     nejnepatrnějšího
-k2eNgMnSc5d1     neperspektivní
-k2eNgMnSc5d2     nepravdivější
-k2eNgMnSc5d3     nejnevhodnější
-k2eNgMnSc6d1     nehybném
-k2eNgMnSc6d2     nemocnějším
-k2eNgMnSc6d3     nejnechudším
-k2eNgMnSc7d1     nespisovným
-k2eNgMnSc7d2     nemocnějším
-k2eNgMnSc7d3     nejnechudším
-k2eNgNnPc1d1     nevymahatelná
-k2eNgNnPc1d2     nepravdivější
-k2eNgNnPc1d3     nejnevhodnější
-k2eNgNnPc2d1     nevstřícných
-k2eNgNnPc2d2     nechudších
-k2eNgNnPc2d3     nejnebezpečnějších
-k2eNgNnPc3d1     nespisovným
-k2eNgNnPc3d2     nemocnějším
-k2eNgNnPc3d3     nejnechudším
-k2eNgNnPc4d1     nevymahatelná
-k2eNgNnPc4d2     nepravdivější
-k2eNgNnPc4d3     nejnevhodnější
-k2eNgNnPc5d1     nevymahatelná
-k2eNgNnPc5d2     nepravdivější
-k2eNgNnPc5d3     nejnevhodnější
-k2eNgNnPc6d1     nevstřícných
-k2eNgNnPc6d2     nechudších
-k2eNgNnPc6d3     nejnebezpečnějších
-k2eNgNnPc7d1     nemocnými
-k2eNgNnPc7d2     nebezpečnějšími
-k2eNgNnPc7d3     nejnechudšíma
-k2eNgNnSc1d1     neperspektivní
-k2eNgNnSc1d2     nepravdivější
-k2eNgNnSc1d3     nejnevhodnější
-k2eNgNnSc2d1     nevázaného
-k2eNgNnSc2d2     nepříznivějšího
-k2eNgNnSc2d3     nejnepatrnějšího
-k2eNgNnSc3d1     nebezpečnému
-k2eNgNnSc3d2     nechudšímu
-k2eNgNnSc3d3     nejnechudšímu
-k2eNgNnSc4d1     neperspektivní
-k2eNgNnSc4d2     nepravdivější
-k2eNgNnSc4d3     nejnevhodnější
-k2eNgNnSc5d1     neperspektivní
-k2eNgNnSc5d2     nepravdivější
-k2eNgNnSc5d3     nejnevhodnější
-k2eNgNnSc6d1     nehybném
-k2eNgNnSc6d2     nemocnějším
-k2eNgNnSc6d3     nejnechudším
-k2eNgNnSc7d1     nespisovným
-k2eNgNnSc7d2     nemocnějším
-k2eNgNnSc7d3     nejnechudším
-k3c2xPyF         sebe
-k3c3xPyF         sobě
-k3c4xPyF         se
-k3c6xPyF         sobě
-k3c7xPyF         sebou
-k3gFnPc1xD       tyto
-k3gFnPc1xOyF     své
-k3gFnPc1xOyI     něčí
-k3gFnPc1xOyN     ničí
-k3gFnPc1xOyQ     čí
-k3gFnPc1xOyR     čí
-k3gFnPc1xT       samy
-k3gFnPc1yI       jakékoliv
-k3gFnPc1yN       žádné
-k3gFnPc1yQ       které
-k3gFnPc1yR       jež
-k3gFnPc2xD       těchže
-k3gFnPc2xOyF     svých
-k3gFnPc2xOyI     něčích
-k3gFnPc2xOyN     ničích
-k3gFnPc2xOyQ     čích
-k3gFnPc2xOyR     čích
-k3gFnPc2xT       samých
-k3gFnPc2yI       jakýchsi
-k3gFnPc2yN       žádných
-k3gFnPc2yQ       jakých
-k3gFnPc2yR       jichž
-k3gFnPc3xD       takovým
-k3gFnPc3xOyF     svým
-k3gFnPc3xOyI     něčím
-k3gFnPc3xOyN     ničím
-k3gFnPc3xOyQ     čím
-k3gFnPc3xOyR     čím
-k3gFnPc3xT       týmž
-k3gFnPc3yI       jakýmkoli
-k3gFnPc3yN       žádným
-k3gFnPc3yQ       kterým
-k3gFnPc3yR       nimž
-k3gFnPc4xD       tyto
-k3gFnPc4xOyF     své
-k3gFnPc4xOyI     něčí
-k3gFnPc4xOyN     ničí
-k3gFnPc4xOyQ     čí
-k3gFnPc4xOyR     čí
-k3gFnPc4xT       samy
-k3gFnPc4yI       jakékoliv
-k3gFnPc4yN       žádné
-k3gFnPc4yQ       které
-k3gFnPc4yR       jež
-k3gFnPc5yR       jaké
-k3gFnPc6xD       těchže
-k3gFnPc6xOyF     svých
-k3gFnPc6xOyI     něčích
-k3gFnPc6xOyN     ničích
-k3gFnPc6xOyQ     čích
-k3gFnPc6xOyR     čích
-k3gFnPc6xT       samých
-k3gFnPc6yI       jakýchsi
-k3gFnPc6yN       žádných
-k3gFnPc6yQ       jakých
-k3gFnPc6yR       jakých
-k3gFnPc7xD       oněmi
-k3gFnPc7xOyF     svými
-k3gFnPc7xOyI     něčíma
-k3gFnPc7xOyN     ničíma
-k3gFnPc7xOyQ     číma
-k3gFnPc7xOyR     číma
-k3gFnPc7xT       veškerými
-k3gFnPc7yI       jakýmikoliv
-k3gFnPc7yN       žádnými
-k3gFnPc7yQ       jakými
-k3gFnPc7yR       jimiž
-k3gFnSc1xD       ona
-k3gFnSc1xOyF     svá
-k3gFnSc1xOyI     něčí
-k3gFnSc1xOyN     ničí
-k3gFnSc1xOyQ     čí
-k3gFnSc1xOyR     čí
-k3gFnSc1xT       sama
-k3gFnSc1yI       jaká
-k3gFnSc1yN       žádná
-k3gFnSc1yQ       jaká
-k3gFnSc1yR       jež
-k3gFnSc2xD       téže
-k3gFnSc2xOyF     své
-k3gFnSc2xOyI     něčí
-k3gFnSc2xOyN     ničí
-k3gFnSc2xOyQ     čí
-k3gFnSc2xOyR     čí
-k3gFnSc2xT       téže
-k3gFnSc2yI       jakékoliv
-k3gFnSc2yN       žádné
-k3gFnSc2yQ       které
-k3gFnSc2yR       jíž
-k3gFnSc3xD       téže
-k3gFnSc3xOyF     své
-k3gFnSc3xOyI     něčí
-k3gFnSc3xOyN     ničí
-k3gFnSc3xOyQ     čí
-k3gFnSc3xOyR     čí
-k3gFnSc3xT       téže
-k3gFnSc3yI       jakékoliv
-k3gFnSc3yN       žádné
-k3gFnSc3yQ       které
-k3gFnSc3yR       jíž
-k3gFnSc4xD       onu
-k3gFnSc4xOyF     svoji
-k3gFnSc4xOyI     něčí
-k3gFnSc4xOyN     ničí
-k3gFnSc4xOyQ     čí
-k3gFnSc4xOyR     čí
-k3gFnSc4xT       všechnu
-k3gFnSc4yI       jakoukoli
-k3gFnSc4yN       žádnou
-k3gFnSc4yQ       jakou
-k3gFnSc4yR       již
-k3gFnSc5yR       jaká
-k3gFnSc6xD       téže
-k3gFnSc6xOyF     své
-k3gFnSc6xOyI     něčí
-k3gFnSc6xOyN     ničí
-k3gFnSc6xOyQ     čí
-k3gFnSc6xOyR     čí
-k3gFnSc6xT       téže
-k3gFnSc6yI       jakékoliv
-k3gFnSc6yN       žádné
-k3gFnSc6yQ       které
-k3gFnSc6yR       níž
-k3gFnSc7xD       tou
-k3gFnSc7xOyF     svou
-k3gFnSc7xOyI     něčí
-k3gFnSc7xOyN     ničí
-k3gFnSc7xOyQ     čí
-k3gFnSc7xOyR     čí
-k3gFnSc7xT       veškerou
-k3gFnSc7yI       jakoukoli
-k3gFnSc7yN       žádnou
-k3gFnSc7yQ       jakou
-k3gFnSc7yR       jíž
-k3gInPc1xD       tyto
-k3gInPc1xOyF     své
-k3gInPc1xOyI     něčí
-k3gInPc1xOyN     ničí
-k3gInPc1xOyQ     čí
-k3gInPc1xOyR     čí
-k3gInPc1xT       samy
-k3gInPc1yI       jakékoliv
-k3gInPc1yN       žádné
-k3gInPc1yQ       které
-k3gInPc1yR       jež
-k3gInPc2xD       těchže
-k3gInPc2xOyF     svých
-k3gInPc2xOyI     něčích
-k3gInPc2xOyN     ničích
-k3gInPc2xOyQ     čích
-k3gInPc2xOyR     čích
-k3gInPc2xT       samých
-k3gInPc2yI       jakýchsi
-k3gInPc2yN       žádných
-k3gInPc2yQ       jakých
-k3gInPc2yR       jichž
-k3gInPc3xD       takovým
-k3gInPc3xOyF     svým
-k3gInPc3xOyI     něčím
-k3gInPc3xOyN     ničím
-k3gInPc3xOyQ     čím
-k3gInPc3xOyR     čím
-k3gInPc3xT       týmž
-k3gInPc3yI       jakýmkoli
-k3gInPc3yN       žádným
-k3gInPc3yQ       kterým
-k3gInPc3yR       nimž
-k3gInPc4xD       tyto
-k3gInPc4xOyF     své
-k3gInPc4xOyI     něčí
-k3gInPc4xOyN     ničí
-k3gInPc4xOyQ     čí
-k3gInPc4xOyR     čí
-k3gInPc4xT       samy
-k3gInPc4yI       jakékoliv
-k3gInPc4yN       žádné
-k3gInPc4yQ       které
-k3gInPc4yR       jež
-k3gInPc5yR       jaké
-k3gInPc6xD       těchže
-k3gInPc6xOyF     svých
-k3gInPc6xOyI     něčích
-k3gInPc6xOyN     ničích
-k3gInPc6xOyQ     čích
-k3gInPc6xOyR     čích
-k3gInPc6xT       samých
-k3gInPc6yI       jakýchsi
-k3gInPc6yN       žádných
-k3gInPc6yQ       jakých
-k3gInPc6yR       jakých
-k3gInPc7xD       oněmi
-k3gInPc7xOyF     svými
-k3gInPc7xOyI     něčími
-k3gInPc7xOyN     ničími
-k3gInPc7xOyQ     čími
-k3gInPc7xOyR     čími
-k3gInPc7xT       veškerými
-k3gInPc7yI       jakýmikoliv
-k3gInPc7yN       žádnými
-k3gInPc7yQ       jakými
-k3gInPc7yR       jimiž
-k3gInSc1xD       onen
-k3gInSc1xOyF     svůj
-k3gInSc1xOyI     něčí
-k3gInSc1xOyN     ničí
-k3gInSc1xOyQ     čí
-k3gInSc1xOyR     čí
-k3gInSc1xT       tentýž
-k3gInSc1yI       jakýkoliv
-k3gInSc1yN       žádný
-k3gInSc1yQ       jaký
-k3gInSc1yR       jenž
-k3gInSc2xD       toho
-k3gInSc2xOyF     svého
-k3gInSc2xOyI     něčího
-k3gInSc2xOyN     ničího
-k3gInSc2xOyQ     čího
-k3gInSc2xOyR     čího
-k3gInSc2xT       veškerého
-k3gInSc2yI       jakého
-k3gInSc2yN       žádného
-k3gInSc2yQ       jakého
-k3gInSc2yR       nějž
-k3gInSc3xD       onomu
-k3gInSc3xOyF     svému
-k3gInSc3xOyI     něčímu
-k3gInSc3xOyN     ničímu
-k3gInSc3xOyQ     čímu
-k3gInSc3xOyR     čímu
-k3gInSc3xT       všemu
-k3gInSc3yI       některému
-k3gInSc3yN       žádnému
-k3gInSc3yQ       jakému
-k3gInSc3yR       jemuž
-k3gInSc4xD       onen
-k3gInSc4xOyF     svůj
-k3gInSc4xOyI     něčí
-k3gInSc4xOyN     ničí
-k3gInSc4xOyQ     čí
-k3gInSc4xOyR     čí
-k3gInSc4xT       tentýž
-k3gInSc4yI       jakýkoliv
-k3gInSc4yN       žádný
-k3gInSc4yQ       jaký
-k3gInSc4yR       nějž
-k3gInSc5yR       jaký
-k3gInSc6xD       takovémhle
-k3gInSc6xOyF     svém
-k3gInSc6xOyI     něčím
-k3gInSc6xOyN     ničím
-k3gInSc6xOyQ     čím
-k3gInSc6xOyR     čím
-k3gInSc6xT       témž
-k3gInSc6yI       jakémsi
-k3gInSc6yN       žádném
-k3gInSc6yQ       jakém
-k3gInSc6yR       němž
-k3gInSc7xD       oním
-k3gInSc7xOyF     svým
-k3gInSc7xOyI     něčím
-k3gInSc7xOyN     ničím
-k3gInSc7xOyQ     čím
-k3gInSc7xOyR     čím
-k3gInSc7xT       týmž
-k3gInSc7yI       jakýmkoli
-k3gInSc7yN       žádným
-k3gInSc7yQ       kterým
-k3gInSc7yR       kterým
-k3gMnPc1xD       ti
-k3gMnPc1xOyF     svoji
-k3gMnPc1xOyI     něčí
-k3gMnPc1xOyN     ničí
-k3gMnPc1xOyQ     čí
-k3gMnPc1xOyR     čí
-k3gMnPc1xT       samí
-k3gMnPc1yI       leckteří
-k3gMnPc1yN       žádní
-k3gMnPc1yQ       jací
-k3gMnPc1yR       jací
-k3gMnPc2xD       těchže
-k3gMnPc2xOyF     svých
-k3gMnPc2xOyI     něčích
-k3gMnPc2xOyN     ničích
-k3gMnPc2xOyQ     čích
-k3gMnPc2xOyR     čích
-k3gMnPc2xT       samých
-k3gMnPc2yI       jakýchsi
-k3gMnPc2yN       žádných
-k3gMnPc2yQ       jakých
-k3gMnPc2yR       jichž
-k3gMnPc3xD       takovým
-k3gMnPc3xOyF     svým
-k3gMnPc3xOyI     něčím
-k3gMnPc3xOyN     ničím
-k3gMnPc3xOyQ     čím
-k3gMnPc3xOyR     čím
-k3gMnPc3xT       týmž
-k3gMnPc3yI       jakýmkoli
-k3gMnPc3yN       žádným
-k3gMnPc3yQ       kterým
-k3gMnPc3yR       nimž
-k3gMnPc4xD       tyto
-k3gMnPc4xOyF     své
-k3gMnPc4xOyI     něčí
-k3gMnPc4xOyN     ničí
-k3gMnPc4xOyQ     čí
-k3gMnPc4xOyR     čí
-k3gMnPc4xT       samy
-k3gMnPc4yI       jakékoliv
-k3gMnPc4yN       žádné
-k3gMnPc4yQ       které
-k3gMnPc4yR       jež
-k3gMnPc5yR       jací
-k3gMnPc6xD       těchže
-k3gMnPc6xOyF     svých
-k3gMnPc6xOyI     něčích
-k3gMnPc6xOyN     ničích
-k3gMnPc6xOyQ     čích
-k3gMnPc6xOyR     čích
-k3gMnPc6xT       samých
-k3gMnPc6yI       jakýchsi
-k3gMnPc6yN       žádných
-k3gMnPc6yQ       jakých
-k3gMnPc6yR       jakých
-k3gMnPc7xD       oněmi
-k3gMnPc7xOyF     svými
-k3gMnPc7xOyI     něčími
-k3gMnPc7xOyN     ničími
-k3gMnPc7xOyQ     čími
-k3gMnPc7xOyR     čími
-k3gMnPc7xT       veškerými
-k3gMnPc7yI       jakýmikoliv
-k3gMnPc7yN       žádnými
-k3gMnPc7yQ       jakými
-k3gMnPc7yR       jimiž
-k3gMnSc1xD       onen
-k3gMnSc1xOyF     svůj
-k3gMnSc1xOyI     něčí
-k3gMnSc1xOyN     ničí
-k3gMnSc1xOyQ     čí
-k3gMnSc1xOyR     čí
-k3gMnSc1xT       tentýž
-k3gMnSc1yI       jakýkoliv
-k3gMnSc1yN       žádný
-k3gMnSc1yQ       jaký
-k3gMnSc1yR       jenž
-k3gMnSc2xD       toho
-k3gMnSc2xOyF     svého
-k3gMnSc2xOyI     něčího
-k3gMnSc2xOyN     ničího
-k3gMnSc2xOyQ     čího
-k3gMnSc2xOyR     čího
-k3gMnSc2xT       veškerého
-k3gMnSc2yI       jakého
-k3gMnSc2yN       žádného
-k3gMnSc2yQ       jakého
-k3gMnSc2yR       nějž
-k3gMnSc3xD       onomu
-k3gMnSc3xOyF     svému
-k3gMnSc3xOyI     něčímu
-k3gMnSc3xOyN     ničímu
-k3gMnSc3xOyQ     čímu
-k3gMnSc3xOyR     čímu
-k3gMnSc3xT       všemu
-k3gMnSc3yI       některému
-k3gMnSc3yN       žádnému
-k3gMnSc3yQ       jakému
-k3gMnSc3yR       jemuž
-k3gMnSc4xD       toho
-k3gMnSc4xOyF     svého
-k3gMnSc4xOyI     něčího
-k3gMnSc4xOyN     ničího
-k3gMnSc4xOyQ     čího
-k3gMnSc4xOyR     čího
-k3gMnSc4xT       sama
-k3gMnSc4yI       jakého
-k3gMnSc4yN       žádného
-k3gMnSc4yQ       jakého
-k3gMnSc4yR       nějž
-k3gMnSc5yR       jaký
-k3gMnSc6xD       takovémhle
-k3gMnSc6xOyF     svém
-k3gMnSc6xOyI     něčím
-k3gMnSc6xOyN     ničím
-k3gMnSc6xOyQ     čím
-k3gMnSc6xOyR     čím
-k3gMnSc6xT       témž
-k3gMnSc6yI       jakémsi
-k3gMnSc6yN       žádném
-k3gMnSc6yQ       jakém
-k3gMnSc6yR       němž
-k3gMnSc7xD       oním
-k3gMnSc7xOyF     svým
-k3gMnSc7xOyI     něčím
-k3gMnSc7xOyN     ničím
-k3gMnSc7xOyQ     čím
-k3gMnSc7xOyR     čím
-k3gMnSc7xT       týmž
-k3gMnSc7yI       jakýmkoli
-k3gMnSc7yN       žádným
-k3gMnSc7yQ       kterým
-k3gMnSc7yR       kterým
-k3gNnPc1xD       ona
-k3gNnPc1xOyF     svá
-k3gNnPc1xOyI     něčí
-k3gNnPc1xOyN     ničí
-k3gNnPc1xOyQ     čí
-k3gNnPc1xOyR     čí
-k3gNnPc1xT       sama
-k3gNnPc1yI       jaká
-k3gNnPc1yN       žádná
-k3gNnPc1yQ       jaká
-k3gNnPc1yR       jež
-k3gNnPc2xD       těchže
-k3gNnPc2xOyF     svých
-k3gNnPc2xOyI     něčích
-k3gNnPc2xOyN     ničích
-k3gNnPc2xOyQ     čích
-k3gNnPc2xOyR     čích
-k3gNnPc2xT       samých
-k3gNnPc2yI       jakýchsi
-k3gNnPc2yN       žádných
-k3gNnPc2yQ       jakých
-k3gNnPc2yR       jichž
-k3gNnPc3xD       takovým
-k3gNnPc3xOyF     svým
-k3gNnPc3xOyI     něčím
-k3gNnPc3xOyN     ničím
-k3gNnPc3xOyQ     čím
-k3gNnPc3xOyR     čím
-k3gNnPc3xT       týmž
-k3gNnPc3yI       jakýmkoli
-k3gNnPc3yN       žádným
-k3gNnPc3yQ       kterým
-k3gNnPc3yR       nimž
-k3gNnPc4xD       ona
-k3gNnPc4xOyF     svá
-k3gNnPc4xOyI     něčí
-k3gNnPc4xOyN     ničí
-k3gNnPc4xOyQ     čí
-k3gNnPc4xOyR     čí
-k3gNnPc4xT       sama
-k3gNnPc4yI       jaká
-k3gNnPc4yN       žádná
-k3gNnPc4yQ       jaká
-k3gNnPc4yR       jež
-k3gNnPc5yR       jaká
-k3gNnPc6xD       těchže
-k3gNnPc6xOyF     svých
-k3gNnPc6xOyI     něčích
-k3gNnPc6xOyN     ničích
-k3gNnPc6xOyQ     čích
-k3gNnPc6xOyR     čích
-k3gNnPc6xT       samých
-k3gNnPc6yI       jakýchsi
-k3gNnPc6yN       žádných
-k3gNnPc6yQ       jakých
-k3gNnPc6yR       jakých
-k3gNnPc7xD       oněmi
-k3gNnPc7xOyF     svými
-k3gNnPc7xOyI     něčíma
-k3gNnPc7xOyN     ničíma
-k3gNnPc7xOyQ     číma
-k3gNnPc7xOyR     číma
-k3gNnPc7xT       veškerými
-k3gNnPc7yI       jakýmikoliv
-k3gNnPc7yN       žádnými
-k3gNnPc7yQ       jakými
-k3gNnPc7yR       jimiž
-k3gNnSc1xD       toto
-k3gNnSc1xOyF     své
-k3gNnSc1xOyI     něčí
-k3gNnSc1xOyN     ničí
-k3gNnSc1xOyQ     čí
-k3gNnSc1xOyR     čí
-k3gNnSc1xT       samé
-k3gNnSc1yI       jakékoliv
-k3gNnSc1yN       žádné
-k3gNnSc1yQ       které
-k3gNnSc1yR       jež
-k3gNnSc2xD       toho
-k3gNnSc2xOyF     svého
-k3gNnSc2xOyI     něčího
-k3gNnSc2xOyN     ničího
-k3gNnSc2xOyQ     čího
-k3gNnSc2xOyR     čího
-k3gNnSc2xT       veškerého
-k3gNnSc2yI       jakého
-k3gNnSc2yN       žádného
-k3gNnSc2yQ       jakého
-k3gNnSc2yR       nějž
-k3gNnSc3xD       onomu
-k3gNnSc3xOyF     svému
-k3gNnSc3xOyI     něčímu
-k3gNnSc3xOyN     ničímu
-k3gNnSc3xOyQ     čímu
-k3gNnSc3xOyR     čímu
-k3gNnSc3xT       všemu
-k3gNnSc3yI       některému
-k3gNnSc3yN       žádnému
-k3gNnSc3yQ       jakému
-k3gNnSc3yR       jemuž
-k3gNnSc4xD       toto
-k3gNnSc4xOyF     své
-k3gNnSc4xOyI     něčí
-k3gNnSc4xOyN     ničí
-k3gNnSc4xOyQ     čí
-k3gNnSc4xOyR     čí
-k3gNnSc4xT       samé
-k3gNnSc4yI       jakékoliv
-k3gNnSc4yN       žádné
-k3gNnSc4yQ       které
-k3gNnSc4yR       jež
-k3gNnSc5yR       jaké
-k3gNnSc6xD       takovémhle
-k3gNnSc6xOyF     svém
-k3gNnSc6xOyI     něčím
-k3gNnSc6xOyN     ničím
-k3gNnSc6xOyQ     čím
-k3gNnSc6xOyR     čím
-k3gNnSc6xT       témž
-k3gNnSc6yI       jakémsi
-k3gNnSc6yN       žádném
-k3gNnSc6yQ       jakém
-k3gNnSc6yR       němž
-k3gNnSc7xD       oním
-k3gNnSc7xOyF     svým
-k3gNnSc7xOyI     něčím
-k3gNnSc7xOyN     ničím
-k3gNnSc7xOyQ     čím
-k3gNnSc7xOyR     čím
-k3gNnSc7xT       týmž
-k3gNnSc7yI       jakýmkoli
-k3gNnSc7yN       žádným
-k3gNnSc7yQ       kterým
-k3gNnSc7yR       kterým
-k3nSc1hPyI       kdokoliv
-k3nSc1hPyN       nikdo
-k3nSc1hPyQ       kdo
-k3nSc1hPyR       kdo
-k3nSc1hTyI       kdeco
-k3nSc1hTyN       pranic
-k3nSc1hTyQ       copak
-k3nSc1hTyR       což
-k3nSc1yQ         cožpak
-k3nSc2hPyI       někoho
-k3nSc2hPyN       nikoho
-k3nSc2hPyQ       koho
-k3nSc2hPyR       koho
-k3nSc2hTyI       čeho
-k3nSc2hTyN       ničeho
-k3nSc2hTyQ       čeho
-k3nSc2hTyR       čeho
-k3nSc2yQ         čehožpak
-k3nSc3hPyI       někomu
-k3nSc3hPyN       nikomu
-k3nSc3hPyQ       komu
-k3nSc3hPyR       komu
-k3nSc3hTyI       něčemu
-k3nSc3hTyN       ničemu
-k3nSc3hTyQ       čemuž
-k3nSc3hTyR       čemuž
-k3nSc3yQ         čemužpak
-k3nSc4hPyI       někoho
-k3nSc4hPyN       nikoho
-k3nSc4hPyQ       koho
-k3nSc4hPyR       koho
-k3nSc4hTyI       kdeco
-k3nSc4hTyN       pranic
-k3nSc4hTyQ       copak
-k3nSc4hTyR       což
-k3nSc4yQ         cožpak
-k3nSc6hPyI       někom
-k3nSc6hPyN       nikom
-k3nSc6hPyQ       kom
-k3nSc6hPyR       kom
-k3nSc6hTyI       čemkoli
-k3nSc6hTyN       ničem
-k3nSc6hTyQ       čemž
-k3nSc6hTyR       čemž
-k3nSc6yQ         čemžpak
-k3nSc7hPyI       kýmkoli
-k3nSc7hPyN       nikým
-k3nSc7hPyQ       kým
-k3nSc7hPyR       kým
-k3nSc7hTyI       čím
-k3nSc7hTyN       ničím
-k3nSc7hTyQ       čím
-k3nSc7hTyR       čím
-k3nSc7yQ         čímžpak
-k3p1gFnPc1xO     mé
-k3p1gFnPc2xO     našich
-k3p1gFnPc3xO     mým
-k3p1gFnPc4xO     mé
-k3p1gFnPc5xO     mé
-k3p1gFnPc6xO     našich
-k3p1gFnPc7xO     mými
-k3p1gFnSc1xO     naše
-k3p1gFnSc2xO     mé
-k3p1gFnSc3xO     mé
-k3p1gFnSc4xO     moji
-k3p1gFnSc5xO     naše
-k3p1gFnSc6xO     mé
-k3p1gFnSc7xO     mojí
-k3p1gInPc1xO     mé
-k3p1gInPc2xO     našich
-k3p1gInPc3xO     mým
-k3p1gInPc4xO     mé
-k3p1gInPc5xO     mé
-k3p1gInPc6xO     našich
-k3p1gInPc7xO     mými
-k3p1gInSc1xO     náš
-k3p1gInSc2xO     mého
-k3p1gInSc3xO     mému
-k3p1gInSc4xO     náš
-k3p1gInSc5xO     náš
-k3p1gInSc6xO     mém
-k3p1gInSc7xO     mým
-k3p1gMnPc1xO     moji
-k3p1gMnPc2xO     našich
-k3p1gMnPc3xO     mým
-k3p1gMnPc4xO     mé
-k3p1gMnPc5xO     naši
-k3p1gMnPc6xO     našich
-k3p1gMnPc7xO     mými
-k3p1gMnSc1xO     náš
-k3p1gMnSc2xO     mého
-k3p1gMnSc3xO     mému
-k3p1gMnSc4xO     mého
-k3p1gMnSc5xO     náš
-k3p1gMnSc6xO     mém
-k3p1gMnSc7xO     mým
-k3p1gNnPc1xO     naše
-k3p1gNnPc2xO     našich
-k3p1gNnPc3xO     mým
-k3p1gNnPc4xO     naše
-k3p1gNnPc5xO     naše
-k3p1gNnPc6xO     našich
-k3p1gNnPc7xO     mými
-k3p1gNnSc1xO     mé
-k3p1gNnSc2xO     mého
-k3p1gNnSc3xO     mému
-k3p1gNnSc4xO     mé
-k3p1gNnSc5xO     mé
-k3p1gNnSc6xO     mém
-k3p1gNnSc7xO     mým
-k3p1nPc1xP       my
-k3p1nPc2xP       nás
-k3p1nPc3xP       nám
-k3p1nPc4xP       nás
-k3p1nPc6xP       nás
-k3p1nPc7xP       námi
-k3p1nSc1xP       já
-k3p1nSc2xP       mě
-k3p1nSc3xP       mi
-k3p1nSc4xP       mě
-k3p1nSc6xP       mně
-k3p1nSc7xP       mnou
-k3p2gFnPc1xO     tvé
-k3p2gFnPc2xO     vašich
-k3p2gFnPc3xO     tvým
-k3p2gFnPc4xO     tvé
-k3p2gFnPc6xO     vašich
-k3p2gFnPc7xO     vašimi
-k3p2gFnSc1xO     vaše
-k3p2gFnSc2xO     vaší
-k3p2gFnSc3xO     vaší
-k3p2gFnSc4xO     vaši
-k3p2gFnSc6xO     vaší
-k3p2gFnSc7xO     vaší
-k3p2gInPc1xO     tvé
-k3p2gInPc2xO     vašich
-k3p2gInPc3xO     tvým
-k3p2gInPc4xO     tvé
-k3p2gInPc6xO     vašich
-k3p2gInPc7xO     vašimi
-k3p2gInSc1xO     tvůj
-k3p2gInSc2xO     vašeho
-k3p2gInSc3xO     tvému
-k3p2gInSc4xO     tvůj
-k3p2gInSc6xO     tvém
-k3p2gInSc7xO     tvým
-k3p2gMnPc1xO     vaši
-k3p2gMnPc2xO     vašich
-k3p2gMnPc3xO     tvým
-k3p2gMnPc4xO     tvé
-k3p2gMnPc6xO     vašich
-k3p2gMnPc7xO     vašimi
-k3p2gMnSc1xO     tvůj
-k3p2gMnSc2xO     vašeho
-k3p2gMnSc3xO     tvému
-k3p2gMnSc4xO     vašeho
-k3p2gMnSc6xO     tvém
-k3p2gMnSc7xO     tvým
-k3p2gNnPc1xO     vaše
-k3p2gNnPc2xO     vašich
-k3p2gNnPc3xO     tvým
-k3p2gNnPc4xO     vaše
-k3p2gNnPc6xO     vašich
-k3p2gNnPc7xO     vašimi
-k3p2gNnSc1xO     tvé
-k3p2gNnSc2xO     vašeho
-k3p2gNnSc3xO     tvému
-k3p2gNnSc4xO     tvé
-k3p2gNnSc6xO     tvém
-k3p2gNnSc7xO     tvým
-k3p2nPc1xP       vy
-k3p2nPc2xP       vás
-k3p2nPc3xP       vám
-k3p2nPc4xP       vás
-k3p2nPc5xP       vy
-k3p2nPc6xP       vás
-k3p2nPc7xP       vámi
-k3p2nSc1xP       ty
-k3p2nSc2xP       tě
-k3p2nSc3xP       ti
-k3p2nSc4xP       tě
-k3p2nSc5xP       ty
-k3p2nSc6xP       tobě
-k3p2nSc7xP       tebou
-k3p3gFnPc1xO     jeho
-k3p3gFnPc1xOyR   jehož
-k3p3gFnPc1xP     ony
-k3p3gFnPc2xO     jeho
-k3p3gFnPc2xOyR   jejíchž
-k3p3gFnPc2xP     jich
-k3p3gFnPc3xO     jeho
-k3p3gFnPc3xOyR   jehož
-k3p3gFnPc3xP     jim
-k3p3gFnPc4xO     jeho
-k3p3gFnPc4xOyR   jehož
-k3p3gFnPc4xP     je
-k3p3gFnPc6xO     jeho
-k3p3gFnPc6xOyR   jejíchž
-k3p3gFnPc6xP     nich
-k3p3gFnPc7xO     jejími
-k3p3gFnPc7xOyR   jejímiž
-k3p3gFnPc7xP     nimi
-k3p3gFnSc1xO     jeho
-k3p3gFnSc1xOyR   jehož
-k3p3gFnSc1xP     ona
-k3p3gFnSc2xO     jeho
-k3p3gFnSc2xOyR   jehož
-k3p3gFnSc2xP     ní
-k3p3gFnSc3xO     jeho
-k3p3gFnSc3xOyR   jehož
-k3p3gFnSc3xP     ní
-k3p3gFnSc4xO     jeho
-k3p3gFnSc4xOyR   jehož
-k3p3gFnSc4xP     ji
-k3p3gFnSc6xO     jeho
-k3p3gFnSc6xOyR   jehož
-k3p3gFnSc6xP     ní
-k3p3gFnSc7xO     jeho
-k3p3gFnSc7xOyR   jehož
-k3p3gFnSc7xP     ní
-k3p3gInPc1xO     jeho
-k3p3gInPc1xOyR   jehož
-k3p3gInPc1xP     ony
-k3p3gInPc2xO     jeho
-k3p3gInPc2xOyR   jejíchž
-k3p3gInPc2xP     jich
-k3p3gInPc3xO     jeho
-k3p3gInPc3xOyR   jehož
-k3p3gInPc3xP     jim
-k3p3gInPc4xO     jeho
-k3p3gInPc4xOyR   jehož
-k3p3gInPc4xP     je
-k3p3gInPc6xO     jeho
-k3p3gInPc6xOyR   jejíchž
-k3p3gInPc6xP     nich
-k3p3gInPc7xO     jejími
-k3p3gInPc7xOyR   jejímiž
-k3p3gInPc7xP     nimi
-k3p3gInSc1xO     jeho
-k3p3gInSc1xOyR   jehož
-k3p3gInSc1xP     on
-k3p3gInSc2xO     jeho
-k3p3gInSc2xOyR   jehož
-k3p3gInSc2xP     jeho
-k3p3gInSc3xO     jeho
-k3p3gInSc3xOyR   jehož
-k3p3gInSc3xP     němu
-k3p3gInSc4xO     jeho
-k3p3gInSc4xOyR   jehož
-k3p3gInSc4xP     jeho
-k3p3gInSc6xO     jeho
-k3p3gInSc6xOyR   jehož
-k3p3gInSc6xP     něm
-k3p3gInSc7xO     jeho
-k3p3gInSc7xOyR   jehož
-k3p3gInSc7xP     jím
-k3p3gMnPc1xO     jeho
-k3p3gMnPc1xOyR   jehož
-k3p3gMnPc1xP     oni
-k3p3gMnPc2xO     jeho
-k3p3gMnPc2xOyR   jejíchž
-k3p3gMnPc2xP     jich
-k3p3gMnPc3xO     jeho
-k3p3gMnPc3xOyR   jehož
-k3p3gMnPc3xP     jim
-k3p3gMnPc4xO     jeho
-k3p3gMnPc4xOyR   jehož
-k3p3gMnPc4xP     je
-k3p3gMnPc6xO     jeho
-k3p3gMnPc6xOyR   jejíchž
-k3p3gMnPc6xP     nich
-k3p3gMnPc7xO     jejími
-k3p3gMnPc7xOyR   jejímiž
-k3p3gMnPc7xP     nimi
-k3p3gMnSc1xO     jeho
-k3p3gMnSc1xOyR   jehož
-k3p3gMnSc1xP     on
-k3p3gMnSc2xO     jeho
-k3p3gMnSc2xOyR   jehož
-k3p3gMnSc2xP     jeho
-k3p3gMnSc3xO     jeho
-k3p3gMnSc3xOyR   jehož
-k3p3gMnSc3xP     němu
-k3p3gMnSc4xO     jeho
-k3p3gMnSc4xOyR   jehož
-k3p3gMnSc4xP     jeho
-k3p3gMnSc6xO     jeho
-k3p3gMnSc6xOyR   jehož
-k3p3gMnSc6xP     něm
-k3p3gMnSc7xO     jeho
-k3p3gMnSc7xOyR   jehož
-k3p3gMnSc7xP     jím
-k3p3gNnPc1xO     jeho
-k3p3gNnPc1xOyR   jehož
-k3p3gNnPc1xP     ona
-k3p3gNnPc2xO     jeho
-k3p3gNnPc2xOyR   jejíchž
-k3p3gNnPc2xP     jich
-k3p3gNnPc3xO     jeho
-k3p3gNnPc3xOyR   jehož
-k3p3gNnPc3xP     jim
-k3p3gNnPc4xO     jeho
-k3p3gNnPc4xOyR   jehož
-k3p3gNnPc4xP     je
-k3p3gNnPc6xO     jeho
-k3p3gNnPc6xOyR   jejíchž
-k3p3gNnPc6xP     nich
-k3p3gNnPc7xO     jejími
-k3p3gNnPc7xOyR   jejímiž
-k3p3gNnPc7xP     nimi
-k3p3gNnSc1xO     jeho
-k3p3gNnSc1xOyR   jehož
-k3p3gNnSc1xP     ono
-k3p3gNnSc2xO     jeho
-k3p3gNnSc2xOyR   jehož
-k3p3gNnSc2xP     jeho
-k3p3gNnSc3xO     jeho
-k3p3gNnSc3xOyR   jehož
-k3p3gNnSc3xP     němu
-k3p3gNnSc4xO     jeho
-k3p3gNnSc4xOyR   jehož
-k3p3gNnSc4xP     je
-k3p3gNnSc6xO     jeho
-k3p3gNnSc6xOyR   jehož
-k3p3gNnSc6xP     něm
-k3p3gNnSc7xO     jeho
-k3p3gNnSc7xOyR   jehož
-k3p3gNnSc7xP     jím
-k4c1             pramálo
-k4c1xC           jedenadvacet
-k4c1xD           tolik
-k4c1yI           kolik
-k4c1yQ           kolik
-k4c1yR           kolik
-k4c2             mála
-k4c2xC           šesti
-k4c2xD           tolika
-k4c2yI           tolika
-k4c2yQ           kolika
-k4c2yR           kolika
-k4c3             pramálo
-k4c3xC           šesti
-k4c3xD           tolika
-k4c3yI           tolika
-k4c3yQ           kolika
-k4c3yR           kolika
-k4c4             pramálo
-k4c4xC           jedenadvacet
-k4c4xD           tolik
-k4c4yI           kolik
-k4c4yQ           kolik
-k4c4yR           kolik
-k4c6             pramálo
-k4c6xC           šesti
-k4c6xD           tolika
-k4c6yI           tolika
-k4c6yQ           kolika
-k4c6yR           kolika
-k4c7             pramálo
-k4c7xC           šesti
-k4c7xD           tolika
-k4c7yI           tolika
-k4c7yQ           kolika
-k4c7yR           kolika
-k4gFnDc7xC       oběma
-k4gFnDc7xCyI     nejedněma
-k4gFnDc7xO       desátýma
-k4gFnDc7xOyI     několikátýma
-k4gFnDc7xR       dvojíma
-k4gFnDc7xRyI     několikerýma
-k4gFnPc1xC       miliardy
-k4gFnPc1xCyI     nejedny
-k4gFnPc1xO       tisící
-k4gFnPc1xOyI     několikáté
-k4gFnPc1xR       troje
-k4gFnPc1xRyI     několikeré
-k4gFnPc2xC       čtyř
-k4gFnPc2xCyI     nejedněch
-k4gFnPc2xO       sedmdesátých
-k4gFnPc2xOyI     několikátých
-k4gFnPc2xR       dvojích
-k4gFnPc2xRyI     několikerých
-k4gFnPc3xC       oběma
-k4gFnPc3xCyI     nejedněm
-k4gFnPc3xO       druhým
-k4gFnPc3xOyI     několikátým
-k4gFnPc3xR       dvojím
-k4gFnPc3xRyI     několikerým
-k4gFnPc4xC       miliardy
-k4gFnPc4xCyI     nejedny
-k4gFnPc4xO       tisící
-k4gFnPc4xOyI     několikáté
-k4gFnPc4xR       troje
-k4gFnPc4xRyI     několikeré
-k4gFnPc5xC       miliardy
-k4gFnPc5xO       tisící
-k4gFnPc5xOyI     několikáté
-k4gFnPc5xR       dvojí
-k4gFnPc5xRyI     několikeré
-k4gFnPc6xC       jedněch
-k4gFnPc6xCyI     nejedněch
-k4gFnPc6xO       sedmdesátých
-k4gFnPc6xOyI     několikátých
-k4gFnPc6xR       dvojích
-k4gFnPc6xRyI     několikerých
-k4gFnPc7xC       oběma
-k4gFnPc7xCyI     nejedněmi
-k4gFnPc7xO       šedesátými
-k4gFnPc7xOyI     několikátými
-k4gFnPc7xR       dvojími
-k4gFnPc7xRyI     několikerými
-k4gFnSc1xC       miliarda
-k4gFnSc1xCyI     nejedna
-k4gFnSc1xO       tisící
-k4gFnSc1xOyI     několikátá
-k4gFnSc1xR       troje
-k4gFnSc1xRyI     několikerá
-k4gFnSc2xC       miliardy
-k4gFnSc2xCyI     nejedné
-k4gFnSc2xO       tisící
-k4gFnSc2xOyI     několikáté
-k4gFnSc2xR       dvojí
-k4gFnSc2xRyI     několikeré
-k4gFnSc3xC       miliardě
-k4gFnSc3xCyI     nejedné
-k4gFnSc3xO       tisící
-k4gFnSc3xOyI     několikáté
-k4gFnSc3xR       dvojí
-k4gFnSc3xRyI     několikeré
-k4gFnSc4xC       jednu
-k4gFnSc4xCyI     nejednu
-k4gFnSc4xO       tisící
-k4gFnSc4xOyI     několikátou
-k4gFnSc4xR       dvojí
-k4gFnSc4xRyI     několikerou
-k4gFnSc5xC       jedna
-k4gFnSc5xO       tisící
-k4gFnSc5xOyI     několikátá
-k4gFnSc5xR       dvojí
-k4gFnSc5xRyI     několikerá
-k4gFnSc6xC       miliardě
-k4gFnSc6xCyI     nejedné
-k4gFnSc6xO       tisící
-k4gFnSc6xOyI     několikáté
-k4gFnSc6xR       dvojí
-k4gFnSc6xRyI     několikeré
-k4gFnSc7xC       jednou
-k4gFnSc7xCyI     nejednou
-k4gFnSc7xO       tisící
-k4gFnSc7xOyI     několikátou
-k4gFnSc7xR       dvojí
-k4gFnSc7xRyI     několikerou
-k4gInDc7xC       oběma
-k4gInPc1xC       milióny
-k4gInPc1xCyI     nejedny
-k4gInPc1xO       tisící
-k4gInPc1xOyI     několikáté
-k4gInPc1xR       troje
-k4gInPc1xRyI     několikeré
-k4gInPc2xC       čtyř
-k4gInPc2xCyI     nejedněch
-k4gInPc2xO       sedmdesátých
-k4gInPc2xOyI     několikátých
-k4gInPc2xR       dvojích
-k4gInPc2xRyI     několikerých
-k4gInPc3xC       oběma
-k4gInPc3xCyI     nejedněm
-k4gInPc3xO       druhým
-k4gInPc3xOyI     několikátým
-k4gInPc3xR       dvojím
-k4gInPc3xRyI     několikerým
-k4gInPc4xC       milióny
-k4gInPc4xCyI     nejedny
-k4gInPc4xO       tisící
-k4gInPc4xOyI     několikáté
-k4gInPc4xR       troje
-k4gInPc4xRyI     několikeré
-k4gInPc5xC       milióny
-k4gInPc5xO       tisící
-k4gInPc5xOyI     několikáté
-k4gInPc5xR       dvojí
-k4gInPc5xRyI     několikeré
-k4gInPc6xC       jedněch
-k4gInPc6xCyI     nejedněch
-k4gInPc6xO       sedmdesátých
-k4gInPc6xOyI     několikátých
-k4gInPc6xR       dvojích
-k4gInPc6xRyI     několikerých
-k4gInPc7xC       milióny
-k4gInPc7xCyI     nejedněmi
-k4gInPc7xO       šedesátými
-k4gInPc7xOyI     několikátými
-k4gInPc7xR       dvojími
-k4gInPc7xRyI     několikerými
-k4gInSc1xC       milion
-k4gInSc1xCyI     nejeden
-k4gInSc1xO       tisící
-k4gInSc1xOyI     několikátý
-k4gInSc1xR       dvojí
-k4gInSc1xRyI     několikerý
-k4gInSc2xC       milionu
-k4gInSc2xCyI     nejednoho
-k4gInSc2xO       čtrnáctého
-k4gInSc2xOyI     několikátého
-k4gInSc2xR       dvojího
-k4gInSc2xRyI     několikerého
-k4gInSc3xC       milionu
-k4gInSc3xCyI     nejednomu
-k4gInSc3xO       třetímu
-k4gInSc3xOyI     několikátému
-k4gInSc3xR       dvojímu
-k4gInSc3xRyI     několikerému
-k4gInSc4xC       milion
-k4gInSc4xCyI     nejeden
-k4gInSc4xO       tisící
-k4gInSc4xOyI     několikátý
-k4gInSc4xR       dvojí
-k4gInSc4xRyI     několikerý
-k4gInSc5xC       jeden
-k4gInSc5xO       tisící
-k4gInSc5xOyI     několikátý
-k4gInSc5xR       dvojí
-k4gInSc5xRyI     několikerý
-k4gInSc6xC       milionu
-k4gInSc6xCyI     nejednom
-k4gInSc6xO       druhém
-k4gInSc6xOyI     několikátém
-k4gInSc6xR       dvojím
-k4gInSc6xRyI     několikerém
-k4gInSc7xC       milionem
-k4gInSc7xCyI     nejedním
-k4gInSc7xO       druhým
-k4gInSc7xOyI     několikátým
-k4gInSc7xR       dvojím
-k4gInSc7xRyI     několikerým
-k4gMnDc7xC       oběma
-k4gMnPc1xC       jedni
-k4gMnPc1xCyI     nejedni
-k4gMnPc1xO       tisící
-k4gMnPc1xOyI     několikátí
-k4gMnPc1xR       dvojí
-k4gMnPc1xRyI     několikeří
-k4gMnPc2xC       čtyř
-k4gMnPc2xCyI     nejedněch
-k4gMnPc2xO       sedmdesátých
-k4gMnPc2xOyI     několikátých
-k4gMnPc2xR       dvojích
-k4gMnPc2xRyI     několikerých
-k4gMnPc3xC       oběma
-k4gMnPc3xCyI     nejedněm
-k4gMnPc3xO       druhým
-k4gMnPc3xOyI     několikátým
-k4gMnPc3xR       dvojím
-k4gMnPc3xRyI     několikerým
-k4gMnPc4xC       dva
-k4gMnPc4xCyI     nejedny
-k4gMnPc4xO       tisící
-k4gMnPc4xOyI     několikáté
-k4gMnPc4xR       troje
-k4gMnPc4xRyI     několikeré
-k4gMnPc5xC       jedni
-k4gMnPc5xO       tisící
-k4gMnPc5xOyI     několikátí
-k4gMnPc5xR       dvojí
-k4gMnPc5xRyI     několikeří
-k4gMnPc6xC       jedněch
-k4gMnPc6xCyI     nejedněch
-k4gMnPc6xO       sedmdesátých
-k4gMnPc6xOyI     několikátých
-k4gMnPc6xR       dvojích
-k4gMnPc6xRyI     několikerých
-k4gMnPc7xC       oběma
-k4gMnPc7xCyI     nejedněmi
-k4gMnPc7xO       šedesátými
-k4gMnPc7xOyI     několikátými
-k4gMnPc7xR       dvojími
-k4gMnPc7xRyI     několikerými
-k4gMnSc1xC       jeden
-k4gMnSc1xCyI     nejeden
-k4gMnSc1xO       tisící
-k4gMnSc1xOyI     několikátý
-k4gMnSc1xR       dvojí
-k4gMnSc1xRyI     několikerý
-k4gMnSc2xC       jednoho
-k4gMnSc2xCyI     nejednoho
-k4gMnSc2xO       čtrnáctého
-k4gMnSc2xOyI     několikátého
-k4gMnSc2xR       dvojího
-k4gMnSc2xRyI     několikerého
-k4gMnSc3xC       jednomu
-k4gMnSc3xCyI     nejednomu
-k4gMnSc3xO       třetímu
-k4gMnSc3xOyI     několikátému
-k4gMnSc3xR       dvojímu
-k4gMnSc3xRyI     několikerému
-k4gMnSc4xC       jednoho
-k4gMnSc4xCyI     nejednoho
-k4gMnSc4xO       čtrnáctého
-k4gMnSc4xOyI     několikátého
-k4gMnSc4xR       dvojího
-k4gMnSc4xRyI     několikerého
-k4gMnSc5xC       jeden
-k4gMnSc5xO       tisící
-k4gMnSc5xOyI     několikátý
-k4gMnSc5xR       dvojí
-k4gMnSc5xRyI     několikerý
-k4gMnSc6xC       jednom
-k4gMnSc6xCyI     nejednom
-k4gMnSc6xO       druhém
-k4gMnSc6xOyI     několikátém
-k4gMnSc6xR       dvojím
-k4gMnSc6xRyI     několikerém
-k4gMnSc7xC       jedním
-k4gMnSc7xCyI     nejedním
-k4gMnSc7xO       druhým
-k4gMnSc7xOyI     několikátým
-k4gMnSc7xR       dvojím
-k4gMnSc7xRyI     několikerým
-k4gNnDc7xC       oběma
-k4gNnDc7xCyI     nejedněma
-k4gNnDc7xO       desátýma
-k4gNnDc7xOyI     několikátýma
-k4gNnDc7xR       dvojíma
-k4gNnDc7xRyI     několikerýma
-k4gNnPc1xC       čtyři
-k4gNnPc1xCyI     nejedna
-k4gNnPc1xO       tisící
-k4gNnPc1xOyI     několikátá
-k4gNnPc1xR       troje
-k4gNnPc1xRyI     několikerá
-k4gNnPc2xC       čtyř
-k4gNnPc2xCyI     nejedněch
-k4gNnPc2xO       sedmdesátých
-k4gNnPc2xOyI     několikátých
-k4gNnPc2xR       dvojích
-k4gNnPc2xRyI     několikerých
-k4gNnPc3xC       oběma
-k4gNnPc3xCyI     nejedněm
-k4gNnPc3xO       druhým
-k4gNnPc3xOyI     několikátým
-k4gNnPc3xR       dvojím
-k4gNnPc3xRyI     několikerým
-k4gNnPc4xC       čtyři
-k4gNnPc4xCyI     nejedna
-k4gNnPc4xO       tisící
-k4gNnPc4xOyI     několikátá
-k4gNnPc4xR       troje
-k4gNnPc4xRyI     několikerá
-k4gNnPc5xC       čtyři
-k4gNnPc5xO       tisící
-k4gNnPc5xOyI     několikátá
-k4gNnPc5xR       dvojí
-k4gNnPc5xRyI     několikerá
-k4gNnPc6xC       stech
-k4gNnPc6xCyI     nejedněch
-k4gNnPc6xO       sedmdesátých
-k4gNnPc6xOyI     několikátých
-k4gNnPc6xR       dvojích
-k4gNnPc6xRyI     několikerých
-k4gNnPc7xC       oběma
-k4gNnPc7xCyI     nejedněmi
-k4gNnPc7xO       šedesátými
-k4gNnPc7xOyI     několikátými
-k4gNnPc7xR       dvojími
-k4gNnPc7xRyI     několikerými
-k4gNnSc1xC       jedno
-k4gNnSc1xCyI     nejedno
-k4gNnSc1xO       tisící
-k4gNnSc1xOyI     několikáté
-k4gNnSc1xR       troje
-k4gNnSc1xRyI     několikeré
-k4gNnSc2xC       sta
-k4gNnSc2xCyI     nejednoho
-k4gNnSc2xO       čtrnáctého
-k4gNnSc2xOyI     několikátého
-k4gNnSc2xR       dvojího
-k4gNnSc2xRyI     několikerého
-k4gNnSc3xC       stu
-k4gNnSc3xCyI     nejednomu
-k4gNnSc3xO       třetímu
-k4gNnSc3xOyI     několikátému
-k4gNnSc3xR       dvojímu
-k4gNnSc3xRyI     několikerému
-k4gNnSc4xC       jedno
-k4gNnSc4xCyI     nejedno
-k4gNnSc4xO       tisící
-k4gNnSc4xOyI     několikáté
-k4gNnSc4xR       troje
-k4gNnSc4xRyI     několikeré
-k4gNnSc5xC       jedno
-k4gNnSc5xO       tisící
-k4gNnSc5xOyI     několikáté
-k4gNnSc5xR       dvojí
-k4gNnSc5xRyI     několikeré
-k4gNnSc6xC       stu
-k4gNnSc6xCyI     nejednom
-k4gNnSc6xO       druhém
-k4gNnSc6xOyI     několikátém
-k4gNnSc6xR       dvojím
-k4gNnSc6xRyI     několikerém
-k4gNnSc7xC       jedním
-k4gNnSc7xCyI     nejedním
-k4gNnSc7xO       druhým
-k4gNnSc7xOyI     několikátým
-k4gNnSc7xR       dvojím
-k4gNnSc7xRyI     několikerým
-k4xCyI           pár
-k4xO             potřetí
-k5eAaBmAgFnP     organizovaly
-k5eAaBmAgFnS     riskovala
-k5eAaBmAgInP     organizovaly
-k5eAaBmAgInS     angažoval
-k5eAaBmAgMnP     komentovali
-k5eAaBmAgMnS     angažoval
-k5eAaBmAgNnP     riskovala
-k5eAaBmAgNnS     kapitulovalo
-k5eAaBmDgFnP     nabivše
-k5eAaBmDgFnS     nabivši
-k5eAaBmDgInP     nabivše
-k5eAaBmDgInS     nabiv
-k5eAaBmDgMnP     nabivše
-k5eAaBmDgMnS     nabiv
-k5eAaBmDgNnP     nabivše
-k5eAaBmDgNnS     nabivši
-k5eAaBmF         dokumentovat
-k5eAaBmIp1nP     protestujeme
-k5eAaBmIp1nS     stavím
-k5eAaBmIp2nP     stačíte
-k5eAaBmIp2nS     abdikuješ
-k5eAaBmIp3nP     definují
-k5eAaBmIp3nS     specifikuje
-k5eAaBmNgFnP     honorovány
-k5eAaBmNgFnS     demontována
-k5eAaBmNgInP     honorovány
-k5eAaBmNgInS     registrován
-k5eAaBmNgMnP     korumpováni
-k5eAaBmNgMnS     registrován
-k5eAaBmNgNnP     demontována
-k5eAaBmNgNnS     deportováno
-k5eAaBmRp1nP     ilustrujme
-k5eAaBmRp2nP     namluvte
-k5eAaBmRp2nS     stav
-k5eAaBmSgFnP     nabijíce
-k5eAaBmSgFnS     nabijíc
-k5eAaBmSgInP     nabijíce
-k5eAaBmSgInS     naděje
-k5eAaBmSgMnP     nabijíce
-k5eAaBmSgMnS     naděje
-k5eAaBmSgNnP     nabijíce
-k5eAaBmSgNnS     nabijíc
-k5eAaImAgFnP     stavěly
-k5eAaImAgFnS     vydávala
-k5eAaImAgInP     stavěly
-k5eAaImAgInS     kroutil
-k5eAaImAgMnP     vyvíjeli
-k5eAaImAgMnS     kroutil
-k5eAaImAgNnP     vydávala
-k5eAaImAgNnS     připadalo
-k5eAaImBp1nP     budeme
-k5eAaImBp1nS     budu
-k5eAaImBp2nP     budete
-k5eAaImBp2nS     budeš
-k5eAaImBp3nP     budou
-k5eAaImBp3nS     bude
-k5eAaImDgFnP     zapomněvše
-k5eAaImDgFnS     zapomněvši
-k5eAaImDgInP     zapomněvše
-k5eAaImDgInS     zapomněv
-k5eAaImDgMnP     zapomněvše
-k5eAaImDgMnS     zapomněv
-k5eAaImDgNnP     zapomněvše
-k5eAaImDgNnS     zapomněvši
-k5eAaImF         ručit
-k5eAaImIp1nP     trápíme
-k5eAaImIp1nS     dovídám
-k5eAaImIp2nP     můžete
-k5eAaImIp2nS     jedeš
-k5eAaImIp3nP     střílí
-k5eAaImIp3nS     nacvičuje
-k5eAaImNgFnP     hrazeny
-k5eAaImNgFnS     vybavována
-k5eAaImNgInP     hrazeny
-k5eAaImNgInS     srážen
-k5eAaImNgMnP     odrazováni
-k5eAaImNgMnS     srážen
-k5eAaImNgNnP     vybavována
-k5eAaImNgNnS     přejímáno
-k5eAaImRp1nP     počítejme
-k5eAaImRp2nP     přemýšlejte
-k5eAaImRp2nS     jednej
-k5eAaImSgFnP     jsouce
-k5eAaImSgFnS     navíc
-k5eAaImSgInP     jsouce
-k5eAaImSgInS     nacvičuje
-k5eAaImSgMnP     jsouce
-k5eAaImSgMnS     nacvičuje
-k5eAaImSgNnP     jsouce
-k5eAaImSgNnS     navíc
-k5eAaPmAgFnP     dostaly
-k5eAaPmAgFnS     vydávala
-k5eAaPmAgInP     dostaly
-k5eAaPmAgInS     vešel
-k5eAaPmAgMnP     projednali
-k5eAaPmAgMnS     vešel
-k5eAaPmAgNnP     vydávala
-k5eAaPmAgNnS     zlíbilo
-k5eAaPmDgFnP     semnuvše
-k5eAaPmDgFnS     abdikovavši
-k5eAaPmDgInP     semnuvše
-k5eAaPmDgInS     vliv
-k5eAaPmDgMnP     semnuvše
-k5eAaPmDgMnS     vliv
-k5eAaPmDgNnP     semnuvše
-k5eAaPmDgNnS     abdikovavši
-k5eAaPmF         poznamenat
-k5eAaPmIp1nP     vyjedeme
-k5eAaPmIp1nS     zůstanu
-k5eAaPmIp2nP     utajíte
-k5eAaPmIp2nS     dostaneš
-k5eAaPmIp3nP     vyhodnotí
-k5eAaPmIp3nS     vyhodnotí
-k5eAaPmNgFnP     zavlečeny
-k5eAaPmNgFnS     pozastavena
-k5eAaPmNgInP     zavlečeny
-k5eAaPmNgInS     předvolán
-k5eAaPmNgMnP     zadluženi
-k5eAaPmNgMnS     předvolán
-k5eAaPmNgNnP     pozastavena
-k5eAaPmNgNnS     podáno
-k5eAaPmRp1nP     doplňme
-k5eAaPmRp2nP     zajděte
-k5eAaPmRp2nS     odvoz
-k5eAaPmSgFnP     řkouce
-k5eAaPmSgFnS     skvouc
-k5eAaPmSgInP     řkouce
-k5eAaPmSgInS     skvě
-k5eAaPmSgMnP     řkouce
-k5eAaPmSgMnS     skvě
-k5eAaPmSgNnP     řkouce
-k5eAaPmSgNnS     skvouc
-k5eNaBmAgFnP     neinformovaly
-k5eNaBmAgFnS     nedefinovala
-k5eNaBmAgInP     neinformovaly
-k5eNaBmAgInS     nenalezl
-k5eNaBmAgMnP     nereagovali
-k5eNaBmAgMnS     nenalezl
-k5eNaBmAgNnP     nedefinovala
-k5eNaBmAgNnS     nedělo
-k5eNaBmDgFnP     nenaděvše
-k5eNaBmDgFnS     nenaděvši
-k5eNaBmDgInP     nenaděvše
-k5eNaBmDgInS     nenadáv
-k5eNaBmDgMnP     nenaděvše
-k5eNaBmDgMnS     nenadáv
-k5eNaBmDgNnP     nenaděvše
-k5eNaBmDgNnS     nenaděvši
-k5eNaBmF         nezoufat
-k5eNaBmIp1nP     nenakupujeme
-k5eNaBmIp1nS     nedisponuji
-k5eNaBmIp2nP     neabdikujete
-k5eNaBmIp2nS     neabdikuješ
-k5eNaBmIp3nP     neorientují
-k5eNaBmIp3nS     nespecifikuje
-k5eNaBmNgFnP     neabsorbovány
-k5eNaBmNgFnS     neabsorbována
-k5eNaBmNgInP     neabsorbovány
-k5eNaBmNgInS     neatakován
-k5eNaBmNgMnP     neabsorbováni
-k5eNaBmNgMnS     neatakován
-k5eNaBmNgNnP     neabsorbována
-k5eNaBmNgNnS     neabsorbováno
-k5eNaBmRp1nP     neabdikujme
-k5eNaBmRp2nP     nenaříkejte
-k5eNaBmRp2nS     neabdikuj
-k5eNaBmSgFnP     nenadějíce
-k5eNaBmSgFnS     nenadějíc
-k5eNaBmSgInP     nenadějíce
-k5eNaBmSgInS     nenaděje
-k5eNaBmSgMnP     nenadějíce
-k5eNaBmSgMnS     nenaděje
-k5eNaBmSgNnP     nenadějíce
-k5eNaBmSgNnS     nenadějíc
-k5eNaImAgFnP     nepodílely
-k5eNaImAgFnS     nenasvědčovala
-k5eNaImAgInP     nepodílely
-k5eNaImAgInS     nevedl
-k5eNaImAgMnP     nevzdávali
-k5eNaImAgMnS     nevedl
-k5eNaImAgNnP     nenasvědčovala
-k5eNaImAgNnS     nesvítilo
-k5eNaImBp1nP     nebudeme
-k5eNaImBp1nS     nebudu
-k5eNaImBp2nP     nebudete
-k5eNaImBp2nS     nebudeš
-k5eNaImBp3nP     nebudou
-k5eNaImBp3nS     nebude
-k5eNaImDgFnP     nezapomněvše
-k5eNaImDgFnS     nezapomněvši
-k5eNaImDgInP     nezapomněvše
-k5eNaImDgInS     nezapomněv
-k5eNaImDgMnP     nezapomněvše
-k5eNaImDgMnS     nezapomněv
-k5eNaImDgNnP     nezapomněvše
-k5eNaImDgNnS     nezapomněvši
-k5eNaImF         neodsuzovat
-k5eNaImIp1nP     neslýcháme
-k5eNaImIp1nS     nechodím
-k5eNaImIp2nP     nemáte
-k5eNaImIp2nS     nedíváš
-k5eNaImIp3nP     nerozhodují
-k5eNaImIp3nS     nevrací
-k5eNaImNgFnP     neřešeny
-k5eNaImNgFnS     neovlivňována
-k5eNaImNgInP     neřešeny
-k5eNaImNgInS     nejet
-k5eNaImNgMnP     nevoleni
-k5eNaImNgMnS     nejet
-k5eNaImNgNnP     neovlivňována
-k5eNaImNgNnS     nevito
-k5eNaImRp1nP     nezkoumejme
-k5eNaImRp2nP     nedávejte
-k5eNaImRp2nS     nešťastni
-k5eNaImSgFnP     nevijíce
-k5eNaImSgFnS     nechtíc
-k5eNaImSgInP     nevijíce
-k5eNaImSgInS     neukazuje
-k5eNaImSgMnP     nevijíce
-k5eNaImSgMnS     neukazuje
-k5eNaImSgNnP     nevijíce
-k5eNaImSgNnS     nechtíc
-k5eNaPmAgFnP     neprošly
-k5eNaPmAgFnS     neobohatila
-k5eNaPmAgInP     neprošly
-k5eNaPmAgInS     nepřišel
-k5eNaPmAgMnP     neodvážili
-k5eNaPmAgMnS     nepřišel
-k5eNaPmAgNnP     neobohatila
-k5eNaPmAgNnS     nezačalo
-k5eNaPmDgFnP     neabdikovavše
-k5eNaPmDgFnS     neabdikovavši
-k5eNaPmDgInP     neabdikovavše
-k5eNaPmDgInS     nespočet
-k5eNaPmDgMnP     neabdikovavše
-k5eNaPmDgMnS     nespočet
-k5eNaPmDgNnP     neabdikovavše
-k5eNaPmDgNnS     neabdikovavši
-k5eNaPmF         neuzákonit
-k5eNaPmIp1nP     nevzdáme
-k5eNaPmIp1nS     nevrátím
-k5eNaPmIp2nP     nepotkáte
-k5eNaPmIp2nS     nedáš
-k5eNaPmIp3nP     nedomluví
-k5eNaPmIp3nS     nenajde
-k5eNaPmNgFnP     neprořezány
-k5eNaPmNgFnS     neudána
-k5eNaPmNgInP     neprořezány
-k5eNaPmNgInS     nepřipraven
-k5eNaPmNgMnP     neomezeni
-k5eNaPmNgMnS     nepřipraven
-k5eNaPmNgNnP     neudána
-k5eNaPmNgNnS     nerozhodnuto
-k5eNaPmRp1nP     neotevřeme
-k5eNaPmRp2nP     nenechte
-k5eNaPmRp2nS     neodešli
-k5eNaPmSgFnP     neskvouce
-k5eNaPmSgFnS     neskvouc
-k5eNaPmSgInP     neskvouce
-k5eNaPmSgInS     neskvě
-k5eNaPmSgMnP     neskvouce
-k5eNaPmSgMnS     neskvě
-k5eNaPmSgNnP     neskvouce
-k5eNaPmSgNnS     neskvouc
-k6eAd1           tajemně
-k6eAd1tCtLtTxD   odtud
-k6eAd1tCyQ       cože
-k6eAd1tD         třeba
-k6eAd1tDtS       dlužno
-k6eAd1tL         navrch
-k6eAd1tLtM       dole
-k6eAd1tLtMtT     pryč
-k6eAd1tLtQ       skrz
-k6eAd1tLtQtTxD   potud
-k6eAd1tLtT       potom
-k6eAd1tLtTxD     tam
-k6eAd1tLxD       onde
-k6eAd1tLyN       nikam
-k6eAd1tLyQ       pokud
-k6eAd1tM         směle
-k6eAd1tMtQ       hodně
-k6eAd1tMtQxD     takto
-k6eAd1tMtT       dlouze
-k6eAd1tMxD       takž
-k6eAd1tMyN       nikterak
-k6eAd1tQ         bezmála
-k6eAd1tQtS       plno
-k6eAd1tQxD       natolik
-k6eAd1tS         zima
-k6eAd1tT         dávno
-k6eAd1tTxD       doposavad
-k6eAd1tTxT       pokaždé
-k6eAd1xD         sem
-k6eAd1xT         vždycky
-k6eAd1yI         kde
-k6eAd1yN         pranic
-k6eAd1yQ         kde
-k6eAd1yR         kde
-k6eAd2           pečlivěji
-k6eAd2tL         níž
-k6eAd2tLtM       doleji
-k6eAd2tLtQ       dál
-k6eAd2tM         agresivněji
-k6eAd2tMtQ       víc
-k6eAd2tMtT       později
-k6eAd2tQ         víc
-k6eAd2tT         dřív
-k6eAd3           nejnověji
-k6eAd3tL         nejblíže
-k6eAd3tLtM       nejdoleji
-k6eAd3tLtQ       nejdále
-k6eAd3tM         nejefektivněji
-k6eAd3tMtQ       nejvíce
-k6eAd3tMtT       nejpozději
-k6eAd3tQ         nejblíže
-k6eAd3tT         nejčastěji
-k6eNd1           nevyhnutelně
-k6eNd1tD         nelze
-k6eNd1tDtS       nedlužno
-k6eNd1tL         neblízko
-k6eNd1tLtM       nezevně
-k6eNd1tLtQ       nedaleko
-k6eNd1tM         nesnadno
-k6eNd1tMtT       nedlouho
-k6eNd1tQ         nemálo
-k6eNd1tQtS       neplno
-k6eNd1tS         neblaze
-k6eNd1tT         nejednou
-k6eNd2           nejistěji
-k6eNd2tL         neblíž
-k6eNd2tLtQ       nedál
-k6eNd2tM         nesnáze
-k6eNd2tMtT       nedéle
-k6eNd2tQ         neméně
-k6eNd2tT         nečastěji
-k6eNd3           nejnebarevněji
-k6eNd3tL         nejneblíž
-k6eNd3tLtQ       nejnedál
-k6eNd3tM         nejneabstraktněji
-k6eNd3tMtT       nejnedéle
-k6eNd3tQ         nejneblíž
-k6eNd3tT         nejnečastěji
-k7c1             kontra
-k7c2             navrch
-k7c3             k
-k7c4             za
-k7c6             na
-k7c7             za
-k8xC             jakož
-k8xS             jen
-k9               no
-kA               tj
-kYmCp1nP         bychom
-kYmCp1nS         bych
-kYmCp2nP         byste
-kYmCp2nS         bys
-kYmCp3nP         aby
-kYmCp3nS         aby
+k0
+k1gFnPc1
+k1gFnPc2
+k1gFnPc3
+k1gFnPc4
+k1gFnPc5
+k1gFnPc6
+k1gFnPc7
+k1gFnSc1
+k1gFnSc2
+k1gFnSc3
+k1gFnSc4
+k1gFnSc5
+k1gFnSc6
+k1gFnSc7
+k1gInPc1
+k1gInPc2
+k1gInPc3
+k1gInPc4
+k1gInPc5
+k1gInPc6
+k1gInPc7
+k1gInSc1
+k1gInSc2
+k1gInSc3
+k1gInSc4
+k1gInSc5
+k1gInSc6
+k1gInSc7
+k1gMnPc1
+k1gMnPc2
+k1gMnPc3
+k1gMnPc4
+k1gMnPc5
+k1gMnPc6
+k1gMnPc7
+k1gMnSc1
+k1gMnSc2
+k1gMnSc3
+k1gMnSc4
+k1gMnSc5
+k1gMnSc6
+k1gMnSc7
+k1gNnPc1
+k1gNnPc2
+k1gNnPc3
+k1gNnPc4
+k1gNnPc5
+k1gNnPc6
+k1gNnPc7
+k1gNnSc1
+k1gNnSc2
+k1gNnSc3
+k1gNnSc4
+k1gNnSc5
+k1gNnSc6
+k1gNnSc7
+k1gRnPc1
+k1gRnPc2
+k1gRnPc3
+k1gRnPc4
+k1gRnPc5
+k1gRnPc6
+k1gRnPc7
+k1xP
+k2eAgFnPc1d1
+k2eAgFnPc1d1hF
+k2eAgFnPc1d1hM
+k2eAgFnPc1d1hR
+k2eAgFnPc1d2
+k2eAgFnPc1d3
+k2eAgFnPc2d1
+k2eAgFnPc2d1hF
+k2eAgFnPc2d1hM
+k2eAgFnPc2d1hR
+k2eAgFnPc2d2
+k2eAgFnPc2d3
+k2eAgFnPc3d1
+k2eAgFnPc3d1hF
+k2eAgFnPc3d1hM
+k2eAgFnPc3d1hR
+k2eAgFnPc3d2
+k2eAgFnPc3d3
+k2eAgFnPc4d1
+k2eAgFnPc4d1hF
+k2eAgFnPc4d1hM
+k2eAgFnPc4d1hR
+k2eAgFnPc4d2
+k2eAgFnPc4d3
+k2eAgFnPc5d1
+k2eAgFnPc5d1hF
+k2eAgFnPc5d1hM
+k2eAgFnPc5d1hR
+k2eAgFnPc5d2
+k2eAgFnPc5d3
+k2eAgFnPc6d1
+k2eAgFnPc6d1hF
+k2eAgFnPc6d1hM
+k2eAgFnPc6d1hR
+k2eAgFnPc6d2
+k2eAgFnPc6d3
+k2eAgFnPc7d1
+k2eAgFnPc7d1hF
+k2eAgFnPc7d1hM
+k2eAgFnPc7d1hR
+k2eAgFnPc7d2
+k2eAgFnPc7d3
+k2eAgFnSc1d1
+k2eAgFnSc1d1hF
+k2eAgFnSc1d1hM
+k2eAgFnSc1d1hR
+k2eAgFnSc1d2
+k2eAgFnSc1d3
+k2eAgFnSc2d1
+k2eAgFnSc2d1hF
+k2eAgFnSc2d1hM
+k2eAgFnSc2d1hR
+k2eAgFnSc2d2
+k2eAgFnSc2d3
+k2eAgFnSc3d1
+k2eAgFnSc3d1hF
+k2eAgFnSc3d1hM
+k2eAgFnSc3d1hR
+k2eAgFnSc3d2
+k2eAgFnSc3d3
+k2eAgFnSc4d1
+k2eAgFnSc4d1hF
+k2eAgFnSc4d1hM
+k2eAgFnSc4d1hR
+k2eAgFnSc4d2
+k2eAgFnSc4d3
+k2eAgFnSc5d1
+k2eAgFnSc5d1hF
+k2eAgFnSc5d1hM
+k2eAgFnSc5d1hR
+k2eAgFnSc5d2
+k2eAgFnSc5d3
+k2eAgFnSc6d1
+k2eAgFnSc6d1hF
+k2eAgFnSc6d1hM
+k2eAgFnSc6d1hR
+k2eAgFnSc6d2
+k2eAgFnSc6d3
+k2eAgFnSc7d1
+k2eAgFnSc7d1hF
+k2eAgFnSc7d1hM
+k2eAgFnSc7d1hR
+k2eAgFnSc7d2
+k2eAgFnSc7d3
+k2eAgInPc1d1
+k2eAgInPc1d1hF
+k2eAgInPc1d1hM
+k2eAgInPc1d1hR
+k2eAgInPc1d2
+k2eAgInPc1d3
+k2eAgInPc2d1
+k2eAgInPc2d1hF
+k2eAgInPc2d1hM
+k2eAgInPc2d1hR
+k2eAgInPc2d2
+k2eAgInPc2d3
+k2eAgInPc3d1
+k2eAgInPc3d1hF
+k2eAgInPc3d1hM
+k2eAgInPc3d1hR
+k2eAgInPc3d2
+k2eAgInPc3d3
+k2eAgInPc4d1
+k2eAgInPc4d1hF
+k2eAgInPc4d1hM
+k2eAgInPc4d1hR
+k2eAgInPc4d2
+k2eAgInPc4d3
+k2eAgInPc5d1
+k2eAgInPc5d1hF
+k2eAgInPc5d1hM
+k2eAgInPc5d1hR
+k2eAgInPc5d2
+k2eAgInPc5d3
+k2eAgInPc6d1
+k2eAgInPc6d1hF
+k2eAgInPc6d1hM
+k2eAgInPc6d1hR
+k2eAgInPc6d2
+k2eAgInPc6d3
+k2eAgInPc7d1
+k2eAgInPc7d1hF
+k2eAgInPc7d1hM
+k2eAgInPc7d1hR
+k2eAgInPc7d2
+k2eAgInPc7d3
+k2eAgInSc1d1
+k2eAgInSc1d1hF
+k2eAgInSc1d1hM
+k2eAgInSc1d1hR
+k2eAgInSc1d2
+k2eAgInSc1d3
+k2eAgInSc2d1
+k2eAgInSc2d1hF
+k2eAgInSc2d1hM
+k2eAgInSc2d1hR
+k2eAgInSc2d2
+k2eAgInSc2d3
+k2eAgInSc3d1
+k2eAgInSc3d1hF
+k2eAgInSc3d1hM
+k2eAgInSc3d1hR
+k2eAgInSc3d2
+k2eAgInSc3d3
+k2eAgInSc4d1
+k2eAgInSc4d1hF
+k2eAgInSc4d1hM
+k2eAgInSc4d1hR
+k2eAgInSc4d2
+k2eAgInSc4d3
+k2eAgInSc5d1
+k2eAgInSc5d1hF
+k2eAgInSc5d1hM
+k2eAgInSc5d1hR
+k2eAgInSc5d2
+k2eAgInSc5d3
+k2eAgInSc6d1
+k2eAgInSc6d1hF
+k2eAgInSc6d1hM
+k2eAgInSc6d1hR
+k2eAgInSc6d2
+k2eAgInSc6d3
+k2eAgInSc7d1
+k2eAgInSc7d1hF
+k2eAgInSc7d1hM
+k2eAgInSc7d1hR
+k2eAgInSc7d2
+k2eAgInSc7d3
+k2eAgMnPc1d1
+k2eAgMnPc1d1hF
+k2eAgMnPc1d1hM
+k2eAgMnPc1d1hR
+k2eAgMnPc1d2
+k2eAgMnPc1d3
+k2eAgMnPc2d1
+k2eAgMnPc2d1hF
+k2eAgMnPc2d1hM
+k2eAgMnPc2d1hR
+k2eAgMnPc2d2
+k2eAgMnPc2d3
+k2eAgMnPc3d1
+k2eAgMnPc3d1hF
+k2eAgMnPc3d1hM
+k2eAgMnPc3d1hR
+k2eAgMnPc3d2
+k2eAgMnPc3d3
+k2eAgMnPc4d1
+k2eAgMnPc4d1hF
+k2eAgMnPc4d1hM
+k2eAgMnPc4d1hR
+k2eAgMnPc4d2
+k2eAgMnPc4d3
+k2eAgMnPc5d1
+k2eAgMnPc5d1hF
+k2eAgMnPc5d1hM
+k2eAgMnPc5d1hR
+k2eAgMnPc5d2
+k2eAgMnPc5d3
+k2eAgMnPc6d1
+k2eAgMnPc6d1hF
+k2eAgMnPc6d1hM
+k2eAgMnPc6d1hR
+k2eAgMnPc6d2
+k2eAgMnPc6d3
+k2eAgMnPc7d1
+k2eAgMnPc7d1hF
+k2eAgMnPc7d1hM
+k2eAgMnPc7d1hR
+k2eAgMnPc7d2
+k2eAgMnPc7d3
+k2eAgMnSc1d1
+k2eAgMnSc1d1hF
+k2eAgMnSc1d1hM
+k2eAgMnSc1d1hR
+k2eAgMnSc1d2
+k2eAgMnSc1d3
+k2eAgMnSc2d1
+k2eAgMnSc2d1hF
+k2eAgMnSc2d1hM
+k2eAgMnSc2d1hR
+k2eAgMnSc2d2
+k2eAgMnSc2d3
+k2eAgMnSc3d1
+k2eAgMnSc3d1hF
+k2eAgMnSc3d1hM
+k2eAgMnSc3d1hR
+k2eAgMnSc3d2
+k2eAgMnSc3d3
+k2eAgMnSc4d1
+k2eAgMnSc4d1hF
+k2eAgMnSc4d1hM
+k2eAgMnSc4d1hR
+k2eAgMnSc4d2
+k2eAgMnSc4d3
+k2eAgMnSc5d1
+k2eAgMnSc5d1hF
+k2eAgMnSc5d1hM
+k2eAgMnSc5d1hR
+k2eAgMnSc5d2
+k2eAgMnSc5d3
+k2eAgMnSc6d1
+k2eAgMnSc6d1hF
+k2eAgMnSc6d1hM
+k2eAgMnSc6d1hR
+k2eAgMnSc6d2
+k2eAgMnSc6d3
+k2eAgMnSc7d1
+k2eAgMnSc7d1hF
+k2eAgMnSc7d1hM
+k2eAgMnSc7d1hR
+k2eAgMnSc7d2
+k2eAgMnSc7d3
+k2eAgNnPc1d1
+k2eAgNnPc1d1hF
+k2eAgNnPc1d1hM
+k2eAgNnPc1d1hR
+k2eAgNnPc1d2
+k2eAgNnPc1d3
+k2eAgNnPc2d1
+k2eAgNnPc2d1hF
+k2eAgNnPc2d1hM
+k2eAgNnPc2d1hR
+k2eAgNnPc2d2
+k2eAgNnPc2d3
+k2eAgNnPc3d1
+k2eAgNnPc3d1hF
+k2eAgNnPc3d1hM
+k2eAgNnPc3d1hR
+k2eAgNnPc3d2
+k2eAgNnPc3d3
+k2eAgNnPc4d1
+k2eAgNnPc4d1hF
+k2eAgNnPc4d1hM
+k2eAgNnPc4d1hR
+k2eAgNnPc4d2
+k2eAgNnPc4d3
+k2eAgNnPc5d1
+k2eAgNnPc5d1hF
+k2eAgNnPc5d1hM
+k2eAgNnPc5d1hR
+k2eAgNnPc5d2
+k2eAgNnPc5d3
+k2eAgNnPc6d1
+k2eAgNnPc6d1hF
+k2eAgNnPc6d1hM
+k2eAgNnPc6d1hR
+k2eAgNnPc6d2
+k2eAgNnPc6d3
+k2eAgNnPc7d1
+k2eAgNnPc7d1hF
+k2eAgNnPc7d1hM
+k2eAgNnPc7d1hR
+k2eAgNnPc7d2
+k2eAgNnPc7d3
+k2eAgNnSc1d1
+k2eAgNnSc1d1hF
+k2eAgNnSc1d1hM
+k2eAgNnSc1d1hR
+k2eAgNnSc1d2
+k2eAgNnSc1d3
+k2eAgNnSc2d1
+k2eAgNnSc2d1hF
+k2eAgNnSc2d1hM
+k2eAgNnSc2d1hR
+k2eAgNnSc2d2
+k2eAgNnSc2d3
+k2eAgNnSc3d1
+k2eAgNnSc3d1hF
+k2eAgNnSc3d1hM
+k2eAgNnSc3d1hR
+k2eAgNnSc3d2
+k2eAgNnSc3d3
+k2eAgNnSc4d1
+k2eAgNnSc4d1hF
+k2eAgNnSc4d1hM
+k2eAgNnSc4d1hR
+k2eAgNnSc4d2
+k2eAgNnSc4d3
+k2eAgNnSc5d1
+k2eAgNnSc5d1hF
+k2eAgNnSc5d1hM
+k2eAgNnSc5d1hR
+k2eAgNnSc5d2
+k2eAgNnSc5d3
+k2eAgNnSc6d1
+k2eAgNnSc6d1hF
+k2eAgNnSc6d1hM
+k2eAgNnSc6d1hR
+k2eAgNnSc6d2
+k2eAgNnSc6d3
+k2eAgNnSc7d1
+k2eAgNnSc7d1hF
+k2eAgNnSc7d1hM
+k2eAgNnSc7d1hR
+k2eAgNnSc7d2
+k2eAgNnSc7d3
+k2eNgFnPc1d1
+k2eNgFnPc1d2
+k2eNgFnPc1d3
+k2eNgFnPc2d1
+k2eNgFnPc2d2
+k2eNgFnPc2d3
+k2eNgFnPc3d1
+k2eNgFnPc3d2
+k2eNgFnPc3d3
+k2eNgFnPc4d1
+k2eNgFnPc4d2
+k2eNgFnPc4d3
+k2eNgFnPc5d1
+k2eNgFnPc5d2
+k2eNgFnPc5d3
+k2eNgFnPc6d1
+k2eNgFnPc6d2
+k2eNgFnPc6d3
+k2eNgFnPc7d1
+k2eNgFnPc7d2
+k2eNgFnPc7d3
+k2eNgFnSc1d1
+k2eNgFnSc1d2
+k2eNgFnSc1d3
+k2eNgFnSc2d1
+k2eNgFnSc2d2
+k2eNgFnSc2d3
+k2eNgFnSc3d1
+k2eNgFnSc3d2
+k2eNgFnSc3d3
+k2eNgFnSc4d1
+k2eNgFnSc4d2
+k2eNgFnSc4d3
+k2eNgFnSc5d1
+k2eNgFnSc5d2
+k2eNgFnSc5d3
+k2eNgFnSc6d1
+k2eNgFnSc6d2
+k2eNgFnSc6d3
+k2eNgFnSc7d1
+k2eNgFnSc7d2
+k2eNgFnSc7d3
+k2eNgInPc1d1
+k2eNgInPc1d2
+k2eNgInPc1d3
+k2eNgInPc2d1
+k2eNgInPc2d2
+k2eNgInPc2d3
+k2eNgInPc3d1
+k2eNgInPc3d2
+k2eNgInPc3d3
+k2eNgInPc4d1
+k2eNgInPc4d2
+k2eNgInPc4d3
+k2eNgInPc5d1
+k2eNgInPc5d2
+k2eNgInPc5d3
+k2eNgInPc6d1
+k2eNgInPc6d2
+k2eNgInPc6d3
+k2eNgInPc7d1
+k2eNgInPc7d2
+k2eNgInPc7d3
+k2eNgInSc1d1
+k2eNgInSc1d2
+k2eNgInSc1d3
+k2eNgInSc2d1
+k2eNgInSc2d2
+k2eNgInSc2d3
+k2eNgInSc3d1
+k2eNgInSc3d2
+k2eNgInSc3d3
+k2eNgInSc4d1
+k2eNgInSc4d2
+k2eNgInSc4d3
+k2eNgInSc5d1
+k2eNgInSc5d2
+k2eNgInSc5d3
+k2eNgInSc6d1
+k2eNgInSc6d2
+k2eNgInSc6d3
+k2eNgInSc7d1
+k2eNgInSc7d2
+k2eNgInSc7d3
+k2eNgMnPc1d1
+k2eNgMnPc1d2
+k2eNgMnPc1d3
+k2eNgMnPc2d1
+k2eNgMnPc2d2
+k2eNgMnPc2d3
+k2eNgMnPc3d1
+k2eNgMnPc3d2
+k2eNgMnPc3d3
+k2eNgMnPc4d1
+k2eNgMnPc4d2
+k2eNgMnPc4d3
+k2eNgMnPc5d1
+k2eNgMnPc5d2
+k2eNgMnPc5d3
+k2eNgMnPc6d1
+k2eNgMnPc6d2
+k2eNgMnPc6d3
+k2eNgMnPc7d1
+k2eNgMnPc7d2
+k2eNgMnPc7d3
+k2eNgMnSc1d1
+k2eNgMnSc1d2
+k2eNgMnSc1d3
+k2eNgMnSc2d1
+k2eNgMnSc2d2
+k2eNgMnSc2d3
+k2eNgMnSc3d1
+k2eNgMnSc3d2
+k2eNgMnSc3d3
+k2eNgMnSc4d1
+k2eNgMnSc4d2
+k2eNgMnSc4d3
+k2eNgMnSc5d1
+k2eNgMnSc5d2
+k2eNgMnSc5d3
+k2eNgMnSc6d1
+k2eNgMnSc6d2
+k2eNgMnSc6d3
+k2eNgMnSc7d1
+k2eNgMnSc7d2
+k2eNgMnSc7d3
+k2eNgNnPc1d1
+k2eNgNnPc1d2
+k2eNgNnPc1d3
+k2eNgNnPc2d1
+k2eNgNnPc2d2
+k2eNgNnPc2d3
+k2eNgNnPc3d1
+k2eNgNnPc3d2
+k2eNgNnPc3d3
+k2eNgNnPc4d1
+k2eNgNnPc4d2
+k2eNgNnPc4d3
+k2eNgNnPc5d1
+k2eNgNnPc5d2
+k2eNgNnPc5d3
+k2eNgNnPc6d1
+k2eNgNnPc6d2
+k2eNgNnPc6d3
+k2eNgNnPc7d1
+k2eNgNnPc7d2
+k2eNgNnPc7d3
+k2eNgNnSc1d1
+k2eNgNnSc1d2
+k2eNgNnSc1d3
+k2eNgNnSc2d1
+k2eNgNnSc2d2
+k2eNgNnSc2d3
+k2eNgNnSc3d1
+k2eNgNnSc3d2
+k2eNgNnSc3d3
+k2eNgNnSc4d1
+k2eNgNnSc4d2
+k2eNgNnSc4d3
+k2eNgNnSc5d1
+k2eNgNnSc5d2
+k2eNgNnSc5d3
+k2eNgNnSc6d1
+k2eNgNnSc6d2
+k2eNgNnSc6d3
+k2eNgNnSc7d1
+k2eNgNnSc7d2
+k2eNgNnSc7d3
+k3c2xPyF
+k3c3xPyF
+k3c4xPyF
+k3c6xPyF
+k3c7xPyF
+k3gFnPc1xD
+k3gFnPc1xOyF
+k3gFnPc1xOyI
+k3gFnPc1xOyN
+k3gFnPc1xOyQ
+k3gFnPc1xOyR
+k3gFnPc1xT
+k3gFnPc1yI
+k3gFnPc1yN
+k3gFnPc1yQ
+k3gFnPc1yR
+k3gFnPc2xD
+k3gFnPc2xOyF
+k3gFnPc2xOyI
+k3gFnPc2xOyN
+k3gFnPc2xOyQ
+k3gFnPc2xOyR
+k3gFnPc2xT
+k3gFnPc2yI
+k3gFnPc2yN
+k3gFnPc2yQ
+k3gFnPc2yR
+k3gFnPc3xD
+k3gFnPc3xOyF
+k3gFnPc3xOyI
+k3gFnPc3xOyN
+k3gFnPc3xOyQ
+k3gFnPc3xOyR
+k3gFnPc3xT
+k3gFnPc3yI
+k3gFnPc3yN
+k3gFnPc3yQ
+k3gFnPc3yR
+k3gFnPc4xD
+k3gFnPc4xOyF
+k3gFnPc4xOyI
+k3gFnPc4xOyN
+k3gFnPc4xOyQ
+k3gFnPc4xOyR
+k3gFnPc4xT
+k3gFnPc4yI
+k3gFnPc4yN
+k3gFnPc4yQ
+k3gFnPc4yR
+k3gFnPc5yR
+k3gFnPc6xD
+k3gFnPc6xOyF
+k3gFnPc6xOyI
+k3gFnPc6xOyN
+k3gFnPc6xOyQ
+k3gFnPc6xOyR
+k3gFnPc6xT
+k3gFnPc6yI
+k3gFnPc6yN
+k3gFnPc6yQ
+k3gFnPc6yR
+k3gFnPc7xD
+k3gFnPc7xOyF
+k3gFnPc7xOyI
+k3gFnPc7xOyN
+k3gFnPc7xOyQ
+k3gFnPc7xOyR
+k3gFnPc7xT
+k3gFnPc7yI
+k3gFnPc7yN
+k3gFnPc7yQ
+k3gFnPc7yR
+k3gFnSc1xD
+k3gFnSc1xOyF
+k3gFnSc1xOyI
+k3gFnSc1xOyN
+k3gFnSc1xOyQ
+k3gFnSc1xOyR
+k3gFnSc1xT
+k3gFnSc1yI
+k3gFnSc1yN
+k3gFnSc1yQ
+k3gFnSc1yR
+k3gFnSc2xD
+k3gFnSc2xOyF
+k3gFnSc2xOyI
+k3gFnSc2xOyN
+k3gFnSc2xOyQ
+k3gFnSc2xOyR
+k3gFnSc2xT
+k3gFnSc2yI
+k3gFnSc2yN
+k3gFnSc2yQ
+k3gFnSc2yR
+k3gFnSc3xD
+k3gFnSc3xOyF
+k3gFnSc3xOyI
+k3gFnSc3xOyN
+k3gFnSc3xOyQ
+k3gFnSc3xOyR
+k3gFnSc3xT
+k3gFnSc3yI
+k3gFnSc3yN
+k3gFnSc3yQ
+k3gFnSc3yR
+k3gFnSc4xD
+k3gFnSc4xOyF
+k3gFnSc4xOyI
+k3gFnSc4xOyN
+k3gFnSc4xOyQ
+k3gFnSc4xOyR
+k3gFnSc4xT
+k3gFnSc4yI
+k3gFnSc4yN
+k3gFnSc4yQ
+k3gFnSc4yR
+k3gFnSc5yR
+k3gFnSc6xD
+k3gFnSc6xOyF
+k3gFnSc6xOyI
+k3gFnSc6xOyN
+k3gFnSc6xOyQ
+k3gFnSc6xOyR
+k3gFnSc6xT
+k3gFnSc6yI
+k3gFnSc6yN
+k3gFnSc6yQ
+k3gFnSc6yR
+k3gFnSc7xD
+k3gFnSc7xOyF
+k3gFnSc7xOyI
+k3gFnSc7xOyN
+k3gFnSc7xOyQ
+k3gFnSc7xOyR
+k3gFnSc7xT
+k3gFnSc7yI
+k3gFnSc7yN
+k3gFnSc7yQ
+k3gFnSc7yR
+k3gInPc1xD
+k3gInPc1xOyF
+k3gInPc1xOyI
+k3gInPc1xOyN
+k3gInPc1xOyQ
+k3gInPc1xOyR
+k3gInPc1xT
+k3gInPc1yI
+k3gInPc1yN
+k3gInPc1yQ
+k3gInPc1yR
+k3gInPc2xD
+k3gInPc2xOyF
+k3gInPc2xOyI
+k3gInPc2xOyN
+k3gInPc2xOyQ
+k3gInPc2xOyR
+k3gInPc2xT
+k3gInPc2yI
+k3gInPc2yN
+k3gInPc2yQ
+k3gInPc2yR
+k3gInPc3xD
+k3gInPc3xOyF
+k3gInPc3xOyI
+k3gInPc3xOyN
+k3gInPc3xOyQ
+k3gInPc3xOyR
+k3gInPc3xT
+k3gInPc3yI
+k3gInPc3yN
+k3gInPc3yQ
+k3gInPc3yR
+k3gInPc4xD
+k3gInPc4xOyF
+k3gInPc4xOyI
+k3gInPc4xOyN
+k3gInPc4xOyQ
+k3gInPc4xOyR
+k3gInPc4xT
+k3gInPc4yI
+k3gInPc4yN
+k3gInPc4yQ
+k3gInPc4yR
+k3gInPc5yR
+k3gInPc6xD
+k3gInPc6xOyF
+k3gInPc6xOyI
+k3gInPc6xOyN
+k3gInPc6xOyQ
+k3gInPc6xOyR
+k3gInPc6xT
+k3gInPc6yI
+k3gInPc6yN
+k3gInPc6yQ
+k3gInPc6yR
+k3gInPc7xD
+k3gInPc7xOyF
+k3gInPc7xOyI
+k3gInPc7xOyN
+k3gInPc7xOyQ
+k3gInPc7xOyR
+k3gInPc7xT
+k3gInPc7yI
+k3gInPc7yN
+k3gInPc7yQ
+k3gInPc7yR
+k3gInSc1xD
+k3gInSc1xOyF
+k3gInSc1xOyI
+k3gInSc1xOyN
+k3gInSc1xOyQ
+k3gInSc1xOyR
+k3gInSc1xT
+k3gInSc1yI
+k3gInSc1yN
+k3gInSc1yQ
+k3gInSc1yR
+k3gInSc2xD
+k3gInSc2xOyF
+k3gInSc2xOyI
+k3gInSc2xOyN
+k3gInSc2xOyQ
+k3gInSc2xOyR
+k3gInSc2xT
+k3gInSc2yI
+k3gInSc2yN
+k3gInSc2yQ
+k3gInSc2yR
+k3gInSc3xD
+k3gInSc3xOyF
+k3gInSc3xOyI
+k3gInSc3xOyN
+k3gInSc3xOyQ
+k3gInSc3xOyR
+k3gInSc3xT
+k3gInSc3yI
+k3gInSc3yN
+k3gInSc3yQ
+k3gInSc3yR
+k3gInSc4xD
+k3gInSc4xOyF
+k3gInSc4xOyI
+k3gInSc4xOyN
+k3gInSc4xOyQ
+k3gInSc4xOyR
+k3gInSc4xT
+k3gInSc4yI
+k3gInSc4yN
+k3gInSc4yQ
+k3gInSc4yR
+k3gInSc5yR
+k3gInSc6xD
+k3gInSc6xOyF
+k3gInSc6xOyI
+k3gInSc6xOyN
+k3gInSc6xOyQ
+k3gInSc6xOyR
+k3gInSc6xT
+k3gInSc6yI
+k3gInSc6yN
+k3gInSc6yQ
+k3gInSc6yR
+k3gInSc7xD
+k3gInSc7xOyF
+k3gInSc7xOyI
+k3gInSc7xOyN
+k3gInSc7xOyQ
+k3gInSc7xOyR
+k3gInSc7xT
+k3gInSc7yI
+k3gInSc7yN
+k3gInSc7yQ
+k3gInSc7yR
+k3gMnPc1xD
+k3gMnPc1xOyF
+k3gMnPc1xOyI
+k3gMnPc1xOyN
+k3gMnPc1xOyQ
+k3gMnPc1xOyR
+k3gMnPc1xT
+k3gMnPc1yI
+k3gMnPc1yN
+k3gMnPc1yQ
+k3gMnPc1yR
+k3gMnPc2xD
+k3gMnPc2xOyF
+k3gMnPc2xOyI
+k3gMnPc2xOyN
+k3gMnPc2xOyQ
+k3gMnPc2xOyR
+k3gMnPc2xT
+k3gMnPc2yI
+k3gMnPc2yN
+k3gMnPc2yQ
+k3gMnPc2yR
+k3gMnPc3xD
+k3gMnPc3xOyF
+k3gMnPc3xOyI
+k3gMnPc3xOyN
+k3gMnPc3xOyQ
+k3gMnPc3xOyR
+k3gMnPc3xT
+k3gMnPc3yI
+k3gMnPc3yN
+k3gMnPc3yQ
+k3gMnPc3yR
+k3gMnPc4xD
+k3gMnPc4xOyF
+k3gMnPc4xOyI
+k3gMnPc4xOyN
+k3gMnPc4xOyQ
+k3gMnPc4xOyR
+k3gMnPc4xT
+k3gMnPc4yI
+k3gMnPc4yN
+k3gMnPc4yQ
+k3gMnPc4yR
+k3gMnPc5yR
+k3gMnPc6xD
+k3gMnPc6xOyF
+k3gMnPc6xOyI
+k3gMnPc6xOyN
+k3gMnPc6xOyQ
+k3gMnPc6xOyR
+k3gMnPc6xT
+k3gMnPc6yI
+k3gMnPc6yN
+k3gMnPc6yQ
+k3gMnPc6yR
+k3gMnPc7xD
+k3gMnPc7xOyF
+k3gMnPc7xOyI
+k3gMnPc7xOyN
+k3gMnPc7xOyQ
+k3gMnPc7xOyR
+k3gMnPc7xT
+k3gMnPc7yI
+k3gMnPc7yN
+k3gMnPc7yQ
+k3gMnPc7yR
+k3gMnSc1xD
+k3gMnSc1xOyF
+k3gMnSc1xOyI
+k3gMnSc1xOyN
+k3gMnSc1xOyQ
+k3gMnSc1xOyR
+k3gMnSc1xT
+k3gMnSc1yI
+k3gMnSc1yN
+k3gMnSc1yQ
+k3gMnSc1yR
+k3gMnSc2xD
+k3gMnSc2xOyF
+k3gMnSc2xOyI
+k3gMnSc2xOyN
+k3gMnSc2xOyQ
+k3gMnSc2xOyR
+k3gMnSc2xT
+k3gMnSc2yI
+k3gMnSc2yN
+k3gMnSc2yQ
+k3gMnSc2yR
+k3gMnSc3xD
+k3gMnSc3xOyF
+k3gMnSc3xOyI
+k3gMnSc3xOyN
+k3gMnSc3xOyQ
+k3gMnSc3xOyR
+k3gMnSc3xT
+k3gMnSc3yI
+k3gMnSc3yN
+k3gMnSc3yQ
+k3gMnSc3yR
+k3gMnSc4xD
+k3gMnSc4xOyF
+k3gMnSc4xOyI
+k3gMnSc4xOyN
+k3gMnSc4xOyQ
+k3gMnSc4xOyR
+k3gMnSc4xT
+k3gMnSc4yI
+k3gMnSc4yN
+k3gMnSc4yQ
+k3gMnSc4yR
+k3gMnSc5yR
+k3gMnSc6xD
+k3gMnSc6xOyF
+k3gMnSc6xOyI
+k3gMnSc6xOyN
+k3gMnSc6xOyQ
+k3gMnSc6xOyR
+k3gMnSc6xT
+k3gMnSc6yI
+k3gMnSc6yN
+k3gMnSc6yQ
+k3gMnSc6yR
+k3gMnSc7xD
+k3gMnSc7xOyF
+k3gMnSc7xOyI
+k3gMnSc7xOyN
+k3gMnSc7xOyQ
+k3gMnSc7xOyR
+k3gMnSc7xT
+k3gMnSc7yI
+k3gMnSc7yN
+k3gMnSc7yQ
+k3gMnSc7yR
+k3gNnPc1xD
+k3gNnPc1xOyF
+k3gNnPc1xOyI
+k3gNnPc1xOyN
+k3gNnPc1xOyQ
+k3gNnPc1xOyR
+k3gNnPc1xT
+k3gNnPc1yI
+k3gNnPc1yN
+k3gNnPc1yQ
+k3gNnPc1yR
+k3gNnPc2xD
+k3gNnPc2xOyF
+k3gNnPc2xOyI
+k3gNnPc2xOyN
+k3gNnPc2xOyQ
+k3gNnPc2xOyR
+k3gNnPc2xT
+k3gNnPc2yI
+k3gNnPc2yN
+k3gNnPc2yQ
+k3gNnPc2yR
+k3gNnPc3xD
+k3gNnPc3xOyF
+k3gNnPc3xOyI
+k3gNnPc3xOyN
+k3gNnPc3xOyQ
+k3gNnPc3xOyR
+k3gNnPc3xT
+k3gNnPc3yI
+k3gNnPc3yN
+k3gNnPc3yQ
+k3gNnPc3yR
+k3gNnPc4xD
+k3gNnPc4xOyF
+k3gNnPc4xOyI
+k3gNnPc4xOyN
+k3gNnPc4xOyQ
+k3gNnPc4xOyR
+k3gNnPc4xT
+k3gNnPc4yI
+k3gNnPc4yN
+k3gNnPc4yQ
+k3gNnPc4yR
+k3gNnPc5yR
+k3gNnPc6xD
+k3gNnPc6xOyF
+k3gNnPc6xOyI
+k3gNnPc6xOyN
+k3gNnPc6xOyQ
+k3gNnPc6xOyR
+k3gNnPc6xT
+k3gNnPc6yI
+k3gNnPc6yN
+k3gNnPc6yQ
+k3gNnPc6yR
+k3gNnPc7xD
+k3gNnPc7xOyF
+k3gNnPc7xOyI
+k3gNnPc7xOyN
+k3gNnPc7xOyQ
+k3gNnPc7xOyR
+k3gNnPc7xT
+k3gNnPc7yI
+k3gNnPc7yN
+k3gNnPc7yQ
+k3gNnPc7yR
+k3gNnSc1xD
+k3gNnSc1xOyF
+k3gNnSc1xOyI
+k3gNnSc1xOyN
+k3gNnSc1xOyQ
+k3gNnSc1xOyR
+k3gNnSc1xT
+k3gNnSc1yI
+k3gNnSc1yN
+k3gNnSc1yQ
+k3gNnSc1yR
+k3gNnSc2xD
+k3gNnSc2xOyF
+k3gNnSc2xOyI
+k3gNnSc2xOyN
+k3gNnSc2xOyQ
+k3gNnSc2xOyR
+k3gNnSc2xT
+k3gNnSc2yI
+k3gNnSc2yN
+k3gNnSc2yQ
+k3gNnSc2yR
+k3gNnSc3xD
+k3gNnSc3xOyF
+k3gNnSc3xOyI
+k3gNnSc3xOyN
+k3gNnSc3xOyQ
+k3gNnSc3xOyR
+k3gNnSc3xT
+k3gNnSc3yI
+k3gNnSc3yN
+k3gNnSc3yQ
+k3gNnSc3yR
+k3gNnSc4xD
+k3gNnSc4xOyF
+k3gNnSc4xOyI
+k3gNnSc4xOyN
+k3gNnSc4xOyQ
+k3gNnSc4xOyR
+k3gNnSc4xT
+k3gNnSc4yI
+k3gNnSc4yN
+k3gNnSc4yQ
+k3gNnSc4yR
+k3gNnSc5yR
+k3gNnSc6xD
+k3gNnSc6xOyF
+k3gNnSc6xOyI
+k3gNnSc6xOyN
+k3gNnSc6xOyQ
+k3gNnSc6xOyR
+k3gNnSc6xT
+k3gNnSc6yI
+k3gNnSc6yN
+k3gNnSc6yQ
+k3gNnSc6yR
+k3gNnSc7xD
+k3gNnSc7xOyF
+k3gNnSc7xOyI
+k3gNnSc7xOyN
+k3gNnSc7xOyQ
+k3gNnSc7xOyR
+k3gNnSc7xT
+k3gNnSc7yI
+k3gNnSc7yN
+k3gNnSc7yQ
+k3gNnSc7yR
+k3nSc1hPyI
+k3nSc1hPyN
+k3nSc1hPyQ
+k3nSc1hPyR
+k3nSc1hTyI
+k3nSc1hTyN
+k3nSc1hTyQ
+k3nSc1hTyR
+k3nSc1yQ
+k3nSc2hPyI
+k3nSc2hPyN
+k3nSc2hPyQ
+k3nSc2hPyR
+k3nSc2hTyI
+k3nSc2hTyN
+k3nSc2hTyQ
+k3nSc2hTyR
+k3nSc2yQ
+k3nSc3hPyI
+k3nSc3hPyN
+k3nSc3hPyQ
+k3nSc3hPyR
+k3nSc3hTyI
+k3nSc3hTyN
+k3nSc3hTyQ
+k3nSc3hTyR
+k3nSc3yQ
+k3nSc4hPyI
+k3nSc4hPyN
+k3nSc4hPyQ
+k3nSc4hPyR
+k3nSc4hTyI
+k3nSc4hTyN
+k3nSc4hTyQ
+k3nSc4hTyR
+k3nSc4yQ
+k3nSc6hPyI
+k3nSc6hPyN
+k3nSc6hPyQ
+k3nSc6hPyR
+k3nSc6hTyI
+k3nSc6hTyN
+k3nSc6hTyQ
+k3nSc6hTyR
+k3nSc6yQ
+k3nSc7hPyI
+k3nSc7hPyN
+k3nSc7hPyQ
+k3nSc7hPyR
+k3nSc7hTyI
+k3nSc7hTyN
+k3nSc7hTyQ
+k3nSc7hTyR
+k3nSc7yQ
+k3p1gFnPc1xO
+k3p1gFnPc2xO
+k3p1gFnPc3xO
+k3p1gFnPc4xO
+k3p1gFnPc5xO
+k3p1gFnPc6xO
+k3p1gFnPc7xO
+k3p1gFnSc1xO
+k3p1gFnSc2xO
+k3p1gFnSc3xO
+k3p1gFnSc4xO
+k3p1gFnSc5xO
+k3p1gFnSc6xO
+k3p1gFnSc7xO
+k3p1gInPc1xO
+k3p1gInPc2xO
+k3p1gInPc3xO
+k3p1gInPc4xO
+k3p1gInPc5xO
+k3p1gInPc6xO
+k3p1gInPc7xO
+k3p1gInSc1xO
+k3p1gInSc2xO
+k3p1gInSc3xO
+k3p1gInSc4xO
+k3p1gInSc5xO
+k3p1gInSc6xO
+k3p1gInSc7xO
+k3p1gMnPc1xO
+k3p1gMnPc2xO
+k3p1gMnPc3xO
+k3p1gMnPc4xO
+k3p1gMnPc5xO
+k3p1gMnPc6xO
+k3p1gMnPc7xO
+k3p1gMnSc1xO
+k3p1gMnSc2xO
+k3p1gMnSc3xO
+k3p1gMnSc4xO
+k3p1gMnSc5xO
+k3p1gMnSc6xO
+k3p1gMnSc7xO
+k3p1gNnPc1xO
+k3p1gNnPc2xO
+k3p1gNnPc3xO
+k3p1gNnPc4xO
+k3p1gNnPc5xO
+k3p1gNnPc6xO
+k3p1gNnPc7xO
+k3p1gNnSc1xO
+k3p1gNnSc2xO
+k3p1gNnSc3xO
+k3p1gNnSc4xO
+k3p1gNnSc5xO
+k3p1gNnSc6xO
+k3p1gNnSc7xO
+k3p1nPc1xP
+k3p1nPc2xP
+k3p1nPc3xP
+k3p1nPc4xP
+k3p1nPc6xP
+k3p1nPc7xP
+k3p1nSc1xP
+k3p1nSc2xP
+k3p1nSc3xP
+k3p1nSc4xP
+k3p1nSc6xP
+k3p1nSc7xP
+k3p2gFnPc1xO
+k3p2gFnPc2xO
+k3p2gFnPc3xO
+k3p2gFnPc4xO
+k3p2gFnPc6xO
+k3p2gFnPc7xO
+k3p2gFnSc1xO
+k3p2gFnSc2xO
+k3p2gFnSc3xO
+k3p2gFnSc4xO
+k3p2gFnSc6xO
+k3p2gFnSc7xO
+k3p2gInPc1xO
+k3p2gInPc2xO
+k3p2gInPc3xO
+k3p2gInPc4xO
+k3p2gInPc6xO
+k3p2gInPc7xO
+k3p2gInSc1xO
+k3p2gInSc2xO
+k3p2gInSc3xO
+k3p2gInSc4xO
+k3p2gInSc6xO
+k3p2gInSc7xO
+k3p2gMnPc1xO
+k3p2gMnPc2xO
+k3p2gMnPc3xO
+k3p2gMnPc4xO
+k3p2gMnPc6xO
+k3p2gMnPc7xO
+k3p2gMnSc1xO
+k3p2gMnSc2xO
+k3p2gMnSc3xO
+k3p2gMnSc4xO
+k3p2gMnSc6xO
+k3p2gMnSc7xO
+k3p2gNnPc1xO
+k3p2gNnPc2xO
+k3p2gNnPc3xO
+k3p2gNnPc4xO
+k3p2gNnPc6xO
+k3p2gNnPc7xO
+k3p2gNnSc1xO
+k3p2gNnSc2xO
+k3p2gNnSc3xO
+k3p2gNnSc4xO
+k3p2gNnSc6xO
+k3p2gNnSc7xO
+k3p2nPc1xP
+k3p2nPc2xP
+k3p2nPc3xP
+k3p2nPc4xP
+k3p2nPc5xP
+k3p2nPc6xP
+k3p2nPc7xP
+k3p2nSc1xP
+k3p2nSc2xP
+k3p2nSc3xP
+k3p2nSc4xP
+k3p2nSc5xP
+k3p2nSc6xP
+k3p2nSc7xP
+k3p3gFnPc1xO
+k3p3gFnPc1xOyR
+k3p3gFnPc1xP
+k3p3gFnPc2xO
+k3p3gFnPc2xOyR
+k3p3gFnPc2xP
+k3p3gFnPc3xO
+k3p3gFnPc3xOyR
+k3p3gFnPc3xP
+k3p3gFnPc4xO
+k3p3gFnPc4xOyR
+k3p3gFnPc4xP
+k3p3gFnPc6xO
+k3p3gFnPc6xOyR
+k3p3gFnPc6xP
+k3p3gFnPc7xO
+k3p3gFnPc7xOyR
+k3p3gFnPc7xP
+k3p3gFnSc1xO
+k3p3gFnSc1xOyR
+k3p3gFnSc1xP
+k3p3gFnSc2xO
+k3p3gFnSc2xOyR
+k3p3gFnSc2xP
+k3p3gFnSc3xO
+k3p3gFnSc3xOyR
+k3p3gFnSc3xP
+k3p3gFnSc4xO
+k3p3gFnSc4xOyR
+k3p3gFnSc4xP
+k3p3gFnSc6xO
+k3p3gFnSc6xOyR
+k3p3gFnSc6xP
+k3p3gFnSc7xO
+k3p3gFnSc7xOyR
+k3p3gFnSc7xP
+k3p3gInPc1xO
+k3p3gInPc1xOyR
+k3p3gInPc1xP
+k3p3gInPc2xO
+k3p3gInPc2xOyR
+k3p3gInPc2xP
+k3p3gInPc3xO
+k3p3gInPc3xOyR
+k3p3gInPc3xP
+k3p3gInPc4xO
+k3p3gInPc4xOyR
+k3p3gInPc4xP
+k3p3gInPc6xO
+k3p3gInPc6xOyR
+k3p3gInPc6xP
+k3p3gInPc7xO
+k3p3gInPc7xOyR
+k3p3gInPc7xP
+k3p3gInSc1xO
+k3p3gInSc1xOyR
+k3p3gInSc1xP
+k3p3gInSc2xO
+k3p3gInSc2xOyR
+k3p3gInSc2xP
+k3p3gInSc3xO
+k3p3gInSc3xOyR
+k3p3gInSc3xP
+k3p3gInSc4xO
+k3p3gInSc4xOyR
+k3p3gInSc4xP
+k3p3gInSc6xO
+k3p3gInSc6xOyR
+k3p3gInSc6xP
+k3p3gInSc7xO
+k3p3gInSc7xOyR
+k3p3gInSc7xP
+k3p3gMnPc1xO
+k3p3gMnPc1xOyR
+k3p3gMnPc1xP
+k3p3gMnPc2xO
+k3p3gMnPc2xOyR
+k3p3gMnPc2xP
+k3p3gMnPc3xO
+k3p3gMnPc3xOyR
+k3p3gMnPc3xP
+k3p3gMnPc4xO
+k3p3gMnPc4xOyR
+k3p3gMnPc4xP
+k3p3gMnPc6xO
+k3p3gMnPc6xOyR
+k3p3gMnPc6xP
+k3p3gMnPc7xO
+k3p3gMnPc7xOyR
+k3p3gMnPc7xP
+k3p3gMnSc1xO
+k3p3gMnSc1xOyR
+k3p3gMnSc1xP
+k3p3gMnSc2xO
+k3p3gMnSc2xOyR
+k3p3gMnSc2xP
+k3p3gMnSc3xO
+k3p3gMnSc3xOyR
+k3p3gMnSc3xP
+k3p3gMnSc4xO
+k3p3gMnSc4xOyR
+k3p3gMnSc4xP
+k3p3gMnSc6xO
+k3p3gMnSc6xOyR
+k3p3gMnSc6xP
+k3p3gMnSc7xO
+k3p3gMnSc7xOyR
+k3p3gMnSc7xP
+k3p3gNnPc1xO
+k3p3gNnPc1xOyR
+k3p3gNnPc1xP
+k3p3gNnPc2xO
+k3p3gNnPc2xOyR
+k3p3gNnPc2xP
+k3p3gNnPc3xO
+k3p3gNnPc3xOyR
+k3p3gNnPc3xP
+k3p3gNnPc4xO
+k3p3gNnPc4xOyR
+k3p3gNnPc4xP
+k3p3gNnPc6xO
+k3p3gNnPc6xOyR
+k3p3gNnPc6xP
+k3p3gNnPc7xO
+k3p3gNnPc7xOyR
+k3p3gNnPc7xP
+k3p3gNnSc1xO
+k3p3gNnSc1xOyR
+k3p3gNnSc1xP
+k3p3gNnSc2xO
+k3p3gNnSc2xOyR
+k3p3gNnSc2xP
+k3p3gNnSc3xO
+k3p3gNnSc3xOyR
+k3p3gNnSc3xP
+k3p3gNnSc4xO
+k3p3gNnSc4xOyR
+k3p3gNnSc4xP
+k3p3gNnSc6xO
+k3p3gNnSc6xOyR
+k3p3gNnSc6xP
+k3p3gNnSc7xO
+k3p3gNnSc7xOyR
+k3p3gNnSc7xP
+k4c1
+k4c1xC
+k4c1xD
+k4c1yI
+k4c1yQ
+k4c1yR
+k4c2
+k4c2xC
+k4c2xD
+k4c2yI
+k4c2yQ
+k4c2yR
+k4c3
+k4c3xC
+k4c3xD
+k4c3yI
+k4c3yQ
+k4c3yR
+k4c4
+k4c4xC
+k4c4xD
+k4c4yI
+k4c4yQ
+k4c4yR
+k4c6
+k4c6xC
+k4c6xD
+k4c6yI
+k4c6yQ
+k4c6yR
+k4c7
+k4c7xC
+k4c7xD
+k4c7yI
+k4c7yQ
+k4c7yR
+k4gFnDc7xC
+k4gFnDc7xCyI
+k4gFnDc7xO
+k4gFnDc7xOyI
+k4gFnDc7xR
+k4gFnDc7xRyI
+k4gFnPc1xC
+k4gFnPc1xCyI
+k4gFnPc1xO
+k4gFnPc1xOyI
+k4gFnPc1xR
+k4gFnPc1xRyI
+k4gFnPc2xC
+k4gFnPc2xCyI
+k4gFnPc2xO
+k4gFnPc2xOyI
+k4gFnPc2xR
+k4gFnPc2xRyI
+k4gFnPc3xC
+k4gFnPc3xCyI
+k4gFnPc3xO
+k4gFnPc3xOyI
+k4gFnPc3xR
+k4gFnPc3xRyI
+k4gFnPc4xC
+k4gFnPc4xCyI
+k4gFnPc4xO
+k4gFnPc4xOyI
+k4gFnPc4xR
+k4gFnPc4xRyI
+k4gFnPc5xC
+k4gFnPc5xO
+k4gFnPc5xOyI
+k4gFnPc5xR
+k4gFnPc5xRyI
+k4gFnPc6xC
+k4gFnPc6xCyI
+k4gFnPc6xO
+k4gFnPc6xOyI
+k4gFnPc6xR
+k4gFnPc6xRyI
+k4gFnPc7xC
+k4gFnPc7xCyI
+k4gFnPc7xO
+k4gFnPc7xOyI
+k4gFnPc7xR
+k4gFnPc7xRyI
+k4gFnSc1xC
+k4gFnSc1xCyI
+k4gFnSc1xO
+k4gFnSc1xOyI
+k4gFnSc1xR
+k4gFnSc1xRyI
+k4gFnSc2xC
+k4gFnSc2xCyI
+k4gFnSc2xO
+k4gFnSc2xOyI
+k4gFnSc2xR
+k4gFnSc2xRyI
+k4gFnSc3xC
+k4gFnSc3xCyI
+k4gFnSc3xO
+k4gFnSc3xOyI
+k4gFnSc3xR
+k4gFnSc3xRyI
+k4gFnSc4xC
+k4gFnSc4xCyI
+k4gFnSc4xO
+k4gFnSc4xOyI
+k4gFnSc4xR
+k4gFnSc4xRyI
+k4gFnSc5xC
+k4gFnSc5xO
+k4gFnSc5xOyI
+k4gFnSc5xR
+k4gFnSc5xRyI
+k4gFnSc6xC
+k4gFnSc6xCyI
+k4gFnSc6xO
+k4gFnSc6xOyI
+k4gFnSc6xR
+k4gFnSc6xRyI
+k4gFnSc7xC
+k4gFnSc7xCyI
+k4gFnSc7xO
+k4gFnSc7xOyI
+k4gFnSc7xR
+k4gFnSc7xRyI
+k4gInDc7xC
+k4gInPc1xC
+k4gInPc1xCyI
+k4gInPc1xO
+k4gInPc1xOyI
+k4gInPc1xR
+k4gInPc1xRyI
+k4gInPc2xC
+k4gInPc2xCyI
+k4gInPc2xO
+k4gInPc2xOyI
+k4gInPc2xR
+k4gInPc2xRyI
+k4gInPc3xC
+k4gInPc3xCyI
+k4gInPc3xO
+k4gInPc3xOyI
+k4gInPc3xR
+k4gInPc3xRyI
+k4gInPc4xC
+k4gInPc4xCyI
+k4gInPc4xO
+k4gInPc4xOyI
+k4gInPc4xR
+k4gInPc4xRyI
+k4gInPc5xC
+k4gInPc5xO
+k4gInPc5xOyI
+k4gInPc5xR
+k4gInPc5xRyI
+k4gInPc6xC
+k4gInPc6xCyI
+k4gInPc6xO
+k4gInPc6xOyI
+k4gInPc6xR
+k4gInPc6xRyI
+k4gInPc7xC
+k4gInPc7xCyI
+k4gInPc7xO
+k4gInPc7xOyI
+k4gInPc7xR
+k4gInPc7xRyI
+k4gInSc1xC
+k4gInSc1xCyI
+k4gInSc1xO
+k4gInSc1xOyI
+k4gInSc1xR
+k4gInSc1xRyI
+k4gInSc2xC
+k4gInSc2xCyI
+k4gInSc2xO
+k4gInSc2xOyI
+k4gInSc2xR
+k4gInSc2xRyI
+k4gInSc3xC
+k4gInSc3xCyI
+k4gInSc3xO
+k4gInSc3xOyI
+k4gInSc3xR
+k4gInSc3xRyI
+k4gInSc4xC
+k4gInSc4xCyI
+k4gInSc4xO
+k4gInSc4xOyI
+k4gInSc4xR
+k4gInSc4xRyI
+k4gInSc5xC
+k4gInSc5xO
+k4gInSc5xOyI
+k4gInSc5xR
+k4gInSc5xRyI
+k4gInSc6xC
+k4gInSc6xCyI
+k4gInSc6xO
+k4gInSc6xOyI
+k4gInSc6xR
+k4gInSc6xRyI
+k4gInSc7xC
+k4gInSc7xCyI
+k4gInSc7xO
+k4gInSc7xOyI
+k4gInSc7xR
+k4gInSc7xRyI
+k4gMnDc7xC
+k4gMnPc1xC
+k4gMnPc1xCyI
+k4gMnPc1xO
+k4gMnPc1xOyI
+k4gMnPc1xR
+k4gMnPc1xRyI
+k4gMnPc2xC
+k4gMnPc2xCyI
+k4gMnPc2xO
+k4gMnPc2xOyI
+k4gMnPc2xR
+k4gMnPc2xRyI
+k4gMnPc3xC
+k4gMnPc3xCyI
+k4gMnPc3xO
+k4gMnPc3xOyI
+k4gMnPc3xR
+k4gMnPc3xRyI
+k4gMnPc4xC
+k4gMnPc4xCyI
+k4gMnPc4xO
+k4gMnPc4xOyI
+k4gMnPc4xR
+k4gMnPc4xRyI
+k4gMnPc5xC
+k4gMnPc5xO
+k4gMnPc5xOyI
+k4gMnPc5xR
+k4gMnPc5xRyI
+k4gMnPc6xC
+k4gMnPc6xCyI
+k4gMnPc6xO
+k4gMnPc6xOyI
+k4gMnPc6xR
+k4gMnPc6xRyI
+k4gMnPc7xC
+k4gMnPc7xCyI
+k4gMnPc7xO
+k4gMnPc7xOyI
+k4gMnPc7xR
+k4gMnPc7xRyI
+k4gMnSc1xC
+k4gMnSc1xCyI
+k4gMnSc1xO
+k4gMnSc1xOyI
+k4gMnSc1xR
+k4gMnSc1xRyI
+k4gMnSc2xC
+k4gMnSc2xCyI
+k4gMnSc2xO
+k4gMnSc2xOyI
+k4gMnSc2xR
+k4gMnSc2xRyI
+k4gMnSc3xC
+k4gMnSc3xCyI
+k4gMnSc3xO
+k4gMnSc3xOyI
+k4gMnSc3xR
+k4gMnSc3xRyI
+k4gMnSc4xC
+k4gMnSc4xCyI
+k4gMnSc4xO
+k4gMnSc4xOyI
+k4gMnSc4xR
+k4gMnSc4xRyI
+k4gMnSc5xC
+k4gMnSc5xO
+k4gMnSc5xOyI
+k4gMnSc5xR
+k4gMnSc5xRyI
+k4gMnSc6xC
+k4gMnSc6xCyI
+k4gMnSc6xO
+k4gMnSc6xOyI
+k4gMnSc6xR
+k4gMnSc6xRyI
+k4gMnSc7xC
+k4gMnSc7xCyI
+k4gMnSc7xO
+k4gMnSc7xOyI
+k4gMnSc7xR
+k4gMnSc7xRyI
+k4gNnDc7xC
+k4gNnDc7xCyI
+k4gNnDc7xO
+k4gNnDc7xOyI
+k4gNnDc7xR
+k4gNnDc7xRyI
+k4gNnPc1xC
+k4gNnPc1xCyI
+k4gNnPc1xO
+k4gNnPc1xOyI
+k4gNnPc1xR
+k4gNnPc1xRyI
+k4gNnPc2xC
+k4gNnPc2xCyI
+k4gNnPc2xO
+k4gNnPc2xOyI
+k4gNnPc2xR
+k4gNnPc2xRyI
+k4gNnPc3xC
+k4gNnPc3xCyI
+k4gNnPc3xO
+k4gNnPc3xOyI
+k4gNnPc3xR
+k4gNnPc3xRyI
+k4gNnPc4xC
+k4gNnPc4xCyI
+k4gNnPc4xO
+k4gNnPc4xOyI
+k4gNnPc4xR
+k4gNnPc4xRyI
+k4gNnPc5xC
+k4gNnPc5xO
+k4gNnPc5xOyI
+k4gNnPc5xR
+k4gNnPc5xRyI
+k4gNnPc6xC
+k4gNnPc6xCyI
+k4gNnPc6xO
+k4gNnPc6xOyI
+k4gNnPc6xR
+k4gNnPc6xRyI
+k4gNnPc7xC
+k4gNnPc7xCyI
+k4gNnPc7xO
+k4gNnPc7xOyI
+k4gNnPc7xR
+k4gNnPc7xRyI
+k4gNnSc1xC
+k4gNnSc1xCyI
+k4gNnSc1xO
+k4gNnSc1xOyI
+k4gNnSc1xR
+k4gNnSc1xRyI
+k4gNnSc2xC
+k4gNnSc2xCyI
+k4gNnSc2xO
+k4gNnSc2xOyI
+k4gNnSc2xR
+k4gNnSc2xRyI
+k4gNnSc3xC
+k4gNnSc3xCyI
+k4gNnSc3xO
+k4gNnSc3xOyI
+k4gNnSc3xR
+k4gNnSc3xRyI
+k4gNnSc4xC
+k4gNnSc4xCyI
+k4gNnSc4xO
+k4gNnSc4xOyI
+k4gNnSc4xR
+k4gNnSc4xRyI
+k4gNnSc5xC
+k4gNnSc5xO
+k4gNnSc5xOyI
+k4gNnSc5xR
+k4gNnSc5xRyI
+k4gNnSc6xC
+k4gNnSc6xCyI
+k4gNnSc6xO
+k4gNnSc6xOyI
+k4gNnSc6xR
+k4gNnSc6xRyI
+k4gNnSc7xC
+k4gNnSc7xCyI
+k4gNnSc7xO
+k4gNnSc7xOyI
+k4gNnSc7xR
+k4gNnSc7xRyI
+k4xCyI
+k4xO
+k5eAaBmAgFnP
+k5eAaBmAgFnS
+k5eAaBmAgInP
+k5eAaBmAgInS
+k5eAaBmAgMnP
+k5eAaBmAgMnS
+k5eAaBmAgNnP
+k5eAaBmAgNnS
+k5eAaBmDgFnP
+k5eAaBmDgFnS
+k5eAaBmDgInP
+k5eAaBmDgInS
+k5eAaBmDgMnP
+k5eAaBmDgMnS
+k5eAaBmDgNnP
+k5eAaBmDgNnS
+k5eAaBmF
+k5eAaBmIp1nP
+k5eAaBmIp1nS
+k5eAaBmIp2nP
+k5eAaBmIp2nS
+k5eAaBmIp3nP
+k5eAaBmIp3nS
+k5eAaBmNgFnP
+k5eAaBmNgFnS
+k5eAaBmNgInP
+k5eAaBmNgInS
+k5eAaBmNgMnP
+k5eAaBmNgMnS
+k5eAaBmNgNnP
+k5eAaBmNgNnS
+k5eAaBmRp1nP
+k5eAaBmRp2nP
+k5eAaBmRp2nS
+k5eAaBmSgFnP
+k5eAaBmSgFnS
+k5eAaBmSgInP
+k5eAaBmSgInS
+k5eAaBmSgMnP
+k5eAaBmSgMnS
+k5eAaBmSgNnP
+k5eAaBmSgNnS
+k5eAaImAgFnP
+k5eAaImAgFnS
+k5eAaImAgInP
+k5eAaImAgInS
+k5eAaImAgMnP
+k5eAaImAgMnS
+k5eAaImAgNnP
+k5eAaImAgNnS
+k5eAaImBp1nP
+k5eAaImBp1nS
+k5eAaImBp2nP
+k5eAaImBp2nS
+k5eAaImBp3nP
+k5eAaImBp3nS
+k5eAaImDgFnP
+k5eAaImDgFnS
+k5eAaImDgInP
+k5eAaImDgInS
+k5eAaImDgMnP
+k5eAaImDgMnS
+k5eAaImDgNnP
+k5eAaImDgNnS
+k5eAaImF
+k5eAaImIp1nP
+k5eAaImIp1nS
+k5eAaImIp2nP
+k5eAaImIp2nS
+k5eAaImIp3nP
+k5eAaImIp3nS
+k5eAaImNgFnP
+k5eAaImNgFnS
+k5eAaImNgInP
+k5eAaImNgInS
+k5eAaImNgMnP
+k5eAaImNgMnS
+k5eAaImNgNnP
+k5eAaImNgNnS
+k5eAaImRp1nP
+k5eAaImRp2nP
+k5eAaImRp2nS
+k5eAaImSgFnP
+k5eAaImSgFnS
+k5eAaImSgInP
+k5eAaImSgInS
+k5eAaImSgMnP
+k5eAaImSgMnS
+k5eAaImSgNnP
+k5eAaImSgNnS
+k5eAaPmAgFnP
+k5eAaPmAgFnS
+k5eAaPmAgInP
+k5eAaPmAgInS
+k5eAaPmAgMnP
+k5eAaPmAgMnS
+k5eAaPmAgNnP
+k5eAaPmAgNnS
+k5eAaPmDgFnP
+k5eAaPmDgFnS
+k5eAaPmDgInP
+k5eAaPmDgInS
+k5eAaPmDgMnP
+k5eAaPmDgMnS
+k5eAaPmDgNnP
+k5eAaPmDgNnS
+k5eAaPmF
+k5eAaPmIp1nP
+k5eAaPmIp1nS
+k5eAaPmIp2nP
+k5eAaPmIp2nS
+k5eAaPmIp3nP
+k5eAaPmIp3nS
+k5eAaPmNgFnP
+k5eAaPmNgFnS
+k5eAaPmNgInP
+k5eAaPmNgInS
+k5eAaPmNgMnP
+k5eAaPmNgMnS
+k5eAaPmNgNnP
+k5eAaPmNgNnS
+k5eAaPmRp1nP
+k5eAaPmRp2nP
+k5eAaPmRp2nS
+k5eAaPmSgFnP
+k5eAaPmSgFnS
+k5eAaPmSgInP
+k5eAaPmSgInS
+k5eAaPmSgMnP
+k5eAaPmSgMnS
+k5eAaPmSgNnP
+k5eAaPmSgNnS
+k5eNaBmAgFnP
+k5eNaBmAgFnS
+k5eNaBmAgInP
+k5eNaBmAgInS
+k5eNaBmAgMnP
+k5eNaBmAgMnS
+k5eNaBmAgNnP
+k5eNaBmAgNnS
+k5eNaBmDgFnP
+k5eNaBmDgFnS
+k5eNaBmDgInP
+k5eNaBmDgInS
+k5eNaBmDgMnP
+k5eNaBmDgMnS
+k5eNaBmDgNnP
+k5eNaBmDgNnS
+k5eNaBmF
+k5eNaBmIp1nP
+k5eNaBmIp1nS
+k5eNaBmIp2nP
+k5eNaBmIp2nS
+k5eNaBmIp3nP
+k5eNaBmIp3nS
+k5eNaBmNgFnP
+k5eNaBmNgFnS
+k5eNaBmNgInP
+k5eNaBmNgInS
+k5eNaBmNgMnP
+k5eNaBmNgMnS
+k5eNaBmNgNnP
+k5eNaBmNgNnS
+k5eNaBmRp1nP
+k5eNaBmRp2nP
+k5eNaBmRp2nS
+k5eNaBmSgFnP
+k5eNaBmSgFnS
+k5eNaBmSgInP
+k5eNaBmSgInS
+k5eNaBmSgMnP
+k5eNaBmSgMnS
+k5eNaBmSgNnP
+k5eNaBmSgNnS
+k5eNaImAgFnP
+k5eNaImAgFnS
+k5eNaImAgInP
+k5eNaImAgInS
+k5eNaImAgMnP
+k5eNaImAgMnS
+k5eNaImAgNnP
+k5eNaImAgNnS
+k5eNaImBp1nP
+k5eNaImBp1nS
+k5eNaImBp2nP
+k5eNaImBp2nS
+k5eNaImBp3nP
+k5eNaImBp3nS
+k5eNaImDgFnP
+k5eNaImDgFnS
+k5eNaImDgInP
+k5eNaImDgInS
+k5eNaImDgMnP
+k5eNaImDgMnS
+k5eNaImDgNnP
+k5eNaImDgNnS
+k5eNaImF
+k5eNaImIp1nP
+k5eNaImIp1nS
+k5eNaImIp2nP
+k5eNaImIp2nS
+k5eNaImIp3nP
+k5eNaImIp3nS
+k5eNaImNgFnP
+k5eNaImNgFnS
+k5eNaImNgInP
+k5eNaImNgInS
+k5eNaImNgMnP
+k5eNaImNgMnS
+k5eNaImNgNnP
+k5eNaImNgNnS
+k5eNaImRp1nP
+k5eNaImRp2nP
+k5eNaImRp2nS
+k5eNaImSgFnP
+k5eNaImSgFnS
+k5eNaImSgInP
+k5eNaImSgInS
+k5eNaImSgMnP
+k5eNaImSgMnS
+k5eNaImSgNnP
+k5eNaImSgNnS
+k5eNaPmAgFnP
+k5eNaPmAgFnS
+k5eNaPmAgInP
+k5eNaPmAgInS
+k5eNaPmAgMnP
+k5eNaPmAgMnS
+k5eNaPmAgNnP
+k5eNaPmAgNnS
+k5eNaPmDgFnP
+k5eNaPmDgFnS
+k5eNaPmDgInP
+k5eNaPmDgInS
+k5eNaPmDgMnP
+k5eNaPmDgMnS
+k5eNaPmDgNnP
+k5eNaPmDgNnS
+k5eNaPmF
+k5eNaPmIp1nP
+k5eNaPmIp1nS
+k5eNaPmIp2nP
+k5eNaPmIp2nS
+k5eNaPmIp3nP
+k5eNaPmIp3nS
+k5eNaPmNgFnP
+k5eNaPmNgFnS
+k5eNaPmNgInP
+k5eNaPmNgInS
+k5eNaPmNgMnP
+k5eNaPmNgMnS
+k5eNaPmNgNnP
+k5eNaPmNgNnS
+k5eNaPmRp1nP
+k5eNaPmRp2nP
+k5eNaPmRp2nS
+k5eNaPmSgFnP
+k5eNaPmSgFnS
+k5eNaPmSgInP
+k5eNaPmSgInS
+k5eNaPmSgMnP
+k5eNaPmSgMnS
+k5eNaPmSgNnP
+k5eNaPmSgNnS
+k6eAd1
+k6eAd1tCtLtTxD
+k6eAd1tCyQ
+k6eAd1tD
+k6eAd1tDtS
+k6eAd1tL
+k6eAd1tLtM
+k6eAd1tLtMtT
+k6eAd1tLtQ
+k6eAd1tLtQtTxD
+k6eAd1tLtT
+k6eAd1tLtTxD
+k6eAd1tLxD
+k6eAd1tLyN
+k6eAd1tLyQ
+k6eAd1tM
+k6eAd1tMtQ
+k6eAd1tMtQxD
+k6eAd1tMtT
+k6eAd1tMxD
+k6eAd1tMyN
+k6eAd1tQ
+k6eAd1tQtS
+k6eAd1tQxD
+k6eAd1tS
+k6eAd1tT
+k6eAd1tTxD
+k6eAd1tTxT
+k6eAd1xD
+k6eAd1xT
+k6eAd1yI
+k6eAd1yN
+k6eAd1yQ
+k6eAd1yR
+k6eAd2
+k6eAd2tL
+k6eAd2tLtM
+k6eAd2tLtQ
+k6eAd2tM
+k6eAd2tMtQ
+k6eAd2tMtT
+k6eAd2tQ
+k6eAd2tT
+k6eAd3
+k6eAd3tL
+k6eAd3tLtM
+k6eAd3tLtQ
+k6eAd3tM
+k6eAd3tMtQ
+k6eAd3tMtT
+k6eAd3tQ
+k6eAd3tT
+k6eNd1
+k6eNd1tD
+k6eNd1tDtS
+k6eNd1tL
+k6eNd1tLtM
+k6eNd1tLtQ
+k6eNd1tM
+k6eNd1tMtT
+k6eNd1tQ
+k6eNd1tQtS
+k6eNd1tS
+k6eNd1tT
+k6eNd2
+k6eNd2tL
+k6eNd2tLtQ
+k6eNd2tM
+k6eNd2tMtT
+k6eNd2tQ
+k6eNd2tT
+k6eNd3
+k6eNd3tL
+k6eNd3tLtQ
+k6eNd3tM
+k6eNd3tMtT
+k6eNd3tQ
+k6eNd3tT
+k7c1
+k7c2
+k7c3
+k7c4
+k7c6
+k7c7
+k8xC
+k8xS
+k9
+kA
+kYmCp1nP
+kYmCp1nS
+kYmCp2nP
+kYmCp2nS
+kYmCp3nP
+kYmCp3nS
 end_of_list
     ;
-    my @list = map {my ($tag, $example) = split(/\s+/, $_); $tag} (split(/\r?\n/, $list));
+    my @list = split(/\r?\n/, $list);
     return \@list;
 }
 
