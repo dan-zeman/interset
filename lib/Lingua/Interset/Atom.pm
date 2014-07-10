@@ -32,6 +32,9 @@ has 'decode_map' => ( isa => 'HashRef', is => 'ro', required => 1 );
 #                 'fem'  => 'F',
 #                 '@'    => 'N' }}
 has 'encode_map' => ( isa => 'HashRef', is => 'ro', required => 1 );
+# Atoms are typically used as micro drivers for individual features within drivers for structured tagsets.
+# If this is the case, the atom may need to be able to identify the tagset it works for, in order to be able to interpret values of the 'other' feature.
+has 'tagset' => ( isa => 'Str', is => 'ro', 'default' => '', documentation => 'Identifier of tagset that this atom is part of. Used when querying the other feature.' );
 
 
 
@@ -135,7 +138,7 @@ sub encode
     my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $map = $self->encode_map();
-    return _encoding_step($map, $fs);
+    return $self->_encoding_step($map, $fs);
 }
 
 
@@ -146,6 +149,7 @@ sub encode
 #------------------------------------------------------------------------------
 sub _encoding_step
 {
+    my $self = shift;
     my $map = shift; # reference to hash with only one key
     my $fs = shift; # Lingua::Interset::FeatureStructure
     # Example of an encoding map:
@@ -159,18 +163,56 @@ sub _encoding_step
     if(scalar(@keys)==1)
     {
         my $feature = $keys[0];
-        if(!feature_valid($feature))
+        ###!!! If $feature is 'other' then we should call $fs->get_other_for_tagset($tagset) instead!
+        ###!!! The problem is that the Atom currently does not know in which tagset it is incorporated. Fix this!
+        ###!!! Jak by mohla vypadat kódovací tabulka pro other, jehož hodnotou je hash (tj. soubor podrysů):
+        # { 'other' => { 'subfeature1' => { 'x' => 'X',
+        #                                   'y' => 'Y' },
+        #                'subfeature2' => { '1' => 'S',
+        #                                   '@' => '' }}}
+        # Problém! Vždy čekám, že další úroveň je hash! Buď je to hash skalárních hodnot (rozskok),
+        # nebo has subfeatur. Jak je poznám? Mohl bych to dělat nějak podobně jako dosud, třeba klíče ve valuehashi
+        # budou vypadat jako "subfeature=value", ale jednak budu zbytečně opakovaně psát subfeature, jednak se to bude muset rozebírat.
+        # Tak co kdybych místo "other" psal v těchto případech "other/subfeature"?
+        # Tím řeknu, že other má být hash, aniž bych zkomplikoval encode_map o úroveň navíc.
+        # { 'other/subfeature1' => { 'x' => 'X',
+        #                            'y' => 'Y',
+        #                            '@' => { 'other/subfeature2' => { '1' => 'S',
+        #                                                              '@' => '' }}}}
+        ###!!!
+        my $value;
+        if($feature eq 'other')
+        {
+            my $tagset = $self->tagset();
+            if($tagset eq '')
+            {
+                confess("Encoding map refers to 'other' but the 'tagset' attribute of the atom is empty");
+            }
+            $value = $fs->get_other_for_tagset($tagset);
+        }
+        elsif($feature =~ m-^other/(.+)$-)
+        {
+            my $subfeature = $1;
+            my $tagset = $self->tagset();
+            if($tagset eq '')
+            {
+                confess("Encoding map refers to 'other' but the 'tagset' attribute of the atom is empty");
+            }
+            $value = $fs->get_other_subfeature($tagset, $subfeature);
+        }
+        elsif(feature_valid($feature))
+        {
+            $value = $fs->get_joined($feature);
+        }
+        else
         {
             confess("Unknown feature '$feature'");
         }
-        ###!!! If $feature is 'other' then we should call $fs->get_other_for_tagset($tagset) instead!
-        ###!!! The problem is that the Atom currently does not know in which tagset it is incorporated. Fix this!
-        my $value = $fs->get_joined($feature);
         my $valuehash = $map->{$feature};
         my $target = _get_decision_for_value($value, $valuehash); # output string or next-level map
         if(ref($target) eq 'HASH')
         {
-            return _encoding_step($target, $fs);
+            return $self->_encoding_step($target, $fs);
         }
         else
         {
@@ -205,7 +247,7 @@ sub list
     my $self = shift;
     my $map = $self->encode_map();
     my %tagset;
-    _list_step($map, \%tagset);
+    $self->_list_step($map, \%tagset);
     my @list = sort(keys(%tagset));
     return \@list;
 }
@@ -219,6 +261,7 @@ sub list
 #------------------------------------------------------------------------------
 sub _list_step
 {
+    my $self = shift;
     my $map = shift; # reference to hash with only one key
     my $tagset = shift; # reference to hash where we collect surface tags
     # Example of an encoding map:
@@ -239,7 +282,7 @@ sub _list_step
             my $target = $valuehash->{$value};
             if(ref($target) eq 'HASH')
             {
-                _list_step($target, $tagset);
+                $self->_list_step($target, $tagset);
             }
             else
             {
