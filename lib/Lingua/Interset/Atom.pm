@@ -163,23 +163,6 @@ sub _encoding_step
     if(scalar(@keys)==1)
     {
         my $feature = $keys[0];
-        ###!!! If $feature is 'other' then we should call $fs->get_other_for_tagset($tagset) instead!
-        ###!!! The problem is that the Atom currently does not know in which tagset it is incorporated. Fix this!
-        ###!!! Jak by mohla vypadat kódovací tabulka pro other, jehož hodnotou je hash (tj. soubor podrysů):
-        # { 'other' => { 'subfeature1' => { 'x' => 'X',
-        #                                   'y' => 'Y' },
-        #                'subfeature2' => { '1' => 'S',
-        #                                   '@' => '' }}}
-        # Problém! Vždy čekám, že další úroveň je hash! Buď je to hash skalárních hodnot (rozskok),
-        # nebo has subfeatur. Jak je poznám? Mohl bych to dělat nějak podobně jako dosud, třeba klíče ve valuehashi
-        # budou vypadat jako "subfeature=value", ale jednak budu zbytečně opakovaně psát subfeature, jednak se to bude muset rozebírat.
-        # Tak co kdybych místo "other" psal v těchto případech "other/subfeature"?
-        # Tím řeknu, že other má být hash, aniž bych zkomplikoval encode_map o úroveň navíc.
-        # { 'other/subfeature1' => { 'x' => 'X',
-        #                            'y' => 'Y',
-        #                            '@' => { 'other/subfeature2' => { '1' => 'S',
-        #                                                              '@' => '' }}}}
-        ###!!!
         my $value;
         if($feature eq 'other')
         {
@@ -483,8 +466,38 @@ Example:
                   'fem'       => 'F',
                   '@'         => 'N' }}
 
+The C<other> feature, if queried by the map, receives special treatment.
+First, the C<tagset> attribute must be filled in and its value is checked against the C<tagset> feature.
+The value is only processed if the tagset ids match (otherwise an empty value is assumed).
+String values and array values (given as vertical-bar-separated strings) are processed
+similarly to normal features.
+In addition, it is possible to have a hash of subfeatures stored in C<other>,
+and to query them as 'other/subfeature'.
+
+Example:
+
+  { 'other/subfeature1' => { 'x' => 'X',
+                             'y' => 'Y',
+                             '@' => { 'other/subfeature2' => { '1' => 'S',
+                                                               '@' => '' }}}}
+
+The corresponding C<decode_map> would be in this case:
+
+  {
+      'X' => ['other' => {'subfeature1' => 'x'}],
+      'Y' => ['other' => {'subfeature1' => 'y'}],
+      'S' => ['other' => {'subfeature2' => '1'}]
+  }
+
 Note that in general it is not possible to automatically derive the C<encode_map> from the C<decode_map>
 or vice versa. However, there are simple instances of atoms where this is possible.
+
+=attr tagset
+
+Optional identifier of the tagset that this atom is part of.
+It is required when the encoding map queries values of the C<other> feature
+(to check against the C<tagset> feature that the values come from the same tagset).
+Default is empty string.
 
 =head1 SEE ALSO
 
