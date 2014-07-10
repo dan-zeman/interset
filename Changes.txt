@@ -2,6 +2,7 @@
 
 Interface:
 * FeatureStructure method merge_hash() renamed to merge_hash_hard() and added new method merge_hash_soft().
+* New methods for the 'other' feature: get_other_subfeature() and is_other().
 * Similarly, Atom method decode_and_merge() split to decode_and_merge_hard() and decode_and_merge_soft().
 
 Features:
