@@ -1467,6 +1467,219 @@ sub _create_atoms
             { 'other/valency' => { 'pro' => '2',
                                    '@'   => '1' }}
     );
+    # MULTIWORDNESS AND RESULTATIVITY ####################
+    # Applies to verbs.
+    $atoms{multiwordness_and_resultativity} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'multiwordness_and_resultativity',
+        'decode_map' =>
+        {
+            # jednoslovné: kradou, maj, sou
+            '1' => [],
+            # nezvratné složené: honorována (by honorována být neměla); nepršelo (by nepršelo); bylo (by bylo třeba usměrnit)
+            '2' => ['other' => {'compverb' => 'comp'}],
+            # zvratné nesložené: myslim (si myslim); ptej (se ptej); neboj (se neboj)
+            # The feature of reflexiveness could accommodate this particular value.
+            '3' => ['other' => {'compverb' => 'rflx'}, 'reflex' => 'reflex'],
+            # zvratné složené: atestovat (se bude atestovat); stávalo (by se stávalo); měla (by se měla)
+            '4' => ['other' => {'compverb' => 'rflx-comp'}, 'reflex' => 'reflex'],
+            # rezultativ prézens: placeno (máme placeno); maji (maji tam napsáno); votevřeno (maji votevřeno)
+            '5' => ['other' => {'compverb' => 'res-pres'}],
+            # rezultativ minulý: feminizováno (sem měl pracoviště silně feminizováno); napsáno (měli napsáno); nařízíno (měl nařízíno)
+            '6' => ['other' => {'compverb' => 'res-past'}],
+            # rezultativ budoucí: žádný výskyt
+            '7' => ['other' => {'compverb' => 'res-fut'}],
+            # rezultativ v infinitivu: vyluxováno (snažím se tam mít vyluxováno); uklizíno (musim mít prostě uklizíno)
+            '8' => ['other' => {'compverb' => 'res-inf'}],
+            # rezultativ v kondicionálu: zakázáno (že bych měla zakázáno)
+            '9' => ['other' => {'compverb' => 'res-cnd'}]
+        },
+        'encode_map' =>
+
+            { 'other/compverb' => { 'comp' => '2',
+                                    'rflx' => '3',
+                                    'rflx-comp' => '4',
+                                    'res-pres' => '5',
+                                    'res-past' => '6',
+                                    'res-fut' => '7',
+                                    'res-inf' => '8',
+                                    'res-cnd' => '9',
+                                    '@' => '1' }}
+    );
+    # SENTENTIAL MODUS ####################
+    # Applies to particles.
+    $atoms{sentmod} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'sentmod',
+        'decode_map' =>
+        {
+            # konstatovací nebo oznamovací: asi; taky (že taky nekoupí nic); spíš (spíš si myslim)
+            '1' => ['other' => {'sentmod' => 'ind'}],
+            # tázací: asi (který by to mohly bejt, asi?); snad (chceš snad tvrdit, že); taky (Zuzana taky chtěla?)
+            '2' => ['other' => {'sentmod' => 'int'}],
+            # imperativní nebo zvolací: taky (no ty taky!); asi (voni asi určitě začnou!?); dyť (dyť si chtěla sama řídit, né?)
+            '3' => ['other' => {'sentmod' => 'imp'}],
+            # jiný nebo smíšený: snad (snad neni počůraná); tak (já nevim no, tak ...); sotva (a sotva ta rovnoprávnost kdy bude)
+            '4' => []
+        },
+        'encode_map' =>
+
+            { 'other/sentmod' => { 'ind' => '1',
+                                   'int' => '2',
+                                   'imp' => '3',
+                                   '@'   => '4' }}
+    );
+    # NOUN FUNCTION ####################
+    $atoms{function1} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'noun_function',
+        'decode_map' =>
+        {
+            # subjekt: člověk (se člověk může dočíst)
+            '1' => ['other' => {'function' => 'subj'}],
+            # predikát (v širším pojetí adv. aj.): člověk (ty seš akční člověk)
+            '2' => ['other' => {'function' => 'pred'}],
+            # atribut neshodný: člověka (záleží na individualitě člověka)
+            '3' => ['other' => {'function' => 'atr'}],
+            # nevazebné příslovečné určení: kantor (jako vysokoškolskej kantor by si měla mít); partnera (u toho druhýho partnera najdou)
+            '4' => ['other' => {'function' => 'adv'}],
+            # věta vokativní: táto (povídej něco, táto taky)
+            '5' => ['other' => {'function' => 'vsent'}],
+            # věta nominativní: děda (a děda chudák, toho budou bolet nohy)
+            '6' => ['other' => {'function' => 'nsent'}],
+            # věta jiná: dědečka (ne z dědečka!)
+            '7' => ['other' => {'function' => 'osent'}],
+            # jiné: muž (má povinností mnohem víc než muž)
+            '8' => ['other' => {'function' => 'oth'}],
+            # samostatné: člověk (a člověk, dyž by vod nich něco potřeboval, tak pomalu by se jim bál něco říc)
+            '9' => ['other' => {'function' => 'sep'}],
+            # nelze určit: člověk (je prostě málo nad čim člověk tak: nebo málo co je upoutává)
+            '-' => []
+        },
+        'encode_map' =>
+
+            { 'other/function' => { 'subj'  => '1',
+                                    'pred'  => '2',
+                                    'atr'   => '3',
+                                    'adv'   => '4',
+                                    'vsent' => '5',
+                                    'nsent' => '6',
+                                    'osent' => '7',
+                                    'oth'   => '8',
+                                    'sep'   => '9',
+                                    '@'     => '-' }}
+    );
+    # ADJECTIVE FUNCTION ####################
+    $atoms{function2} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'adjective_function',
+        'decode_map' =>
+        {
+            # atribut: mladej (to žádnej mladej člověk nesnáší)
+            '1' => ['other' => {'function' => 'atr'}],
+            # predikát: akční (ty seš akční člověk) (!!!)
+            '2' => ['other' => {'function' => 'pred'}],
+            # nelexikalizované v platnosti substantiva: mladší (ty mladší si řikaj)
+            '3' => ['other' => {'function' => 'noun'}],
+            # věta: vizuálnější (vizuálnější ...)
+            '4' => ['other' => {'function' => 'sent'}],
+            # jiné: svobodnej (no tak jako svobodnej, to by si se nesměl voženit a vzít si mě)
+            '5' => ['other' => {'function' => 'oth'}]
+        },
+        'encode_map' =>
+
+            { 'other/function' => { 'atr'  => '1',
+                                    'pred' => '2',
+                                    'noun' => '3',
+                                    'sent' => '4',
+                                    'oth'  => '5' }}
+    );
+    # PRONOUN FUNCTION ####################
+    $atoms{function3} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'pronoun_function',
+        'decode_map' =>
+        {
+            # samostatné: ten (a že teda ten, kterej to koupí)
+            '1' => ['other' => {'function' => 'sep'}],
+            # adjektivní: tom (záleží na tom pracovnim prostředí)
+            '2' => ['other' => {'function' => 'adj'}],
+            # v platnosti věty: to (to, co mu doposavad chybělo)
+            '3' => ['other' => {'function' => 'sent'}],
+            # jiné: tu (na tu, co má jenom jedny boty)
+            '4' => ['other' => {'function' => 'oth'}]
+        },
+        'encode_map' =>
+
+            { 'other/function' => { 'sep'  => '1',
+                                    'adj'  => '2',
+                                    'sent' => '3',
+                                    'oth'  => '4' }}
+    );
+    # NUMERAL FUNCTION ####################
+    $atoms{function4} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'numeral_function',
+        'decode_map' =>
+        {
+            # samostatná: jeden (má stálý místo jeden, dva, tři lidi; že jeden žije pro sebe)
+            '1' => ['other' => {'function' => 'sep'}],
+            # adjektivní: tři (bylo asi tři dny po pohřbu)
+            '2' => ['other' => {'function' => 'adj'}],
+            # adverbiální: tolik (muslimové maj tolik ženskejch, kolik jich uživí); čtvrt (reaguješ čtvrt vteřiny); jednou (byla jenom jednou); několikanásobně
+            '3' => ['other' => {'function' => 'adv'}],
+            # vztažná: žádný výskyt
+            '4' => ['other' => {'function' => 'rel'}],
+            # věta: žádný výskyt
+            '5' => ['other' => {'function' => 'sent'}],
+            # jiná: jedný (v půl jedný); šedesáti (úspěšnej život jinak než v šedesáti)
+            '6' => ['other' => {'function' => 'oth'}]
+        },
+        'encode_map' =>
+
+            { 'other/function' => { 'sep'  => '1',
+                                    'adj'  => '2',
+                                    'adv'  => '3',
+                                    'rel'  => '4',
+                                    'sent' => '5',
+                                    'oth'  => '6' }}
+    );
+    # FUNCTION OF PREPOSITION ####################
+    # (left functional dependency)
+    $atoms{function7} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'preposition_function',
+        'decode_map' =>
+        {
+            # bez řídícího výrazu: u (můžeš u toho žehlit)
+            '0' => ['other' => {'dependency' => 'sep'}],
+            # postverbální: do (pudu do soutěže); z (by se tam moh dostat z půllitru Jany); u (že by dělala u pece)
+            '1' => ['other' => {'dependency' => 'verb'}],
+            # postsubstantivní nebo postpronominální: z (skleničku, z který ráda piju); do (při cestě do malý země)
+            '2' => ['other' => {'dependency' => 'noun'}],
+            # postadjektivní: do (zašitej do peřiny); u (nepopulární u starších lidí); ze (pojišťovna nejbližší ze Žižkova)
+            '3' => ['other' => {'dependency' => 'adj'}],
+            # postadverbiální: do (potom do obchodní školy); vod (daleko vod toho autobusu); z (pryč z pracovního prostředí)
+            '4' => ['other' => {'dependency' => 'adv'}],
+            # jiná: u (jako u ženskejch); z (že z Horních); do (radši na Slapy než do Káranýho)
+            '5' => ['other' => {'dependency' => 'oth'}]
+        },
+        'encode_map' =>
+
+            { 'other/dependency' => { 'sep'  => '0',
+                                      'verb' => '1',
+                                      'noun' => '2',
+                                      'adj'  => '3',
+                                      'adv'  => '4',
+                                      'oth'  => '5' }}
+    );
     return \%atoms;
 }
 
