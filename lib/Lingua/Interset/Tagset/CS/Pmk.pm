@@ -1136,6 +1136,172 @@ sub _create_atoms
         }
     );
     $atoms{valencyF1} = $atoms{valency5};
+    # ADVERB VALENCY ####################
+    $atoms{valency6} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'adverb_valency',
+        'decode_map' =>
+        {
+            # nespecifikovaná u slovesa: eště (a eště vydělali), napoprvý (nestřílím napoprvý), spolu (kdyby spolu mladí lidé déle žili)
+            '-' => [],
+            # kvantifikační nebo intenzifikační u slovesa: eště (Láďovi eště neni štyricet), absolutně (neplatí to absolutně)
+            '1' => ['other' => {'valency' => 'vrb-qnt'}],
+            # nekvantifikační s bezpředložkovým pádem jména: akorát (měli akorát dvě ženský), přesně (mám přesně tydlety zkušenosti)
+            '2' => ['other' => {'valency' => 'npr-nqn'}],
+            # kvantifikační s bezpředložkovým pádem jména: eště (eště vo víc dní), akorát (čuchala sem akorát olovo)
+            '3' => ['other' => {'valency' => 'npr-qnt'}],
+            # nekvantifikační u substantiv bez předložky: akorát (akorát párek sme dostali), přesně (neseženeš přesně ty lidi)
+            # How the hell does this differ from 2?
+            '4' => ['other' => {'valency' => 'npr-nq4'}],
+            # s adjektivem nebo adverbiem: eště (dyť sou malinký eště), fyzicky (fyzicky těžké práce)
+            '5' => ['other' => {'valency' => 'adj-adv'}],
+            # s předložkou: zády (zády k ňákejm klukům), spolu (spolu s výchovou dětí)
+            '6' => ['other' => {'valency' => 'pre'}],
+            # se spojkou nebo synsém.: přesně (přesně cejtěj to, co ty), dozelena (takovej ten dozelena)
+            '7' => ['other' => {'valency' => 'con'}],
+            # s infinitivem: spolu (schopni spolu diskutovat), přesně (nemůžu přesně posoudit)
+            '8' => ['other' => {'valency' => 'inf'}],
+            # s větou: možná (možná, že tím, dyby se zvýšily...)
+            '9' => ['other' => {'valency' => 'snt'}],
+            # jiné (věta apod.): až (deset až patnáct tisíc ročně), možná (možná že bych se přikláněl)
+            '0' => ['other' => {'valency' => 'oth'}]
+        }
+    );
+    # CONJUNCTION VALENCY ####################
+    $atoms{valency8} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'conjunction_valency',
+        'decode_map' =>
+        {
+            # vůči slovu: na zadek a dolu; rodičům nebo mýmu okolí; v nepříliš zralém věku, ale z objektivních příčin
+            '1' => ['other' => {'valency' => 'wrd'}],
+            # vůči větě: sme se sešli a řikali sme mu; povinnosti sou tvoje, ale já je dělám; budu s vámi běhat nebo pudu do soutěže
+            '2' => ['other' => {'valency' => 'snt'}],
+            # nelze určit: a pak vždycky ne; něco jim teda sdělit nebo ...; autorita, ale ... asi mmm
+            '9' => ['other' => {'valency' => 'unk'}]
+        }
+    );
+    # PARTICLE VALENCY ####################
+    $atoms{valency0} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'particle_valency',
+        'decode_map' =>
+        {
+            # adpropoziční zač.: ... asi si ...; že taky nekoupí nic; spíš si myslim
+            '1' => ['other' => {'valency' => 'pro-beg'}],
+            # adpropoziční konc.: tak tam taky pudem, asi; to určitě přispělo k tomu taky; kolem sto čtyřiceti korun snad
+            '2' => ['other' => {'valency' => 'pro-end'}],
+            # adpropoziční jiná: to bych asi neměla; menčí taky kapacita plic; bojuje a snad částečně úspěšně
+            '3' => ['other' => {'valency' => 'pro-oth'}],
+            # adlexémová zač.: asi tisíc dvě stě let; taky nekoupí; spíš pes a Tonda
+            '4' => ['other' => {'valency' => 'lex-beg'}],
+            # adlexémová konc.: matika taky; několik asi; ňáká francouzská značka snad
+            '5' => ['other' => {'valency' => 'lex-end'}],
+            # adlexémová jiná: dneska je asi důvod jiný; která je taky tabuizovaná; nebo spíš, spíš hudby
+            '6' => ['other' => {'valency' => 'lex-oth'}],
+            # jiná nebo neurčeno: asi jak chválit za něco; co se týče jazyků, taky asi, pokud teda
+            '7' => ['other' => {'valency' => 'oth'}]
+        }
+    );
+    # VALENCY OF SUBSTANTIVE IDIOMS ####################
+    $atoms{valencyF2} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'substantive_idiom_valency',
+        'decode_map' =>
+        {
+            # bez valence: změny k lepšímu; zlatou svatbu; motor (hnací motor a stimul)
+            '0' => [],
+            # pád bez předložky (???): mít vliv; mít k sobě blíž; být doma (=nepracovat); mít děti; obejít se bez něčeho
+            '1' => ['other' => {'valency' => 'npr'}],
+            # s předložkou: vzít sebou; pochopení pro mě; pudou nahoru; udělat něco pro ty děti
+            '2' => ['other' => {'valency' => 'pre'}],
+            # se spojkou (???): vývojem vědy a techniky; samozřejmostí správců učeben a správců laboratoří
+            '3' => ['other' => {'valency' => 'con'}],
+            # s infinitivem: dát pozor (???); mít právo, aby (???)
+            '4' => ['other' => {'valency' => 'inf'}],
+            # s adverbiem: maj daleko; hodně dalších výskytů, ale jsou divné
+            '5' => ['other' => {'valency' => 'adv'}],
+            # bez předložky dva pády: má ráda Komárka; mám na mysli ten film; dám to trochu do pořádku
+            '6' => ['other' => {'valency' => 'npr+npr'}],
+            # pád a předložka: jí mám dát na zadek; ze kterejch by měl radost; to je na úkor té emancipace
+            '7' => ['other' => {'valency' => 'npr+pre'}],
+            # pád a spojka: nemáš, kdo by ti je držel; si říkaj za zády:; mohu říct, tak tohleto ten člověk vytvořil
+            '8' => ['other' => {'valency' => 'npr+con'}],
+            # jiné, 2 předložky nebo 3 pády: pro sebe a pro jiné tím pádem; tady u nich; a tak dále
+            '9' => ['other' => {'valency' => 'oth'}]
+        }
+    );
+    # VALENCY OF ADJECTIVE IDIOMS ####################
+    $atoms{valencyF3} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'adjective_idiom_valency',
+        'decode_map' =>
+        {
+            # bez valence v atributu: jako (vo ženu jako takovou); úrovni (na ňáký slušný úrovni); ten (pán ten a ten)
+            '0' => ['other' => {'valency' => 'atr'}],
+            # bez valence v predikátu: života (je vodtržená vod života); zpitá (byla zpitá na mol); nahňácaný (sedíme na sebe nahňácaný)
+            '1' => ['other' => {'valency' => 'prd'}],
+            # pád bez předložky v predikátu: žádný výskyt
+            '2' => ['other' => {'valency' => 'prd-npr'}],
+            # s předložkou v predikátu: žádný výskyt
+            '3' => ['other' => {'valency' => 'prd-pre'}],
+            # se spojkou: žádný výskyt
+            '4' => ['other' => {'valency' => 'con'}],
+            # s infinitivem: žádný výskyt
+            '5' => ['other' => {'valency' => 'inf'}],
+            # jiné: jako (vo systému jako takovym); pohled (taková roztomilá bytost na první pohled); takovej (strach jako takovej)
+            '8' => ['other' => {'valency' => 'oth'}]
+        }
+    );
+    # VALENCY OF ADVERBIAL IDIOMS ####################
+    $atoms{valencyF4} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'adverb_idiom_valency',
+        'decode_map' =>
+        {
+            # nespecifikovaná u slovesa: způsobem (kerý se ňákym způsobem rozlišujou); u (zrovna tak je to u mě)
+            '-' => [],
+            # kvantifikační nebo intenzifikační u slovesa: životě (asi jednou v životě); případě (v každém případě dokážou)
+            '1' => ['other' => {'valency' => 'vrb-qnt'}],
+            # nepředložkový pád, nekvantifikační: pohodě (my v krásný pohodě)
+            '2' => ['other' => {'valency' => 'npr-nqn'}],
+            # kvantifikační u jmen: cenu (shonu po penězích za každou cenu); většině (ve většině rodinách)
+            '3' => ['other' => {'valency' => 'nou-qnt'}],
+            # nekvantifikační u substantiv: u (to neni jenom u nás na podniku); podstatě (to je v podstatě prostředí školy)
+            '4' => ['other' => {'valency' => 'nou-nqn'}],
+            # s adjektivem nebo adverbiem: způsobem (ňákym způsobem úspěšná); tak (tak ňák hezký)
+            '5' => ['other' => {'valency' => 'adj-adv'}],
+            # s předložkou: u (mysliš u mě na pracovišti); podstatě (děti se vychovávaj v podstatě vod půl roku)
+            '6' => ['other' => {'valency' => 'pre'}],
+            # se spojkou / synsém.: podstatě (v podstatě nic, nó to by); tak (dycky jich tak ňák je tak ňák to,)
+            '7' => ['other' => {'valency' => 'con'}],
+            # s infinitivem: způsobem (nemaj ňákym způsobem možnost vybít); tak (tak a tak ta věc má vypadat)
+            '8' => ['other' => {'valency' => 'inf'}],
+            # s větou: u (u mě teda byl v tom, že); podstatě (ale v podstatě na to nejsem zvyklá)
+            '9' => ['other' => {'valency' => 'snt'}],
+            # jiné, věta aj.: tak (tý vteřiny, jo, nebo tak ňák, já vim); míře (nemyslim, že v takový míře, protože ty lidi)
+            '0' => ['other' => {'valency' => 'oth'}]
+        }
+    );
+    # VALENCY OF PROPOSITIONAL IDIOMS ####################
+    $atoms{valencyF5} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'propositional_idiom_valency',
+        'decode_map' =>
+        {
+            # bez valence k propozici: nevim (já nevim ten plán); no (no a jedno ke druhému)
+            '1' => [],
+            # spojení s propozicí: je (jak u nás je známo, tak je to tak, že prostě)
+            '2' => ['other' => {'valency' => 'pro'}]
+        }
+    );
     return \%atoms;
 }
 
