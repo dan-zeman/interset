@@ -684,6 +684,458 @@ sub _create_atoms
             { 'other' => { 'multitoken' => '2',
                            '@'          => '1' }}
     );
+    # NOUN CLASS ####################
+    $atoms{noun_class} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'noun_class',
+        'decode_map' =>
+        {
+            # osoba: holčička, maminku, blondýnka, bytost, rošťanda
+            '1' => ['other' => {'nounclass' => 'person'}],
+            # živočich: zvířata, vůl, had, krávám, psy
+            '2' => ['other' => {'nounclass' => 'animal'}],
+            # konkrétum: hlavou, vodu, nohy, auto, metru
+            '3' => ['other' => {'nounclass' => 'concrete'}],
+            # abstraktum: pocit, vzdělání, mezera, mládí, války
+            '4' => ['other' => {'nounclass' => 'abstract'}],
+            # jiné nejasné: sídlišti, chatu, továrnách, pracovně, ateliér
+            '9' => ['other' => {'nounclass' => 'unclear'}]
+        },
+        'encode_map' =>
+
+            { 'other/nounclass' => { 'person'   => '1',
+                                     'animal'   => '2',
+                                     'concrete' => '3',
+                                     'abstract' => '4',
+                                     '@'        => '9' }}
+    );
+    # ADJECTIVE CLASS ####################
+    $atoms{adjective_class} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'adjective_class',
+        'decode_map' =>
+        {
+            # deskriptivní: těsné, prožitej, vykonaný, starší, mladších
+            '1' => ['other' => {'adjclass' => 'descr'}],
+            # deskriptivní propriální: Zděnkový, Patriková, Romanovou, náchodskýho, silvánského
+            '2' => ['other' => {'adjclass' => 'prop'}],
+            # evaluativní: blbej, nepříjemnej, hroznej, neuvěřitelný, šílený
+            '3' => ['other' => {'adjclass' => 'eval'}],
+            # intenzifikační: kratší, krátkou, delší, rychlý, malej, velká, nejhlubšího
+            '4' => ['other' => {'adjclass' => 'intens'}],
+            # restriktivní: celý, další, stejnej, specifický, určitý, jinýho
+            '5' => ['other' => {'adjclass' => 'restr'}],
+            # nelze určit: zato, myšlená, danej
+            '9' => []
+        },
+        'encode_map' =>
+
+            { 'other/adjclass' => { 'descr'  => '1',
+                                    'prop'   => '2',
+                                    'eval'   => '3',
+                                    'intens' => '4',
+                                    'restr'  => '5',
+                                    '@'      => '9' }}
+    );
+    # ADVERB CLASS ####################
+    $atoms{adverb_class} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'adverb_class',
+        'decode_map' =>
+        {
+            # neurčuje se: takle, jak, tak, takhle, nějak
+            '-' => [],
+            # deskriptivní: spolu, prakticky, individuálně, citově, přesně
+            '1' => ['other' => {'advclass' => 'descr'}],
+            # evaluativní: strašně, různě, nespravedlivě, pořádně, prakticky
+            '2' => ['other' => {'advclass' => 'eval'}],
+            # intenzifikační: malinko, uplně, totálně, hodně, daleko
+            '3' => ['other' => {'advclass' => 'intens'}],
+            # restriktivní: většinou, jenom, podobně, stejně, výhradně
+            '4' => ['other' => {'advclass' => 'restr'}],
+            # deskriptivní časoprostorové: pořád, domů, dneska, tady, někam
+            '5' => ['other' => {'advclass' => 'timespace'}],
+            # nelze určit: no occurrence in corpus
+            '6' => ['other' => {'advclass' => 'unknown'}]
+        },
+        'encode_map' =>
+
+            { 'other/advclass' => { 'descr'     => '1',
+                                    'eval'      => '2',
+                                    'intens'    => '3',
+                                    'restr'     => '4',
+                                    'timespace' => '5',
+                                    'unknown'   => '6',
+                                    '@'         => '-' }}
+    );
+    # PREPOSITION CLASS ####################
+    $atoms{preposition_class} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'preposition_class',
+        'decode_map' =>
+        {
+            # lokální: u, do, na, v, po
+            '1' => ['advtype' => 'loc'],
+            # temporální: před, po, v, vod, do
+            '2' => ['advtype' => 'tim'],
+            # jiná: vo, kvůli, ke, kromě, s
+            '3' => []
+        },
+        'encode_map' =>
+
+            { 'advtype' => { 'loc' => '1',
+                             'tim' => '2',
+                             '@'   => '3' }}
+    );
+    # CONJUNCTION CLASS ####################
+    $atoms{conjunction_class} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'conjunction_class',
+        'decode_map' =>
+        {
+            # kombinační (sluč./stup./vyluč./odpor.): a, ale, nebo, jenomže, ať
+            '1' => ['other' => {'conjclass' => 'comb'}],
+            # specifikační (obsah./kval./účin./účel.): aby, že, jesli
+            '2' => ['other' => {'conjclass' => 'spec'}],
+            # závislostní (kauz./důsl./podmín./příp./výjim.): pokuď, když, protože, takže, prže
+            '3' => ['other' => {'conjclass' => 'dep'}],
+            # časoprostorová: jakmile, než, co, jak, dyž
+            '4' => ['other' => {'conjclass' => 'timespace'}],
+            # jiná (podob./srov./způs./zřet.): než, jako
+            '5' => ['other' => {'conjclass' => 'comp'}]
+        },
+        'encode_map' =>
+
+            { 'other/conjclass' => { 'spec'      => '2',
+                                     'dep'       => '3',
+                                     'timespace' => '4',
+                                     'comp'      => '5',
+                                     '@'         => '1' }}
+    );
+    # INTERJECTION CLASS ####################
+    $atoms{interjection_class} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'interjection_class',
+        'decode_map' =>
+        {
+            # faktuální: ee, ne, hm, á, eh
+            '1' => ['other' => {'interclass' => 'fac'}],
+            # voluntativní: no, jo, jasně, pozor, nene
+            '2' => ['other' => {'interclass' => 'vol'}],
+            # emocionální: sakra, jé, bóže, bezva, hrůza
+            '3' => ['other' => {'interclass' => 'emo'}],
+            # kontaktové: neboj, podivejte, na, hele, počkej
+            '4' => ['other' => {'interclass' => 'con'}],
+            # onomatopoické: hhh, checheche, cha, chachacha
+            '5' => ['other' => {'interclass' => 'ono'}],
+            # voluntativní kontaktové: vole
+            '6' => ['other' => {'interclass' => 'volcon'}],
+            # voluntativní emocionální: jaktože, ty, ále, chá, šlus
+            '7' => ['other' => {'interclass' => 'volemo'}],
+            # voluntativní onomatopoické: šup
+            '8' => ['other' => {'interclass' => 'volono'}],
+            # emocionální kontaktové: ano
+            '9' => ['other' => {'interclass' => 'emocon'}],
+            # jiné: no occurrence in corpus
+            '0' => []
+        },
+        'encode_map' =>
+
+            { 'other/interclass' => { 'fac'    => '1',
+                                      'vol'    => '2',
+                                      'emo'    => '3',
+                                      'con'    => '4',
+                                      'ono'    => '5',
+                                      'volcon' => '6',
+                                      'volemo' => '7',
+                                      'volono' => '8',
+                                      'emocon' => '9',
+                                      '@'      => '0' }}
+    );
+    # PARTICLE CLASS ####################
+    $atoms{particle_class} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'particle_class',
+        'decode_map' =>
+        {
+            # faktuální: tak, teda, asi, jako, řikám
+            '1' => ['other' => {'partclass' => 'fact'}],
+            # faktuální evaluativní: přitom, stejně, ovšem, potom, prakticky
+            '2' => ['other' => {'partclass' => 'eval'}],
+            # faktuální intenzifikační: i, specielně, hlavně, aspoň, už
+            '3' => ['other' => {'partclass' => 'intens'}],
+            # voluntativní: řekněme
+            '4' => ['other' => {'partclass' => 'vol'}],
+            # voluntativní evaluativní: třeba
+            '5' => ['other' => {'partclass' => 'voleval'}],
+            # expresivní (+eval./intenz.): no, taky, tak
+            '6' => ['other' => {'partclass' => 'expr'}],
+            # emocionální (eval./intenz.): bohužel, normálně, eště, akorát, vyloženě
+            '7' => ['other' => {'partclass' => 'emo'}],
+            # faktuální expresivní (+eval.): prostě, nakonec, vono, ne, jenom
+            '8' => ['other' => {'partclass' => 'factexpr'}],
+            # jiné (kombinace): teprv, nó, no, jo, dejme tomu
+            '9' => []
+        },
+        'encode_map' =>
+
+            { 'other/partclass' => { 'fact'     => '1',
+                                     'eval'     => '2',
+                                     'intens'   => '3',
+                                     'vol'      => '4',
+                                     'voleval'  => '5',
+                                     'expr'     => '6',
+                                     'emo'      => '7',
+                                     'factexpr' => '8',
+                                     '@'        => '9' }}
+    );
+    # VALENCY ####################
+    # Note that valency, as it seems to be defined by the corpus annotation, does
+    # not distinguish obligatory arguments from optional adjuncts. It simply
+    # denotes the type of the dependent node in the particular sentence. It is thus
+    # a property of the word in context, rather than of the lexical unit.
+    # Valency codes differ for different parts of speech, thus we have different
+    # atoms here, indexed by the characters that encode part of speech (e.g. 1
+    # is noun).
+    # NOUN VALENCY ####################
+    $atoms{valency1} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'noun_valency',
+        'decode_map' =>
+        {
+            # bez valence: zařazení, ohodnocení, vzdělání, věc, lidi
+            '0' => [],
+            # s bezpředložkovým pádem: fůra, května, rok, revizi, zdroje
+            '1' => ['other' => {'valency' => 'npr'}],
+            # s předložkou: díru, kamna, smlouva, subdodavatele, modernizace
+            '2' => ['other' => {'valency' => 'pre'}],
+            # se spojovacím výrazem (včetně relativ): práci, lazar, člověk, dlaždičky, mapy
+            '3' => ['other' => {'valency' => 'con'}],
+            # s infinitivem: možnost, příležitost, čas, rozdíl, snaha
+            '4' => ['other' => {'valency' => 'inf'}],
+            # s adverbiem: hodin (denně), životem (předtim), starost (navíc), moc (shora), prací (doma)
+            '5' => ['other' => {'valency' => 'adv'}],
+            # se dvěma bezpředložkovými pády: stanice (metra Dejvická), přetížení (dětí učivem), věnování se (rodičů dětem)
+            '6' => ['other' => {'valency' => 'npr+npr'}],
+            # s bezpředložkovým a předložkovým pádem: kontakt (dětí s vostatníma), výchovu (dětí v rodině), vztah (dítěte k rodině)
+            '7' => ['other' => {'valency' => 'npr+pre'}],
+            # s bezpředložkovým pádem a spojkou: spolčení (jeden proti druhému, aby), podmínky (k tomu, aby), mládí (dítěte, kdy)
+            '8' => ['other' => {'valency' => 'npr+con'}],
+            # jiné a vícečetné: příklad (, kdy), pracovník (, jako je ..., kterej ...), záruka (, že)
+            '9' => ['other' => {'valency' => 'oth'}]
+        }
+    );
+    # ADJECTIVE VALENCY ####################
+    $atoms{valency2} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'adjective_valency',
+        'decode_map' =>
+        {
+            # bez valence v atributu: vysoká, šeredný, mladí, naprostou, nezkušený
+            '0' => ['other' => {'synpos' => 'attr'}],
+            # bez valence v predikátu: dobrý, solidní, zlí, vobtížný, schopný
+            '1' => ['other' => {'synpos' => 'pred'}],
+            # s pádem bez předložky v predikátu: vytvořený (závodem), vychovávaná (třicátníky), plný (jich), adekvátní (tomu)
+            '2' => ['other' => {'valency' => 'npr'}],
+            # s předložkovým pádem v predikátu: spokojený (v práci), nevšímaví (ke všemu), spokojená (s prostředim)
+            '3' => ['other' => {'valency' => 'pre'}],
+            # se spojkou: rádi (že), přesvědčená (že), hodnější (než), posuzovanej (jako), vyšší (než)
+            '4' => ['other' => {'valency' => 'con'}],
+            # s infinitivem: nutný (vykonávat), možný (měnit), povolený (řikat), schopnej (říct), zvyklý (bejt)
+            '5' => ['other' => {'valency' => 'inf'}],
+            # jiné nebo neurčitelné: otevřený, nemyslitelné, nového, nastudovaného, připravený
+            '8' => ['other' => {'valency' => 'oth'}]
+        }
+    );
+    # PRONOUN VALENCY ####################
+    $atoms{valency3} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'pronoun_valency',
+        'decode_map' =>
+        {
+            # bez valence: sám, tom, my, všechno, jim
+            '0' => [],
+            # s bezpředložkovým pádem: tudle (otázku) (???), naše (společnost) (???), některý (ženský) (???)
+            '1' => ['other' => {'valency' => 'npr'}],
+            # s předložkovým pádem: sám (vod sebe), každej (z nás), málokterý (z rodičů), málokdo (z nich), někoho (nad hrobem)
+            '2' => ['other' => {'valency' => 'pre'}],
+            # s podřadící spojkou: tom (jesi), tom (kolik), takový (jak), toho (na jaký)
+            '3' => ['other' => {'valency' => 'con'}],
+            # jiné: co, který, ten (že), čem, to (vo čem)
+            '4' => ['other' => {'valency' => 'oth'}]
+        }
+    );
+    # NUMERAL VALENCY ####################
+    $atoms{valency4} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'numeral_valency',
+        'decode_map' =>
+        {
+            # bez valence samostatná: tolik, druhejm, jednou, vobojí, jedno
+            '0' => [],
+            # s bezpředložkovým pádem: vosum (hodin), dva (buřty), tři (krajíce), jedenáct (let), čtyřiceti (letech)
+            '1' => ['other' => {'valency' => 'npr'}],
+            # s předložkou: jedním (z důvodů), jednou (za čtyři roky), dvě (z možností), jeden (z kořenů), čtvrt (na devět)
+            '2' => ['other' => {'valency' => 'pre'}],
+            # jiná: jedenáct (večer), jednou (tak velkej), (těch) devět (co jsme), pět (který), tří (v Praze)
+            '3' => ['other' => {'valency' => 'oth'}]
+        }
+    );
+    # VALENCY OF VERBS AND VERBAL IDIOMS ####################
+    $atoms{valency5} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'verb_valency',
+        'decode_map' =>
+        {
+            # nerealizovaná subjektová valence, zřejmě hlavně u infinitivů: vzdělávat se, dejchat, nehýřit, rozšířit, stihnout
+            '1'  => [],
+            # nesubjektová valence s akuzativem
+            # jen akuzativ: dělat (tohleto), stihnout (to), mít (čas), vystudovat (školu), přijímat (procento)
+            '2-' => ['other' => {'valency' => 'acc'}],
+            # a genitiv: vodpovědět (bez přípravy na votázku), vymazat (to z třídní knihy), ušetřit (na auto z platu)
+            '21' => ['other' => {'valency' => 'acc+gen'}],
+            # a instrumentál: dělat (něco s tim), dosáhnout (něco s nima), vyto (to před náma), získat (prostředky jinými formami)
+            '22' => ['other' => {'valency' => 'acc+ins'}],
+            # a lokativ: vychovaj (lidi v tom), říct (todleto vo mně), postavit (manželství na základech), mluvit (vo tom hodinu)
+            '23' => ['other' => {'valency' => 'acc+loc'}],
+            # a akuzativ: vést (dialog přes třetí osobu), máš (to samozřejmý), svádět (to na bolševiky), nabalovat (ty na kterej)
+            '24' => ['other' => {'valency' => 'acc+acc'}],
+            # a dativ: věnovat (tomu čas), vysvětlit (to jim), přidat (někomu stovku), ubrat (herci stovku), hnát (lidi k tomu)
+            '25' => ['other' => {'valency' => 'acc+dat'}],
+            # a adverbiále: udělat (cokoli kůli penězům), vyruš (policajta v sobotu), polapit (ho za vobojek), představit si (ženu tam)
+            '26' => ['other' => {'valency' => 'acc+adv'}],
+            # a infinitiv: nenapadne (mě kouřit), nechat (děti vystudovat), baví (mladý poslouchat), nechat (se popíchat)
+            '27' => ['other' => {'valency' => 'acc+inf'}],
+            # a spojka: rozvíjet (je jako), věřit (v to, že), postarat se (vo to, aby), nekouká se (na to, aby)
+            '28' => ['other' => {'valency' => 'acc+con'}],
+            # a další 2 pády: dělat (něco vopravdu) (???); no other occurrences
+            '29' => ['other' => {'valency' => 'acc+2'}],
+            # jiné smíšené/trojmístné: dodělat (to částečně, než), sladit (si všechno barevně, jak chceš)
+            '20' => ['other' => {'valency' => 'acc+oth'}],
+            # nesubjektová valence s neakuzativem
+            # genitiv: ubývá (lásky), jít (do svazku), vodtrhnout se (vod většiny), nezbláznit se (do shonu), nadít se (pomoci)
+            '31' => ['other' => {'valency' => 'gen'}],
+            # instrumentál: vrtět (ocasem), udělat se (vedoucím), rozptylovat (činností), zabývat se (situací)
+            '32' => ['other' => {'valency' => 'ins'}],
+            # lokativ: záleží (na lidech), podílet se (na výchově), rozhodnout se (o tom), vydělávat (na tom)
+            '33' => ['other' => {'valency' => 'loc'}],
+            # dativ: vadilo by (mně), přirovnat (k tomu), došlo (k rovnoprávnosti), pomoct (jí)
+            '34' => ['other' => {'valency' => 'dat'}],
+            # genitiv a neakuzativ: usuzovat (z toho, že), oprostit (se vod všeho), bylo (vod předmětů až po stáje)
+            '35' => ['other' => {'valency' => 'gen+nac'}],
+            # instrumentál a neakuzativ: učit se (s dětma do školy), mluvit (s nima vo věcech), plýtvat (nehospodárně čimkoliv)
+            '36' => ['other' => {'valency' => 'ins+nac'}],
+            # lokativ a neakuzativ: píše se (vo tom v novinách), mluvit (vo tom víc), omezit (se v něčem)
+            '37' => ['other' => {'valency' => 'loc+nac'}],
+            # dativ a neakuzativ: věnovat se (těmto cele), mluví se (mně blbě), nelíbilo se (tobě na Slapech)
+            '38' => ['other' => {'valency' => 'dat+nac'}],
+            # nominativ včetně adjektiv: řídit (sama), bejt (podmínka), bejt (vohodnocená), bejt (hrdá)
+            '39' => ['other' => {'valency' => 'nom-nsb'}],
+            # jiné smíšené/trojmístné: bejt (mně šedesát), vyrovnat se (způsobem sami ze sebou s tim)
+            '30' => ['other' => {'valency' => 'oth+nac'}],
+            # jiná nesubjektová valence
+            # adverbiále: zařadit (tim způsobem), zařadit se (někam), použít (v životě), žít (v úctě), žilo se (jak)
+            '41' => ['other' => {'valency' => 'adv'}],
+            # infinitiv: mělo se (vyučovat), nechat si (brát), umět (pomoct), chodit (si zatrénovat)
+            '42' => ['other' => {'valency' => 'inf'}],
+            # spojka: hodilo by se (abys), zdá se (že), představ si (že), uvažovat (že), myslelo se (že)
+            '43' => ['other' => {'valency' => 'con'}],
+            # dvě adverbiále: chodí se (denně do práce), sednout si (zvlášť do místnosti), nepršelo (tady na Silvestra)
+            '44' => ['other' => {'valency' => 'adv+adv'}],
+            # adverbiále a neakuzativ: vyprávělo se (o tom léta), pracovalo se (mi líp), hrát (nám tam)
+            '45' => ['other' => {'valency' => 'adv+nac'}],
+            # adverbiále a infinitiv: jezdit (tam nakupovat), snažit se (tam vydat), nejde (už potom přitáhnout)
+            '46' => ['other' => {'valency' => 'adv+inf'}],
+            # adverbiále a spojka: přečíst si (na pytliku, z čeho to je), uvádí se (nakonec, že), porovnávat (tolik, že)
+            '47' => ['other' => {'valency' => 'adv+con'}],
+            # infinitiv a neakuzativ: nepodařilo se (mu naplnit), bát se (strašně mluvit), podařilo se (mi přivýst)
+            '48' => ['other' => {'valency' => 'inf+nac'}],
+            # spojka a neakuzativ: myslej (tim, že), dokázat (si, že), říct (o okolí, že), vočekávat (vod ženy, že)
+            '49' => ['other' => {'valency' => 'con+nac'}],
+            # jiné: říct (spousta), říct (já dělám ...) [unquoted direct speech]
+            '40' => ['other' => {'valency' => 'oth'}],
+            # subjektová valence bez nesubjektové
+            '5'  => ['other' => {'valency' => 'nom'}],
+            # subjektová a nesubjektová s akuzativem
+            # jen akuzativ
+            '6-' => ['other' => {'valency' => 'nom+acc'}],
+            # a genitiv
+            '61' => ['other' => {'valency' => 'nom+acc+gen'}],
+            # a instrumentál
+            '62' => ['other' => {'valency' => 'nom+acc+ins'}],
+            # a lokativ
+            '63' => ['other' => {'valency' => 'nom+acc+loc'}],
+            # a akuzativ
+            '64' => ['other' => {'valency' => 'nom+acc+acc'}],
+            # a dativ
+            '65' => ['other' => {'valency' => 'nom+acc+dat'}],
+            # a adverbiále (včetně předložek)
+            '66' => ['other' => {'valency' => 'nom+acc+adv'}],
+            # a infinitiv
+            '67' => ['other' => {'valency' => 'nom+acc+inf'}],
+            # a spojka
+            '68' => ['other' => {'valency' => 'nom+acc+con'}],
+            # a další 2 pády
+            '69' => ['other' => {'valency' => 'nom+acc+2'}],
+            # jiná (smíšená/trojmístná)
+            '60' => ['other' => {'valency' => 'nom+acc+oth'}],
+            # subjektová a nesubjektová s neakuzativem
+            # genitiv
+            '71' => ['other' => {'valency' => 'nom+gen'}],
+            # instrumentál (včetně adjektiv)
+            '72' => ['other' => {'valency' => 'nom+ins'}],
+            # lokativ
+            '73' => ['other' => {'valency' => 'nom+loc'}],
+            # dativ
+            '74' => ['other' => {'valency' => 'nom+dat'}],
+            # genitiv a neakuzativ
+            '75' => ['other' => {'valency' => 'nom+gen+nac'}],
+            # instrumentál a neakuzativ
+            '76' => ['other' => {'valency' => 'nom+ins+nac'}],
+            # lokativ a neakuzativ
+            '77' => ['other' => {'valency' => 'nom+loc+nac'}],
+            # dativ a neakuzativ
+            '78' => ['other' => {'valency' => 'nom+dat+nac'}],
+            # nominativ (včetně adj. ap.)
+            '79' => ['other' => {'valency' => 'nom+nom'}],
+            # jiné pády (smíšená, trojmístná)
+            '70' => ['other' => {'valency' => 'nom+othercase'}],
+            # subjektová a nesubjektová jiná
+            # adverbiále včetně předložkových frází
+            '81' => ['other' => {'valency' => 'nom+adv'}],
+            # infinitiv
+            '82' => ['other' => {'valency' => 'nom+inf'}],
+            # spojka
+            '83' => ['other' => {'valency' => 'nom+con'}],
+            # 2 adverbiále
+            '84' => ['other' => {'valency' => 'nom+adv+adv'}],
+            # adverbiále a neakuzativ
+            '85' => ['other' => {'valency' => 'nom+adv+nac'}],
+            # adverbiále a infinitiv
+            '86' => ['other' => {'valency' => 'nom+adv+inf'}],
+            # adverbiále a spojka
+            '87' => ['other' => {'valency' => 'nom+adv+con'}],
+            # infinitiv a neakuzativ
+            '88' => ['other' => {'valency' => 'nom+inf+nac'}],
+            # spojka a neakuzativ
+            '89' => ['other' => {'valency' => 'nom+con+nac'}],
+            # jiné i přímá řeč
+            '80' => ['other' => {'valency' => 'nom+oth'}]
+        }
+    );
+    $atoms{valencyF1} = $atoms{valency5};
     return \%atoms;
 }
 
