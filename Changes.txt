@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+2.005     2014-07-11 17:10:37+02:00 Europe/Prague
+
 Interface:
 * FeatureStructure method merge_hash() renamed to merge_hash_hard() and added new method merge_hash_soft().
 * Similarly, Atom method decode_and_merge() split to decode_and_merge_hard() and decode_and_merge_soft().
