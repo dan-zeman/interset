@@ -931,7 +931,19 @@ sub _create_atoms
             '8' => ['other' => {'valency' => 'npr+con'}],
             # jiné a vícečetné: příklad (, kdy), pracovník (, jako je ..., kterej ...), záruka (, že)
             '9' => ['other' => {'valency' => 'oth'}]
-        }
+        },
+        'encode_map' =>
+
+            { 'other/valency' => { 'npr' => '1',
+                                   'pre' => '2',
+                                   'con' => '3',
+                                   'inf' => '4',
+                                   'adv' => '5',
+                                   'npr+npr' => '6',
+                                   'npr+pre' => '7',
+                                   'npr+con' => '8',
+                                   'oth' => '9',
+                                   '@'   => '0' }}
     );
     # ADJECTIVE VALENCY ####################
     $atoms{valency2} = $self->create_atom
@@ -941,9 +953,9 @@ sub _create_atoms
         'decode_map' =>
         {
             # bez valence v atributu: vysoká, šeredný, mladí, naprostou, nezkušený
-            '0' => ['other' => {'synpos' => 'attr'}],
+            '0' => ['other' => {'valency' => 'attr'}],
             # bez valence v predikátu: dobrý, solidní, zlí, vobtížný, schopný
-            '1' => ['other' => {'synpos' => 'pred'}],
+            '1' => ['other' => {'valency' => 'pred'}],
             # s pádem bez předložky v predikátu: vytvořený (závodem), vychovávaná (třicátníky), plný (jich), adekvátní (tomu)
             '2' => ['other' => {'valency' => 'npr'}],
             # s předložkovým pádem v predikátu: spokojený (v práci), nevšímaví (ke všemu), spokojená (s prostředim)
@@ -954,7 +966,16 @@ sub _create_atoms
             '5' => ['other' => {'valency' => 'inf'}],
             # jiné nebo neurčitelné: otevřený, nemyslitelné, nového, nastudovaného, připravený
             '8' => ['other' => {'valency' => 'oth'}]
-        }
+        },
+        'encode_map' =>
+
+            { 'other/valency' => { 'pred' => '1',
+                                   'npr'  => '2',
+                                   'pre'  => '3',
+                                   'con'  => '4',
+                                   'inf'  => '5',
+                                   'oth'  => '8',
+                                   '@'    => '0' }}
     );
     # PRONOUN VALENCY ####################
     $atoms{valency3} = $self->create_atom
@@ -973,7 +994,14 @@ sub _create_atoms
             '3' => ['other' => {'valency' => 'con'}],
             # jiné: co, který, ten (že), čem, to (vo čem)
             '4' => ['other' => {'valency' => 'oth'}]
-        }
+        },
+        'encode_map' =>
+
+            { 'other/valency' => { 'npr' => '1',
+                                   'pre' => '2',
+                                   'con' => '3',
+                                   'oth' => '4',
+                                   '@'   => '0' }}
     );
     # NUMERAL VALENCY ####################
     $atoms{valency4} = $self->create_atom
@@ -990,7 +1018,13 @@ sub _create_atoms
             '2' => ['other' => {'valency' => 'pre'}],
             # jiná: jedenáct (večer), jednou (tak velkej), (těch) devět (co jsme), pět (který), tří (v Praze)
             '3' => ['other' => {'valency' => 'oth'}]
-        }
+        },
+        'encode_map' =>
+
+            { 'other/valency' => { 'npr' => '1',
+                                   'pre' => '2',
+                                   'oth' => '3',
+                                   '@'   => '0' }}
     );
     # VALENCY OF VERBS AND VERBAL IDIOMS ####################
     $atoms{valency5} = $self->create_atom
@@ -1133,7 +1167,73 @@ sub _create_atoms
             '89' => ['other' => {'valency' => 'nom+con+nac'}],
             # jiné i přímá řeč
             '80' => ['other' => {'valency' => 'nom+oth'}]
-        }
+        },
+        'encode_map' =>
+
+            { 'other/valency' => { 'acc'     => '2-',
+                                   'acc+gen' => '21',
+                                   'acc+ins' => '22',
+                                   'acc+loc' => '23',
+                                   'acc+acc' => '24',
+                                   'acc+dat' => '25',
+                                   'acc+adv' => '26',
+                                   'acc+inf' => '27',
+                                   'acc+con' => '28',
+                                   'acc+2'   => '29',
+                                   'acc+oth' => '20',
+                                   'gen'     => '31',
+                                   'ins'     => '32',
+                                   'loc'     => '33',
+                                   'dat'     => '34',
+                                   'gen+nac' => '35',
+                                   'ins+nac' => '36',
+                                   'loc+nac' => '37',
+                                   'dat+nac' => '38',
+                                   'nom-nsb' => '39',
+                                   'oth+nac' => '30',
+                                   'adv'     => '41',
+                                   'inf'     => '42',
+                                   'con'     => '43',
+                                   'adv+adv' => '44',
+                                   'adv+nac' => '45',
+                                   'adv+inf' => '46',
+                                   'adv+con' => '47',
+                                   'inf+nac' => '48',
+                                   'con+nac' => '49',
+                                   'oth'     => '40',
+                                   'nom'     => '5',
+                                   'nom+acc' => '6-',
+                                   'nom+acc+gen' => '61',
+                                   'nom+acc+ins' => '62',
+                                   'nom+acc+loc' => '63',
+                                   'nom+acc+acc' => '64',
+                                   'nom+acc+dat' => '65',
+                                   'nom+acc+adv' => '66',
+                                   'nom+acc+inf' => '67',
+                                   'nom+acc+con' => '68',
+                                   'nom+acc+2'   => '69',
+                                   'nom+acc+oth' => '60',
+                                   'nom+gen'     => '71',
+                                   'nom+ins'     => '72',
+                                   'nom+loc'     => '73',
+                                   'nom+dat'     => '74',
+                                   'nom+gen+nac' => '75',
+                                   'nom+ins+nac' => '76',
+                                   'nom+loc+nac' => '77',
+                                   'nom+dat+nac' => '78',
+                                   'nom+nom'     => '79',
+                                   'nom+othercase' => '70',
+                                   'nom+adv'     => '81',
+                                   'nom+inf'     => '82',
+                                   'nom+con'     => '83',
+                                   'nom+adv+adv' => '84',
+                                   'nom+adv+nac' => '85',
+                                   'nom+adv+inf' => '86',
+                                   'nom+adv+con' => '87',
+                                   'nom+inf+nac' => '88',
+                                   'nom+con+nac' => '89',
+                                   'nom+oth'     => '80',
+                                   '@'           => '1-' }}
     );
     $atoms{valencyF1} = $atoms{valency5};
     # ADVERB VALENCY ####################
@@ -1166,7 +1266,20 @@ sub _create_atoms
             '9' => ['other' => {'valency' => 'snt'}],
             # jiné (věta apod.): až (deset až patnáct tisíc ročně), možná (možná že bych se přikláněl)
             '0' => ['other' => {'valency' => 'oth'}]
-        }
+        },
+        'encode_map' =>
+
+            { 'other/valency' => { 'vrb-qnt' => '1',
+                                   'npr-nqn' => '2',
+                                   'npr-qnt' => '3',
+                                   'npr-nq4' => '4',
+                                   'adj-adv' => '5',
+                                   'pre'     => '6',
+                                   'con'     => '7',
+                                   'inf'     => '8',
+                                   'snt'     => '9',
+                                   'oth'     => '0',
+                                   '@'       => '-' }}
     );
     # CONJUNCTION VALENCY ####################
     $atoms{valency8} = $self->create_atom
@@ -1181,7 +1294,12 @@ sub _create_atoms
             '2' => ['other' => {'valency' => 'snt'}],
             # nelze určit: a pak vždycky ne; něco jim teda sdělit nebo ...; autorita, ale ... asi mmm
             '9' => ['other' => {'valency' => 'unk'}]
-        }
+        },
+        'encode_map' =>
+
+            { 'other/valency' => { 'wrd' => '1',
+                                   'snt' => '2',
+                                   '@'   => '9' }}
     );
     # PARTICLE VALENCY ####################
     $atoms{valency0} = $self->create_atom
@@ -1204,7 +1322,16 @@ sub _create_atoms
             '6' => ['other' => {'valency' => 'lex-oth'}],
             # jiná nebo neurčeno: asi jak chválit za něco; co se týče jazyků, taky asi, pokud teda
             '7' => ['other' => {'valency' => 'oth'}]
-        }
+        },
+        'encode_map' =>
+
+            { 'other/valency' => { 'pro-beg' => '1',
+                                   'pro-end' => '2',
+                                   'pro-oth' => '3',
+                                   'lex-beg' => '4',
+                                   'lex-end' => '5',
+                                   'lex-oth' => '6',
+                                   '@'       => '7' }}
     );
     # VALENCY OF SUBSTANTIVE IDIOMS ####################
     $atoms{valencyF2} = $self->create_atom
@@ -1233,7 +1360,19 @@ sub _create_atoms
             '8' => ['other' => {'valency' => 'npr+con'}],
             # jiné, 2 předložky nebo 3 pády: pro sebe a pro jiné tím pádem; tady u nich; a tak dále
             '9' => ['other' => {'valency' => 'oth'}]
-        }
+        },
+        'encode_map' =>
+
+            { 'other/valency' => { 'npr' => '1',
+                                   'pre' => '2',
+                                   'con' => '3',
+                                   'inf' => '4',
+                                   'adv' => '5',
+                                   'npr+npr' => '6',
+                                   'npr+pre' => '7',
+                                   'npr+con' => '8',
+                                   'oth'     => '9',
+                                   '@'       => '0' }}
     );
     # VALENCY OF ADJECTIVE IDIOMS ####################
     $atoms{valencyF3} = $self->create_atom
@@ -1256,7 +1395,16 @@ sub _create_atoms
             '5' => ['other' => {'valency' => 'inf'}],
             # jiné: jako (vo systému jako takovym); pohled (taková roztomilá bytost na první pohled); takovej (strach jako takovej)
             '8' => ['other' => {'valency' => 'oth'}]
-        }
+        },
+        'encode_map' =>
+
+            { 'other/valency' => { 'atr' => '0',
+                                   'prd' => '1',
+                                   'prd-npr' => '2',
+                                   'prd-pre' => '3',
+                                   'con' => '4',
+                                   'inf' => '5',
+                                   'oth' => '8' }}
     );
     # VALENCY OF ADVERBIAL IDIOMS ####################
     $atoms{valencyF4} = $self->create_atom
@@ -1287,7 +1435,20 @@ sub _create_atoms
             '9' => ['other' => {'valency' => 'snt'}],
             # jiné, věta aj.: tak (tý vteřiny, jo, nebo tak ňák, já vim); míře (nemyslim, že v takový míře, protože ty lidi)
             '0' => ['other' => {'valency' => 'oth'}]
-        }
+        },
+        'encode_map' =>
+
+            { 'other/valency' => { 'vrb-qnt' => '1',
+                                   'npr-nqn' => '2',
+                                   'nou-qnt' => '3',
+                                   'nou-nqn' => '4',
+                                   'adj-adv' => '5',
+                                   'pre'     => '6',
+                                   'con'     => '7',
+                                   'inf'     => '8',
+                                   'snt'     => '9',
+                                   'oth'     => '0',
+                                   '@'       => '-' }}
     );
     # VALENCY OF PROPOSITIONAL IDIOMS ####################
     $atoms{valencyF5} = $self->create_atom
@@ -1300,7 +1461,11 @@ sub _create_atoms
             '1' => [],
             # spojení s propozicí: je (jak u nás je známo, tak je to tak, že prostě)
             '2' => ['other' => {'valency' => 'pro'}]
-        }
+        },
+        'encode_map' =>
+
+            { 'other/valency' => { 'pro' => '2',
+                                   '@'   => '1' }}
     );
     return \%atoms;
 }
