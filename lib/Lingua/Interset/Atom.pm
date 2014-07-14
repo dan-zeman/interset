@@ -56,6 +56,7 @@ sub decode
     my $tag = shift;
     my $fs = Lingua::Interset::FeatureStructure->new();
     my $map = $self->decode_map();
+    $tag = '' if(!defined($tag));
     my $assignments = $map->{$tag};
     if($assignments)
     {
@@ -87,6 +88,8 @@ sub decode_and_merge_hard
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $fs1 = $self->decode($tag);
     my $hash = $fs1->get_hash();
+    # Special behavior is defined if the 'other' feature in both hashes is a hash of subfeatures.
+    _merge_other_subhashes($fs->other(), $hash->{other}, $hash);
     $fs->merge_hash_hard($hash);
     return $fs;
 }
@@ -114,8 +117,33 @@ sub decode_and_merge_soft
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $fs1 = $self->decode($tag);
     my $hash = $fs1->get_hash();
+    # Special behavior is defined if the 'other' feature in both hashes is a hash of subfeatures.
+    _merge_other_subhashes($fs->other(), $hash->{other}, $hash);
     $fs->merge_hash_soft($hash);
     return $fs;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Special merging of the 'other' feature in the case that it is a sub-hash of
+# subfeatures.
+#------------------------------------------------------------------------------
+sub _merge_other_subhashes
+{
+    my $tgt_other = shift;
+    my $src_other = shift;
+    my $src_fs_hash = shift; # we will remove other from here after processing its contents
+    if(ref($src_other) eq 'HASH' && ref($tgt_other) eq 'HASH')
+    {
+        my @keys = keys(%{$src_other});
+        foreach my $key (@keys)
+        {
+            # The value is probably a plain scalar but it is not guaranteed, so we must create a deep copy.
+            $tgt_other->{$key} = Lingua::Interset::FeatureStructure::_duplicate_recursive($src_other->{$key});
+        }
+        delete($src_fs_hash->{other});
+    }
 }
 
 
@@ -179,7 +207,8 @@ sub _encoding_step
             my $tagset = $self->tagset();
             if($tagset eq '')
             {
-                confess("Encoding map refers to 'other' but the 'tagset' attribute of the atom is empty");
+                my $surfeature = $self->surfeature();
+                confess("Encoding map (surface feature = '$surfeature') refers to 'other' but the 'tagset' attribute of the atom is empty");
             }
             $value = $fs->get_other_subfeature($tagset, $subfeature);
         }

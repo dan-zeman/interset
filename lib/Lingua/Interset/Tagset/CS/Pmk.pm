@@ -14,7 +14,8 @@ extends 'Lingua::Interset::Tagset';
 
 
 
-has 'atoms' => ( isa => 'HashRef', is => 'ro', builder => '_create_atoms', lazy => 1 );
+has 'atoms'       => ( isa => 'HashRef', is => 'ro', builder => '_create_atoms',       lazy => 1 );
+has 'feature_map' => ( isa => 'HashRef', is => 'ro', builder => '_create_feature_map', lazy => 1 );
 
 
 
@@ -25,6 +26,42 @@ sub _create_atoms
 {
     my $self = shift;
     my %atoms;
+    # PART OF SPEECH ####################
+    $atoms{pos} = $self->create_atom
+    (
+        'tagset' => 'cs::pmk',
+        'surfeature' => 'pos',
+        'decode_map' =>
+        {
+            '1' => ['pos' => 'noun'],
+            '2' => ['pos' => 'adj'],
+            '3' => ['pos' => 'noun|adj', 'prontype' => 'prn'],
+            '4' => ['pos' => 'num'],
+            '5' => ['pos' => 'verb'],
+            '6' => ['pos' => 'adv'],
+            '7' => ['pos' => 'adp', 'adpostype' => 'prep'],
+            '8' => ['pos' => 'conj'],
+            '9' => ['pos' => 'int'],
+            '0' => ['pos' => 'part'],
+            'F' => ['other' => {'pos' => 'F'}], # idiom (it may behave syntactically as various parts of speech)
+            'J' => ['other' => {'pos' => 'J'}] # other
+        },
+        'encode_map' =>
+
+            { 'other/pos' => { 'F' => 'F',
+                               'J' => 'J',
+                               '@' => { 'prontype' => { ''  => { 'pos' => { 'noun' => { 'nountype' => { 'prop' => 'JP',
+                                                                                                        '@'    => '1'}},
+                                                                            'adj'  => '2',
+                                                                            'num'  => '4',
+                                                                            'verb' => '5',
+                                                                            'adv'  => '6',
+                                                                            'adp'  => '7',
+                                                                            'conj' => '8',
+                                                                            'int'  => '9',
+                                                                            'part' => '0' }},
+                                                        '@' => '3' }}}}
+    );
     # GENDER ####################
     # Encoding of gender varies depending on context (part of speech).
     ###!!! Map differing number codes to one set first.
@@ -38,6 +75,7 @@ sub _create_atoms
     #);
     $atoms{gender} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'gender',
         'decode_map' =>
         {
@@ -72,6 +110,7 @@ sub _create_atoms
     #);
     $atoms{number} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'number',
         'decode_map' =>
         {
@@ -97,6 +136,7 @@ sub _create_atoms
     # GENDER AND NUMBER OF PARTICIPLES ####################
     $atoms{participle_gender_number} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'participle_gender_number',
         'decode_map' =>
         {
@@ -132,6 +172,7 @@ sub _create_atoms
     # PERSON AND NUMBER OF VERBS ####################
     $atoms{person_number} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'person_number',
         'decode_map' =>
         {
@@ -171,6 +212,7 @@ sub _create_atoms
     # CASE ####################
     $atoms{case} = $self->create_simple_atom
     (
+        'tagset' => 'cs::pmk',
         'intfeature' => 'case',
         'simple_decode_map' =>
         {
@@ -190,6 +232,7 @@ sub _create_atoms
     # (pád počítané jmenné fráze)
     $atoms{counted_case} = $self->create_simple_atom
     (
+        'tagset' => 'cs::pmk',
         'intfeature' => 'other',
         'simple_decode_map' =>
         {
@@ -206,6 +249,7 @@ sub _create_atoms
     # DEGREE OF COMPARISON ####################
     $atoms{degree} = $self->create_simple_atom
     (
+        'tagset' => 'cs::pmk',
         'intfeature' => 'degree',
         'simple_decode_map' =>
         {
@@ -217,6 +261,7 @@ sub _create_atoms
     # MOOD, TENSE AND VOICE ####################
     $atoms{mood_tense_voice} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'mood_tense_voice',
         'decode_map' =>
         {
@@ -249,6 +294,7 @@ sub _create_atoms
     # IMPERATIVE OR NON-FINITE VERB FORM ####################
     $atoms{nonfinite_verb_form} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'nonfinite_verb_form',
         'decode_map' =>
         {
@@ -275,6 +321,7 @@ sub _create_atoms
     # NEGATIVENESS ####################
     $atoms{negativeness} = $self->create_simple_atom
     (
+        'tagset' => 'cs::pmk',
         'intfeature' => 'negativeness',
         'simple_decode_map' =>
         {
@@ -285,6 +332,7 @@ sub _create_atoms
     # STYLE ####################
     $atoms{style} = $self->create_simple_atom
     (
+        'tagset' => 'cs::pmk',
         'intfeature' => 'style',
         'simple_decode_map' =>
         {
@@ -303,60 +351,63 @@ sub _create_atoms
     # Noun types in PMK mostly reflect how (from what part of speech) the noun was derived.
     $atoms{noun_type} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'noun_type',
         'decode_map' =>
         {
             # běžné: konstruktér, rodina, auto
             '1' => [],
             # adjektivní: ženská, vedoucí, nadřízenej
-            '2' => ['other' => 'nountype=adj'],
+            '2' => ['other' => {'nountype' => 'adj'}],
             # zájmenné: naši, vaši
-            '3' => ['other' => 'nountype=pron'],
+            '3' => ['other' => {'nountype' => 'pron'}],
             # číslovkové: dvojka, devítka, šestsettřináctka
-            '4' => ['other' => 'nountype=num'],
+            '4' => ['other' => {'nountype' => 'num'}],
             # slovesné: postavení, bití, chování
-            '5' => ['other' => 'nountype=verb'],
+            '5' => ['other' => {'nountype' => 'verb'}],
             # slovesné zvratné: věnování se; note: the tag is assigned to "věnování" while "se" has an empty tag
-            '6' => ['other' => 'nountype=verb', 'reflex' => 'reflex'],
+            '6' => ['other' => {'nountype' => 'verb'}, 'reflex' => 'reflex'],
             # zkratkové slovo: ó dé eska; note: the tag is assigned to "ó" while "dé" and "eska" have empty tags
             # This is not the same as an abbreviated noun.
-            '7' => ['other' => 'nountype=abbr'],
+            '7' => ['other' => {'nountype' => 'abbr'}],
             # nesklonné: apartmá, interview, gró
-            '9' => ['other' => 'nountype=indecl']
+            '9' => ['other' => {'nountype' => 'indecl'}]
         },
         'encode_map' =>
 
             { 'reflex' => { 'reflex' => '6',
-                            '@'      => { 'other' => { 'nountype=adj'    => '2',
-                                                       'nountype=pron'   => '3',
-                                                       'nountype=num'    => '4',
-                                                       'nountype=verb'   => '5',
-                                                       'nountype=abbr'   => '7',
-                                                       'nountype=indecl' => '9',
-                                                       '@'               => '1' }}}}
+                            '@'      => { 'other/nountype' => { 'adj'    => '2',
+                                                                'pron'   => '3',
+                                                                'num'    => '4',
+                                                                'verb'   => '5',
+                                                                'abbr'   => '7',
+                                                                'indecl' => '9',
+                                                                '@'      => '1' }}}}
     );
     # ADJECTIVE TYPE ####################
     $atoms{adjective_type} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'adjective_type',
         'decode_map' =>
         {
             # nespecifické: jiný, prázdnej, řádová
             '1' => [],
             # slovesné: ovlivněný, skličující, vyspělý
-            '2' => ['other' => 'adjtype=verb'],
+            '2' => ['other' => {'adjtype' => 'verb'}],
             # přivlastňovací: Martinův, tátový, Klárčiny
             '3' => ['poss' => 'poss']
         },
         'encode_map' =>
 
             { 'poss' => { 'poss' => '3',
-                          '@'    => { 'other' => { 'adjtype=verb' => '2',
-                                                   '@'            => '1' }}}}
+                          '@'    => { 'other/adjtype' => { 'verb' => '2',
+                                                           '@'    => '1' }}}}
     );
     # ADJECTIVE SUBTYPE ####################
     $atoms{adjective_subtype} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'adjective_subtype',
         'decode_map' =>
         {
@@ -386,6 +437,7 @@ sub _create_atoms
     # PRONOUN TYPE ####################
     $atoms{pronoun_type} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'pronoun_type',
         'decode_map' =>
         {
@@ -408,9 +460,9 @@ sub _create_atoms
             # přivlastňovací zvratné: své, svýmu, svými, svoje
             '9' => ['prontype' => 'prs', 'poss' => 'poss', 'reflex' => 'reflex'],
             # víceslovné: nějaký takový, takový ňáký, nějaký ty, takovym tim
-            '0' => ['prontype' => 'ind', 'other' => 'prontype=víceslovné'],
+            '0' => ['prontype' => 'ind', 'other' => {'prontype' => 'víceslovné'}],
             # víceslovné vztažné: to co, "to, co", něco co, "ten, kdo"
-            '-' => ['prontype' => 'rel', 'other' => 'prontype=víceslovné']
+            '-' => ['prontype' => 'rel', 'other' => {'prontype' => 'víceslovné'}]
         },
         'encode_map' =>
 
@@ -418,17 +470,18 @@ sub _create_atoms
                                                                                '@'      => '8' }},
                                                      '@'    => { 'reflex' => { 'reflex' => '3',
                                                                                '@'      => '1' }}}},
-                              'ind' => { 'other' => { 'prontype=víceslovné' => '0',
-                                                      '@'                   => '2' }},
+                              'ind' => { 'other/prontype' => { 'víceslovné' => '0',
+                                                               '@'          => '2' }},
                               'dem' => '4',
                               'int' => '5',
-                              'rel' => { 'other' => { 'prontype=víceslovné' => '-',
-                                                      '@'                   => '6' }},
+                              'rel' => { 'other/prontype' => { 'víceslovné' => '-',
+                                                               '@'          => '6' }},
                               'neg' => '7' }}
     );
     # NUMERAL TYPE ####################
     $atoms{numeral_type} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'numeral_type',
         'decode_map' =>
         {
@@ -443,24 +496,24 @@ sub _create_atoms
             # neurčitá: několik, kolik, pár, tolik, několikrát
             '5' => ['prontype' => 'ind'],
             # víceslovná základní: dvě stě, tři tisíce, deset tisíc, sedum set, čtyři sta
-            '6' => ['pos' => 'num', 'numtype' => 'card', 'other' => 'numtype=víceslovná'],
+            '6' => ['pos' => 'num', 'numtype' => 'card', 'other' => {'numtype' => 'víceslovná'}],
             # víceslovná řadová: sedumdesátym druhym, šedesátej vosmej, osmdesátém devátém
-            '7' => ['pos' => 'adj', 'numtype' => 'ord', 'other' => 'numtype=víceslovná'],
+            '7' => ['pos' => 'adj', 'numtype' => 'ord', 'other' => {'numtype' => 'víceslovná'}],
             # víceslovná druhová
-            '8' => ['pos' => 'adj', 'numtype' => 'gen', 'other' => 'numtype=víceslovná'],
+            '8' => ['pos' => 'adj', 'numtype' => 'gen', 'other' => {'numtype' => 'víceslovná'}],
             # víceslovná násobná
-            '9' => ['pos' => 'adv', 'numtype' => 'mult', 'other' => 'numtype=víceslovná'],
+            '9' => ['pos' => 'adv', 'numtype' => 'mult', 'other' => {'numtype' => 'víceslovná'}],
             # víceslovná neurčitá: "tolik, kolik", "tolik (ženskejch), kolik"
-            '0' => ['prontype' => 'ind', 'other' => 'numtype=víceslovná']
+            '0' => ['prontype' => 'ind', 'other' => {'numtype' => 'víceslovná'}]
         },
         'encode_map' =>
 
-            { 'other' => { 'numtype=víceslovná' => { 'prontype' => { 'ind' => '0',
+            { 'other/numtype' => { 'víceslovná' => { 'prontype' => { 'ind' => '0',
                                                                      '@'   => { 'numtype' => { 'mult' => '9',
                                                                                                'gen'  => '8',
                                                                                                'ord'  => '7',
                                                                                                '@'    => '6' }}}},
-                           '@'                  => { 'prontype' => { 'ind' => '5',
+                                   '@'          => { 'prontype' => { 'ind' => '5',
                                                                      '@'   => { 'numtype' => { 'mult' => '4',
                                                                                                'gen'  => '3',
                                                                                                'ord'  => '2',
@@ -469,6 +522,7 @@ sub _create_atoms
     # ASPECT ####################
     $atoms{aspect} = $self->create_simple_atom
     (
+        'tagset' => 'cs::pmk',
         'intfeature' => 'aspect',
         'simple_decode_map' =>
         {
@@ -483,6 +537,7 @@ sub _create_atoms
     # ADVERB TYPE ####################
     $atoms{adverb_type} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'adverb_type',
         'decode_map' =>
         {
@@ -512,25 +567,27 @@ sub _create_atoms
     # PREPOSITION TYPE ####################
     $atoms{preposition_type} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'preposition_type',
         'decode_map' =>
         {
             # běžná vlastní: v, vod, na, z, se
             '1' => [],
             # nevlastní homonymní: vokolo, vedle, včetně, pomocí, během
-            '2' => ['other' => 'preptype=nevlastní'],
+            '2' => ['other' => {'preptype' => 'nevlastní'}],
             # víceslovná: z pohledů, na základě, na začátku, za účelem, v rámci
-            '3' => ['other' => 'preptype=víceslovná']
+            '3' => ['other' => {'preptype' => 'víceslovná'}]
         },
         'encode_map' =>
 
-            { 'other' => { 'preptype=nevlastní'  => '2',
-                           'preptype=víceslovná' => '3',
-                           '@'                   => '1' }}
+            { 'other/preptype' => { 'nevlastní'  => '2',
+                                    'víceslovná' => '3',
+                                    '@'          => '1' }}
     );
     # CONJUNCTION TYPE ####################
     $atoms{conjunction_type} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'conjunction_type',
         'decode_map' =>
         {
@@ -539,119 +596,123 @@ sub _create_atoms
             # podřadící jednoslovná: jesli, protože, že, jako, než
             '2' => ['conjtype' => 'sub'],
             # souřadící víceslovná: buďto-anebo, i-i, ať už-anebo, buď-nebo, ať-nebo
-            '3' => ['conjtype' => 'coor', 'other' => 'multitoken'],
+            '3' => ['conjtype' => 'coor', 'other' => {'conjtype' => 'multitoken'}],
             # podřadící víceslovná: jesli-tak, "na to, že", i když, i dyž, proto-že
-            '4' => ['conjtype' => 'sub', 'other' => 'multitoken'],
+            '4' => ['conjtype' => 'sub', 'other' => {'conjtype' => 'multitoken'}],
             # jiná jednoslovná: v korpusu se nevyskytuje
-            '5' => ['other' => 'conjtype=other'],
+            '5' => ['other' => {'conjtype' => 'other'}],
             # jiná víceslovná: v korpusu se nevyskytuje
-            '6' => ['other' => 'conjtype=other-multitoken'],
+            '6' => ['other' => {'conjtype' => 'other-multitoken'}],
             # nelze určit: buď, jak, sice, jednak, buďto
             '9' => []
         },
         'encode_map' =>
 
-            { 'other' => { 'conjtype=other'            => '5',
-                           'conjtype=other-multitoken' => '6',
-                           'multitoken'                => { 'conjtype' => { 'sub'  => '4',
+            { 'other/conjtype' => { 'other'            => '5',
+                                    'other-multitoken' => '6',
+                                    'multitoken'       => { 'conjtype' => { 'sub'  => '4',
                                                                             '@'    => '3' }},
-                           '@'                         => { 'conjtype' => { 'sub'  => '2',
+                                    '@'                => { 'conjtype' => { 'sub'  => '2',
                                                                             'coor' => '1',
                                                                             '@'    => '9' }}}}
     );
     # INTERJECTION TYPE ####################
     $atoms{interjection_type} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'interjection_type',
         'decode_map' =>
         {
             # běžné původní: hm, nó, no jo, jé, aha
             '1' => [],
             # substantivní: škoda, čoveče, mami, bóže, hovno
-            '2' => ['other' => 'intertype=noun'],
+            '2' => ['other' => {'intertype' => 'noun'}],
             # adjektivní: hotovo, bezva
-            '3' => ['other' => 'intertype=adj'],
+            '3' => ['other' => {'intertype' => 'adj'}],
             # zájmenné: jo, ne, jó, né
-            '4' => ['other' => 'intertype=pron'],
+            '4' => ['other' => {'intertype' => 'pron'}],
             # slovesné: neboj, sím, podivejte, hele, počkej
-            '5' => ['other' => 'intertype=verb'],
+            '5' => ['other' => {'intertype' => 'verb'}],
             # adverbiální: vážně, jistě, takle, depak, rozhodně
-            '6' => ['other' => 'intertype=adv'],
+            '6' => ['other' => {'intertype' => 'adv'}],
             # jiné: jaktože, pardón, zaplať pámbu, ahój, vůbec
-            '7' => ['other' => 'intertype=other'],
+            '7' => ['other' => {'intertype' => 'other'}],
             # víceslovné = frazém: v korpusu se nevyskytlo, resp. možná se vyskytlo a bylo označkováno jako frazém
-            '0' => ['other' => 'intertype=multitoken']
+            '0' => ['other' => {'intertype' => 'multitoken'}]
         },
         'encode_map' =>
 
-            { 'other' => { 'intertype=noun'       => '2',
-                           'intertype=adj'        => '3',
-                           'intertype=pron'       => '4',
-                           'intertype=verb'       => '5',
-                           'intertype=adv'        => '6',
-                           'intertype=other'      => '7',
-                           'intertype=multitoken' => '0',
-                           '@'                    => '1' }}
+            { 'other/intertype' => { 'noun'       => '2',
+                                     'adj'        => '3',
+                                     'pron'       => '4',
+                                     'verb'       => '5',
+                                     'adv'        => '6',
+                                     'other'      => '7',
+                                     'multitoken' => '0',
+                                     '@'          => '1' }}
     );
     # PARTICLE TYPE ####################
     $atoms{particle_type} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'particle_type',
         'decode_map' =>
         {
             # vlastní nehomonymní: asi, právě, také, spíš, přece
             '1' => [],
             # adverbiální: prostě, hnedle, naopak, třeba, tak
-            '2' => ['other' => 'parttype=adv'],
+            '2' => ['other' => {'parttype' => 'adv'}],
             # spojkové: teda, ani, jako, až, ale
-            '3' => ['other' => 'parttype=conj'],
+            '3' => ['other' => {'parttype' => 'conj'}],
             # jiné: nó, zrovna, jo, vlastně, to
-            '4' => ['other' => 'parttype=other'],
+            '4' => ['other' => {'parttype' => 'other'}],
             # víceslovné nevětné: no tak, tak ňák, že jo, nebo co, jen tak
-            '5' => ['other' => 'parttype=multitoken]
+            '5' => ['other' => {'parttype' => 'multitoken'}]
         },
         'encode_map' =>
 
-            { 'other' => { 'parttype=adv'        => '2',
-                           'parttype=conj'       => '3',
-                           'parttype=other'      => '4',
-                           'parttype=multitoken' => '5',
-                           '@'                   => '1' }}
+            { 'other/parttype' => { 'adv'        => '2',
+                                    'conj'       => '3',
+                                    'other'      => '4',
+                                    'multitoken' => '5',
+                                    '@'          => '1' }}
     );
     # IDIOM TYPE ####################
     ###!!! Perhaps we could reverse the priorities. Idiom type would be (mostly) decoded
     ###!!! as $fs->{pos}, and $fs->{other} would record that this is an idiom.
     $atoms{idiom_type} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'idiom_type',
         'decode_map' =>
         {
             # verbální: vyprdnout se na to, mít dojem, mít smysl, měli rádi, jít vzorem
-            '1' => ['other' => 'idiomtype=verb'],
+            '1' => ['other' => {'idiomtype' => 'verb'}],
             # substantivní: hlava rodiny, žebříček hodnot, říjnový revoluci, diamantovou svatbou, českej člověk
-            '2' => ['other' => 'idiomtype=noun'],
+            '2' => ['other' => {'idiomtype' => 'noun'}],
             # adjektivní: ten a ten, každym druhym, toho a toho, jako takovou, výše postavených
-            '3' => ['other' => 'idiomtype=adj'],
+            '3' => ['other' => {'idiomtype' => 'adj'}],
             # adverbiální: u nás, v naší době, tak ňák, za chvíli, podle mýho názoru
-            '4' => ['other' => 'idiomtype=adv'],
+            '4' => ['other' => {'idiomtype' => 'adv'}],
             # propoziční včetně interjekčních: to stálo vodříkání, to snad není možný, je to tím že, největší štěstí je
-            '5' => ['other' => 'idiomtype=prop'],
+            '5' => ['other' => {'idiomtype' => 'prop'}],
             # jiné: samy za sebe, všechno možný, jak který, všech možnejch, jednoho vůči druhýmu
-            '6' => ['other' => 'idiomtype=other']
+            '6' => ['other' => {'idiomtype' => 'other'}]
         },
         'encode_map' =>
 
-            { 'other' => { 'idiomtype=verb' => '1',
-                           'idiomtype=noun' => '2',
-                           'idiomtype=adj'  => '3',
-                           'idiomtype=adv'  => '4',
-                           'idiomtype=prop' => '5',
-                           '@'              => '6' }}
+            { 'other/idiomtype' => { 'verb' => '1',
+                                     'noun' => '2',
+                                     'adj'  => '3',
+                                     'adv'  => '4',
+                                     'prop' => '5',
+                                     '@'    => '6' }}
     );
     # OTHER REAL TYPE ####################
     # (skutečný druh)
     $atoms{other_real_type} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'other_real_type',
         'decode_map' =>
         {
@@ -671,6 +732,7 @@ sub _create_atoms
     # PROPER NOUN TYPE ####################
     $atoms{proper_noun_type} = $self->create_atom
     (
+        'tagset' => 'cs::pmk',
         'surfeature' => 'proper_noun_type',
         'decode_map' =>
         {
@@ -1686,6 +1748,62 @@ sub _create_atoms
 
 
 #------------------------------------------------------------------------------
+# Creates a map that tells for each surface part of speech which features are
+# relevant and in what order they appear.
+#------------------------------------------------------------------------------
+sub _create_feature_map
+{
+    my $self = shift;
+    my %features =
+    (
+        # substantivum = noun
+        # According to documentation the last attribute should be style but it does not occur in the data.
+        # 2! druh 3. třída 4. valence 5! rod 6. číslo 7. pád 8. funkce 9! styl
+        '1' => ['pos', 'noun_type', 'noun_class', 'valency1', 'gender', 'number', 'case', 'function1'],
+        # adjektivum = adjective
+        # 2! druh 3! poddruh 4. třída 5. valence 6. rod 7. číslo 8. pád 9. stupeň 10. funkce 11! styl
+        '2' => ['pos', 'adjective_type', 'adjective_subtype', 'adjective_class', 'valency2', 'gender', 'number', 'case', 'degree', 'function2'],
+        # zájmeno = pronoun
+        # 2! druh 3. valence 4. rod 5. číslo 6. pád 7. funkce 8. styl
+        '3' => ['pos', 'pronoun_type', 'valency3', 'gender', 'number', 'case', 'function3'],
+        # číslovka = numeral
+        # 2! druh 3. valence 4. rod 5. číslo 6. pád 7. pád subst./pron. 8. funkce 9. styl
+        '4' => ['pos', 'numeral_type', 'valency4', 'gender', 'number', 'case', 'counted_case', 'function4'],
+        # sloveso = verb
+        # 2. vid 3. valence subjektová 4. valence 5. osoba/číslo 6. způsob/čas/slovesný rod 7. imper./neurč. tvary 8! víceslovnost a rezultativnost 9. jmenný rod 10! zápor 11! styl
+        '5' => ['pos', 'aspect', 'valency5', 'valency5', 'person_number', 'mood_tense_voice', 'nonfinite_verb_form', 'multiwordness_and_resultativity', 'participle_gender_number', 'negativeness'],
+        # adverbium = adverb
+        # 2! druh 3. třída 4. valence/funkce 5. stupeň 6! styl
+        '6' => ['pos', 'adverb_type', 'adverb_class', 'valency6', 'degree'],
+        # předložka = preposition
+        # 2! druh 3. třída 4. valenční pád 5. funkční závislost levá 6! styl
+        '7' => ['pos', 'preposition_type', 'preposition_class', 'case', 'function7'],
+        # spojka = conjunction
+        # 2! druh 3. třída 4. valence 5! styl
+        '8' => ['pos', 'conjunction_type', 'conjunction_class', 'valency8'],
+        # citoslovce = interjection
+        # 2! druh 3. třída 4! styl
+        '9' => ['pos', 'interjection_type', 'interjection_class'],
+        # částice = particle
+        # 2! druh 3. třída 4. valence 5. modus věty 6! styl
+        '0' => ['pos', 'particle_type', 'particle_class', 'valency0', 'sentmod'],
+        # idiom a frazém = idiom and set phrase
+        # 2! druh; other positions are not defined for F6: 3. valence substantivní 4. valence
+        'F6' => ['pos', 'idiom_type'],
+        'F'  => ['pos', 'idiom_type', 'valency5', 'valency5'],
+        # jiné = other (real type encoded at second position: CZP)
+        # 2! skutečný druh: CZP 7! styl
+        # pouze pro P: P3. druh P4. rod P5. číslo P6. pád
+        'JC' => ['pos', 'other_real_type'],
+        'JZ' => ['pos', 'other_real_type'],
+        'JP' => ['pos', 'other_real_type', 'proper_noun_type', 'gender', 'number', 'case']
+    );
+    return \%features;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Decodes a physical tag (string) and returns the corresponding feature
 # structure.
 #------------------------------------------------------------------------------
@@ -1694,21 +1812,38 @@ sub decode
     my $self = shift;
     my $tag = shift;
     my $fs = Lingua::Interset::FeatureStructure->new();
-    $fs->set_tagset('cs::pdt');
+    $fs->set_tagset('cs::pmk');
+    # Convert the tag to an array of values.
+    my $tag1 = $tag;
+    my @values;
+    while($tag1 =~ s/^<i(\d+)>(.*?)<\/i\1>//)
+    {
+        my $position = $1;
+        my $value = $2;
+        $values[$position-1] = $value;
+    }
     my $atoms = $self->atoms();
-    my @chars = split(//, $tag);
-    $atoms->{pos}->decode_and_merge_hard($chars[0].$chars[1], $fs);
-    $atoms->{gender}->decode_and_merge_hard($chars[2], $fs);
-    $atoms->{number}->decode_and_merge_hard($chars[3], $fs);
-    $atoms->{case}->decode_and_merge_hard($chars[4], $fs);
-    $atoms->{possgender}->decode_and_merge_hard($chars[5], $fs);
-    $atoms->{possnumber}->decode_and_merge_hard($chars[6], $fs);
-    $atoms->{person}->decode_and_merge_hard($chars[7], $fs);
-    $atoms->{tense}->decode_and_merge_hard($chars[8], $fs);
-    $atoms->{degree}->decode_and_merge_hard($chars[9], $fs);
-    $atoms->{negativeness}->decode_and_merge_hard($chars[10], $fs);
-    $atoms->{voice}->decode_and_merge_hard($chars[11], $fs);
-    $atoms->{variant}->decode_and_merge_hard($chars[14], $fs);
+    my $features = $self->feature_map();
+    my $pos = $values[1];
+    if($pos eq 'J' || $pos eq 'F' && $values[2] eq '6')
+    {
+        $pos .= $values[2];
+    }
+    if(exists($features->{$pos}))
+    {
+        my @features = @{$features->{$pos}};
+        for(my $i = 0; $i<=$#features; $i++)
+        {
+            confess("Unknown atom '$features[$i]'") if(!exists($atoms->{$features[$i]}));
+            $atoms->{$features[$i]}->decode_and_merge_hard($values[$i], $fs);
+        }
+    }
+    # untagged tokens in multi-word expressions have empty tags like this:
+    # <i1></i1><i2></i2><i3></i3><i4></i4><i5></i5><i6></i6><i7></i7><i8></i8><i9></i9><i10></i10><i11></i11>
+    else
+    {
+        $fs->set('other', {'pos' => 'untagged'});
+    }
     return $fs;
 }
 
@@ -1721,33 +1856,43 @@ sub encode
 {
     my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
-    my $tag = '';
-    # pos and subpos
-    # Numerals and pronouns must come first because they can be at the same time also nouns or adjectives.
-    if($fs->is_numeral())
-    {
-    # Now encode the features.
-    # The PDT tagset distinguishes unknown values ("X") and irrelevant features ("-").
-    # Interset does not do this distinction but we have prepared the defaults for empty values above.
-    my @tag = split(//, $tag);
-    my @features = ('pos', 'subpos', 'gender', 'number', 'case', 'possgender', 'possnumber', 'person', 'tense', 'degree', 'negativeness', 'voice', undef, undef, 'variant');
     my $atoms = $self->atoms();
-    for(my $i = 2; $i<15; $i++)
+    my $features = $self->feature_map();
+    my $pos = $atoms->{pos}->encode($fs);
+    my @values;
+    if(exists($features->{$pos}))
     {
-        next if($i==12 || $i==13);
-        my $atag = $atoms->{$features[$i]}->encode($fs);
-        # If we got undef, there is something wrong with our encoding tables.
-        if(!defined($atag))
+        my @features = @{$features->{$pos}};
+        for(my $i = 0; $i<=$#features; $i++)
         {
-            print STDERR ("\n", $fs->as_string(), "\n");
-            confess("Cannot encode '$features[$i]'");
-        }
-        if($atag ne '')
-        {
-            $tag[$i] = $atag;
+            confess("Unknown atom '$features[$i]'") if(!exists($atoms->{$features[$i]}));
+            $values[$i] = $atoms->{$features[$i]}->encode($fs);
         }
     }
-    $tag = join('', @tag);
+    my $tag;
+    # Convert the array of values to a tag in the XML format.
+    # If $values[0] is empty, then all are empty.
+    # untagged tokens in multi-word expressions have empty tags like this:
+    # <i1></i1><i2></i2><i3></i3><i4></i4><i5></i5><i6></i6><i7></i7><i8></i8><i9></i9><i10></i10><i11></i11>
+    if(!defined($values[0]) || $values[0] eq '')
+    {
+        $tag = '<i1></i1><i2></i2><i3></i3><i4></i4><i5></i5><i6></i6><i7></i7><i8></i8><i9></i9><i10></i10><i11></i11>';
+    }
+    else
+    {
+        for(my $i = 0; $i<11; $i++)
+        {
+            my $value = $values[$i];
+            $value = '' if(!defined($value));
+            # Undefined attributes have the value '_', only <i11>, for some reason, is empty.
+            if($value eq '')
+            {
+                $value = $i<10 ? '_' : '';
+            }
+            my $iplus = $i+1;
+            $tag .= "<i$iplus>$value</i$iplus>";
+        }
+    }
     return $tag;
 }
 
