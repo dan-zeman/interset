@@ -1933,6 +1933,7 @@ sub decode
         my @features = @{$features->{$pos}};
         for(my $i = 0; $i<=$#features; $i++)
         {
+            next if(!defined($features[$i]));
             confess("Unknown atom '$features[$i]'") if(!exists($atoms->{$features[$i]}));
             if($features[$i] eq 'gender')
             {
@@ -14456,6 +14457,7 @@ Interset driver for the long tags of the Prague Spoken Corpus (Pražský mluven�
 
 L<Lingua::Interset>,
 L<Lingua::Interset::Tagset>,
+L<Lingua::Interset::Tagset::CS::Pmkkr>,
 L<Lingua::Interset::FeatureStructure>
 
 =cut
