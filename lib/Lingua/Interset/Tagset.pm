@@ -379,7 +379,7 @@ sub test_tag
     $f->set_other('');
     my $tag2 = $self->encode($f);
     # Is the resulting tag known?
-    if(0 && !$self->is_known_tag($tag2))
+    if(!$self->is_known_tag($tag2))
     {
         my $sfs2 = $f->as_string();
         my $message = "Error: encode(decode(x)-other) gives an unknown tag\n";
