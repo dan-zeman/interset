@@ -1,12 +1,20 @@
 {{$NEXT}}
 
+Interface:
+* New methods for the 'other' feature: get_other_subfeature() and is_other().
+* Fixed treatment of the 'other' feature in atoms.
+
+Drivers:
+* CS::Pmk
+* CS::Pmkkr
+
+
+
 2.005     2014-07-11 17:10:37+02:00 Europe/Prague
 
 Interface:
 * FeatureStructure method merge_hash() renamed to merge_hash_hard() and added new method merge_hash_soft().
 * Similarly, Atom method decode_and_merge() split to decode_and_merge_hard() and decode_and_merge_soft().
-* New methods for the 'other' feature: get_other_subfeature() and is_other().
-* Fixed treatment of the 'other' feature in atoms.
 
 Features:
 * New value of feature 'advtype': 'sta' (adverb of state, e.g. Czech "horko", "zima", "volno", "nanic").
@@ -14,8 +22,6 @@ Features:
 Drivers:
 * CS::Ajka
 * CS::Cnk
-* CS::Pmk
-* CS::Pmkkr
 
 
 
