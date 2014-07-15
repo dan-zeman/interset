@@ -418,6 +418,7 @@ sub _create_atoms
     # Thus, setting person = '2' will distinguish these forms from the normal ones.
     $atoms{clitic_s} = $self->create_atom
     (
+        'tagset'     => 'cs::multext',
         'surfeature' => 'clitic_s',
         'decode_map' =>
         {
@@ -426,7 +427,15 @@ sub _create_atoms
         },
         # We cannot use encode_map for decisions based on the 'other' feature.
         # Custom code must be used instead of calling Atom::encode().
-        'encode_map' => {}
+        'encode_map' =>
+
+            { 'other/clitic_s' => { 'y' => 'y',
+            # Clitic_s is obligatory for pronouns.
+            # It is also obligatory for participles and infinitives (!) but not other verb forms.
+                                    '@' => { 'prontype' => { ''  => { 'verbform' => { 'inf'  => 'n',
+                                                                                      'part' => 'n',
+                                                                                      '@'    => '-' }},
+                                                             '@' => 'n' }}}}
     );
     # 21. NUMERAL FORM ####################
     $atoms{numform} = $self->create_simple_atom
@@ -653,29 +662,7 @@ sub encode
     {
         if(defined($features[$i]))
         {
-            # Encoding clitic_s cannot be defined using encode map because it depends on the value of the 'other' feature.
-            if($features[$i] eq 'clitic_s')
-            {
-                my $other = $fs->get_other_for_tagset('cs::multext');
-                if(ref($other) eq 'HASH' && $other->{clitic_s} eq 'y')
-                {
-                    $tag .= 'y';
-                }
-                # Clitic_s is obligatory for pronouns.
-                # It is also obligatory for participles and infinitives (!) but not other verb forms.
-                elsif($fs->is_pronoun() || $fs->is_participle() || $fs->is_infinitive())
-                {
-                    $tag .= 'n';
-                }
-                else
-                {
-                    $tag .= '-';
-                }
-            }
-            else
-            {
-                $tag .= $atoms->{$features[$i]}->encode($fs);
-            }
+            $tag .= $atoms->{$features[$i]}->encode($fs);
         }
         else
         {

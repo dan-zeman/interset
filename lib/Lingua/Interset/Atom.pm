@@ -32,6 +32,9 @@ has 'decode_map' => ( isa => 'HashRef', is => 'ro', required => 1 );
 #                 'fem'  => 'F',
 #                 '@'    => 'N' }}
 has 'encode_map' => ( isa => 'HashRef', is => 'ro', required => 1 );
+# Atoms are typically used as micro drivers for individual features within drivers for structured tagsets.
+# If this is the case, the atom may need to be able to identify the tagset it works for, in order to be able to interpret values of the 'other' feature.
+has 'tagset' => ( isa => 'Str', is => 'ro', 'default' => '', documentation => 'Identifier of tagset that this atom is part of. Used when querying the other feature.' );
 
 
 
@@ -53,6 +56,7 @@ sub decode
     my $tag = shift;
     my $fs = Lingua::Interset::FeatureStructure->new();
     my $map = $self->decode_map();
+    $tag = '' if(!defined($tag));
     my $assignments = $map->{$tag};
     if($assignments)
     {
@@ -84,6 +88,8 @@ sub decode_and_merge_hard
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $fs1 = $self->decode($tag);
     my $hash = $fs1->get_hash();
+    # Special behavior is defined if the 'other' feature in both hashes is a hash of subfeatures.
+    _merge_other_subhashes($fs->other(), $hash->{other}, $hash);
     $fs->merge_hash_hard($hash);
     return $fs;
 }
@@ -111,8 +117,33 @@ sub decode_and_merge_soft
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $fs1 = $self->decode($tag);
     my $hash = $fs1->get_hash();
+    # Special behavior is defined if the 'other' feature in both hashes is a hash of subfeatures.
+    _merge_other_subhashes($fs->other(), $hash->{other}, $hash);
     $fs->merge_hash_soft($hash);
     return $fs;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Special merging of the 'other' feature in the case that it is a sub-hash of
+# subfeatures.
+#------------------------------------------------------------------------------
+sub _merge_other_subhashes
+{
+    my $tgt_other = shift;
+    my $src_other = shift;
+    my $src_fs_hash = shift; # we will remove other from here after processing its contents
+    if(ref($src_other) eq 'HASH' && ref($tgt_other) eq 'HASH')
+    {
+        my @keys = keys(%{$src_other});
+        foreach my $key (@keys)
+        {
+            # The value is probably a plain scalar but it is not guaranteed, so we must create a deep copy.
+            $tgt_other->{$key} = Lingua::Interset::FeatureStructure::_duplicate_recursive($src_other->{$key});
+        }
+        delete($src_fs_hash->{other});
+    }
 }
 
 
@@ -135,7 +166,7 @@ sub encode
     my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $map = $self->encode_map();
-    return _encoding_step($map, $fs);
+    return $self->_encoding_step($map, $fs);
 }
 
 
@@ -146,6 +177,7 @@ sub encode
 #------------------------------------------------------------------------------
 sub _encoding_step
 {
+    my $self = shift;
     my $map = shift; # reference to hash with only one key
     my $fs = shift; # Lingua::Interset::FeatureStructure
     # Example of an encoding map:
@@ -159,18 +191,40 @@ sub _encoding_step
     if(scalar(@keys)==1)
     {
         my $feature = $keys[0];
-        if(!feature_valid($feature))
+        my $value;
+        if($feature eq 'other')
+        {
+            my $tagset = $self->tagset();
+            if($tagset eq '')
+            {
+                confess("Encoding map refers to 'other' but the 'tagset' attribute of the atom is empty");
+            }
+            $value = $fs->get_other_for_tagset($tagset);
+        }
+        elsif($feature =~ m-^other/(.+)$-)
+        {
+            my $subfeature = $1;
+            my $tagset = $self->tagset();
+            if($tagset eq '')
+            {
+                my $surfeature = $self->surfeature();
+                confess("Encoding map (surface feature = '$surfeature') refers to 'other' but the 'tagset' attribute of the atom is empty");
+            }
+            $value = $fs->get_other_subfeature($tagset, $subfeature);
+        }
+        elsif(feature_valid($feature))
+        {
+            $value = $fs->get_joined($feature);
+        }
+        else
         {
             confess("Unknown feature '$feature'");
         }
-        ###!!! If $feature is 'other' then we should call $fs->get_other_for_tagset($tagset) instead!
-        ###!!! The problem is that the Atom currently does not know in which tagset it is incorporated. Fix this!
-        my $value = $fs->get_joined($feature);
         my $valuehash = $map->{$feature};
         my $target = _get_decision_for_value($value, $valuehash); # output string or next-level map
         if(ref($target) eq 'HASH')
         {
-            return _encoding_step($target, $fs);
+            return $self->_encoding_step($target, $fs);
         }
         else
         {
@@ -205,7 +259,7 @@ sub list
     my $self = shift;
     my $map = $self->encode_map();
     my %tagset;
-    _list_step($map, \%tagset);
+    $self->_list_step($map, \%tagset);
     my @list = sort(keys(%tagset));
     return \@list;
 }
@@ -219,6 +273,7 @@ sub list
 #------------------------------------------------------------------------------
 sub _list_step
 {
+    my $self = shift;
     my $map = shift; # reference to hash with only one key
     my $tagset = shift; # reference to hash where we collect surface tags
     # Example of an encoding map:
@@ -239,7 +294,7 @@ sub _list_step
             my $target = $valuehash->{$value};
             if(ref($target) eq 'HASH')
             {
-                _list_step($target, $tagset);
+                $self->_list_step($target, $tagset);
             }
             else
             {
@@ -440,8 +495,38 @@ Example:
                   'fem'       => 'F',
                   '@'         => 'N' }}
 
+The C<other> feature, if queried by the map, receives special treatment.
+First, the C<tagset> attribute must be filled in and its value is checked against the C<tagset> feature.
+The value is only processed if the tagset ids match (otherwise an empty value is assumed).
+String values and array values (given as vertical-bar-separated strings) are processed
+similarly to normal features.
+In addition, it is possible to have a hash of subfeatures stored in C<other>,
+and to query them as 'other/subfeature'.
+
+Example:
+
+  { 'other/subfeature1' => { 'x' => 'X',
+                             'y' => 'Y',
+                             '@' => { 'other/subfeature2' => { '1' => 'S',
+                                                               '@' => '' }}}}
+
+The corresponding C<decode_map> would be in this case:
+
+  {
+      'X' => ['other' => {'subfeature1' => 'x'}],
+      'Y' => ['other' => {'subfeature1' => 'y'}],
+      'S' => ['other' => {'subfeature2' => '1'}]
+  }
+
 Note that in general it is not possible to automatically derive the C<encode_map> from the C<decode_map>
 or vice versa. However, there are simple instances of atoms where this is possible.
+
+=attr tagset
+
+Optional identifier of the tagset that this atom is part of.
+It is required when the encoding map queries values of the C<other> feature
+(to check against the C<tagset> feature that the values come from the same tagset).
+Default is empty string.
 
 =head1 SEE ALSO
 

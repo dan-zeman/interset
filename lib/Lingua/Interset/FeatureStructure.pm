@@ -1375,6 +1375,130 @@ sub get_other_for_tagset
 
 
 #------------------------------------------------------------------------------
+# If tagset matches and if other is a hash, this method returns the value of
+# a subfeature, i.e. a value stored in the hash under a particular key.
+#------------------------------------------------------------------------------
+=method get_other_subfeature()
+
+  my $value = $fs->get_other_subfeature ('cs::pdt', 'my_weird_feature');
+
+Takes a tagset id and name of a non-Interset feature, stored as a subfeature of
+C<other>. The C<other> feature may have arbitrary values ranging from plain
+scalars to references to multi-level nested structures of hashes and arrays.
+This method focuses on the case that C<other> contains a single-level hash.
+The hash keys can be seen as names of additional features that are otherwise
+not available in Interset. These additional features are subfeatures of
+C<other> and their values are strings. This is one of the most useful ways of
+deploying the C<other> feature.
+
+If the given tagset id matches the value of the C<tagset> feature,
+and the value of C<other> is a hash reference,
+the method uses the subfeature name as a key to the hash.
+If there is a value stored under the hash, it returns the value.
+(In case the value is not a string but a reference, a deep copy is created.)
+Otherwise it returns the empty string.
+
+=cut
+sub get_other_subfeature
+{
+    my $self = shift;
+    my $tagset = shift;
+    my $subfeature = shift;
+    my $other = $self->other();
+    if($tagset eq $self->tagset() && defined($other) && ref($other) eq 'HASH' && exists($other->{$subfeature}))
+    {
+        # This method was created because of simple hashes whose values are strings.
+        # But there is no guarantee that the value is not a reference and thus we must return a deep copy.
+        return _duplicate_recursive($other->{$subfeature});
+    }
+    return '';
+}
+
+
+
+#------------------------------------------------------------------------------
+# Tests tagset + other features. Instead of returning a deep copy of the
+# possibly structured value (see get_other_for_tagset()), this method only
+# queries whether the other feature has/contains one particular scalar value.
+#------------------------------------------------------------------------------
+=method is_other()
+
+  if ($fs->is_other ('cs::pdt', 'my_weird_tag') ||
+      $fs->is_other ('cs::pdt', 'my_weird_feature', 'much_weirder_value'))
+  {
+      ...
+  }
+
+Takes a tagset id.
+If it does not match the value of the C<tagset> feature, returns an empty string.
+If the tagset ids do match, the method queries the value of the C<other>
+feature. Unlike C<get_other_for_tagset()>, it does not create a deep copy of the
+possibly structured value. Instead, it only checks whether the feature has or
+contains one particular scalar value.
+
+There are no a priori restrictions on the values of the C<other> feature.
+The value can be a multi-level nested structure of hashes and arrays if necessary.
+However, most of the time it will be either a scalar value, or a flat (one-level)
+hash of feature-value pairs that cannot be stored using standard Interset features.
+
+Besides the tagset id, this method takes one or two additional arguments.
+If the current value of C<other> is scalar, the method checks whether it equals
+to Argument 1. If the current value is an array reference, the method checks
+whether the array contains Argument 1. If the current value is a hash reference,
+the method interprets Argument 1 as hash key and checks whether the value
+stored under that key equals to Argument 2.
+
+It returns 1 when a match is found and 0 otherwise.
+
+=cut
+sub is_other
+{
+    my $self = shift;
+    my $tagset = shift;
+    my $arg1 = shift;
+    my $arg2 = shift;
+    $arg1 = '' if(!defined($arg1));
+    $arg2 = '' if(!defined($arg2));
+    if($self->tagset() eq $tagset)
+    {
+        my $other = $self->other();
+        $other = '' if(!defined($other));
+        my $ref = ref($other);
+        if($ref eq '' && $other eq $arg1)
+        {
+            return 1;
+        }
+        elsif($ref eq 'ARRAY' && any { $_ eq $arg1 } (@{$other}))
+        {
+            return 1;
+        }
+        elsif($ref eq 'HASH' && exists($other->{$arg1}))
+        {
+            my $value = $other->{$arg1};
+            $value = '' if(!defined($value));
+            if($value eq $arg2)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
 # Tests whether values of a feature contain one particular value. Useful if we
 # know that a feature may have array of values.
 #------------------------------------------------------------------------------

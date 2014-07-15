@@ -145,6 +145,9 @@ sub test
             print("$error\n");
         }
         $n_errors += @errors;
+        # We do not want to wait for all the errors if there are thousands of them.
+        # We want to start fixing them because we have to fix them all anyway.
+        last if($n_errors>=100);
         ###!!! By moving the test to the Tagset module we lost updating the %unknown hash.
     }
     # We can print the list of all tags including the unknown ones but normally we do not want to.
