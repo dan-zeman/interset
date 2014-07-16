@@ -24,6 +24,83 @@ has 'feature_map' => ( isa => 'HashRef', is => 'ro', builder => '_create_feature
 
 
 #------------------------------------------------------------------------------
+# Creates atomic drivers for surface features.
+#------------------------------------------------------------------------------
+sub _create_atoms
+{
+    my $self = shift;
+    # Most atoms can be inherited but some have to be redefined.
+    my $atoms = $self->SUPER::_create_atoms();
+    # Croatian verbform feature is a merger of verbform, mood, tense and voice.
+    # VERB FORM ####################
+    $atoms->{verbform} = $self->create_atom
+    (
+        'surfeature' => 'verbform',
+        'decode_map' =>
+        {
+            'n' => ['verbform' => 'inf'],                                     # biti, bit
+            'p' => ['verbform' => 'part'],                                    # bio, bila, bilo, bili, bile, bila
+            'r' => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pres'], # sam, si, je, smo, ste, su
+            'f' => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'fut'],  # no occurrence? these forms are also tagged as present: budem, budeš, bude, budemo, budete, budu
+            'm' => ['verbform' => 'fin', 'mood' => 'imp'],                    # budi, budimo, budite
+            'a' => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'aor'],  # bih, bi, bi, bismo, biste, bi
+            'e' => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'imp']   # bijah, bijaše, bijaše, bijasmo, bijaste, bijahu
+        },
+        'encode_map' =>
+
+            { 'mood' => { 'imp' => 'm',
+                          '@'   => { 'verbform' => { 'part'  => 'p',
+                                                     'trans' => 't',
+                                                     'inf'   => 'n',
+                                                     '@'     => { 'tense' => { 'pres' => 'r',
+                                                                               'fut'  => 'f',
+                                                                               'aor'  => 'a',
+                                                                               'imp'  => 'e',
+                                                                               'past' => 'a',
+                                                                               'narr' => 'a',
+                                                                               'pqp'  => 'a',
+                                                                               '@'    => 'n' }}}}}}
+    );
+    # ADJTYPE ####################
+    $atoms->{adjtype} = $self->create_atom
+    (
+        'surfeature' => 'adjtype',
+        'decode_map' =>
+        {
+            # general adjective
+            # examples: važan, velik, dobar
+            'g' => [],
+            # possessive adjective
+            # examples: Žuvanićev, Ashdownov, vladin
+            's' => ['poss' => 'poss'],
+            # participial adjective
+            # examples: žrtvovan, zvan, znan, zloupotrebljavan
+            'p' => ['verbform' => 'part']
+        },
+        'encode_map' =>
+
+            { 'poss' => { 'poss' => 's',
+                           '@'   => { 'verbform' => { 'part' => 'p',
+                                                      '@'    => 'g' }}}}
+    );
+    # DEFINITENESS ####################
+    # Definiteness is defined only for adjectives in Croatian.
+    # It distinguishes long and short forms of Slavic adjectives. In Czech, the "indefinite" form would be "jmenný tvar" (nominal form, as opposed to the long, pronominal form).
+    $atoms->{definiteness} = $self->create_simple_atom
+    (
+        'intfeature' => 'definiteness',
+        'simple_decode_map' =>
+        {
+            'y' => 'def', # glavni, bivši, novi, prvi, turski
+            'n' => 'ind'  # važan, velik, poznat, dobar, ključan
+        }
+    );
+    return $atoms;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Creates a map that tells for each surface part of speech which features are
 # relevant and in what order they appear.
 #------------------------------------------------------------------------------
@@ -90,6 +167,10 @@ sub encode
     {
         if(defined($features[$i]))
         {
+            if(!exists($atoms->{$features[$i]}))
+            {
+                confess("Cannot find atom for surface feature '$features[$i]'");
+            }
             $tag .= $atoms->{$features[$i]}->encode($fs);
         }
         else
