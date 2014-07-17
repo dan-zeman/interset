@@ -79,6 +79,9 @@ sub _create_atoms
             # abbreviation
             # examples: atd., apod.
             'Y' => ['abbr' => 'abbr'],
+            # punctuation
+            # examples: , .
+            'Z' => ['pos' => 'punc'],
             # residual
             'X' => []
         },
@@ -96,6 +99,7 @@ sub _create_atoms
                                                                          'conj' => 'C',
                                                                          'part' => 'Q',
                                                                          'int'  => 'I',
+                                                                         'punc' => 'Z',
                                                                          '@'    => 'X' }},
                                                      '@' => 'M' }}}}
     );
