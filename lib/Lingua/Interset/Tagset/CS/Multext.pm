@@ -71,17 +71,18 @@ sub _create_atoms
         'encode_map' =>
 
             { 'abbr' => { 'abbr' => 'Y',
-                          '@'    => { 'numtype' => { '' => { 'prontype' => { '' => { 'pos' => { 'noun' => 'N',
-                                                                                     'adj'  => 'A',
-                                                                                     'num'  => 'M',
-                                                                                     'verb' => 'V',
-                                                                                     'adv'  => 'R',
-                                                                                     'adp'  => 'S',
-                                                                                     'conj' => 'C',
-                                                                                     'part' => 'Q',
-                                                                                     'int'  => 'I',
-                                                                                     '@'    => 'X' }},
-                                                                  '@' => 'P' }},
+                          '@'    => { 'numtype' => { ''  => { 'pos' => { 'noun' => { 'prontype' => { ''  => 'N',
+                                                                                                     '@' => 'P' }},
+                                                                         'adj'  => { 'prontype' => { ''  => 'A',
+                                                                                                     '@' => 'P' }},
+                                                                         'num'  => 'M',
+                                                                         'verb' => 'V',
+                                                                         'adv'  => 'R',
+                                                                         'adp'  => 'S',
+                                                                         'conj' => 'C',
+                                                                         'part' => 'Q',
+                                                                         'int'  => 'I',
+                                                                         '@'    => 'X' }},
                                                      '@' => 'M' }}}}
     );
     # 2. NOUNTYPE ####################

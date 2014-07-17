@@ -95,6 +95,115 @@ sub _create_atoms
             'n' => 'ind'  # važan, velik, poznat, dobar, ključan
         }
     );
+    # IS PRONOUN CLITIC? ####################
+    # clitic = yes for short forms of pronouns that behave like clitics (there exists a long form with identical meaning).
+    # Examples: me, mi, nam (vs. "nama"), te, ti, vam, ih, im, njeg, ga, mu, nj, njem, njim, je, joj, ju, njom
+    $atoms->{clitic} = $self->create_atom
+    (
+        'surfeature' => 'clitic',
+        'decode_map' =>
+        {
+            'y' => ['variant' => 'short'],
+            'n' => ['variant' => 'long']
+        },
+        'encode_map' =>
+
+            { 'variant' => { 'short' => 'y',
+                             'long'  => 'n',
+                             '@'     => '-' }}
+    );
+    # REFERENT TYPE OF PRONOUN ####################
+    # For Czech this feature distinguished between reflexive personal and reflexive possessive pronouns.
+    # Any non-empty value thus implied reflexivity. It is not true for Croatian where the possessive ('s')
+    # referent type is set for the non-reflexive possessive pronoun "naša" (Ps1fsnp--sa).
+    # (It is strange because other non-reflexive possessive pronouns have this feature empty.
+    # It occurs once in the corpus but the same pronoun occurs with the empty value (Ps1fsnp-n-a) more often.)
+    $atoms->{referent_type} = $self->create_atom
+    (
+        'surfeature' => 'referent_type',
+        'decode_map' =>
+        {
+            's' => ['poss' => 'poss'],
+            'p' => []
+        },
+        'encode_map' =>
+
+            { 'reflex' => { 'reflex' => { 'poss' => { 'poss' => 's',
+                                                      '@'    => 'p' }},
+                            '@'      => '-' }}
+    );
+    # NUMERAL TYPE ####################
+    # Czech default is 'c', Croatian default should be '-'.
+    $atoms->{numtype}{encode_map}{numtype}{'card'} = 'c';
+    $atoms->{numtype}{encode_map}{numtype}{'@'} = '-';
+    # ADVERB TYPE ####################
+    $atoms->{adverb_type} = $self->create_atom
+    (
+        'surfeature' => 'adverb_type',
+        'decode_map' =>
+        {
+            # general adverb
+            # examples: također, međutim, još, samo, kada
+            'g' => [],
+            # participial adverb (= adverbial participle = transgressive in Czech!)
+            # examples: uključujući, ističući, govoreći, dodajući, budući
+            'r' => ['verbform' => 'trans']
+        },
+        'encode_map' =>
+
+            { 'verbform' => { 'trans' => 'r',
+                              'part'  => 'r',
+                              '@'     => 'g' }}
+    );
+    # PARTICLE TYPE ####################
+    $atoms->{parttype} = $self->create_atom
+    (
+        'surfeature' => 'parttype',
+        'decode_map' =>
+        {
+            # affirmative particle
+            # examples: da
+            'r' => ['negativeness' => 'pos'],
+            # negative particle
+            # examples: ne
+            'z' => ['negativeness' => 'neg'],
+            # interrogative particle
+            # examples: li, zar
+            'q' => ['prontype' => 'int'],
+            # modal particle
+            # examples: sve, što, i, više, god, bilo
+            'o' => ['parttype' => 'mod']
+        },
+        'encode_map' =>
+
+            { 'negativeness' => { 'pos' => 'r',
+                                  'neg' => 'z',
+                                  '@'   => { 'prontype' => { 'int' => 'q',
+                                                             '@'   => { 'parttype' => { 'mod' => 'o',
+                                                                                        '@'   => '-' }}}}}}
+    );
+    # RESIDUAL TYPE ####################
+    $atoms->{restype} = $self->create_atom
+    (
+        'surfeature' => 'restype',
+        'decode_map' =>
+        {
+            # foreign word
+            # examples: a1, SETimes, European, bin, international
+            'f' => ['foreign' => 'foreign'],
+            # typo
+            't' => ['typo' => 'typo'],
+            # program
+            # DZ: I am not sure what this value is supposed to mean. It is mentioned but not explained in the documentation.
+            # It does not occur in the SETimes.HR corpus.
+            'p' => []
+        },
+        'encode_map' =>
+
+            { 'foreign' => { 'foreign' => 'f',
+                             '@'       => { 'typo' => { 'typo' => 't',
+                                                        '@'    => '-' }}}}
+    );
     return $atoms;
 }
 
@@ -115,8 +224,12 @@ sub _create_feature_map
         'P' => ['pos', 'prontype', 'person', 'gender', 'number', 'case', 'possnumber', 'possgender', 'clitic', 'referent_type', 'syntactic_type', 'animateness'],
         'R' => ['pos', 'adverb_type', 'degree'],
         'S' => ['pos', 'case'],
-        'C' => ['pos', 'conjtype', 'conjform'],
-        'M' => ['pos', 'numform', 'numtype', 'gender', 'number', 'case', 'animateness']
+        # The documentation also mentions a third feature, "conjunction formation", with the values 's' (simple) and 'c' (compound).
+        # It does not occur in the SETimes.HR corpus, there are only 'Cc' (coordinating conjunctions) and 'Cs' (subordinating).
+        'C' => ['pos', 'conjtype'],
+        'M' => ['pos', 'numform', 'numtype', 'gender', 'number', 'case', 'animateness'],
+        'Q' => ['pos', 'parttype'],
+        'X' => ['pos', 'restype']
     );
     return \%features;
 }
@@ -188,7 +301,16 @@ sub encode
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
 # This is the official list from http://nlp.ffzg.hr/data/tagging/msd-hr.html
-# 1291
+#
+# Only the tag 'Ps1fsnp--sa' has been removed because it is wrong. It sets the
+# referent type (pos[9]='s') for the non-reflexive possessive pronoun "naša",
+# while the referent type is normally used to distinguish between reflexive
+# personal and reflexive possessive pronouns, i.e. it is non-empty iff the
+# pronoun is reflexive. The tag occurs once in the SETimes.HR corpus but the
+# same pronoun "naša" occurs more often with the empty referent type
+# (Ps1fsnp-n-a).
+#
+# 1290 tags after removing that one.
 #------------------------------------------------------------------------------
 sub list
 {
@@ -1014,7 +1136,6 @@ Ps1mplp-n-a
 Ps1mpis-n-a
 Ps1mpip-n-a
 Ps1fsns-n-a
-Ps1fsnp--sa
 Ps1fsnp-n-a
 Ps1fsgs-n-a
 Ps1fsgp-n-a
