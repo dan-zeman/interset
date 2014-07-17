@@ -11,15 +11,21 @@ use utf8;
 use open ':utf8';
 use namespace::autoclean;
 use Moose;
-###!!! I am temporarily deriving this driver from CS::Multext.
-###!!! Later I will create a common predecessor module for the two, probably Lingua::Interset::Tagset::Multext.
-#extends 'Lingua::Interset::Tagset';
-extends 'Lingua::Interset::Tagset::CS::Multext';
+extends 'Lingua::Interset::Tagset::Multext';
 
 
 
-has 'atoms'       => ( isa => 'HashRef', is => 'ro', builder => '_create_atoms',       lazy => 1 );
-has 'feature_map' => ( isa => 'HashRef', is => 'ro', builder => '_create_feature_map', lazy => 1 );
+#------------------------------------------------------------------------------
+# Returns the tagset id that should be set as the value of the 'tagset' feature
+# during decoding. Every derived class must (re)define this method! The result
+# should correspond to the last two parts in package name, lowercased.
+# Specifically, it should be the ISO 639-2 language code, followed by
+# '::multext'. Example: 'cs::multext'.
+#------------------------------------------------------------------------------
+sub get_tagset_id
+{
+    return 'hr::multext';
+}
 
 
 
@@ -83,18 +89,6 @@ sub _create_atoms
                            '@'   => { 'verbform' => { 'part' => 'p',
                                                       '@'    => 'g' }}}}
     );
-    # DEFINITENESS ####################
-    # Definiteness is defined only for adjectives in Croatian.
-    # It distinguishes long and short forms of Slavic adjectives. In Czech, the "indefinite" form would be "jmenný tvar" (nominal form, as opposed to the long, pronominal form).
-    $atoms->{definiteness} = $self->create_simple_atom
-    (
-        'intfeature' => 'definiteness',
-        'simple_decode_map' =>
-        {
-            'y' => 'def', # glavni, bivši, novi, prvi, turski
-            'n' => 'ind'  # važan, velik, poznat, dobar, ključan
-        }
-    );
     # IS PRONOUN CLITIC? ####################
     # clitic = yes for short forms of pronouns that behave like clitics (there exists a long form with identical meaning).
     # Examples: me, mi, nam (vs. "nama"), te, ti, vam, ih, im, njeg, ga, mu, nj, njem, njim, je, joj, ju, njom
@@ -112,98 +106,10 @@ sub _create_atoms
                              'long'  => 'n',
                              '@'     => '-' }}
     );
-    # REFERENT TYPE OF PRONOUN ####################
-    # For Czech this feature distinguished between reflexive personal and reflexive possessive pronouns.
-    # Any non-empty value thus implied reflexivity. It is not true for Croatian where the possessive ('s')
-    # referent type is set for the non-reflexive possessive pronoun "naša" (Ps1fsnp--sa).
-    # (It is strange because other non-reflexive possessive pronouns have this feature empty.
-    # It occurs once in the corpus but the same pronoun occurs with the empty value (Ps1fsnp-n-a) more often.)
-    $atoms->{referent_type} = $self->create_atom
-    (
-        'surfeature' => 'referent_type',
-        'decode_map' =>
-        {
-            's' => ['poss' => 'poss'],
-            'p' => []
-        },
-        'encode_map' =>
-
-            { 'reflex' => { 'reflex' => { 'poss' => { 'poss' => 's',
-                                                      '@'    => 'p' }},
-                            '@'      => '-' }}
-    );
     # NUMERAL TYPE ####################
     # Czech default is 'c', Croatian default should be '-'.
     $atoms->{numtype}{encode_map}{numtype}{'card'} = 'c';
     $atoms->{numtype}{encode_map}{numtype}{'@'} = '-';
-    # ADVERB TYPE ####################
-    $atoms->{adverb_type} = $self->create_atom
-    (
-        'surfeature' => 'adverb_type',
-        'decode_map' =>
-        {
-            # general adverb
-            # examples: također, međutim, još, samo, kada
-            'g' => [],
-            # participial adverb (= adverbial participle = transgressive in Czech!)
-            # examples: uključujući, ističući, govoreći, dodajući, budući
-            'r' => ['verbform' => 'trans']
-        },
-        'encode_map' =>
-
-            { 'verbform' => { 'trans' => 'r',
-                              'part'  => 'r',
-                              '@'     => 'g' }}
-    );
-    # PARTICLE TYPE ####################
-    $atoms->{parttype} = $self->create_atom
-    (
-        'surfeature' => 'parttype',
-        'decode_map' =>
-        {
-            # affirmative particle
-            # examples: da
-            'r' => ['negativeness' => 'pos'],
-            # negative particle
-            # examples: ne
-            'z' => ['negativeness' => 'neg'],
-            # interrogative particle
-            # examples: li, zar
-            'q' => ['prontype' => 'int'],
-            # modal particle
-            # examples: sve, što, i, više, god, bilo
-            'o' => ['parttype' => 'mod']
-        },
-        'encode_map' =>
-
-            { 'negativeness' => { 'pos' => 'r',
-                                  'neg' => 'z',
-                                  '@'   => { 'prontype' => { 'int' => 'q',
-                                                             '@'   => { 'parttype' => { 'mod' => 'o',
-                                                                                        '@'   => '-' }}}}}}
-    );
-    # RESIDUAL TYPE ####################
-    $atoms->{restype} = $self->create_atom
-    (
-        'surfeature' => 'restype',
-        'decode_map' =>
-        {
-            # foreign word
-            # examples: a1, SETimes, European, bin, international
-            'f' => ['foreign' => 'foreign'],
-            # typo
-            't' => ['typo' => 'typo'],
-            # program
-            # DZ: I am not sure what this value is supposed to mean. It is mentioned but not explained in the documentation.
-            # It does not occur in the SETimes.HR corpus.
-            'p' => []
-        },
-        'encode_map' =>
-
-            { 'foreign' => { 'foreign' => 'f',
-                             '@'       => { 'typo' => { 'typo' => 't',
-                                                        '@'    => '-' }}}}
-    );
     return $atoms;
 }
 
@@ -232,68 +138,6 @@ sub _create_feature_map
         'X' => ['pos', 'restype']
     );
     return \%features;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Decodes a physical tag (string) and returns the corresponding feature
-# structure.
-#------------------------------------------------------------------------------
-sub decode
-{
-    my $self = shift;
-    my $tag = shift;
-    my $fs = Lingua::Interset::FeatureStructure->new();
-    $fs->set_tagset('hr::multext');
-    my $atoms = $self->atoms();
-    my $features = $self->feature_map();
-    my @chars = split(//, $tag);
-    $atoms->{pos}->decode_and_merge_hard($chars[0], $fs);
-    my @features;
-    @features = @{$features->{$chars[0]}} if(defined($features->{$chars[0]}));
-    for(my $i = 1; $i<=$#features; $i++)
-    {
-        if(defined($features[$i]) && defined($chars[$i]))
-        {
-            $atoms->{$features[$i]}->decode_and_merge_hard($chars[$i], $fs);
-        }
-    }
-    return $fs;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Takes feature structure and returns the corresponding physical tag (string).
-#------------------------------------------------------------------------------
-sub encode
-{
-    my $self = shift;
-    my $fs = shift; # Lingua::Interset::FeatureStructure
-    my $atoms = $self->atoms();
-    my $features = $self->feature_map();
-    my $tag = $atoms->{pos}->encode($fs);
-    my @features;
-    @features = @{$features->{$tag}} if(defined($features->{$tag}));
-    for(my $i = 1; $i<=$#features; $i++)
-    {
-        if(defined($features[$i]))
-        {
-            if(!exists($atoms->{$features[$i]}))
-            {
-                confess("Cannot find atom for surface feature '$features[$i]'");
-            }
-            $tag .= $atoms->{$features[$i]}->encode($fs);
-        }
-        else
-        {
-            $tag .= '-';
-        }
-    }
-    # Remove trailing dashes.
-    $tag =~ s/-+$//;
-    return $tag;
 }
 
 
