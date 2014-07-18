@@ -197,7 +197,8 @@ sub _encoding_step
             my $tagset = $self->tagset();
             if($tagset eq '')
             {
-                confess("Encoding map refers to 'other' but the 'tagset' attribute of the atom is empty");
+                my $surfeature = $self->surfeature();
+                confess("Encoding map (surface feature = '$surfeature') refers to 'other' but the 'tagset' attribute of the atom is empty");
             }
             $value = $fs->get_other_for_tagset($tagset);
         }
