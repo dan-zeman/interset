@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+2.006     2014-07-18 15:50:40+02:00 Europe/Prague
+
 Interface:
 * New methods for the 'other' feature: get_other_subfeature() and is_other().
 * Fixed treatment of the 'other' feature in atoms.
