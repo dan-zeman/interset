@@ -551,6 +551,7 @@ these values are derived from the tagset of the Prague Arabic Dependency Treeban
 
 L<Lingua::Interset>,
 L<Lingua::Interset::Tagset>,
+L<Lingua::Interset::Tagset::AR::Conll2007>,
 L<Lingua::Interset::FeatureStructure>
 
 =cut
