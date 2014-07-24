@@ -32,6 +32,7 @@ sub _create_atoms
     # PART OF SPEECH ####################
     $atoms{k} = $self->create_atom
     (
+        'tagset' => 'cs::ajka',
         'surfeature' => 'pos',
         'decode_map' =>
         {
@@ -260,6 +261,7 @@ sub _create_atoms
     # For instance, "potud" can be both adverb of extent and of time, thus its tag contains 'tQtT'.
     $atoms{t} = $self->create_atom
     (
+        'tagset' => 'cs::ajka',
         'surfeature' => 'advtype',
         'decode_map' =>
         {
@@ -293,14 +295,13 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            { 'other' => { 'tA' => 'tA',
-                           '@'  => { 'advtype' => { 'loc' => 'tL',
-                                                    'tim' => 'tT',
-                                                    'man' => 'tM',
-                                                    'sta' => 'tS',
-                                                    'deg' => 'tQ',
-                                                    'cau' => 'tC',
-                                                    'mod' => 'tD' }}}}
+            { 'advtype' => { 'loc' => 'tL',
+                             'tim' => 'tT',
+                             'man' => 'tM',
+                             'sta' => 'tS',
+                             'deg' => 'tQ',
+                             'cau' => 'tC',
+                             'mod' => 'tD' }}
     );
     # GENDER ####################
     $atoms{g} = $self->create_atom
@@ -475,6 +476,7 @@ sub _create_atoms
     # Majka does not know the word forms ses, sis, tys, šels, viděls etc.
     $atoms{z} = $self->create_atom
     (
+        'tagset' => 'cs::ajka',
         'surfeature' => 'clitic',
         'decode_map' =>
         {
@@ -488,6 +490,7 @@ sub _create_atoms
     # This feature is documented but it does not occur in the output of the current version of Majka.
     $atoms{w} = $self->create_atom
     (
+        'tagset' => 'cs::ajka',
         'surfeature' => 'style',
         'decode_map' =>
         {
