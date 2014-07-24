@@ -5356,7 +5356,6 @@ end_of_list
     # Protect from editors that replace tabs by spaces.
     $list =~ s/ \s+/\t/sg;
     my @list = split(/\r?\n/, $list);
-    pop(@list) if($list[$#list] eq '');
     return \@list;
 }
 
