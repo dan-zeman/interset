@@ -18,7 +18,7 @@ use Lingua::Interset::Tagset;
 ###!!! Exclude selected tagsets that are too large: cs::conll cs::conll2009 cs::cnk cs::pmk
 my @tagsets =
 (
-    'ar::conll', 'ar::conll2007',
+    'ar::padt', 'ar::conll', 'ar::conll2007',
     'cs::pdt', 'cs::ajka', 'cs::multext', 'cs::pmkkr',
     'en::penn', 'en::conll', 'en::conll2009',
     'hr::multext'
