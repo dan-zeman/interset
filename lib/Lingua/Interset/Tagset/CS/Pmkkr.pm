@@ -1,4 +1,4 @@
-# ABSTRACT: Driver for the shortened Czech tagset of the Prague Spoken Corpus (Pražský mluvený korpus).
+# ABSTRACT: Driver for the shortened Czech tagset of the Prague Spoken Corpus (Prazsky mluveny korpus).
 # Copyright © 2009, 2010, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::CS::Pmkkr;
