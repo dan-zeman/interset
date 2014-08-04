@@ -343,6 +343,26 @@ my %matrix = @_matrix =
             ['pred']
         ],
     },
+    # Morphological part of speech.
+    # A word's morphological paradigm may behave like a different part of speech than the word is assigned to.
+    # For example, Slovak noun vstupné “admission (fee)” behaves syntactically as noun, is tagged as noun,
+    # but it originates from an adjective and retains adjectival paradigm. The paradigm feature of the sk::snk
+    # tagset maps to this Interset feature.
+    'morphpos' =>
+    {
+        'priority' => 205,
+        'values' => ['noun', 'adj', 'pron', 'num', 'adv', 'mix', 'def', ''],
+        'replacements' =>
+        [
+            ['mix'],
+            ['noun'],
+            ['adj'],
+            ['pron'],
+            ['num'],
+            ['adv'],
+            ['def']
+        ],
+    },
     #--------------------------------------------------------------------------
     # For the following group of almost-boolean attributes I am not sure what would be the best internal representation.
     # Many of them constitute a distinct part of speech in some tagsets but they are in principle orthogonal to the part-of-speach feature.
