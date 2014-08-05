@@ -3,6 +3,9 @@
 Features:
 * New feature 'morphpos' (it existed in Interset 1 for sk::snk but it did not make it to Interset 2 so far).
 
+Drivers:
+* JA::Ipadic
+
 
 
 2.008     2014-08-01 11:14:23+02:00 Europe/Prague
