@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+2.009     2014-08-11 17:20:03+02:00 Europe/Prague
+
 Features:
 * New feature 'morphpos' (it existed in Interset 1 for sk::snk but it did not make it to Interset 2 so far).
 
