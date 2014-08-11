@@ -43,7 +43,7 @@ around BUILDARGS => sub
         # Construct decode_map in the form expected by Atom.
         my %dm;
         # Construct encode_map in the form expected by Atom.
-        my %em;;
+        my %em;
         # The encode_default attribute has default value '' but it may not have been set yet.
         $attr->{encode_default} = '' if(!defined($attr->{encode_default}));
         my %valuehash = ('@' => $attr->{encode_default});
