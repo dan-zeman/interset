@@ -9,6 +9,7 @@ use open ":utf8";
 binmode(STDIN, ":utf8");
 binmode(STDOUT, ":utf8");
 binmode(STDERR, ":utf8");
+use tagset::common;
 
 # Tagset documentation is in /net/data/CoNLL/2009/es/doc/tagsets.pdf
 # The global hashes %translate_name and %translate_value provide an approximate mapping between the tagset and Interset.

@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+Interface:
+* New importable functions in the main package: find_tagsets() and hash_drivers().
+
 Drivers:
 * MUL::Google
 

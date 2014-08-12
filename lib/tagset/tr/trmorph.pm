@@ -10,10 +10,13 @@ use open ':utf8';
 
 
 
+my %symtable;
+BEGIN
+{
 # The symbols are documented in
 # Çağrı Çöltekin (2013, draft October 12): 'TRmorph: A morphological analyzer for Turkish'
 # https://github.com/coltekin/TRmorph/blob/master/doc/trmorph-manual.pdf
-my %symtable =
+%symtable =
 (
     # Part of speech tags
     'Alpha' => [], ###!!! Symbols of the alphabet
@@ -181,6 +184,7 @@ my %symtable =
     'imp' => ['mood' => 'imp'], # Imperative ("-")
     'aor' => ['subtense' => 'aor'], # Aorist ("-ar", "-ir" etc.)
 );
+}
 
 
 
@@ -242,21 +246,15 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
-# cat train.conll test.conll |\
-#   perl -pe '@x = split(/\s+/, $_); $_ = "$x[3]\t$x[4]\t$x[5]\n"' |\
-#   sort -u | wc -l
-# 1074
-# 1072 after cleaning ###!!!???and adding 'other'-resistant tags
+###!!! To be implemented later!
+# Currently we only output the list of the core symbols for parts of speech,
+# without additional features.
 #------------------------------------------------------------------------------
 sub list
 {
-    my $list = <<end_of_list
-end_of_list
-    ;
-    # Protect from editors that replace tabs by spaces.
-    $list =~ s/ \s+/\t/sg;
-    my @list = split(/\r?\n/, $list);
-    pop(@list) if($list[$#list] eq "");
+    # Symbols for parts of speech start with an uppercase letter, everything
+    # else starts with lowercase.
+    my @list = map {"<$_>"} (sort(grep {m/^[A-Z]/} (keys(%symtable))));
     return \@list;
 }
 

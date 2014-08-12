@@ -13,7 +13,7 @@ use Moose 2;
 use MooseX::SemiAffordanceAccessor; # attribute x is written using set_x($value) and read using x()
 # Allow the user to import the core functions into their namespace by stating
 # use Lingua::Interset qw(decode encode list);
-use Exporter::Easy ( OK => [ 'decode', 'encode', 'encode_strict', 'list', 'find_drivers', 'get_driver_object' ] );
+use Exporter::Easy ( OK => [ 'decode', 'encode', 'encode_strict', 'list', 'find_drivers', 'find_tagsets', 'hash_drivers', 'get_driver_object' ] );
 
 
 
@@ -347,7 +347,28 @@ sub _find_drivers
 # will be returned (and something is definitely wrong if they are not
 # identical implementations). Exception: Interset 2.0 drivers are prefered over
 # the old ones.
+#
+# For backward compatibility, this function is also available under its older
+# name, get_driver_hash(). I later decided that I wanted to call it
+# hash_drivers(). It is available for import as hash_drivers().
 #------------------------------------------------------------------------------
+=func hash_drivers()
+
+  my $hash_of_drivers = hash_drivers ();
+
+Returns the set of all known tagset drivers indexed by tagset id. The elements
+are hashes themselves, with the same record structure as returned by
+C<find_drivers()>. Unlike C<find_drivers()>, here the records are organized
+in a hash instead of a list, and only one driver per tagset is present.
+If there are two drivers installed for the same tagset, the one that appears
+earlier in C<@INC> (or in the C<PERL5LIB> environment variable) is returned.
+Exception: Interset 2.0 and newer drivers are prefered over the old ones.
+
+=cut
+sub hash_drivers
+{
+    return get_driver_hash();
+}
 sub get_driver_hash
 {
     if(!defined($driver_hash))
@@ -375,6 +396,28 @@ sub get_driver_hash
         $driver_hash = \%hash;
     }
     return $driver_hash;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Tries to enumerate known tagsets (for which there is at least one driver).
+# This function uses find_drivers() but it returns a list of tagset ids
+# available for the user to ask for creating a driver object.
+#------------------------------------------------------------------------------
+=func find_tagsets()
+
+  my @list_of_tagset_ids = find_tagsets ();
+
+This function uses find_drivers() and further processes its output. It returns
+the list of tagset ids for which there is a driver installed. The user can then
+call the C<get_driver_object()> method on these ids.
+
+=cut
+sub find_tagsets
+{
+    my $hash = get_driver_hash();
+    return sort(keys(%{$hash}));
 }
 
 

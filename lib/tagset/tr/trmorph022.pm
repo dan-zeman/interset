@@ -3,17 +3,20 @@
 # Copyright © 2013 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
-package tagset::tr::trmorph;
+package tagset::tr::trmorph022;
 use utf8;
 use open ':utf8';
 
 
 
+my %symtable;
+BEGIN
+{
 ###!!! The symbols used in TRmorph 0.2.2 are described in $TRMORPH/doc/symbols.
 ###!!! But not all of them! For instance, one of the analyses returned for 'olmak'
 ###!!! contains '<vinf>', which is not documented in doc/symbols (although it is
 ###!!! not difficult to guess that it denotes the infinitive).
-my %symtable =
+%symtable =
 (
     '1p' => ['person' => '1', 'number' => 'plu'], # A1pl
     '1s' => ['person' => '1', 'number' => 'sing'], # A1sg
@@ -93,6 +96,7 @@ my %symtable =
     'vn_mak' => ['pos' => 'noun'], # Verbal noun marker (gör-<b>mey</b>-e gittim `I went to see')
     'vn_yis' => ['pos' => 'noun'], # Verbal noun marker.
 );
+}
 
 
 
@@ -154,21 +158,12 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
-# cat train.conll test.conll |\
-#   perl -pe '@x = split(/\s+/, $_); $_ = "$x[3]\t$x[4]\t$x[5]\n"' |\
-#   sort -u | wc -l
-# 1074
-# 1072 after cleaning ###!!!???and adding 'other'-resistant tags
+###!!! To be implemented later!
+# Currently we only output the list of the individual symbols.
 #------------------------------------------------------------------------------
 sub list
 {
-    my $list = <<end_of_list
-end_of_list
-    ;
-    # Protect from editors that replace tabs by spaces.
-    $list =~ s/ \s+/\t/sg;
-    my @list = split(/\r?\n/, $list);
-    pop(@list) if($list[$#list] eq "");
+    my @list = map {"<$_>"} (sort(keys(%symtable)));
     return \@list;
 }
 
