@@ -27,14 +27,14 @@ sub decode
     if($pos eq "S")
     {
         $f{pos} = "noun";
-        
+
         if ($subpos eq "SP") {
-            $f{subpos} = "prop";            
+            $f{subpos} = "prop";
         }
         elsif($pos eq "SA")
         {
             $f{abbr} = "abbr";
-        }        
+        }
     }
     # adj = adjective # example: refrescante, algarvio
     elsif($pos eq "A")
@@ -51,7 +51,7 @@ sub decode
     elsif($pos eq "P")
     {
         $f{pos} = "noun";
-        
+
         if ($subpos eq "PD") {
             $f{prontype} = "dem";
         }
@@ -75,7 +75,7 @@ sub decode
     elsif($pos eq "D")
     {
         $f{pos} = "adj";
-        
+
         if ($subpos eq "DD") {
             $f{subpos} = "det";
         }
@@ -84,12 +84,12 @@ sub decode
     elsif($pos eq "N")
     {
         $f{pos} = "num";
-        
+
         if ($subpos eq "N") {
-            $f{numtype} = "card";    
+            $f{numtype} = "card";
         }
         elsif ($subpos eq "NO") {
-            $f{numtype} = "ord";            
+            $f{numtype} = "ord";
         }
     }
     # v = verb
@@ -132,77 +132,77 @@ sub decode
     foreach my $feature (@features)
     {
         my @feat_val = split /\s*=\s*/, $feature;
-        
+
         if ($feat_val[0] eq "gen") {
             if ($feat_val[1] eq "M") {
-                $f{gender} = "masc";                
+                $f{gender} = "masc";
             }
             elsif ($feat_val[1] eq "F") {
-                $f{gender} = "fem";                
+                $f{gender} = "fem";
             }
             elsif ($feat_val[1] eq "N") {
-                $f{gender} = "neut";                
-            }            
+                $f{gender} = "neut";
+            }
         }
         elsif ($feat_val[0] eq "num") {
             if ($feat_val[1] eq "S") {
-                $f{number} = "sing";                
+                $f{number} = "sing";
             }
             elsif ($feat_val[1] eq "P") {
-                $f{number} = "plu";                
+                $f{number} = "plu";
             }
             else {
-                $f{number} = "coll";                                
-            }            
+                $f{number} = "coll";
+            }
         }
         elsif ($feat_val[0] eq "per") {
             if ($feat_val[1] eq "1") {
-                $f{person} = "1";                
+                $f{person} = "1";
             }
             elsif ($feat_val[1] eq "2") {
-                $f{person} = "2";                
+                $f{person} = "2";
             }
             elsif ($feat_val[1] eq "3") {
-                $f{person} = "3";                
+                $f{person} = "3";
             }
         }
         elsif ($feat_val[0] eq "mod") {
             if ($feat_val[1] eq "G") {
-                $f{verbform} = "part";                
+                $f{verbform} = "part";
             }
             elsif ($feat_val[1] eq "F") {
-                $f{verbform} = "inf";                
+                $f{verbform} = "inf";
             }
             elsif ($feat_val[1] eq "I") {
-                $f{mood} = "ind";                
+                $f{mood} = "ind";
             }
             elsif ($feat_val[1] eq "C") {
-                $f{mood} = "sub";                
+                $f{mood} = "sub";
             }
             elsif ($feat_val[1] eq "D") {
-                $f{mood} = "cnd";                
+                $f{mood} = "cnd";
             }
             elsif ($feat_val[1] eq "M") {
-                $f{mood} = "imp";                
+                $f{mood} = "imp";
             }
             elsif ($feat_val[1] eq "P") {
-                $f{verbform} = "part";                
+                $f{verbform} = "part";
             }
         }
         elsif ($feat_val[0] eq "tmp") {
             if ($feat_val[1] eq "P") {
-                $f{tense} = "pres";                
+                $f{tense} = "pres";
             }
             elsif ($feat_val[1] eq "F") {
-                $f{tense} = "fut";                
+                $f{tense} = "fut";
             }
             elsif ($feat_val[1] eq "R") {
-                $f{tense} = "past";                
-            }            
+                $f{tense} = "past";
+            }
         }
         elsif ($feat_val[0] eq "sup") {
             if ($feat_val[1] eq "S") {
-                $f{degree} = "sup";                
+                $f{degree} = "sup";
             }
         }
     }
@@ -250,6 +250,174 @@ sub encode
 sub list
 {
     my $list = <<end_of_list
+A	A	gen=F|num=P
+A	A	gen=F|num=P|sup=S
+A	A	gen=F|num=S
+A	A	gen=F|num=S|sup=S
+A	A	gen=M|num=N
+A	A	gen=M|num=P
+A	A	gen=M|num=P|sup=S
+A	A	gen=M|num=S
+A	A	gen=M|num=S|sup=S
+A	A	gen=N|num=N
+A	A	gen=N|num=P
+A	A	gen=N|num=S
+A	AP	gen=F|num=P
+A	AP	gen=F|num=S
+A	AP	gen=M|num=P
+A	AP	gen=M|num=S
+A	AP	gen=N|num=P
+B	B	_
+B	B	sup=S
+C	C	_
+D	DD	gen=F|num=P
+D	DD	gen=F|num=S
+D	DD	gen=M|num=P
+D	DD	gen=M|num=S
+D	DD	gen=N|num=S
+D	DE	gen=N|num=N
+D	DE	gen=N|num=P
+D	DI	gen=F|num=P
+D	DI	gen=F|num=S
+D	DI	gen=M|num=P
+D	DI	gen=M|num=S
+D	DI	gen=N|num=N
+D	DI	gen=N|num=P
+D	DI	gen=N|num=S
+D	DR	gen=N|num=S
+D	DT	gen=F|num=P
+D	DT	gen=F|num=S
+D	DT	gen=M|num=S
+D	DT	gen=N|num=N
+D	DT	gen=N|num=P
+D	DT	gen=N|num=S
+E	E	_
+E	E	gen=F|num=P
+E	E	gen=F|num=S
+E	E	gen=M|num=P
+E	E	gen=M|num=S
+E	E	gen=N|num=S
+I	I	_
+N	N	_
+N	N	gen=F|num=P
+N	N	gen=N|num=N
+N	N	gen=N|num=S
+N	NO	_
+N	NO	gen=F|num=P
+N	NO	gen=F|num=S
+N	NO	gen=M|num=P
+N	NO	gen=M|num=S
+P	PD	gen=F|num=P
+P	PD	gen=F|num=S
+P	PD	gen=M|num=P
+P	PD	gen=M|num=S
+P	PD	gen=N|num=N
+P	PD	gen=N|num=P
+P	PI	gen=F|num=P
+P	PI	gen=F|num=S
+P	PI	gen=M|num=P
+P	PI	gen=M|num=S
+P	PI	gen=N|num=N
+P	PI	gen=N|num=P
+P	PI	gen=N|num=S
+P	PP	gen=F|num=S
+P	PP	gen=M|num=P
+P	PP	gen=M|num=S
+P	PQ	gen=F|num=N
+P	PQ	gen=F|num=N|per=3
+P	PQ	gen=F|num=P|per=3
+P	PQ	gen=F|num=S
+P	PQ	gen=F|num=S|per=3
+P	PQ	gen=M|num=P
+P	PQ	gen=M|num=P|per=3
+P	PQ	gen=M|num=S
+P	PQ	gen=M|num=S|per=3
+P	PQ	gen=N|num=N
+P	PQ	gen=N|num=N|per=3
+P	PQ	gen=N|num=P|per=1
+P	PQ	gen=N|num=P|per=2
+P	PQ	gen=N|num=P|per=3
+P	PQ	gen=N|num=S
+P	PQ	gen=N|num=S|per=1
+P	PQ	gen=N|num=S|per=2
+P	PQ	gen=N|num=S|per=3
+P	PR	gen=M|num=P
+P	PR	gen=M|num=S
+P	PR	gen=N|num=N
+P	PR	gen=N|num=P
+P	PR	gen=N|num=S
+P	PT	gen=M|num=S
+P	PT	gen=N|num=N
+P	PT	gen=N|num=S
+PU	PU	_
+R	RD	gen=F|num=P
+R	RD	gen=F|num=S
+R	RD	gen=M|num=P
+R	RD	gen=M|num=S
+R	RD	gen=N|num=S
+R	RI	gen=F|num=S
+R	RI	gen=M|num=S
+S	S	_
+S	S	gen=F|num=N
+S	S	gen=F|num=P
+S	S	gen=F|num=S
+S	S	gen=M|num=N
+S	S	gen=M|num=P
+S	S	gen=M|num=S
+S	S	gen=N|num=N
+S	S	gen=N|num=P
+S	S	gen=N|num=S
+S	SP	gen=N|num=N
+S	SW	gen=N|num=N
+SA	SA	gen=N|num=N
+V	V	gen=F|num=P|mod=P|tmp=R
+V	V	gen=F|num=S|mod=P|tmp=R
+V	V	gen=M|num=P|mod=P|tmp=R
+V	V	gen=M|num=S|mod=P|tmp=R
+V	V	gen=N|num=P|mod=P|tmp=P
+V	V	gen=N|num=S|mod=P|tmp=P
+V	V	mod=F
+V	V	mod=G
+V	V	num=P|per=1|mod=C|tmp=I
+V	V	num=P|per=1|mod=C|tmp=P
+V	V	num=P|per=1|mod=D|tmp=P
+V	V	num=P|per=1|mod=I|tmp=F
+V	V	num=P|per=1|mod=I|tmp=I
+V	V	num=P|per=1|mod=I|tmp=P
+V	V	num=P|per=1|mod=I|tmp=R
+V	V	num=P|per=2|mod=C|tmp=I
+V	V	num=P|per=2|mod=C|tmp=P
+V	V	num=P|per=2|mod=I|tmp=F
+V	V	num=P|per=2|mod=I|tmp=P
+V	V	num=P|per=2|mod=M|tmp=P
+V	V	num=P|per=3|mod=C|tmp=I
+V	V	num=P|per=3|mod=C|tmp=P
+V	V	num=P|per=3|mod=D|tmp=P
+V	V	num=P|per=3|mod=I|tmp=F
+V	V	num=P|per=3|mod=I|tmp=I
+V	V	num=P|per=3|mod=I|tmp=P
+V	V	num=P|per=3|mod=I|tmp=R
+V	V	num=S|per=1|mod=C|tmp=I
+V	V	num=S|per=1|mod=C|tmp=P
+V	V	num=S|per=1|mod=D|tmp=P
+V	V	num=S|per=1|mod=I|tmp=F
+V	V	num=S|per=1|mod=I|tmp=I
+V	V	num=S|per=1|mod=I|tmp=P
+V	V	num=S|per=1|mod=I|tmp=R
+V	V	num=S|per=2|mod=C|tmp=P
+V	V	num=S|per=2|mod=D|tmp=P
+V	V	num=S|per=2|mod=I|tmp=F
+V	V	num=S|per=2|mod=I|tmp=I
+V	V	num=S|per=2|mod=I|tmp=P
+V	V	num=S|per=2|mod=M|tmp=P
+V	V	num=S|per=3|mod=C|tmp=I
+V	V	num=S|per=3|mod=C|tmp=P
+V	V	num=S|per=3|mod=D|tmp=P
+V	V	num=S|per=3|mod=I|tmp=F
+V	V	num=S|per=3|mod=I|tmp=I
+V	V	num=S|per=3|mod=I|tmp=P
+V	V	num=S|per=3|mod=I|tmp=R
+X	X	_
 end_of_list
     ;
     # Protect from editors that replace tabs by spaces.
