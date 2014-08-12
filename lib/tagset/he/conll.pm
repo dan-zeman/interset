@@ -2,7 +2,7 @@
 # Driver for the Hebrew tagset.
 # Tagset described in Yoav Goldberg: Automatic Syntactic Processing of Modern
 # Hebrew Automatic Syntactic Processing of Modern Hebrew (2011), p. 32.
-# TODO: try to use the official (but not as easy to process) resource: 
+# TODO: try to use the official (but not as easy to process) resource:
 # BGU Computational Linguistics Group. Hebrew morphological tagging guidelines.
 # Technical report, Ben Gurion University of the Negev, 2008.
 # <http://www.cs.bgu.ac.il/~adlerm/tagging-guideline.pdf>
@@ -201,21 +201,21 @@ sub process_subpos {
     else {
         warn "Unknown Hebrew subpos $subpos\n";
     }
-    
+
     return $f;
 }
 
 # TODO: usually guessed (i.e. maybe wrong)
 my $conllfeats = {
-    
+
     # used usually with nouns. pronouns, numerals, verbs and adjectives
     S => { number => 'sing' },
-    P => { number => 'plu' },    
+    P => { number => 'plu' },
     M => { gender => 'masc' },
     F => { gender => 'fem' },
     # used with NN and BN
     suf_S => { number => 'sing' },
-    suf_P => { number => 'plu' },    
+    suf_P => { number => 'plu' },
     suf_M => { gender => 'masc' },
     suf_F => { gender => 'fem' },
 
@@ -227,7 +227,7 @@ my $conllfeats = {
     suf_1 => { person => '1' },
     suf_2 => { person => '2' },
     suf_3 => { person => '3' },
-    
+
     # used with COP and VB
     PAST => { tense => 'past' },
     FUTURE => { tense => 'fut' },
@@ -245,7 +245,7 @@ my $conllfeats = {
     # unknown word
     '!!MISS!!' => { },
     '!!UNK!!' => { },
-    
+
     # TODO unknown features (to me)
 
     # some verb features yet unknown to me (maybe the paradigm?)
@@ -259,7 +259,7 @@ my $conllfeats = {
     PUAL => { },
     # this one is used with VB, BN, BNT and MD
     A => { },
-    
+
     # used with PRP -- imperative pronoun? and anyway, which prontype?
     IMP => { prontype => 'prs' },
 
@@ -300,297 +300,8 @@ sub encode
     my $f = shift; # this is not a deep copy! We must not modify the contents!
     my $nonstrict = shift; # strict is default
     $strict = !$nonstrict;
-    # Map Interset word classes to Penn word classes (in particular, test pronouns only once - here).
-    my $pos = $f->{pos};
-    if($pos =~ m/^(noun|adj)$/ && $f->{prontype} ne "")
-    {
-        $pos = "pron";
-    }
-    my $tag;
-    # foreign words without respect to part of speech
-    if($f->{foreign} eq "foreign")
-    {
-        $tag = "FW";
-    }
-    # separated affixes
-    elsif($f->{hyph} eq "hyph")
-    {
-        $tag = "AFX";
-    }
-    # noun: NN, NNS, NNP, NNPS
-    elsif($pos eq "noun")
-    {
-        # special cases first, defaults last
-        if($f->{subpos} eq "prop")
-        {
-            if($f->{number} eq "plu")
-            {
-                $tag = "NNPS";
-            }
-            else
-            {
-                $tag = "NNP";
-            }
-        }
-        else
-        {
-            if($f->{number} eq "plu")
-            {
-                $tag = "NNS";
-            }
-            else
-            {
-                $tag = "NN";
-            }
-        }
-    }
-    # adj:  JJ, JJR, JJS, PDT
-    elsif($pos eq "adj")
-    {
-        # special cases first, defaults last
-        if($f->{subpos} eq "pdt")
-        {
-            $tag = "PDT";
-        }
-        elsif($f->{subpos} eq "det" && $f->{prontype} !~ m/^(int|rel)$/)
-        {
-            $tag = "DT";
-        }
-        elsif($f->{degree} eq "comp")
-        {
-            $tag = "JJR";
-        }
-        elsif($f->{degree} eq "sup")
-        {
-            $tag = "JJS";
-        }
-        else
-        {
-            $tag = "JJ";
-        }
-    }
-    # pron: PRP, PRP$, WP, WP$, WDT
-    elsif($pos eq "pron")
-    {
-        # special cases first, defaults last
-        if($f->{prontype} =~ m/^(rel|int)$/)
-        {
-            if($f->{poss} eq "poss")
-            {
-                $tag = "WP\$";
-            }
-            elsif($f->{pos} eq "adj")
-            {
-                $tag = "WDT";
-            }
-            else
-            {
-                $tag = "WP";
-            }
-        }
-        else
-        {
-            if($f->{poss} eq "poss")
-            {
-                $tag = "PRP\$";
-            }
-            else
-            {
-                $tag = "PRP";
-            }
-        }
-    }
-    # num:  CD, (WDT), (WRB), (JJ)
-    elsif($f->{pos} eq "num")
-    {
-        if($f->{numtype} eq "card")
-        {
-            $tag = "CD";
-        }
-        elsif($f->{prontype} =~ m/^(rel|int)$/)
-        {
-            if($f->{subpos} eq "mult")
-            {
-                $tag = "WRB";
-            }
-            else
-            {
-                $tag = "WDT";
-            }
-        }
-        else
-        {
-            $tag = "JJ";
-        }
-    }
-    # verb: VB, VBD, VBG, VBN, VBP, VBZ, MD
-    elsif($f->{pos} eq "verb")
-    {
-        # special cases first, defaults last
-        if($f->{subpos} eq "mod")
-        {
-            $tag = "MD";
-        }
-        elsif($f->{verbform} eq "part")
-        {
-            if($f->{tense} eq "pres")
-            {
-                $tag = "VBG";
-            }
-            else
-            {
-                $tag = "VBN";
-            }
-        }
-        elsif($f->{tense} eq "past")
-        {
-            $tag = "VBD";
-        }
-        elsif($f->{tense} eq "pres" && $f->{number} eq "sing")
-        {
-            if($f->{person} eq "3")
-            {
-                $tag = "VBZ";
-            }
-            else
-            {
-                $tag = "VBP";
-            }
-        }
-        else
-        {
-            $tag = "VB";
-        }
-    }
-    # adv:  EX, RB, RBR, RBS, WRB
-    elsif($f->{pos} eq "adv")
-    {
-        # special cases first, defaults last
-        if($f->{subpos} eq "ex")
-        {
-            $tag = "EX";
-        }
-        elsif($f->{prontype} =~ m/^(int|rel)$/)
-        {
-            $tag = "WRB";
-        }
-        elsif($f->{degree} eq "comp")
-        {
-            $tag = "RBR";
-        }
-        elsif($f->{degree} eq "sup")
-        {
-            $tag = "RBS";
-        }
-        else
-        {
-            $tag = "RB";
-        }
-    }
-    # prep: IN, (TO)
-    elsif($f->{pos} eq "prep")
-    {
-        $tag = "IN";
-    }
-    # conj: CC, (IN)
-    elsif($f->{pos} eq "conj")
-    {
-        # special cases first, defaults last
-        if($f->{subpos} eq "sub")
-        {
-            $tag = "IN";
-        }
-        else
-        {
-            $tag = "CC";
-        }
-    }
-    # part: RP, TO, POS
-    elsif($f->{pos} eq "part")
-    {
-        # special cases first, defaults last
-        if($f->{poss} eq "poss")
-        {
-            $tag = "POS";
-        }
-        elsif($f->{verbform} eq "inf" || $f->{subpos} eq "inf")
-        {
-            $tag = "TO";
-        }
-        else
-        {
-            $tag = "RP";
-        }
-    }
-    # int:  UH
-    elsif($f->{pos} eq "int")
-    {
-        $tag = "UH";
-    }
-    # other: $, LS, SYM, #, ., ,
-    elsif($f->{tagset} eq "en::penn" && $f->{other} eq "currency")
-    {
-        $tag = "\$";
-    }
-    elsif($f->{pos} eq "punc")
-    {
-        if($f->{numtype} eq "ord")
-        {
-            $tag = "LS";
-        }
-        elsif($f->{tagset} eq "en::penn" && $f->{other} eq "\#")
-        {
-            $tag = "\#";
-        }
-        elsif($f->{punctype} =~ m/^(peri|qest|excl)$/)
-        {
-            $tag = ".";
-        }
-        elsif($f->{punctype} eq "comm")
-        {
-            $tag = ",";
-        }
-        elsif($f->{punctype} eq "brck")
-        {
-            if($f->{puncside} eq "fin")
-            {
-                $tag = "-RRB-";
-            }
-            else
-            {
-                $tag = "-LRB-";
-            }
-        }
-        elsif($f->{punctype} eq "quot")
-        {
-            if($f->{puncside} eq "fin")
-            {
-                $tag = "''";
-            }
-            else
-            {
-                $tag = "``";
-            }
-        }
-        elsif($f->{punctype} eq "dash")
-        {
-            # This tag is new in PennBioIE. In older data hyphens are tagged ":".
-            $tag = "HYPH";
-        }
-        elsif($f->{punctype} eq "symb")
-        {
-            $tag = "SYM";
-        }
-        else
-        {
-            $tag = ":";
-        }
-    }
-    # punctuation and unknown elements
-    else
-    {
-        $tag = "NIL";
-    }
+    my $tag = $f->{pos};
+    ###!!! To be implemented!
     return $tag;
 }
 
@@ -602,54 +313,6 @@ sub encode
 sub list
 {
     my $list = <<end_of_list
-``
--LRB-
--RRB-
-,
-:
-.
-''
-\$
-#
-AFX
-CC
-CD
-DT
-EX
-FW
-HYPH
-IN
-JJ
-JJR
-JJS
-LS
-MD
-NIL
-NN
-NNP
-NNPS
-NNS
-PDT
-POS
-PRP
-PRP\$
-RB
-RBR
-RBS
-RP
-SYM
-TO
-UH
-VB
-VBD
-VBG
-VBN
-VBP
-VBZ
-WDT
-WP
-WP\$
-WRB
 end_of_list
     ;
     my @list = split(/\r?\n/, $list);
