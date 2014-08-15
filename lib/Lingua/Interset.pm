@@ -417,7 +417,8 @@ call the C<get_driver_object()> method on these ids.
 sub find_tagsets
 {
     my $hash = get_driver_hash();
-    return sort(keys(%{$hash}));
+    my @tagsets = sort(keys(%{$hash}));
+    return @tagsets;
 }
 
 
