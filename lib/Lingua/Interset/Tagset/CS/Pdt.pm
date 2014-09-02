@@ -675,7 +675,7 @@ sub encode
                 {
                     # já, ty, on, ona, ono, my, vy, oni, ony
                     # it has gender if it is 3rd person
-                    if($fs->person() == 3)
+                    if($fs->person() eq '3')
                     {
                         $tag = 'PPXXX----------';
                     }
