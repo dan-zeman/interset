@@ -5,6 +5,7 @@
 
 package tagset::da::conll;
 use utf8;
+use tagset::common;
 
 
 
