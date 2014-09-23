@@ -921,7 +921,7 @@ sub value_valid
     # For the 'tagset' feature, a regular expression is used instead of a list of values.
     elsif($feature eq 'tagset')
     {
-        return $value =~ m/^[a-z]+::[a-z]+$/;
+        return $value =~ m/^[a-z]+::[a-z0-9]+$/;
     }
     # Other known features all have their lists of values (including the empty string).
     else
