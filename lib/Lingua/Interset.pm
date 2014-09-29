@@ -274,7 +274,9 @@ sub _find_drivers
                 my $sdpath = "$tpath/$sd";
                 if(-d $sdpath && $sd !~ m/^\.\.?$/)
                 {
-                    opendir(DIR, $sdpath) or confess("Cannot read folder $sdpath: $!\n");
+                    # It is possible that a subfolder of $PERLLIB is not readable.
+                    # We cannot complain about it. We will just silently proceed to the next available folder.
+                    opendir(DIR, $sdpath) or next;
                     my @files = readdir(DIR);
                     closedir(DIR);
                     foreach my $file (@files)
