@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+Fixes:
+* Lingua::Interset::find_drivers() no longer fails if a subfolder of an %INC path is not readable.
+
+
+
 2.011     2014-09-23 22:40:14+02:00 Europe/Prague
 
 Drivers:
