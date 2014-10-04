@@ -407,14 +407,15 @@ sub get_feature_names
 
 #------------------------------------------------------------------------------
 # Decodes a physical tag (string) and returns the corresponding feature
-# structure.
+# structure. ###!!! Z tohohle by se snad mohl stát společný předek pro CoNLL.
 #------------------------------------------------------------------------------
-sub decode
+sub decode_conll
 {
     my $self = shift;
     my $tag = shift;
+    my $tagset = shift; # e.g. 'da::conll'
     my $fs = Lingua::Interset::FeatureStructure->new();
-    $fs->set_tagset('da::conll');
+    $fs->set_tagset($tagset);
     my $atoms = $self->atoms();
     my $feature_names = $self->features_all();
     # Three components: coarse-grained pos, fine-grained pos, features
@@ -443,6 +444,20 @@ sub decode
             $atoms->{$name}->decode_and_merge_hard($features_conll{$name}, $fs);
         }
     }
+    return $fs;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Decodes a physical tag (string) and returns the corresponding feature
+# structure. ###!!! This is the tagset-specific part of a CoNLL decoder.
+#------------------------------------------------------------------------------
+sub decode
+{
+    my $self = shift;
+    my $tag = shift;
+    my $fs = $self->decode_conll($tag, 'da::conll');
     # Default feature values. Used to improve collaboration with other drivers.
     # Some pronoun forms can be declared accusative/oblique case.
     if($fs->prontype() eq 'prs' && !$fs->is_possessive() && $fs->case() eq '')
@@ -453,6 +468,44 @@ sub decode
         $fs->set_case('acc');
     }
     return $fs;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Takes feature structure and returns the corresponding physical tag (string).
+# ###!!! Z tohohle by se snad mohl stát společný předek pro CoNLL.
+#------------------------------------------------------------------------------
+sub encode_conll
+{
+    my $self = shift;
+    my $fs = shift; # Lingua::Interset::FeatureStructure
+    # Every CoNLL tagset has a different relation between pos and subpos, so we want them already encoded.
+    my $pos = shift;
+    my $subpos = shift;
+    # The list of feature names may differ for different parts of speech so we want to get a reference to the list.
+    my $feature_names = shift;
+    my $atoms = $self->atoms();
+    my $subpos = $atoms->{pos}->encode($fs);
+    my @features;
+    foreach my $name (@{$feature_names})
+    {
+        # Sanity check: did we define atoms for all features?
+        confess("Undefined atom for feature $name") if(!defined($atoms->{$name}));
+        my $value = $atoms->{$name}->encode($fs);
+        if($value ne '')
+        {
+            # Value adjustments tailored for this physical tagset would come here.
+            push(@features, "$name=$value");
+        }
+    }
+    my $features = '_';
+    if(scalar(@features) > 0)
+    {
+        $features = join('|', @features);
+    }
+    my $tag = "$pos\t$subpos\t$features";
+    return $tag;
 }
 
 
@@ -483,24 +536,7 @@ sub encode
     }
     my $feature_names = $self->get_feature_names($fpos);
     my $pos = $subpos =~ m/^(RG|SP)$/ ? $subpos : substr($subpos, 0, 1);
-    my @features;
-    foreach my $name (@{$feature_names})
-    {
-        # Sanity check: did we define atoms for all features?
-        confess("Undefined atom for feature $name") if(!defined($atoms->{$name}));
-        my $value = $atoms->{$name}->encode($fs);
-        if($value ne '')
-        {
-            # Value adjustments tailored for this physical tagset would come here.
-            push(@features, "$name=$value");
-        }
-    }
-    my $features = '_';
-    if(scalar(@features) > 0)
-    {
-        $features = join('|', @features);
-    }
-    my $tag = "$pos\t$subpos\t$features";
+    my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names);
     return $tag;
 }
 
