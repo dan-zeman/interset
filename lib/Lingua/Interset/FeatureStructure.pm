@@ -1641,6 +1641,55 @@ sub is_wh {my $self = shift; return any {m/^(int|rel)$/} ($self->get_list('pront
 
 
 
+use Lingua::Interset::Tagset::MUL::Upos;
+has '_upos_driver' => ( isa => 'Lingua::Interset::Tagset::MUL::Upos', is => 'ro', builder => '_create_upos_driver', lazy => 1 );
+sub _create_upos_driver { return new Lingua::Interset::Tagset::MUL::Upos; }
+
+
+
+#------------------------------------------------------------------------------
+# Sets feature values according to a universal part-of-speech tag as defined in
+# 2014 for the Universal Dependencies
+# (http://universaldependencies.github.io/docs/).
+#------------------------------------------------------------------------------
+=method set_upos()
+
+Sets feature values according to a universal part-of-speech tag as defined in 2014
+for the Universal Dependencies
+(L<http://universaldependencies.github.io/docs/>).
+
+=cut
+sub set_upos
+{
+    my $self = shift;
+    my $upos = shift;
+    my $driver = $self->_upos_driver();
+    $driver->decode_and_merge_hard($upos, $self);
+}
+
+
+
+#------------------------------------------------------------------------------
+# Returns the universal part-of-speech tag as defined in 2014 for the Universal
+# Dependencies (http://universaldependencies.github.io/docs/).
+#------------------------------------------------------------------------------
+=method get_upos(), upos()
+
+Returns the universal part-of-speech tag as defined in 2014
+for the Universal Dependencies
+(L<http://universaldependencies.github.io/docs/>).
+
+=cut
+sub get_upos
+{
+    my $self = shift;
+    my $driver = $self->_upos_driver();
+    return $driver->encode($self);
+}
+sub upos { return get_upos(@_); }
+
+
+
 #------------------------------------------------------------------------------
 # Tests multiple Interset features simultaneously. Input is a list of feature-
 # value pairs, return value is 1 if the node matches all these values. This

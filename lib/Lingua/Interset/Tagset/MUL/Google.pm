@@ -1,7 +1,7 @@
 # ABSTRACT: Driver for the Google Universal Part-of-Speech Tagset.
 # http://code.google.com/p/universal-pos-tags/
 # Copyright © 2014 Martin Popel <popel@ufal.mff.cuni.cz>
-# Copyright © 2014 Dan Zeman <popel@ufal.mff.cuni.cz>
+# Copyright © 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::MUL::Google;
 use strict;
@@ -128,6 +128,7 @@ L<http://code.google.com/p/universal-pos-tags/>.
 
 L<Lingua::Interset>
 L<Lingua::Interset::Tagset>,
+L<Lingua::Interset::Tagset::MUL::Upos>,
 L<Lingua::Interset::Atom>,
 L<Lingua::Interset::FeatureStructure>
 

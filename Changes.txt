@@ -1,5 +1,13 @@
 {{$NEXT}}
 
+Drivers:
+* MUL::Upos
+
+Interface:
+* FeatureStructure has new methods set_upos() and get_upos() for the universal POS tags.
+
+
+
 2.013     2014-10-04 22:40:48+02:00 Europe/Prague
 
 Drivers:
