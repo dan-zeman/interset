@@ -486,7 +486,6 @@ sub encode_conll
     # The list of feature names may differ for different parts of speech so we want to get a reference to the list.
     my $feature_names = shift;
     my $atoms = $self->atoms();
-    my $subpos = $atoms->{pos}->encode($fs);
     my @features;
     foreach my $name (@{$feature_names})
     {
