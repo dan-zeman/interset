@@ -1,5 +1,13 @@
 {{$NEXT}}
 
+Drivers:
+* DE::Stts
+
+Fixes:
+* Fixed a bug in Atom::list(). Previously, tags were taken from encode but not from decode map.
+
+
+
 2.014     2014-10-06 22:10:01+02:00 Europe/Prague
 
 Drivers:

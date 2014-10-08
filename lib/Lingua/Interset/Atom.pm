@@ -258,9 +258,18 @@ created by collecting tag occurrences in some corpus.
 sub list
 {
     my $self = shift;
-    my $map = $self->encode_map();
     my %tagset;
-    $self->_list_step($map, \%tagset);
+    # Collect tags that we are prepared to decode.
+    my $dmap = $self->decode_map();
+    foreach my $tag (keys(%{$dmap}))
+    {
+        $tagset{$tag}++;
+    }
+    # Collect tags reachable through our encoding map.
+    # There should not really be any additional tags not known from $dmap.
+    # But as a sanity check, we will scan them anyway.
+    my $emap = $self->encode_map();
+    $self->_list_step($emap, \%tagset);
     my @list = sort(keys(%tagset));
     return \@list;
 }

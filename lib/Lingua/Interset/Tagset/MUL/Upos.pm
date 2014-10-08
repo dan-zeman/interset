@@ -118,18 +118,16 @@ sub decode
 
 =head1 SYNOPSIS
 
-  use Lingua::Interset::Tagset::MUL::Google;
-  my $driver = Lingua::Interset::Tagset::MUL::Google->new();
+  use Lingua::Interset::Tagset::MUL::Upos;
+  my $driver = Lingua::Interset::Tagset::MUL::Upos->new();
   my $fs = $driver->decode('NOUN');
 
 or
 
   use Lingua::Interset qw(decode);
-  my $fs = decode('mul::google', 'NOUN');
+  my $fs = decode('mul::upos', 'NOUN');
 
 =head1 DESCRIPTION
-Driver for the Universal Part-of-Speech Tagset, version 2014-10-01, part of Universal Dependencies.
-# http://universaldependencies.github.io/docs/
 
 Interset driver for the Universal Part-of-Speech Tagset
 as of its extended version for the Universal Dependencies (2014-10-01),
