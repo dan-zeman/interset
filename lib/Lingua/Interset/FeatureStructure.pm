@@ -115,6 +115,7 @@ my %matrix = @_matrix =
             ['prop'],
             ['class'],
         ],
+        'uname' => 'NounType'
     },
     # Named entity type. Typically used together with nountype = 'prop'.
     'nametype' =>
@@ -145,6 +146,7 @@ my %matrix = @_matrix =
             ['spo'],
             ['hob']
         ],
+        'uname' => 'NameType'
     },
     # Special type of adjective if applicable and if known.
     'adjtype' =>
@@ -157,6 +159,7 @@ my %matrix = @_matrix =
             ['det'],
             ['art', 'det'],
         ],
+        'uname' => 'AdjType'
     },
     # Pronominality and its type for nouns (pronouns), adjectives (determiners), numerals, adverbs etc.
     'prontype' =>
@@ -175,6 +178,7 @@ my %matrix = @_matrix =
             ['neg', 'ind'],
             ['tot', 'ind'],
         ],
+        'uname' => 'PronType'
     },
     # Numeral types.
     # Note that it is not guaranteed that pos eq 'num'. Typically only cardinal numbers
@@ -195,6 +199,7 @@ my %matrix = @_matrix =
             ['dist', 'card'],
             ['range', 'card']
         ],
+        'uname' => 'NumType'
     },
     # Presentation form of numerals.
     'numform' =>
@@ -207,6 +212,7 @@ my %matrix = @_matrix =
             ['digit', 'roman'],
             ['roman', 'digit']
         ],
+        'uname' => 'NumForm'
     },
     # Numeric value (class of values) of numerals.
     # Some low-value numerals in some languages behave differently.
@@ -220,6 +226,7 @@ my %matrix = @_matrix =
             ['2', '3'],
             ['3', '2']
         ],
+        'uname' => 'NumValue'
     },
     # Special type of verb if applicable and if known.
     'verbtype' =>
@@ -233,6 +240,7 @@ my %matrix = @_matrix =
             ['mod', 'aux'],
             ['verbconj'],
         ],
+        'uname' => 'VerbType'
     },
     # Semantic type of adverb.
     'advtype' =>
@@ -251,6 +259,7 @@ my %matrix = @_matrix =
             ['adadj'],
             ['ex']
         ],
+        'uname' => 'AdvType'
     },
     # Special type of adposition if applicable and if known.
     'adpostype' =>
@@ -266,6 +275,7 @@ my %matrix = @_matrix =
             ['preppron'],
             ['comprep']
         ],
+        'uname' => 'AdpType'
     },
     # Conjunction type.
     'conjtype' =>
@@ -279,6 +289,7 @@ my %matrix = @_matrix =
             ['comp'],
             ['oper']
         ],
+        'uname' => 'ConjType'
     },
     # Particle type.
     'parttype' =>
@@ -293,6 +304,7 @@ my %matrix = @_matrix =
             ['inf'],
             ['vbp']
         ],
+        'uname' => 'PartType'
     },
     # Punctuation type.
     'punctype' =>
@@ -313,6 +325,7 @@ my %matrix = @_matrix =
             ['symb'],
             ['root']
         ],
+        'uname' => 'PunctType'
     },
     # Distinction between opening and closing brackets and other paired punctuation.
     'puncside' =>
@@ -324,6 +337,7 @@ my %matrix = @_matrix =
             ['ini'],
             ['fin']
         ],
+        'uname' => 'PunctSide'
     },
     # Syntactic part of speech.
     ###!!! DO WE STILL NEED THIS?
@@ -362,6 +376,7 @@ my %matrix = @_matrix =
             ['adv'],
             ['def']
         ],
+        'uname' => 'MorphPos'
     },
     #--------------------------------------------------------------------------
     # For the following group of almost-boolean attributes I am not sure what would be the best internal representation.
@@ -376,6 +391,7 @@ my %matrix = @_matrix =
         [
             ['poss']
         ],
+        'uname' => 'Poss'
     },
     # Reflexivity.
     'reflex' =>
@@ -386,6 +402,7 @@ my %matrix = @_matrix =
         [
             ['reflex']
         ],
+        'uname' => 'Reflex'
     },
     # Foreign word? (Not a loanword but a quotation from a foreign language.)
     'foreign' =>
@@ -396,6 +413,7 @@ my %matrix = @_matrix =
         [
             ['foreign']
         ],
+        'uname' => 'Foreign'
     },
     # Abbreviation?
     'abbr' =>
@@ -406,6 +424,7 @@ my %matrix = @_matrix =
         [
             ['abbr']
         ],
+        'uname' => 'Abbr'
     },
     # Is this a part of a hyphenated compound?
     # Typically one part gets a normal part of speech and the other gets this flag.
@@ -418,6 +437,7 @@ my %matrix = @_matrix =
         [
             ['hyph']
         ],
+        'uname' => 'Hyph'
     },
     # Is this / does this word contain a typo?
     'typo' =>
@@ -428,6 +448,7 @@ my %matrix = @_matrix =
         [
             ['typo']
         ],
+        'uname' => 'Typo'
     },
     # Is this a reduplicated or echo word?
     'echo' =>
@@ -439,6 +460,7 @@ my %matrix = @_matrix =
             ['rdp', 'ech'],
             ['ech', 'rdp']
         ],
+        'uname' => 'Echo'
     },
     # Negativeness (presence of negative morpheme in languages and word classes where applicable).
     'negativeness' =>
@@ -450,6 +472,7 @@ my %matrix = @_matrix =
             ['pos'],
             ['neg']
         ],
+        'uname' => 'Negative'
     },
     # Definiteness (or state in Arabic).
     'definiteness' =>
@@ -463,6 +486,7 @@ my %matrix = @_matrix =
             ['red', 'def'],
             ['com', 'red', 'def']
         ],
+        'uname' => 'Definite'
     },
     # Gender.
     'gender' =>
@@ -476,6 +500,7 @@ my %matrix = @_matrix =
             ['masc', 'com'],
             ['fem', 'com']
         ],
+        'uname' => 'Gender'
     },
     # Animateness (considered part of gender in some tagsets, but still orthogonal).
     'animateness' =>
@@ -488,6 +513,7 @@ my %matrix = @_matrix =
             ['nhum', 'anim'],
             ['inan']
         ],
+        'uname' => 'Animacy'
     },
     # Grammatical number.
     'number' =>
@@ -502,6 +528,7 @@ my %matrix = @_matrix =
             ['ptan', 'plu'],
             ['coll', 'sing']
         ],
+        'uname' => 'Number'
     },
     # Grammatical case.
     'case' =>
@@ -543,6 +570,7 @@ my %matrix = @_matrix =
             ['cau'],
             ['ben', 'dat']
         ],
+        'uname' => 'Case'
     },
     # Is this a special form (case) after a preposition?
     # Typically applies to personal pronouns, e.g. in Czech and Portuguese.
@@ -555,6 +583,7 @@ my %matrix = @_matrix =
             ['npr'],
             ['pre']
         ],
+        'uname' => 'PrepCase'
     },
     # Degree of comparison.
     'degree' =>
@@ -568,6 +597,7 @@ my %matrix = @_matrix =
             ['sup', 'comp'],
             ['abs', 'sup']
         ],
+        'uname' => 'Degree'
     },
     # Person.
     'person' =>
@@ -580,6 +610,7 @@ my %matrix = @_matrix =
             ['1'],
             ['2']
         ],
+        'uname' => 'Person'
     },
     # Politeness, formal vs. informal word forms.
     'politeness' =>
@@ -591,6 +622,7 @@ my %matrix = @_matrix =
             ['inf'],
             ['pol']
         ],
+        'uname' => 'Polite'
     },
     # Possessor's gender. (The gender feature typically holds the possession's gender in this case.)
     'possgender' =>
@@ -604,6 +636,7 @@ my %matrix = @_matrix =
             ['masc', 'com'],
             ['fem', 'com']
         ],
+        'uname' => 'Gender[psor]'
     },
     # Possessor's person.
     # Used e.g. in Hungarian where possessive morphemes can be attached to possessed nouns ("apple-mine").
@@ -617,6 +650,7 @@ my %matrix = @_matrix =
             ['1'],
             ['2']
         ],
+        'uname' => 'Person[psor]'
     },
     # Possessor's number.
     'possnumber' =>
@@ -629,6 +663,7 @@ my %matrix = @_matrix =
             ['dual', 'plu'],
             ['plu']
         ],
+        'uname' => 'Number[psor]'
     },
     # Possession's number.
     # In Hungarian, it is possible (though rare) that a noun has three numbers:
@@ -643,6 +678,7 @@ my %matrix = @_matrix =
             ['dual', 'plu'],
             ['plu']
         ],
+        'uname' => 'Number[psee]'
     },
     # Subcategorization.
     # So far this feature only keeps the transitive-intransitive distinction encoded in some tagsets.
@@ -656,6 +692,7 @@ my %matrix = @_matrix =
             ['intr'],
             ['tran']
         ],
+        'uname' => 'Subcat'
     },
     # Verb form.
     ###!!! Combine this feature with mood? Non-empty mood seems to always imply verbform=fin.
@@ -676,6 +713,7 @@ my %matrix = @_matrix =
             ['sup'],
             ['trans']
         ],
+        'uname' => 'VerbForm'
     },
     # Mood.
     'mood' =>
@@ -692,6 +730,7 @@ my %matrix = @_matrix =
             ['jus', 'sub'],
             ['qot', 'ind']
         ],
+        'uname' => 'Mood'
     },
     # Tense.
     'tense' =>
@@ -708,6 +747,7 @@ my %matrix = @_matrix =
             ['nar', 'past'],
             ['pqp', 'past']
         ],
+        'uname' => 'Tense'
     },
     # Voice.
     'voice' =>
@@ -719,6 +759,7 @@ my %matrix = @_matrix =
             ['act'],
             ['pass']
         ],
+        'uname' => 'Voice'
     },
     # Aspect (lexical or grammatical; but see also the 'imp' tense).
     'aspect' =>
@@ -732,6 +773,7 @@ my %matrix = @_matrix =
             ['pro'],
             ['prog']
         ],
+        'uname' => 'Aspect'
     },
     # Variant. Used in some tagsets to distinguish between forms of the same lemma that would otherwise get the same tag.
     # The meaning of the values is not and cannot be universal, not even within the scope of one tagset.
@@ -754,6 +796,7 @@ my %matrix = @_matrix =
             ['short'],
             ['long']
         ],
+        'uname' => 'Variant'
     },
     # Style.
     # Either lexical category of the lemma, or grammatical
@@ -776,6 +819,7 @@ my %matrix = @_matrix =
             ['expr', 'coll'],
             ['vulg', 'derg']
         ],
+        'uname' => 'Style'
     },
     # Tagset identifier. Where does this feature structure come from? Used to interpret the 'other' feature.
     # The expected values can be checked by a regular expression but they cannot be enumerated.
