@@ -283,6 +283,7 @@ Interset driver for the Stuttgart-Tübingen Tagset of German.
 L<Lingua::Interset>
 L<Lingua::Interset::Tagset>,
 L<Lingua::Interset::Atom>,
+L<Lingua::Interset::Tagset::DE::Conll>,
 L<Lingua::Interset::FeatureStructure>
 
 =cut

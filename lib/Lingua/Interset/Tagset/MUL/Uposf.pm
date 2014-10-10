@@ -16,7 +16,7 @@ extends 'Lingua::Interset::Tagset';
 
 
 
-has 'upos_driver' => ( isa => 'Lingua::Interset::Tagset::MUL::Upos', is => 'ro', default => new Lingua::Interset::Tagset::MUL::Upos );
+has 'upos_driver' => ( isa => 'Lingua::Interset::Tagset::MUL::Upos', is => 'ro', default => sub { new Lingua::Interset::Tagset::MUL::Upos } );
 
 
 

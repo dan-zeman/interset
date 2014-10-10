@@ -1318,6 +1318,7 @@ sub get
 {
     my $self = shift;
     my $feature = shift;
+    confess() if(!defined($feature));
     return _duplicate_recursive($self->{$feature});
 }
 
@@ -1752,17 +1753,23 @@ sub get_ufeatures
 {
     my $self = shift;
     my $fh = $self->get_hash();
-    my @features = sort {$matrix{$a}{uname} cmp $matrix{$b}{uname}} (keys(%{$fh}));
+    my @features = sort {$matrix{$a}{uname} cmp $matrix{$b}{uname}} (grep {defined($matrix{$_}{uname})} (keys(%{$fh})));
     my @pairs;
     foreach my $feature (@features)
     {
         my $uname = $matrix{$feature}{uname};
-        next if(!defined($uname));
+        my @values = grep {defined($_) && $_ ne ''} $self->get_list($feature);
+        next unless(@values);
         # Sort multivalues alphabetically and capitalize them.
-        my @values = map {s/^(.)/\u$1/; $_} (sort($self->get_list()));
+        @values = sort(map {s/^(.)/\u$1/; $_} (@values));
         # Join values using comma (unlike in get_joined(), with Universal Features we cannot use the vertical bar).
         my $value = join(',', @values);
-        push(@pairs, "$uname=$value");
+        # Interset uses for boolean features the value identical to feature name while universal features use "Yes".
+        $value = 'Yes' if($value eq $uname);
+        my $pair = "$uname=$value";
+        # Some values of some features became obsolete because the distinction was moved to the POS tag level.
+        next if($pair =~ m/^(ConjType=(Coor|Sub)|NounType=(Com|Prop)|VerbType=Aux)$/);
+        push(@pairs, $pair);
     }
     return @pairs;
 }
