@@ -8,6 +8,7 @@ Drivers:
 
 Fixes:
 * Fixed a bug in Atom::list(). Previously, tags were taken from encode but not from decode map.
+* FeatureStructure has new method get_ufeatures() for the universal features.
 
 
 
