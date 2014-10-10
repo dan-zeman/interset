@@ -29,6 +29,7 @@ sub _create_atoms
     # UNNAMED MIXED FEATURES ####################
     $atoms{mixed} = $self->create_atom
     (
+        'tagset' => 'de::conll2009',
         'surfeature' => 'mixed',
         'decode_map' =>
         {
@@ -38,7 +39,7 @@ sub _create_atoms
             'Neut' => ['gender' => 'neut'],
             # Numerus / number
             'Sg'   => ['number' => 'sing'],
-            'Pl'   => ['number' => 'plur'],
+            'Pl'   => ['number' => 'plu'], ###!!! should be plur in universal features
             # Kasus / case
             'Nom'  => ['case' => 'nom'],
             'Gen'  => ['case' => 'gen'],
@@ -94,7 +95,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'Sg' => 'sing',
-            'Pl' => 'plur'
+            'Pl' => 'plu' ###!!! should be plur in universal features
         },
         'encode_default' => '*'
     );
@@ -123,6 +124,18 @@ sub _create_atoms
         },
         'encode_default' => '*'
     );
+    # PERSON ####################
+    $atoms{person} = $self->create_simple_atom
+    (
+        'intfeature' => 'person',
+        'simple_decode_map' =>
+        {
+            '1' => '1',
+            '2' => '2',
+            '3' => '3'
+        },
+        'encode_default' => '*'
+    );
     # TENSE ####################
     $atoms{tense} = $self->create_simple_atom
     (
@@ -133,6 +146,34 @@ sub _create_atoms
             'Pres' => 'pres'
         },
         'encode_default' => '*'
+    );
+    # TENSE OF PARTICIPLE ####################
+    $atoms{partense} = $self->create_simple_atom
+    (
+        'intfeature' => 'tense',
+        'simple_decode_map' =>
+        {
+            'Psp' => 'past',
+            'Prp' => 'pres'
+        },
+        'encode_default' => '*'
+    );
+    # VERB FORM ####################
+    $atoms{verbform} = $self->create_atom
+    (
+        'tagset' => 'de::conll2009',
+        'surfeature' => 'verbform',
+        'decode_map' =>
+        {
+            # infinitive: "abkommen"
+            'Inf'   => ['verbform' => 'inf'],
+            # infinitive with the incorporated "zu" marker: "abzukommen"
+            'Infzu' => ['verbform' => 'inf', 'other' => {'verbform' => 'infzu'}]
+        },
+        'encode_map' =>
+
+            { 'verbform' => { 'inf' => { 'other/verbform' => { 'infzu' => 'Infzu',
+                                                               '@'     => 'Inf' }}}}
     );
     # MODUS / MOOD ####################
     $atoms{mood} = $self->create_simple_atom
@@ -163,10 +204,45 @@ sub decode
     my ($pos, $features) = split(/\s+/, $tag);
     # The CoNLL tagset is derived from the STTS tagset.
     # Part of speech is the STTS tag.
+    if($pos eq 'PROAV')
+    {
+        $pos = 'PAV';
+    }
     my $fs = $self->SUPER::decode($pos);
-    # Here we could set $fs->set_tagset('de::conll2009') but we will not so that all
-    # the descendants of de::stts can share the same feature structures.
-    ###!!! And now the new part. Decode the features.
+    # Unlike in DE::Conll, we do set our own tagset identifier because we have the features and thus the difference between us and the base DE::Stts is substantial.
+    $fs->set_tagset('de::conll2009');
+    my @features = split(/\|/, $features);
+    my $atoms = $self->atoms();
+    foreach my $feature (@features)
+    {
+        $atoms->{mixed}->decode_and_merge_hard($feature, $fs);
+    }
+    # Estimate part of speech of TRUNCated words.
+    # de::stts cannot do that without the morphological features.
+    ###!!! It breaks encode(decode(x))!
+    if(0 && $pos eq 'TRUNC' && $fs->pos() eq '')
+    {
+        if($fs->degree())
+        {
+            $fs->set_pos('adj');
+        }
+        elsif($fs->verbform() eq 'part')
+        {
+            $fs->set_pos('verb');
+        }
+        elsif($fs->verbform() eq 'inf')
+        {
+            $fs->set_pos('verb');
+        }
+        elsif($fs->person() =~ m/^[123]$/)
+        {
+            $fs->set_pos('verb');
+        }
+        else
+        {
+            $fs->set_pos('noun');
+        }
+    }
     return $fs;
 }
 
@@ -181,15 +257,109 @@ sub encode
     my $fs = shift; # Lingua::Interset::FeatureStructure
     # The CoNLL tagset is derived from the STTS tagset.
     # Part of speech is the STTS tag.
+    my $old_tagset = $fs->tagset();
+    $fs->set_tagset('de::stts') if($old_tagset eq 'de::conll2009');
     my $tag = $self->SUPER::encode($fs);
-    ###!!! And now the new part. Encode the features.
-    return "$tag\t_";
+    $fs->set_tagset($old_tagset);
+    if($tag eq 'PAV')
+    {
+        $tag = 'PROAV';
+    }
+    # Encode the features.
+    my @feature_names = ();
+    my $keytag = $tag;
+    if($tag =~ m/^((APPR)?ART|FM|N[NE]|P(D|I|POS|REL|W)(AT|S)|XY)$/)
+    {
+        @feature_names = ('case', 'number', 'gender');
+    }
+    else
+    {
+        my %feature_names =
+        (
+            'NN'   => ['case', 'number', 'gender'],
+            'ADJA' => ['degree', 'case', 'number', 'gender'],
+            'ADJD' => ['degree'],
+            'ADV'  => ['degree'],
+            'APPO' => ['case'],
+            'PPER' => ['person', 'case', 'number', 'gender'],
+            'PRF'  => ['person', 'case', 'number'],
+            'VINF' => ['verbform'],
+            'VIZU' => ['verbform'],
+            'VFIN' => ['person', 'number', 'tense', 'mood'],
+            # The imperative of the 1st and 3rd persons (plural) are expressed using the word order (verb precedes pronoun).
+            # The finite verb is tagged VVIMP, however its morphological features speak about indicative.
+            'VIMP' => ['person', 'number'], ###!!! person [13] => Pres|Ind; otherwise, just Imp
+            'VPP'  => ['partense'],
+        );
+        if($tag =~ m/^V([VMA])(FIN|IMP|IZU|INF|PP)$/)
+        {
+            my $verbtype = $1;
+            my $verbform = $2;
+            $keytag = 'V'.$verbform;
+        }
+        elsif($tag eq 'TRUNC')
+        {
+            if($fs->is_infinitive())
+            {
+                $keytag = 'VINF';
+            }
+            elsif($fs->is_participle())
+            {
+                $keytag = 'VPP';
+            }
+            elsif($fs->is_verb())
+            {
+                $keytag = 'VIND';
+            }
+            elsif($fs->degree())
+            {
+                $keytag = 'ADJA';
+            }
+            else
+            {
+                $keytag = 'NN';
+            }
+        }
+        if(defined($feature_names{$keytag}))
+        {
+            @feature_names = @{$feature_names{$keytag}};
+        }
+    }
+    my @features;
+    my $atoms = $self->atoms();
+    foreach my $name (@feature_names)
+    {
+        push(@features, $atoms->{$name}->encode($fs));
+    }
+    if($keytag eq 'VIMP')
+    {
+        # The imperative of the 1st and 3rd persons (plural) are expressed using the word order (verb precedes pronoun).
+        # The finite verb is tagged VVIMP, however its morphological features speak about indicative.
+        if($fs->person() ne '2')
+        {
+            push(@features, 'Pres', 'Ind');
+        }
+        else
+        {
+            push(@features, 'Imp');
+        }
+    }
+    my $features = @features ? join('|', @features) : '_';
+    if($tag eq 'TRUNC' && $features =~ m/^\*\|(Sg|Pl)\|\*$/)
+    {
+        $features = "3|$1|Pres|Ind";
+    }
+    # *|*|* should be changed to _
+    $features = '_' if($features =~ m/^\*(\|\*)*$/);
+    return "$tag\t$features";
 }
 
 
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
+# The tag occurrences in the CoNLL 2009 corpus have been collected.
+# 835 tags have been observed.
 #------------------------------------------------------------------------------
 sub list
 {
@@ -1033,7 +1203,7 @@ XY	Nom|Sg|Masc
 end_of_list
     ;
     # Protect from editors that replace tabs by spaces.
-    $list =~ s/ \s+/\t/sg;
+    $list =~ s/[ \t]+/\t/g;
     my @list = split(/\r?\n/, $list);
     return \@list;
 }
