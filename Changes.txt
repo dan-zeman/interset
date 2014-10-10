@@ -3,6 +3,7 @@
 Drivers:
 * DE::Stts
 * DE::Conll
+* DE::Conll2009
 * MUL::Uposf
 
 Fixes:
