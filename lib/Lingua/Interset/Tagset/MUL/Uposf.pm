@@ -80,7 +80,9 @@ sub encode
 sub list
 {
     my $self = shift;
-    return $self->upos_driver()->list();
+    my $list = $self->upos_driver()->list();
+    my @list = map {"$_\t_"} (@{$list});
+    return \@list;
 }
 
 
