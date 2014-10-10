@@ -97,10 +97,10 @@ my %postable =
     'NNP'   => ['pos' => 'noun', 'nountype' => 'prop', 'number' => 'sing'],
     # proper noun, plural
     # examples: Americas
-    'NNPS'  => ['pos' => 'noun', 'nountype' => 'prop', 'number' => 'plu'],
+    'NNPS'  => ['pos' => 'noun', 'nountype' => 'prop', 'number' => 'plur'],
     # noun, plural
     # examples: animals
-    'NNS'   => ['pos' => 'noun', 'number' => 'plu'],
+    'NNS'   => ['pos' => 'noun', 'number' => 'plur'],
     # predeterminer
     # examples: "all" in "all the flowers" or "both" in "both his children"
     'PDT'   => ['pos' => 'adj', 'adjtype' => 'pdt'],
@@ -252,7 +252,7 @@ sub encode
         # NN NNS NNP NNPS
         if($fs->nountype() eq 'prop')
         {
-            if($fs->number() eq 'plu')
+            if($fs->number() eq 'plur')
             {
                 $tag = 'NNPS';
             }
@@ -263,7 +263,7 @@ sub encode
         }
         else
         {
-            if($fs->number() eq 'plu')
+            if($fs->number() eq 'plur')
             {
                 $tag = 'NNS';
             }

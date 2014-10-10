@@ -187,7 +187,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'sg'   => 'sing',
-            'pl'   => 'plu',
+            'pl'   => 'plur',
             'dual' => 'dual'
         }
     );
@@ -209,7 +209,7 @@ sub _create_atoms
             'any' => ['person' => '1|2|3']
         },
         'encode_map' =>
-        
+
             { 'other/person' => { '4' => '4',
                                   '5' => '5',
                                   '6' => '6',

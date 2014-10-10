@@ -269,7 +269,7 @@ sub _create_atoms
         {
             's' => 'sing',
             'd' => 'dual',
-            'p' => 'plu'
+            'p' => 'plur'
         },
         'encode_default' => '-'
     );
@@ -375,7 +375,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             's' => 'sing',
-            'p' => 'plu'
+            'p' => 'plur'
         },
         'encode_default' => '-'
     );

@@ -102,19 +102,19 @@ sub _create_atoms
         'decode_map' =>
         {
             'S' => ['number' => 'sing'],
-            'P' => ['number' => 'plu'],
+            'P' => ['number' => 'plur'],
             'T' => ['number' => 'ptan'],
             'D' => ['number' => 'dual'],
             'C' => ['number' => 'coll'],
             # "Vykání": using plural to address a single person in a polite manner.
-            'V' => ['number' => 'plu', 'politeness' => 'pol'],
+            'V' => ['number' => 'plur', 'politeness' => 'pol'],
             'X' => []
         },
         'encode_map' =>
 
             { 'number' => { 'sing' => 'S',
                             'dual' => 'D',
-                            'plu'  => { 'politeness' => { 'pol' => 'V',
+                            'plur'  => { 'politeness' => { 'pol' => 'V',
                                                           '@'   => 'P' }},
                             'ptan' => 'T',
                             'coll' => 'C',
@@ -131,10 +131,10 @@ sub _create_atoms
             '2' => ['gender' => 'masc', 'animateness' => 'inan', 'number' => 'sing'],
             '3' => ['gender' => 'fem', 'number' => 'sing'],
             '4' => ['gender' => 'neut', 'number' => 'sing'],
-            '5' => ['gender' => 'masc', 'animateness' => 'anim', 'number' => 'plu'],
-            '6' => ['gender' => 'masc', 'animateness' => 'inan', 'number' => 'plu'],
-            '7' => ['gender' => 'fem', 'number' => 'plu'],
-            '8' => ['gender' => 'neut', 'number' => 'plu'],
+            '5' => ['gender' => 'masc', 'animateness' => 'anim', 'number' => 'plur'],
+            '6' => ['gender' => 'masc', 'animateness' => 'inan', 'number' => 'plur'],
+            '7' => ['gender' => 'fem', 'number' => 'plur'],
+            '8' => ['gender' => 'neut', 'number' => 'plur'],
             # - -> neurčuje se / not specified => empty value
             # 9 => nelze určit / cannot specify => empty value
             # If this is not a participle number may still be specified but will be encoded elsewhere; gender will be '-'.
@@ -150,7 +150,7 @@ sub _create_atoms
                                                                                                                   '@'    => '1' }},
                                                                                    'fem'  => '3',
                                                                                    '@'    => '4' }},
-                                                         'plu'  => { 'gender' => { 'masc' => { 'animateness' => { 'inan' => '6',
+                                                         'plur' => { 'gender' => { 'masc' => { 'animateness' => { 'inan' => '6',
                                                                                                                   '@'    => '5' }},
                                                                                    'fem'  => '7',
                                                                                    '@'    => '8' }},
@@ -166,9 +166,9 @@ sub _create_atoms
             '1' => ['person' => '1', 'number' => 'sing'],
             '2' => ['person' => '2', 'number' => 'sing'],
             '3' => ['person' => '3', 'number' => 'sing'],
-            '4' => ['person' => '1', 'number' => 'plu'],
-            '5' => ['person' => '2', 'number' => 'plu'],
-            '6' => ['person' => '3', 'number' => 'plu'],
+            '4' => ['person' => '1', 'number' => 'plur'],
+            '5' => ['person' => '2', 'number' => 'plur'],
+            '6' => ['person' => '3', 'number' => 'plur'],
             '7' => ['verbform' => 'inf', 'voice' => 'act'],
             '8' => ['verbform' => 'inf', 'voice' => 'pass'],
             # "non-personal" (neosobní) usage of the third person
@@ -176,7 +176,7 @@ sub _create_atoms
             '9' => ['person' => '3', 'number' => 'sing', 'other' => {'person' => 'nonpers'}],
             # non-personal plural
             # only two occurrences in the whole corpus: "řikali", "hlásaj"
-            '0' => ['person' => '3', 'number' => 'plu', 'other' => {'person' => 'nonpers'}],
+            '0' => ['person' => '3', 'number' => 'plur', 'other' => {'person' => 'nonpers'}],
             # - -> neurčuje se / not specified => empty value
             # can conflict with participle gender+number
             '-' => ['other' => {'person' => '-'}]
@@ -185,11 +185,11 @@ sub _create_atoms
 
             { 'other/person' => { '-'       => '-',
                                   'nonpers' => { 'number' => { 'sing' => '9',
-                                                               'plu'  => '0',
+                                                               'plur' => '0',
                                                                '@'    => '-' }},
                                   '@'       => { 'verbform' => { 'inf' => { 'voice' => { 'pass' => '8',
                                                                                          '@'    => '7' }},
-                                                                 '@'   => { 'number' => { 'plu'  => { 'person' => { '1' => '4',
+                                                                 '@'   => { 'number' => { 'plur' => { 'person' => { '1' => '4',
                                                                                                                     '2' => '5',
                                                                                                                     '@' => '6' }},
                                                                                           'sing' => { 'person' => { '1' => '1',

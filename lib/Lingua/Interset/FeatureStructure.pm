@@ -35,7 +35,7 @@ use List::MoreUtils qw(any);
 # 1.3. Default priority order of features, to be used when restricting value combinations (can be overriden for particular tagsets)
 # 2. For each feature, list of known values
 # 2.1. Each value named using the 'enum' keyword of Moose to trigger Moose data validation
-# 2.2. Print order of values, e.g. we want to print 'sing' before 'plu' although alphabetical order says otherwise
+# 2.2. Print order of values, e.g. we want to print 'sing' before 'plur' although alphabetical order says otherwise
 # 3. For each value, order in which the other values should be considered as replacements when value restrictions are in effect
 
 # Solution: One big matrix of features, values and their properties follows.
@@ -519,13 +519,13 @@ my %matrix = @_matrix =
     'number' =>
     {
         'priority' => 320,
-        'values' => ['sing', 'dual', 'plu', 'ptan', 'coll', ''],
+        'values' => ['sing', 'dual', 'plur', 'ptan', 'coll', ''],
         'replacements' =>
         [
             ['sing'],
-            ['dual', 'plu'],
-            ['plu'],
-            ['ptan', 'plu'],
+            ['dual', 'plur'],
+            ['plur'],
+            ['ptan', 'plur'],
             ['coll', 'sing']
         ],
         'uname' => 'Number'
@@ -656,12 +656,12 @@ my %matrix = @_matrix =
     'possnumber' =>
     {
         'priority' => 380,
-        'values' => ['sing', 'dual', 'plu', ''],
+        'values' => ['sing', 'dual', 'plur', ''],
         'replacements' =>
         [
             ['sing'],
-            ['dual', 'plu'],
-            ['plu']
+            ['dual', 'plur'],
+            ['plur']
         ],
         'uname' => 'Number[psor]'
     },
@@ -671,12 +671,12 @@ my %matrix = @_matrix =
     'possednumber' =>
     {
         'priority' => 390,
-        'values' => ['sing', 'dual', 'plu', ''],
+        'values' => ['sing', 'dual', 'plur', ''],
         'replacements' =>
         [
             ['sing'],
-            ['dual', 'plu'],
-            ['plu']
+            ['dual', 'plur'],
+            ['plur']
         ],
         'uname' => 'Number[psee]'
     },
@@ -1187,7 +1187,7 @@ sub multiset
 #------------------------------------------------------------------------------
 =method set_hash()
 
-  my %hash = ('pos' => 'noun', 'number' => 'plu');
+  my %hash = ('pos' => 'noun', 'number' => 'plur');
   $fs->set_hash (\%hash);
 
 Takes a reference to a hash of features and their values.
@@ -1216,7 +1216,7 @@ sub set_hash
 #------------------------------------------------------------------------------
 =method merge_hash_hard()
 
-  my %hash = ('pos' => 'noun', 'number' => 'plu');
+  my %hash = ('pos' => 'noun', 'number' => 'plur');
   $fs->merge_hash_hard (\%hash);
 
 Takes a reference to a hash of features and their values.
@@ -1251,7 +1251,7 @@ sub merge_hash_hard
 #------------------------------------------------------------------------------
 =method merge_hash_soft()
 
-  my %hash = ('pos' => 'noun', 'number' => 'plu');
+  my %hash = ('pos' => 'noun', 'number' => 'plur');
   $fs->merge_hash_soft (\%hash);
 
 Takes a reference to a hash of features and their values.
@@ -1652,7 +1652,7 @@ sub is_past {my $self = shift; return $self->contains('tense', 'past');}
 sub is_possessive {my $self = shift; return $self->poss() eq 'poss';}
 =method is_plural()
 =cut
-sub is_plural {my $self = shift; return $self->contains('number', 'plu');}
+sub is_plural {my $self = shift; return $self->contains('number', 'plur');}
 =method is_pronoun()
 =cut
 sub is_pronoun {my $self = shift; return $self->prontype() ne '';}
@@ -1786,7 +1786,7 @@ sub get_ufeatures
 #------------------------------------------------------------------------------
 =method matches()
 
-  if ($fs->matches ('pos' => 'noun', 'gender' => '!masc', 'number' => '~(dual|plu)'))
+  if ($fs->matches ('pos' => 'noun', 'gender' => '!masc', 'number' => '~(dual|plur)'))
   {
       ...
   }

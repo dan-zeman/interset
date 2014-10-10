@@ -143,7 +143,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'sing'      => 'sing',
-            'plur'      => 'plu',
+            'plur'      => 'plur',
             'sing/plur' => ''
         }
     );
@@ -245,7 +245,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'sing'      => 'sing',
-            'plur'      => 'plu',
+            'plur'      => 'plur',
             'sing/plur' => ''
         }
     );

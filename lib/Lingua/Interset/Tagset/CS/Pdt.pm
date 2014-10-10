@@ -283,9 +283,9 @@ sub _create_atoms
         'encode_map' =>
 
             { 'gender' => { 'fem|masc'  => 'T',
-                            'fem|neut'  => { 'number' => { 'plu|sing' => 'Q',
+                            'fem|neut'  => { 'number' => { 'plur|sing' => 'Q',
                                                            'sing'     => 'H',
-                                                           'plu'      => 'H',
+                                                           'plur'      => 'H',
                                                            '@'        => 'H' }},
                             'masc|neut' => { 'animateness' => { 'inan' => 'W',
                                                                 '@'    => 'Z' }},
@@ -303,15 +303,15 @@ sub _create_atoms
         {
             'S' => ['number' => 'sing'],
             'D' => ['number' => 'dual'],
-            'P' => ['number' => 'plu'],
-            'W' => ['number' => 'sing|plu'],
+            'P' => ['number' => 'plur'],
+            'W' => ['number' => 'sing|plur'],
             'X' => []
         },
         'encode_map' =>
 
-            { 'number' => { 'plu|sing' => 'W',
+            { 'number' => { 'plur|sing' => 'W',
                             'dual' => 'D',
-                            'plu'  => 'P',
+                            'plur'  => 'P',
                             'sing' => 'S' }}
     );
     # 4. CASE ####################
@@ -356,7 +356,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'S' => 'sing',
-            'P' => 'plu'
+            'P' => 'plur'
         }
     );
     # 7. PERSON ####################
@@ -597,7 +597,7 @@ sub encode
             $tag = 'Ck-------------';
         }
         elsif($fs->get_other_for_tagset('cs::pdt') eq 'h' ||
-              $fs->gender() eq 'masc' && $fs->animateness() eq '' && $fs->number() eq 'plu' && $fs->case() eq 'acc')
+              $fs->gender() eq 'masc' && $fs->animateness() eq '' && $fs->number() eq 'plur' && $fs->case() eq 'acc')
         {
             # jedny, nejedny
             $tag = 'ChX------------';

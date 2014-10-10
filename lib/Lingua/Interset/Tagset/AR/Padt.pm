@@ -162,7 +162,7 @@ sub _create_atoms
         {
             'S' => 'sing',
             'D' => 'dual',
-            'P' => 'plu'
+            'P' => 'plur'
         },
         'encode_default' => '-'
     );
@@ -229,7 +229,7 @@ sub _create_atoms
             # undecided between subjunctive and jussive
             'D' => ['verbform' => 'fin', 'mood' => 'sub|jus'],
             # "energetic" mood, only with imperative verbs (VC) ("imperative" itself is a mood!), found only one example:
-            # فُوزَانِّ ... win, be victorious ... VCE----D-- 	fūzānni 	فُوزَانِّ 	-FūL-ānni 	imperative verb, energetic, dual
+            # Ů�ŮŹŮ�Ř˛ŮŽŘ§Ů�Ů�Ů� ... win, be victorious ... VCE----D-- 	fūzānni 	Ů�ŮŹŮ�Ř˛ŮŽŘ§Ů�Ů�Ů� 	-FūL-ānni 	imperative verb, energetic, dual
             # see http://quest.ms.mff.cuni.cz/cgi-bin/elixir/index.fcgi?mode=resolve
             'E' => ['verbform' => 'fin', 'mood' => 'imp', 'other' => {'mood' => 'energetic'}]
         },

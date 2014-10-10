@@ -200,7 +200,7 @@ sub _create_atoms
         'decode_map' =>
         {
             's' => ['number' => 'sing'],
-            'p' => ['number' => 'plu'],
+            'p' => ['number' => 'plur'],
             # The "common number" means that we cannot decide between singular and plural.
             # Ideally we would represent this just by the empty value of number.
             # Unfortunately, we also have to be able to reproduce the original annotation in encoding.
@@ -211,7 +211,7 @@ sub _create_atoms
 
             { 'other/number' => { 'com' => 'c',
                                   '@'   => { 'number' => { 'sing' => 's',
-                                                           'plu'  => 'p' }}}}
+                                                           'plur'  => 'p' }}}}
     );
     # PERSON ####################
     $atoms->{person} = $self->create_simple_atom
@@ -230,7 +230,7 @@ sub _create_atoms
         'intfeature' => 'politeness',
         'simple_decode_map' =>
         {
-            # Used only for the two polite 2nd person pronouns, "vost&egra;" (sing) and "vost&egra;s" (plu).
+            # Used only for the two polite 2nd person pronouns, "vost&egra;" (sing) and "vost&egra;s" (plur).
             'yes' => 'pol'
         }
     );
@@ -242,13 +242,13 @@ sub _create_atoms
         'decode_map' =>
         {
             's' => ['possnumber' => 'sing'],
-            'p' => ['possnumber' => 'plu'],
+            'p' => ['possnumber' => 'plur'],
             'c' => ['other' => {'possnumber' => 'c'}]
         },
         'encode_map' =>
 
             { 'possnumber' => { 'sing' => 's',
-                                'plu'  => 'p',
+                                'plur'  => 'p',
                                 '@'    => { 'other/possnumber' => { 'c' => 'c',
                                                                     '@' => '' }}}}
     );

@@ -371,7 +371,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             's' => 'sing',
-            'p' => 'plu',
+            'p' => 'plur',
             # t = count form
             # special ending for plural of inanimate nouns in counted noun phrases
             # corresponds to the singular genitive ussage in Russian ("tri časa")
@@ -432,7 +432,7 @@ sub _create_atoms
             # op = one possessor
             'op' => ['poss' => 'poss', 'possnumber' => 'sing'],
             # mp = many possessors
-            'mp' => ['poss' => 'poss', 'possnumber' => 'plu'],
+            'mp' => ['poss' => 'poss', 'possnumber' => 'plur'],
             # q = quantity or degree
             'q' => ['pos' => 'num'],
             # l = location
@@ -446,7 +446,7 @@ sub _create_atoms
 
             { 'reflex' => { 'reflex' => 'r',
                             '@'      => { 'poss' => { 'poss' => { 'possnumber' => { 'sing' => 'op',
-                                                                                    'plu'  => 'mp',
+                                                                                    'plur'  => 'mp',
                                                                                     '@'    => 'p' }},
                                                       '@'    => { 'pos' => { 'adj|adv|noun' => '',
                                                                              'noun' => 'e',

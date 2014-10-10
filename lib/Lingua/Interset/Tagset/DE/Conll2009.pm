@@ -39,7 +39,7 @@ sub _create_atoms
             'Neut' => ['gender' => 'neut'],
             # Numerus / number
             'Sg'   => ['number' => 'sing'],
-            'Pl'   => ['number' => 'plu'], ###!!! should be plur in universal features
+            'Pl'   => ['number' => 'plur'],
             # Kasus / case
             'Nom'  => ['case' => 'nom'],
             'Gen'  => ['case' => 'gen'],
@@ -95,7 +95,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'Sg' => 'sing',
-            'Pl' => 'plu' ###!!! should be plur in universal features
+            'Pl' => 'plur'
         },
         'encode_default' => '*'
     );

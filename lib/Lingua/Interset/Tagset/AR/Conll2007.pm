@@ -124,7 +124,7 @@ sub _create_atoms
         {
             'S' => 'sing',
             'D' => 'dual',
-            'P' => 'plu'
+            'P' => 'plur'
         }
     );
     # CASE ####################
