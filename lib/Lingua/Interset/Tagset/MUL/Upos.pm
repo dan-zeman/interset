@@ -138,6 +138,7 @@ see L<http://universaldependencies.github.io/docs/>.
 L<Lingua::Interset>
 L<Lingua::Interset::Tagset>,
 L<Lingua::Interset::Tagset::MUL::Google>,
+L<Lingua::Interset::Tagset::MUL::Uposf>,
 L<Lingua::Interset::Atom>,
 L<Lingua::Interset::FeatureStructure>
 

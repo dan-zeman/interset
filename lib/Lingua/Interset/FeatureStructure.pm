@@ -1735,6 +1735,41 @@ sub upos { return get_upos(@_); }
 
 
 #------------------------------------------------------------------------------
+# Returns the list of feature=value pairs in the format prescribed by the
+# Universal Dependencies (http://universaldependencies.github.io/docs/), i.e.
+# identifiers are capitalized, some features are renamed and all pairs are
+# ordered alphabetically.
+#------------------------------------------------------------------------------
+=func get_ufeatures()
+
+Returns the list of feature-value pairs in the format prescribed by the
+Universal Dependencies (L<http://universaldependencies.github.io/docs/>), i.e.
+all features and values are capitalized, some features are renamed and all
+feature-value pairs are ordered alphabetically.
+
+=cut
+sub get_ufeatures
+{
+    my $self = shift;
+    my $fh = $self->get_hash();
+    my @features = sort {$matrix{$a}{uname} cmp $matrix{$b}{uname}} (keys(%{$fh}));
+    my @pairs;
+    foreach my $feature (@features)
+    {
+        my $uname = $matrix{$feature}{uname};
+        next if(!defined($uname));
+        # Sort multivalues alphabetically and capitalize them.
+        my @values = map {s/^(.)/\u$1/; $_} (sort($self->get_list()));
+        # Join values using comma (unlike in get_joined(), with Universal Features we cannot use the vertical bar).
+        my $value = join(',', @values);
+        push(@pairs, "$uname=$value");
+    }
+    return @pairs;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Tests multiple Interset features simultaneously. Input is a list of feature-
 # value pairs, return value is 1 if the node matches all these values. This
 # function is an abbreviation for a series of get_iset() calls in an if
