@@ -93,6 +93,7 @@ Thus this driver is only a translation layer above the C<de::stts> driver.
 L<Lingua::Interset>,
 L<Lingua::Interset::Tagset>,
 L<Lingua::Interset::Tagset::DE::Stts>,
+L<Lingua::Interset::Tagset::DE::Conll2009>,
 L<Lingua::Interset::FeatureStructure>
 
 =cut
