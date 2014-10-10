@@ -75,6 +75,76 @@ sub _create_atoms
             'pos' => {}
         }
     );
+    # GENUS / GENDER ####################
+    $atoms{gender} = $self->create_simple_atom
+    (
+        'intfeature' => 'gender',
+        'simple_decode_map' =>
+        {
+            'Masc' => 'masc',
+            'Fem'  => 'fem',
+            'Neut' => 'neut'
+        },
+        'encode_default' => '*'
+    );
+    # NUMERUS / NUMBER ####################
+    $atoms{number} = $self->create_simple_atom
+    (
+        'intfeature' => 'number',
+        'simple_decode_map' =>
+        {
+            'Sg' => 'sing',
+            'Pl' => 'plur'
+        },
+        'encode_default' => '*'
+    );
+    # KASUS / CASE ####################
+    $atoms{case} = $self->create_simple_atom
+    (
+        'intfeature' => 'case',
+        'simple_decode_map' =>
+        {
+            'Nom' => 'nom',
+            'Gen' => 'gen',
+            'Dat' => 'dat',
+            'Acc' => 'acc'
+        },
+        'encode_default' => '*'
+    );
+    # GRAD / DEGREE ####################
+    $atoms{degree} = $self->create_simple_atom
+    (
+        'intfeature' => 'degree',
+        'simple_decode_map' =>
+        {
+            'Pos'  => 'pos',
+            'Comp' => 'comp',
+            'Sup'  => 'sup'
+        },
+        'encode_default' => '*'
+    );
+    # TENSE ####################
+    $atoms{tense} = $self->create_simple_atom
+    (
+        'intfeature' => 'tense',
+        'simple_decode_map' =>
+        {
+            'Past' => 'past',
+            'Pres' => 'pres'
+        },
+        'encode_default' => '*'
+    );
+    # MODUS / MOOD ####################
+    $atoms{mood} = $self->create_simple_atom
+    (
+        'intfeature' => 'mood',
+        'simple_decode_map' =>
+        {
+            'Ind'  => 'ind',
+            'Subj' => 'sub'
+        },
+        'encode_default' => '*'
+    );
     return \%atoms;
 }
 
