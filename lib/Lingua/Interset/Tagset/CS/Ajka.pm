@@ -366,17 +366,17 @@ sub _create_atoms
         {
             'nS' => ['number' => 'sing'],
             'nD' => ['number' => 'dual'],
-            'nP' => ['number' => 'plu'],
+            'nP' => ['number' => 'plur'],
             # Special value for common forms of surnames that denote all members of a family, e.g. "Novákovi" = "the Nováks", "the Novák family".
             # Unlike gender, for number it is not necessary to have a special value: this surname form is always in plural.
             # In fact, the 'nR' value is mentioned in documentation but it does not occur in output of Majka.
-            'nR' => ['number' => 'plu']
+            'nR' => ['number' => 'plur']
         },
         'encode_map' =>
 
             { 'number' => { 'sing' => 'nS',
                             'dual' => 'nD',
-                            'plu'  => 'nP' }}
+                            'plur'  => 'nP' }}
     );
     # CASE ####################
     $atoms{c} = $self->create_simple_atom

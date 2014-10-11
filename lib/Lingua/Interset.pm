@@ -436,7 +436,7 @@ sub find_tagsets
   my $tag1 = 'NN'; # in the English Penn Treebank, "NN" means "noun"
   my $feature_structure = decode('en::penn', $tag1);
   print($feature_structure->as_string(), "\n");
-  $feature_structure->set_number('plu');
+  $feature_structure->set_number('plur');
   my $tag2 = encode('en::penn', $feature_structure);
   print("$tag2\n");
 
