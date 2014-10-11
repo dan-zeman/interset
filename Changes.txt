@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+Features:
+* Feature 'number', value 'plu' (plural) changed to 'plur' to reflect the Universal Dependencies / Features.
+
+
+
 2.015     2014-10-10 18:23:36+02:00 Europe/Prague
 
 Drivers:
