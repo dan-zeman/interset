@@ -75,6 +75,7 @@ sub _create_atoms
                          'conj' => 'c',
                          'int'  => 'i',
                          'punc' => 'f',
+                         'sym'  => 'f',
                          '@'    => 'n' }}
     );
     # DETAILED PART OF SPEECH ####################
@@ -346,7 +347,7 @@ sub _create_atoms
             'etc'             => ['punctype' => 'comm', 'other' => {'punctype' => 'etc'}],
             'exclamationmark' => ['punctype' => 'excl'],
             'hyphen'          => ['punctype' => 'dash'],
-            'mathsign'        => ['punctype' => 'symb'],
+            'mathsign'        => ['pos' => 'sym'],
             'period'          => ['punctype' => 'peri'],
             'questionmark'    => ['punctype' => 'qest'],
             'quotation'       => ['punctype' => 'quot'],
@@ -362,11 +363,11 @@ sub _create_atoms
                                                                 '@'     => 'comma' }},
                               'excl' => 'exclamationmark',
                               'dash' => 'hyphen',
-                              'symb' => 'mathsign',
                               'peri' => 'period',
                               'qest' => 'questionmark',
                               'quot' => 'quotation',
-                              'semi' => 'semicolon' }}
+                              'semi' => 'semicolon',
+                              '@'    => { 'pos' => { 'sym' => 'mathsign' }}}}
     );
     # PAIRED PUNCTUATION SIDE ####################
     $atoms->{punctenclose} = $self->create_simple_atom

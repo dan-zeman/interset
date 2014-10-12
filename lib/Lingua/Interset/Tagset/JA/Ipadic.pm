@@ -97,12 +97,12 @@ my %postable =
     '助詞-特殊'         => ['pos' => 'adp', 'adpostype' => 'post', 'other' => 'special'], # particle-special
     '助動詞'            => ['pos' => 'verb', 'verbtype' => 'aux'], # aux
     '感動詞'            => ['pos' => 'int'], # exclamation
-    '記号'              => ['pos' => 'punc', 'punctype' => 'symb'], # symbol
-    '記号-一般'         => ['pos' => 'punc', 'punctype' => 'symb', 'other' => 'misc'], # symbol-misc
+    '記号'              => ['pos' => 'sym'], # symbol
+    '記号-一般'         => ['pos' => 'sym', 'other' => 'misc'], # symbol-misc
     '記号-句点'         => ['pos' => 'punc', 'punctype' => 'peri'], # symbol-comma
     '記号-読点'         => ['pos' => 'punc', 'punctype' => 'comm'], # symbol-period
     '記号-空白'         => ['pos' => 'punc', 'other' => 'space'], # symbol-space
-    '記号-アルファベット'   => ['pos' => 'punc', 'punctype' => 'symb', 'other' => 'alphabet'], # symbol-alphabetic
+    '記号-アルファベット'   => ['pos' => 'sym', 'other' => 'alphabet'], # symbol-alphabetic
     '記号-括弧開'       => ['pos' => 'punc', 'punctype' => 'brck', 'puncside' => 'ini'], # symbol-left_parenthesis
     '記号-括弧閉'       => ['pos' => 'punc', 'punctype' => 'brck', 'puncside' => 'fin'], # symbol-right_parenthesis
     'その他'            => ['other' => 'other'], # other
@@ -593,12 +593,9 @@ sub encode
       }
     }
 
-    # Punctuation
-    elsif ($pos eq 'punc')
+    # Punctuation and symbols
+    elsif ($pos eq 'sym')
     {
-      # symbol-alphabetic symbol-misc symbol
-      if ($fs->punctype() eq 'symb')
-      {
         if ($fs->other() eq 'alphabet')
         {
           $tag = '記号-アルファベット';
@@ -611,9 +608,11 @@ sub encode
         {
           $tag = '記号';
         }
-      }
+    }
+    elsif ($pos eq 'punc')
+    {
       # symbol-left_parenthesis symbol-right_parenthesis
-      elsif ($fs->punctype() eq 'brck')
+      if ($fs->punctype() eq 'brck')
       {
         if ($fs->puncside() eq 'ini')
         {

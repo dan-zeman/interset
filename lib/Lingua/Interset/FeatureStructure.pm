@@ -89,13 +89,14 @@ my %matrix = @_matrix =
     'pos' =>
     {
         'priority' => 10,
-        'values'   => ['noun', 'adj', 'num', 'verb', 'adv', 'adp', 'conj', 'part', 'int', 'punc', ''],
+        'values'   => ['noun', 'adj', 'num', 'verb', 'adv', 'adp', 'conj', 'part', 'int', 'punc', 'sym', ''],
         'replacements' =>
         [
             ['part'        ],
             ['noun', 'verb'],
             ['verb'        ],
-            ['punc'        ],
+            ['sym', 'punc' ],
+            ['punc', 'sym' ],
             ['adj',  'noun'],
             ['num',  'adj' ],
             ['adv'         ],
@@ -310,7 +311,7 @@ my %matrix = @_matrix =
     'punctype' =>
     {
         'priority' => 170,
-        'values' => ['peri', 'qest', 'excl', 'quot', 'brck', 'comm', 'colo', 'semi', 'dash', 'symb', 'root', ''],
+        'values' => ['peri', 'qest', 'excl', 'quot', 'brck', 'comm', 'colo', 'semi', 'dash', 'root', ''],
         'replacements' =>
         [
             ['colo'],
@@ -322,7 +323,6 @@ my %matrix = @_matrix =
             ['brck', 'quot'],
             ['semi', 'comm'],
             ['dash', 'colo'],
-            ['symb'],
             ['root']
         ],
         'uname' => 'PunctType'
@@ -1671,6 +1671,9 @@ sub is_singular {my $self = shift; return $self->contains('number', 'sing');}
 =method is_subordinator()
 =cut
 sub is_subordinator {my $self = shift; return $self->is_conjunction() && $self->conjtype() eq 'sub';}
+=method is_symbol()
+=cut
+sub is_symbol {my $self = shift; return $self->contains('pos', 'sym');}
 =method is_transgressive()
 =cut
 sub is_transgressive {my $self = shift; return $self->contains('verbform', 'trans');}

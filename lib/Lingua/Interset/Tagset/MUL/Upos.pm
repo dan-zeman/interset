@@ -58,7 +58,7 @@ around BUILDARGS => sub
         # subordinating conjunction
         'SCONJ' => ['pos' => 'conj', 'conjtype' => 'sub'],
         # symbol
-        'SYM'   => ['pos' => 'punc', 'punctype' => 'symb'],
+        'SYM'   => ['pos' => 'sym'],
         # verb (non-auxiliary, all tenses and modes)
         'VERB'  => ['pos' => 'verb'],
         # other: foreign words, unanalyzable tokens
@@ -84,8 +84,8 @@ around BUILDARGS => sub
                                                '@'   => 'CONJ' }},
                    'part' => 'PART',
                    'int'  => 'INTJ',
-                   'punc' => { 'punctype' => { 'symb' => 'SYM',
-                                               '@'    => 'PUNCT' }},
+                   'punc' => 'PUNCT',
+                   'sym'  => 'SYM',
                    '@'    => 'X' }
     );
     # Now add the references to the attribute hash.

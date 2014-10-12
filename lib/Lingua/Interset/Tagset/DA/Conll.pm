@@ -80,7 +80,7 @@ sub _create_atoms
             'XF' => ['foreign' => 'foreign'],
             'XP' => ['pos' => 'punc'],
             # symbol, e.g. "+"
-            'XS' => ['pos' => 'punc', 'punctype' => 'symb'],
+            'XS' => ['pos' => 'sym'],
             # formulae, e.g. "U-21"
             # nothing to do - same as "other"
             'XR' => ['other' => {'pos' => 'formula'}],
@@ -118,8 +118,8 @@ sub _create_atoms
                                                      '@'   => 'CC' }},
                          'part' => 'U',
                          'int'  => 'I',
-                         'punc' => { 'punctype' => { 'symb' => 'XS',
-                                                     '@'    => 'XP' }},
+                         'punc' => 'XP',
+                         'sym'  => 'XS',
                          '@'    => { 'abbr' => { 'abbr' => 'XA',
                                                  '@'    => { 'foreign' => { 'foreign' => 'XF',
                                                                             '@'       => { 'other/pos' => { 'formula' => 'XR',
