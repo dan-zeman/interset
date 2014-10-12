@@ -43,7 +43,7 @@ around BUILDARGS => sub
         # also if modifying another adjective
         'ADJD'   => ['pos' => 'adj', 'variant' => 'short'], ###!!! synpos => 'pred' ... we want to get rid of synpos
         # article / Artikel
-        'ART'    => ['pos' => 'adj', 'adjtype' => 'art'],
+        'ART'    => ['pos' => 'adj', 'prontype' => 'art'],
         # irreflexive personal pronoun / irreflexives Personalpronomen
         # "ich", "du", "er", "sie", "es", "wir", "ihr"
         # "mir", "mich", "dir", ... when used irreflexively ("er begegnet mir hier")
@@ -114,7 +114,7 @@ around BUILDARGS => sub
         'APPR'    => ['pos' => 'adp', 'adpostype' => 'prep'],
         # preposition with article / Präposition mit Artikel
         # "zum", "zur", "aufs", "vom", "im"
-        'APPRART' => ['pos' => 'adp', 'adpostype' => 'prep', 'adjtype' => 'det'],
+        'APPRART' => ['pos' => 'adp', 'adpostype' => 'prep', 'prontype' => 'art'],
         # postposition / Postposition
         # "[der Straße] entlang"
         # beware: same word in "entlang [der Straße]" is preposition
@@ -187,11 +187,11 @@ around BUILDARGS => sub
                                                'tot' => 'PIS',
                                                'neg' => 'PIS',
                                                '@'   => 'PIS' }},
-                   'adj'  => { 'adjtype' => { 'art' => 'ART',
-                                              'pdt' => 'PIDAT',
+                   'adj'  => { 'adjtype' => { 'pdt' => 'PIDAT',
                                               '@'   => { 'prontype' => { ''    => { 'variant' => { 'short' => 'ADJD',
                                                                                                    '@'     => 'ADJA' }},
                                                                          'prs' => 'PPOSAT',
+                                                                         'art' => 'ART',
                                                                          'dem' => 'PDAT',
                                                                          'int' => 'PWAT',
                                                                          'rel' => 'PRELAT',
@@ -215,7 +215,8 @@ around BUILDARGS => sub
                    'adp'  => { 'adpostype' => { 'post' => 'APPO',
                                                 'circ' => 'APZR',
                                                 '@'    => { 'adjtype' => { 'det' => 'APPRART',
-                                                                           '@'   => 'APPR' }}}},
+                                                                           '@'   => { 'prontype' => { 'art' => 'APPRART',
+                                                                                                      '@'   => 'APPR' }}}}}},
                    'conj' => { 'conjtype' => { 'sub'  => { 'other/conjtype' => { 'zu' => 'KOUI',
                                                                                  '@'  => 'KOUS' }},
                                                'comp' => 'KOKOM',

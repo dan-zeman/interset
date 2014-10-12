@@ -153,12 +153,11 @@ my %matrix = @_matrix =
     'adjtype' =>
     {
         'priority' => 90,
-        'values' => ['pdt', 'det', 'art', ''],
+        'values' => ['pdt', 'det', ''],
         'replacements' =>
         [
             ['pdt'],
             ['det'],
-            ['art', 'det'],
         ],
         'uname' => 'AdjType'
     },
@@ -166,7 +165,7 @@ my %matrix = @_matrix =
     'prontype' =>
     {
         'priority' => 100,
-        'values' => ['prn', 'prs', 'rcp', 'int', 'rel', 'dem', 'neg', 'ind', 'tot', ''],
+        'values' => ['prn', 'prs', 'rcp', 'art', 'int', 'rel', 'dem', 'neg', 'ind', 'tot', ''],
         'replacements' =>
         [
             ['prn'],
@@ -178,6 +177,7 @@ my %matrix = @_matrix =
             ['rel', 'int'],
             ['neg', 'ind'],
             ['tot', 'ind'],
+            ['art']
         ],
         'uname' => 'PronType'
     },
@@ -1611,6 +1611,9 @@ sub is_adposition {my $self = shift; return $self->contains('pos', 'adp');}
 =method is_adverb()
 =cut
 sub is_adverb {my $self = shift; return $self->contains('pos', 'adv');}
+=method is_article()
+=cut
+sub is_article {my $self = shift; return $self->contains('prontype', 'art');}
 =method is_conjunction()
 =cut
 sub is_conjunction {my $self = shift; return $self->contains('pos', 'conj');}

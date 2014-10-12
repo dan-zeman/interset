@@ -75,7 +75,7 @@ sub _create_atoms
             # Although not documented, the data contain the tag "-\t-\tdef=D".
             # It is always assigned to the definite article 'al' if separated from its noun or adjective.
             # Normally the article is not tokenized off and makes the definiteness feature of the noun.
-            '--' => ['pos' => 'adj', 'adjtype' => 'art']
+            '--' => ['pos' => 'adj', 'prontype' => 'art']
         },
         'encode_map' =>
 
@@ -86,8 +86,8 @@ sub _create_atoms
                                                                                                                              'dem' => 'SD',
                                                                                                                              'rel' => 'SR',
                                                                                                                              '@'   => 'S-' }},
-                                                                                                 'adj'  => { 'prontype' => { ''    => { 'adjtype' => { 'art' => '--',
-                                                                                                                                                       '@'   => 'A-' }},
+                                                                                                 'adj'  => { 'prontype' => { ''    => 'A-',
+                                                                                                                             'art' => '--',
                                                                                                                              'dem' => 'SD',
                                                                                                                              'rel' => 'SR',
                                                                                                                              '@'   => 'S-' }},

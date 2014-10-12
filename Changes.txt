@@ -1,5 +1,13 @@
 {{$NEXT}}
 
+Features:
+* Value 'art' (article) moved from feature 'adjtype' to 'prontype'. Adjtype becomes deprecated.
+
+Interface:
+* FeatureStructure has new method is_article().
+
+
+
 2.016     2014-10-11 21:46:09+02:00 Europe/Prague
 
 Features:
