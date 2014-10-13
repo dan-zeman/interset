@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+2.017     2014-10-13 16:07:59+02:00 Europe/Prague
+
 Features:
 * Value 'art' (article) moved from feature 'adjtype' to 'prontype'. Adjtype becomes deprecated.
 * Value 'det' (determiner) of 'adjtype' removed. Determiners are now recognized by pos=adj + non-empty value of 'prontype'.
