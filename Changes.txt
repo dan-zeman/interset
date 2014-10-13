@@ -2,6 +2,7 @@
 
 Features:
 * Value 'art' (article) moved from feature 'adjtype' to 'prontype'. Adjtype becomes deprecated.
+* Value 'det' (determiner) of 'adjtype' removed. Determiners are now recognized by pos=adj + non-empty value of 'prontype'.
 
 Interface:
 * FeatureStructure has new method is_article().
