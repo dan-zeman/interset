@@ -75,7 +75,7 @@ sub _create_atoms
             # demonstratives
             # Only 4 occurrences in the corpus, only 2 word types:
             # এই (ē'i = this), এইসব (ē'isaba = these)
-            'DEM'  => ['pos' => 'adj', 'adjtype' => 'det', 'prontype' => 'dem'],
+            'DEM'  => ['pos' => 'adj', 'prontype' => 'dem'],
             # quantifiers
             # Examples:
             # একটু (ēkaṭu = a little), কিছুটা (kichuṭā = somewhat), কোনও (kōna'ō = no), খুব (khuba = very), বহু (bahu = many), সব (saba = all)

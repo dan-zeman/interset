@@ -153,11 +153,10 @@ my %matrix = @_matrix =
     'adjtype' =>
     {
         'priority' => 90,
-        'values' => ['pdt', 'det', ''],
+        'values' => ['pdt', ''],
         'replacements' =>
         [
-            ['pdt'],
-            ['det'],
+            ['pdt']
         ],
         'uname' => 'AdjType'
     },

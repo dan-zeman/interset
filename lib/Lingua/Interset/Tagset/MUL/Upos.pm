@@ -40,7 +40,7 @@ around BUILDARGS => sub
         # coordinating conjunction
         'CONJ'  => ['pos' => 'conj', 'conjtype' => 'coor'],
         # determiner
-        'DET'   => ['pos' => 'adj', 'adjtype' => 'det', 'prontype' => 'prn'],
+        'DET'   => ['pos' => 'adj', 'prontype' => 'prn'],
         # interjection
         'INTJ'  => ['pos' => 'int'],
         # common noun
@@ -72,8 +72,7 @@ around BUILDARGS => sub
                    'noun' => { 'prontype' => { ''  => { 'nountype' => { 'prop' => 'PROPN',
                                                                         '@'    => 'NOUN' }},
                                                '@' => 'PRON' }},
-                   'adj'  => { 'adjtype' => { 'det' => 'DET',
-                                              'pdt' => 'DET',
+                   'adj'  => { 'adjtype' => { 'pdt' => 'DET',
                                               '@'   => { 'prontype' => { ''  => 'ADJ',
                                                                          '@' => 'DET' }}}},
                    'num'  => 'NUM',

@@ -37,7 +37,7 @@ sub _create_atoms
             'p' => ['pos' => 'noun', 'prontype' => 'prn'],
             'a' => ['pos' => 'adj'],
             # d postype=numeral ... numeral! (cardinal, ordinal and other): tres, quatre, cinc; doble, triple, múltiple
-            'd' => ['pos' => 'adj', 'adjtype' => 'det'],
+            'd' => ['pos' => 'adj', 'prontype' => 'prn'],
             # w ... date, name of the day of week:
             # 1999, 1998, 2001, any_2000, mes_de_maig, 11_de_setembre, vuit_del_vespre (eight o'clock)
             # dilluns (Monday), dimarts (Tuesday), dimecres (Wednesday), dijous (Thursday), divendres (Friday), dissabte (Saturday), diumenge (Sunday)
@@ -62,13 +62,12 @@ sub _create_atoms
                                                                              '@'     => { 'advtype' => { 'tim' => 'w',
                                                                                                          '@'   => 'n' }}}},
                                                      '@' => 'p' }},
-                         'adj'  => { 'adjtype' => { 'det' => 'd',
-                                                    'pdt' => 'd',
-                                                    '@'   => { 'prontype' => { 'art' => 'd',
-                                                                               '@'   => 'a' }}}},
+                         'adj'  => { 'adjtype' => { 'pdt' => 'd',
+                                                    '@'   => { 'prontype' => { ''  => 'a',
+                                                                               '@' => 'd' }}}},
                          'num'  => { 'numform' => { 'digit' => 'z',
-                                                    '@'     => { 'prontype' => { 'prn' => 'p',
-                                                                                 '@'   => 'd' }}}},
+                                                    '@'     => { 'other/synpos' => { 'noun' => 'p',
+                                                                                     '@'    => 'd' }}}},
                          'verb' => 'v',
                          'adv'  => 'r',
                          'adp'  => 's',
@@ -106,6 +105,11 @@ sub _create_atoms
             # This does not seem to be enough evidence to create a new pronoun type.
             'exclamative'   => ['prontype' => 'rel', 'other' => {'prontype' => 'exc'}],
             # types of numerals
+            # Here we override the pos value that has been decoded previously (p => noun, d => adj).
+            # In order to not lose information in round-trip, we have to save the p|d distinction.
+            # Thus the decode() method modifies the 'numeral' value to either 'pnumeral' or 'dnumeral' before using this decoding map.
+            'pnumeral'      => ['pos' => 'num', 'numtype' => 'card', 'other' => {'synpos' => 'noun'}],
+            'dnumeral'      => ['pos' => 'num', 'numtype' => 'card', 'other' => {'synpos' => 'adj'}],
             'numeral'       => ['pos' => 'num', 'numtype' => 'card'],
             # pos=z (numbers/digits, currencies and percentage)
             'currency'      => ['pos' => 'noun', 'other' => {'postype' => 'currency'}], # although subclass of number (pos=z), these are noun identifiers of currencies (pesetas, dólares, euros)
@@ -418,6 +422,13 @@ sub decode
     {
         if(defined($features_conll{$name}) && $features_conll{$name} ne '')
         {
+            # The feature postype=numeral will override the pos value that has been decoded previously (p => noun, d => adj, both will change to num).
+            # In order to not lose information in round-trip, we have to save the p|d distinction.
+            # Thus the decode() method modifies the 'numeral' value to either 'pnumeral' or 'dnumeral' before using this decoding map.
+            if($name eq 'postype' && $features_conll{$name} eq 'numeral')
+            {
+                $features_conll{$name} = $pos.'numeral';
+            }
             $atoms->{$name}->decode_and_merge_hard($features_conll{$name}, $fs);
         }
     }

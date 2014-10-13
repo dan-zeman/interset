@@ -70,7 +70,7 @@ around BUILDARGS => sub
         'CD'    => ['pos' => 'num', 'numtype' => 'card'],
         # determiner
         # examples: a, the, some
-        'DT'    => ['pos' => 'adj', 'adjtype' => 'det'],
+        'DT'    => ['pos' => 'adj', 'prontype' => 'prn'],
         # existential there
         # examples: there
         'EX'    => ['pos' => 'adv', 'advtype' => 'ex'],
@@ -115,7 +115,7 @@ around BUILDARGS => sub
         'NNS'   => ['pos' => 'noun', 'number' => 'plur'],
         # predeterminer
         # examples: "all" in "all the flowers" or "both" in "both his children"
-        'PDT'   => ['pos' => 'adj', 'adjtype' => 'pdt'],
+        'PDT'   => ['pos' => 'adj', 'adjtype' => 'pdt', 'prontype' => 'prn'],
         # possessive ending
         # examples: 's
         'POS'   => ['pos' => 'part', 'poss' => 'poss'],
@@ -172,7 +172,7 @@ around BUILDARGS => sub
         'VBZ'   => ['pos' => 'verb', 'verbform' => 'fin', 'tense' => 'pres', 'number' => 'sing', 'person' => 3],
         # wh-determiner
         # examples: which
-        'WDT'   => ['pos' => 'adj', 'adjtype' => 'det', 'prontype' => 'int|rel'],
+        'WDT'   => ['pos' => 'adj', 'prontype' => 'int|rel'],
         # wh-pronoun
         # examples: who
         'WP'    => ['pos' => 'noun', 'prontype' => 'int|rel'],
@@ -201,11 +201,11 @@ around BUILDARGS => sub
                                                                                                                                       '@'    => 'NNP' }},
                                                                                                             '@'    => { 'number' => { 'plur' => 'NNS',
                                                                                                                                       '@'    => 'NN' }}}},
-                                                                                'adj'  => { 'adjtype' => { 'det' => 'DT',
-                                                                                                           'pdt' => 'PDT',
-                                                                                                           '@'   => { 'degree' => { 'sup'  => 'JJS',
-                                                                                                                                    'comp' => 'JJR',
-                                                                                                                                    '@'    => 'JJ' }}}},
+                                                                                'adj'  => { 'adjtype' => { 'pdt' => 'PDT',
+                                                                                                           '@'   => { 'prontype' => { ''  => { 'degree' => { 'sup'  => 'JJS',
+                                                                                                                                               'comp' => 'JJR',
+                                                                                                                                               '@'    => 'JJ' }},
+                                                                                                                                      '@' => 'DT' }}}},
                                                                                 'num'  => 'CD',
                                                                                 'verb' => { 'verbtype' => { 'mod' => 'MD',
                                                                                                             '@'   => { 'verbform' => { 'part' => { 'tense' => { 'pres' => 'VBG',

@@ -41,7 +41,7 @@ around BUILDARGS => sub
         # conjunction
         'CONJ' => ['pos' => 'conj'],
         # determiner
-        'DET'  => ['pos' => 'adj', 'adjtype' => 'det'],
+        'DET'  => ['pos' => 'adj', 'prontype' => 'prn'],
         # noun (common and proper)
         'NOUN' => ['pos' => 'noun'],
         # cardinal number
@@ -61,9 +61,9 @@ around BUILDARGS => sub
         'pos' => { 'verb' => 'VERB',
                    'noun' => { 'prontype' => { ''  => 'NOUN',
                                                '@' => 'PRON' }},
-                   'adj'  => { 'adjtype' => { 'det' => 'DET',
-                                              'pdt' => 'DET',
-                                              '@'   => 'ADJ' }},
+                   'adj'  => { 'adjtype' => { 'pdt' => 'DET',
+                                              '@'   => { 'prontype' => { ''  => 'ADJ',
+                                                                         '@' => 'DET' }}}},
                    'adv'  => 'ADV',
                    'adp'  => 'ADP',
                    'conj' => 'CONJ',
