@@ -1773,7 +1773,7 @@ sub get_ufeatures
         $value = 'Yes' if($value eq $uname);
         my $pair = "$uname=$value";
         # Some values of some features became obsolete because the distinction was moved to the POS tag level.
-        next if($pair =~ m/^(PronType=Prn|ConjType=(Coor|Sub)|NounType=(Com|Prop)|VerbType=Aux)$/);
+        next if($pair =~ m/^(PronType=Prn|ConjType=(Coor|Sub)|NounType=(Com|Prop)|VerbType=Aux|Variant=[0-9])$/);
         push(@pairs, $pair);
     }
     return @pairs;
