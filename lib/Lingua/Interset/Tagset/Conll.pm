@@ -161,6 +161,8 @@ from this common CoNLL module.
 
 L<Lingua::Interset>,
 L<Lingua::Interset::Tagset>,
+L<Lingua::Interset::Tagset::AR::Conll>,
+L<Lingua::Interset::Tagset::AR::Conll2007>,
 L<Lingua::Interset::Tagset::BG::Conll>,
 L<Lingua::Interset::Tagset::DA::Conll>,
 L<Lingua::Interset::FeatureStructure>

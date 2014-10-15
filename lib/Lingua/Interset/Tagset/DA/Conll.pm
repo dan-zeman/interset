@@ -626,6 +626,7 @@ Danish Dependency Treebank.
 
 L<Lingua::Interset>,
 L<Lingua::Interset::Tagset>,
+L<Lingua::Interset::Tagset::Conll>,
 L<Lingua::Interset::FeatureStructure>
 
 =cut

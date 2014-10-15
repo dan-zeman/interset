@@ -1280,6 +1280,7 @@ these values are derived from the tagset of the BulTreeBank.
 
 L<Lingua::Interset>,
 L<Lingua::Interset::Tagset>,
+L<Lingua::Interset::Tagset::Conll>,
 L<Lingua::Interset::FeatureStructure>
 
 =cut

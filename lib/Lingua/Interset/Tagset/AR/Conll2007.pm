@@ -10,11 +10,7 @@ use utf8;
 use open ':utf8';
 use namespace::autoclean;
 use Moose;
-extends 'Lingua::Interset::Tagset';
-
-
-
-has 'atoms'       => ( isa => 'HashRef', is => 'ro', builder => '_create_atoms',       lazy => 1 );
+extends 'Lingua::Interset::Tagset::Conll';
 
 
 
@@ -200,6 +196,19 @@ sub _create_atoms
 
 
 #------------------------------------------------------------------------------
+# Creates the list of all surface CoNLL features that can appear in the FEATS
+# column. This list will be used in decode().
+#------------------------------------------------------------------------------
+sub _create_features_all
+{
+    my $self = shift;
+    my @features = ('Mood', 'Voice', 'Person', 'Gender', 'Number', 'Case', 'Defin');
+    return \@features;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Decodes a physical tag (string) and returns the corresponding feature
 # structure.
 #------------------------------------------------------------------------------
@@ -207,33 +216,7 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
-    my $fs = Lingua::Interset::FeatureStructure->new();
-    $fs->set_tagset('ar::conll');
-    my $atoms = $self->atoms();
-    # Three components: coarse-grained pos, fine-grained pos, features
-    # Only features with non-empty values appear in the tag.
-    # There are 7 possible features in the following canonical ordering:
-    # mood voice pers gen num case def
-    # example: N\tN\tcase=1|def=I
-    my ($pos, $subpos, $features) = split(/\s+/, $tag);
-    $features = '' if($features eq '_');
-    my @features_conll = split(/\|/, $features);
-    my %features_conll;
-    foreach my $f (@features_conll)
-    {
-        if($f =~ m/^(\w+)=(.)$/)
-        {
-            $features_conll{$1} = $2;
-        }
-    }
-    $atoms->{pos}->decode_and_merge_hard($subpos, $fs);
-    foreach my $name ('Mood', 'Voice', 'Person', 'Gender', 'Number', 'Case', 'Defin')
-    {
-        if(defined($features_conll{$name}) && $features_conll{$name} ne '')
-        {
-            $atoms->{$name}->decode_and_merge_hard($features_conll{$name}, $fs);
-        }
-    }
+    my $fs = $self->decode_conll($tag, 'ar::conll');
     return $fs;
 }
 
@@ -249,21 +232,8 @@ sub encode
     my $atoms = $self->atoms();
     my $subpos = $atoms->{pos}->encode($fs);
     my $pos = substr($subpos, 0, 1);
-    my @features;
-    foreach my $name ('Mood', 'Voice', 'Person', 'Gender', 'Number', 'Case', 'Defin')
-    {
-        my $value = $atoms->{$name}->encode($fs);
-        if($value ne '')
-        {
-            push(@features, "$name=$value");
-        }
-    }
-    my $features = '_';
-    if(scalar(@features) > 0)
-    {
-        $features = join('|', @features);
-    }
-    my $tag = "$pos\t$subpos\t$features";
+    my $feature_names = $self->features_all();
+    my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names);
     return $tag;
 }
 
@@ -607,6 +577,7 @@ these values are derived from the tagset of the Prague Arabic Dependency Treeban
 
 L<Lingua::Interset>,
 L<Lingua::Interset::Tagset>,
+L<Lingua::Interset::Tagset::Conll>,
 L<Lingua::Interset::Tagset::AR::Padt>,
 L<Lingua::Interset::Tagset::AR::Conll>,
 L<Lingua::Interset::FeatureStructure>
