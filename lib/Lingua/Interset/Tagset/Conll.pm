@@ -17,20 +17,39 @@ extends 'Lingua::Interset::Tagset';
 
 
 
-###!!!
-=pod
-Možná by neškodilo soustředit na jednom místě kód, který se opakuje u sad CoNLL a CoNLL 2009.
-Ale asi z toho budou vybočovat sady, které jsou odvozené od jiných tagsetů, jako CS, EN, DE, SV. Tak nevím, jak moc se to vyplatí.
+has 'atoms'        => ( isa => 'HashRef', is => 'ro', builder => '_create_atoms', lazy => 1 );
+has 'features_all' => ( isa => 'ArrayRef', is => 'ro', builder => '_create_features_all', lazy => 1 );
+has 'features_pos' => ( isa => 'HashRef', is => 'ro', builder => '_create_features_pos', lazy => 1 );
 
-Zatím mám čistě conllí (2006) ovladače pro bulharštinu a dánštinu, ale i ty jsou odvozené z jiných tagsetů, akorát je nemám podchycené.
-Taky vlastně neodvozuju arabštinu (Conll a Conll2007).
-Společné rysy:
 
-- značka se skládá ze tří částí, CPOS, POS a FEATS; rysy (FEATS) lze ještě dále rozložit
-- seznam rysů je pro každý jazyk jiný; pořadí rysů se může lišit i podle slovního druhu
-- při encode je občas potřeba trochu čarovat, protože někdy se rys má prostě vynechat a jindy se má uvést, ale s nějakou všeobjímající hodnotou (unmarked)
-- při decode se občas čaruje taky, aby se dovyplnily rysy, které daný tagset neznačí, ale automaticky vyplývají; zlepší to spolupráci s jinými ovladači
-=cut
+
+#------------------------------------------------------------------------------
+# These methods must be defined in the derived classes.
+#------------------------------------------------------------------------------
+sub _create_atoms { confess("The _create_atoms() method must be defined in a class derived from Lingua::Interset::Tagset::Conll"); }
+sub _create_features_all { confess("The _create_features_all() method must be defined in a class derived from Lingua::Interset::Tagset::Conll"); }
+sub _create_features_pos { confess("The _create_features_pos() method must be defined in a class derived from Lingua::Interset::Tagset::Conll"); }
+
+
+
+#------------------------------------------------------------------------------
+# Returns the list of surface CoNLL features for a given part of speech.
+#------------------------------------------------------------------------------
+sub get_feature_names
+{
+    my $self = shift;
+    my $pos = shift;
+    my $feature_names_pos = $self->features_pos();
+    if(exists($feature_names_pos->{$pos}))
+    {
+        return $feature_names_pos->{$pos};
+    }
+    else
+    {
+        my @dummy = ();
+        return \@dummy;
+    }
+}
 
 
 
@@ -93,7 +112,6 @@ sub encode_conll
     # The list of feature names may differ for different parts of speech so we want to get a reference to the list.
     my $feature_names = shift;
     my $atoms = $self->atoms();
-    my $subpos = $atoms->{pos}->encode($fs);
     my @features;
     foreach my $name (@{$feature_names})
     {
@@ -115,11 +133,13 @@ sub encode_conll
     return $tag;
 }
 
+
+
+1;
+
+
+
 =head1 DESCRIPTION
-# ABSTRACT: Common code for drivers of tagsets from files in CoNLL 2006 format.
-# This will be the common ancestor of e.g. BG::Conll and DA::Conll.
-# It will not be used for tagsets that are derived from non-Conll tagsets, e.g. CS::Conll and EN::Conll.
-# (Most Conll tagsets are derived from non-Conll tagsets but we do not care unless we also have a driver for the non-Conll ancestor.)
 
 Common code for drivers of tagsets from files in the CoNLL 2006 format.
 These tags always consists of three tab-separated parts:

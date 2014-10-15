@@ -13,7 +13,7 @@ use utf8;
 use open ':utf8';
 use namespace::autoclean;
 use Moose;
-extends 'Lingua::Interset::Tagset';
+extends 'Lingua::Interset::Tagset::Conll';
 
 
 
@@ -527,6 +527,38 @@ sub _create_atoms
 
 
 #------------------------------------------------------------------------------
+# Creates the list of all surface CoNLL features that can appear in the FEATS
+# column. This list will be used in decode().
+#------------------------------------------------------------------------------
+sub _create_features_all
+{
+    my $self = shift;
+    my @features = ('aspect', 'case', 'cause', 'def', 'form', 'gen', 'imtrans', 'mood', 'num', 'past', 'pers', 'possgen', 'ref', 'tense', 'trans', 'type', 'vform', 'voice');
+    return \@features;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Creates the list of surface CoNLL features that can appear in the FEATS
+# column with particular parts of speech. This list will be used in encode().
+#------------------------------------------------------------------------------
+sub _create_features_pos
+{
+    my $self = shift;
+    my %features =
+    (
+        '@' => ['type', 'aspect', 'trans', 'vform', 'voice', 'mood', 'tense', 'past', 'ref', 'cause', 'gen', 'pers', 'num', 'case', 'def', 'form', 'possgen'],
+        'P' => ['ref', 'cause', 'form', 'case', 'num', 'pers', 'gen', 'def', 'possgen'],
+        'V' => ['type', 'aspect', 'trans', 'vform', 'voice', 'mood', 'tense', 'past', 'pers', 'num', 'gen', 'def'],
+        'T' => []
+    );
+    return \%features;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Decodes a physical tag (string) and returns the corresponding feature
 # structure.
 #------------------------------------------------------------------------------
@@ -534,8 +566,6 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
-    my $fs = Lingua::Interset::FeatureStructure->new();
-    $fs->set_tagset('bg::conll');
     my $atoms = $self->atoms();
     # Three components: coarse-grained pos, fine-grained pos, features
     # Only features with non-empty values appear in the tag.
@@ -549,29 +579,7 @@ sub decode
     $tag =~ s/\|num=p\|(.*)\|gen=/\|num=p\|$1\|possgen=/;
     # Also, all indefinite pronouns start with def=i and there can (but need not) be another def at the end.
     $tag =~ s/Pf\tdef=i\|/Pf\t/;
-    my ($pos, $subpos, $features) = split(/\s+/, $tag);
-    $features = '' if($features eq '_');
-    my @features_conll = split(/\|/, $features);
-    my %features_conll;
-    foreach my $f (@features_conll)
-    {
-        if($f =~ m/^(\w+)=(\w+)$/)
-        {
-            $features_conll{$1} = $2;
-        }
-        else
-        {
-            $features_conll{$f} = $f;
-        }
-    }
-    $atoms->{pos}->decode_and_merge_hard($subpos, $fs);
-    foreach my $name ('aspect', 'case', 'cause', 'def', 'form', 'gen', 'imtrans', 'mood', 'num', 'past', 'pers', 'possgen', 'ref', 'tense', 'trans', 'type', 'vform', 'voice')
-    {
-        if(defined($features_conll{$name}) && $features_conll{$name} ne '')
-        {
-            $atoms->{$name}->decode_and_merge_hard($features_conll{$name}, $fs);
-        }
-    }
+    my $fs = $self->decode_conll($tag, 'bg::conll');
     # Default feature values. Used to improve collaboration with other drivers.
     if($fs->is_verb())
     {
@@ -606,22 +614,10 @@ sub encode
     my $atoms = $self->atoms();
     my $subpos = $atoms->{pos}->encode($fs);
     my $pos = $subpos eq 'Punct' ? 'Punct' : substr($subpos, 0, 1);
-    my %feature_names =
-    (
-        '@' => ['type', 'aspect', 'trans', 'vform', 'voice', 'mood', 'tense', 'past', 'ref', 'cause', 'gen', 'pers', 'num', 'case', 'def', 'form', 'possgen'],
-        'P' => ['ref', 'cause', 'form', 'case', 'num', 'pers', 'gen', 'def', 'possgen'],
-        'V' => ['type', 'aspect', 'trans', 'vform', 'voice', 'mood', 'tense', 'past', 'pers', 'num', 'gen', 'def'],
-        'T' => []
-    );
-    my @feature_names;
-    if(exists($feature_names{$pos}))
-    {
-        @feature_names = @{$feature_names{$pos}};
-    }
-    else
-    {
-        @feature_names = @{$feature_names{'@'}};
-    }
+    my $fpos = $pos;
+    $fpos = '@' unless($fpos =~ m/^[PVT]$/);
+    my $feature_names = $self->get_feature_names($fpos);
+    my @feature_names = @{$feature_names};
     my @features;
     # def1
     # The features of indefinite pronouns (Pf) always begin with "def=i".
