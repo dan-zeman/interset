@@ -319,20 +319,222 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
-# Tags were collected from the corpus, 144 distinct tags found:
-# cat danish_ddt_train.conll ../test/danish_ddt_test.conll |\
-#   perl -pe '@x = split(/\s+/, $_); $_ = "$x[3]\t$x[4]\t$x[5]\n"' |\
-#   sort -u | wc -l
-# 147 total tags after adding a few to survive missing value of 'other'.
+# Tags were collected from the corpus.
+# 240 tag-features combinations have been observed in the sample Jo&atil;o sent
+# us. Some of them are errors and were removed from our list. (We can decode
+# them but we will not try to encode them.)
 #------------------------------------------------------------------------------
 sub list
 {
     my $self = shift;
     my $list = <<end_of_list
+ADJ	ADJ	fp
+ADJ	ADJ	fp-comp
+ADJ	ADJ	fp-sup
+ADJ	ADJ	fs
+ADJ	ADJ	fs-comp
+ADJ	ADJ	fs-dim
+ADJ	ADJ	fs-sup
+ADJ	ADJ	gn
+ADJ	ADJ	gp
+ADJ	ADJ	gp-comp
+ADJ	ADJ	gs
+ADJ	ADJ	gs-comp
+ADJ	ADJ	mp
+ADJ	ADJ	mp-comp
+ADJ	ADJ	mp-dim
+ADJ	ADJ	mp-sup
+ADJ	ADJ	ms
+ADJ	ADJ	ms-comp
+ADJ	ADJ	ms-dim
+ADJ	ADJ	ms-sup
+ADV	ADV	_
+CARD	CARD	fp
+CARD	CARD	fs
+CARD	CARD	gp
+CARD	CARD	mp
+CARD	CARD	ms
+CJ	CJ	_
+CL	CL	fp3
+CL	CL	fs3
+CL	CL	gn13
+CL	CL	gn3
+CL	CL	gp2
+CL	CL	gp3
+CL	CL	gs1
+CL	CL	gs2
+CL	CL	gs3
+CL	CL	mp3
+CL	CL	ms3
+CN	CN	PNM
+CN	CN	fp
+CN	CN	fp-dim
+CN	CN	fs
+CN	CN	fs-dim
+CN	CN	gp
+CN	CN	gs
+CN	CN	mn
+CN	CN	mp
+CN	CN	mp-dim
+CN	CN	ms
+CN	CN	ms-dim
+CN	CN	ms-sup
+DA	DA	fp
+DA	DA	fs
+DA	DA	mp
+DA	DA	ms
+DEM	DEM	fp
+DEM	DEM	fs
+DEM	DEM	gp
+DEM	DEM	gs
+DEM	DEM	mp
+DEM	DEM	ms
+DFR	DFR	_
+DGT	DGT	_
+DGTR	DGTR	_
+DM	DM	_
+GER	GER	_
+IA	IA	fp
+IA	IA	mp
+IND	IND	mp
+IND	IND	ms
+INF	INF	ifl-1p
+INF	INF	ninf
+INFAUX	INFAUX	ninf
+INT	INT	_
+ITJ	ITJ	_
+LADV1	LADV1	_
+LADV2	LADV2	_
+LADV3	LADV3	_
+LADV4	LADV4	_
+LADV5	LADV5	_
+LADV6	LADV6	_
+LADV7	LADV7	_
+LDFR1	LDFR1	_
+LDFR2	LDFR2	_
+LPREP1	LPREP1	_
+LTR	LTR	_
+MGT	MGT	mp
+MTH	MTH	ms
+ORD	ORD	fn
+ORD	ORD	fp
+ORD	ORD	fs
+ORD	ORD	mn
+ORD	ORD	mp
+ORD	ORD	ms
+PADR	PADR	fs
+PADR	PADR	ms
+PNT	PNT	_
+POSS	POSS	fp
+POSS	POSS	fs
+POSS	POSS	mp
+POSS	POSS	ms
+PP	PP	_
+PPA	PPA	fp
+PPA	PPA	fs
+PPA	PPA	gp
+PPA	PPA	gs
+PPA	PPA	mp
+PPA	PPA	ms
+PPT	PPT	_
+PREP	PREP	_
+PRS	PRS	fp3
+PRS	PRS	fs3
+PRS	PRS	gp1
+PRS	PRS	gp2
+PRS	PRS	gs1
+PRS	PRS	gs2
+PRS	PRS	gs3
+PRS	PRS	mp1
+PRS	PRS	mp3
+PRS	PRS	ms1
+PRS	PRS	ms3
+QNT	QNT	fp
+QNT	QNT	fs
+QNT	QNT	gp
+QNT	QNT	gs
+QNT	QNT	mp
+QNT	QNT	ms
+REL	REL	_
+REL	REL	fp
+REL	REL	fs
+REL	REL	gp
+REL	REL	gs
+REL	REL	mp
+REL	REL	ms
+STT	STT	fs
+STT	STT	ms
+SYB	SYB	_
+UM	UM	fs
+UM	UM	ms
+V	V	GER
+V	V	INF-1p
+V	V	INF-3p
+V	V	INF-3s
+V	V	INF-nInf
+V	V	PPT-gs
+V	V	PPT-ms
+V	V	c-1p
+V	V	c-1s
+V	V	c-2s
+V	V	c-3p
+V	V	c-3s
+V	V	fc-1p
+V	V	fc-2s
+V	V	fc-3p
+V	V	fc-3s
+V	V	fi-1p
+V	V	fi-1s
+V	V	fi-2s
+V	V	fi-3p
+V	V	fi-3s
+V	V	ger
+V	V	ic-1p
+V	V	ic-2s
+V	V	ic-3p
+V	V	ic-3s
+V	V	ii-1p
+V	V	ii-1s
+V	V	ii-2s
+V	V	ii-3p
+V	V	ii-3s
+V	V	imp-2s
+V	V	inf-3p
+V	V	inf-3s
+V	V	inf-nInf
+V	V	mpi-3s
+V	V	pc-1p
+V	V	pc-1s
+V	V	pc-3p
+V	V	pc-3s
+V	V	pi-1p
+V	V	pi-1s
+V	V	pi-2s
+V	V	pi-3p
+V	V	pi-3s
+V	V	ppi-1p
+V	V	ppi-1s
+V	V	ppi-2s
+V	V	ppi-3p
+V	V	ppi-3s
+VAUX	VAUX	c-3p
+VAUX	VAUX	c-3s
+VAUX	VAUX	fi-3s
+VAUX	VAUX	ic-3s
+VAUX	VAUX	ii-3p
+VAUX	VAUX	ii-3s
+VAUX	VAUX	pc-3p
+VAUX	VAUX	pc-3s
+VAUX	VAUX	pi-1s
+VAUX	VAUX	pi-3p
+VAUX	VAUX	pi-3s
+WD	WD	fs
+WD	WD	mp
+WD	WD	ms
 end_of_list
     ;
     # Protect from editors that replace tabs by spaces.
-    $list =~ s/ \s+/\t/sg;
+    $list =~ s/\s+/\t/sg;
     my @list = split(/\r?\n/, $list);
     return \@list;
 }
@@ -359,6 +561,8 @@ Interset driver for the Portuguese tagset of the CINTIL corpus
 L<http://cintil.ul.pt/>).
 
 =head1 SEE ALSO
+
+L<http://cintil.ul.pt/cintilwhatsin.html#guidelines>
 
 L<Lingua::Interset>,
 L<Lingua::Interset::Tagset>,
