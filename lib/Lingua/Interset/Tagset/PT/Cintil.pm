@@ -1,5 +1,6 @@
 # ABSTRACT: Driver for the Portuguese tagset of the CINTIL corpus (Corpus Internacional do Portugu&ecir;s).
 # http://cintil.ul.pt/
+# http://cintil.ul.pt/cintilwhatsin.html#guidelines
 # Copyright © 2014 Martin Popel <popel@ufal.mff.cuni.cz>
 # Copyright © 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
