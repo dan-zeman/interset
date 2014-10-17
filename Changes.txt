@@ -1,5 +1,13 @@
 {{$NEXT}}
 
+Drivers:
+* PT::Cintil
+
+Interface:
+* FeatureStructure has new methods is_comparative() and is_superlative().
+
+
+
 2.017     2014-10-13 16:07:59+02:00 Europe/Prague
 
 Features:

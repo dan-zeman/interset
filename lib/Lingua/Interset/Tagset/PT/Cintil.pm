@@ -12,7 +12,11 @@ use utf8;
 use open ':utf8';
 use namespace::autoclean;
 use Moose;
-extends 'Lingua::Interset::Tagset::Conll';
+extends 'Lingua::Interset::Tagset';
+
+
+
+has 'atoms' => ( isa => 'HashRef', is => 'ro', builder => '_create_atoms', lazy => 1 );
 
 
 
@@ -55,7 +59,7 @@ sub _create_atoms
             # Number expressed in digits
             'DGT'    => ['pos' => 'num', 'numform' => 'digit'],
             # Discourse marker "olá"
-            'DM'     => ['pos' => 'int'],
+            'DM'     => ['pos' => 'int', 'other' => {'pos' => 'discourse'}],
             # Electronic address
             'EADR'   => ['pos' => 'noun', 'other' => {'pos' => 'url'}],
             # End of enumeration etc.
@@ -82,15 +86,15 @@ sub _create_atoms
             'LTR'    => ['pos' => 'sym', 'other' => {'pos' => 'letter'}],
             # Magnitude class (unidade, dezena, dúzia, resma)
             # unidade = unit; dezena = dozen; dúzia = dozen; resma = ream = hromada
-            'MGT'    => ['pos' => 'noun', 'numtype' => 'card', 'numform' => 'word'],
+            'MGT'    => ['pos' => 'noun', 'numtype' => 'card', 'numform' => 'word', 'other' => {'pos' => 'magnitude'}],
             # Month (Janeiro, Dezembro)
-            'MTH'    => ['pos' => 'noun'],
+            'MTH'    => ['pos' => 'noun', 'other' => {'pos' => 'month'}],
             # Noun phrase (idem)
             'NP'     => ['pos' => 'noun', 'abbr' => 'abbr'],
             # Ordinal numeral (primeiro, centésimo, penúltimo)
             'ORD'    => ['pos' => 'adj', 'numtype' => 'ord'],
             # Part of address (rua, av., rot.)
-            'PADR'   => ['pos' => 'noun'],
+            'PADR'   => ['pos' => 'noun', 'other' => {'pos' => 'address'}],
             # Part of name (Lisboa, António, Jo&atil;o)
             'PNM'    => ['pos' => 'noun', 'nountype' => 'prop'],
             # Punctuation (., ?, (, ))
@@ -99,8 +103,9 @@ sub _create_atoms
             'POSS'   => ['pos' => 'adj', 'prontype' => 'prs', 'poss' => 'poss'],
             # Past participle not in compound tenses (sido, afirmados, vivida)
             'PPA'    => ['pos' => 'adj', 'verbform' => 'part', 'tense' => 'past'],
-            # Prepositional phrase (algures = somewhere)
-            'PP'     => ['pos' => 'adv'],
+            ###!!! According to Martin/documentation?, PP should mean "prepositional phrase" (algures = somewhere).
+            ###!!! However, there are only a few occurrences, always with the ellipsis punctuation ("...").
+            'PP'     => ['pos' => 'punc'],
             # Past participle in compound tenses (sido, afirmado, vivido)
             'PPT'    => ['pos' => 'verb', 'verbform' => 'part', 'tense' => 'past'],
             # Preposition (de, para, em redor de)
@@ -108,11 +113,11 @@ sub _create_atoms
             # Personal pronoun (eu, tu, ele)
             'PRS'    => ['pos' => 'noun', 'prontype' => 'prs'],
             # Quantifier (todos, muitos, nenhum)
-            'QNT'    => ['pos' => 'adj', 'prontype' => 'ind|tot|neg'],
+            'QNT'    => ['pos' => 'adj', 'prontype' => 'ind|tot|neg', 'numtype' => 'card'],
             # Relative pronoun, determiner or adverb (que, cujo, tal que)
             'REL'    => ['pos' => 'noun|adj|adv', 'prontype' => 'rel'],
             # Social title (Presidente, drª., prof.)
-            'STT'    => ['pos' => 'noun', 'abbr' => 'abbr'],
+            'STT'    => ['pos' => 'noun', 'other' => {'pos' => 'title'}],
             # Symbol (@, #, &)
             'SYB'    => ['pos' => 'sym'],
             # Optional termination ((s), (as))
@@ -126,38 +131,51 @@ sub _create_atoms
             # Verb (other than PPA, PPT, INF or GER) (falou, falaria)
             'V'      => ['pos' => 'verb', 'verbform' => 'fin'],
             # Day of week (segunda, terça-feira, sábado)
-            'WD'     => ['pos' => 'noun']
+            'WD'     => ['pos' => 'noun', 'other' => {'pos' => 'weekday'}]
         },
         'encode_map' =>
 
             { 'prontype' => { 'prs' => { 'poss' => { 'poss' => 'POSS',
-                                                     '@'    => 'PRS' }},
+                                                     '@'    => { 'variant' => { 'short' => 'CL',
+                                                                                '@'     => 'PRS' }}}},
                               'art' => { 'definiteness' => { 'def' => 'DA',
-                                                             '@'   => 'IA' }},
+                                                             '@'   => { 'numtype' => { 'card' => 'UM',
+                                                                                       '@'    => 'IA' }}}},
                               'dem' => 'DEM',
-                              'ind' => 'IND',
-                              'neg' => 'IND',
-                              'tot' => 'IND',
+                              'ind' => { 'numtype' => { ''  => 'IND',
+                                                        '@' => 'QNT' }},
+                              'neg' => { 'numtype' => { ''  => 'IND',
+                                                        '@' => 'QNT' }},
+                              'tot' => { 'numtype' => { ''  => 'IND',
+                                                        '@' => 'QNT' }},
                               'int' => 'INT',
                               'rel' => 'REL',
-                              '@'   => { 'pos' => { 'noun' => 'CN',
+                              '@'   => { 'pos' => { 'noun' => { 'other/pos' => { 'month'     => 'MTH',
+                                                                                 'weekday'   => 'WD',
+                                                                                 'magnitude' => 'MGT',
+                                                                                 'address'   => 'PADR',
+                                                                                 'title'     => 'STT',
+                                                                                 '@'         => 'CN' }},
                                                     'adj'  => { 'verbform' => { 'part' => 'PPA',
-                                                                                '@'    => 'ADJ' }},
-                                                    'num'  => 'CARD',
-                                                    'verb' => { 'verbtype' => { 'aux' => { 'verbform' => { 'inf'  => 'INFAUX',
-                                                                                                           'ger'  => 'GERAUX',
-                                                                                                           'part' => 'GERAUX',
-                                                                                                           '@'    => 'VAUX' }},
-                                                                                '@'   => { 'verbform' => { 'inf'  => 'INF',
-                                                                                                           'ger'  => 'GER',
-                                                                                                           'part' => { 'tense' => { 'pres' => 'GER',
-                                                                                                                                    '@'    => 'PPT' }},
-                                                                                                           '@'    => 'V' }}}},
+                                                                                '@'    => { 'numtype' => { 'ord' => 'ORD',
+                                                                                                           '@'   => 'ADJ' }}}},
+                                                    'num'  => { 'numtype' => { 'frac' => 'DFR',
+                                                                               '@'    => { 'numform' => { 'digit' => 'DGT',
+                                                                                                          'roman' => 'DGTR',
+                                                                                                          '@'     => 'CARD' }}}},
+                                                    # We decode INF and INFAUX but we never encode it. Instead, we encode "V V inf".
+                                                    # The input data are not consistent but the "V" tag is more frequent with infinitives.
+                                                    # Similar with GER and GERAUX.
+                                                    'verb' => { 'verbtype' => { 'aux' => { 'verbform' => { '@'    => 'VAUX' }},
+                                                                                '@'   => { 'verbform' => { '@'    => 'V' }}}},
                                                     'adv'  => 'ADV',
                                                     'adp'  => 'PREP',
                                                     'conj' => 'CJ',
-                                                    'int'  => 'ITJ',
-                                                    'sym'  => 'SYB' }}}}
+                                                    'int'  => { 'other/pos' => { 'discourse' => 'DM',
+                                                                                 '@'         => 'ITJ' }},
+                                                    'punc' => 'PNT',
+                                                    'sym'  => { 'other/pos' => { 'letter' => 'LTR',
+                                                                                 '@'      => 'SYB' }}}}}}
     );
     # FEATURES ####################
     $atoms{feature} = $self->create_atom
@@ -167,8 +185,10 @@ sub _create_atoms
         {
             'm'    => ['gender' => 'masc'],
             'f'    => ['gender' => 'fem'],
+            'g'    => [], # undetermined gender
             's'    => ['number' => 'sing'],
             'p'    => ['number' => 'plur'],
+            'n'    => [], # undetermined number
             # diminutive
             'dim'  => ['other' => {'diminutive' => 'yes'}],
             'comp' => ['degree' => 'comp'],
@@ -196,71 +216,151 @@ sub _create_atoms
             'fc'   => ['mood' => 'sub', 'tense' => 'fut'],
             # imperativo
             'imp'  => ['mood' => 'imp'],
-            # inflected infinitive (???)
-            'ifl'  => [],
-            # uninflected infinitive (???)
-            'nifl' => [],
-            # undocumented features that occur in the data
-            'inf'  => [], # infinitive?
-            'ninf' => [], # same as nifl?
-            'nInf' => [], # same as nifl?
-            'g'    => [], # undetermined gender?
-            'n'    => [], # undetermined number?
-            '?'    => [],
-            '??'   => []
+            # There are two ways of tagging infinitives: either at the part-of-speech level or in the features:
+            # V V inf-nInf
+            # V V inf-3s
+            # V V inf-3p
+            # INF INF ninf
+            # INF INF ifl-1p
+            'inf'  => ['verbform' => 'inf'],
+            'ifl'  => [], # inflected infinitive; person+number feature follows
+            'ninf' => [], # uninflected infinitive
+            'nInf' => [], # uninflected infinitive
+            # Similarly, there are multiple ways of tagging gerunds / present participles:
+            # V V ger ... 21
+            # V V GER ... 88
+            # GER GER <lemma> ... 12
+            # GERAUX GERAUX ... 0 (but documented)
+            'ger'  => ['verbform' => 'ger'],
+            # Similarly, there are multiple ways of tagging past participles (used in compound tenses, not used adjectively):
+            # PPT PPT <lemma> ... 27
+            # V V PPT-ms ... 184
+            'PPT'  => ['verbform' => 'part', 'tense' => 'past', 'aspect' => 'perf'],
+            # Part of name (Lisboa, António, Jo&atil;o)
+            # The documentation says that this is a part-of-speech tag. However, in the data it appears as a feature of the "CN" tag.
+            'PNM'    => ['nountype' => 'prop'],
+            # other undocumented features that occur in the data
+            '?'    => [], # unknown gender or number
+            '??'   => [], # unknown gender and number
         },
         'encode_map' =>
 
             { 'pos' => '' }
     );
-    return \%atoms;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Creates the list of all surface CoNLL features that can appear in the FEATS
-# column. This list will be used in decode().
-#------------------------------------------------------------------------------
-sub _create_features_all
-{
-    my $self = shift;
-    my @features = ('mood', 'tense', 'voice', 'number', 'person', 'degree', 'gender', 'definiteness', 'transcat', 'case', 'def', 'possessor', 'reflexive', 'register');
-    return \@features;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Creates the list of surface CoNLL features that can appear in the FEATS
-# column with particular parts of speech. This list will be used in encode().
-#------------------------------------------------------------------------------
-sub _create_features_pos
-{
-    my $self = shift;
-    my %features =
+    # GENDER+NUMBER ####################
+    $atoms{gn} = $self->create_atom
     (
-        'NC' => ['gender', 'number', 'case', 'def'],
-        'NP' => ['case'],
-        'AN' => ['degree', 'gender', 'number', 'case', 'def', 'transcat'],
-        'AD' => ['degree', 'transcat'],
-        'AC' => ['case'],
-        'AO' => ['case'],
-        'PC' => ['number', 'case'],
-        'PD' => ['gender', 'number', 'case', 'register'],
-        'PI' => ['gender', 'number', 'case', 'register'],
-        'PO' => ['person', 'gender', 'number', 'case', 'possessor', 'reflexive', 'register'],
-        'PP' => ['person', 'gender', 'number', 'case', 'reflexive', 'register'],
-        'PT' => ['gender', 'number', 'case', 'register'],
-        'RG' => ['degree'],
-        'V.infin'  => ['mood', 'voice'],
-        'V.indic'  => ['mood', 'tense', 'voice'],
-        'V.imper'  => ['mood'],
-        'V.partic' => ['mood', 'tense', 'number', 'gender', 'definiteness', 'transcat', 'case'],
-        'V.trans'  => ['mood', 'tense', 'transcat'],
-        'V.gerund' => ['mood', 'number', 'gender', 'definiteness', 'case']
+        'surfeature' => 'gn',
+        'decode_map' =>
+        {
+            'ms' => ['gender' => 'masc', 'number' => 'sing'],
+            'mp' => ['gender' => 'masc', 'number' => 'plur'],
+            'mn' => ['gender' => 'masc'],
+            'fs' => ['gender' => 'fem', 'number' => 'sing'],
+            'fp' => ['gender' => 'fem', 'number' => 'plur'],
+            'fn' => ['gender' => 'fem'],
+            'gs' => ['number' => 'sing'],
+            'gp' => ['number' => 'plur'],
+            'gn' => []
+        },
+        'encode_map' =>
+
+            { 'gender' => { 'masc' => { 'number' => { 'sing' => 'ms',
+                                                      'plur' => 'mp',
+                                                      '@'    => 'mn' }},
+                            'fem'  => { 'number' => { 'sing' => 'fs',
+                                                      'plur' => 'fp',
+                                                      '@'    => 'fn' }},
+                            '@'    => { 'number' => { 'sing' => 'gs',
+                                                      'plur' => 'gp',
+                                                      '@'    => 'gn' }}}}
     );
-    return \%features;
+    # PERSON+NUMBER ####################
+    $atoms{pn} = $self->create_atom
+    (
+        'surfeature' => 'pn',
+        'decode_map' =>
+        {
+            '1s' => ['person' => '1', 'number' => 'sing'],
+            '2s' => ['person' => '2', 'number' => 'sing'],
+            '3s' => ['person' => '3', 'number' => 'sing'],
+            '1p' => ['person' => '1', 'number' => 'plur'],
+            '2p' => ['person' => '2', 'number' => 'plur'],
+            '3p' => ['person' => '3', 'number' => 'plur']
+        },
+        'encode_map' =>
+
+            { 'number' => { 'sing' => { 'person' => { '1' => '1s',
+                                                      '2' => '2s',
+                                                      '3' => '3s' }},
+                            'plur' => { 'person' => { '1' => '1p',
+                                                      '2' => '2p',
+                                                      '3' => '3p' }}}}
+    );
+    # TENSE+MOOD ####################
+    $atoms{tm} = $self->create_atom
+    (
+        'surfeature' => 'tm',
+        'decode_map' =>
+        {
+            # presente do indicativo
+            'pi'   => ['mood' => 'ind', 'tense' => 'pres'],
+            # préterito perfeito do indicativo
+            'ppi'  => ['mood' => 'ind', 'tense' => 'past', 'aspect' => 'perf'],
+            # préterito imperfeito do indicativo
+            'ii'   => ['mood' => 'ind', 'tense' => 'past', 'aspect' => 'imp'],
+            # préterito mais que perfeito do indicativo
+            'mpi'  => ['mood' => 'ind', 'tense' => 'pqp', 'aspect' => 'perf'],
+            # futuro do indicativo
+            'fi'   => ['mood' => 'ind', 'tense' => 'fut'],
+            # condicional
+            'c'    => ['mood' => 'cnd'],
+            # presente do conjuntivo
+            'pc'   => ['mood' => 'sub', 'tense' => 'pres'],
+            # préterito imperfeito do conjuntivo
+            'ic'   => ['mood' => 'sub', 'tense' => 'past', 'aspect' => 'imp'],
+            # futuro do conjuntivo
+            'fc'   => ['mood' => 'sub', 'tense' => 'fut'],
+            # imperativo
+            'imp'  => ['mood' => 'imp'],
+            # There are two ways of tagging infinitives: either at the part-of-speech level or in the features:
+            # V V inf-nInf
+            # V V inf-3s
+            # V V inf-3p
+            # INF INF ninf
+            # INF INF ifl-1p
+            'inf'  => ['verbform' => 'inf'],
+            # Similarly, there are multiple ways of tagging gerunds / present participles:
+            # V V ger ... 21
+            # V V GER ... 88
+            # GER GER <lemma> ... 12
+            # GERAUX GERAUX ... 0 (but documented)
+            'GER'  => ['verbform' => 'ger'],
+            'ger'  => ['verbform' => 'ger'],
+            # Similarly, there are multiple ways of tagging past participles (used in compound tenses, not used adjectively):
+            # PPT PPT <lemma> ... 27
+            # V V PPT-ms ... 184
+            'PPT'  => ['verbform' => 'part', 'tense' => 'past', 'aspect' => 'perf'],
+        },
+        'encode_map' =>
+
+            { 'verbform' => { 'inf'  => 'inf',
+                              'ger'  => 'ger',
+                              'part' => { 'tense' => { 'pres' => 'ger',
+                                                       '@'    => 'PPT' }},
+                              '@'    => { 'mood' => { 'ind' => { 'tense' => { 'pres' => 'pi',
+                                                                              'past' => { 'aspect' => { 'imp'  => 'ii',
+                                                                                                        'perf' => 'ppi' }},
+                                                                              'pqp'  => 'mpi',
+                                                                              'fut'  => 'fi' }},
+                                                      'cnd' => 'c',
+                                                      'sub' => { 'tense' => { 'pres' => 'pc',
+                                                                              'past' => 'ic',
+                                                                              'imp'  => 'ic',
+                                                                              'fut'  => 'fc' }},
+                                                      'imp' => 'imp' }}}}
+    );
+    return \%atoms;
 }
 
 
@@ -273,15 +373,28 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
-    my $fs = $self->decode_conll($tag, 'da::conll');
-    # Default feature values. Used to improve collaboration with other drivers.
-    # Some pronoun forms can be declared accusative/oblique case.
-    if($fs->prontype() eq 'prs' && !$fs->is_possessive() && $fs->case() eq '')
+    my $fs = Lingua::Interset::FeatureStructure->new();
+    $fs->set_tagset('pt::cintil');
+    my $atoms = $self->atoms();
+    # Three components, and the first two are identical: pos, pos, features.
+    # example: CN\tCN\tms
+    my ($pos, $subpos, $features) = split(/\s+/, $tag);
+    # Multi-word expressions: The tags are preceded by "L" and followed by
+    # a numerical index: LADV1, LADV2, ..., LADV7, LDFR1, LDFR2, LPREP1, ...
+    $pos =~ s/^L(.+)\d+$/$1/;
+    # Some features are separated by a hyphen, others are not separated.
+    # The underscore character is used if there are no features.
+    $features = '' if($features eq '_');
+    my @features = split(/-/, $features);
+    # Separate gender, number and person.
+    # g is the undistinguishable gender, i.e. g = m|f
+    # n is the undistinguishable number, i.e. n = s|p
+    @features = map {m/^([mfg])([spn])([123])$/ ? ($1, $2, $3) : $_} (@features);
+    @features = map {m/^([mfg123])([spn])$/ ? ($1, $2) : $_} (@features);
+    $atoms->{pos}->decode_and_merge_hard($pos, $fs);
+    foreach my $feature (@features)
     {
-        # Most nominative personal pronouns have case=nom. Examples: jeg (I), du (you), han (he), hun (she), vi (we), I (you), de (they).
-        # Most accusative personal pronouns have case=unmarked. Examples: mig (me), dig (you), ham (him), hende (her), os (us), jer (you), dem (them), sig (oneself).
-        # It is unclear what to do with 3rd person singular pronouns "den" and "det", which have case=unmarked but I suspect they can be used also as nominative.
-        $fs->set_case('acc');
+        $atoms->{feature}->decode_and_merge_hard($feature, $fs);
     }
     return $fs;
 }
@@ -296,25 +409,44 @@ sub encode
     my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $atoms = $self->atoms();
-    my $subpos = $atoms->{pos}->encode($fs);
-    my $fpos = $subpos;
-    if($fpos =~ m/^V[AE]$/)
+    my $pos = $atoms->{pos}->encode($fs);
+    my $features = '_';
+    # Proper nouns / parts of names ("PNM"): according to documentation they should be POS tags but in fact they appear as features.
+    if($fs->is_proper_noun())
     {
-        my $verbform = $fs->verbform();
-        my $surface_mood = $verbform eq 'trans' ? 'trans' : $atoms->{mood}->encode($fs);
-        $fpos = "V.$surface_mood";
+        $features = 'PNM';
     }
-    elsif($fpos eq 'AN')
+    elsif($pos =~ m/^(ADJ|CARD|CL|CN|DA|DEM|IA|IND|MGT|MTH|ORD|PADR|POSS|PPA|PRS|QNT|REL|STT|UM|WD)$/)
     {
-        my $transcat = $atoms->{transcat}->encode($fs);
-        if($transcat eq 'adverbial')
+        $features = $atoms->{gn}->encode($fs);
+        # Relative adverbs do not encode gender and number.
+        $features = '_' if($pos eq 'REL' && $features eq 'gn');
+        # Is it a degree of comparison other than positive?
+        if($fs->is_comparative())
         {
-            $fpos = 'AD';
+            $features .= '-comp';
         }
+        elsif($fs->is_superlative())
+        {
+            $features .= '-sup';
+        }
+        # Is it a diminutive?
+        $features .= '-dim' if($fs->is_other('pt::cintil', 'diminutive', 'yes'));
     }
-    my $feature_names = $self->get_feature_names($fpos);
-    my $pos = $subpos =~ m/^(RG|SP)$/ ? $subpos : substr($subpos, 0, 1);
-    my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names);
+    if($pos =~ m/^(CL|PRS)$/)
+    {
+        $features .= $fs->person();
+    }
+    if($pos =~ m/^(V|VAUX)$/)
+    {
+        my $tm = $atoms->{tm}->encode($fs);
+        my $pn = $atoms->{pn}->encode($fs);
+        $pn = 'nInf' if($tm eq 'inf' && $pn eq '');
+        $pn = 'ms' if($tm eq 'PPT'); # actually this is gender+number, not person+number
+        $features = $tm;
+        $features .= "-$pn" if($pn ne '');
+    }
+    my $tag = "$pos\t$pos\t$features";
     return $tag;
 }
 
@@ -360,7 +492,6 @@ CARD	CARD	ms
 CJ	CJ	_
 CL	CL	fp3
 CL	CL	fs3
-CL	CL	gn13
 CL	CL	gn3
 CL	CL	gp2
 CL	CL	gp3
@@ -396,26 +527,12 @@ DFR	DFR	_
 DGT	DGT	_
 DGTR	DGTR	_
 DM	DM	_
-GER	GER	_
 IA	IA	fp
 IA	IA	mp
 IND	IND	mp
 IND	IND	ms
-INF	INF	ifl-1p
-INF	INF	ninf
-INFAUX	INFAUX	ninf
 INT	INT	_
 ITJ	ITJ	_
-LADV1	LADV1	_
-LADV2	LADV2	_
-LADV3	LADV3	_
-LADV4	LADV4	_
-LADV5	LADV5	_
-LADV6	LADV6	_
-LADV7	LADV7	_
-LDFR1	LDFR1	_
-LDFR2	LDFR2	_
-LPREP1	LPREP1	_
 LTR	LTR	_
 MGT	MGT	mp
 MTH	MTH	ms
@@ -432,14 +549,12 @@ POSS	POSS	fp
 POSS	POSS	fs
 POSS	POSS	mp
 POSS	POSS	ms
-PP	PP	_
 PPA	PPA	fp
 PPA	PPA	fs
 PPA	PPA	gp
 PPA	PPA	gs
 PPA	PPA	mp
 PPA	PPA	ms
-PPT	PPT	_
 PREP	PREP	_
 PRS	PRS	fp3
 PRS	PRS	fs3
@@ -470,12 +585,6 @@ STT	STT	ms
 SYB	SYB	_
 UM	UM	fs
 UM	UM	ms
-V	V	GER
-V	V	INF-1p
-V	V	INF-3p
-V	V	INF-3s
-V	V	INF-nInf
-V	V	PPT-gs
 V	V	PPT-ms
 V	V	c-1p
 V	V	c-1s
@@ -502,6 +611,7 @@ V	V	ii-2s
 V	V	ii-3p
 V	V	ii-3s
 V	V	imp-2s
+V	V	inf-1p
 V	V	inf-3p
 V	V	inf-3s
 V	V	inf-nInf
