@@ -537,7 +537,7 @@ WD	WD	ms
 end_of_list
     ;
     # Protect from editors that replace tabs by spaces.
-    $list =~ s/\s+/\t/sg;
+    $list =~ s/[ \t]+/\t/sg;
     my @list = split(/\r?\n/, $list);
     return \@list;
 }
