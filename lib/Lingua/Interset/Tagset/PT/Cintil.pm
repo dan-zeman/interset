@@ -160,7 +160,7 @@ sub _create_atoms
                                                     'sym'  => 'SYB' }}}}
     );
     # FEATURES ####################
-    $atoms{feature} = $self->create_simple_atom
+    $atoms{feature} = $self->create_atom
     (
         'surfeature' => 'feature',
         'decode_map' =>
@@ -208,7 +208,10 @@ sub _create_atoms
             'n'    => [], # undetermined number?
             '?'    => [],
             '??'   => []
-        }
+        },
+        'encode_map' =>
+
+            { 'pos' => '' }
     );
     return \%atoms;
 }
