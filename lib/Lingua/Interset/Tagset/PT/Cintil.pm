@@ -36,36 +36,36 @@ sub _create_atoms
         'surfeature' => 'pos',
         'decode_map' =>
         {
-            # Adjective
+            # Adjective (bom, brilhante, eficaz)
             'ADJ'    => ['pos' => 'adj'],
-            # Adverb
+            # Adverb (hoje, já, sim, felizmente)
             'ADV'    => ['pos' => 'adv'],
-            # Cardinal number
+            # Cardinal number (zero, dez, cem, mil)
             'CARD'   => ['pos' => 'num', 'numtype' => 'card'],
-            # Conjunction (e, que, como)
+            # Conjunction (e, ou, que, como)
             'CJ'     => ['pos' => 'conj'],
             # Clitic (-se, o, -lhe)
             ###!!! Should Interset have a new feature for encliticized personal pronouns? They are not necessarily reflexive.
             'CL'     => ['pos' => 'noun', 'prontype' => 'prs', 'variant' => 'short', 'other' => {'pos' => 'clitic'}],
-            # Common noun
+            # Common noun (computador, cidade, ideia)
             'CN'     => ['pos' => 'noun', 'nountype' => 'com'],
             # Definite article (o, a, os, as)
             'DA'     => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'def'],
-            # Demonstrative pronoun or determiner
+            # Demonstrative pronoun or determiner (este, esses, aquele)
             'DEM'    => ['pos' => 'noun|adj', 'prontype' => 'dem'],
-            # Denominator of a fraction
+            # Denominator of a fraction (meio, terço, décimo, %)
             'DFR'    => ['pos' => 'num', 'numtype' => 'frac'],
-            # Roman numeral
+            # Roman numeral (VI, LX, MMIII, MCMXCIX)
             'DGTR'   => ['pos' => 'num', 'numform' => 'roman'],
-            # Number expressed in digits
+            # Number expressed in digits (0, 1, 42, 12345, 67890)
             'DGT'    => ['pos' => 'num', 'numform' => 'digit'],
             # Discourse marker "olá"
             'DM'     => ['pos' => 'int', 'other' => {'pos' => 'discourse'}],
-            # Electronic address
+            # Electronic address (http://www.di.fc.ul.pt)
             'EADR'   => ['pos' => 'noun', 'other' => {'pos' => 'url'}],
-            # End of enumeration etc.
+            # End of enumeration (etc.)
             'EOE'    => ['pos' => 'part', 'abbr' => 'abbr'],
-            # Exclamation (ah, ei)
+            # Exclamation (que, quanto)
             'EXC'    => ['pos' => 'int'],
             # Gerund (sendo, afirmando, vivendo)
             'GER'    => ['pos' => 'verb', 'verbform' => 'part', 'tense' => 'pres', 'aspect' => 'prog'],
@@ -94,7 +94,7 @@ sub _create_atoms
             'NP'     => ['pos' => 'noun', 'abbr' => 'abbr'],
             # Ordinal numeral (primeiro, centésimo, penúltimo)
             'ORD'    => ['pos' => 'adj', 'numtype' => 'ord'],
-            # Part of address (rua, av., rot.)
+            # Part of address (Rua, av., rot.)
             'PADR'   => ['pos' => 'noun', 'other' => {'pos' => 'address'}],
             # Part of name (Lisboa, António, Jo&atil;o)
             'PNM'    => ['pos' => 'noun', 'nountype' => 'prop'],
@@ -125,7 +125,7 @@ sub _create_atoms
             'TERMN'  => [],
             # "um" or "uma" (they could be either indefinite articles or cardinal numerals meaning "one")
             'UM'     => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'ind', 'numtype' => 'card', 'numform' => 'word', 'numvalue' => '1'],
-            # Abbreviated measurement unit (kg., km.)
+            # Abbreviated measurement unit (Kg, h, seg, Hz, Mbytes)
             'UNIT'   => ['pos' => 'noun', 'abbr' => 'abbr'],
             # Finite form of an auxiliary verb in compound tenses (temos, haveriam)
             'VAUX'   => ['pos' => 'verb', 'verbtype' => 'aux', 'verbform' => 'fin'],
@@ -133,6 +133,16 @@ sub _create_atoms
             'V'      => ['pos' => 'verb', 'verbform' => 'fin'],
             # Day of week (segunda, terça-feira, sábado)
             'WD'     => ['pos' => 'noun', 'other' => {'pos' => 'weekday'}]
+            # LADVn ... multi-word adverb (de facto, em suma, um pouco)
+            # LCJn .... multi-word conjunction (assim como, já que)
+            # LDEMn ... multi-word demonstrative (o mesmo)
+            # LDFRn ... multi-word denominator of fraction (por cento)
+            # LDMn .... multi-word discourse marker (pois n&atil;o, até logo)
+            # LITJn ... multi-word interjection (meu Deus)
+            # LPRSn ... multi-word personal (a gente, si mesmo, V. Exa.)
+            # LPREPn .. multi-word preposition (através de, a partir de)
+            # LQDn .... multi-word quantifier (uns quantos)
+            # LRELn ... multi-word relative (tal como)
         },
         'encode_map' =>
 
