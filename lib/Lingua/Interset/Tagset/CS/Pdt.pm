@@ -617,7 +617,7 @@ sub encode
             {
                 # jehož, jejíž, jejichž
                 # it has possgender if it is 3rd person
-                if($fs->person() == 3)
+                if($fs->person() eq '3')
                 {
                     $tag = 'P1XXXX---------';
                 }
@@ -635,7 +635,7 @@ sub encode
             {
                 # můj, tvůj, jeho, její, náš, váš, jejich
                 # it has possgender if it is 3rd person
-                if($fs->person() == 3)
+                if($fs->person() eq '3')
                 {
                     $tag = 'PSXXXXX--------';
                 }
