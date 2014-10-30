@@ -844,16 +844,29 @@ my $replacements = undef;
 
 
 # Define the features as Moose attributes.
+my $meta = __PACKAGE__->meta();
 foreach my $feature (keys(%matrix))
 {
-    unless($feature =~ m/^(tagset|other)$/)
+    # Multivalues are internally implemented as arrays and a feature value is either a scalar or an array reference.
+    # This is unhandy for the users. For them it would be better if they knew they would always get a scalar (or always an array).
+    # Therefore we want to define attribute setters and getters that will do simple conversion in addition to just setting/getting the hybrid value.
+    # We do this using meta() from Class::MOP::Class. The $feature attribute is defined as 'bare' because we will create the accessor methods ourselves.
+    has $feature => (is => 'bare', default => '');
+    # The setter will accept scalars, scalars with multivalues ('fem|masc'), array references and lists.
+    $meta->add_method(qq/set_$feature/, sub
     {
-        has $feature => (is => 'rw', default => '');
-    }
+        my $self = shift;
+        my @values = @_;
+        return $self->set($feature, @values);
+    });
+    # The getter will always return a scalar and multivalues will be serialized ('fem|masc').
+    # The user can call get_list() if they want a list.
+    $meta->add_method(qq/$feature/, sub
+    {
+        my $self = shift;
+        return $self->get_joined($feature);
+    });
 }
-has 'tagset'       => ( is  => 'rw', default => '' );
-#                        isa => { subtype as 'Str', where { m/^([a-z]+::[a-z]+)?$/ }, message { "'$_' does not look like a tagset identifier ('lang::corpus')." } } );
-has 'other'        => ( is  => 'rw', default => '' );
 
 
 
@@ -964,7 +977,7 @@ sub value_valid
     # For the 'tagset' feature, a regular expression is used instead of a list of values.
     elsif($feature eq 'tagset')
     {
-        return $value =~ m/^[a-z]+::[a-z0-9]+$/;
+        return $value =~ m/^([a-z]+::[a-z0-9]+)?$/;
     }
     # Other known features all have their lists of values (including the empty string).
     else
@@ -1083,7 +1096,12 @@ sub set
     confess("Unknown feature '$feature'") if(!feature_valid($feature));
     my @values = @_;
     confess('Missing value') if(!@values);
-    return $self->set_other(map {_duplicate_recursive($_)} @values) if($feature eq 'other');
+    # The interpretation of the @values if different if the feature is 'other'.
+    if($feature eq 'other')
+    {
+        $self->{$feature} = _duplicate_recursive($values[0]);
+        return 1;
+    }
     my @values1;
     my %values; # map values and do not add the same value twice
     foreach my $value (@values)
@@ -1169,14 +1187,6 @@ sub add
     {
         $self->set($assignments[$i], $assignments[$i+1]);
     }
-}
-###!!! Backwards compatibility will be kept for a while.
-sub multiset
-{
-    my $self = shift;
-    my @args = @_;
-    print STDERR ("WARNING: FeatureStructure::multiset() is deprecated, use add() instead!\n");
-    return $self->add(@args);
 }
 
 

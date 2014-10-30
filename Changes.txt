@@ -2,6 +2,10 @@
 
 Interface:
 * FeatureStructure::set($feature, $value) now dies if either the feature or the value is unknown.
+* Default setters (e.g. set_gender()) now call set($feature, $value), so they can take multivalues
+  in all forms and referenced arrays (if any) are deeply copied, not shared.
+* Default getters (e.g. gender()) now always return scalars. Multivalues are joined by vertical bars.
+  This is the same behavior as with the get_joined($feature) method.
 
 
 
