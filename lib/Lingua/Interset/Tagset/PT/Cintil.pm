@@ -110,7 +110,7 @@ sub _create_atoms
             # Past participle in compound tenses (sido, afirmado, vivido)
             'PPT'    => ['pos' => 'verb', 'verbform' => 'part', 'tense' => 'past'],
             # Preposition (de, para, em redor de)
-            'PREP'   => ['pos' => 'adp', 'adptype' => 'prep'],
+            'PREP'   => ['pos' => 'adp', 'adpostype' => 'prep'],
             # Personal pronoun (eu, tu, ele)
             'PRS'    => ['pos' => 'noun', 'prontype' => 'prs'],
             # Quantifier (todos, muitos, nenhum)
