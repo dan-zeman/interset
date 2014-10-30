@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+2.019     2014-10-30 22:30:13+01:00 Europe/Prague
+
 Interface:
 * FeatureStructure::set($feature, $value) now dies if either the feature or the value is unknown.
 * Default setters (e.g. set_gender()) now call set($feature, $value), so they can take multivalues
