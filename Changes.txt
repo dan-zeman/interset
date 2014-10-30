@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+Interface:
+* FeatureStructure::set($feature, $value) now dies if either the feature or the value is unknown.
+
+
+
 2.018     2014-10-17 14:51:14+02:00 Europe/Prague
 
 Drivers:

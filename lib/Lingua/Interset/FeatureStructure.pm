@@ -1075,12 +1075,12 @@ via C<get()>, and decides to modify the array, they will probably expect to
 change only that particular feature structure and not others that happen to
 use the same array.
 
-
 =cut
 sub set
 {
     my $self = shift;
     my $feature = shift;
+    confess("Unknown feature '$feature'") if(!feature_valid($feature));
     my @values = @_;
     confess('Missing value') if(!@values);
     return $self->set_other(map {_duplicate_recursive($_)} @values) if($feature eq 'other');
@@ -1094,6 +1094,7 @@ sub set
             {
                 # No unlimited recursion. Referenced arrays are not supposed to contain subarrays.
                 confess('Plain scalar expected') unless(ref($subvalue) eq '');
+                confess("Unknown value '$subvalue' of feature '$feature'") if(!value_valid($feature, $subvalue));
                 push(@values1, $subvalue) unless($values{$subvalue});
                 $values{$subvalue}++;
             }
@@ -1104,12 +1105,14 @@ sub set
             foreach my $subvalue (@subvalues)
             {
                 push(@values1, $subvalue) unless($values{$subvalue});
+                confess("Unknown value '$subvalue' of feature '$feature'") if(!value_valid($feature, $subvalue));
                 $values{$subvalue}++;
             }
         }
         else
         {
             push(@values1, $value) unless($values{$value});
+            confess("Unknown value '$value' of feature '$feature'") if(!value_valid($feature, $value));
             $values{$value}++;
         }
     }
@@ -1326,7 +1329,7 @@ sub get
 #------------------------------------------------------------------------------
 # Similar to get but always returns scalar. If there is an array of disjoint
 # values, it does not pick just one. Instead, it sorts all values and joins
-# them using the vertical bar. Example: 'masc|fem'.
+# them using the vertical bar. Example: 'fem|masc'.
 #------------------------------------------------------------------------------
 =method get_joined()
 
