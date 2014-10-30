@@ -1,4 +1,4 @@
-# ABSTRACT: Driver for the Stuttgart-Tübingen Tagset of German.
+# ABSTRACT: Driver for the Stuttgart-Tuebingen Tagset of German.
 # Copyright © 2008, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::DE::Stts;
