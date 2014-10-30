@@ -847,26 +847,33 @@ my $replacements = undef;
 my $meta = __PACKAGE__->meta();
 foreach my $feature (keys(%matrix))
 {
-    # Multivalues are internally implemented as arrays and a feature value is either a scalar or an array reference.
-    # This is unhandy for the users. For them it would be better if they knew they would always get a scalar (or always an array).
-    # Therefore we want to define attribute setters and getters that will do simple conversion in addition to just setting/getting the hybrid value.
-    # We do this using meta() from Class::MOP::Class. The $feature attribute is defined as 'bare' because we will create the accessor methods ourselves.
-    has $feature => (is => 'bare', default => '');
-    # The setter will accept scalars, scalars with multivalues ('fem|masc'), array references and lists.
-    $meta->add_method(qq/set_$feature/, sub
+    unless($feature eq 'other')
     {
-        my $self = shift;
-        my @values = @_;
-        return $self->set($feature, @values);
-    });
-    # The getter will always return a scalar and multivalues will be serialized ('fem|masc').
-    # The user can call get_list() if they want a list.
-    $meta->add_method(qq/$feature/, sub
-    {
-        my $self = shift;
-        return $self->get_joined($feature);
-    });
+        # Multivalues are internally implemented as arrays and a feature value is either a scalar or an array reference.
+        # This is unhandy for the users. For them it would be better if they knew they would always get a scalar (or always an array).
+        # Therefore we want to define attribute setters and getters that will do simple conversion in addition to just setting/getting the hybrid value.
+        # We do this using meta() from Class::MOP::Class. The $feature attribute is defined as 'bare' because we will create the accessor methods ourselves.
+        has $feature => (is => 'bare', default => '');
+        # The setter will accept scalars, scalars with multivalues ('fem|masc'), array references and lists.
+        $meta->add_method(qq/set_$feature/, sub
+        {
+            my $self = shift;
+            my @values = @_;
+            return $self->set($feature, @values);
+        });
+        # The getter will always return a scalar and multivalues will be serialized ('fem|masc').
+        # The user can call get_list() if they want a list.
+        $meta->add_method(qq/$feature/, sub
+        {
+            my $self = shift;
+            return $self->get_joined($feature);
+        });
+    }
 }
+# The 'other' feature will have a standard setter/getter that will just take/return anything. Usually a hash reference.
+###!!! In future we may want to limit the values of 'other' to be references to hashes of scalar-valued subfeatures.
+###!!! Then we will probably define new methods for subfeatures and a serialization method. And the standard getter will be redefined to return strings only.
+has 'other' => (is => 'rw', default => '');
 
 
 
@@ -1185,7 +1192,24 @@ sub add
     my @assignments = @_;
     for(my $i = 0; $i<=$#assignments; $i += 2)
     {
-        $self->set($assignments[$i], $assignments[$i+1]);
+        my $feature = $assignments[$i];
+        my $value = $assignments[$i+1];
+        # Support for hashes of subfeatures in 'other'.
+        # We want to merge the two hashes, not to replace the current hash by the new one.
+        if($feature eq 'other' && ref($value) eq 'HASH')
+        {
+            my $current = $self->other();
+            if(ref($current) eq 'HASH')
+            {
+                foreach my $subfeature (keys(%{$value}))
+                {
+                    # Do not concern about deep copying now. It will be taken care of in set().
+                    $current->{$subfeature} = $value->{$subfeature};
+                }
+                $value = $current;
+            }
+        }
+        $self->set($feature, $value);
     }
 }
 

@@ -6,6 +6,8 @@ Interface:
   in all forms and referenced arrays (if any) are deeply copied, not shared.
 * Default getters (e.g. gender()) now always return scalars. Multivalues are joined by vertical bars.
   This is the same behavior as with the get_joined($feature) method.
+* Exception: The 'other' feature can still contain anything (usually a hash reference)
+  and its getter ($fs->other()) will return exactly that anything, not necessarily a scalar.
 
 
 
