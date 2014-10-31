@@ -111,6 +111,8 @@ sub encode_conll
     my $subpos = shift;
     # The list of feature names may differ for different parts of speech so we want to get a reference to the list.
     my $feature_names = shift;
+    # By default, feature names are included (e.g. "gender=masc"). Some CoNLL tagsets contain only values without feature names (e.g. "masc").
+    my $value_only = shift;
     my $atoms = $self->atoms();
     my @features;
     foreach my $name (@{$feature_names})
@@ -121,7 +123,14 @@ sub encode_conll
         if($value ne '')
         {
             # Value adjustments tailored for this physical tagset would come here.
-            push(@features, "$name=$value");
+            if($value_only)
+            {
+                push(@features, $value);
+            }
+            else
+            {
+                push(@features, "$name=$value");
+            }
         }
     }
     my $features = '_';

@@ -607,12 +607,12 @@ end_of_list
 
   use Lingua::Interset::Tagset::DA::Conll;
   my $driver = Lingua::Interset::Tagset::DA::Conll->new();
-  my $fs = $driver->decode("N\nNC\ngender=common|number=sing|case=unmarked|def=indef");
+  my $fs = $driver->decode("N\tNC\tgender=common|number=sing|case=unmarked|def=indef");
 
 or
 
   use Lingua::Interset qw(decode);
-  my $fs = decode('da::conll', "N\nNC\ngender=common|number=sing|case=unmarked|def=indef");
+  my $fs = decode('da::conll', "N\tNC\tgender=common|number=sing|case=unmarked|def=indef");
 
 =head1 DESCRIPTION
 
