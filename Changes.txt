@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+Interface:
+* FeatureStructure has new methods is_masculine(), is_feminine(), is_neuter() and is_common_gender().
+
+
+
 2.020     2014-10-31 17:34:17+01:00 Europe/Prague
 
 Features:

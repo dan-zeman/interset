@@ -12,6 +12,16 @@ use Carp;
 use Getopt::Long;
 use Lingua::Interset qw(hash_drivers list decode encode);
 
+sub usage
+{
+    print STDERR ("Usage:   tagset_to_uposf_table.pl [--italics 0] <tagset> <corpus> 0/1\n");
+    print STDERR ("Example: tagset_to_uposf_table.pl en::penn conll-2007-en 1 > docs/_tagset-conversion/en-penn-uposf.md\n");
+    print STDERR ("         --italics ... should examples be formatted as italics? Default: 1\n");
+    print STDERR ("         <tagset> .... e.g. en::conll\n");
+    print STDERR ("         <corpus> .... e.g. conll-2007-en; where to take examples from\n");
+    print STDERR ("         0/1 ......... whether to reduce indexed tags to subpos\n");
+}
+
 # All examples in Latin, Cyrillic and Greek scripts should be in italics. Other scripts should not.
 my $italics = 1;
 GetOptions('italics=s' => \$italics);
