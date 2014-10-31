@@ -1,5 +1,15 @@
 {{$NEXT}}
 
+Features:
+* Two new values of the feature 'foreign':
+  * 'fscript' = foreign word in foreign script
+  * 'tscript' = foreign word transcribed from a foreign script
+
+Drivers:
+* EL::Conll
+
+
+
 2.019     2014-10-30 22:30:13+01:00 Europe/Prague
 
 Interface:

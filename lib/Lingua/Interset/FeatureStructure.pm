@@ -407,10 +407,12 @@ my %matrix = @_matrix =
     'foreign' =>
     {
         'priority' => 400,
-        'values' => ['foreign', ''], ###!!! OR yes-no-empty? But I do not think it would be practical.
+        'values' => ['foreign', 'fscript', 'tscript', ''],
         'replacements' =>
         [
-            ['foreign']
+            ['foreign'],
+            ['fscript', 'foreign'],
+            ['tscript', 'foreign']
         ],
         'uname' => 'Foreign'
     },
