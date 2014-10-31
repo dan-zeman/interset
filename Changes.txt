@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+2.020     2014-10-31 17:34:17+01:00 Europe/Prague
+
 Features:
 * Two new values of the feature 'foreign':
   * 'fscript' = foreign word in foreign script
