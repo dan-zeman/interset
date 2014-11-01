@@ -349,14 +349,14 @@ sub decode
     my $self = shift;
     my $tag = shift;
     my $fs = Lingua::Interset::FeatureStructure->new();
-    $fs->set_tagset('pt::cintil');
+    $fs->set_tagset('et::puudepank');
     my $atoms = $self->atoms();
-    # Three components, and the first two are identical: pos, pos, features.
-    # example: CN\tCN\tms
-    my ($pos, $subpos, $features) = split(/\s+/, $tag);
-    # The underscore character is used if there are no features.
-    $features = '' if($features eq '_');
-    my @features = split(/-/, $features);
+    # Tag is the part of speech followed by a slash and the morphosyntactic features, separated by commas.
+    # example: n/com,sg,nom
+    my ($pos, $features) = split(/\//, $tag);
+    # Two dashes are used if there are no features.
+    $features = '' if($features eq '--');
+    my @features = split(/,/, $features);
     $atoms->{pos}->decode_and_merge_hard($pos, $fs);
     foreach my $feature (@features)
     {
@@ -376,8 +376,8 @@ sub encode
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $atoms = $self->atoms();
     my $pos = $atoms->{pos}->encode($fs);
-    my $features = '_';
-    my $tag = "$pos\t$pos\t$features";
+    my $features = '--';
+    my $tag = "$pos/$features";
     return $tag;
 }
 
