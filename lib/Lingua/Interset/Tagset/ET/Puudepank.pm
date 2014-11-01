@@ -99,16 +99,7 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            { 'prontype' => { 'prs' => { 'poss' => { 'poss' => 'pron-poss',
-                                                     '@'    => 'pron-pers' }},
-                              'art' => 'art',
-                              'dem' => 'pron-dem',
-                              'ind' => 'pron-indef',
-                              'neg' => 'pron-indef',
-                              'tot' => 'pron-indef',
-                              'int' => 'pron-int',
-                              'rel' => 'pron-rel',
-                              '@'   => { 'pos' => { 'noun' => { 'nountype' => { 'prop' => 'prop',
+            { 'prontype' => { ''    => { 'pos' => { 'noun' => { 'nountype' => { 'prop' => 'prop',
                                                                                 '@'    => 'n' }},
                                                     'adj'  => { 'nametype' => { 'nat' => 'adj-nat',
                                                                                 '@'   => 'adj' }},
@@ -127,7 +118,14 @@ sub _create_atoms
                                                                                 '@'   => 'b' }},
                                                     'int'  => 'intj',
                                                     'punc' => 'punc',
-                                                    '@'    => 'x' }}}}
+                                                    '@'    => 'x' }},
+                              'prs' => { 'poss' => { 'poss' => 'pron-poss',
+                                                     '@'    => 'pron-pers' }},
+                              'art' => 'art',
+                              # Encoding of pronoun types is inconsistent in the corpus.
+                              # The type is always the first feature but sometimes it is also part of the part-of-speech tag (pron-dem/dem), next time it is not (pron/dem).
+                              # We can decode pron-(dem|indef|int|rel) but we do not encode it. Our list of known tags only contains the pron/dem variant.
+                              '@'   => 'pron' }}
     );
     # FEATURES ####################
     $atoms{feature} = $self->create_atom
@@ -322,18 +320,109 @@ sub _create_atoms
         # .janna ... words with suffix '-janna' (pekimägi-käskijanna)
         # .ke ... words with suffix '-ke' (aiamajakese, sammukese, klaasikese)
         # .lik ... words with suffix '-lik' (pidulikku)
-        # .line ... unknown meaning
-        # .m ... adjectives; unknown meaning (rare feature)
-        # .mine, %mine ... nouns; unknown meaning (rare feature)
+        # .line ... adjectives or nouns with suffix '-line', '-lis-' (mustavereline)
+        # .m ... adjectives; unknown meaning (rare feature; just one occurrence: väiksemagi)
+        # .mine, %mine ... nouns with suffix '-mis-' (rare feature; nõudmised, kurtmised)
         # .nud, %nud ... words with suffix '-nud'
         # .tav, %tav ... words with suffix '-tav' (laetav, väidetavasti)
         # .tud, %tud ... words with suffix '-tud'
-        # .v, %v ... unknown meaning
-        # -- ... meaning no features?
+        # .v, %v ... participial adjectives with suffix '-v', '-va-'
+        # -- ... meaning no features
         },
         'encode_map' =>
 
             { 'pos' => '' }
+    );
+    # NOUNTYPE ####################
+    $atoms{nountype} = $self->create_atom
+    (
+        'surfeature' => 'nountype',
+        'decode_map' =>
+        {
+            # com ... common noun (tuul, mees, kraan, riik, naine)
+            'com'     => ['nountype' => 'com'],
+            # nominal ... nominal abbreviation (Kaabel-TV, EE, kaabelTV) ... used rarely and inconsistently, should be ignored
+            'nominal' => []
+        },
+        'encode_map' =>
+        {
+            'nountype' => { '@' => 'com' }
+        }
+    );
+    # PRONTYPE ####################
+    $atoms{prontype} = $self->create_atom
+    (
+        'surfeature' => 'prontype',
+        'decode_map' =>
+        {
+            # demonstrative: sel (this), samal (the same), see (it, this), niisugune (such), too (that)
+            'dem'   => ['prontype' => 'dem'],
+            # total: iga (each, every, any), kõik (everything, all), mõlemad (both)
+            'det'   => ['prontype' => 'tot'],
+            # indefinite or negative: teised (other), midagi (nothing), üht (one), mõne (a few), keegi (one), mingi (some), mitu (several)
+            'indef' => ['prontype' => 'ind|neg'],
+            # interrogative: milline (what), mis (which), kes (who)
+            'inter' => ['prontype' => 'int']
+        },
+        'encode_map' =>
+        {
+            'prontype' => { 'dem' => 'dem',
+                            'tot' => 'det',
+                            'ind' => 'indef',
+                            'neg' => 'indef',
+                            'int' => 'inter' }
+        }
+    );
+    # NUMBER ####################
+    $atoms{number} = $self->create_simple_atom
+    (
+        'intfeature' => 'number',
+        'simple_decode_map' =>
+        {
+            # sg ... singular (abbreviations, adjectives, nouns, numerals, pronouns, proper nouns, verbs
+            # pl ... plural (ditto)
+            'sg' => 'sing',
+            'pl' => 'plur'
+        }
+    );
+    # CASE ####################
+    $atoms{case} = $self->create_simple_atom
+    (
+        'intfeature' => 'case',
+        'simple_decode_map' =>
+        {
+            # nom ... nominative (tuul, mees, kraan, riik, naine)
+            # gen ... genitive (laua, mehe, ukse, metsa, tee)
+            # abes ... abessive? (aietuseta)
+            # abl ... ablative (maalt, laevalt, põrandalt, teelt, näolt)
+            # ad ... adessive (aastal, tänaval, hommikul, õhtul, sammul)
+            # adit ... additive (koju, tuppa, linna, kööki, aeda) ... tenhle pád česká, anglická ani estonská Wikipedie estonštině nepřipisuje, ale značky Multext ho obsahují
+            #    additive has the same meaning as illative, exists only for some words and only in singular
+            # all ... allative (põrandala, kaldale, rinnale, koerale, külalisele)
+            # el ... elative (hommikust, trepist, linnast, toast, voodist)
+            # es ... essive (naisena, paratamatusena, tulemusena, montöörina, tegurina)
+            # ill ... illative (voodisse, ämbrisse, sahtlisse, esikusse, autosse)
+            # in ... inessive (toas, elus, unes, sadulas, lumes)
+            # kom ... comitative (kiviga, jalaga, rattaga, liigutusega, petrooliga)
+            # part ... partitive (vett, tundi, ust, verd, rada)
+            # term ... terminative (õhtuni, mereni, ääreni, kaldani, kroonini)
+            # tr ... translative (presidendiks, ajaks, kasuks, müüjaks, karjapoisiks)
+            'nom'  => 'nom',
+            'gen'  => 'gen',
+            'abes' => 'abe',
+            'abl'  => 'abl',
+            'ad'   => 'ade',
+            'adit' => 'add',
+            'all'  => 'all',
+            'el'   => 'ela',
+            'es'   => 'ess',
+            'ill'  => 'ill',
+            'in'   => 'ine',
+            'kom'  => 'com',
+            'part' => 'par',
+            'term' => 'ter',
+            'tr'   => 'tra'
+        }
     );
     return \%atoms;
 }
@@ -377,6 +466,24 @@ sub encode
     my $atoms = $self->atoms();
     my $pos = $atoms->{pos}->encode($fs);
     my $features = '--';
+    my @feature_names = ();
+    if($pos eq 'n')
+    {
+        @feature_names = ('nountype', 'number', 'case');
+    }
+    elsif($pos eq 'pron')
+    {
+        @feature_names = ('prontype', 'number', 'case');
+    }
+    my @features = ();
+    foreach my $feature (@feature_names)
+    {
+        push(@features, $atoms->{$feature}->encode($fs));
+    }
+    if(@features)
+    {
+        $features = join(',', @features);
+    }
     my $tag = "$pos/$features";
     return $tag;
 }
@@ -391,7 +498,19 @@ sub encode
 # conj-c/sub).
 # Removed features:
 # .cap, %cap ... the word starts with an uppercase letter
-# 454 tags survived.
+# .gi ... adjectives and nouns with the suffix '-gi' (rare feature)
+# .ja, %ja ... words with suffix '-ja' (pakkujad, vabastaja)
+# .janna ... words with suffix '-janna' (pekimägi-käskijanna)
+# .ke ... words with suffix '-ke' (aiamajakese, sammukese, klaasikese)
+# .lik ... words with suffix '-lik' (pidulikku)
+# .line ... adjectives or nouns with suffix '-line', '-lis-' (mustavereline)
+# .m ... adjectives; unknown meaning (rare feature; just one occurrence: väiksemagi)
+# .mine, %mine ... nouns with suffix '-mis-' (rare feature; nõudmised, kurtmised)
+# .nud, %nud ... words with suffix '-nud'
+# .tav, %tav ... words with suffix '-tav' (laetav, väidetavasti)
+# .tud, %tud ... words with suffix '-tud'
+# .v, %v ... participial adjectives with suffix '-v', '-va-'
+# 409 tags survived.
 #------------------------------------------------------------------------------
 sub list
 {
@@ -404,7 +523,6 @@ adj/comp,pl,ad
 adj/comp,pl,nom
 adj/comp,pl,part
 adj/comp,sg,gen
-adj/comp,sg,gen,.gi,.m
 adj/comp,sg,nom
 adj/comp,sg,tr
 adj/ord,pl,in,l
@@ -417,57 +535,39 @@ adj/ord,sg,nom
 adj/ord,sg,part,l
 adj/ord,sg,tr,l
 adj/pos
-adj/pos,partic,%nud
-adj/pos,.tud,partic
-adj/pos,.nud
-adj/pos,.nud,partic
-adj/pos,.tud
-adj/pos,.tud,partic
-adj/pos,partic,%nud
-adj/pos,partic,%tud
+adj/pos,partic
 adj/pos,pl,el
-adj/pos,pl,es,.tud
+adj/pos,pl,es
 adj/pos,pl,gen
-adj/pos,pl,gen,.v,partic
+adj/pos,pl,gen,partic
 adj/pos,pl,ill
 adj/pos,pl,in
 adj/pos,pl,nom
 adj/pos,pl,part
-adj/pos,pl,part,.v,partic,.?
-adj/pos,pl,part,partic,%v
+adj/pos,pl,part,partic,.?
+adj/pos,pl,part,partic
 adj/pos,pl,tr
 adj/pos,sg,ad
 adj/pos,sg,adit
-adj/pos,sg,adit,.lik
 adj/pos,sg,all
-adj/pos,sg,all,.v,partic
+adj/pos,sg,all,partic
 adj/pos,sg,el
 adj/pos,sg,gen
-adj/pos,sg,gen,.gi
-adj/pos,sg,gen,.line
-adj/pos,sg,gen,.v,partic
-adj/pos,sg,gen,partic,%v
+adj/pos,sg,gen,partic
 adj/pos,sg,ill
-adj/pos,sg,ill,.v,partic
+adj/pos,sg,ill,partic
 adj/pos,sg,in
-adj/pos,sg,in,.v,partic
+adj/pos,sg,in,partic
 adj/pos,sg,nom
-adj/pos,sg,nom,.v,partic
-adj/pos,sg,nom,.line
-adj/pos,sg,nom,.v,partic
-adj/pos,sg,nom,partic,%tud
-adj/pos,sg,nom,partic,%v
-adj/pos,sg,nom,partic,.tav
+adj/pos,sg,nom,partic
 adj/pos,sg,part
-adj/pos,sg,part,.line
-adj/pos,sg,part,.v,partic
-adj/pos,sg,part,partic,%v
+adj/pos,sg,part,partic
 adj/pos,sg,tr
 adj-nat/--
 adv/--
 adv/.?
 adv/adv
-adv/partic,%tav
+adv/partic
 b/--
 conj-c/--
 conj-c/crd
@@ -487,59 +587,33 @@ n/com,pl,in
 n/com,pl,in,.?
 n/com,pl,kom
 n/com,pl,nom
-n/com,pl,nom,%ja
-n/com,pl,nom,%mine
 n/com,pl,nom,.?
 n/com,pl,part
-n/com,pl,part,%mine
 n/com,pl,tr
 n/com,sg,abes
 n/com,sg,abl
-n/com,sg,abl,.mine
 n/com,sg,ad
 n/com,sg,adit
 n/com,sg,ad
-n/com,sg,ad,%mine
 n/com,sg,all
-n/com,sg,all,%mine
 n/com,sg,all,.?
 n/com,sg,el
 n/com,sg,el,.?
 n/com,sg,es
 n/com,sg,gen
-n/com,sg,gen,%ja
-n/com,sg,gen,%mine
 n/com,sg,gen,.?
-n/com,sg,gen,.ja
-n/com,sg,gen,.ke
-n/com,sg,gen,.mine
 n/com,sg,ill
 n/com,sg,ill,.?
 n/com,sg,in
-n/com,sg,in,%mine
 n/com,sg,in,.?
 n/com,sg,kom
-n/com,sg,kom,%mine
 n/com,sg,kom,.?
 n/com,sg,nom
-n/com,sg,nom,%ja
-n/com,sg,nom,%mine
 n/com,sg,nom,.?
-n/com,sg,nom,.ja
-n/com,sg,nom,.janna
-n/com,sg,nom,.line
 n/com,sg,part
-n/com,sg,part,%mine
 n/com,sg,part,.?
-n/com,sg,part,.gi
-n/com,sg,part,.ja
-n/com,sg,part,.ke
-n/com,sg,part,.mine
 n/com,sg,term
 n/com,sg,tr
-n/com,sg,tr,%ja
-n/com,sg,tr,%mine
-n/com,sg,tr,.mine
 n/nominal,sg,nom,y
 n/nominal,y
 num/--
@@ -566,13 +640,16 @@ num/ord,sg,ad,l
 num/ord,sg,nom,l
 num/ord,sg,part,l
 num/ord,x?,digit
+pron/dem,pl,gen
 pron/dem,pl,nom
 pron/dem,sg,ad
 pron/dem,sg,el
+pron/dem,sg,es
 pron/dem,sg,gen
 pron/dem,sg,kom
 pron/dem,sg,nom
 pron/dem,sg,part
+pron/dem,sg,term
 pron/dem,sg,tr
 pron/det,pl,el
 pron/det,pl,gen
@@ -581,10 +658,17 @@ pron/det,sg,ad
 pron/det,sg,all
 pron/det,sg,gen
 pron/det,sg,nom
+pron/indef,pl,el
+pron/indef,pl,gen
 pron/indef,pl,nom
 pron/indef,pl,part
+pron/indef,sg,abl
+pron/indef,sg,adit
+pron/indef,sg,all
 pron/indef,sg,gen
+pron/indef,sg,ill
 pron/indef,sg,in
+pron/indef,sg,nom
 pron/indef,sg,part
 pron/inter,pl,nom
 pron/inter,sg,gen
@@ -601,54 +685,6 @@ pron/pers,ps3,sg,ad
 pron/pers,ps3,sg,all
 pron/pers,ps3,sg,gen
 pron/pers,ps3,sg,nom
-pron/pl,all,.cap
-pron/pl,el
-pron/pl,gen,.cap
-pron/pos,sg,gen
-pron/pos,sg,kom
-pron/pos,sg,nom
-pron/rec,sg,all
-pron/refl,sg,all
-pron/refl,sg,kom
-pron/refl,sg,part
-pron/rel,pl,nom
-pron/rel,pl,part
-pron/rel,sg,abl
-pron/rel,sg,ad
-pron/rel,sg,gen
-pron/rel,sg,kom
-pron/rel,sg,nom
-pron/rel,sg,part
-pron/sg,adit
-pron/sg,el
-pron/sg,gen
-pron/sg,part
-pron-def/indef
-pron-def/indef,pl,el
-pron-def/indef,pl,gen
-pron-def/indef,pl,nom
-pron-def/indef,pl,part
-pron-def/indef,sg,abl
-pron-def/indef,sg,all
-pron-def/indef,sg,gen
-pron-def/indef,sg,ill
-pron-def/indef,sg,nom
-pron-def/indef,sg,part
-pron-def/inter,rel,indef,sg,nom
-pron-dem/dem,pl,gen
-pron-dem/dem,pl,nom
-pron-dem/dem,sg,ad
-pron-dem/dem,sg,el
-pron-dem/dem,sg,es
-pron-dem/dem,sg,gen
-pron-dem/dem,sg,nom
-pron-dem/dem,sg,part
-pron-dem/dem,sg,term
-pron-dem/indef,dem,pl,nom
-pron-dem/indef,dem,sg,adit
-pron-dem/indef,dem,sg,gen
-pron-dem/indef,dem,sg,part
-pron-indef/indef,pl,nom
 pron-pers/pers,ps1,pl,ad
 pron-pers/pers,ps1,pl,gen
 pron-pers/pers,ps1,pl,nom
@@ -669,6 +705,9 @@ pron-pers/pers,ps3,sg,el
 pron-pers/pers,ps3,sg,gen
 pron-pers/pers,ps3,sg,nom
 pron-pers/pers,ps3,sg,part
+pron/pos,sg,gen
+pron/pos,sg,kom
+pron/pos,sg,nom
 pron-poss/pos,det,refl,sg,ad
 pron-poss/pos,det,refl,sg,all
 pron-poss/pos,det,refl,sg,el
@@ -677,8 +716,20 @@ pron-poss/pos,det,refl,sg,nom
 pron-poss/pos,det,refl,sg,part
 pron-poss/pos,det,refl,sg,term
 pron-poss/pos,sg,gen
+pron/rec,sg,all
+pron/refl,sg,all
+pron/refl,sg,kom
+pron/refl,sg,part
 pron-refl/refl,sg,gen
 pron-refl/refl,sg,ill
+pron/rel,pl,nom
+pron/rel,pl,part
+pron/rel,sg,abl
+pron/rel,sg,ad
+pron/rel,sg,gen
+pron/rel,sg,kom
+pron/rel,sg,nom
+pron/rel,sg,part
 pron-rel/inter,rel,sg,nom
 pron-rel/rel,sg,nom
 prop/--
