@@ -671,12 +671,12 @@ end_of_list
 
   use Lingua::Interset::Tagset::PT::Cintil;
   my $driver = Lingua::Interset::Tagset::PT::Cintil->new();
-  my $fs = $driver->decode("CN\nCN\nms");
+  my $fs = $driver->decode("CN\tCN\tms");
 
 or
 
   use Lingua::Interset qw(decode);
-  my $fs = decode('pt::cintil', "CN\nCN\nms");
+  my $fs = decode('pt::cintil', "CN\tCN\tms");
 
 =head1 DESCRIPTION
 
