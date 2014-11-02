@@ -104,11 +104,11 @@ sub _create_atoms
                                                     'adj'  => { 'nametype' => { 'nat' => 'adj-nat',
                                                                                 '@'   => 'adj' }},
                                                     'num'  => 'num',
-                                                    'verb' => { 'verbform' => { 'part'  => 'v-pcp2',
-                                                                                'trans' => 'v-pcp2',
-                                                                                'inf'   => 'v-inf',
-                                                                                'fin'   => 'v-fin',
-                                                                                '@'     => 'v' }},
+                                                    # Encoding of verb forms is inconsistent in the corpus.
+                                                    # The form is encoded in the features but sometimes it is also part of the part-of-speech tag.
+                                                    # We can decode v-(fin|inf|pcp2) but we do not encode it.
+                                                    # Our list of known tags only contains the simple "v" variant.
+                                                    'verb' => 'v',
                                                     'adv'  => 'adv',
                                                     'adp'  => { 'adpostype' => { 'post' => 'pst',
                                                                                  '@'    => 'prp' }},
@@ -118,9 +118,8 @@ sub _create_atoms
                                                                                 '@'   => 'b' }},
                                                     'int'  => 'intj',
                                                     'punc' => 'punc',
-                                                    '@'    => 'x' }},
-                              'prs' => { 'poss' => { 'poss' => 'pron-poss',
-                                                     '@'    => 'pron-pers' }},
+                                                    '@'    => { 'abbr' => { 'abbr' => 'abbr',
+                                                                            '@'    => 'x' }}}},
                               'art' => 'art',
                               # Encoding of pronoun types is inconsistent in the corpus.
                               # The type is always the first feature but sometimes it is also part of the part-of-speech tag (pron-dem/dem), next time it is not (pron/dem).
@@ -148,6 +147,7 @@ sub _create_atoms
             # inter ... pron-def/inter,rel,indef (mitu = how many/several/many)
             # inter ... pron-rel/inter,rel (kes = who)
             # pers ... pron/pers || pron-pers/pers (ma, mina = I, sa = you, ta, tema = he/she/it, me = we, nad, nemad = they)
+            # pos(s) ... "pos" is in corpus but in order to not confuse it with the positive degree, we changed it to "poss"
             # rec ... pron/rec: reciprocal pronoun (üksteisele = each other)
             # refl ... pron/refl || pron-poss/pos,det,refl || pron-refl/refl: reflexive pronoun (ise = oneself, enda = own [genitive of 'ise'], oma = my/your/his/her/its/our/their)
             # rel ... pron/rel: relative pronoun (mis, kes)
@@ -158,13 +158,16 @@ sub _create_atoms
             'indef' => ['prontype' => 'ind'],
             'inter' => ['prontype' => 'int'],
             'pers'  => ['prontype' => 'prs'],
+            'poss'  => ['prontype' => 'prs', 'poss' => 'poss'],
             'rec'   => ['prontype' => 'rcp'],
-            'refl'  => ['reflex' => 'reflex'],
+            'refl'  => ['prontype' => 'prs', 'reflex' => 'reflex'],
             'rel'   => ['prontype' => 'rel'],
         # Numeral:
+            # l ... numeral (or ordinal adjective) written in letters (üks, kaks, kolm, neli, viis)
             # digit ... numeral written in digits (21, 120, 20_000, 15.40, 1875)
             # card ... cardinal numerals (kaks = two, neli = four, viis = five, seitse = seven, kümme = ten)
             # ord ... adj/ord || num/ord (esimene = first, teine = second, kolmas = third)
+            'l'     => ['numform' => 'word'],
             'digit' => ['numform' => 'digit'],
             'card'  => ['numtype' => 'card'],
             'ord'   => ['numtype' => 'ord'],
@@ -270,6 +273,8 @@ sub _create_atoms
         # Personativity of verbs: is the person of the verb known? (###!!! DZ: tagset documentation missing, misinterpretation possible!)
             # ps ... (olen = I am, sõidan = I drive, ütlen = I say, ujun = I swim, liigutan = I move)
             # imps ... (räägitakse = it's said, kaalutakse = it's considered; mängiti = played, visati = thrown, eelistati = preferred, hakati = began)
+            'ps'   => [], # default
+            'imps' => ['other' => {'personal' => 'no'}],
         # Verb form and mood:
             # inf ... infinitive (teha, saada, hakata, pakkuda, müüa)
             # sup ... supine (informeerimata, tulemast, avaldamast, otsima, tegema)
@@ -309,7 +314,6 @@ sub _create_atoms
             # .All, %All ... noun phrase in allative
             # .El, %El ... noun phrase in elative
             # .Part, %Part ... noun phrase in partitive
-        # l ... ordinal adjectives and cardinal and ordinal numerals; unknown meaning
         # y ... noun abbreviations? (USA, AS, EBRD, CIA, ETV)
         # ? ... abbreviations, numerals; unknown meaning
         # .? ... abbreviations, adjectives, adverbs, nouns, proper nouns; unknown meaning
@@ -341,12 +345,15 @@ sub _create_atoms
         {
             # com ... common noun (tuul, mees, kraan, riik, naine)
             'com'     => ['nountype' => 'com'],
+            # prop ... proper noun (Peeter, Jaan, Jüri, Mare, Erik)
+            'prop'    => ['nountype' => 'prop'],
             # nominal ... nominal abbreviation (Kaabel-TV, EE, kaabelTV) ... used rarely and inconsistently, should be ignored
             'nominal' => []
         },
         'encode_map' =>
         {
-            'nountype' => { '@' => 'com' }
+            'nountype' => { 'prop' => 'prop',
+                            '@'    => 'com' }
         }
     );
     # PRONTYPE ####################
@@ -355,14 +362,24 @@ sub _create_atoms
         'surfeature' => 'prontype',
         'decode_map' =>
         {
-            # demonstrative: sel (this), samal (the same), see (it, this), niisugune (such), too (that)
+            # demonstrative: sel (this), samal (the same), see (it, this), need (these), niisugune (such), too (that)
             'dem'   => ['prontype' => 'dem'],
             # total: iga (each, every, any), kõik (everything, all), mõlemad (both)
             'det'   => ['prontype' => 'tot'],
             # indefinite or negative: teised (other), midagi (nothing), üht (one), mõne (a few), keegi (one), mingi (some), mitu (several)
             'indef' => ['prontype' => 'ind|neg'],
             # interrogative: milline (what), mis (which), kes (who)
-            'inter' => ['prontype' => 'int']
+            'inter' => ['prontype' => 'int'],
+            # personal: mina, ma (I), sina, sa (you.sing), ta, tema (he/she/it), meie, me (we), teie, te (you.plur), nemad, nad (they)
+            'pers'  => ['prontype' => 'prs'],
+            # possessive: oma (own, their, your, its, his, our, my)
+            'pos'   => ['prontype' => 'prs', 'poss' => 'poss'],
+            # reciprocal: üksteisele (each other)
+            'rec'   => ['prontype' => 'rcp'],
+            # reflexive: ise, enese, end (oneself, self)
+            'refl'  => ['prontype' => 'prs', 'reflex' => 'reflex'],
+            # relative: kes (who), mis (what), milline (which)
+            'rel'   => ['prontype' => 'rel']
         },
         'encode_map' =>
         {
@@ -370,7 +387,124 @@ sub _create_atoms
                             'tot' => 'det',
                             'ind' => 'indef',
                             'neg' => 'indef',
-                            'int' => 'inter' }
+                            'int' => 'inter',
+                            'prs' => { 'poss' => { 'poss' => 'pos',
+                                                   '@'    => { 'reflex' => { 'reflex' => 'refl',
+                                                                             '@'      => 'pers' }}}},
+                            'rcp' => 'rec',
+                            'rel' => 'rel' }
+        }
+    );
+    # NUMTYPE ####################
+    $atoms{numtype} = $self->create_simple_atom
+    (
+        'intfeature' => 'numtype',
+        'simple_decode_map' =>
+        {
+            # card ... cardinal numerals (kaks = two, neli = four, viis = five, seitse = seven, kümme = ten)
+            # ord ... adj/ord || num/ord (esimene = first, teine = second, kolmas = third)
+            'card' => 'card',
+            'ord'  => 'ord'
+        }
+    );
+    # NUMFORM ####################
+    $atoms{numform} = $self->create_simple_atom
+    (
+        'intfeature' => 'numform',
+        'simple_decode_map' =>
+        {
+            # l ... numeral (or ordinal adjective) written in letters (üks, kaks, kolm, neli, viis)
+            # digit ... numeral written in digits (21, 120, 20_000, 15.40, 1875)
+            'l'     => 'word',
+            'digit' => 'digit'
+        }
+    );
+    # VERBTYPE ####################
+    $atoms{verbtype} = $self->create_simple_atom
+    (
+        'intfeature' => 'verbtype',
+        'simple_decode_map' =>
+        {
+            'aux' => 'aux',
+            'mod' => 'mod'
+        },
+        'encode_default' => 'main'
+    );
+    # ADPOSTYPE ####################
+    $atoms{adpostype} = $self->create_simple_atom
+    (
+        'intfeature' => 'adpostype',
+        'simple_decode_map' =>
+        {
+            'pre'  => 'prep',
+            'post' => 'post'
+        }
+    );
+    # CONJTYPE ####################
+    $atoms{conjtype} = $self->create_simple_atom
+    (
+        'intfeature' => 'conjtype',
+        'simple_decode_map' =>
+        {
+            # crd ... conj-c/crd || conj-s/crd: coordination (ja = and, aga = but, või = or, vaid = but, ent = however)
+            #         conj-c/crd,sub (kui = if/as/when/that)
+            # sub ... conj-s/sub || conj-c/sub: subordination (et = that, kui = if/as/when/that, sest = because, nagu = as/like, kuigi = although)
+            'crd'   => 'coor',
+            'sub'   => 'sub'
+        }
+    );
+    # PUNCTYPE ####################
+    $atoms{punctype} = $self->create_simple_atom
+    (
+        'intfeature' => 'punctype',
+        'simple_decode_map' =>
+        {
+            # Com ... comma (,)
+            # Exc ... exclamation mark (!)
+            # Fst ... full stop (., ...)
+            # Int ... question mark (?)
+            'Com' => 'comm',
+            'Exc' => 'excl',
+            'Fst' => 'peri',
+            'Int' => 'qest'
+        }
+    );
+    # PERSON ####################
+    $atoms{person} = $self->create_simple_atom
+    (
+        'intfeature' => 'person',
+        'simple_decode_map' =>
+        {
+            # ps1 ... first person (ma, mind)
+            # ps2 ... second person (sind)
+            # ps3 ... third person (neil, neile, nende, nad, neid, tal, talle, tema, ta)
+            'ps1' => '1',
+            'ps2' => '2',
+            'ps3' => '3'
+        }
+    );
+    # PERSONAL VS. IMPERSONAL VERB ####################
+    $atoms{personal} = $self->create_atom
+    (
+        'tagset' => 'et::puudepank',
+        'surfeature' => 'personal',
+        'decode_map' =>
+        {
+            'ps'   => [], # default
+            'imps' => ['other' => {'personal' => 'no'}]
+        },
+        'encode_map' =>
+        {
+            'other/personal' => { 'no' => 'imps',
+                                  '@'  => { 'verbtype' => { 'aux' => 'ps',
+                                                            '@'   => { 'mood' => { 'ind' => { 'person' => { ''  => { 'negativeness' => { 'pos' => 'imps',
+                                                                                                                                         '@'   => 'ps' }},
+                                                                                                            '@' => 'ps' }},
+                                                                                   'cnd' => { 'tense' => { 'past' => 'ps',
+                                                                                                           '@'    => { 'person' => { ''  => { 'negativeness' => { 'pos' => 'imps',
+                                                                                                                                                                  '@'   => 'ps' }},
+                                                                                                                                     '@' => 'ps' }}}},
+                                                                                   '@'   => 'ps' }}}}}
         }
     );
     # NUMBER ####################
@@ -424,6 +558,125 @@ sub _create_atoms
             'tr'   => 'tra'
         }
     );
+    # DEGREE OF COMPARISON ####################
+    $atoms{degree} = $self->create_simple_atom
+    (
+        'intfeature' => 'degree',
+        'simple_decode_map' =>
+        {
+            # The feature 'pos' seems to be the only feature with multiple meanings depending on the part of speech.
+            # With adjectives, it means probably 'positive degree'. With pronouns, it is probably 'possessive'.
+            # pos ... adj/pos (suur = big, väike = small, noor = young, aastane = annual, hall = gray)
+            # pos ... adj/pos,partic (unistav = dreamy, rahulolev = contented, kägardunud = pushed, hautatud = stew, solvatud = hurt)
+            # pos ... pron/pos (oma = my/your/his/her/its/our/their)
+            # pos ... pron-poss/pos (oma)
+            # pos ... pron-poss/pos,det,refl (ise, enda, oma)
+            # comp ... comparative (tugevam = stronger, parem = better, tõenäolisem = more likely, enam = more, suurem = greater)
+            'pos'  => 'pos',
+            'comp' => 'comp'
+        }
+    );
+    # VALENCY CASE OF ADPOSITIONS ####################
+    $atoms{valcase} = $self->create_simple_atom
+    (
+        'intfeature' => 'case',
+        'simple_decode_map' =>
+        {
+            # nom ... nominative (tuul, mees, kraan, riik, naine)
+            # gen ... genitive (laua, mehe, ukse, metsa, tee)
+            # abes ... abessive? (aietuseta)
+            # abl ... ablative (maalt, laevalt, põrandalt, teelt, näolt)
+            # ad ... adessive (aastal, tänaval, hommikul, õhtul, sammul)
+            # adit ... additive (koju, tuppa, linna, kööki, aeda) ... tenhle pád česká, anglická ani estonská Wikipedie estonštině nepřipisuje, ale značky Multext ho obsahují
+            #    additive has the same meaning as illative, exists only for some words and only in singular
+            # all ... allative (põrandala, kaldale, rinnale, koerale, külalisele)
+            # el ... elative (hommikust, trepist, linnast, toast, voodist)
+            # es ... essive (naisena, paratamatusena, tulemusena, montöörina, tegurina)
+            # ill ... illative (voodisse, ämbrisse, sahtlisse, esikusse, autosse)
+            # in ... inessive (toas, elus, unes, sadulas, lumes)
+            # kom ... comitative (kiviga, jalaga, rattaga, liigutusega, petrooliga)
+            # part ... partitive (vett, tundi, ust, verd, rada)
+            # term ... terminative (õhtuni, mereni, ääreni, kaldani, kroonini)
+            # tr ... translative (presidendiks, ajaks, kasuks, müüjaks, karjapoisiks)
+            '.nom'  => 'nom',
+            '.gen'  => 'gen',
+            '.abes' => 'abe',
+            '.abl'  => 'abl',
+            '.ad'   => 'ade',
+            '.adit' => 'add',
+            '.all'  => 'all',
+            '.el'   => 'ela',
+            '.es'   => 'ess',
+            '.ill'  => 'ill',
+            '.in'   => 'ine',
+            '.kom'  => 'com',
+            '.part' => 'par',
+            '.term' => 'ter',
+            '.tr'   => 'tra'
+        }
+    );
+    # VERBFORM AND MOOD ####################
+    $atoms{mood} = $self->create_atom
+    (
+        'surfeature' => 'mood',
+        'decode_map' =>
+        {
+            # inf ... infinitive (teha, saada, hakata, pakkuda, müüa)
+            # sup ... supine (informeerimata, tulemast, avaldamast, otsima, tegema)
+            # partic ... adjectives and verbs ... participles (keedetud, tuntud, tunnustatud)
+            # ger ... gerund (arvates, naeratades, vaadates, näidates, saabudes)
+            # indic ... indicative (oli, pole, ole, on, ongi)
+            # imper ... imperative (vala, sõiduta)
+            # cond ... conditional (saaks, moodustaksid)
+            # quot ... quotative mood (olevat, tilkuvat)
+            'inf'   => ['verbform' => 'inf'],
+            'sup'   => ['verbform' => 'sup'],
+            'partic'=> ['verbform' => 'part'],
+            'ger'   => ['verbform' => 'ger'],
+            'indic' => ['verbform' => 'fin', 'mood' => 'ind'],
+            'imper' => ['verbform' => 'fin', 'mood' => 'imp'],
+            'cond'  => ['verbform' => 'fin', 'mood' => 'cnd'],
+            'quot'  => ['verbform' => 'fin', 'mood' => 'qot']
+        },
+        'encode_map' =>
+        {
+            'verbform' => { 'inf'   => 'inf',
+                            'sup'   => 'sup',
+                            'part'  => 'partic',
+                            'trans' => 'partic',
+                            'ger'   => 'ger',
+                            '@'     => { 'mood' => { 'imp' => 'imper',
+                                                     'cnd' => 'cond',
+                                                     'qot' => 'quot',
+                                                     '@'   => 'indic' }}}
+        }
+    );
+    # TENSE ####################
+    $atoms{tense} = $self->create_simple_atom
+    (
+        'intfeature' => 'tense',
+        'simple_decode_map' =>
+        {
+            # pres ... present (saaks, moodustaksid, oleks, asetuks, kaalutakse)
+            # past ... past (tehtud, antud, surutud, kirjutatud, arvatud)
+            # impf ... imperfect (oli, käskisin, helistasin, olid, algasid)
+            'pres'  => 'pres',
+            'past'  => 'past',
+            'impf'  => 'imp'
+        }
+    );
+    # NEGATIVENESS ####################
+    $atoms{negativeness} = $self->create_simple_atom
+    (
+        'intfeature' => 'negativeness',
+        'simple_decode_map' =>
+        {
+            # af ... affirmative verb (oli, saime, andsin, sain, ütlesin)
+            # neg ... negative verb (ei, kutsutud, tahtnud, teadnud, polnud)
+            'af'  => 'pos',
+            'neg' => 'neg'
+        }
+    );
     return \%atoms;
 }
 
@@ -442,6 +695,10 @@ sub decode
     my $atoms = $self->atoms();
     # Tag is the part of speech followed by a slash and the morphosyntactic features, separated by commas.
     # example: n/com,sg,nom
+    # The 'pos' feature is ambiguous. For adjectives it is the positive degree.
+    # For pronouns it is the possessive type.
+    # We must disambiguate it before we decode each feature separately.
+    $tag =~ s:^pron(-poss)?/pos:pron/poss:;
     my ($pos, $features) = split(/\//, $tag);
     # Two dashes are used if there are no features.
     $features = '' if($features eq '--');
@@ -467,13 +724,68 @@ sub encode
     my $pos = $atoms->{pos}->encode($fs);
     my $features = '--';
     my @feature_names = ();
-    if($pos eq 'n')
+    if($pos =~ m/^(n|prop)$/)
     {
         @feature_names = ('nountype', 'number', 'case');
     }
+    elsif($pos eq 'adj')
+    {
+        push(@feature_names, $fs->is_ordinal() ? 'numtype' : 'degree');
+        push(@feature_names, 'number', 'case');
+        push(@feature_names, 'mood') if($fs->is_participle());
+        push(@feature_names, 'numform') if($fs->is_ordinal());
+    }
     elsif($pos eq 'pron')
     {
-        @feature_names = ('prontype', 'number', 'case');
+        if($fs->contains('prontype', 'prs') && !$fs->is_possessive() && !$fs->is_reflexive())
+        {
+            @feature_names = ('prontype', 'person', 'number', 'case');
+        }
+        else
+        {
+            @feature_names = ('prontype', 'number', 'case');
+        }
+    }
+    elsif($pos eq 'num')
+    {
+        @feature_names = ('numtype');
+        push(@feature_names, 'number') if($fs->number() ne '');
+        push(@feature_names, 'case') if($fs->case() ne '');
+        push(@feature_names, 'numform');
+    }
+    elsif($pos eq 'v')
+    {
+        @feature_names = ('verbtype');
+        # The negative auxiliary "ei" does not have the mood feature.
+        # But other negative auxiliaries ("pole", "ole", "saaks") do have it.
+        ###!!! Let's remove "v/aux,neg" from the list of known tags.
+        push(@feature_names, 'mood');
+        unless($fs->is_gerund() || $fs->is_infinitive())
+        {
+            push(@feature_names, 'tense') unless($fs->is_supine());
+            # Some verb forms do not have person and number.
+            push(@feature_names, 'person') if($fs->person() ne '');
+            push(@feature_names, 'number') if($fs->number() ne '');
+            push(@feature_names, 'personal');
+            push(@feature_names, 'negativeness') unless($fs->is_participle() || $fs->is_supine());
+            push(@feature_names, 'case') if($fs->is_supine());
+        }
+    }
+    elsif($pos =~ m/^(prp|pst)$/)
+    {
+        @feature_names = ('adpostype');
+        if($fs->case() ne '')
+        {
+            push(@feature_names, 'valcase');
+        }
+    }
+    elsif($pos =~ m/^conj/)
+    {
+        @feature_names = ('conjtype');
+    }
+    elsif($pos eq 'punc' && $fs->punctype() ne '')
+    {
+        @feature_names = ('punctype');
     }
     my @features = ();
     foreach my $feature (@feature_names)
@@ -510,15 +822,26 @@ sub encode
 # .tav, %tav ... words with suffix '-tav' (laetav, väidetavasti)
 # .tud, %tud ... words with suffix '-tud'
 # .v, %v ... participial adjectives with suffix '-v', '-va-'
-# 409 tags survived.
+# .? ... undocumented feature with unknown meaning
+# x? ... undocumented feature with unknown meaning (occurs with num/card,digit)
+# ? ... undocumented feature with unknown meaning
+# Subcategorization of verbs:
+# .Intr, %Intr ... intransitive verb
+# .Int, %Int ... verb subcategorization? another code for intransitive?
+# .InfP, %InfP ... infinitive phrase
+# .FinV, %FinV ... finite verb
+# .NGP-P, %NGP-P ... verb subcategorization? for what?
+# .Abl, %Abl ... noun phrase in ablative
+# .All, %All ... noun phrase in allative
+# .El, %El ... noun phrase in elative
+# .Part, %Part ... noun phrase in partitive
+# 252 tags survived.
 #------------------------------------------------------------------------------
 sub list
 {
     my $self = shift;
     my $list = <<end_of_list
-abbr/?
-abbr/sg,gen,.?
-adj/--
+abbr/--
 adj/comp,pl,ad
 adj/comp,pl,nom
 adj/comp,pl,part
@@ -531,11 +854,9 @@ adj/ord,sg,ad,l
 adj/ord,sg,all,l
 adj/ord,sg,el,l
 adj/ord,sg,gen,l
-adj/ord,sg,nom
+adj/ord,sg,nom,l
 adj/ord,sg,part,l
 adj/ord,sg,tr,l
-adj/pos
-adj/pos,partic
 adj/pos,pl,el
 adj/pos,pl,es
 adj/pos,pl,gen
@@ -544,7 +865,6 @@ adj/pos,pl,ill
 adj/pos,pl,in
 adj/pos,pl,nom
 adj/pos,pl,part
-adj/pos,pl,part,partic,.?
 adj/pos,pl,part,partic
 adj/pos,pl,tr
 adj/pos,sg,ad
@@ -565,17 +885,10 @@ adj/pos,sg,part,partic
 adj/pos,sg,tr
 adj-nat/--
 adv/--
-adv/.?
-adv/adv
-adv/partic
 b/--
-conj-c/--
 conj-c/crd
-conj-c/crd,sub
 conj-s/sub
 intj/--
-n/y
-n/--
 n/com,pl,abl
 n/com,pl,ad
 n/com,pl,all
@@ -584,10 +897,8 @@ n/com,pl,es
 n/com,pl,gen
 n/com,pl,ill
 n/com,pl,in
-n/com,pl,in,.?
 n/com,pl,kom
 n/com,pl,nom
-n/com,pl,nom,.?
 n/com,pl,part
 n/com,pl,tr
 n/com,sg,abes
@@ -596,28 +907,16 @@ n/com,sg,ad
 n/com,sg,adit
 n/com,sg,ad
 n/com,sg,all
-n/com,sg,all,.?
 n/com,sg,el
-n/com,sg,el,.?
 n/com,sg,es
 n/com,sg,gen
-n/com,sg,gen,.?
 n/com,sg,ill
-n/com,sg,ill,.?
 n/com,sg,in
-n/com,sg,in,.?
 n/com,sg,kom
-n/com,sg,kom,.?
 n/com,sg,nom
-n/com,sg,nom,.?
 n/com,sg,part
-n/com,sg,part,.?
 n/com,sg,term
 n/com,sg,tr
-n/nominal,sg,nom,y
-n/nominal,y
-num/--
-num/card,?,digit
 num/card,digit
 num/card,pl,ill,l
 num/card,pl,nom,l
@@ -629,17 +928,14 @@ num/card,sg,el,l
 num/card,sg,gen,l
 num/card,sg,in,l
 num/card,sg,kom,l
-num/card,sg,nom
 num/card,sg,nom,l
 num/card,sg,part,l
 num/card,sg,term,l
-num/card,x?,digit
 num/ord,digit
 num/ord,sg,adit,l
 num/ord,sg,ad,l
 num/ord,sg,nom,l
 num/ord,sg,part,l
-num/ord,x?,digit
 pron/dem,pl,gen
 pron/dem,pl,nom
 pron/dem,sg,ad
@@ -673,55 +969,43 @@ pron/indef,sg,part
 pron/inter,pl,nom
 pron/inter,sg,gen
 pron/inter,sg,nom
+pron/pers,ps1,pl,ad
+pron/pers,ps1,pl,gen
+pron/pers,ps1,pl,nom
+pron/pers,ps1,pl,part
+pron/pers,ps1,sg,ad
+pron/pers,ps1,sg,all
+pron/pers,ps1,sg,gen
 pron/pers,ps1,sg,nom
 pron/pers,ps1,sg,part
+pron/pers,ps2,sg,gen
+pron/pers,ps2,sg,nom
 pron/pers,ps2,sg,part
 pron/pers,ps3,pl,ad
 pron/pers,ps3,pl,all
+pron/pers,ps3,pl,el
 pron/pers,ps3,pl,gen
 pron/pers,ps3,pl,nom
 pron/pers,ps3,pl,part
 pron/pers,ps3,sg,ad
 pron/pers,ps3,sg,all
+pron/pers,ps3,sg,el
 pron/pers,ps3,sg,gen
 pron/pers,ps3,sg,nom
-pron-pers/pers,ps1,pl,ad
-pron-pers/pers,ps1,pl,gen
-pron-pers/pers,ps1,pl,nom
-pron-pers/pers,ps1,pl,part
-pron-pers/pers,ps1,sg,ad
-pron-pers/pers,ps1,sg,all
-pron-pers/pers,ps1,sg,gen
-pron-pers/pers,ps1,sg,nom
-pron-pers/pers,ps1,sg,part
-pron-pers/pers,ps2,sg,gen
-pron-pers/pers,ps2,sg,nom
-pron-pers/pers,ps3,pl,el
-pron-pers/pers,ps3,pl,gen
-pron-pers/pers,ps3,pl,nom
-pron-pers/pers,ps3,sg,ad
-pron-pers/pers,ps3,sg,all
-pron-pers/pers,ps3,sg,el
-pron-pers/pers,ps3,sg,gen
-pron-pers/pers,ps3,sg,nom
-pron-pers/pers,ps3,sg,part
+pron/pers,ps3,sg,part
 pron/pos,sg,gen
 pron/pos,sg,kom
 pron/pos,sg,nom
-pron-poss/pos,det,refl,sg,ad
-pron-poss/pos,det,refl,sg,all
-pron-poss/pos,det,refl,sg,el
-pron-poss/pos,det,refl,sg,gen
-pron-poss/pos,det,refl,sg,nom
-pron-poss/pos,det,refl,sg,part
-pron-poss/pos,det,refl,sg,term
-pron-poss/pos,sg,gen
 pron/rec,sg,all
+pron/refl,sg,ad
 pron/refl,sg,all
+pron/refl,sg,el
+pron/refl,sg,gen
+pron/refl,sg,ill
 pron/refl,sg,kom
+pron/refl,sg,nom
 pron/refl,sg,part
-pron-refl/refl,sg,gen
-pron-refl/refl,sg,ill
+pron/refl,sg,term
 pron/rel,pl,nom
 pron/rel,pl,part
 pron/rel,sg,abl
@@ -730,38 +1014,22 @@ pron/rel,sg,gen
 pron/rel,sg,kom
 pron/rel,sg,nom
 pron/rel,sg,part
-pron-rel/inter,rel,sg,nom
-pron-rel/rel,sg,nom
-prop/--
-prop/prop,pl,nom,.?
+prop/prop,pl,nom
 prop/prop,pl,part
 prop/prop,sg,abl
 prop/prop,sg,adit
 prop/prop,sg,ad
 prop/prop,sg,all
-prop/prop,sg,all,.?
 prop/prop,sg,el
 prop/prop,sg,gen
-prop/prop,sg,gen,.?
 prop/prop,sg,ill
-prop/prop,sg,ill,.?
 prop/prop,sg,in
 prop/prop,sg,kom
-prop/prop,sg,kom,.?
 prop/prop,sg,nom
-prop/prop,sg,nom,.?
 prop/prop,sg,part
-prop/prop,sg,part,.?
 prop/prop,sg,tr
-prp/--
-prp/post
-prp/post,%el
-prp/post,%gen
-prp/post,%nom
 prp/pre
-prp/pre,%el
-prp/pre,%gen
-prp/pre,%kom
+prp/pre,.el
 prp/pre,.gen
 prp/pre,.kom
 prp/pre,.part
@@ -775,31 +1043,37 @@ punc/Com
 punc/Exc
 punc/Fst
 punc/Int
-v/--
+v/aux,cond,pres,ps,af
 v/aux,cond,pres,ps,neg
+v/aux,indic,impf,ps1,sg,ps,af
+v/aux,indic,impf,ps3,pl,ps,af
 v/aux,indic,impf,ps3,sg,ps,af
+v/aux,indic,pres,ps2,sg,ps,af
+v/aux,indic,pres,ps3,pl,ps,af
 v/aux,indic,pres,ps3,sg,ps,af
 v/aux,indic,pres,ps,neg
-v/aux,neg
+v/main,cond,past,imps,af
+v/main,cond,past,ps,af
+v/main,cond,pres,imps,af
 v/main,cond,pres,ps3,pl,ps,af
 v/main,cond,pres,ps3,sg,ps,af
 v/main,cond,pres,ps,neg
 v/main,ger
-v/main,ger,af,.Intr
+v/main,imper,pres,ps2,sg,ps,af
 v/main,indic,impf,imps,af
 v/main,indic,impf,imps,neg
 v/main,indic,impf,ps1,pl,ps,af
 v/main,indic,impf,ps1,sg,ps,af
+v/main,indic,impf,ps2,sg,ps,af
 v/main,indic,impf,ps3,pl,ps,af
 v/main,indic,impf,ps3,sg,ps,af
 v/main,indic,impf,ps,neg
-v/main,indic,impf,ps,neg,,,%InfP
 v/main,indic,pres,imps,af
 v/main,indic,pres,ps1,pl,ps,af
 v/main,indic,pres,ps1,sg,ps,af
 v/main,indic,pres,ps2,pl,ps,af
+v/main,indic,pres,ps2,sg,ps,af
 v/main,indic,pres,ps3,pl,ps,af
-v/main,indic,pres,ps3,pl,ps,af,,,%All
 v/main,indic,pres,ps3,sg,ps,af
 v/main,indic,pres,ps,neg
 v/main,inf
@@ -809,6 +1083,7 @@ v/main,quot,pres,ps,af
 v/main,sup,ps,abes
 v/main,sup,ps,el
 v/main,sup,ps,ill
+v/main,sup,ps,in
 v/mod,cond,pres,ps3,sg,ps,af
 v/mod,cond,pres,ps,neg
 v/mod,indic,impf,ps3,sg,ps,af
@@ -817,90 +1092,6 @@ v/mod,indic,pres,ps1,sg,ps,af
 v/mod,indic,pres,ps3,pl,ps,af
 v/mod,indic,pres,ps3,sg,ps,af
 v/mod,indic,pres,ps,neg
-v-fin/aux,cond,pres,ps,af,.FinV,.Intr
-v-fin/aux,indic,impf,ps1,sg,ps,af,.FinV,.Intr
-v-fin/aux,indic,impf,ps3,pl,ps,af,.FinV,.Intr
-v-fin/aux,indic,impf,ps3,sg,ps,af,.FinV,.Intr
-v-fin/aux,indic,pres,ps2,sg,ps,af,.FinV,.Intr
-v-fin/aux,indic,pres,ps3,pl,ps,af,.FinV,.Intr
-v-fin/aux,indic,pres,ps3,sg,ps,af,.FinV,.Intr
-v-fin/main,cond,past,ps,af,.FinV,.Intr
-v-fin/main,cond,pres,imps,af,.FinV,.NGP-P
-v-fin/main,imper,pres,ps2,sg,ps,af,.FinV,.NGP-P
-v-fin/main,indic,impf,imps,af,.FinV,.Intr
-v-fin/main,indic,impf,imps,af,.FinV,.NGP-P
-v-fin/main,indic,impf,ps1,pl,ps,af,.FinV
-v-fin/main,indic,impf,ps1,pl,ps,af,.FinV,.Intr
-v-fin/main,indic,impf,ps1,pl,ps,af,.FinV,.NGP-P
-v-fin/main,indic,impf,ps1,pl,ps,af,.FinV,.NGP-P,.Abl
-v-fin/main,indic,impf,ps1,pl,ps,af,.FinV,.NGP-P,.InfP,.El,.All
-v-fin/main,indic,impf,ps1,pl,ps,af,.FinV,.Part
-v-fin/main,indic,impf,ps1,sg,ps,af,.FinV
-v-fin/main,indic,impf,ps1,sg,ps,af,.FinV,.Intr
-v-fin/main,indic,impf,ps1,sg,ps,af,.FinV,.NGP-P
-v-fin/main,indic,impf,ps1,sg,ps,af,.FinV,.NGP-P,.Abl
-v-fin/main,indic,impf,ps1,sg,ps,af,.FinV,.Part
-v-fin/main,indic,impf,ps2,sg,ps,af,.FinV
-v-fin/main,indic,impf,ps2,sg,ps,af,.FinV,.Intr
-v-fin/main,indic,impf,ps2,sg,ps,af,.FinV,.Part
-v-fin/main,indic,impf,ps3,pl,ps,af,.FinV
-v-fin/main,indic,impf,ps3,pl,ps,af,.FinV,.InfP
-v-fin/main,indic,impf,ps3,pl,ps,af,.FinV,.Intr
-v-fin/main,indic,impf,ps3,pl,ps,af,.FinV,.NGP-P
-v-fin/main,indic,impf,ps3,pl,ps,af,.FinV,.NGP-P,.InfP,.El,.All
-v-fin/main,indic,impf,ps3,pl,ps,af,.FinV,.Part
-v-fin/main,indic,impf,ps3,sg,ps,af,.FinV
-v-fin/main,indic,impf,ps3,sg,ps,af,.FinV,.InfP
-v-fin/main,indic,impf,ps3,sg,ps,af,.FinV,.Int
-v-fin/main,indic,impf,ps3,sg,ps,af,.FinV,.Intr
-v-fin/main,indic,impf,ps3,sg,ps,af,.FinV,.Intr,.Ill
-v-fin/main,indic,impf,ps3,sg,ps,af,.FinV,.NGP-P
-v-fin/main,indic,impf,ps3,sg,ps,af,.FinV,.Part
-v-fin/main,indic,impf,ps3,sg,ps,af,.FinV,.Part-P
-v-fin/main,indic,impf,ps,neg,.FinV,.Intr
-v-fin/main,indic,pres,imps,af,.FinV,.NGP-P
-v-fin/main,indic,pres,ps1,pl,ps,af,.FinV,.Intr
-v-fin/main,indic,pres,ps1,sg,ps,af,.FinV,.Intr
-v-fin/main,indic,pres,ps1,sg,ps,af,.FinV,.NGP-P
-v-fin/main,indic,pres,ps2,sg,ps,af,.FinV,.Intr
-v-fin/main,indic,pres,ps2,sg,ps,af,.FinV,.NGP-P,.InfP
-v-fin/main,indic,pres,ps3,pl,ps,af,.FinV
-v-fin/main,indic,pres,ps3,pl,ps,af,.FinV,.Intr
-v-fin/main,indic,pres,ps3,pl,ps,af,.FinV,.NGP-P
-v-fin/main,indic,pres,ps3,pl,ps,af,.FinV,.Part
-v-fin/main,indic,pres,ps3,sg,ps,af,.FinV
-v-fin/main,indic,pres,ps3,sg,ps,af,.FinV,.InfP
-v-fin/main,indic,pres,ps3,sg,ps,af,.FinV,.Int
-v-fin/main,indic,pres,ps3,sg,ps,af,.FinV,.Intr
-v-fin/main,indic,pres,ps3,sg,ps,af,.FinV,.NGP-P
-v-fin/main,indic,pres,ps3,sg,ps,af,.FinV,.NGP-P,.InfP
-v-fin/main,indic,pres,ps3,sg,ps,af,.FinV,.Part
-v-fin/main,indic,pres,ps3,sg,ps,af,.FinV,.Part-P
-v-fin/main,indic,pres,ps,neg,.FinV,.Intr
-v-fin/main,indic,pres,ps,neg,.FinV,.NGP-P
-v-fin/main,quot,pres,ps,af,.FinV,.Intr
-v-fin/mod,indic,impf,ps3,sg,ps,af,.FinV,.sup,.NGP-P
-v-fin/mod,indic,pres,ps3,sg,ps,af,.FinV,.NGP-P
-v-inf/main,inf,.NGP-P
-v-inf/main,inf,.Part
-v-inf/main,sup,ps,abes
-v-inf/main,sup,ps,el
-v-inf/main,sup,ps,ill
-v-inf/main,sup,ps,ill,.Intr
-v-inf/main,sup,ps,ill,.Intr,.ill,.all
-v-inf/main,sup,ps,ill,.NGP-P
-v-inf/main,sup,ps,ill,.NGP-P,.El,.Abl
-v-inf/main,sup,ps,ill,.NGP-P,.InfP
-v-inf/main,sup,ps,ill,.Part
-v-inf/main,sup,ps,ill,.Part-P
-v-inf/main,sup,ps,ill,.Part-P,.InfP
-v-inf/main,sup,ps,in,.NGP-P
-v-inf/main,sup,ps,in,.NGP-P,.InfP
-v-pcp2/main,partic,past,imps,.NGP-P
-v-pcp2/main,partic,past,imps,.Part
-v-pcp2/main,partic,past,ps
-v-pcp2/main,partic,past,ps,.Intr
-v-pcp2/main,partic,past,ps,.NGP-P
 x/--
 end_of_list
     ;
