@@ -26,56 +26,6 @@ sub _create_atoms
 {
     my $self = shift;
     my %atoms;
-    # UNNAMED MIXED FEATURES ####################
-    $atoms{mixed} = $self->create_atom
-    (
-        'tagset' => 'de::conll2009',
-        'surfeature' => 'mixed',
-        'decode_map' =>
-        {
-            # Genus / gender
-            'Masc' => ['gender' => 'masc'],
-            'Fem'  => ['gender' => 'fem'],
-            'Neut' => ['gender' => 'neut'],
-            # Numerus / number
-            'Sg'   => ['number' => 'sing'],
-            'Pl'   => ['number' => 'plur'],
-            # Kasus / case
-            'Nom'  => ['case' => 'nom'],
-            'Gen'  => ['case' => 'gen'],
-            'Dat'  => ['case' => 'dat'],
-            'Acc'  => ['case' => 'acc'],
-            # Grad / degree
-            'Pos'  => ['degree' => 'pos'],
-            'Comp' => ['degree' => 'comp'],
-            'Sup'  => ['degree' => 'sup'],
-            # Person / person
-            '1'    => ['person' => '1'],
-            '2'    => ['person' => '2'],
-            '3'    => ['person' => '3'],
-            # Tense
-            'Pres' => ['tense' => 'pres'],
-            'Past' => ['tense' => 'past'],
-            # Modus / mood and verbform
-            # Inf (infinitive) always comes with VVINF, so it already is set.
-            'Inf'  => ['verbform' => 'inf'], ###!!! only with TRUNC pos tag!
-            # Infzu always comes with VVIZU, so it already is set.
-            # Ind (indicative) may also come with VVIMP (as in "schauen Sie mal") but it should not replace the imperative set from POS!
-            # Imp (imperative) always comes with VVIMP.
-            'Subj' => ['verbform' => 'fin', 'mood' => 'sub'],
-            # past participle ("aufgeschreckt", "überzeugt", "getan", ...)
-            'Psp'  => ['verbform' => 'part', 'tense' => 'past', 'aspect' => 'perf'],
-            # present participle ("eingehend", "sprühend")
-            'Prp'  => ['verbform' => 'part', 'tense' => 'pres', 'aspect' => 'imp'],
-            # Except for the feature values decoded above, the following are possible: *|_
-        },
-        'encode_map' =>
-        {
-            # Nothing to do here. This feature set is asymmetric because the feature values appear without feature names.
-            # We decode all features using one atom but we will encode each feature separately.
-            'pos' => {}
-        }
-    );
     # GENUS / GENDER ####################
     $atoms{gender} = $self->create_simple_atom
     (
@@ -148,15 +98,22 @@ sub _create_atoms
         'encode_default' => '*'
     );
     # TENSE OF PARTICIPLE ####################
-    $atoms{partense} = $self->create_simple_atom
+    $atoms{partense} = $self->create_atom
     (
-        'intfeature' => 'tense',
-        'simple_decode_map' =>
+        'surfeature' => 'tense',
+        'decode_map' =>
         {
-            'Psp' => 'past',
-            'Prp' => 'pres'
+            # past participle ("aufgeschreckt", "überzeugt", "getan", ...)
+            'Psp' => ['verbform' => 'part', 'tense' => 'past', 'aspect' => 'perf'],
+            # present participle ("eingehend", "sprühend")
+            'Prp' => ['verbform' => 'part', 'tense' => 'pres', 'aspect' => 'imp']
         },
-        'encode_default' => '*'
+        'encode_map' =>
+        {
+            'tense' => { 'past' => 'Psp',
+                         'pres' => 'Prp',
+                         '@'    => '*' }
+        }
     );
     # VERB FORM ####################
     $atoms{verbform} = $self->create_atom
@@ -165,6 +122,8 @@ sub _create_atoms
         'surfeature' => 'verbform',
         'decode_map' =>
         {
+            # Inf (infinitive) always comes with VVINF, so it already is set.
+            # Infzu always comes with VVIZU, so it already is set.
             # infinitive: "abkommen"
             'Inf'   => ['verbform' => 'inf'],
             # infinitive with the incorporated "zu" marker: "abzukommen"
@@ -176,15 +135,29 @@ sub _create_atoms
                                                                '@'     => 'Inf' }}}}
     );
     # MODUS / MOOD ####################
-    $atoms{mood} = $self->create_simple_atom
+    $atoms{mood} = $self->create_atom
     (
-        'intfeature' => 'mood',
-        'simple_decode_map' =>
+        'surfeature' => 'mood',
+        'decode_map' =>
         {
-            'Ind'  => 'ind',
-            'Subj' => 'sub'
+            # Ind (indicative) may also come with VVIMP (as in "schauen Sie mal") but it should not replace the imperative set from POS!
+            # Imp (imperative) always comes with VVIMP.
+            #'Ind'  => ['verbform' => 'fin', 'mood' => 'ind'],
+            'Subj' => ['verbform' => 'fin', 'mood' => 'sub']
         },
-        'encode_default' => '*'
+        'encode_map' =>
+        {
+            'mood' => { 'ind' => 'Ind',
+                        'sub' => 'Subj' }
+        }
+    );
+    # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
+    my @fatoms = map {$atoms{$_}} (qw(gender number case degree person tense partense verbform mood));
+    $atoms{feature} = $self->create_merged_atom
+    (
+        'surfeature' => 'feature',
+        'tagset'     => 'de::conll2009',
+        'atoms'      => \@fatoms
     );
     return \%atoms;
 }
@@ -215,7 +188,7 @@ sub decode
     my $atoms = $self->atoms();
     foreach my $feature (@features)
     {
-        $atoms->{mixed}->decode_and_merge_hard($feature, $fs);
+        $atoms->{feature}->decode_and_merge_hard($feature, $fs);
     }
     # Estimate part of speech of TRUNCated words.
     # de::stts cannot do that without the morphological features.

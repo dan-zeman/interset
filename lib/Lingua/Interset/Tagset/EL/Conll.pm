@@ -168,53 +168,6 @@ sub _create_atoms
                                                                             '@'       => { 'other/pos' => { 'comp' => 'COMP',
                                                                                                             '@'    => 'RgFwTr' }}}}}}}}
     );
-    # FEATURES ####################
-    $atoms{feature} = $self->create_atom
-    (
-        'surfeature' => 'feature',
-        'decode_map' =>
-        {
-            'Ma' => ['gender' => 'masc'],
-            'Fe' => ['gender' => 'fem'],
-            'Ne' => ['gender' => 'neut'],
-            'Sg' => ['number' => 'sing'],
-            'Pl' => ['number' => 'plur'],
-            'Nm' => ['case' => 'nom'],
-            'Ge' => ['case' => 'gen'],
-            'Ac' => ['case' => 'acc'],
-            'Vo' => ['case' => 'voc'],
-            'Da' => ['case' => 'dat'],
-            'Ba' => ['degree' => 'pos'],
-            'Cp' => ['degree' => 'comp'],
-            'Su' => ['degree' => 'sup'],
-            '01' => ['person' => '1'],
-            '02' => ['person' => '2'],
-            '03' => ['person' => '3'],
-            # The fifth (last) feature of pronouns:
-            'Xx' => [], # non-personal pronouns always have "Xx" here
-            'We' => ['variant' => 'short'], # e.g. masculine 1st person accusative singular = με;   plural = μας
-            'St' => ['variant' => 'long'],  # e.g. masculine 1st person accusative singular = μένα; plural = εμάς
-            # Syntactic type of numerals:
-            'Aj' => [], # adjectival form of numeral
-            'No' => [], # nominal form of numeral; appears only with the "Ct" type of numerals, and they don't appear with "Aj" (δεκάδες, εκατοντάδες)
-            # Verb features:
-            'Nf' => ['verbform' => 'inf'],
-            'Pp' => ['verbform' => 'part'],
-            'Id' => ['verbform' => 'fin', 'mood' => 'ind'],
-            'Mp' => ['verbform' => 'fin', 'mood' => 'imp'],
-            'Pa' => ['tense' => 'past'],
-            'Pr' => ['tense' => 'pres'],
-            'Ip' => ['aspect' => 'imp'],
-            'Pe' => ['aspect' => 'perf'],
-            'Av' => ['voice' => 'act'],
-            'Pv' => ['voice' => 'pass']
-        },
-        # Asymmetric processing. The encoding map is empty but there are separate atoms for individual features
-        # and they define partial encoding maps.
-        'encode_map' =>
-
-            { 'pos' => '' }
-    );
     # GENDER ####################
     $atoms{gender} = $self->create_simple_atom
     (
@@ -357,6 +310,14 @@ sub _create_atoms
             'Pv' => 'pass'
         },
         'encode_default' => 'Xx'
+    );
+    # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
+    my @fatoms = map {$atoms{$_}} (qw(gender number case degree person perspronform synpos verbform tense aspect voice));
+    $atoms{feature} = $self->create_merged_atom
+    (
+        'surfeature' => 'feature',
+        'tagset'     => 'el::conll',
+        'atoms'      => \@fatoms
     );
     return \%atoms;
 }
