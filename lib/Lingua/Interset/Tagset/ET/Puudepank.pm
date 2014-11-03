@@ -631,6 +631,9 @@ sub encode
 # .El, %El ... noun phrase in elative
 # .Part, %Part ... noun phrase in partitive
 # 252 tags survived.
+# Then we added missing combinations of number+case (except for the additive
+# case, whose usage is limited) for nominals and person+number for verbs.
+# 614 total tags after the extension.
 #------------------------------------------------------------------------------
 sub list
 {
