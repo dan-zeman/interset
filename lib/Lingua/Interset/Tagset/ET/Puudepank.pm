@@ -723,74 +723,40 @@ sub encode
     my $atoms = $self->atoms();
     my $pos = $atoms->{pos}->encode($fs);
     my $features = '--';
-    my @feature_names = ();
-    if($pos =~ m/^(n|prop)$/)
-    {
-        @feature_names = ('nountype', 'number', 'case');
-    }
-    elsif($pos eq 'adj')
-    {
-        push(@feature_names, $fs->is_ordinal() ? 'numtype' : 'degree');
-        push(@feature_names, 'number', 'case');
-        push(@feature_names, 'mood') if($fs->is_participle());
-        push(@feature_names, 'numform') if($fs->is_ordinal());
-    }
-    elsif($pos eq 'pron')
-    {
-        if($fs->contains('prontype', 'prs') && !$fs->is_possessive() && !$fs->is_reflexive())
-        {
-            @feature_names = ('prontype', 'person', 'number', 'case');
-        }
-        else
-        {
-            @feature_names = ('prontype', 'number', 'case');
-        }
-    }
-    elsif($pos eq 'num')
-    {
-        @feature_names = ('numtype');
-        push(@feature_names, 'number') if($fs->number() ne '');
-        push(@feature_names, 'case') if($fs->case() ne '');
-        push(@feature_names, 'numform');
-    }
-    elsif($pos eq 'v')
-    {
-        @feature_names = ('verbtype');
-        # The negative auxiliary "ei" does not have the mood feature.
-        # But other negative auxiliaries ("pole", "ole", "saaks") do have it.
-        ###!!! Let's remove "v/aux,neg" from the list of known tags.
-        push(@feature_names, 'mood');
-        unless($fs->is_gerund() || $fs->is_infinitive())
-        {
-            push(@feature_names, 'tense') unless($fs->is_supine());
-            # Some verb forms do not have person and number.
-            push(@feature_names, 'person') if($fs->person() ne '');
-            push(@feature_names, 'number') if($fs->number() ne '');
-            push(@feature_names, 'personal');
-            push(@feature_names, 'negativeness') unless($fs->is_participle() || $fs->is_supine());
-            push(@feature_names, 'case') if($fs->is_supine());
-        }
-    }
-    elsif($pos =~ m/^(prp|pst)$/)
-    {
-        @feature_names = ('adpostype');
-        if($fs->case() ne '')
-        {
-            push(@feature_names, 'valcase');
-        }
-    }
-    elsif($pos =~ m/^conj/)
-    {
-        @feature_names = ('conjtype');
-    }
-    elsif($pos eq 'punc' && $fs->punctype() ne '')
-    {
-        @feature_names = ('punctype');
-    }
+    my %feature_names =
+    (
+        'n'     => ['nountype', 'number', 'case'],
+        'prop'  => ['nountype', 'number', 'case'],
+        'aord'  => ['numtype', 'number', 'case', 'numform'],
+        'apart' => ['degree', 'number', 'case', 'mood'],
+        'adj'   => ['degree', 'number', 'case'],
+        'prs'   => ['prontype', 'person', 'number', 'case'],
+        'pron'  => ['prontype', 'number', 'case'],
+        'num'   => ['numtype', 'number', 'case', 'numform'],
+        'vinf'  => ['verbtype', 'mood'],
+        'vpart' => ['verbtype', 'mood', 'tense', 'person', 'number', 'personal'],
+        'vsup'  => ['verbtype', 'mood', 'person', 'number', 'personal', 'case'],
+        'v'     => ['verbtype', 'mood', 'tense', 'person', 'number', 'personal', 'negativeness'],
+        'prp'   => ['adpostype', 'valcase'],
+        'pst'   => ['adpostype', 'valcase'],
+        'conj-c'=> ['conjtype'],
+        'conj-s'=> ['conjtype'],
+        'punc'  => ['punctype']
+    );
+    my $fpos = $pos;
+    $fpos = 'aord'  if($fpos eq 'adj' && $fs->is_ordinal());
+    $fpos = 'apart' if($fpos eq 'adj' && $fs->is_participle());
+    $fpos = 'prs'   if($fpos eq 'pron' && $fs->is_personal_pronoun() && !$fs->is_possessive() && !$fs->is_reflexive());
+    $fpos = 'vinf'  if($fpos eq 'v' && ($fs->is_infinitive() || $fs->is_gerund()));
+    $fpos = 'vpart' if($fpos eq 'v' && ($fs->is_participle() || $fs->is_transgressive()));
+    $fpos = 'vsup'  if($fpos eq 'v' && $fs->is_supine());
+    my $feature_names = $feature_names{$fpos};
+    $feature_names = [] unless(defined($feature_names));
     my @features = ();
-    foreach my $feature (@feature_names)
+    foreach my $feature (@{$feature_names})
     {
-        push(@features, $atoms->{$feature}->encode($fs));
+        my $value = $atoms->{$feature}->encode($fs);
+        push(@features, $value) unless($value eq '');
     }
     if(@features)
     {
