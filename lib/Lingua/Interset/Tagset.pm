@@ -183,6 +183,45 @@ sub create_simple_atom
 
 
 
+#------------------------------------------------------------------------------
+# Creates and returns an atomic driver with an empty encoding map and a huge
+# decoding map that is a merger of decoding maps from other atomic drivers.
+# Derived classes may want to use atoms to define decoding and encoding of
+# individual surface features. If the feature values appear without feature
+# names in the tags, we may need a huge decoding map for all the features, and
+# many small encoding maps for individual features. It is advantageous to
+# define the small atoms (both for decoding and encoding) and then merge them
+# automatically and get the big decoding map.
+#------------------------------------------------------------------------------
+sub create_merged_atom
+{
+    my $self = shift;
+    my @parameters = @_;
+    my %parameters = @parameters;
+    confess("The 'atoms' parameter is required") unless(defined($parameters{atoms}));
+    unless(defined($parameters{surfeature}))
+    {
+        $parameters{surfeature} = 'feature';
+    }
+    unless(defined($parameters{decode_map}))
+    {
+        $parameters{decode_map} = {};
+    }
+    unless(defined($parameters{encode_map}))
+    {
+        # The encoding map cannot be empty even if we are not going to use it.
+        $parameters{encode_map} = { 'pos' => {} };
+    }
+    my $atom = $self->create_atom(%parameters);
+    if(defined($parameters{atoms}))
+    {
+        $atom->merge_atoms(@{$parameters{atoms}});
+    }
+    return $atom;
+}
+
+
+
 ###############################################################################
 # COLLECTING PERMITTED FEATURE VALUES OF A TAGSET
 ###############################################################################

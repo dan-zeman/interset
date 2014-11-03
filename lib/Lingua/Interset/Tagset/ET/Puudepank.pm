@@ -316,7 +316,7 @@ sub _create_atoms
         'intfeature' => 'number',
         'simple_decode_map' =>
         {
-            # sg ... singular (abbreviations, adjectives, nouns, numerals, pronouns, proper nouns, verbs
+            # sg ... singular (abbreviations, adjectives, nouns, numerals, pronouns, proper nouns, verbs)
             # pl ... plural (ditto)
             'sg' => 'sing',
             'pl' => 'plur'
@@ -499,15 +499,13 @@ sub _create_atoms
         # .tud, %tud ... words with suffix '-tud'
         # .v, %v ... participial adjectives with suffix '-v', '-va-'
         # -- ... meaning no features
-    $atoms{feature} = $self->create_atom
+    my @fatoms = map {$atoms{$_}} (qw(nountype prontype numtype numform verbtype adpostype conjtype punctype number case valcase degree person personal mood tense negativeness));
+    $atoms{feature} = $self->create_merged_atom
     (
         'surfeature' => 'feature',
         'tagset'     => 'et::puudepank',
-        'decode_map' => {},
-        'encode_map' => { 'pos' => {} } # The encoding map cannot be empty even if we are not going to use it.
+        'atoms'      => \@fatoms
     );
-    my @fatoms = map {$atoms{$_}} (qw(nountype prontype numtype numform verbtype adpostype conjtype punctype number case valcase degree person personal mood tense negativeness));
-    $atoms{feature}->merge_atoms(@fatoms);
     return \%atoms;
 }
 
