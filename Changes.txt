@@ -7,6 +7,7 @@ Interface:
 * FeatureStructure has new methods is_masculine(), is_feminine(), is_neuter(), is_common_gender(),
   is_negative(), is_affirmative(), is_auxiliary(), is_modal(), is_gerund(), is_conditional(),
   is_cardinal(), is_ordinal(), is_personal_pronoun().
+* New method Atom::merge_atoms() helps create a big atom to decode unnamed features.
 
 
 

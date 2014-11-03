@@ -405,6 +405,106 @@ sub _get_decision_for_value
 
 
 
+#------------------------------------------------------------------------------
+# Takes references to one or more other atoms and merges (adds) their decoding
+# maps to our decoding map. Ordering of the atoms matters: if several atoms
+# define decoding of the same feature, the first definition will be used and
+# the others will be ignored. The atom $self comes first.
+#------------------------------------------------------------------------------
+=method merge_atoms()
+
+  $atom0->merge($atom1, $atom2, ..., $atomN);
+
+Takes references to one or more other atoms and merges (adds) their decoding
+maps to our decoding map. Ordering of the atoms matters: if several atoms
+define decoding of the same feature, the first definition will be used and
+the others will be ignored. The atom C<$self> comes first.
+
+Note that the I<encoding> map will I<not change>.
+This method is useful for tagsets where feature values appear without naming
+the feature. For example, instead of
+
+  gender=masc|number=sing|case=nom
+
+the tag only contains
+
+  masc|sing|nom
+
+Such tagsets require asymmetric processing.
+There is one big atom that decodes any feature value regardless of which
+feature it belongs to. But it does not encode anything.
+Then there are many small atoms for individual features.
+We cannot use them for decoding because we do not know which atom to pick
+until we have decoded the value. But we will use them for encoding because
+we know which features and in what order we want to encode for a particular
+part of speech.
+
+We could define both the big decoding atom and the small encoding atoms
+manually. There is a drawback to it: we would be describing each feature twice
+at two different places in the source code. The C<merge_atoms()> method gives
+us a better way: we will define the small atoms (both for decoding and
+encoding) and then create the big decoding atom by merging the small ones:
+
+  # This code goes in a tagset driver, e.g. Lingua::Interset::Tagset::CS::Mytagset,
+  # in a function that builds all necessary atoms, e.g. sub _create_atoms.
+  my %atoms;
+  $atoms{genderanim} = $self->create_atom
+  (
+      'surfeature' => 'genderanim',
+      'decode_map' =>
+      {
+          'ma' => ['gender' => 'masc', 'animateness' => 'anim'],
+          'mi' => ['gender' => 'masc', 'animateness' => 'inan'],
+          'f'  => ['gender' => 'fem'],
+          'n'  => ['gender' => 'neut']
+      },
+      'encode_map' =>
+      {
+          'gender' => { 'masc' => { 'animateness' => { 'inan' => 'mi',
+                                                       '@'    => 'ma' }},
+                        'fem'  => 'f',
+                        '@'    => 'n' }
+      }
+  );
+  $atoms{number} = $self->create_simple_atom
+  (
+      'intfeature' => 'number',
+      'simple_decode_map' =>
+      {
+          'sg' => 'sing',
+          'pl' => 'plur'
+      }
+  );
+  $atoms{feature} = $self->create_atom
+  (
+      'surfeature' => 'feature',
+      'decode_map' => {},
+      'encode_map' => { 'pos' => {} } # The encoding map cannot be empty even if we are not going to use it.
+  );
+  $atoms{feature}->merge_atoms($atoms{genderanim}, $atoms{number});
+
+=cut
+sub merge_atoms
+{
+    my $self = shift;
+    my @atoms = @_;
+    my $dmap = $self->decode_map();
+    foreach my $atom (@atoms)
+    {
+        my $admap = $atom->decode_map();
+        foreach my $key (keys(%{$admap}))
+        {
+            unless(defined($dmap->{$key}))
+            {
+                $dmap->{$key} = $admap->{$key};
+            }
+        }
+    }
+    return $dmap;
+}
+
+
+
 1;
 
 =head1 SYNOPSIS
