@@ -727,6 +727,190 @@ sub _create_atoms
             'other/multiword' => { 'yes' => 'B' }
         }
     );
+    # POSTPOSITION ####################
+    # Postpositions are attached using underscore to the preceding noun, pronoun, adjective, determiner or adverb.
+    # The joined token has the POS feature set twice: once just "POS:+" to mark that there is a postposition,
+    # and once indicating the concrete postposition. Note that a postposition attached using '_' does not trigger the MW:B feature!
+    $atoms{POS} = $self->create_atom
+    (
+        'tagset' => 'eu::conll',
+        'surfeature' => 'pos',
+        'decode_map' =>
+        {
+            '+' => ['other' => {'has_postposition' => 'yes'}]
+        },
+        'encode_map' =>
+        {
+            'other/postposition' => { }
+        }
+    );
+    my $dm = $atoms{POS}->decode_map();
+    my $em = $atoms{POS}->encode_map();
+    my @postpositions =
+    (
+        'aintzinean', # former 1
+        'aitzina', # beyond 2
+        'aitzinean', # in the 5
+        'aitzineko', # before 2
+        'aitzinetik', # beforehand 3
+        'alboan', # next 2
+        'aldamenetik', # side 1
+        'alde', # the 38
+        'aldean', # at 11
+        'aldeaz', # at 1
+        'aldeko', # for 39
+        'aldera', # to 20
+        'alderat', # 1
+        'aldetik', # as 25
+        'antzean', # similar 1
+        'antzeko', # similar 9
+        'antzekoa', # similar 2
+        'antzera', # like 3
+        'arabera', # according to 135
+        'araberako', # by 1
+        'arte', # to 82
+        'artean', # among 158
+        'arteetik', # among 1
+        'arteko', # between 108
+        'artekoak', # between 1
+        'at', # at 6
+        'atzean', # back 15
+        'atzeko', # back 6
+        'atzera', # back 1
+        'atzetik', # after 12
+        'aurka', # against 103
+        'aurkaa', # against 1
+        'aurkako', # against 49
+        'aurrean', # to 74
+        'aurreko', # previous 10
+        'aurrera', # from 36
+        'aurrerako', # from 2
+        'aurretik', # before 26
+        'azpian', # under 9
+        'azpitik', # below 6
+        'baitan', # within 12
+        'barik', # not 2
+        'barna', # through 1
+        'barnean', # within 11
+        'barneko', # including 2
+        'barnera', # into 1
+        'barrena', # through 4
+        'barrenean', # inside 1
+        'barru', # in 7
+        'barruan', # within 37
+        'barruetatik', # inside 1
+        'barruko', # internal 3
+        'barrura', # inside 1
+        'barrutik', # inside 2
+        'batera', # with 43
+        'begira', # at 31
+        'behera', # down 11
+        'bestaldean', # other 1
+        'bezala', # as 75
+        'bezalako', # as 15
+        'bezalakoa', # as 1
+        'bezalakoen', # as 1
+        'bidez', # by 45
+        'bila', # for 20
+        'bitarte', # to 2
+        'bitartean', # while 18
+        'bitarteko', # to 5
+        'bitarterako', # 1
+        'bitartez', # through 13
+        'buruan', # after 7
+        'buruz', # about 47
+        'buruzko', # on 36
+        'eran', # as 1
+        'erdian', # middle 11
+        'erdiko', # central 1
+        'erdira', # half 3
+        'erditan', # half 1
+        'eske', # begging 2
+        'esker', # thanks 30
+        'esku', # the 12
+        'eskuetan', # hands 5
+        'eskuko', # hand 1
+        'eskutik', # by 6
+        'ezean', # if you do not 4
+        'gabe', # no 74
+        'gabeko', # not 18
+        'gain', # in addition to 36
+        'gaindi', # overcome 1
+        'gaindiko', # border 1
+        'gainean', # on 33
+        'gainera', # also 9
+        'gainerat', # 1
+        'gainetik', # above 16
+        'gero', # more 1
+        'geroztik', # since 18
+        'gertu', # near 4
+        'gibeleko', # liver 1
+        'gibeletik', # behind 2
+        'gisa', # as 34
+        'gisako', # as 1
+        'gisan', # as 2
+        'gisara', # as 1
+        'goiko', # top 1
+        'goitik', # top 1
+        'gora', # up 30
+        'gorago', # above 1
+        'gorako', # more 7
+        'gorakoen', # over 1
+        'hurbil', # close 8
+        'hurrean', # respectively 1
+        'inguru', # about 16
+        'ingurua', # environment 1
+        'inguruan', # about 77
+        'inguruetako', # surrounding 1
+        'inguruetan', # in 2
+        'inguruko', # about 28
+        'ingurura', # about 5
+        'ingururako', # environment 1
+        'irian', # 1
+        'kanpo', # outside 28
+        'kanpoko', # external 12
+        'kanpora', # outside 4
+        'kontra', # against 72
+        'kontrako', # against 39
+        'landa', # rural 7
+        'landara', # plant 2
+        'legez', # as 1
+        'lekuan', # where 4
+        'lepora', # 1
+        'mendean', # the 1
+        'menpe', # depends on 8
+        'menpera', # conquest 1
+        'moduan', # as 1
+        'modura', # as 1
+        'ondoan', # next 19
+        'ondoko', # the 1
+        'ondora', # close 1
+        'ondoren', # after 32
+        'ondorengo', # the 2
+        'ondotik', # after 14
+        'ordez', # instead of 9
+        'ostean', # after 17
+        'osteko', # after 1
+        'pare', # two 1
+        'parean', # at 5
+        'pareko', # equivalent 2
+        'partean', # part of 3
+        'partez', # notebook 1
+        'pean', # under 1
+        'truke', # exchange 9
+        'urrun', # from 3
+        'urruti', # far 3
+        'zai', # waiting 2
+        'zain', # waiting 12
+        'zehar', # during 42
+    );
+    foreach my $p (@postpositions)
+    {
+        my $value = 'POS'.$p;
+        $dm->{$value} = ['other' => {'postposition' => $p}];
+        $em->{'other/postposition'}{$p} = $value;
+    }
+    $em->{'other/postposition'}{'@'} = {'other/has_postposition' => { 'yes' => '+' }};
     return \%atoms;
 }
 
