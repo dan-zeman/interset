@@ -62,6 +62,10 @@ sub decode_conll
     my $self = shift;
     my $tag = shift;
     my $tagset = shift; # e.g. 'da::conll'
+    my $poskey = shift; # pos | subpos | both; subpos is default
+    $poskey = 'subpos' if(!defined($poskey));
+    my $delimiter = shift; # Feature-value delimiter. Default is '=' but eu::conll has ':' and Hyderabad tagsets have '-'.
+    $delimiter = '=' if(!defined($delimiter));
     my $fs = Lingua::Interset::FeatureStructure->new();
     $fs->set_tagset($tagset);
     my $atoms = $self->atoms();
@@ -75,7 +79,7 @@ sub decode_conll
     my %features_conll;
     foreach my $f (@features_conll)
     {
-        if($f =~ m/^(\w+)=(.+)$/)
+        if($f =~ m/^(\w+)$delimiter(.+)$/)
         {
             $features_conll{$1} = $2;
         }
@@ -84,7 +88,8 @@ sub decode_conll
             $features_conll{$f} = $f;
         }
     }
-    $atoms->{pos}->decode_and_merge_hard($subpos, $fs);
+    my $posvalue = $poskey eq 'pos' ? $pos : $poskey eq 'both' ? "$pos\t$subpos" : $subpos;
+    $atoms->{pos}->decode_and_merge_hard($posvalue, $fs);
     foreach my $name (@{$feature_names})
     {
         if(defined($features_conll{$name}) && $features_conll{$name} ne '')

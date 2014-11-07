@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+Features:
+* New features for the multi-argument agreement of Basque synthetic verbs:
+  * ergperson, ergnumber, ergpoliteness
+  * datperson, datnumber, datpoliteness
+
 Drivers:
 * ET::Puudepank
 

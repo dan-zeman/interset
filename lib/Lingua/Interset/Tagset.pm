@@ -24,6 +24,32 @@ has 'permitted_values' => ( isa => 'HashRef', is => 'ro', builder => '_build_per
 
 
 #------------------------------------------------------------------------------
+# Returns the tagset id that should be set as the value of the 'tagset' feature
+# during decoding. Every derived class must (re)define this method! The result
+# should correspond to the last two parts in package name, lowercased.
+# Specifically, it should be the ISO 639-2 language code, followed by '::' and
+# a language-specific tagset id. Example: 'cs::multext'.
+#------------------------------------------------------------------------------
+=method get_tagset_id()
+
+Returns the tagset id that should be set as the value of the 'tagset' feature
+during decoding. Every derived class must implement this method, even though
+the derived class is also responsible for setting the value in its C<decode()>
+method.
+
+The ID should correspond to the last two parts in package name, lowercased.
+Specifically, it should be the ISO 639-2 language, followed by C<::>
+and a language-specific tagset ID. Example: C<cs::multext>.
+
+=cut
+sub get_tagset_id
+{
+    confess("The get_tagset_id() method has not been redefined in a class derived from Lingua::Interset::Tagset");
+}
+
+
+
+#------------------------------------------------------------------------------
 # Decodes a physical tag (string) and returns the corresponding feature
 # structure.
 #------------------------------------------------------------------------------
@@ -162,7 +188,7 @@ sub list
 sub create_atom
 {
     my $self = shift;
-    my @parameters = @_;
+    my @parameters = (@_, 'tagset' => $self->get_tagset_id());
     my $atom = Lingua::Interset::Atom->new(@parameters);
     return $atom;
 }
@@ -176,7 +202,7 @@ sub create_atom
 sub create_simple_atom
 {
     my $self = shift;
-    my @parameters = @_;
+    my @parameters = (@_, 'tagset' => $self->get_tagset_id());
     my $atom = Lingua::Interset::SimpleAtom->new(@parameters);
     return $atom;
 }

@@ -16,7 +16,27 @@ extends 'Lingua::Interset::Tagset::Conll';
 
 
 #------------------------------------------------------------------------------
+# Returns the tagset id that should be set as the value of the 'tagset' feature
+# during decoding. Every derived class must (re)define this method! The result
+# should correspond to the last two parts in package name, lowercased.
+# Specifically, it should be the ISO 639-2 language code, followed by '::' and
+# a language-specific tagset id. Example: 'cs::multext'.
+#------------------------------------------------------------------------------
+sub get_tagset_id
+{
+    return 'eu::conll';
+}
+
+
+
+#------------------------------------------------------------------------------
 # Creates atomic drivers for surface features.
+# DZ: I could not find any documentation of the tagset. I found some Spanish
+# description of Basque morphology, which I could understand, and the English
+# Wikipedia. But the codes of features are derived from Basque terms, and it
+# is difficult to use on-line translation to translate them if we don't know
+# the full terms. A grammar book written in Basque could help, see e.g. here:
+# http://www.euskaltzaindia.net/dok/iker_jagon_tegiak/24569.pdf
 #------------------------------------------------------------------------------
 sub _create_atoms
 {
@@ -25,24 +45,58 @@ sub _create_atoms
     # PART OF SPEECH ####################
     $atoms{pos} = $self->create_atom
     (
-        'tagset' => 'eu::conll',
         'surfeature' => 'pos',
         'decode_map' =>
         {
-            # adberbiboa = adverb, common (gaurko = today, samar = relatively, lehenbiziko = first)
+            # adberbiboa = adverb
+            # arrunt = common
+            # common adverb: gaurko = today, samar = relatively, lehenbiziko = first
             "ADB\tARR" => ['pos' => 'adv'],
-            # adberbiboa, galdera = adverb, question (nola = how, zergatik = why, noraino = to what extent, non = where, noiz = when)
+            # galdera = question
+            # interrogative adverb: nola = how, zergatik = why, noraino = to what extent, non = where, noiz = when
             "ADB\tGAL" => ['pos' => 'adv', 'prontype' => 'int'],
-            # aditz = verb (azaltzekoak = explain, pentsatzekoa = think, egotekoa = be)
-            "ADI\tADI_IZEELI" => ['pos' => 'verb'],
-            # verb, composed (ahal_izateko = in order to, aurre_egiteko = meet, hitz_egiteko = speak)
-            "ADI\tADK" => ['pos' => 'verb'],
-            # (merezi = worth)
-            "ADI\tADP" => ['pos' => 'verb'],
-            # verb, factitive (faktitivní, kausativní) (adierazi = said, jakinarazi = reported, ikustarazi = displayed)
-            "ADI\tFAK" => ['pos' => 'verb'],
-            # verb, simple (egin = do, izan = be, jokatu = play, eman = given, esan = said)
-            "ADI\tSIN" => ['pos' => 'verb'],
+
+            # aditz = verb
+            # sintetiko = synthetic
+            # Only a few Basque verbs can be conjugated synthetically, i.e. they have finite forms.
+            # The rest have only non-finite forms, which enter into compound tenses (non-finite main verb + finite auxiliary).
+            # synthetic verb: egin = do, izan = be, jokatu = play, eman = give, esan = say
+            ###!!! It is probably a mistake to interpret ADI SIN as synthetic verb, see also the discussion at ADT ADT below!
+            ###!!! Could it mean "sintagma"? Are these non-finite verb forms ocurring in a periphrastic tense with a finite auxiliary?
+            "ADI\tSIN" => ['pos' => 'verb', 'other' => {'verbtype' => 'synthetic'}],
+            # konposatu = compound
+            # compound verbs, i.e. light verb constructions: bizi_izan = live, nahi_izan = want, atzera_egin = retract, amore_eman = give up
+            "ADI\tADK" => ['pos' => 'verb', 'other' => {'verbtype' => 'compound'}],
+            # ADP is very rare. The lemma always has many other forms which are ADK instead of ADP. Hypothesis: ADP marks the lexical part of a compound verb
+            # if the verbal part (auxiliary) is missing.
+            # (merezi = worth; lemma: merezi_izan = be worth)
+            "ADI\tADP" => ['pos' => 'verb', 'other' => {'verbtype' => 'part_of_compound'}],
+            # factitive verb: adierazi = say, jakinarazi = report, ikustarazi = display
+            # (Some sources say that "factitive" = "causative", but based on the above Google-translated examples, I am not sure that this is the case.)
+            "ADI\tFAK" => ['pos' => 'verb', 'other' => {'verbtype' => 'factitive'}],
+            # ADI_IZEELI seems to be a noun phrase derived from a verb: gertatu = happen, gertatutakoa = the one that happened.
+            # esandakoa (lemma esan = say), gertatutakoa (gertatu = happen), ezarritakoa (ezarri = establish), jasotakoa (jaso = receive), deitutakoa (so-called; deitu = call)
+            # Wikipedia, Basque verb: Participle + -tako (dako) ... adjectival (= non-finite relative). Examples: ikusitako, egindako, hartutako, hildako.
+            # Zuk ikusitako gizona itsua da.
+            # 'The man you saw (= seen by you) is blind.'
+            # [you.ERGATIVE see.PARTICIPLE-tako man blind is]
+            "ADI\tADI_IZEELI" => ['pos' => 'verb', 'other' => {'verbtype' => 'tako'}],
+
+            # auxiliary verb (izan, *edin, ukan, *edun, *ezan)
+            # laguntzailearen = auxiliary
+            "ADL\tADL" => ['pos' => 'verb', 'verbtype' => 'aux'],
+            # aditz trinkoa = compact verb (Is it the same as the synthetic verb? What is the difference from ADI SIN?)
+            # examples: joan = go, egon = be, izan = be, jakin = know
+            # most frequent ADT ADT lemmas: izan, ukan, egon, eduki, jakin, esan, etorri, joan, ibili, iruditu
+            # most frequent ADI SIN lemmas: izan, egin, eman, jokatu, esan, lortu, irabazi, hartu, hasi, ikusi
+            # most frequent ADT ADT forms: da, dela, dago, dira, du, zen, zegoen, daude, dute, zuen
+            # most frequent ADI SIN forms: izan, egin, izango, esan, egiten, eman, irabazi, jokatu, lortu, hasi
+            # Full paradigm (e.g. including the NORK feature) is found only with ADI ADK, ADL ADL, ADT ADT. But not with ADI SIN!
+            # So it was probably a misinterpretation to say that ADI SIN is the synthetic verb! I don't see finite forms among the most frequent ones there!
+            "ADT\tADT" => ['pos' => 'verb', 'other' => {'verbtype' => 'trinko'}],
+            # [error?] (there is only one occurrence: Bear_Zana)
+            "ADT\tARR" => ['pos' => 'verb'],
+
             # adjektiboa = adjective (nondik_norakoa)
             "ADJ\tADJ" => ['pos' => 'adj'],
             # adjective, common (errusiar = Russian, atzerritar = foreign, gustuko = tasteful, britainiar = British, ageriko = visible)
@@ -51,22 +105,27 @@ sub _create_atoms
             "ADJ\tERKIND" => ['pos' => 'adj'],
             # adjektiboa, galdera = adjective, question (nolakoa = what, nongoa = where)
             "ADJ\tGAL" => ['pos' => 'adj', 'prontype' => 'int'],
-            # adjective, simple (ongi_etorria = welcome to) [error?]
+            # adjective [error?] (ongi_etorria = welcome to)
             "ADJ\tSIN" => ['pos' => 'adj'],
-            # auxiliary verb (izan, *edin, ukan, *edun, *ezan)
-            "ADL\tADL" => ['pos' => 'verb', 'subpos' => 'aux'],
-            # synthetic verb (joan = go, egon = be, izan = be, jakin = know)
-            "ADT\tADT" => ['pos' => 'verb'],
-            # [error?] (Bear_Zana)
-            "ADT\tARR" => ['pos' => 'verb'],
+
             # bereiz = separator (", (, ), -, », «, /, ', *, [, ], +, `)
-            "BEREIZ\tBEREIZ" => ['pos' => 'punc'],
+            "BEREIZ\tBEREIZ"             => ['pos' => 'punc'],
+            # punt marka = punctuation (, . ... ! ? : ;)
+            "PUNT_MARKA\tPUNT_BI_PUNT"   => ['pos' => 'punc', 'punctype' => 'colo'], # :
+            "PUNT_MARKA\tPUNT_ESKL"      => ['pos' => 'punc', 'punctype' => 'excl'], # !
+            "PUNT_MARKA\tPUNT_GALD"      => ['pos' => 'punc', 'punctype' => 'qest'], # ?
+            "PUNT_MARKA\tPUNT_HIRU"      => ['pos' => 'punc', 'punctype' => 'peri'], # ...
+            "PUNT_MARKA\tPUNT_KOMA"      => ['pos' => 'punc', 'punctype' => 'comm'], # ,
+            "PUNT_MARKA\tPUNT_PUNT"      => ['pos' => 'punc', 'punctype' => 'peri'], # .
+            "PUNT_MARKA\tPUNT_PUNT_KOMA" => ['pos' => 'punc', 'punctype' => 'semi'], # ;
+
             # beste = other (eta_abar = etc.)
             "BST\tARR" => [],
             # beste = other (baino = than, de = of, ohi = usually, ea = whether, ezta = or)
             "BST\tBST" => [],
             # other, indefinite (ez_beste, ez_besterik = only, no other)
             "BST\tDZG" => [],
+
             # determiner, distributive = banatu (bana = one each, 6na, 25na, bedera = at least, bina = two)
             "DET\tBAN" => ['pos' => 'num'],
             # determiner, indefinite (bestea = other, nahikoa = enough, gehiena = most of the, bestekoa = average, hainbat = some, gehiago = more)
@@ -128,20 +187,14 @@ sub _create_atoms
             "LOT\tMEN" => ['pos' => 'conj', 'subpos' => 'sub'],
             # partikula = particle (ez, ezetz = no/not, bai, baietz = yes, al = to, ote = whether, omen = it seems)
             "PRT\tPRT" => ['pos' => 'part'],
-            "PUNT_MARKA\tPUNT_BI_PUNT" => ['pos' => 'punc', 'punctype' => 'colo'], # :
-            "PUNT_MARKA\tPUNT_ESKL" => ['pos' => 'punc', 'punctype' => 'excl'], # !
-            "PUNT_MARKA\tPUNT_GALD" => ['pos' => 'punc', 'punctype' => 'qest'], # ?
-            "PUNT_MARKA\tPUNT_HIRU" => ['pos' => 'punc', 'punctype' => 'peri'], # ...
-            "PUNT_MARKA\tPUNT_KOMA" => ['pos' => 'punc', 'punctype' => 'comm'], # ,
-            "PUNT_MARKA\tPUNT_PUNT" => ['pos' => 'punc', 'punctype' => 'peri'], # .
-            "PUNT_MARKA\tPUNT_PUNT_KOMA" => ['pos' => 'punc', 'punctype' => 'semi'], # ;
         },
         'encode_map' =>
         {
             'pos' => { 'noun' => 'IZE',
                        'adj'  => 'ADJ',
                        'verb' => 'ADI',
-                       'adv'  => 'ADB',
+                       'adv'  => { 'prontype' => { 'int' => "ADB\tGAL",
+                                                   '@'   => "ADB\tARR" }},
                        'conj' => 'LOT',
                        'part' => 'PRT',
                        'int'  => 'ITJ',
@@ -221,7 +274,6 @@ sub _create_atoms
     # zenbakarri = countable
     $atoms{ZENB} = $self->create_atom
     (
-        'tagset' => 'eu::conll',
         'surfeature' => 'zenb',
         'decode_map' =>
         {
@@ -237,7 +289,6 @@ sub _create_atoms
     ###!!! There are no + values explicitly marked neither for NEUR nor for ZENB.
     $atoms{NEUR} = $self->create_atom
     (
-        'tagset' => 'eu::conll',
         'surfeature' => 'neur',
         'decode_map' =>
         {
@@ -290,7 +341,6 @@ sub _create_atoms
     # In the tagset, MUG:MG means that there is no NUM feature.
     $atoms{MUG} = $self->create_atom
     (
-        'tagset' => 'eu::conll',
         'surfeature' => 'mug',
         'decode_map' =>
         {
@@ -309,7 +359,6 @@ sub _create_atoms
     # However, there are exceptions (e.g. NMG:S|NUM:P) and NMG can also occur without NUM and/or MUG.
     $atoms{NMG} = $self->create_atom
     (
-        'tagset' => 'eu::conll',
         'surfeature' => 'nmg',
         'decode_map' =>
         {
@@ -336,50 +385,50 @@ sub _create_atoms
             # There is some documentation written in Spanish, so the comments show also the corresponding Spanish case names.
             # The words in parentheses (e.g. "NOR") are corresponding Basque interrogative pronouns ("WHO").
             # Nuclear cases
-            # absolutive / absolutivo (NOR)
+            # absolutive / absolutivo / absolutua (NOR)
             # intransitive subject, transitive direct object
             'ABS'   => ['case' => 'abs'], # partidua, aukera, taldea, garaipena, beharra
-            # partitive / partitivo
+            # partitive / partitivo / partitiboa
             'PAR'   => ['case' => 'par'], # aukerarik, arazorik, asmorik, arriskurik, garaipenik
-            # ergative / ergativo (NORK)
+            # ergative / ergativo / ergauboa (NORK)
             # transitive subject
             'ERG'   => ['case' => 'erg'], # taldeak, erakundeak, sindikatuak, oposizioak, haizeak
-            # dative / dativo (NORI)
+            # dative / dativo / datiboa (NORI)
             # recipient, affected, "to", "for", "from"
             'DAT'   => ['case' => 'dat'], # taldeari, partiduari, bideari, elektrizitate-lineari, kanpainari
             # Local cases
-            # inessive / inesivo (NON)
+            # inessive / inesivo / inesiboa (NON)
             # where, when, "in", "at", "on"
             'INE'   => ['case' => 'ine'], # igandean, taldean, moduan, lanean, partiduan
-            # allative / adlativo (NORA)
+            # allative / adlativo / adlatiboa (NORA)
             # where to, "to"
             'ALA'   => ['case' => 'all'], # behera, segundora, etxera, kalera, kilometrora
-            # directional allative / adlativo direccional (NORANTZ)
+            # directional allative / adlativo direccional / adlatibo bukatuzkoa (NORANTZ)
             'ABZ'   => ['case' => 'lat'], # beherantz, ubiderantz, txokorantz, aurrerantz
             # terminal allative / adlativo terminal (NORAINO)
             'ABU'   => ['case' => 'ter'], # posturaino, zeruraino, bazterreraino, erdiraino, dorreraino
-            # ablative / ablativo (NONDIK)
+            # ablative / ablativo / ablatiboa (NONDIK)
             # where from/through, "from", "since", "through"
             'ABL'   => ['case' => 'abl'], # aurretik, hasieratik, urtetik, ondotik, kostaldetik
-            # local genitive / genitivo locativo (NONGO)
+            # local genitive / genitivo locativo / leku genitiboa (NONGO)
             # pertaining to where/when; "of". E.g. "yesterday's program", "the exit door of upstairs".
             'GEL'   => ['case' => 'loc'], # taldeko, urteko, aurreko, munduko, goizeko
             'BNK'   => ['case' => 'loc', 'other' => {'case' => 'BNK'}], # eguneko, litroko, partiduko, antzeko
             'DESK'  => ['case' => 'loc', 'other' => {'case' => 'DESK'}], # urteko, metroko, kiloko, pezetako, mailako
             # Other cases
-            # genitive / genitivo (NOREN)
+            # genitive / genitivo / genitiboa (NOREN)
             # possessive, genitive, "of", "-'s"
             'GEN'   => ['case' => 'gen'], # irailaren, taldearen, urriaren, apirilaren, euskararen
-            # instrumental / instrumental (NORTAZ)
+            # instrumental / instrumental / instrumentala (NORTAZ)
             # means, topic, "by", "of", "about"
             'INS'   => ['case' => 'ins'], # bakeaz, dinamitaz, areaz, aukeraz, giroaz
-            # comitative / asociativo (NOREKIN)
+            # comitative / asociativo / soziatiboa (NOREKIN)
             # accompaniment, means, "with"
             'SOZ'   => ['case' => 'com'], # urterekin, punturekin, kolperekin, bolarekin, arazorekin
             # benefactive / destinativo (NORENTZAT)
             # beneficiary, "for"
             'DES'   => ['case' => 'ben'], # mutilarentzat, entzenatzailearentzat, jokalariarentzat, buruzagiarentzat, nafarrarentzat
-            # causative / motivativo (NORENGATIK)
+            # causative / motivativo / kausazkoetan (NORENGATIK)
             # cause, reason, value, "because of", "(in exchange) for"
             'MOT'   => ['case' => 'cau'], # gorrotoarengatik, ukalondokoagatik, jokaeragatik, drogagatik, urdinagatik
             # essive / prolativo (NORTZAT)
@@ -426,6 +475,7 @@ sub _create_atoms
             'SUP'  => ['degree' => 'sup'],
             # absolute superlative of adjectives and adverbs (goizegi = too early, maizegi = too often, urrunegi = too far, azkarregi = too fast, berantegi = too late)
             # This is not exactly the same meaning as that of Romance absolute superlatives (es: guapísima).
+            # In Wikipedia this is called "excessive" instead of "absolute superlative". ###!!! Shall we add this value to Interset?
             # gehiegi = too
             'GEHI' => ['degree' => 'abs']
         },
@@ -497,8 +547,8 @@ sub _create_atoms
         {
             'NIK'     => ['ergperson' => 1, 'ergnumber' => 'sing'],                           # verb erg argument 'nik' = 'I'          (haut, dut, zaitut, zaituztet, ditut) 662
             'HIK'     => ['ergperson' => 2, 'ergnumber' => 'sing', 'ergpoliteness' => 'inf'], # verb erg argument 'hik' = 'thou'       (nauk, duk, gaituk, dituk) 6
-            'HIK-NO'  => ['ergperson' => 2, 'ergnumber' => 'sing', 'ergpoliteness' => 'inf'], #                                        (dun, ezan, iezaion, nazan) 10
-            'HIK-TO'  => ['ergperson' => 2, 'ergnumber' => 'sing', 'ergpoliteness' => 'inf'], #                                        (duan, duk, ezak, baduala) 8
+            'HIK-NO'  => ['ergperson' => 2, 'ergnumber' => 'sing', 'ergpoliteness' => 'inf', 'erggender' => 'fem'],  #                 (dun, ezan, iezaion, nazan) 10
+            'HIK-TO'  => ['ergperson' => 2, 'ergnumber' => 'sing', 'ergpoliteness' => 'inf', 'erggender' => 'masc'], #                 (duan, duk, ezak, baduala) 8
             'ZUK'     => ['ergperson' => 2, 'ergnumber' => 'sing', 'ergpoliteness' => 'pol'], # verb erg argument 'zuk' = 'you-sg'     (nauzu, duzu, gaituzu, dituzu) 208
             'HARK'    => ['ergperson' => 3, 'ergnumber' => 'sing'],                           # verb erg argument 'hark' = 'he/she/it' (nau, hau, du, gaitu, zaitu, zaituzte, ditu) 5981
             'GUK'     => ['ergperson' => 1, 'ergnumber' => 'plur'],                           # verb erg argument 'guk' = 'we'         (haugu, dugu, zaitugu, zaituztegu, ditugu) 721
@@ -524,8 +574,8 @@ sub _create_atoms
         'decode_map' =>
         {
             'NIRI'    => ['datperson' => 1, 'datnumber' => 'sing'],                           # verb dat argument 'niri' = 'to me'         (hatzait, zait, zatzaizkit, zatzaizkidate, zaizkit) 152
-            'HIRI-NO' => ['datperson' => 2, 'datnumber' => 'sing', 'datpoliteness' => 'inf'], # verb dat argument 'hiri' = 'to thee'       (natzaik, zaik, gatzaizkik, zaizkik) 2
-            'HIRI-TO' => ['datperson' => 2, 'datnumber' => 'sing', 'datpoliteness' => 'inf'], #                                            (zaik, diat, nian) 5
+            'HIRI-NO' => ['datperson' => 2, 'datnumber' => 'sing', 'datpoliteness' => 'inf', 'datgender' => 'fem'],  # verb dat argument 'hiri' = 'to thee' (natzaik, zaik, gatzaizkik, zaizkik) 2
+            'HIRI-TO' => ['datperson' => 2, 'datnumber' => 'sing', 'datpoliteness' => 'inf', 'datgender' => 'masc'], #                                      (zaik, diat, nian) 5
             'ZURI'    => ['datperson' => 2, 'datnumber' => 'sing', 'datpoliteness' => 'pol'], # verb dat argument 'zuri' = 'to you-sg'     (natzaizu, zaizu, gatzaizkizu, zaizkizu) 39
             'HARI'    => ['datperson' => 3, 'datnumber' => 'sing'],                           # verb dat argument 'hari' = 'to him/her/it' (natzaio, hatzaio, zaio, gatzaizkio, zatzaizkio, zatzaizkiote, zaizkio) 1085
             'GURI'    => ['datperson' => 1, 'datnumber' => 'plur'],                           # verb dat argument 'guri' = 'to us'         (hatzaigu, zaigu, zatzaizkigu, zatzaizkigute, zaizkigu) 124
@@ -549,9 +599,9 @@ sub _create_atoms
         'intfeature' => 'verbform',
         'simple_decode_map' =>
         {
-            'PART'  => 'part', # participle
-            'ADIZE' => 'ger', # verbal noun
-            'ADOIN' => 'inf' # occurs with modals
+            'PART'  => 'part', # partizipioa = participle
+            'ADIZE' => 'ger', # aditz izena = verbal noun
+            'ADOIN' => 'inf' # aditz oina = verb base (occurs with modals)
         }
     );
     # ASPECT ####################
@@ -561,16 +611,15 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'PNT'  => '', # composed verbs, finite forms of synthetic verbs (dugu, daukagu, dakigu, darabilgu, diogu)
-            'BURU' => 'perf', # perfect (izan, egin, esan, eman, hasi)
-            'EZBU' => 'imp', # imperfect (izaten, egiten, ematen, ikusten, erabiltzen)
-            'GERO' => 'pro' # prospective (izango, egingo, jokatuko, egongo, hartuko)
+            'BURU' => 'perf', # burutua / perfect (izan, egin, esan, eman, hasi)
+            'EZBU' => 'imp', # ezburutua / imperfect (izaten, egiten, ematen, ikusten, erabiltzen)
+            'GERO' => 'pro' # geroa / prospective (izango, egingo, jokatuko, egongo, hartuko)
         }
     );
     # ERL ####################
     # ERL is a feature of verbs and conjunctions. Its meaning is unknown. Perhaps "erlazio" = "relation"?
     $atoms{ERL} = $self->create_atom
     (
-        'tagset' => 'eu::conll',
         'surfeature' => 'erl',
         'decode_map' =>
         {
@@ -581,7 +630,9 @@ sub _create_atoms
             'HAUT'  => ['other' => {'erl' => 'haut'}], # conjunctions: edo = or, zein = and, ala = or, edota = or, nahiz = and, bestela = or
             'ONDO'  => ['other' => {'erl' => 'ondo'}], # conjunctions (beraz = so, bada = if, orduan = when, hortaz = so, egia_esan = true that, azken_esan = now that)
             # Verbs
+            # baldintzazko adizkiak = conditional forms
             'BALD'  => ['other' => {'erl' => 'bald'}], # verbs: conditional protasis (balira = if they were; bada, badira, bagara, bagatzaizkio, bagina, baginen, balira, balitz, ..., izatekoan)
+            # denbora = time
             'DENB'  => ['other' => {'erl' => 'denb'}], # verbs (denean, denerako, denetik, direnean, direneako, ginenean, naizenean, naizenetik, nintzenean, zaigunean, zenean, zenetik, zirenean, zirenetik, zitzaionean, zitzaizkienean)
             'ERLT'  => ['other' => {'erl' => 'erlt'}], # verbs (den, diren, giren, naizen, zaidan, zaien, zaigun, zaion, zaizkien, zaizkion, zaizkizun, zen, ziren, zitzaidan, zitzaion, zitzaizkigun, zitzaizkion)
             'HELB'  => ['other' => {'erl' => 'helb'}], # verbs (izateko, izatera)
@@ -617,7 +668,6 @@ sub _create_atoms
     # There are verb lemmas (e.g. "edin") whose word forms appear in multiple classes.
     $atoms{MDN} = $self->create_atom
     (
-        'tagset' => 'eu::conll',
         'surfeature' => 'mdn',
         'decode_map' =>
         {
@@ -658,13 +708,13 @@ sub _create_atoms
     # MOD is a feature of particles and some verbs. Its meaning is unknown.
     $atoms{MOD} = $self->create_atom
     (
-        'tagset' => 'eu::conll',
         'surfeature' => 'mod',
         'decode_map' =>
         {
             # particles (ez = no, bai = yes) and verbs (ukan = act, jakin = know, izan = be, egon = stay, iruditu = seem)
            'EGI' => ['other' => {'mod' => 'egi'}],
             # particles (al, ote, omen, ei, bide, ahal)
+            # "al" and "ote" are question markers.
            'ZIU' => ['other' => {'mod' => 'ziu'}]
         },
         'encode_map' =>
@@ -675,28 +725,31 @@ sub _create_atoms
     );
     # HIT ####################
     # HIT is a rare feature of some verbs. Its meaning is unknown.
+    ###!!! Maybe it is related to this information from https://en.wikipedia.org/wiki/Basque_verbs:
+    # In colloquial Basque, an informal relationship and social solidarity between the speaker and a single interlocutor
+    # are expressed by employing a special mode of speech often referred to in Basque as either hika or hitano
+    # (both derived from hi, the informal second-person pronoun; in other places the same phenomenon is named
+    # noka and toka for female and male interlocutors respectively).
     $atoms{HIT} = $self->create_atom
     (
-        'tagset' => 'eu::conll',
         'surfeature' => 'hit',
         'decode_map' =>
         {
-            # Examples, lemma *edun: din, dinat, ditin, ditun, dun, gintunan, naun, zidaten, zien, zinan, zion
-            'NO' => ['other' => {'hit' => 'no'}],
-            # Examples, lemma *edun: diagu, diat, dik, ditek, duk, genian, nian
-            'TO' => ['other' => {'hit' => 'to'}]
+            # Examples, lemma *edun (to have): din, dinat, dinagu, ditun, zinan, ninan, dun, naun, ditin, gintunan, zidaten, zien, zion
+            'NO' => ['gender' => 'fem'],
+            # Examples, lemma *edun (to have): dik, diat, diagu, dituk, zian, nian, duk, nauk, ditek, genian
+            'TO' => ['gender' => 'masc']
         },
         'encode_map' =>
         {
-            'other/hit' => { 'no' => 'NO',
-                             'to' => 'TO' }
+            'gender' => { 'masc' => 'TO',
+                          'fem'  => 'NO' }
         }
     );
     # KLM ####################
     # KLM is a rare feature of a few conjunctions. Its meaning is unknown.
     $atoms{KLM} = $self->create_atom
     (
-        'tagset' => 'eu::conll',
         'surfeature' => 'klm',
         'decode_map' =>
         {
@@ -716,7 +769,6 @@ sub _create_atoms
     # That is, MW:B means that the word form contains '_'. Exception: noun coupled with a postposition has POS:+ instead of MW:B.
     $atoms{MW} = $self->create_atom
     (
-        'tagset' => 'eu::conll',
         'surfeature' => 'mw',
         'decode_map' =>
         {
@@ -733,7 +785,6 @@ sub _create_atoms
     # and once indicating the concrete postposition. Note that a postposition attached using '_' does not trigger the MW:B feature!
     $atoms{POS} = $self->create_atom
     (
-        'tagset' => 'eu::conll',
         'surfeature' => 'pos',
         'decode_map' =>
         {
@@ -923,42 +974,10 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('mood', 'tense', 'voice', 'number', 'person', 'degree', 'gender', 'definiteness', 'transcat', 'case', 'def', 'possessor', 'reflexive', 'register');
+    # POS JE NEKDY PRED KAS, NEKDY ZA KAS
+    # ADM ASP ERL MDN NOR NORK NORI MAI BIZ IZAUR PER NMG KAS POS NUM MUG MW ENT
+    my @features = ('ENT', 'MTKAT', 'IZAUR', 'BIZ', 'ZENB', 'NEUR', 'PLU', 'NUM', 'MUG', 'NMG', 'KAS', 'MAI', 'PER', 'NOR', 'NORK', 'NORI', 'ADM', 'ASP', 'ERL', 'MDN', 'MOD', 'HIT', 'KLM', 'MW', 'POS');
     return \@features;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Creates the list of surface CoNLL features that can appear in the FEATS
-# column with particular parts of speech. This list will be used in encode().
-#------------------------------------------------------------------------------
-sub _create_features_pos
-{
-    my $self = shift;
-    my %features =
-    (
-        'NC' => ['gender', 'number', 'case', 'def'],
-        'NP' => ['case'],
-        'AN' => ['degree', 'gender', 'number', 'case', 'def', 'transcat'],
-        'AD' => ['degree', 'transcat'],
-        'AC' => ['case'],
-        'AO' => ['case'],
-        'PC' => ['number', 'case'],
-        'PD' => ['gender', 'number', 'case', 'register'],
-        'PI' => ['gender', 'number', 'case', 'register'],
-        'PO' => ['person', 'gender', 'number', 'case', 'possessor', 'reflexive', 'register'],
-        'PP' => ['person', 'gender', 'number', 'case', 'reflexive', 'register'],
-        'PT' => ['gender', 'number', 'case', 'register'],
-        'RG' => ['degree'],
-        'V.infin'  => ['mood', 'voice'],
-        'V.indic'  => ['mood', 'tense', 'voice'],
-        'V.imper'  => ['mood'],
-        'V.partic' => ['mood', 'tense', 'number', 'gender', 'definiteness', 'transcat', 'case'],
-        'V.trans'  => ['mood', 'tense', 'transcat'],
-        'V.gerund' => ['mood', 'number', 'gender', 'definiteness', 'case']
-    );
-    return \%features;
 }
 
 
@@ -971,16 +990,9 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
-    my $fs = $self->decode_conll($tag, 'da::conll');
+    my $fs = $self->decode_conll($tag, 'eu::conll', 'both', ':');
     # Default feature values. Used to improve collaboration with other drivers.
-    # Some pronoun forms can be declared accusative/oblique case.
-    if($fs->prontype() eq 'prs' && !$fs->is_possessive() && $fs->case() eq '')
-    {
-        # Most nominative personal pronouns have case=nom. Examples: jeg (I), du (you), han (he), hun (she), vi (we), I (you), de (they).
-        # Most accusative personal pronouns have case=unmarked. Examples: mig (me), dig (you), ham (him), hende (her), os (us), jer (you), dem (them), sig (oneself).
-        # It is unclear what to do with 3rd person singular pronouns "den" and "det", which have case=unmarked but I suspect they can be used also as nominative.
-        $fs->set_case('acc');
-    }
+    # ... nothing yet ...
     return $fs;
 }
 
@@ -994,24 +1006,9 @@ sub encode
     my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $atoms = $self->atoms();
-    my $subpos = $atoms->{pos}->encode($fs);
-    my $fpos = $subpos;
-    if($fpos =~ m/^V[AE]$/)
-    {
-        my $verbform = $fs->verbform();
-        my $surface_mood = $verbform eq 'trans' ? 'trans' : $atoms->{mood}->encode($fs);
-        $fpos = "V.$surface_mood";
-    }
-    elsif($fpos eq 'AN')
-    {
-        my $transcat = $atoms->{transcat}->encode($fs);
-        if($transcat eq 'adverbial')
-        {
-            $fpos = 'AD';
-        }
-    }
-    my $feature_names = $self->get_feature_names($fpos);
-    my $pos = $subpos =~ m/^(RG|SP)$/ ? $subpos : substr($subpos, 0, 1);
+    my $pos_subpos = $atoms->{pos}->encode($fs);
+    my ($pos, $subpos) = split(/\t/, $pos_subpos);
+    my $feature_names = $self->features_all();
     my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names);
     return $tag;
 }
@@ -1020,11 +1017,8 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
-# Tags were collected from the corpus, 144 distinct tags found:
-# cat danish_ddt_train.conll ../test/danish_ddt_test.conll |\
-#   perl -pe '@x = split(/\s+/, $_); $_ = "$x[3]\t$x[4]\t$x[5]\n"' |\
-#   sort -u | wc -l
-# 147 total tags after adding a few to survive missing value of 'other'.
+# Tags were collected from the corpus, 3945 distinct tags found.
+# 3945 total tags after adding a few to survive missing value of 'other'.
 #------------------------------------------------------------------------------
 sub list
 {

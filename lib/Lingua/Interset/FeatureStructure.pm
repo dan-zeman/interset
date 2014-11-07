@@ -681,6 +681,88 @@ my %matrix = @_matrix =
         ],
         'uname' => 'Number[psee]'
     },
+    # Person of the ergative argument of the verb.
+    # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
+    'ergperson' =>
+    {
+        'priority' => 400,
+        'values' => ['1', '2', '3', ''],
+        'replacements' =>
+        [
+            ['3'],
+            ['1'],
+            ['2']
+        ],
+        'uname' => 'Person[erg]'
+    },
+    # Person of the dative argument of the verb.
+    # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
+    'datperson' =>
+    {
+        'priority' => 401,
+        'values' => ['1', '2', '3', ''],
+        'replacements' =>
+        [
+            ['3'],
+            ['1'],
+            ['2']
+        ],
+        'uname' => 'Person[dat]'
+    },
+    # Number of the ergative argument of the verb.
+    # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
+    'ergnumber' =>
+    {
+        'priority' => 402,
+        'values' => ['sing', 'dual', 'plur', ''],
+        'replacements' =>
+        [
+            ['sing'],
+            ['dual', 'plur'],
+            ['plur']
+        ],
+        'uname' => 'Number[erg]'
+    },
+    # Number of the dative argument of the verb.
+    # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
+    'datnumber' =>
+    {
+        'priority' => 403,
+        'values' => ['sing', 'dual', 'plur', ''],
+        'replacements' =>
+        [
+            ['sing'],
+            ['dual', 'plur'],
+            ['plur']
+        ],
+        'uname' => 'Number[dat]'
+    },
+    # Politeness of the ergative argument of the verb.
+    # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
+    'ergpoliteness' =>
+    {
+        'priority' => 404,
+        'values' => ['inf', 'pol', ''],
+        'replacements' =>
+        [
+            ['inf'],
+            ['pol']
+        ],
+        'uname' => 'Polite[erg]'
+    },
+    # Politeness of the dative argument of the verb.
+    # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
+    'datpoliteness' =>
+    {
+        'priority' => 405,
+        'values' => ['inf', 'pol', ''],
+        'replacements' =>
+        [
+            ['inf'],
+            ['pol']
+        ],
+        'uname' => 'Polite[dat]'
+    },
     # Subcategorization.
     # So far this feature only keeps the transitive-intransitive distinction encoded in some tagsets.
     # However, real verb subcategorization is in fact much more complex.
