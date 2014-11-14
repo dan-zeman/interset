@@ -57,13 +57,13 @@ sub _create_atoms
             "ADB\tGAL" => ['pos' => 'adv', 'prontype' => 'int'],
 
             # aditz = verb
-            # sintetiko = synthetic
-            # Only a few Basque verbs can be conjugated synthetically, i.e. they have finite forms.
-            # The rest have only non-finite forms, which enter into compound tenses (non-finite main verb + finite auxiliary).
-            # synthetic verb: egin = do, izan = be, jokatu = play, eman = give, esan = say
-            ###!!! It is probably a mistake to interpret ADI SIN as synthetic verb, see also the discussion at ADT ADT below!
-            ###!!! Could it mean "sintagma"? Are these non-finite verb forms ocurring in a periphrastic tense with a finite auxiliary?
-            "ADI\tSIN" => ['pos' => 'verb', 'other' => {'verbtype' => 'synthetic'}],
+            # SIN: I don't know what SIN stands for but it is not "sintetiko": unlike ADK, ADL and ADT, words tagged SIN do not have the full paradigm (e.g. including the NORK feature).
+            # Synthetic verbs are also called "aditz trinkoak" (compact verbs) and they are tagged ADT.
+            # most frequent ADI SIN lemmas: izan, egin, eman, jokatu, esan, lortu, irabazi, hartu, hasi, ikusi
+            # most frequent ADI SIN forms: izan, egin, izango, esan, egiten, eman, irabazi, jokatu, lortu, hasi
+            # My hypothesis: ADI SIN are non-finite verb forms used (together with a finite auxiliary) in periphrastic tenses.
+            # Both synthetic and analytic verbs have their non-finite forms tagged ADI SIN (for example, "izan" is a synthetic verb, "hartu" is not).
+            "ADI\tSIN" => ['pos' => 'verb'],
             # konposatu = compound
             # compound verbs, i.e. light verb constructions: bizi_izan = live, nahi_izan = want, atzera_egin = retract, amore_eman = give up
             "ADI\tADK" => ['pos' => 'verb', 'other' => {'verbtype' => 'compound'}],
@@ -85,21 +85,27 @@ sub _create_atoms
             # auxiliary verb (izan, *edin, ukan, *edun, *ezan)
             # laguntzailearen = auxiliary
             "ADL\tADL" => ['pos' => 'verb', 'verbtype' => 'aux'],
-            # aditz trinkoa = compact verb (Is it the same as the synthetic verb? What is the difference from ADI SIN?)
+            # ADL IZEELI seems to be an auxiliary verb in a nominal form, whatever that means.
+            "ADL\tADL_IZEELI" => ['pos' => 'verb', 'verbtype' => 'aux', 'other' => {'verbform' => 'nominal'}],
+            # aditz trinkoa = compact verb (also called synthetic verb)
+            # Only a few Basque verbs can be conjugated synthetically, i.e. they have finite forms.
+            # The rest have only non-finite forms, which enter into compound tenses (non-finite main verb + finite auxiliary).
             # examples: joan = go, egon = be, izan = be, jakin = know
             # most frequent ADT ADT lemmas: izan, ukan, egon, eduki, jakin, esan, etorri, joan, ibili, iruditu
-            # most frequent ADI SIN lemmas: izan, egin, eman, jokatu, esan, lortu, irabazi, hartu, hasi, ikusi
             # most frequent ADT ADT forms: da, dela, dago, dira, du, zen, zegoen, daude, dute, zuen
+            # most frequent ADI SIN lemmas: izan, egin, eman, jokatu, esan, lortu, irabazi, hartu, hasi, ikusi
             # most frequent ADI SIN forms: izan, egin, izango, esan, egiten, eman, irabazi, jokatu, lortu, hasi
             # Full paradigm (e.g. including the NORK feature) is found only with ADI ADK, ADL ADL, ADT ADT. But not with ADI SIN!
-            # So it was probably a misinterpretation to say that ADI SIN is the synthetic verb! I don't see finite forms among the most frequent ones there!
-            "ADT\tADT" => ['pos' => 'verb', 'other' => {'verbtype' => 'trinko'}],
+            "ADT\tADT" => ['pos' => 'verb', 'verbform' => 'fin', 'other' => {'verbtype' => 'synthetic'}],
+            # ADT IZEELI seems to be a synthetic verb in a nominal form, whatever that means.
+            "ADT\tADT_IZEELI" => ['pos' => 'verb', 'verbform' => 'fin', 'other' => {'verbtype' => 'synthetic', 'verbform' => 'nominal'}],
             # [error?] (there is only one occurrence: Bear_Zana)
             "ADT\tARR" => ['pos' => 'verb'],
 
             # adjektiboa = adjective (nondik_norakoa)
+            # This tag is probably error. It should be ADJ ARR.
             "ADJ\tADJ" => ['pos' => 'adj'],
-            # adjective, common (errusiar = Russian, atzerritar = foreign, gustuko = tasteful, britainiar = British, ageriko = visible)
+            # arrunt adjektiboa = common adjective (errusiar = Russian, atzerritar = foreign, gustuko = tasteful, britainiar = British, ageriko = visible)
             "ADJ\tARR" => ['pos' => 'adj'],
             # (aldi_bereko = at the same time, simultaneous)
             "ADJ\tERKIND" => ['pos' => 'adj'],
@@ -126,16 +132,20 @@ sub _create_atoms
             # other, indefinite (ez_beste, ez_besterik = only, no other)
             "BST\tDZG" => [],
 
-            # determiner, distributive = banatu (bana = one each, 6na, 25na, bedera = at least, bina = two)
-            "DET\tBAN" => ['pos' => 'num'],
-            # determiner, indefinite (bestea = other, nahikoa = enough, gehiena = most of the, bestekoa = average, hainbat = some, gehiago = more)
-            "DET\tDZG" => ['pos' => 'num', 'prontype' => 'ind'],
-            # determiner, definite (10:00etarako = 10:00 pm, bi = two, hiru = three, zortzi = eight)
+            # determiner, quantifier, distributive = banatu (bana = one each, 6na, 25na, bedera = at least, bina = two)
+            "DET\tBAN" => ['pos' => 'num', 'numtype' => 'dist'],
+            # determiner, quantifier, indefinite = determinatzaile, zenbaki, zehaztugabe
+            # (asko = many, ugari = many, gehiago = more, gehien = most, hainbeste = so many, gutxi = few, gutxien = least, gutxiagorako = for less, nahikoa = enough)
+            "DET\tDZG" => ['pos' => 'num', 'numtype' => 'card', 'prontype' => 'ind'],
+            # determiner, quantifier, definite = determinatzaile, zenbaki, zehatz
+            # (bat = one, bi = two, hiru = three, lau = four, bost = five, 19:00, %72,46, 10, 2-3)
             "DET\tDZH" => ['pos' => 'num', 'numtype' => 'card'],
-            # determiner, demonstrative common (horretarako = this, hartarako = so, horietarako = these, hori, hau, hura)
+            # determiner, demonstrative, common = determinatzaile, erakusleak, arrunt
+            # (hori = that, hau = this, hura = he/she/it)
             "DET\tERKARR" => ['pos' => 'adj', 'prontype' => 'dem'],
-            # determiner, demonstrative emphatic (bera = the same)
-            "DET\tERKIND" => ['pos' => 'adj', 'prontype' => 'dem'],
+            # determiner, demonstrative, emphatic/strong = determinatzaile, erakusleak, indartsu
+            # (bera = the same) ###!!! ??? reflexive ???
+            "DET\tERKIND" => ['pos' => 'adj', 'prontype' => 'dem', 'reflex' => 'reflex'],
             # determiner, indefinite common (edozer = any)
             "DET\tNOLARR" => ['pos' => 'adj', 'prontype' => 'ind'],
             # determiner, indefinite question (zer = what, zenbat = how many, zein = which)
@@ -144,6 +154,7 @@ sub _create_atoms
             "DET\tORD" => ['pos' => 'num', 'numtype' => 'ord'],
             # determiner, general (guzti = all, dena = everything)
             "DET\tORO" => ['pos' => 'adj', 'subpos' => 'det', 'prontype' => 'tot'],
+
             "ERL\tERL" => [], # [error?] (bait = because)
             "HAOS\tHAOS" => [], # (ari, komeni, berrogoita, hogeita)
             # pronoun, reciprocal (elkar = each other)
@@ -191,15 +202,35 @@ sub _create_atoms
         'encode_map' =>
         {
             'pos' => { 'noun' => 'IZE',
-                       'adj'  => 'ADJ',
-                       'verb' => { 'other/verbtype' => { 'tako' => "ADI\tADI_IZEELI",
-                                                         '@'    => "ADI\tADI" }},
+                       'adj'  => { 'prontype' => { 'dem' => { 'reflex' => { 'reflex' => "DET\tERKIND",
+                                                                            '@'      => "DET\tERKARR" }},
+                                                   'int' => "ADJ\tGAL",
+                                                   '@'   => "ADJ\tARR" }},
+                       'num'  => { 'numtype' => { 'dist' => "DET\tBAN",
+                                                  '@'    => { 'prontype' => { 'ind' => "DET\tDZG",
+                                                                              '@'   => "DET\tDZH" }}}},
+                       'verb' => { 'verbtype' => { 'aux' => { 'other/verbform' => { 'nominal' => "ADL\tADL_IZEELI",
+                                                                                    '@'       => "ADL\tADL" }},
+                                                   '@'   => { 'other/verbtype' => { 'compound'         => "ADI\tADK",
+                                                                                    'part_of_compound' => "ADI\tADP",
+                                                                                    'factitive'        => "ADI\tFAK",
+                                                                                    'tako'             => "ADI\tADI_IZEELI",
+                                                                                    '@'                => { 'verbform' => { 'fin' => { 'other/verbform' => { 'nominal' => "ADT\tADT_IZEELI",
+                                                                                                                                                             '@'       => "ADT\tADT" }},
+                                                                                                                            '@'   => "ADI\tSIN" }}}}}},
                        'adv'  => { 'prontype' => { 'int' => "ADB\tGAL",
                                                    '@'   => "ADB\tARR" }},
                        'conj' => 'LOT',
                        'part' => 'PRT',
                        'int'  => 'ITJ',
-                       'punc' => 'PUNT_MARKA' }
+                       'punc' => { 'punctype' => { 'colo' => "PUNT_MARKA\tPUNT_BI_PUNT",
+                                                   'excl' => "PUNT_MARKA\tPUNT_ESKL",
+                                                   'qest' => "PUNT_MARKA\tPUNT_GALD",
+                                                   'peri' => "PUNT_MARKA\tPUNT_HIRU",
+                                                   'comm' => "PUNT_MARKA\tPUNT_KOMA",
+                                                   'semi' => "PUNT_MARKA\tPUNT_PUNT_KOMA",
+                                                   '@'    => "BEREIZ\tBEREIZ" }},
+                       '@'    => "BST\tBST" }
         }
     );
     # NAMED ENTITY TYPE ####################
@@ -528,28 +559,42 @@ sub _create_atoms
     );
     # AGREEMENT PERSON AND NUMBER OF THE ABSOLUTIVE ARGUMENT ####################
     # nor = who/whom, absolutive
+    # Note: Originally I wanted to use the default features 'person', 'number' and 'politeness' for this.
+    # It would be parallel to languages that only mark agreement in person and number with the subject of the verb.
+    # Unfortunately, some Basque finite verbs have additional morphemes of nominal inflection.
+    # Thus their form reflects the person-number agreement with the absolutive argument (NOR), and nominal inflection (KAS, NUM etc.) at the same time.
+    # (I have no idea what is the meaning of these forms but they are not so rare that one could consider them errors.)
+    # Examples: TAG (word form)
+    # ADL ADL_IZEELI KAS:ABS|NUM:S|MUG:M|MDN:A1|NOR:HURA (dena) ................. number=sing|absnumber=sing
+    # ADL ADL_IZEELI KAS:ABS|NUM:S|MUG:M|MDN:A1|NOR:HAIEK|NORK:HARK (dituena) ... number=sing|absnumber=plur|ergnumber=sing
+    # ADL ADL_IZEELI KAS:ABS|NUM:P|MUG:M|MDN:A1|NOR:HURA|NORK:GUK (dugunak) ..... number=plur|absnumber=sing|ergnumber=plur
+    # ADL ADL_IZEELI KAS:ABS|NUM:P|MUG:M|MDN:A1|NOR:HAIEK (direnak) ............. number=plur|absnumber=plur
+    # So I decided to reserve the 'number' feature for nominal inflection, and to define 'absnumber' for agreement.
+    # After all, the absolutive argument is not always the subject (for transitive verbs it is the object) so the parallelism with other languages was not so strong.
+    # I also define 'absperson' and 'abspoliteness', although there is no direct conflict for these features ('person' and 'politeness' applies now only to personal pronouns).
+    # But it is better to have these features aligned with 'ergperson', 'ergpoliteness', 'datperson' and 'datpoliteness'.
     $atoms{NOR} = $self->create_atom
     (
         'surfeature' => 'nor',
         'decode_map' =>
         {
-            'NI'    => ['person' => 1, 'number' => 'sing'],                        # verb abs argument 'ni' = 'I'           (naiz,   banaiz,   naizateke) 337
-            'HI'    => ['person' => 2, 'number' => 'sing', 'politeness' => 'inf'], # verb abs argument 'hi' = 'thou'        (haiz,   bahaiz,   haizateke) 20
-            'ZU'    => ['person' => 2, 'number' => 'sing', 'politeness' => 'pol'], # verb abs argument 'zu' = 'you'         (zara,   bazara,   zarateke) 93
-            'HURA'  => ['person' => 3, 'number' => 'sing'],                        # verb abs argument 'hura' = 'he/she/it' (da,     bada,     dateke) 14342
-            'GU'    => ['person' => 1, 'number' => 'plur'],                        # verb abs argument 'gu' = 'we'          (gara,   bagara,   garateke) 223
-            'ZUEK'  => ['person' => 2, 'number' => 'plur'],                        # verb abs argument 'zuek' = 'you'       (zarete, bazarete, zaratekete) 12
-            'HAIEK' => ['person' => 3, 'number' => 'plur'],                        # verb abs argument 'haiek' = 'they'     (dira,   badira,   dirateke) 4248
+            'NI'    => ['absperson' => 1, 'absnumber' => 'sing'],                           # verb abs argument 'ni' = 'I'           (naiz,   banaiz,   naizateke) 337
+            'HI'    => ['absperson' => 2, 'absnumber' => 'sing', 'abspoliteness' => 'inf'], # verb abs argument 'hi' = 'thou'        (haiz,   bahaiz,   haizateke) 20
+            'ZU'    => ['absperson' => 2, 'absnumber' => 'sing', 'abspoliteness' => 'pol'], # verb abs argument 'zu' = 'you'         (zara,   bazara,   zarateke) 93
+            'HURA'  => ['absperson' => 3, 'absnumber' => 'sing'],                           # verb abs argument 'hura' = 'he/she/it' (da,     bada,     dateke) 14342
+            'GU'    => ['absperson' => 1, 'absnumber' => 'plur'],                           # verb abs argument 'gu' = 'we'          (gara,   bagara,   garateke) 223
+            'ZUEK'  => ['absperson' => 2, 'absnumber' => 'plur'],                           # verb abs argument 'zuek' = 'you'       (zarete, bazarete, zaratekete) 12
+            'HAIEK' => ['absperson' => 3, 'absnumber' => 'plur'],                           # verb abs argument 'haiek' = 'they'     (dira,   badira,   dirateke) 4248
         },
         'encode_map' =>
         {
-            'person' => { '1' => { 'number' => { 'sing' => 'NI',
-                                                 'plur' => 'GU' }},
-                          '2' => { 'number' => { 'sing' => { 'politeness' => { 'inf' => 'HI',
-                                                                               '@'   => 'ZU' }},
-                                                 'plur' => 'ZUEK' }},
-                          '3' => { 'number' => { 'sing' => 'HURA',
-                                                 'plur' => 'HAIEK' }}}
+            'absperson' => { '1' => { 'absnumber' => { 'sing' => 'NI',
+                                                       'plur' => 'GU' }},
+                             '2' => { 'absnumber' => { 'sing' => { 'abspoliteness' => { 'inf' => 'HI',
+                                                                                        '@'   => 'ZU' }},
+                                                       'plur' => 'ZUEK' }},
+                             '3' => { 'absnumber' => { 'sing' => 'HURA',
+                                                       'plur' => 'HAIEK' }}}
         }
     );
     # AGREEMENT PERSON AND NUMBER OF THE ERGATIVE ARGUMENT ####################
@@ -573,7 +618,9 @@ sub _create_atoms
         {
             'ergperson' => { '1' => { 'ergnumber' => { 'sing' => 'NIK',
                                                        'plur' => 'GUK' }},
-                             '2' => { 'ergnumber' => { 'sing' => { 'ergpoliteness' => { 'inf' => 'HIK',
+                             '2' => { 'ergnumber' => { 'sing' => { 'ergpoliteness' => { 'inf' => { 'erggender' => { 'masc' => 'HIK-TO',
+                                                                                                                    'fem'  => 'HIK-NO',
+                                                                                                                    '@'    => 'HIK' }},
                                                                                         '@'   => 'ZUK' }},
                                                        'plur' => 'ZUEK-K' }},
                              '3' => { 'ergnumber' => { 'sing' => 'HARK',
@@ -600,7 +647,8 @@ sub _create_atoms
         {
             'datperson' => { '1' => { 'datnumber' => { 'sing' => 'NIRI',
                                                        'plur' => 'GURI' }},
-                             '2' => { 'datnumber' => { 'sing' => { 'datpoliteness' => { 'inf' => 'HIRI-NO',
+                             '2' => { 'datnumber' => { 'sing' => { 'datpoliteness' => { 'inf' => { 'datgender' => { 'fem' => 'HIRI-NO',
+                                                                                                                    '@'   => 'HIRI-TO' }},
                                                                                         '@'   => 'ZURI' }},
                                                        'plur' => 'ZUEI' }},
                              '3' => { 'datnumber' => { 'sing' => 'HARI',
@@ -638,10 +686,10 @@ sub _create_atoms
         'encode_map' =>
         {
             # finite verbs always have a non-empty value of person (the NOR feature)
-            'person' => { ''  => { 'aspect' => { 'perf' => 'BURU',
-                                                 'imp'  => 'EZBU',
-                                                 'pro'  => 'GERO' }},
-                          '@' => 'PNT' }
+            'absperson' => { ''  => { 'aspect' => { 'perf' => 'BURU',
+                                                    'imp'  => 'EZBU',
+                                                    'pro'  => 'GERO' }},
+                             '@' => 'PNT' }
         }
     );
     # ERL ####################
@@ -685,6 +733,7 @@ sub _create_atoms
                              'helb'  => 'HELB',
                              'kaus'  => 'KAUS',
                              'konpl' => 'KONPL',
+                             'kont'  => 'KONT',
                              'mod'   => 'MOD',
                              'mod/denb' => 'MOD/DENB',
                              'mos'   => 'MOS',
@@ -924,6 +973,7 @@ sub _create_atoms
         'gaindi', # overcome 1
         'gaindiko', # border 1
         'gainean', # on 33
+        'gaineko', # about
         'gainera', # also 9
         'gainerat', # 1
         'gainetik', # above 16
@@ -1018,6 +1068,27 @@ sub _create_features_all
 
 
 #------------------------------------------------------------------------------
+# Creates the list of surface CoNLL features that can appear in the FEATS
+# column with particular parts of speech. This list will be used in encode().
+#------------------------------------------------------------------------------
+sub _create_features_pos
+{
+    my $self = shift;
+    my %features =
+    (
+        ###!!! Někdy i určité sloveso má pád a číslo a já pak nevím, jak mám poznat, jestli ho uvést zvlášť, nebo ne!
+        'ADInfin' => ['PLU', 'MAI', 'ADM', 'ASP', 'ERL', 'KAS', 'NUM', 'MUG', 'MW', 'ENT'],
+        'ADIfin'  => ['ASP', 'ERL', 'KAS', 'NUM', 'MUG', 'MOD', 'MDN', 'NOR', 'NORK', 'NORI', 'HIT', 'MW', 'ENT'],
+        'ADL'     => ['ERL', 'KAS', 'NUM', 'MUG', 'MOD', 'MDN', 'NOR', 'NORK', 'NORI', 'HIT'],
+        'ADT'     => ['ASP', 'ERL', 'KAS', 'NUM', 'MUG', 'MOD', 'MDN', 'NOR', 'NORK', 'NORI', 'HIT', 'ENT'],
+        '@'       => $self->_create_features_all()
+    );
+    return \%features;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Decodes a physical tag (string) and returns the corresponding feature
 # structure.
 #------------------------------------------------------------------------------
@@ -1045,7 +1116,16 @@ sub encode
     my $atoms = $self->atoms();
     my $pos_subpos = $atoms->{pos}->encode($fs);
     my ($pos, $subpos) = split(/\t/, $pos_subpos);
-    my $feature_names = $self->features_all();
+    my $fpos = '@';
+    if($pos eq 'ADI')
+    {
+        $fpos = $fs->absperson() ne '' ? 'ADIfin' : 'ADInfin';
+    }
+    elsif($pos =~ m/^(ADL|ADT)$/)
+    {
+        $fpos = $pos;
+    }
+    my $feature_names = $self->get_feature_names($fpos);
     my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names, 0, ':');
     # For technical reasons, we do not allow two features with the same name, even if they are closely related ("POS:POSarte|POS:+").
     $tag =~ s/hasPOS:\+/POS:+/;
@@ -1057,7 +1137,8 @@ sub encode
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
 # Tags were collected from the corpus, 3945 distinct tags found.
-# 3945 total tags after adding a few to survive missing value of 'other'.
+# Removing tags considered to be errors...
+# Adding a few to survive missing value of 'other'...
 #------------------------------------------------------------------------------
 sub list
 {
@@ -1493,7 +1574,6 @@ ADI	SIN	MAI:SUP|ADM:PART|KAS:ABS|NUM:P|MUG:M
 ADI	SIN	MAI:SUP|ADM:PART|KAS:ABS|NUM:S|MUG:M
 ADI	SIN	MAI:SUP|ADM:PART|KAS:GEN|NUM:P|MUG:M
 ADI	SIN	MAI:SUP|ADM:PART|KAS:INE|NUM:S|MUG:M
-ADJ	ADJ	NUM:S|MUG:M|MW:B
 ADJ	ARR	BIZ:-
 ADJ	ARR	BIZ:-|KAS:ABS|MUG:MG
 ADJ	ARR	BIZ:-|KAS:ABS|NUM:P|MUG:M
@@ -1791,56 +1871,10 @@ ADJ	ARR	MAI:SUP|KAS:ABS|NUM:S|MUG:M
 ADJ	ARR	MAI:SUP|KAS:ERG|NUM:P|MUG:M
 ADJ	ARR	MAI:SUP|KAS:INE|NUM:S|MUG:M
 ADJ	ARR	_
-ADJ	ERKIND	MW:B
 ADJ	GAL	KAS:ABS|NUM:P|MUG:M
 ADJ	GAL	KAS:ABS|NUM:S|MUG:M
 ADJ	GAL	NUM:S|MUG:M|MW:B
 ADJ	GAL	_
-ADJ	SIN	KAS:ABS|NUM:S|MUG:M|MW:B
-ADL	ADL	ASP:PNT|ERL:BALD|MDN:A1|NOR:HURA
-ADL	ADL	ASP:PNT|ERL:BALD|MDN:A1|NOR:HURA|NORK:GUK
-ADL	ADL	ASP:PNT|ERL:BALD|MDN:A1|NOR:HURA|NORK:HAIEK-K
-ADL	ADL	ASP:PNT|ERL:BALD|MDN:B1|NOR:HAIEK
-ADL	ADL	ASP:PNT|ERL:BALD|MDN:B4|NOR:HURA
-ADL	ADL	ASP:PNT|ERL:DENB|MDN:B1|NOR:HURA|NORK:HARK
-ADL	ADL	ASP:PNT|ERL:ERLT|MDN:A1|NOR:HAIEK
-ADL	ADL	ASP:PNT|ERL:ERLT|MDN:A1|NOR:HAIEK|NORK:GUK
-ADL	ADL	ASP:PNT|ERL:ERLT|MDN:A1|NOR:HAIEK|NORK:HARK
-ADL	ADL	ASP:PNT|ERL:ERLT|MDN:A1|NOR:HURA
-ADL	ADL	ASP:PNT|ERL:ERLT|MDN:A1|NOR:HURA|NORI:HARI
-ADL	ADL	ASP:PNT|ERL:ERLT|MDN:A1|NOR:HURA|NORK:HARK
-ADL	ADL	ASP:PNT|ERL:KAUS|MDN:A1|NOR:HURA
-ADL	ADL	ASP:PNT|ERL:KAUS|MDN:A1|NOR:HURA|NORK:GUK
-ADL	ADL	ASP:PNT|ERL:KAUS|MDN:A1|NOR:HURA|NORK:HARK
-ADL	ADL	ASP:PNT|ERL:KAUS|MDN:B1|NOR:HURA
-ADL	ADL	ASP:PNT|ERL:KONPL|MDN:A1|NOR:HURA
-ADL	ADL	ASP:PNT|ERL:KONPL|MDN:A1|NOR:HURA|NORK:HARK
-ADL	ADL	ASP:PNT|ERL:KONPL|MDN:A1|NOR:NI
-ADL	ADL	ASP:PNT|ERL:KONPL|MDN:A5|NOR:HURA
-ADL	ADL	ASP:PNT|ERL:MOD/DENB|MDN:A1|NOR:HURA|NORK:HAIEK-K|NORI:GURI
-ADL	ADL	ASP:PNT|ERL:MOS|MDN:B1|NOR:HURA
-ADL	ADL	ASP:PNT|ERL:ZHG|MDN:B1|NOR:HURA
-ADL	ADL	ASP:PNT|MDN:A1|NOR:HAIEK
-ADL	ADL	ASP:PNT|MDN:A1|NOR:HAIEK|NORK:HAIEK-K
-ADL	ADL	ASP:PNT|MDN:A1|NOR:HAIEK|NORK:HARK
-ADL	ADL	ASP:PNT|MDN:A1|NOR:HURA
-ADL	ADL	ASP:PNT|MDN:A1|NOR:HURA|NORI:HAIEI
-ADL	ADL	ASP:PNT|MDN:A1|NOR:HURA|NORI:ZURI
-ADL	ADL	ASP:PNT|MDN:A1|NOR:HURA|NORK:GUK
-ADL	ADL	ASP:PNT|MDN:A1|NOR:HURA|NORK:HAIEK-K
-ADL	ADL	ASP:PNT|MDN:A1|NOR:HURA|NORK:HARK
-ADL	ADL	ASP:PNT|MDN:A1|NOR:HURA|NORK:HARK|NORI:HARI
-ADL	ADL	ASP:PNT|MDN:A1|NOR:NI|HIT:NO
-ADL	ADL	ASP:PNT|MDN:A5|NOR:HURA
-ADL	ADL	ASP:PNT|MDN:B1|NOR:HAIEK|NORK:HARK
-ADL	ADL	ASP:PNT|MDN:B1|NOR:HURA
-ADL	ADL	ASP:PNT|MDN:B1|NOR:HURA|NORK:GUK
-ADL	ADL	ASP:PNT|MDN:B1|NOR:HURA|NORK:HARK
-ADL	ADL	ASP:PNT|MDN:B1|NOR:HURA|NORK:HARK|NORI:HARI
-ADL	ADL	ASP:PNT|MDN:B1|NOR:HURA|NORK:ZUK
-ADL	ADL	ASP:PNT|MDN:B1|NOR:NI
-ADL	ADL	ASP:PNT|MDN:B2|NOR:HURA|NORK:HARK
-ADL	ADL	ASP:PNT|MDN:B7|NOR:HURA
 ADL	ADL	ERL:BALD|MDN:A1|NOR:GU
 ADL	ADL	ERL:BALD|MDN:A1|NOR:GU|NORI:HARI
 ADL	ADL	ERL:BALD|MDN:A1|NOR:HAIEK
@@ -2534,17 +2568,11 @@ ADL	ADL	MOD:EGI|MDN:B1|NOR:HURA|NORK:HAIEK-K
 ADL	ADL	MOD:EGI|MDN:B1|NOR:HURA|NORK:HARK
 ADL	ADL	MOD:EGI|MDN:B2|NOR:HAIEK|NORK:HAIEK-K
 ADL	ADL	MOD:EGI|MDN:B7|NOR:HURA
-ADL	ADL_IZEELI	ASP:PNT|KAS:ABS|NUM:P|MUG:M|MDN:A1|NOR:HAIEK|NORI:HAIEI
-ADL	ADL_IZEELI	ASP:PNT|KAS:ABS|NUM:S|MUG:M|MDN:A1|NOR:HURA
-ADL	ADL_IZEELI	ASP:PNT|KAS:ABS|NUM:S|MUG:M|MDN:A1|NOR:HURA|NORK:GUK
-ADL	ADL_IZEELI	ASP:PNT|KAS:ABS|NUM:S|MUG:M|MDN:A1|NOR:HURA|NORK:HARK
-ADL	ADL_IZEELI	ASP:PNT|KAS:DES|NUM:S|MUG:M|MDN:A1|NOR:HURA|NORK:HARK
-ADL	ADL_IZEELI	ASP:PNT|KAS:INE|NUM:S|MUG:M|MDN:B1|NOR:HURA|NORK:HARK
-ADL	ADL_IZEELI	ASP:PNT|KAS:MOT|NUM:S|MUG:M|MDN:A1|NOR:HURA
 ADL	ADL_IZEELI	KAS:ABL|NUM:P|MUG:M|MDN:A1|NOR:HURA|NORK:HAIEK-K
 ADL	ADL_IZEELI	KAS:ABS|MUG:MG|MDN:A1|NOR:HURA|NORK:HAIEK-K
 ADL	ADL_IZEELI	KAS:ABS|NUM:P|MUG:M|MDN:A1|NOR:GU|NORK:HAIEK-K
 ADL	ADL_IZEELI	KAS:ABS|NUM:P|MUG:M|MDN:A1|NOR:HAIEK
+ADL	ADL_IZEELI	KAS:ABS|NUM:P|MUG:M|MDN:A1|NOR:HAIEK|NORI:HAIEI
 ADL	ADL_IZEELI	KAS:ABS|NUM:P|MUG:M|MDN:A1|NOR:HAIEK|NORK:HAIEK-K
 ADL	ADL_IZEELI	KAS:ABS|NUM:P|MUG:M|MDN:A1|NOR:HAIEK|NORK:HARK|NORI:GURI
 ADL	ADL_IZEELI	KAS:ABS|NUM:P|MUG:M|MDN:A1|NOR:HURA|NORK:GUK
@@ -2624,6 +2652,8 @@ ADL	ADL_IZEELI	KAS:INE|NUM:P|MUG:M|MDN:A1|NOR:HAIEK
 ADL	ADL_IZEELI	KAS:INE|NUM:P|MUG:M|MDN:A1|NOR:NI
 ADL	ADL_IZEELI	KAS:INE|NUM:S|MUG:M|MDN:A1|NOR:HURA|NORK:HAIEK-K
 ADL	ADL_IZEELI	KAS:INS|NUM:S|MUG:M|MDN:B1|NOR:HURA|NORK:HAIEK-K
+ADL	ADL_IZEELI	KAS:INE|NUM:S|MUG:M|MDN:B1|NOR:HURA|NORK:HARK
+ADL	ADL_IZEELI	KAS:MOT|NUM:S|MUG:M|MDN:A1|NOR:HURA
 ADL	ADL_IZEELI	KAS:MOT|NUM:S|MUG:M|MDN:A1|NOR:HURA|NORK:HAIEK-K
 ADL	ADL_IZEELI	KAS:MOT|NUM:S|MUG:M|MDN:B1|NOR:GU|NORK:HARK
 ADL	ADL_IZEELI	KAS:MOT|NUM:S|MUG:M|MDN:B1|NOR:HURA|NORI:HARI
@@ -2673,6 +2703,7 @@ ADT	ADT	ASP:PNT|ERL:DENB|MDN:A1|NOR:HURA|NORK:HARK
 ADT	ADT	ASP:PNT|ERL:DENB|MDN:A1|NOR:NI
 ADT	ADT	ASP:PNT|ERL:DENB|MDN:B1|NOR:HAIEK|NORK:HARK
 ADT	ADT	ASP:PNT|ERL:DENB|MDN:B1|NOR:HURA
+ADT	ADT	ASP:PNT|ERL:DENB|MDN:B1|NOR:HURA|NORK:HARK
 ADT	ADT	ASP:PNT|ERL:ERLT|MDN:A1|NOR:GU
 ADT	ADT	ASP:PNT|ERL:ERLT|MDN:A1|NOR:GU|NORK:HAIEK-K
 ADT	ADT	ASP:PNT|ERL:ERLT|MDN:A1|NOR:HAIEK
@@ -2959,18 +2990,6 @@ ADT	ADT	ASP:PNT|MOD:EGI|MDN:B1|NOR:HURA|NORK:HARK
 ADT	ADT	ASP:PNT|MOD:EGI|MDN:B1|NOR:HURA|NORK:NIK
 ADT	ADT	ASP:PNT|MOD:EGI|MDN:B3|NOR:HURA|NORK:HARK
 ADT	ADT	ASP:PNT|MOD:EGI|MDN:B7|NOR:HURA
-ADT	ADT	ERL:DENB|MDN:B1|NOR:HURA|NORK:HARK
-ADT	ADT	ERL:ERLT|MDN:A1|NOR:HAIEK
-ADT	ADT	ERL:KAUS|MDN:A1|NOR:HURA
-ADT	ADT	ERL:KONPL|MDN:A1|NOR:HAIEK
-ADT	ADT	ERL:KONPL|MDN:A1|NOR:HURA
-ADT	ADT	ERL:KONPL|MDN:A1|NOR:HURA|NORK:HARK
-ADT	ADT	ERL:KONPL|MDN:B1|NOR:HAIEK
-ADT	ADT	ERL:KONPL|MDN:B1|NOR:HURA
-ADT	ADT	ERL:MOD/DENB|MDN:B1|NOR:HAIEK
-ADT	ADT	ERL:MOS|MDN:B1|NOR:HURA
-ADT	ADT	ERL:ZHG|MDN:A1|NOR:HURA
-ADT	ADT	MDN:B1|NOR:HURA|NORK:HARK
 ADT	ADT_IZEELI	ASP:PNT|KAS:ABL|NUM:S|MUG:M|MDN:B1|NOR:GU
 ADT	ADT_IZEELI	ASP:PNT|KAS:ABS|NUM:PH|MUG:M|MDN:A1|NOR:ZU|NORK:GUK
 ADT	ADT_IZEELI	ASP:PNT|KAS:ABS|NUM:P|MUG:M|MDN:A1|NOR:GU
@@ -3027,18 +3046,12 @@ ADT	ADT_IZEELI	ASP:PNT|KAS:INS|NUM:P|MUG:M|MDN:A1|NOR:HURA
 ADT	ADT_IZEELI	ASP:PNT|KAS:INS|NUM:P|MUG:M|MDN:A1|NOR:HURA|NORI:HARI
 ADT	ADT_IZEELI	ASP:PNT|KAS:INS|NUM:S|MUG:M|MDN:A1|NOR:HURA|NORI:HARI
 ADT	ADT_IZEELI	ASP:PNT|KAS:INS|NUM:S|MUG:M|MDN:A1|NOR:HURA|NORK:ZUK
-ADT	ARR	ASP:PNT|KAS:ABS|NUM:S|MUG:M|MDN:B1|NOR:HURA|ENT:Pertsona
 BEREIZ	BEREIZ	_
-BST	ARR	KAS:ABS|MUG:MG|MW:B
-BST	ARR	KAS:ALA|NUM:P|MUG:M|MW:B
-BST	ARR	KAS:DAT|NUM:P|MUG:M|MW:B
 BST	BST	ENT:Pertsona
 BST	BST	MTKAT:LAB
 BST	BST	MTKAT:LAB|KAS:ERG|NUM:P|MUG:M
 BST	BST	MW:B
 BST	BST	_
-BST	DZG	KAS:PAR|MUG:MG|MW:B
-BST	DZG	MW:B
 DET	BAN	KAS:ABS|MUG:MG
 DET	BAN	KAS:GEL
 DET	BAN	KAS:SOZ|MUG:MG
@@ -3171,7 +3184,6 @@ DET	DZH	NMG:P|KAS:GEN|MUG:MG
 DET	DZH	NMG:P|KAS:GEN|MUG:MG|MW:B
 DET	DZH	NMG:P|KAS:GEN|NUM:PH|MUG:M
 DET	DZH	NMG:P|KAS:GEN|NUM:P|MUG:M
-DET	DZH	NMG:P|KAS:GEN|NUM:P|MUG:M|MW:B|KAS:INE|POS:POSartean|POS:+
 DET	DZH	NMG:P|KAS:INE|MUG:MG
 DET	DZH	NMG:P|KAS:INE|NUM:PH|MUG:M|POS:POSartean|POS:+
 DET	DZH	NMG:P|KAS:INE|NUM:P|MUG:M
@@ -3706,7 +3718,6 @@ IZE	ARR	BIZ:+|KAS:GEN|MUG:MG
 IZE	ARR	BIZ:+|KAS:GEN|NUM:PH|MUG:M
 IZE	ARR	BIZ:+|KAS:GEN|NUM:P|MUG:M
 IZE	ARR	BIZ:+|KAS:GEN|NUM:P|MUG:M|ENT:Pertsona
-IZE	ARR	BIZ:+|KAS:GEN|NUM:P|MUG:M|MW:B|KAS:INE|POS:POSaurrean|POS:+
 IZE	ARR	BIZ:+|KAS:GEN|NUM:S|MUG:M
 IZE	ARR	BIZ:+|KAS:GEN|NUM:S|MUG:M|ENT:Pertsona
 IZE	ARR	BIZ:+|KAS:GEN|NUM:S|MUG:M|MW:B
@@ -3942,14 +3953,11 @@ IZE	ARR	BIZ:-|KAS:GEN|NUM:P|MUG:M|ENT:Erakundea
 IZE	ARR	BIZ:-|KAS:GEN|NUM:P|MUG:M|ENT:Pertsona
 IZE	ARR	BIZ:-|KAS:GEN|NUM:P|MUG:M|MW:B
 IZE	ARR	BIZ:-|KAS:GEN|NUM:P|MUG:M|MW:B|ENT:Erakundea
-IZE	ARR	BIZ:-|KAS:GEN|NUM:P|MUG:M|MW:B|KAS:ABS|POS:POSalde|POS:+
-IZE	ARR	BIZ:-|KAS:GEN|NUM:P|MUG:M|MW:B|KAS:GEL|POS:POSaldeko|POS:+
 IZE	ARR	BIZ:-|KAS:GEN|NUM:S|MUG:M
 IZE	ARR	BIZ:-|KAS:GEN|NUM:S|MUG:M|ENT:???
 IZE	ARR	BIZ:-|KAS:GEN|NUM:S|MUG:M|ENT:Erakundea
 IZE	ARR	BIZ:-|KAS:GEN|NUM:S|MUG:M|ENT:Pertsona
 IZE	ARR	BIZ:-|KAS:GEN|NUM:S|MUG:M|ENT:Tokia
-IZE	ARR	BIZ:-|KAS:GEN|NUM:S|MUG:M|MW:B|KAS:INE|POS:POSbaitan|POS:+
 IZE	ARR	BIZ:-|KAS:GEN|NUM:S|MUG:M|POS:POSgorakoen|POS:+
 IZE	ARR	BIZ:-|KAS:INE|MUG:MG
 IZE	ARR	BIZ:-|KAS:INE|MUG:MG|POS:POSartean|POS:+
@@ -4441,7 +4449,6 @@ IZE	IZB	BIZ:-|ZENB:-|NEUR:-|PLU:-|MTKAT:SIG|KAS:SOZ|NUM:S|MUG:M|ENT:Erakundea
 IZE	IZB	ENT:???
 IZE	IZB	ENT:Erakundea
 IZE	IZB	ENT:Pertsona
-IZE	IZB	IZAUR:-|KAS:ALA|NUM:S|MUG:M|MW:B|ENT:Tokia|KAS:ABS|POS:POSarte|POS:+
 IZE	IZB	IZAUR:-|KAS:INE|NUM:S|MUG:M|MW:B|ENT:Tokia
 IZE	IZB	KAS:ABS|NUM:S|MUG:M
 IZE	IZB	KAS:ABS|NUM:S|MUG:M|ENT:Pertsona
@@ -4713,7 +4720,6 @@ IZE	LIB	IZAUR:-|KAS:GEL|NUM:S|MUG:M|ENT:Tokia
 IZE	LIB	IZAUR:-|KAS:GEL|NUM:S|MUG:M|MW:B|ENT:Erakundea
 IZE	LIB	IZAUR:-|KAS:GEL|NUM:S|MUG:M|MW:B|ENT:Tokia
 IZE	LIB	IZAUR:-|KAS:GEN|NUM:P|MUG:M|MW:B|ENT:Erakundea
-IZE	LIB	IZAUR:-|KAS:GEN|NUM:S|MUG:M|MW:B|ENT:Erakundea|KAS:EM|POS:POSarabera|POS:+
 IZE	LIB	IZAUR:-|KAS:INE|NUM:P|MUG:M|MW:B|ENT:Tokia
 IZE	LIB	IZAUR:-|KAS:SOZ|NUM:P|MUG:M|MW:B|ENT:Erakundea
 IZE	LIB	IZAUR:-|MW:B|ENT:Erakundea
@@ -4793,7 +4799,6 @@ IZE	LIB	PLU:-|KAS:ABL|NUM:S|MUG:M|ENT:Tokia
 IZE	LIB	PLU:-|KAS:ABL|NUM:S|MUG:M|ENT:Tokia|POS:POSatzetik|POS:+
 IZE	LIB	PLU:-|KAS:ABL|NUM:S|MUG:M|ENT:Tokia|POS:POSaurretik|POS:+
 IZE	LIB	PLU:-|KAS:ABL|NUM:S|MUG:M|MW:B|ENT:Tokia
-IZE	LIB	PLU:-|KAS:ABL|NUM:S|MUG:M|MW:B|ENT:Tokia|KAS:ALA|POS:POSkanpora|POS:+
 IZE	LIB	PLU:-|KAS:ABS|MUG:MG|ENT:Erakundea
 IZE	LIB	PLU:-|KAS:ABS|MUG:MG|ENT:Tokia
 IZE	LIB	PLU:-|KAS:ABS|NUM:P|MUG:M|ENT:Tokia
@@ -4875,7 +4880,6 @@ IZE	LIB	PLU:-|KAS:GEN|NUM:S|MUG:M|ENT:Pertsona
 IZE	LIB	PLU:-|KAS:GEN|NUM:S|MUG:M|ENT:Tokia
 IZE	LIB	PLU:-|KAS:GEN|NUM:S|MUG:M|MW:B
 IZE	LIB	PLU:-|KAS:GEN|NUM:S|MUG:M|MW:B|ENT:Erakundea
-IZE	LIB	PLU:-|KAS:GEN|NUM:S|MUG:M|MW:B|ENT:Erakundea|KAS:GEL|POS:POSaldeko|POS:+
 IZE	LIB	PLU:-|KAS:GEN|NUM:S|MUG:M|MW:B|ENT:Tokia
 IZE	LIB	PLU:-|KAS:INE|NUM:S|MUG:M
 IZE	LIB	PLU:-|KAS:INE|NUM:S|MUG:M|ENT:Erakundea
@@ -4888,7 +4892,6 @@ IZE	LIB	PLU:-|KAS:INE|NUM:S|MUG:M|ENT:Tokia|POS:POSbarruan|POS:+
 IZE	LIB	PLU:-|KAS:INE|NUM:S|MUG:M|ENT:Tokia|POS:POSeskuetan|POS:+
 IZE	LIB	PLU:-|KAS:INE|NUM:S|MUG:M|MW:B|ENT:Erakundea
 IZE	LIB	PLU:-|KAS:INE|NUM:S|MUG:M|MW:B|ENT:Tokia
-IZE	LIB	PLU:-|KAS:INE|NUM:S|MUG:M|MW:B|ENT:Tokia|KAS:EM|POS:POSzehar|POS:+
 IZE	LIB	PLU:-|KAS:INS|NUM:S|MUG:M|ENT:Tokia
 IZE	LIB	PLU:-|KAS:PRO|NUM:S|MUG:M|ENT:Tokia
 IZE	LIB	PLU:-|KAS:SOZ|NUM:S|MUG:M

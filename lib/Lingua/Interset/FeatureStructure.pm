@@ -681,11 +681,25 @@ my %matrix = @_matrix =
         ],
         'uname' => 'Number[psee]'
     },
+    # Person of the absolutive argument of the verb.
+    # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
+    'absperson' =>
+    {
+        'priority' => 400,
+        'values' => ['1', '2', '3', ''],
+        'replacements' =>
+        [
+            ['3'],
+            ['1'],
+            ['2']
+        ],
+        'uname' => 'Person[abs]'
+    },
     # Person of the ergative argument of the verb.
     # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
     'ergperson' =>
     {
-        'priority' => 400,
+        'priority' => 401,
         'values' => ['1', '2', '3', ''],
         'replacements' =>
         [
@@ -699,7 +713,7 @@ my %matrix = @_matrix =
     # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
     'datperson' =>
     {
-        'priority' => 401,
+        'priority' => 402,
         'values' => ['1', '2', '3', ''],
         'replacements' =>
         [
@@ -709,11 +723,25 @@ my %matrix = @_matrix =
         ],
         'uname' => 'Person[dat]'
     },
+    # Number of the absolutive argument of the verb.
+    # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
+    'absnumber' =>
+    {
+        'priority' => 403,
+        'values' => ['sing', 'dual', 'plur', ''],
+        'replacements' =>
+        [
+            ['sing'],
+            ['dual', 'plur'],
+            ['plur']
+        ],
+        'uname' => 'Number[abs]'
+    },
     # Number of the ergative argument of the verb.
     # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
     'ergnumber' =>
     {
-        'priority' => 402,
+        'priority' => 404,
         'values' => ['sing', 'dual', 'plur', ''],
         'replacements' =>
         [
@@ -727,7 +755,7 @@ my %matrix = @_matrix =
     # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
     'datnumber' =>
     {
-        'priority' => 403,
+        'priority' => 405,
         'values' => ['sing', 'dual', 'plur', ''],
         'replacements' =>
         [
@@ -737,11 +765,24 @@ my %matrix = @_matrix =
         ],
         'uname' => 'Number[dat]'
     },
+    # Politeness of the absolutive argument of the verb.
+    # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
+    'abspoliteness' =>
+    {
+        'priority' => 406,
+        'values' => ['inf', 'pol', ''],
+        'replacements' =>
+        [
+            ['inf'],
+            ['pol']
+        ],
+        'uname' => 'Polite[abs]'
+    },
     # Politeness of the ergative argument of the verb.
     # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
     'ergpoliteness' =>
     {
-        'priority' => 404,
+        'priority' => 407,
         'values' => ['inf', 'pol', ''],
         'replacements' =>
         [
@@ -754,7 +795,7 @@ my %matrix = @_matrix =
     # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
     'datpoliteness' =>
     {
-        'priority' => 405,
+        'priority' => 408,
         'values' => ['inf', 'pol', ''],
         'replacements' =>
         [
@@ -762,6 +803,36 @@ my %matrix = @_matrix =
             ['pol']
         ],
         'uname' => 'Polite[dat]'
+    },
+    # Gender of the ergative argument of the verb.
+    # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
+    'erggender' =>
+    {
+        'priority' => 409,
+        'values' => ['masc', 'fem', 'com', 'neut', ''],
+        'replacements' =>
+        [
+            ['neut'],
+            ['com', 'masc', 'fem'],
+            ['masc', 'com'],
+            ['fem', 'com']
+        ],
+        'uname' => 'Gender[erg]'
+    },
+    # Gender of the dative argument of the verb.
+    # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
+    'datgender' =>
+    {
+        'priority' => 410,
+        'values' => ['masc', 'fem', 'com', 'neut', ''],
+        'replacements' =>
+        [
+            ['neut'],
+            ['com', 'masc', 'fem'],
+            ['masc', 'com'],
+            ['fem', 'com']
+        ],
+        'uname' => 'Gender[dat]'
     },
     # Subcategorization.
     # So far this feature only keeps the transitive-intransitive distinction encoded in some tagsets.
