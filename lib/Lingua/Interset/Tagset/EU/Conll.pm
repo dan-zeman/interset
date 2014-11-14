@@ -192,7 +192,8 @@ sub _create_atoms
         {
             'pos' => { 'noun' => 'IZE',
                        'adj'  => 'ADJ',
-                       'verb' => 'ADI',
+                       'verb' => { 'other/verbtype' => { 'tako' => "ADI\tADI_IZEELI",
+                                                         '@'    => "ADI\tADI" }},
                        'adv'  => { 'prontype' => { 'int' => "ADB\tGAL",
                                                    '@'   => "ADB\tARR" }},
                        'conj' => 'LOT',
@@ -308,24 +309,37 @@ sub _create_atoms
         {
             ###!!! Problém! NUM je samostatný rys, který tuto hodnotu přeplácne obyčejným množným číslem!
             '+' => ['number' => 'ptan'],
-            '-' => []
+            '-' => ['other' => {'plu' => 'no'}]
         },
         'encode_map' =>
         {
             'number' => { 'ptan' => '+',
-                          '@'    => '-' }
+                          '@'    => { 'other/plu' => { 'no' => '-',
+                                                       '@'  => '' }}}
         }
     );
     # NUMBER ####################
-    $atoms{NUM} = $self->create_simple_atom
+    $atoms{NUM} = $self->create_atom
     (
-        'intfeature' => 'number',
-        'simple_decode_map' =>
+        'surfeature' => 'number',
+        'decode_map' =>
         {
-            'S'  => 'sing',
-            'P'  => 'plur',
-            ###!!!??? - adjectives, determiners and nouns (maiteok = dear, gehienok = most, biok [bi=two], laurok [lau=four], denok, guztiok)
-            'PH' => ''
+            'S'  => ['number' => 'sing'],
+            'P'  => ['number' => 'plur'],
+            # According to http://en.wikipedia.org/wiki/Basque_grammar#Noun_phrase, there are two forms of plural in Basque: proximal ("these houses") and neutral ("the houses").
+            # The proximal forms occur rarely. The tagset covers both under the NUM feature: NUM:P ... neutral plural; NUM:PH ... proximal plural.
+            #    -a, -a(r)- singular article (etxea = the house)
+            #    -ak, -e- plural article (etxeak = the houses)
+            #    -ok, -o- plural proximal article (etxeok = these houses)
+            #    -(r)ik negative-polar article (partitive suffix) (etxerik = no houses (in "there are no houses"))
+            # Examples from BDT: maiteok = dear, gehienok = most, biok [bi=two], laurok [lau=four], denok, guztiok
+            'PH' => ['number' => 'plur', 'other' => {'number' => 'proximal'}]
+        },
+        'encode_map' =>
+        {
+            'number' => { 'sing' => 'S',
+                          'plur' => { 'other/number' => { 'proximal' => 'PH',
+                                                          '@'        => 'P' }}}
         }
     );
     # DETERMINEDNESS OF NUMBER ####################
@@ -605,15 +619,29 @@ sub _create_atoms
         }
     );
     # ASPECT ####################
-    $atoms{ASP} = $self->create_simple_atom
+    $atoms{ASP} = $self->create_atom
     (
-        'intfeature' => 'aspect',
-        'simple_decode_map' =>
+        'surfeature' => 'aspect',
+        'decode_map' =>
         {
-            'PNT'  => '', # composed verbs, finite forms of synthetic verbs (dugu, daukagu, dakigu, darabilgu, diogu)
-            'BURU' => 'perf', # burutua / perfect (izan, egin, esan, eman, hasi)
-            'EZBU' => 'imp', # ezburutua / imperfect (izaten, egiten, ematen, ikusten, erabiltzen)
-            'GERO' => 'pro' # geroa / prospective (izango, egingo, jokatuko, egongo, hartuko)
+            # burutua / perfect (izan, egin, esan, eman, hasi)
+            'BURU' => ['aspect' => 'perf'],
+            # ezburutua / imperfect (izaten, egiten, ematen, ikusten, erabiltzen)
+            'EZBU' => ['aspect' => 'imp'],
+            # geroa / prospective (izango, egingo, jokatuko, egongo, hartuko)
+            'GERO' => ['aspect' => 'pro'],
+            # finite forms of synthetic, auxiliary and compound verbs have a special value of "aspect", meaning that aspect is irrelevant for them
+            # (dugu, daukagu, dakigu, darabilgu, diogu)
+            # We do not set verbform=fin here because we do not want to clash with verbform possibly set during the decoding of part of speech.
+            'PNT'  => []
+        },
+        'encode_map' =>
+        {
+            # finite verbs always have a non-empty value of person (the NOR feature)
+            'person' => { ''  => { 'aspect' => { 'perf' => 'BURU',
+                                                 'imp'  => 'EZBU',
+                                                 'pro'  => 'GERO' }},
+                          '@' => 'PNT' }
         }
     );
     # ERL ####################
@@ -783,17 +811,24 @@ sub _create_atoms
     # Postpositions are attached using underscore to the preceding noun, pronoun, adjective, determiner or adverb.
     # The joined token has the POS feature set twice: once just "POS:+" to mark that there is a postposition,
     # and once indicating the concrete postposition. Note that a postposition attached using '_' does not trigger the MW:B feature!
-    $atoms{POS} = $self->create_atom
+    # For technical reasons, we do not allow two features with the same name, even if they are closely related ("POS:POSarte|POS:+").
+    $atoms{hasPOS} = $self->create_atom
     (
-        'surfeature' => 'pos',
+        'surfeature' => 'haspos',
         'decode_map' =>
         {
             '+' => ['other' => {'has_postposition' => 'yes'}]
         },
         'encode_map' =>
         {
-            'other/postposition' => { }
+            'other/has_postposition' => { 'yes' => '+' }
         }
+    );
+    $atoms{POS} = $self->create_atom
+    (
+        'surfeature' => 'pos',
+        'decode_map' => {},
+        'encode_map' => { 'other/postposition' => {} }
     );
     my $dm = $atoms{POS}->decode_map();
     my $em = $atoms{POS}->encode_map();
@@ -961,7 +996,6 @@ sub _create_atoms
         $dm->{$value} = ['other' => {'postposition' => $p}];
         $em->{'other/postposition'}{$p} = $value;
     }
-    $em->{'other/postposition'}{'@'} = {'other/has_postposition' => { 'yes' => '+' }};
     return \%atoms;
 }
 
@@ -976,7 +1010,8 @@ sub _create_features_all
     my $self = shift;
     # POS JE NEKDY PRED KAS, NEKDY ZA KAS
     # ADM ASP ERL MDN NOR NORK NORI MAI BIZ IZAUR PER NMG KAS POS NUM MUG MW ENT
-    my @features = ('ENT', 'MTKAT', 'IZAUR', 'BIZ', 'ZENB', 'NEUR', 'PLU', 'NUM', 'MUG', 'NMG', 'KAS', 'MAI', 'PER', 'NOR', 'NORK', 'NORI', 'ADM', 'ASP', 'ERL', 'MDN', 'MOD', 'HIT', 'KLM', 'MW', 'POS');
+    my @features = ('ENT', 'MTKAT', 'IZAUR', 'BIZ', 'ZENB', 'NEUR', 'PLU', 'NUM', 'MUG', 'NMG', 'KAS', 'MAI',
+                    'PER', 'NOR', 'NORK', 'NORI', 'ADM', 'ASP', 'ERL', 'MDN', 'MOD', 'HIT', 'KLM', 'MW', 'POS', 'hasPOS');
     return \@features;
 }
 
@@ -990,6 +1025,8 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
+    # For technical reasons, we do not allow two features with the same name, even if they are closely related ("POS:POSarte|POS:+").
+    $tag =~ s/POS:\+/hasPOS:+/;
     my $fs = $self->decode_conll($tag, 'eu::conll', 'both', ':');
     # Default feature values. Used to improve collaboration with other drivers.
     # ... nothing yet ...
@@ -1009,7 +1046,9 @@ sub encode
     my $pos_subpos = $atoms->{pos}->encode($fs);
     my ($pos, $subpos) = split(/\t/, $pos_subpos);
     my $feature_names = $self->features_all();
-    my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names);
+    my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names, 0, ':');
+    # For technical reasons, we do not allow two features with the same name, even if they are closely related ("POS:POSarte|POS:+").
+    $tag =~ s/hasPOS:\+/POS:+/;
     return $tag;
 }
 

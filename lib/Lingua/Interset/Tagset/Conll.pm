@@ -118,6 +118,8 @@ sub encode_conll
     my $feature_names = shift;
     # By default, feature names are included (e.g. "gender=masc"). Some CoNLL tagsets contain only values without feature names (e.g. "masc").
     my $value_only = shift;
+    my $delimiter = shift; # Feature-value delimiter. Default is '=' but eu::conll has ':' and Hyderabad tagsets have '-'.
+    $delimiter = '=' if(!defined($delimiter));
     my $atoms = $self->atoms();
     my @features;
     foreach my $name (@{$feature_names})
@@ -134,7 +136,7 @@ sub encode_conll
             }
             else
             {
-                push(@features, "$name=$value");
+                push(@features, $name.$delimiter.$value);
             }
         }
     }
