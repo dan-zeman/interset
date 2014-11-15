@@ -109,28 +109,13 @@ sub _create_atoms
             "ADJ\tARR" => ['pos' => 'adj'],
             # (aldi_bereko = at the same time, simultaneous)
             "ADJ\tERKIND" => ['pos' => 'adj'],
-            # adjektiboa, galdera = adjective, question (nolakoa = what, nongoa = where)
-            "ADJ\tGAL" => ['pos' => 'adj', 'prontype' => 'int'],
+            # adjektiboa, galdera = adjective, question
+            # There are also interrogative determiners (DET NOLGAL) and I do not know how the borderline is defined.
+            # ADJ GAL: nolako = what, zer-nolako = what, nolakoa = what, nongoa = where of
+            # DET NOLGAL: zein = which, zer = what, zenbat = how many
+            "ADJ\tGAL" => ['pos' => 'adj', 'prontype' => 'int', 'other' => {'determiner' => 'no'}],
             # adjective [error?] (ongi_etorria = welcome to)
             "ADJ\tSIN" => ['pos' => 'adj'],
-
-            # bereiz = separator (", (, ), -, », «, /, ', *, [, ], +, `)
-            "BEREIZ\tBEREIZ"             => ['pos' => 'punc'],
-            # punt marka = punctuation (, . ... ! ? : ;)
-            "PUNT_MARKA\tPUNT_BI_PUNT"   => ['pos' => 'punc', 'punctype' => 'colo'], # :
-            "PUNT_MARKA\tPUNT_ESKL"      => ['pos' => 'punc', 'punctype' => 'excl'], # !
-            "PUNT_MARKA\tPUNT_GALD"      => ['pos' => 'punc', 'punctype' => 'qest'], # ?
-            "PUNT_MARKA\tPUNT_HIRU"      => ['pos' => 'punc', 'punctype' => 'peri'], # ...
-            "PUNT_MARKA\tPUNT_KOMA"      => ['pos' => 'punc', 'punctype' => 'comm'], # ,
-            "PUNT_MARKA\tPUNT_PUNT"      => ['pos' => 'punc', 'punctype' => 'peri'], # .
-            "PUNT_MARKA\tPUNT_PUNT_KOMA" => ['pos' => 'punc', 'punctype' => 'semi'], # ;
-
-            # beste = other (eta_abar = etc.)
-            "BST\tARR" => [],
-            # beste = other (baino = than, de = of, ohi = usually, ea = whether, ezta = or)
-            "BST\tBST" => [],
-            # other, indefinite (ez_beste, ez_besterik = only, no other)
-            "BST\tDZG" => [],
 
             # determiner, quantifier, distributive = banatu (bana = one each, 6na, 25na, bedera = at least, bina = two)
             "DET\tBAN" => ['pos' => 'num', 'numtype' => 'dist'],
@@ -146,27 +131,37 @@ sub _create_atoms
             # determiner, demonstrative, emphatic/strong = determinatzaile, erakusleak, indartsu
             # (bera = the same) ###!!! ??? reflexive ???
             "DET\tERKIND" => ['pos' => 'adj', 'prontype' => 'dem', 'reflex' => 'reflex'],
-            # determiner, indefinite common (edozer = any)
-            "DET\tNOLARR" => ['pos' => 'adj', 'prontype' => 'ind'],
-            # determiner, indefinite question (zer = what, zenbat = how many, zein = which)
+            # determiner, indefinite common
+            # (edozein = anything, ezein = none, zernahi = whatever)
+            "DET\tNOLARR" => ['pos' => 'adj', 'prontype' => 'ind|neg'],
+            # determiner, indefinite question
+            # There are also interrogative adjectives (ADJ GAL) and I do not know how the borderline is defined.
+            # ADJ GAL: nolako = what, zer-nolako = what, nolakoa = what, nongoa = where of
+            # DET NOLGAL: zein = which, zer = what, zenbat = how many
             "DET\tNOLGAL" => ['pos' => 'adj', 'prontype' => 'int'],
-            # determiner, ordinal (lehen = first, aurren = first, bigarren = second, hirugarren = third, azken = last)
-            "DET\tORD" => ['pos' => 'num', 'numtype' => 'ord'],
-            # determiner, general (guzti = all, dena = everything)
-            "DET\tORO" => ['pos' => 'adj', 'subpos' => 'det', 'prontype' => 'tot'],
+            # determiner, ordinal = determinatzaile, ordinal
+            # (lehen = first, aurren = first, bigarren = second, hirugarren = third, azken = last)
+            "DET\tORD" => ['pos' => 'adj', 'numtype' => 'ord'],
+            # determiner, general/total
+            # (oro = every, guzti = all, dena = everything)
+            "DET\tORO" => ['pos' => 'adj', 'prontype' => 'tot'],
 
-            "ERL\tERL" => [], # [error?] (bait = because)
-            "HAOS\tHAOS" => [], # (ari, komeni, berrogoita, hogeita)
-            # pronoun, reciprocal (elkar = each other)
-            "IOR\tELK" => ['pos' => 'noun', 'prontype' => 'rcp'],
-            # pronoun, question (nor = who)
-            "IOR\tIZGGAL" => ['pos' => 'noun', 'prontype' => 'int'],
-            # pronoun, indefinite (ezer = nothing, zerbait = something, inor = no one, zertxobait = somewhat, norbait = someone)
-            "IOR\tIZGMGB" => ['pos' => 'noun', 'prontype' => 'ind'],
-            # pronoun, personal common (ni = I, hi = thou, hura = he/she/it, gu = we, zu, zuek = you, haiek = they)
+            # pronoun, personal common = izenordain, pertsonal arrunt
+            # (ni = I, hi = thou, hura = he/she/it, gu = we, zu, zuek = you, haiek = they)
             "IOR\tPERARR" => ['pos' => 'noun', 'prontype' => 'prs'],
-            # pronoun, personal emphatic (neu, heu, geu, zeu)
+            # pronoun, personal emphatic/strong = izenordain, pertsonal indartsu
+            # (neu, heu, geu, zeu)
             "IOR\tPERIND" => ['pos' => 'noun', 'prontype' => 'prs', 'variant' => 1],
+            # pronoun, reciprocal = izenordain, ...
+            # (elkar = each other)
+            "IOR\tELK" => ['pos' => 'noun', 'prontype' => 'rcp'],
+            # pronoun, question = izenordain, galdera
+            # (nor = who)
+            "IOR\tIZGGAL" => ['pos' => 'noun', 'prontype' => 'int'],
+            # pronoun, indefinite = izenordain, mugagabea
+            # (ezer = nothing, zerbait = something/anything, inor = anyone/none, zertxobait = somewhat, norbait = someone, edonor = anyone)
+            "IOR\tIZGMGB" => ['pos' => 'noun', 'prontype' => 'ind|neg'],
+
             # interjection, [error?]
             "ITJ\tARR" => ['pos' => 'int'],
             # interjekzioa = interjection (beno, ha, tira, dzast, ea)
@@ -198,14 +193,47 @@ sub _create_atoms
             "LOT\tMEN" => ['pos' => 'conj', 'subpos' => 'sub'],
             # partikula = particle (ez, ezetz = no/not, bai, baietz = yes, al = to, ote = whether, omen = it seems)
             "PRT\tPRT" => ['pos' => 'part'],
+
+            # bereiz = separator (", (, ), -, », «, /, ', *, [, ], +, `)
+            "BEREIZ\tBEREIZ"             => ['pos' => 'punc'],
+            # punt marka = punctuation (, . ... ! ? : ;)
+            "PUNT_MARKA\tPUNT_BI_PUNT"   => ['pos' => 'punc', 'punctype' => 'colo'], # :
+            "PUNT_MARKA\tPUNT_ESKL"      => ['pos' => 'punc', 'punctype' => 'excl'], # !
+            "PUNT_MARKA\tPUNT_GALD"      => ['pos' => 'punc', 'punctype' => 'qest'], # ?
+            "PUNT_MARKA\tPUNT_HIRU"      => ['pos' => 'punc', 'punctype' => 'peri'], # ...
+            "PUNT_MARKA\tPUNT_KOMA"      => ['pos' => 'punc', 'punctype' => 'comm'], # ,
+            "PUNT_MARKA\tPUNT_PUNT"      => ['pos' => 'punc', 'punctype' => 'peri'], # .
+            "PUNT_MARKA\tPUNT_PUNT_KOMA" => ['pos' => 'punc', 'punctype' => 'semi'], # ;
+
+            "ERL\tERL" => [], # [error?] (bait = because)
+            "HAOS\tHAOS" => [], # (ari, komeni, berrogoita, hogeita)
+
+            # beste = other (eta_abar = etc.)
+            "BST\tARR" => [],
+            # beste = other (baino = than, de = of, ohi = usually, ea = whether, ezta = or)
+            "BST\tBST" => [],
+            # other, indefinite (ez_beste, ez_besterik = only, no other)
+            "BST\tDZG" => [],
+
         },
         'encode_map' =>
         {
-            'pos' => { 'noun' => 'IZE',
+            'pos' => { 'noun' => { 'prontype' => { 'prs' => { 'variant' => { '1' => "IOR\tPERIND",
+                                                                             '@' => "IOR\tPERARR" }},
+                                                   'rcp' => "IOR\tELK",
+                                                   'int' => "IOR\tIZGGAL",
+                                                   'ind' => "IOR\tIZGMGB",
+                                                   'neg' => "IOR\tIZGMGB",
+                                                   '@'   => "IZE\tARR" }},
                        'adj'  => { 'prontype' => { 'dem' => { 'reflex' => { 'reflex' => "DET\tERKIND",
                                                                             '@'      => "DET\tERKARR" }},
-                                                   'int' => "ADJ\tGAL",
-                                                   '@'   => "ADJ\tARR" }},
+                                                   'int' => { 'other/determiner' => { 'no' => "ADJ\tGAL",
+                                                                                      '@'  => "DET\tNOLGAL" }},
+                                                   'ind' => "DET\tNOLARR",
+                                                   'neg' => "DET\tNOLARR",
+                                                   'tot' => "DET\tORO",
+                                                   '@'   => { 'numtype' => { 'ord' => "DET\tORD",
+                                                                             '@'   => "ADJ\tARR" }}}},
                        'num'  => { 'numtype' => { 'dist' => "DET\tBAN",
                                                   '@'    => { 'prontype' => { 'ind' => "DET\tDZG",
                                                                               '@'   => "DET\tDZH" }}}},
