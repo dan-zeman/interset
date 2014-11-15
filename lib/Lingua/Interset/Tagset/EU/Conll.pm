@@ -162,29 +162,46 @@ sub _create_atoms
             # (ezer = nothing, zerbait = something/anything, inor = anyone/none, zertxobait = somewhat, norbait = someone, edonor = anyone)
             "IOR\tIZGMGB" => ['pos' => 'noun', 'prontype' => 'ind|neg'],
 
+            # izenak = nombres = nouns
+            # noun, common = izen, arrunt
+            # (gizona = man, jokalaria = player, txapelduna = champion)
+            # (partidua = player, aukera = opportunity, taldea = group, garaipena = victory, beharra = need)
+            "IZE\tARR" => ['pos' => 'noun', 'nountype' => 'com'],
+            # proper noun = izen egokia (besides ENT:Pertsona, there are also ENT:Erakundea and ENT:Tokia)
+            # IZE IZB ENT:Pertsona (Juan, Miguel, Javier, Carlos, Guzman)
+            # IZE IZB PLU:-|KAS:ABS|NUM:S|MUG:M (Olano, Perez, Mendizabal, Ganix, Tauziat)
+            # IZE IZB PLU:-|KAS:ABS|NUM:S|MUG:M|ENT:Pertsona (Andreas, Jontxu, Milosevic, Eli, Arafat)
+            "IZE\tIZB" => ['pos' => 'noun', 'nountype' => 'prop'],
+            # place name? (besides ENT:Tokia, there are also ENT:Erakundea and ENT:Pertsona)
+            # IZE LIB PLU:-|KAS:ABS|NUM:S|MUG:M|ENT:Tokia (Frantzia, Bizkaia, Errusia, Zaragoza, Gipuzkoa)
+            # IZE LIB PLU:+|KAS:ABS|NUM:P|MUG:M|ENT:Tokia (Bahamak, Molukak, Filipinak)
+            "IZE\tLIB" => ['pos' => 'noun', 'nountype' => 'prop', 'variant' => '1'],
+            # izen = noun, adverbial (adverb with nominal inflection)
+            # (atzokoa = yesterday, kontrakoa = opposite, gaurkoa = present, araberakoa = depending on, biharkoa = tomorrow)
+            "IZE\tADB_IZEELI" => ['pos' => 'noun', 'other' => {'derfrompos' => 'adv'}],
+            # izen = noun, adjectival (adjective with nominal inflection)
+            # (handikoa = high, hutsezkoa = empty, nagusietakoa = main, agortezinezkoa = inexhaustible, txikikoa = low)
+            "IZE\tADJ_IZEELI" => ['pos' => 'noun', 'other' => {'derfrompos' => 'adj'}],
+            # izen = noun, determinal (determiner with nominal inflection)
+            # (batena = one, batekoa = one, berea = percent, guztiona = everyone, berekoa = the same)
+            "IZE\tDET_IZEELI" => ['pos' => 'noun', 'other' => {'derfrompos' => 'det'}],
+            # izen = noun, pronominal
+            # This tag is rare because most pronouns already have nominal inflection. Only the independent forms of possessive pronouns fall here.
+            # (nirea = mine, geurea = ours, zuena = yours)
+            "IZE\tIOR_IZEELI" => ['pos' => 'noun', 'prontype' => 'prs', 'poss' => 'poss'],
+            # izen = noun, denominal (noun with secondary nominal inflection after the -ko (locative genitive) suffix)
+            # For example, "maila" = "degree, level"; "mailak" = "degrees, levels"; "mailako", "mailakoa" = "level", "mailakoak" = "levels".
+            # alde = side, aldekoa = supporter, fan
+            # (mailakoa = level, aldekoa = fan, pezetakoa = peseta, artekoa = art, beharrekoa = necessity)
+            "IZE\tIZE_IZEELI" => ['pos' => 'noun', 'other' => {'derfrompos' => 'noun'}],
+            # izen, zenbaki = noun, number (name of number, number with nominal inflection)
+            # (biak = two, hiruak = three, hamabiak = twelve, 22raino = until 22, 1996tik = since 1996)
+            "IZE\tZKI" => ['pos' => 'num', 'numtype' => 'card'],
+
             # interjection, [error?]
             "ITJ\tARR" => ['pos' => 'int'],
             # interjekzioa = interjection (beno, ha, tira, dzast, ea)
             "ITJ\tITJ" => ['pos' => 'int'],
-            # izenak = nombres = nouns
-            # izen = noun, adverbial (araberakoak = according to, kontrakoak = against, betikoak = always)
-            "IZE\tADB_IZEELI" => ['pos' => 'noun'],
-            # izen = noun, adjectival (handikoa = high, hutsezkoa = empty, nagusietakoa = main)
-            "IZE\tADJ_IZEELI" => ['pos' => 'noun'],
-            # noun, common (jokalari = player, pertsona = person, soldadu = soldier)
-            "IZE\tARR" => ['pos' => 'noun'],
-            # izen = noun, determinal (batena, batekoa = one, berea = percent)
-            "IZE\tDET_IZEELI" => ['pos' => 'noun'],
-            # izen = noun, pronominal (nireak = mine, geurea = our, zuena)
-            "IZE\tIOR_IZEELI" => ['pos' => 'noun'],
-            # proper noun (Jean, EAJ, Espainiako_Erregearen_Gabonetako)
-            "IZE\tIZB" => ['pos' => 'noun', 'subpos' => 'prop'],
-            # izen = noun, denominal (mailakoa = level, aldekoa = support, pezetakoa = peseta)
-            "IZE\tIZE_IZEELI" => ['pos' => 'noun'],
-            # place name (Bahamak, Molukak, Filipinak)
-            "IZE\tLIB" => ['pos' => 'noun', 'subpos' => 'prop'],
-            # izen = noun, number (biak = two, hiruak = three, hamabiak = twelve, 22raino = until 22, 1996tik = since 1996)
-            "IZE\tZKI" => ['pos' => 'num', 'numtype' => 'card'],
             # conjunction (baina = but, baino = than, izan_ezik = except for, ez_baina = but not, eta = and, baita = and, ezta = or, ez_ezik = in addition to, baita_ere = also, edo = or, zein = and, ala = or, edota = or, nahiz = and)
             "LOT\tJNT" => ['pos' => 'conj', 'subpos' => 'coor'],
             # connector (hala_ere = but, baldin = if/or, ere = also, bestalde = in addition, batez_ere = especially, batik_bat = mainly, are_gehiago = more so, hots = that, bestela = or, osterantzean = moreover, ezen = that, zeren_eta = because, alde_batetik = on the one hand, besterik_gabe = just, beraz = so)
@@ -205,8 +222,21 @@ sub _create_atoms
             "PUNT_MARKA\tPUNT_PUNT"      => ['pos' => 'punc', 'punctype' => 'peri'], # .
             "PUNT_MARKA\tPUNT_PUNT_KOMA" => ['pos' => 'punc', 'punctype' => 'semi'], # ;
 
-            "ERL\tERL" => [], # [error?] (bait = because)
-            "HAOS\tHAOS" => [], # (ari, komeni, berrogoita, hogeita)
+            # relation = erlazio
+            # Is this an error? There are only three occurrences of the word "bait" (because, since). But the word does not occur with any other tag.
+            "ERL\tERL" => ['pos' => 'conj', 'subpos' => 'sub'],
+            # HAOS: 40 occurrences, 36 of which go to the word "ari".
+            # It is a special verb, meaning "be engaged in", used to form progressive periphrases.
+            # http://books.google.cz/books?id=Kss999lxKm0C&pg=PA287&lpg=PA287&dq=ari+basque&source=bl&ots=J3K8bKW9TT&sig=t11oLSyx76b8AhtZMufo-SVrpL4&hl=cs&sa=X&ei=vDxnVNiaCePiywOsoIKQAw&ved=0CEkQ6AEwCQ#v=onepage&q=ari%20basque&f=false
+            # A Grammar of Basque (ed. José Ignacio Hualde, Jon Ortiz de Irbina), p. 285
+            # Section 3.5.5.1 Progressive periphrases, 3.5.5.1.1 The ari construction
+            # Example:
+            # lanean/lanari     ari        da
+            # work.LOC/work.DAT engaged-in is
+            # he/she is working
+            # I have removed HAOS from the list of known tags because it is not clear what it means and how it is used.
+            # However, we can still partially decode it, based on the verb "ari".
+            "HAOS\tHAOS" => ['pos' => 'verb', 'verbform' => 'part'], # (ari, komeni, berrogoita, hogeita)
 
             # beste = other (eta_abar = etc.)
             "BST\tARR" => [],
@@ -218,13 +248,21 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'pos' => { 'noun' => { 'prontype' => { 'prs' => { 'variant' => { '1' => "IOR\tPERIND",
-                                                                             '@' => "IOR\tPERARR" }},
+            'pos' => { 'noun' => { 'prontype' => { 'prs' => { 'poss' => { 'poss' => "IZE\tIOR_IZEELI",
+                                                                          '@'    => { 'variant' => { '1' => "IOR\tPERIND",
+                                                                                                     '@' => "IOR\tPERARR" }}}},
                                                    'rcp' => "IOR\tELK",
                                                    'int' => "IOR\tIZGGAL",
                                                    'ind' => "IOR\tIZGMGB",
                                                    'neg' => "IOR\tIZGMGB",
-                                                   '@'   => "IZE\tARR" }},
+                                                   '@'   => { 'nountype' => { 'prop' => { 'variant' => { '1' => "IZE\tLIB",
+                                                                                                         '@' => "IZE\tIZB" }}}},
+                                                                              '@'    => { 'numtype' => { 'card' => "IZE\tZKI",
+                                                                                                         '@'    => { 'other/derfrompos' => { 'adv'  => "IZE\tADB_IZEELI",
+                                                                                                                                             'adj'  => "IZE\tADJ_IZEELI",
+                                                                                                                                             'det'  => "IZE\tDET_IZEELI",
+                                                                                                                                             'noun' => "IZE\tIZE_IZEELI",
+                                                                                                                                             '@'    => "IZE\tARR" }}}}}},
                        'adj'  => { 'prontype' => { 'dem' => { 'reflex' => { 'reflex' => "DET\tERKIND",
                                                                             '@'      => "DET\tERKARR" }},
                                                    'int' => { 'other/determiner' => { 'no' => "ADJ\tGAL",
@@ -250,7 +288,7 @@ sub _create_atoms
                                                    '@'   => "ADB\tARR" }},
                        'conj' => 'LOT',
                        'part' => 'PRT',
-                       'int'  => 'ITJ',
+                       'int'  => "ITJ\tITJ",
                        'punc' => { 'punctype' => { 'colo' => "PUNT_MARKA\tPUNT_BI_PUNT",
                                                    'excl' => "PUNT_MARKA\tPUNT_ESKL",
                                                    'qest' => "PUNT_MARKA\tPUNT_GALD",
@@ -1027,6 +1065,7 @@ sub _create_atoms
         'inguruan', # about 77
         'inguruetako', # surrounding 1
         'inguruetan', # in 2
+        'inguruetara', # around
         'inguruko', # about 28
         'ingurura', # about 5
         'ingururako', # environment 1
@@ -3525,8 +3564,6 @@ DET	ORO	NMG:MG|KAS:DAT|MUG:MG
 DET	ORO	NMG:MG|KAS:ERG|MUG:MG
 DET	ORO	NMG:MG|KAS:INS|MUG:MG
 DET	ORO	_
-ERL	ERL	ERL:KAUS
-HAOS	HAOS	_
 IOR	ELK	KAS:ABS|MUG:MG
 IOR	ELK	KAS:ABS|MUG:MG|POS:POSaurka|POS:+
 IOR	ELK	KAS:DAT|MUG:MG
@@ -3654,8 +3691,6 @@ IOR	PERIND	PER:ZU|KAS:EM|NUM:S|MUG:M|POS:POSgisara|POS:+
 IOR	PERIND	PER:ZU|KAS:ERG|NUM:S|MUG:M
 IOR	PERIND	PER:ZU|KAS:GEN|NUM:S|MUG:M
 IOR	PERIND	PER:ZU|KAS:INE|NUM:S|MUG:M|POS:POSinguruan|POS:+
-ITJ	ARR	BIZ:-|KAS:ABS|MUG:MG|MW:B
-ITJ	ITJ	ENT:Pertsona
 ITJ	ITJ	MW:B
 ITJ	ITJ	_
 IZE	ADB_IZEELI	KAS:ABS|NUM:P|MUG:M
@@ -3704,7 +3739,6 @@ IZE	ARR	BIZ:+|KAS:ABS|NUM:S|MUG:M|POS:POSmenpe|POS:+
 IZE	ARR	BIZ:+|KAS:ALA|MUG:MG
 IZE	ARR	BIZ:+|KAS:ALA|MUG:MG|POS:POSbatera|POS:+
 IZE	ARR	BIZ:+|KAS:ALA|NUM:P|MUG:M
-IZE	ARR	BIZ:+|KAS:ALA|NUM:P|MUG:M|POS:POSbatera?|POS:+
 IZE	ARR	BIZ:+|KAS:ALA|NUM:S|MUG:M
 IZE	ARR	BIZ:+|KAS:ALA|NUM:S|MUG:M|POS:POSbatera|POS:+
 IZE	ARR	BIZ:+|KAS:DAT|MUG:MG
@@ -3736,7 +3770,7 @@ IZE	ARR	BIZ:+|KAS:ERG|NUM:S|MUG:M|ENT:Erakundea
 IZE	ARR	BIZ:+|KAS:ERG|NUM:S|MUG:M|MW:B
 IZE	ARR	BIZ:+|KAS:GEL|NUM:PH|MUG:M|POS:POSarteko|POS:+
 IZE	ARR	BIZ:+|KAS:GEL|NUM:P|MUG:M
-IZE	ARR	BIZ:+|KAS:GEL|NUM:P|MUG:M|ENT:Erakundea|POS:POSGabeko|POS:+
+IZE	ARR	BIZ:+|KAS:GEL|NUM:P|MUG:M|ENT:Erakundea|POS:POSgabeko|POS:+
 IZE	ARR	BIZ:+|KAS:GEL|NUM:P|MUG:M|POS:POSarteko|POS:+
 IZE	ARR	BIZ:+|KAS:GEL|NUM:P|MUG:M|POS:POSatzeko|POS:+
 IZE	ARR	BIZ:+|KAS:GEL|NUM:P|MUG:M|POS:POSaurkako|POS:+
@@ -3932,13 +3966,12 @@ IZE	ARR	BIZ:-|KAS:ERG|NUM:S|MUG:M|MW:B
 IZE	ARR	BIZ:-|KAS:ERG|NUM:S|MUG:M|MW:B|ENT:Erakundea
 IZE	ARR	BIZ:-|KAS:GEL
 IZE	ARR	BIZ:-|KAS:GEL|MUG:MG
-IZE	ARR	BIZ:-|KAS:GEL|MUG:MG|POS:POSInguruko|POS:+
 IZE	ARR	BIZ:-|KAS:GEL|MUG:MG|POS:POSgabeko|POS:+
 IZE	ARR	BIZ:-|KAS:GEL|MUG:MG|POS:POSinguruko|POS:+
 IZE	ARR	BIZ:-|KAS:GEL|NUM:PH|MUG:M
 IZE	ARR	BIZ:-|KAS:GEL|NUM:P|MUG:M
 IZE	ARR	BIZ:-|KAS:GEL|NUM:P|MUG:M|ENT:Erakundea
-IZE	ARR	BIZ:-|KAS:GEL|NUM:P|MUG:M|ENT:Erakundea|POS:POSAldeko|POS:+
+IZE	ARR	BIZ:-|KAS:GEL|NUM:P|MUG:M|ENT:Erakundea|POS:POSaldeko|POS:+
 IZE	ARR	BIZ:-|KAS:GEL|NUM:P|MUG:M|ENT:Pertsona|POS:POSgaineko|POS:+
 IZE	ARR	BIZ:-|KAS:GEL|NUM:P|MUG:M|MW:B
 IZE	ARR	BIZ:-|KAS:GEL|NUM:P|MUG:M|POS:POSaldeko|POS:+
@@ -3953,9 +3986,9 @@ IZE	ARR	BIZ:-|KAS:GEL|NUM:P|MUG:M|POS:POSinguruko|POS:+
 IZE	ARR	BIZ:-|KAS:GEL|NUM:P|MUG:M|POS:POSkontrako|POS:+
 IZE	ARR	BIZ:-|KAS:GEL|NUM:S|MUG:M
 IZE	ARR	BIZ:-|KAS:GEL|NUM:S|MUG:M|ENT:Erakundea
-IZE	ARR	BIZ:-|KAS:GEL|NUM:S|MUG:M|ENT:Erakundea|POS:POSAldeko|POS:+
-IZE	ARR	BIZ:-|KAS:GEL|NUM:S|MUG:M|ENT:Erakundea|POS:POSAurkako|POS:+
+IZE	ARR	BIZ:-|KAS:GEL|NUM:S|MUG:M|ENT:Erakundea|POS:POSaldeko|POS:+
 IZE	ARR	BIZ:-|KAS:GEL|NUM:S|MUG:M|ENT:Erakundea|POS:POSarteko|POS:+
+IZE	ARR	BIZ:-|KAS:GEL|NUM:S|MUG:M|ENT:Erakundea|POS:POSaurkako|POS:+
 IZE	ARR	BIZ:-|KAS:GEL|NUM:S|MUG:M|ENT:Erakundea|POS:POSburuzko|POS:+
 IZE	ARR	BIZ:-|KAS:GEL|NUM:S|MUG:M|ENT:Pertsona
 IZE	ARR	BIZ:-|KAS:GEL|NUM:S|MUG:M|ENT:Pertsona|POS:POSburuzko|POS:+
@@ -4300,9 +4333,9 @@ IZE	ARR	KAS:GEL|NUM:P|MUG:M|POS:POSkanpoko|POS:+
 IZE	ARR	KAS:GEL|NUM:P|MUG:M|POS:POSkontrako|POS:+
 IZE	ARR	KAS:GEL|NUM:S|MUG:M
 IZE	ARR	KAS:GEL|NUM:S|MUG:M|ENT:Erakundea
-IZE	ARR	KAS:GEL|NUM:S|MUG:M|ENT:Erakundea|POS:POSKontrako|POS:+
 IZE	ARR	KAS:GEL|NUM:S|MUG:M|ENT:Erakundea|POS:POSarteko|POS:+
 IZE	ARR	KAS:GEL|NUM:S|MUG:M|ENT:Erakundea|POS:POSaurkako|POS:+
+IZE	ARR	KAS:GEL|NUM:S|MUG:M|ENT:Erakundea|POS:POSkontrako|POS:+
 IZE	ARR	KAS:GEL|NUM:S|MUG:M|ENT:Pertsona
 IZE	ARR	KAS:GEL|NUM:S|MUG:M|ENT:Tokia
 IZE	ARR	KAS:GEL|NUM:S|MUG:M|POS:POSKontrako|POS:+
