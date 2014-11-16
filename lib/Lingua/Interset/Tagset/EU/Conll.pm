@@ -6450,19 +6450,19 @@ end_of_list
 
   use Lingua::Interset::Tagset::EU::Conll;
   my $driver = Lingua::Interset::Tagset::EU::Conll->new();
-  my $fs = $driver->decode("IZE\tIZE_ARR\tABS|NUMS|MUGM");
+  my $fs = $driver->decode("IZE\tARR\tBIZ:+|KAS:ABS|NUM:S|MUG:M");
 
 or
 
   use Lingua::Interset qw(decode);
-  my $fs = decode('eu::conll', "IZE\tIZE_ARR\tABS|NUMS|MUGM");
+  my $fs = decode('eu::conll', "IZE\tARR\tBIZ:+|KAS:ABS|NUM:S|MUG:M");
 
 =head1 DESCRIPTION
 
 Interset driver for the tagset of the Basque Dependency Treebank version 2011
 in the CoNLL format. Note that this version of the tagset is slightly different
 from the Basque data of the CoNLL 2007 Shared Task. For instance, the features
-now contain feature names, thas we have 'KAS:ABS' for the absolutive case,
+now contain feature names, thus we have 'KAS:ABS' for the absolutive case,
 not only 'ABS'.
 
 CoNLL tagsets in Interset are traditionally three values separated by tabs.
