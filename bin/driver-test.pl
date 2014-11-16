@@ -137,35 +137,38 @@ sub test
         ###!!! In order to debug eu::conll, I am switching part of the tests off temporarily.
         @errors = grep {!m/gives an unknown tag/} (@errors);
         ###!!! Exclude unequality errors where the only difference is the ordering of features.
-        @errors = grep
+        if(0)
         {
-            my $result = 1;
-            my $src;
-            if(m/src = "(.*?)"/)
+            @errors = grep
             {
-                $src = $1;
-            }
-            my $tgt;
-            if(m/tgt = "(.*?)"/)
-            {
-                $tgt = $1;
-            }
-            if(defined($src) && defined($tgt))
-            {
-                my ($spos, $ssubpos, $sfeat) = split(/\t/, $src);
-                my ($tpos, $tsubpos, $tfeat) = split(/\t/, $tgt);
-                if(defined($spos) && defined($ssubpos) && defined($sfeat) &&
-                   defined($tpos) && defined($tsubpos) && defined($tfeat) &&
-                   $spos eq $tpos && $ssubpos eq $tsubpos)
+                my $result = 1;
+                my $src;
+                if(m/src = "(.*?)"/)
                 {
-                    my $sfeatsort = join('|', sort(split(/\|/, $sfeat)));
-                    my $tfeatsort = join('|', sort(split(/\|/, $tfeat)));
-                    $result = 0 if($sfeatsort eq $tfeatsort);
+                    $src = $1;
                 }
+                my $tgt;
+                if(m/tgt = "(.*?)"/)
+                {
+                    $tgt = $1;
+                }
+                if(defined($src) && defined($tgt))
+                {
+                    my ($spos, $ssubpos, $sfeat) = split(/\t/, $src);
+                    my ($tpos, $tsubpos, $tfeat) = split(/\t/, $tgt);
+                    if(defined($spos) && defined($ssubpos) && defined($sfeat) &&
+                       defined($tpos) && defined($tsubpos) && defined($tfeat) &&
+                       $spos eq $tpos && $ssubpos eq $tsubpos)
+                    {
+                        my $sfeatsort = join('|', sort(split(/\|/, $sfeat)));
+                        my $tfeatsort = join('|', sort(split(/\|/, $tfeat)));
+                        $result = 0 if($sfeatsort eq $tfeatsort);
+                    }
+                }
+                $result;
             }
-            $result;
+            (@errors);
         }
-        (@errors);
         ###!!! End of temporary measure.
         if($n_errors==0 && scalar(@errors)>0)
         {
