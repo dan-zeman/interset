@@ -8,6 +8,7 @@ Features:
 
 Drivers:
 * ET::Puudepank
+* EU::Conll
 
 Interface:
 * FeatureStructure has new methods is_masculine(), is_feminine(), is_neuter(), is_common_gender(),

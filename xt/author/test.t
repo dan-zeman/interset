@@ -10,7 +10,7 @@ binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 # We must declare in advance how many tests we are going to perform.
 # There are currently three tests per tagset driver.
-use Test::More tests => 23*3;
+use Test::More tests => 24*3;
 use Lingua::Interset qw(get_driver_object);
 use Lingua::Interset::Tagset;
 
@@ -28,6 +28,7 @@ my @tagsets =
     'el::conll',
     'en::penn', 'en::conll', 'en::conll2009',
     'et::puudepank',
+    'eu::conll',
     'hr::multext',
     'ja::ipadic',
     'mul::google', 'mul::upos',
