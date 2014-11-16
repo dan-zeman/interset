@@ -21,6 +21,20 @@ has 'upos_driver' => ( isa => 'Lingua::Interset::Tagset::MUL::Upos', is => 'ro',
 
 
 #------------------------------------------------------------------------------
+# Returns the tagset id that should be set as the value of the 'tagset' feature
+# during decoding. Every derived class must (re)define this method! The result
+# should correspond to the last two parts in package name, lowercased.
+# Specifically, it should be the ISO 639-2 language code, followed by '::' and
+# a language-specific tagset id. Example: 'cs::multext'.
+#------------------------------------------------------------------------------
+sub get_tagset_id
+{
+    return 'mul::uposf';
+}
+
+
+
+#------------------------------------------------------------------------------
 # Decodes a physical tag (string) and returns the corresponding feature
 # structure.
 #------------------------------------------------------------------------------

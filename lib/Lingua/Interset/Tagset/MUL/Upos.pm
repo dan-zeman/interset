@@ -16,6 +16,20 @@ extends 'Lingua::Interset::Atom';
 
 
 #------------------------------------------------------------------------------
+# Returns the tagset id that should be set as the value of the 'tagset' feature
+# during decoding. Every derived class must (re)define this method! The result
+# should correspond to the last two parts in package name, lowercased.
+# Specifically, it should be the ISO 639-2 language code, followed by '::' and
+# a language-specific tagset id. Example: 'cs::multext'.
+#------------------------------------------------------------------------------
+sub get_tagset_id
+{
+    return 'mul::upos';
+}
+
+
+
+#------------------------------------------------------------------------------
 # This block will be called before object construction. It will build the
 # decoding and encoding maps for this particular tagset.
 # Then it will pass all the attributes to the constructor.

@@ -20,6 +20,20 @@ has 'feature_map' => ( isa => 'HashRef', is => 'ro', builder => '_create_feature
 
 
 #------------------------------------------------------------------------------
+# Returns the tagset id that should be set as the value of the 'tagset' feature
+# during decoding. Every derived class must (re)define this method! The result
+# should correspond to the last two parts in package name, lowercased.
+# Specifically, it should be the ISO 639-2 language code, followed by '::' and
+# a language-specific tagset id. Example: 'cs::multext'.
+#------------------------------------------------------------------------------
+sub get_tagset_id
+{
+    return 'cs::pmk';
+}
+
+
+
+#------------------------------------------------------------------------------
 # Creates atomic drivers for 11 surface features.
 #------------------------------------------------------------------------------
 sub _create_atoms
