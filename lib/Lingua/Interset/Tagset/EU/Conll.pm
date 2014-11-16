@@ -196,18 +196,35 @@ sub _create_atoms
             "IZE\tIZE_IZEELI" => ['pos' => 'noun', 'other' => {'derfrompos' => 'noun'}],
             # izen, zenbaki = noun, number (name of number, number with nominal inflection)
             # (biak = two, hiruak = three, hamabiak = twelve, 22raino = until 22, 1996tik = since 1996)
-            "IZE\tZKI" => ['pos' => 'num', 'numtype' => 'card'],
+            "IZE\tZKI" => ['pos' => 'noun', 'numtype' => 'card'],
 
             # interjection, [error?]
             "ITJ\tARR" => ['pos' => 'int'],
             # interjekzioa = interjection (beno, ha, tira, dzast, ea)
             "ITJ\tITJ" => ['pos' => 'int'],
-            # conjunction (baina = but, baino = than, izan_ezik = except for, ez_baina = but not, eta = and, baita = and, ezta = or, ez_ezik = in addition to, baita_ere = also, edo = or, zein = and, ala = or, edota = or, nahiz = and)
-            "LOT\tJNT" => ['pos' => 'conj', 'subpos' => 'coor'],
-            # connector (hala_ere = but, baldin = if/or, ere = also, bestalde = in addition, batez_ere = especially, batik_bat = mainly, are_gehiago = more so, hots = that, bestela = or, osterantzean = moreover, ezen = that, zeren_eta = because, alde_batetik = on the one hand, besterik_gabe = just, beraz = so)
-            "LOT\tLOK" => ['pos' => 'conj', 'subpos' => 'sub'],
-            # (eta_gero = and then, eta = and, arren = although)
-            "LOT\tMEN" => ['pos' => 'conj', 'subpos' => 'sub'],
+            # conjunction
+            # LOT JNT ERL:AURK (baina = but, baino = than, baizik = rather)
+            # LOT JNT ERL:EMEN (eta = and, baita = as well as, bainan = but)
+            # LOT JNT ERL:HAUT (edo = or, zein = or, ala = or, edota = or, nahiz = though)
+            # (baina = but, baino = than, izan_ezik = except for, ez_baina = but not, eta = and, baita = and, ezta = or, ez_ezik = in addition to, baita_ere = also, edo = or, zein = and, ala = or, edota = or, nahiz = and)
+            "LOT\tJNT" => ['pos' => 'conj', 'conjtype' => 'coor'],
+            # connector (DZ: are LOT LOK reserved for joining clauses, while LOT JNT was for non-clausal phrases?)
+            # LOT LOK ERL:AURK (berriz = whereas, ordea = however, ostera = however, aldiz)
+            # LOT LOK ERL:BALD (baldin = if, orohar = in general)
+            # LOT LOK ERL:DENB (harik eta = until)
+            # LOT LOK ERL:EMEN (ere = also, bestalde = on the other hand, gainera = also, halaber = as well as, behintzat = unless)
+            # LOT LOK ERL:ESPL (alegia = which, hots = namely)
+            # LOT LOK ERL:HAUT (bestela = otherwise, osterantzean = otherwise, gainerakoan = the rest)
+            # LOT LOK ERL:KAUS (ezen = because)
+            # LOT LOK ERL:KONT (nahiz = or, though, even)
+            # LOT LOK ERL:MOD  (alde batetik = on the one hand, alde batera = aside, oro har = in general, besterik gabe = simply)
+            # LOT LOK ERL:ONDO (beraz = therefore, orduan = when, hortaz = therefore, ba, horrenbestez = thus, hence)
+            "LOT\tLOK" => ['pos' => 'conj', 'conjtype' => 'sub'],
+            # subordinating conjunction = lokarri menperatzaileak? But some of the examples below do not look like subordinating conjunctions.
+            # LOT MEN ERL:DENB (eta gero = and then)
+            # LOT MEN ERL:KAUS (eta = and)
+            # LOT MEN ERL:KONT (arren = although, despite)
+            "LOT\tMEN" => ['pos' => 'conj', 'conjtype' => 'sub', 'other' => {'conjtype' => 'men'}],
             # partikula = particle (ez, ezetz = no/not, bai, baietz = yes, al = to, ote = whether, omen = it seems)
             "PRT\tPRT" => ['pos' => 'part'],
 
@@ -217,9 +234,9 @@ sub _create_atoms
             "PUNT_MARKA\tPUNT_BI_PUNT"   => ['pos' => 'punc', 'punctype' => 'colo'], # :
             "PUNT_MARKA\tPUNT_ESKL"      => ['pos' => 'punc', 'punctype' => 'excl'], # !
             "PUNT_MARKA\tPUNT_GALD"      => ['pos' => 'punc', 'punctype' => 'qest'], # ?
-            "PUNT_MARKA\tPUNT_HIRU"      => ['pos' => 'punc', 'punctype' => 'peri'], # ...
-            "PUNT_MARKA\tPUNT_KOMA"      => ['pos' => 'punc', 'punctype' => 'comm'], # ,
             "PUNT_MARKA\tPUNT_PUNT"      => ['pos' => 'punc', 'punctype' => 'peri'], # .
+            "PUNT_MARKA\tPUNT_HIRU"      => ['pos' => 'punc', 'punctype' => 'peri', 'other' => {'punctype' => 'ellipsis'}], # ... (hiru puntu = three dots)
+            "PUNT_MARKA\tPUNT_KOMA"      => ['pos' => 'punc', 'punctype' => 'comm'], # ,
             "PUNT_MARKA\tPUNT_PUNT_KOMA" => ['pos' => 'punc', 'punctype' => 'semi'], # ;
 
             # relation = erlazio
@@ -256,13 +273,13 @@ sub _create_atoms
                                                    'ind' => "IOR\tIZGMGB",
                                                    'neg' => "IOR\tIZGMGB",
                                                    '@'   => { 'nountype' => { 'prop' => { 'variant' => { '1' => "IZE\tLIB",
-                                                                                                         '@' => "IZE\tIZB" }}}},
+                                                                                                         '@' => "IZE\tIZB" }},
                                                                               '@'    => { 'numtype' => { 'card' => "IZE\tZKI",
                                                                                                          '@'    => { 'other/derfrompos' => { 'adv'  => "IZE\tADB_IZEELI",
                                                                                                                                              'adj'  => "IZE\tADJ_IZEELI",
                                                                                                                                              'det'  => "IZE\tDET_IZEELI",
                                                                                                                                              'noun' => "IZE\tIZE_IZEELI",
-                                                                                                                                             '@'    => "IZE\tARR" }}}}}},
+                                                                                                                                             '@'    => "IZE\tARR" }}}}}}}},
                        'adj'  => { 'prontype' => { 'dem' => { 'reflex' => { 'reflex' => "DET\tERKIND",
                                                                             '@'      => "DET\tERKARR" }},
                                                    'int' => { 'other/determiner' => { 'no' => "ADJ\tGAL",
@@ -286,13 +303,16 @@ sub _create_atoms
                                                                                                                             '@'   => "ADI\tSIN" }}}}}},
                        'adv'  => { 'prontype' => { 'int' => "ADB\tGAL",
                                                    '@'   => "ADB\tARR" }},
-                       'conj' => 'LOT',
-                       'part' => 'PRT',
+                       'conj' => { 'conjtype' => { 'coor' => "LOT\tJNT",
+                                                   'sub'  => { 'other/conjtype' => { 'men' => "LOT\tMEN",
+                                                                                     '@'   => "LOT\tLOK" }}}},
+                       'part' => "PRT\tPRT",
                        'int'  => "ITJ\tITJ",
                        'punc' => { 'punctype' => { 'colo' => "PUNT_MARKA\tPUNT_BI_PUNT",
                                                    'excl' => "PUNT_MARKA\tPUNT_ESKL",
                                                    'qest' => "PUNT_MARKA\tPUNT_GALD",
-                                                   'peri' => "PUNT_MARKA\tPUNT_HIRU",
+                                                   'peri' => { 'other/punctype' => { 'ellipsis' => "PUNT_MARKA\tPUNT_HIRU",
+                                                                                     '@'        => "PUNT_MARKA\tPUNT_PUNT" }},
                                                    'comm' => "PUNT_MARKA\tPUNT_KOMA",
                                                    'semi' => "PUNT_MARKA\tPUNT_PUNT_KOMA",
                                                    '@'    => "BEREIZ\tBEREIZ" }},
@@ -404,15 +424,18 @@ sub _create_atoms
         'surfeature' => 'plu',
         'decode_map' =>
         {
-            ###!!! Problém! NUM je samostatný rys, který tuto hodnotu přeplácne obyčejným množným číslem!
-            '+' => ['number' => 'ptan'],
-            '-' => ['other' => {'plu' => 'no'}]
+            # We want to set 'number' => 'ptan' but it is not guaranteed that it will survive if we do it here.
+            # There is an independent feature of NUM that may replace it with 'plur' if it is decoded later.
+            # Thus we will copy the information again after all features have been decoded.
+            '+' => ['other' => {'ptan' => 'yes'}, 'number' => 'ptan'],
+            '-' => ['other' => {'ptan' => 'no'}]
         },
         'encode_map' =>
         {
             'number' => { 'ptan' => '+',
-                          '@'    => { 'other/plu' => { 'no' => '-',
-                                                       '@'  => '' }}}
+                          '@'    => { 'other/ptan' => { 'yes' => '+',
+                                                        'no'  => '-',
+                                                        '@'   => '' }}}
         }
     );
     # NUMBER ####################
@@ -436,7 +459,8 @@ sub _create_atoms
         {
             'number' => { 'sing' => 'S',
                           'plur' => { 'other/number' => { 'proximal' => 'PH',
-                                                          '@'        => 'P' }}}
+                                                          '@'        => 'P' }},
+                          'ptan' => 'P' }
         }
     );
     # DETERMINEDNESS OF NUMBER ####################
@@ -621,6 +645,35 @@ sub _create_atoms
                                                  'plur' => 'ZUEK' }},
                           '3' => { 'number' => { 'sing' => 'HURA',
                                                  'plur' => 'HAIEK' }}}
+        }
+    );
+    # PERSON AND NUMBER OF IOR_IZEELI ####################
+    # IOR_IZEELI are nouns derived from personal pronouns, i.e. independent forms of possessive pronouns with additional suffixes of nominal inflection.
+    # Thus they have case and number, which can differ from the inherent number incorporated in the PER feature. This is the only situation where we
+    # have to use the 'possnumber' feature of Interset. We had to rename the PER feature to possPER so that it gets a different processing atom.
+    # Note however that we still set the 'person' feature, not 'possperson', which is parallel to the decoding of possessive pronouns in other tagsets.
+    $atoms{possPER} = $self->create_atom
+    (
+        'surfeature' => 'possper',
+        'decode_map' =>
+        {
+            'NI'    => ['person' => 1, 'possnumber' => 'sing'], # (nireak = mine)
+            'HI'    => ['person' => 2, 'possnumber' => 'sing', 'politeness' => 'inf'],
+            'ZU'    => ['person' => 2, 'possnumber' => 'sing', 'politeness' => 'pol'],
+            'HURA'  => ['person' => 3, 'possnumber' => 'sing'],
+            'GU'    => ['person' => 1, 'possnumber' => 'plur'], # (geurea = ours)
+            'ZUEK'  => ['person' => 2, 'possnumber' => 'plur'], # (zuena = yours)
+            'HAIEK' => ['person' => 3, 'possnumber' => 'plur'],
+        },
+        'encode_map' =>
+        {
+            'person' => { '1' => { 'possnumber' => { 'sing' => 'NI',
+                                                     'plur' => 'GU' }},
+                          '2' => { 'possnumber' => { 'sing' => { 'politeness' => { 'inf' => 'HI',
+                                                                                   '@'   => 'ZU' }},
+                                                     'plur' => 'ZUEK' }},
+                          '3' => { 'possnumber' => { 'sing' => 'HURA',
+                                                     'plur' => 'HAIEK' }}}
         }
     );
     # AGREEMENT PERSON AND NUMBER OF THE ABSOLUTIVE ARGUMENT ####################
@@ -1128,7 +1181,7 @@ sub _create_features_all
     # POS JE NEKDY PRED KAS, NEKDY ZA KAS
     # ADM ASP ERL MDN NOR NORK NORI MAI BIZ IZAUR PER NMG KAS POS NUM MUG MW ENT
     my @features = ('ENT', 'MTKAT', 'IZAUR', 'BIZ', 'ZENB', 'NEUR', 'PLU', 'NUM', 'MUG', 'NMG', 'KAS', 'MAI',
-                    'PER', 'NOR', 'NORK', 'NORI', 'ADM', 'ASP', 'ERL', 'MDN', 'MOD', 'HIT', 'KLM', 'MW', 'POS', 'hasPOS');
+                    'PER', 'possPER', 'NOR', 'NORK', 'NORI', 'ADM', 'ASP', 'ERL', 'MDN', 'MOD', 'HIT', 'KLM', 'MW', 'POS', 'hasPOS');
     return \@features;
 }
 
@@ -1148,6 +1201,7 @@ sub _create_features_pos
         'ADIfin'  => ['ASP', 'ERL', 'KAS', 'NUM', 'MUG', 'MOD', 'MDN', 'NOR', 'NORK', 'NORI', 'HIT', 'MW', 'ENT'],
         'ADL'     => ['ERL', 'KAS', 'NUM', 'MUG', 'MOD', 'MDN', 'NOR', 'NORK', 'NORI', 'HIT'],
         'ADT'     => ['ASP', 'ERL', 'KAS', 'NUM', 'MUG', 'MOD', 'MDN', 'NOR', 'NORK', 'NORI', 'HIT', 'ENT'],
+        'IZE'     => ['BIZ', 'ZENB', 'NEUR', 'PLU', 'MTKAT', 'MAI', 'ADM', 'IZAUR', 'possPER', 'NMG', 'KAS', 'NUM', 'MUG', 'POS', 'hasPOS', 'MW', 'ENT'],
         '@'       => $self->_create_features_all()
     );
     return \%features;
@@ -1165,7 +1219,13 @@ sub decode
     my $tag = shift;
     # For technical reasons, we do not allow two features with the same name, even if they are closely related ("POS:POSarte|POS:+").
     $tag =~ s/POS:\+/hasPOS:+/;
+    $tag =~ s/IOR_IZEELI\tPER:/IOR_IZEELI\tpossPER:/;
     my $fs = $self->decode_conll($tag, 'eu::conll', 'both', ':');
+    # Make sure that the NUM:P feature does not overwrite the value set by the PLU:+ feature.
+    if($fs->get_other_subfeature('eu::conll', 'ptan') eq 'yes')
+    {
+        $fs->set('number', 'ptan');
+    }
     # Default feature values. Used to improve collaboration with other drivers.
     # ... nothing yet ...
     return $fs;
@@ -1188,7 +1248,7 @@ sub encode
     {
         $fpos = $fs->absperson() ne '' ? 'ADIfin' : 'ADInfin';
     }
-    elsif($pos =~ m/^(ADL|ADT)$/)
+    elsif($pos =~ m/^(ADL|ADT|IZE)$/)
     {
         $fpos = $pos;
     }
@@ -1196,6 +1256,7 @@ sub encode
     my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names, 0, ':');
     # For technical reasons, we do not allow two features with the same name, even if they are closely related ("POS:POSarte|POS:+").
     $tag =~ s/hasPOS:\+/POS:+/;
+    $tag =~ s/possPER:/PER:/;
     return $tag;
 }
 
@@ -1206,6 +1267,7 @@ sub encode
 # Tags were collected from the corpus, 3945 distinct tags found.
 # Removing tags considered to be errors...
 # Adding a few to survive missing value of 'other'...
+# Result: 3853 tags.
 #------------------------------------------------------------------------------
 sub list
 {
@@ -4338,7 +4400,6 @@ IZE	ARR	KAS:GEL|NUM:S|MUG:M|ENT:Erakundea|POS:POSaurkako|POS:+
 IZE	ARR	KAS:GEL|NUM:S|MUG:M|ENT:Erakundea|POS:POSkontrako|POS:+
 IZE	ARR	KAS:GEL|NUM:S|MUG:M|ENT:Pertsona
 IZE	ARR	KAS:GEL|NUM:S|MUG:M|ENT:Tokia
-IZE	ARR	KAS:GEL|NUM:S|MUG:M|POS:POSKontrako|POS:+
 IZE	ARR	KAS:GEL|NUM:S|MUG:M|POS:POSaldeko|POS:+
 IZE	ARR	KAS:GEL|NUM:S|MUG:M|POS:POSaurkako|POS:+
 IZE	ARR	KAS:GEL|NUM:S|MUG:M|POS:POSaurreko|POS:+
@@ -4577,10 +4638,7 @@ IZE	IZB	MTKAT:SIG|KAS:INE|NUM:S|MUG:M|ENT:Pertsona
 IZE	IZB	MTKAT:SIG|KAS:INE|NUM:S|MUG:M|ENT:Tokia
 IZE	IZB	MTKAT:SIG|KAS:PAR|NUM:S|MUG:M|ENT:Erakundea
 IZE	IZB	MTKAT:SIG|KAS:SOZ|NUM:S|MUG:M|ENT:Erakundea
-IZE	IZB	NEUR:-|PLU:-|KAS:ABS|NUM:S|MUG:M|ENT:Pertsona
-IZE	IZB	PLU:+|ENT:Tokia
 IZE	IZB	PLU:+|KAS:ABL|NUM:P|MUG:M|ENT:Tokia
-IZE	IZB	PLU:+|KAS:ABS|MUG:MG|ENT:Tokia
 IZE	IZB	PLU:+|KAS:ABS|NUM:P|MUG:M|ENT:Pertsona|POS:POSbitarte|POS:+
 IZE	IZB	PLU:+|KAS:ABS|NUM:P|MUG:M|ENT:Tokia
 IZE	IZB	PLU:+|KAS:ALA|NUM:P|MUG:M|ENT:Tokia
@@ -4685,7 +4743,6 @@ IZE	IZB	PLU:-|MTKAT:SIG|KAS:ERG|NUM:S|MUG:M|ENT:Pertsona
 IZE	IZB	PLU:-|MTKAT:SIG|KAS:GEL|NUM:S|MUG:M|ENT:Erakundea
 IZE	IZB	PLU:-|MTKAT:SIG|KAS:GEL|NUM:S|MUG:M|ENT:Tokia
 IZE	IZB	PLU:-|MTKAT:SIG|KAS:GEN|NUM:S|MUG:M|ENT:Erakundea
-IZE	IZB	ZENB:-|PLU:-
 IZE	IZB	_
 IZE	IZE_IZEELI	BIZ:+|KAS:ABS|NUM:P|MUG:M
 IZE	IZE_IZEELI	BIZ:+|KAS:ABS|NUM:S|MUG:M
@@ -4815,9 +4872,6 @@ IZE	LIB	MTKAT:SIG|KAS:GEN|NUM:S|MUG:M|ENT:Tokia
 IZE	LIB	MTKAT:SIG|KAS:INE|NUM:S|MUG:M|ENT:Tokia
 IZE	LIB	MW:B|ENT:???
 IZE	LIB	MW:B|ENT:Erakundea
-IZE	LIB	NEUR:-|ENT:Tokia
-IZE	LIB	PLU:+|ENT:Erakundea
-IZE	LIB	PLU:+|ENT:Tokia
 IZE	LIB	PLU:+|IZAUR:-|KAS:ABS|NUM:P|MUG:M|MW:B|ENT:Tokia
 IZE	LIB	PLU:+|IZAUR:-|KAS:ALA|NUM:P|MUG:M|MW:B|ENT:Tokia
 IZE	LIB	PLU:+|IZAUR:-|KAS:DAT|NUM:P|MUG:M|MW:B|ENT:Erakundea
