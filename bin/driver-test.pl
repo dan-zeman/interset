@@ -135,7 +135,7 @@ sub test
         }
         my @errors = $driver->test_tag($tag, \$n_other, \%other_survivors);
         ###!!! In order to debug eu::conll, I am switching part of the tests off temporarily.
-        @errors = grep {!m/gives an unknown tag/} (@errors);
+        #@errors = grep {!m/gives an unknown tag/} (@errors);
         ###!!! Exclude unequality errors where the only difference is the ordering of features.
         if(0)
         {

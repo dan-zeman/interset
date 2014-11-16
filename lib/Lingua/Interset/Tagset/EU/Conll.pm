@@ -1267,7 +1267,7 @@ sub encode
 # Tags were collected from the corpus, 3945 distinct tags found.
 # Removing tags considered to be errors...
 # Adding a few to survive missing value of 'other'...
-# Result: 3853 tags.
+# Result: 3851 tags.
 #------------------------------------------------------------------------------
 sub list
 {
@@ -1294,7 +1294,6 @@ ADB	ARR	KAS:ABS|POS:POSkanpo|POS:+
 ADB	ARR	KAS:ABS|POS:POSlanda|POS:+
 ADB	ARR	KAS:ABZ
 ADB	ARR	KAS:ABZ|MAI:KONP
-ADB	ARR	KAS:ALA|POS:POSaurrera|POS:+
 ADB	ARR	KAS:ALA|POS:POSaurrera|POS:+
 ADB	ARR	KAS:ALA|POS:POSbehera|POS:+
 ADB	ARR	KAS:EM|POS:POSantzeko|POS:+
@@ -4102,7 +4101,6 @@ IZE	ARR	BIZ:-|KAS:GEL|POS:POSaitzineko|POS:+
 IZE	ARR	BIZ:-|KAS:GEL|POS:POSaldeko|POS:+
 IZE	ARR	BIZ:-|KAS:GEL|POS:POSantzeko|POS:+
 IZE	ARR	BIZ:-|KAS:GEL|POS:POSarteko|POS:+
-IZE	ARR	BIZ:-|KAS:GEL|POS:POSaurreko|POS:+
 IZE	ARR	BIZ:-|KAS:GEL|POS:POSaurreko|POS:+
 IZE	ARR	BIZ:-|KAS:GEL|POS:POSbarruko|POS:+
 IZE	ARR	BIZ:-|KAS:GEL|POS:POSerdiko|POS:+
