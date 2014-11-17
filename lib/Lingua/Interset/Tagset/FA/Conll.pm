@@ -40,110 +40,177 @@ sub _create_atoms
     # PART OF SPEECH ####################
     $atoms{pos} = $self->create_atom
     (
-        'tagset' => 'da::conll',
+        'tagset' => 'fa::conll',
         'surfeature' => 'pos',
         'decode_map' =>
         {
-            # N = noun
-            # common noun
-            'NC' => ['pos' => 'noun', 'nountype' => 'com'],
-            # proper noun
-            'NP' => ['pos' => 'noun', 'nountype' => 'prop'],
-            # A = adjective or numeral
-            'AN' => ['pos' => 'adj'],
-            'AC' => ['pos' => 'num', 'numtype' => 'card'],
-            'AO' => ['pos' => 'adj', 'numtype' => 'ord'],
-            # P = pronoun
-            'PP' => ['pos' => 'noun', 'prontype' => 'prs'],
-            'PO' => ['pos' => 'adj', 'prontype' => 'prs', 'poss' => 'poss'],
-            'PC' => ['pos' => 'noun', 'prontype' => 'rcp'],
-            'PD' => ['pos' => 'noun|adj', 'prontype' => 'dem'],
-            'PI' => ['pos' => 'noun|adj', 'prontype' => 'ind'],
-            'PT' => ['pos' => 'noun|adj', 'prontype' => 'int|rel'],
-            # V = verb
-            # VA = main verb
-            # VE = medial verb
-            #     - deponent verb
-            #     - reciprocal verb
-            #     (medial verbs are passive in form and active in meaning)
-            'VA' => ['pos' => 'verb'],
-            'VE' => ['pos' => 'verb', 'other' => {'verbtype' => 'medial'}],
-            # RG = adverb
-            'RG' => ['pos' => 'adv'],
-            # SP = preposition
-            'SP' => ['pos' => 'adp', 'adpostype' => 'prep'],
-            # C = conjunction
-            'CC' => ['pos' => 'conj', 'conjtype' => 'coor'],
-            'CS' => ['pos' => 'conj', 'conjtype' => 'sub'],
-            # U = unique (including particles?)
-            # ... infinitivmark&osla;ren "at"
-            # ... "som"
-            # ... "der"
-            # We cannot distinguish those three without seeing the actual word.
-            # Since infinitive is the most important and most frequent of them, we
-            # will choose infinitive.
-            'U'  => ['pos' => 'part', 'parttype' => 'inf'],
-            # I = interjection
-            'I'  => ['pos' => 'int'],
-            # X = residual class
-            'XA' => ['abbr' => 'abbr'],
-            'XF' => ['foreign' => 'foreign'],
-            'XP' => ['pos' => 'punc'],
-            # symbol, e.g. "+"
-            'XS' => ['pos' => 'sym'],
-            # formulae, e.g. "U-21"
-            # nothing to do - same as "other"
-            'XR' => ['other' => {'pos' => 'formula'}],
-            # other than the above
-            'XX' => []
+            # This table uses subpos (the POS column of the CoNLL format) as input.
+            # The "coarse comments" refer to the values of the (coarse) part of speech, i.e. the CPOS column.
+            # coarse ADJ
+            'AJP'    => ['pos' => 'adj', 'degree' => 'pos'], # dígr, islámí, bzrg, jdíd, mxtlf
+            'AJCM'   => ['pos' => 'adj', 'degree' => 'comp'], # bíštr, bíš, bhtr, bíštrí, kmtr
+            'AJSUP'  => ['pos' => 'adj', 'degree' => 'sup'], # bhtrín, mhmtrín, bzrgtrín, bíštrín, qwítrín
+            '_'      => ['pos' => 'adj'], # wláyí, xúdsáxte, wárd, xúbí (undocumented)
+            # coarse ADR: address term
+            'PRADR'  => ['pos' => 'adj'], # í, yá, áháí (pre-noun morpheme to "make the noun the address of the speaker")
+            'POSADR' => ['pos' => 'adj'], # á (post-noun morpheme to "make the noun the address of the speaker")
+            # coarse ADV
+            'SADV'   => ['pos' => 'adv'], # hm, níz, htí, ne, xílí (genuine adverbs)
+            'AVP'    => ['pos' => 'adv', 'degree' => 'pos'], # hm, tnhá, dígr, xúb, ps (positive adjectives modifying verbs)
+            'AVCM'   => ['pos' => 'adv', 'degree' => 'comp'], # bíštr, bíš, kmtr, bhtr, zúdtr (comparative adjectives modifying verbs)
+            # coarse CL (undocumented)
+            'MEAS'   => ['pos' => 'noun'], # kílú (only one occurrence of this one word form) + one N MEAS: qášq
+            # coarse CONJ
+            'CONJ'   => ['pos' => 'conj', 'conjtype' => 'coor'], # w, yá, amá, wlí, ke
+            # coarse IDEN
+            'IDEN'   => ['pos' => 'noun'], # imám, dktr, šhíd, síd, áytalláh (titles used with personal names)
+            # coarse N
+            'ANM'    => ['pos' => 'noun', 'animateness' => 'anim'], # xdá, ksí, ansán, xadáwand, nfr
+            'IANM'   => ['pos' => 'noun', 'animateness' => 'inan'], # sál, kár, írán, rúz, dst
+            # coarse PART
+            'PART'   => ['pos' => 'part'], # áyá, ke, mgr, rá, dígr
+            # coarse POSNUM
+            'POSNUM' => ['pos' => 'num'], # awl, dúm, súm, čhárm, nxst (post-noun numeral)
+            # coarse POSTP
+            'POSTP'  => ['pos' => 'adp', 'adpostype' => 'post'], # rá, čún, az, rfte, mrá
+            # coarse PR
+            'SEPER'  => ['pos' => 'noun', 'prontype' => 'prs'], # mn, tú, aw, má, šmá, ánhá (separate personal pronoun)
+            'JOPER'  => ['pos' => 'noun', 'prontype' => 'prs'], # m, t, š, mán, tán, šán (enclitic personal pronoun)
+            'DEMON'  => ['pos' => 'noun', 'prontype' => 'dem'], # án, ín, hmín, čnán, ánjá (demonstrative pronoun)
+            'INTG'   => ['pos' => 'noun', 'prontype' => 'int'], # če, kjá, čgúne, čí, črá (interrogative pronoun)
+            'CREFX'  => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex'], # xod, xwíš, hm, ykdígr, hmdígr (common reflexive pronoun)
+            'UCREFX' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex'], # (noncommon reflexive pronoun: not present in data)
+            'RECPR'  => ['pos' => 'noun', 'prontype' => 'rcp'], # (reciprocal pronoun: not present in data)
+            '_'      => ['pos' => 'noun', 'prontype' => 'prs'], # hm, ykdígr, hmdígr, xúdš, xúdšán ###!!! The '_' fine POS also occurs with adjectives!
+            # coarse PREM (pre-modifier of nouns)
+            'EXAJ'   => ['pos' => 'adj'], # če, čqdr, án, čnd, ajb (exclamatory: express speaker's surprise towards the modified noun)
+            'QUAJ'   => ['pos' => 'adj', 'prontype' => 'int'], # če, kdám, čnd, kdámín (interrogative)
+            'DEMAJ'  => ['pos' => 'adj', 'prontype' => 'dem'], # ín, án, hmán, hmín, čnín (demonstrative)
+            'AMBAJ'  => ['pos' => 'adj'], # hr, čnd, híč, brxí, hme (ambiguous)
+            # coarse PRENUM (pre-noun numeral)
+            'PRENUM' => ['pos' => 'num'], # ek, do, se, úlín, čhár
+            # coarse PREP
+            'PREP'   => ['pos' => 'adp', 'adpostype' => 'prep'], # be, dr, az, bá, bráí
+            'POST'   => ['pos' => 'adp', 'adpostype' => 'post'], # zmn
+            # coarse PSUS (pseudo-sentence; instead of verb)
+            'PSUS'   => [], # káš, ne, angár, ya'aní, ble
+            # coarse PUNC
+            'PUNC'   => ['pos' => 'punc'], # ., ,, ?, !, "
+            # coarse V
+            'ACT'    => ['pos' => 'verb', 'voice' => 'act'], # míknnd, hstnd, dárnd, mídhnd, mítwánnd
+            'PASS'   => ['pos' => 'verb', 'voice' => 'pass'], # míšúnd, šde, dádemíšúnd, zádemíšúnd, gdárdemíšúnd
+            'MODL'   => ['pos' => 'verb', 'verbtype' => 'mod'], # báyd, nbáyd, mítwán, nmítwánd, míšúd
+            # coarse SUBR (subordinating conjunction)
+            'SUBR'   => ['pos' => 'conj', 'conjtype' => 'sub'], # ke, agr, tá, zírá, čún
         },
         'encode_map' =>
-
-            { 'pos' => { 'noun' => { 'prontype' => { ''    => { 'nountype' => { 'prop' => 'NP',
-                                                                                '@'    => 'NC' }},
-                                                     'prs' => { 'poss' => { 'poss' => 'PO',
-                                                                            '@'    => 'PP' }},
-                                                     'rcp' => 'PC',
-                                                     'dem' => 'PD',
-                                                     'int' => 'PT',
-                                                     'rel' => 'PT',
-                                                     '@'   => 'PI' }},
-                         'adj'  => { 'prontype' => { ''    => { 'numtype' => { 'card' => 'AC',
-                                                                               'ord'  => 'AO',
-                                                                               '@'    => 'AN' }},
-                                                     'prs' => { 'poss' => { 'poss' => 'PO',
-                                                                            '@'    => 'PP' }},
-                                                     'rcp' => 'PC',
-                                                     'dem' => 'PD',
-                                                     'int' => 'PT',
-                                                     'rel' => 'PT',
-                                                     '@'   => 'PI' }},
-                         'num'  => { 'numtype' => { 'ord' => 'AO',
-                                                    '@'   => 'AC' }},
-                         'verb' => { 'other/verbtype' => { 'medial' => 'VE',
-                                                           '@'      => 'VA' }},
-                         'adv'  => 'RG',
-                         'adp'  => 'SP',
-                         'conj' => { 'conjtype' => { 'sub' => 'CS',
-                                                     '@'   => 'CC' }},
-                         'part' => 'U',
-                         'int'  => 'I',
-                         'punc' => 'XP',
-                         'sym'  => 'XS',
-                         '@'    => { 'abbr' => { 'abbr' => 'XA',
-                                                 '@'    => { 'foreign' => { 'foreign' => 'XF',
-                                                                            '@'       => { 'other/pos' => { 'formula' => 'XR',
-                                                                                                            '@'       => 'XX' }}}}}}}}
+        {
+            'pos' => { 'noun' => { 'prontype' => { 'prs' => { 'reflex' => { 'reflex' => 'CREFX',
+                                                                            '@'      => 'SEPER' }},
+                                                   'rcp' => 'RECPR',
+                                                   'dem' => 'DEMON',
+                                                   'int' => 'INTG',
+                                                   '@'   => { 'animateness' => { 'anim' => 'ANM',
+                                                                                 '@'    => 'IANM' }}}},
+                       'adj'  => { 'degree' => { 'sup'  => 'AJSUP',
+                                                 'comp' => 'AJCM',
+                                                 '@'    => 'AJP' }},
+                       'num'  => 'PRENUM',
+                       'verb' => { 'verbtype' => { 'mod' => 'MODL',
+                                                   '@'   => { 'voice' => { 'pass' => 'PASS',
+                                                                           '@'    => 'ACT' }}}},
+                       'adv'  => { 'degree' => { 'pos'  => 'AVP',
+                                                 'comp' => 'AVCM',
+                                                 'sup'  => 'AVCM',
+                                                 '@'    => 'SADV' }},
+                       'adp'  => { 'adpostype' => { 'post' => 'POST',
+                                                    '@'    => 'PREP' }},
+                       'conj' => { 'conjtype' => { 'sub' => 'SUBR',
+                                                   '@'   => 'CONJ' }},
+                       'part' => 'PART',
+                       'punc' => 'PUNC' }
+        }
     );
-    # GENDER ####################
-    $atoms{gender} = $self->create_simple_atom
+    # ATTACHMENT TYPE ####################
+    # Orthographic words may have been broken into parts during tokenization in order to show syntactic relations between morphemes. Examples:
+    # didämäš => didäm|äš (äš is object of the verb didäm)
+    # mära => mä (contracted form of the personal pronoun män) | ra (postposition, could play object or complement adposition of the verb)
+    # The attachment feature makes restoration of orthographic words possible.
+    $atoms{attachment} = $self->create_atom
     (
-        'intfeature' => 'gender',
+        'tagset' => 'fa::conll',
+        'surfeature' => 'attachment',
+        'decode_map' =>
+        {
+            'ISO' => ['other' => {'attachment' => 'isolated'}], # isolated word
+            'PRV' => ['other' => {'attachment' => 'previous'}], # attached to the previous word
+            'NXT' => ['other' => {'attachment' => 'next'}]  # attached to the next word
+        },
+        'encode_map' =>
+        {
+            'other/attachment' => { 'isolated' => 'ISO',
+                                    'previous' => 'PRV',
+                                    'next'     => 'NXT' }
+        }
+    );
+    # PERSON ####################
+    $atoms{person} = $self->create_simple_atom
+    (
+        'intfeature' => 'person',
         'simple_decode_map' =>
         {
-            'common'        => 'com',
-            'neuter'        => 'neut',
-            'common/neuter' => ''
+            '1' => '1', # mn, xúdm, án, má, xúdmán
+            '2' => '2', # tú, xúdt, šmá, xúdtán, šmáhá
+            '3' => '3'  # ú, án, ín, ánhá, ánán
+        }
+    );
+    # NUMBER ####################
+    $atoms{number} = $self->create_simple_atom
+    (
+        'intfeature' => 'number',
+        'simple_decode_map' =>
+        {
+            'SING' => 'sing', # xdá, ksí, ansán, xdáwnd, nfr
+            'PLUR' => 'plur'  # mrdm, ksání, dígrán, afrád, znán
+        }
+    );
+    # VERB FORM, MOOD, TENSE AND ASPECT ####################
+    # (example verb xordän = to eat)
+    $atoms{tma} = $self->create_atom
+    (
+        'surfeature' => 'tma',
+        'decode_map' =>
+        {
+            'HA'    => ['verbform' => 'fin', 'mood' => 'imp'],                                        # boxor
+            'AY'    => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'fut'],                      # xahäm xord (indicative future)
+            'GNES'  => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'past', 'aspect' => 'imp'],  # mixordeäm (indicative imperfective perfect)
+            'GBES'  => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pqp',  'aspect' => 'imp'],  # mixorde budäm (indicative imperfective pluperfect)
+            'GES'   => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'past', 'aspect' => 'imp'],  # mixordäm (indicative imperfective preterite)
+            'GN'    => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'past', 'aspect' => 'perf'], # xordeäm (indicative perfect)
+            'GB'    => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pqp',  'aspect' => 'perf'], # xorde budäm (indicative pluperfect)
+            'H'     => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pres'],                     # mixoräm (indicative present)
+            'GS'    => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'past'],                     # xordäm (indicative preterite)
+            'GBESE' => ['verbform' => 'fin', 'mood' => 'sub', 'tense' => 'pqp',  'aspect' => 'imp'],  # mixorde bude bašäm (subjunctive imperfective pluperfect)
+            'GESEL' => ['verbform' => 'fin', 'mood' => 'sub', 'tense' => 'past', 'aspect' => 'imp'],  # mixorde bašäm (subjunctive imperfective preterite)
+            'GBEL'  => ['verbform' => 'fin', 'mood' => 'sub', 'tense' => 'pqp',  'aspect' => 'perf'], # xorde bude bašäm (subjunctive pluperfect)
+            'HEL'   => ['verbform' => 'fin', 'mood' => 'sub', 'tense' => 'pres'],                     # boxoräm (subjunctive present)
+            'GEL'   => ['verbform' => 'fin', 'mood' => 'sub', 'tense' => 'past'],                     # xorde bašäm (subjunctive preterite)
+        },
+        'encode_map' =>
+        {
+            'mood' => { 'imp' => 'HA',
+                        'sub' => { 'tense' => { 'pres' => 'HEL',
+                                                'past' => { 'aspect' => { 'imp' => 'GESEL',
+                                                                          '@'   => 'GEL' }},
+                                                'pqp'  => { 'aspect' => { 'imp' => 'GBESE',
+                                                                          '@'   => 'GBEL' }}}},
+                        '@'   => { 'tense' => { 'fut'  => 'AY',
+                                                'pres' => 'H',
+                                                'past' => { 'aspect' => { 'imp'  => 'GNES',
+                                                                          'perf' => 'GN',
+                                                                          '@'    => 'GS' }},
+                                                'pqp'  => { 'aspect' => { 'imp'  => 'GBES',
+                                                                          '@'    => 'GB' }}}}}
         }
     );
     return \%atoms;
@@ -158,7 +225,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('mood', 'tense', 'voice', 'number', 'person', 'degree', 'gender', 'definiteness', 'transcat', 'case', 'def', 'possessor', 'reflexive', 'register');
+    my @features = ('person', 'attachment', 'number', 'tma');
     return \@features;
 }
 
@@ -189,16 +256,9 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
-    my $fs = $self->decode_conll($tag, 'da::conll'); ###!!! Teď když už je metoda get_tagset_id() povinná všude, by se tenhle parametr mohl zrušit.
+    my $fs = $self->decode_conll($tag, 'fa::conll'); ###!!! Teď když už je metoda get_tagset_id() povinná všude, by se tenhle parametr mohl zrušit.
     # Default feature values. Used to improve collaboration with other drivers.
-    # Some pronoun forms can be declared accusative/oblique case.
-    if($fs->prontype() eq 'prs' && !$fs->is_possessive() && $fs->case() eq '')
-    {
-        # Most nominative personal pronouns have case=nom. Examples: jeg (I), du (you), han (he), hun (she), vi (we), I (you), de (they).
-        # Most accusative personal pronouns have case=unmarked. Examples: mig (me), dig (you), ham (him), hende (her), os (us), jer (you), dem (them), sig (oneself).
-        # It is unclear what to do with 3rd person singular pronouns "den" and "det", which have case=unmarked but I suspect they can be used also as nominative.
-        $fs->set_case('acc');
-    }
+    # ... nothing yet ...
     return $fs;
 }
 
@@ -214,22 +274,8 @@ sub encode
     my $atoms = $self->atoms();
     my $subpos = $atoms->{pos}->encode($fs);
     my $fpos = $subpos;
-    if($fpos =~ m/^V[AE]$/)
-    {
-        my $verbform = $fs->verbform();
-        my $surface_mood = $verbform eq 'trans' ? 'trans' : $atoms->{mood}->encode($fs);
-        $fpos = "V.$surface_mood";
-    }
-    elsif($fpos eq 'AN')
-    {
-        my $transcat = $atoms->{transcat}->encode($fs);
-        if($transcat eq 'adverbial')
-        {
-            $fpos = 'AD';
-        }
-    }
-    my $feature_names = $self->get_feature_names($fpos);
-    my $pos = $subpos =~ m/^(RG|SP)$/ ? $subpos : substr($subpos, 0, 1);
+    my $feature_names = $self->features_all(); ###!!!$self->get_feature_names($fpos);
+    my $pos = substr($subpos, 0, 1); ###!!! To se musí udělat jinak!
     my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names);
     return $tag;
 }
