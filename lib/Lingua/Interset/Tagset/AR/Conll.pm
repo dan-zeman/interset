@@ -228,7 +228,7 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
-    my $fs = $self->decode_conll($tag, 'ar::conll');
+    my $fs = $self->decode_conll($tag);
     return $fs;
 }
 

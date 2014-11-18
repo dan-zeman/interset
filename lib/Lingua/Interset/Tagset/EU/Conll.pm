@@ -1220,7 +1220,7 @@ sub decode
     # For technical reasons, we do not allow two features with the same name, even if they are closely related ("POS:POSarte|POS:+").
     $tag =~ s/POS:\+/hasPOS:+/;
     $tag =~ s/IOR_IZEELI\tPER:/IOR_IZEELI\tpossPER:/;
-    my $fs = $self->decode_conll($tag, 'eu::conll', 'both', ':');
+    my $fs = $self->decode_conll($tag, 'both', ':');
     # Make sure that the NUM:P feature does not overwrite the value set by the PLU:+ feature.
     if($fs->get_other_subfeature('eu::conll', 'ptan') eq 'yes')
     {

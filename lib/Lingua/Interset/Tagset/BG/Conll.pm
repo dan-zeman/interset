@@ -593,7 +593,7 @@ sub decode
     $tag =~ s/\|num=p\|(.*)\|gen=/\|num=p\|$1\|possgen=/;
     # Also, all indefinite pronouns start with def=i and there can (but need not) be another def at the end.
     $tag =~ s/Pf\tdef=i\|/Pf\t/;
-    my $fs = $self->decode_conll($tag, 'bg::conll');
+    my $fs = $self->decode_conll($tag);
     # Default feature values. Used to improve collaboration with other drivers.
     if($fs->is_verb())
     {

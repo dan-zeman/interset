@@ -372,7 +372,7 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
-    my $fs = $self->decode_conll($tag, 'fa::conll', 'both'); ###!!! Teď když už je metoda get_tagset_id() povinná všude, by se tenhle parametr mohl zrušit.
+    my $fs = $self->decode_conll($tag, 'both');
     # Default feature values. Used to improve collaboration with other drivers.
     # ... nothing yet ...
     return $fs;

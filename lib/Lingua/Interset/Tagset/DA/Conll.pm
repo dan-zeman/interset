@@ -399,7 +399,7 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
-    my $fs = $self->decode_conll($tag, 'da::conll');
+    my $fs = $self->decode_conll($tag);
     # Default feature values. Used to improve collaboration with other drivers.
     # Some pronoun forms can be declared accusative/oblique case.
     if($fs->prontype() eq 'prs' && !$fs->is_possessive() && $fs->case() eq '')

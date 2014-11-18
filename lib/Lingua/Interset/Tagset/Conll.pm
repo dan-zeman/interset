@@ -61,13 +61,12 @@ sub decode_conll
 {
     my $self = shift;
     my $tag = shift;
-    my $tagset = shift; # e.g. 'da::conll'
     my $poskey = shift; # pos | subpos | both; subpos is default
     $poskey = 'subpos' if(!defined($poskey));
     my $delimiter = shift; # Feature-value delimiter. Default is '=' but eu::conll has ':' and Hyderabad tagsets have '-'.
     $delimiter = '=' if(!defined($delimiter));
     my $fs = Lingua::Interset::FeatureStructure->new();
-    $fs->set_tagset($tagset);
+    $fs->set_tagset($self->get_tagset_id());
     my $atoms = $self->atoms();
     my $feature_names = $self->features_all();
     # Three components: coarse-grained pos, fine-grained pos, features
