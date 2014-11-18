@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+Features:
+* New value 'exc' of the feature 'prontype': exclamative determiner or pronoun (e.g. "WHAT a surprise!")
+
 Drivers:
 * FA::Conll
 

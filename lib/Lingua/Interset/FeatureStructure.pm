@@ -164,7 +164,7 @@ my %matrix = @_matrix =
     'prontype' =>
     {
         'priority' => 100,
-        'values' => ['prn', 'prs', 'rcp', 'art', 'int', 'rel', 'dem', 'neg', 'ind', 'tot', ''],
+        'values' => ['prn', 'prs', 'rcp', 'art', 'int', 'rel', 'exc', 'dem', 'neg', 'ind', 'tot', ''],
         'replacements' =>
         [
             ['prn'],
@@ -172,8 +172,9 @@ my %matrix = @_matrix =
             ['dem'],
             ['prs'],
             ['rcp', 'prs'],
-            ['int', 'rel'],
+            ['int', 'rel', 'exc'],
             ['rel', 'int'],
+            ['exc', 'int'],
             ['neg', 'ind'],
             ['tot', 'ind'],
             ['art']

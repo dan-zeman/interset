@@ -44,91 +44,117 @@ sub _create_atoms
         'surfeature' => 'pos',
         'decode_map' =>
         {
-            # This table uses subpos (the POS column of the CoNLL format) as input.
-            # The "coarse comments" refer to the values of the (coarse) part of speech, i.e. the CPOS column.
-            # coarse ADJ
-            'AJP'    => ['pos' => 'adj', 'degree' => 'pos'], # dígr, islámí, bzrg, jdíd, mxtlf
-            'AJCM'   => ['pos' => 'adj', 'degree' => 'comp'], # bíštr, bíš, bhtr, bíštrí, kmtr
-            'AJSUP'  => ['pos' => 'adj', 'degree' => 'sup'], # bhtrín, mhmtrín, bzrgtrín, bíštrín, qwítrín
-            '_'      => ['pos' => 'adj'], # wláyí, xúdsáxte, wárd, xúbí (undocumented)
+            # This table uses pos and subpos (the CPOS and POS columns of the CoNLL format) as input.
+            # coarse ADJ: adjective
+            "ADJ\tAJP"    => ['pos' => 'adj', 'degree' => 'pos'], # dígr, islámí, bzrg, jdíd, mxtlf
+            "ADJ\tAJCM"   => ['pos' => 'adj', 'degree' => 'comp'], # bíštr, bíš, bhtr, bíštrí, kmtr
+            "ADJ\tAJSUP"  => ['pos' => 'adj', 'degree' => 'sup'], # bhtrín, mhmtrín, bzrgtrín, bíštrín, qwítrín
+            "ADJ\t_"      => ['pos' => 'adj'], # wláyí, xúdsáxte, wárd, xúbí (undocumented)
             # coarse ADR: address term
-            'PRADR'  => ['pos' => 'adj'], # í, yá, áháí (pre-noun morpheme to "make the noun the address of the speaker")
-            'POSADR' => ['pos' => 'adj'], # á (post-noun morpheme to "make the noun the address of the speaker")
+            # pre-noun morpheme to "make the noun the address of the speaker" (i.e. an interjection introducing a vocative phrase?)
+            # í = hey!, hallo!; yá = or (???); áháí = hey!
+            "ADR\tPRADR"  => ['pos' => 'int', 'case' => 'voc', 'other' => {'side' => 'pre'}],
+            # post-noun morpheme to "make the noun the address of the speaker"
+            # only "á", sometimes (15 times) as a bound morpheme, sometimes (3 times) as an isolated word
+            "ADR\tPOSADR" => ['pos' => 'int', 'case' => 'voc', 'other' => {'side' => 'post'}],
             # coarse ADV
-            'SADV'   => ['pos' => 'adv'], # hm, níz, htí, ne, xílí (genuine adverbs)
-            'AVP'    => ['pos' => 'adv', 'degree' => 'pos'], # hm, tnhá, dígr, xúb, ps (positive adjectives modifying verbs)
-            'AVCM'   => ['pos' => 'adv', 'degree' => 'comp'], # bíštr, bíš, kmtr, bhtr, zúdtr (comparative adjectives modifying verbs)
+            "ADV\tSADV"   => ['pos' => 'adv'], # hm, níz, htí, ne, xílí (genuine adverbs)
+            "ADV\tAVP"    => ['pos' => 'adv', 'degree' => 'pos'], # hm, tnhá, dígr, xúb, ps (positive adjectives modifying verbs)
+            "ADV\tAVCM"   => ['pos' => 'adv', 'degree' => 'comp'], # bíštr, bíš, kmtr, bhtr, zúdtr (comparative adjectives modifying verbs)
+            "ADV\tAVSUP"  => ['pos' => 'adv', 'degree' => 'sup'], # dúbáre
             # coarse CL (undocumented)
-            'MEAS'   => ['pos' => 'noun'], # kílú (only one occurrence of this one word form) + one N MEAS: qášq
-            # coarse CONJ
-            'CONJ'   => ['pos' => 'conj', 'conjtype' => 'coor'], # w, yá, amá, wlí, ke
+            "CL\tMEAS"    => ['pos' => 'noun'], # kílú (only one occurrence of this one word form) + one N MEAS: qášq
+            # coarse CONJ: coordinating conjunction
+            "CONJ\tCONJ"  => ['pos' => 'conj', 'conjtype' => 'coor'], # w, yá, amá, wlí, ke
             # coarse IDEN
-            'IDEN'   => ['pos' => 'noun'], # imám, dktr, šhíd, síd, áytalláh (titles used with personal names)
-            # coarse N
-            'ANM'    => ['pos' => 'noun', 'animateness' => 'anim'], # xdá, ksí, ansán, xadáwand, nfr
-            'IANM'   => ['pos' => 'noun', 'animateness' => 'inan'], # sál, kár, írán, rúz, dst
-            # coarse PART
-            'PART'   => ['pos' => 'part'], # áyá, ke, mgr, rá, dígr
-            # coarse POSNUM
-            'POSNUM' => ['pos' => 'num'], # awl, dúm, súm, čhárm, nxst (post-noun numeral)
-            # coarse POSTP
-            'POSTP'  => ['pos' => 'adp', 'adpostype' => 'post'], # rá, čún, az, rfte, mrá
-            # coarse PR
-            'SEPER'  => ['pos' => 'noun', 'prontype' => 'prs'], # mn, tú, aw, má, šmá, ánhá (separate personal pronoun)
-            'JOPER'  => ['pos' => 'noun', 'prontype' => 'prs'], # m, t, š, mán, tán, šán (enclitic personal pronoun)
-            'DEMON'  => ['pos' => 'noun', 'prontype' => 'dem'], # án, ín, hmín, čnán, ánjá (demonstrative pronoun)
-            'INTG'   => ['pos' => 'noun', 'prontype' => 'int'], # če, kjá, čgúne, čí, črá (interrogative pronoun)
-            'CREFX'  => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex'], # xod, xwíš, hm, ykdígr, hmdígr (common reflexive pronoun)
-            'UCREFX' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex'], # (noncommon reflexive pronoun: not present in data)
-            'RECPR'  => ['pos' => 'noun', 'prontype' => 'rcp'], # (reciprocal pronoun: not present in data)
-            '_'      => ['pos' => 'noun', 'prontype' => 'prs'], # hm, ykdígr, hmdígr, xúdš, xúdšán ###!!! The '_' fine POS also occurs with adjectives!
-            # coarse PREM (pre-modifier of nouns)
-            'EXAJ'   => ['pos' => 'adj'], # če, čqdr, án, čnd, ajb (exclamatory: express speaker's surprise towards the modified noun)
-            'QUAJ'   => ['pos' => 'adj', 'prontype' => 'int'], # če, kdám, čnd, kdámín (interrogative)
-            'DEMAJ'  => ['pos' => 'adj', 'prontype' => 'dem'], # ín, án, hmán, hmín, čnín (demonstrative)
-            'AMBAJ'  => ['pos' => 'adj'], # hr, čnd, híč, brxí, hme (ambiguous)
+            "IDEN\tIDEN"  => ['pos' => 'noun', 'other' => {'nountype' => 'title'}], # imám, dktr, šhíd, síd, áytalláh (titles used with personal names)
+            # coarse N: noun
+            "N\tANM"      => ['pos' => 'noun', 'animateness' => 'anim'], # xdá, ksí, ansán, xadáwand, nfr
+            "N\tIANM"     => ['pos' => 'noun', 'animateness' => 'inan'], # sál, kár, írán, rúz, dst
+            # coarse PART: particle
+            "PART\tPART"  => ['pos' => 'part'], # áyá, ke, mgr, rá, dígr
+            # coarse POSNUM: number following a noun
+            "POSNUM\tPOSNUM" => ['pos' => 'num', 'other' => {'numtype' => 'post'}], # awl, dúm, súm, čhárm, nxst (post-noun numeral)
+            # coarse POSTP: postposition
+            "POSTP\tPOSTP" => ['pos' => 'adp', 'adpostype' => 'post'], # rá, čún, az, rfte, mrá
+            # coarse PR: pronoun
+            "PR\tSEPER"   => ['pos' => 'noun', 'prontype' => 'prs'], # mn, tú, aw, má, šmá, ánhá (separate personal pronoun)
+            "PR\tJOPER"   => ['pos' => 'noun', 'prontype' => 'prs', 'variant' => 'short'], # m, t, š, mán, tán, šán (enclitic personal pronoun)
+            "PR\tDEMON"   => ['pos' => 'noun', 'prontype' => 'dem'], # án, ín, hmín, čnán, ánjá (demonstrative pronoun)
+            "PR\tINTG"    => ['pos' => 'noun', 'prontype' => 'int'], # če, kjá, čgúne, čí, črá (interrogative pronoun)
+            "PR\tCREFX"   => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex'], # xod, xwíš, hm, ykdígr, hmdígr (common reflexive pronoun)
+            "PR\tUCREFX"  => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex'], # (noncommon reflexive pronoun: not present in data)
+            "PR\tRECPR"   => ['pos' => 'noun', 'prontype' => 'rcp'], # (reciprocal pronoun: not present in data)
+            "PR\t_"       => ['pos' => 'noun', 'prontype' => 'prs'], # hm, ykdígr, hmdígr, xúdš, xúdšán ###!!! The '_' fine POS also occurs with adjectives!
+            # coarse PREM (pre-modifier of nouns, i.e. determiner?)
+            # exclamatory determiner: expresses speaker's surprise towards the modified noun ("WHAT a surprise!")
+            # če = what, čqdr = how much, how many, án = it, čnd = several, ajb = wonder, surprise
+            "PREM\tEXAJ"  => ['pos' => 'adj', 'prontype' => 'exc'],
+            # interrogative determiner
+            # če = what, kdám = which, čnd = several, kdámín = what
+            "PREM\tQUAJ"  => ['pos' => 'adj', 'prontype' => 'int'],
+            # demonstrative determiner
+            # ín = this, án = it, hmán = same, hmín = same, čnín = such
+            "PREM\tDEMAJ" => ['pos' => 'adj', 'prontype' => 'dem'],
+            # "ambiguous" (per the documentation) => total, indefinite or negative determiner
+            # hr = each/any/every, čnd = several/a few, híč = any/no/none, brxí = some, hme = all/every
+            "PREM\tAMBAJ" => ['pos' => 'adj', 'prontype' => 'tot|ind|neg'],
             # coarse PRENUM (pre-noun numeral)
-            'PRENUM' => ['pos' => 'num'], # ek, do, se, úlín, čhár
-            # coarse PREP
-            'PREP'   => ['pos' => 'adp', 'adpostype' => 'prep'], # be, dr, az, bá, bráí
-            'POST'   => ['pos' => 'adp', 'adpostype' => 'post'], # zmn
+            "PRENUM\tPRENUM" => ['pos' => 'num', 'other' => {'numtype' => 'pre'}], # ek, do, se, úlín, čhár
+            # coarse PREP: preposition
+            "PREP\tPREP"  => ['pos' => 'adp', 'adpostype' => 'prep'], # be, dr, az, bá, bráí
+            "PREP\tPOST"  => ['pos' => 'adp', 'adpostype' => 'post'], # zmn
+            "PREP\tPOSTP" => ['pos' => 'adp', 'adpostype' => 'post'], # ps
             # coarse PSUS (pseudo-sentence; instead of verb)
-            'PSUS'   => [], # káš, ne, angár, ya'aní, ble
-            # coarse PUNC
-            'PUNC'   => ['pos' => 'punc'], # ., ,, ?, !, "
-            # coarse V
-            'ACT'    => ['pos' => 'verb', 'voice' => 'act'], # míknnd, hstnd, dárnd, mídhnd, mítwánnd
-            'PASS'   => ['pos' => 'verb', 'voice' => 'pass'], # míšúnd, šde, dádemíšúnd, zádemíšúnd, gdárdemíšúnd
-            'MODL'   => ['pos' => 'verb', 'verbtype' => 'mod'], # báyd, nbáyd, mítwán, nmítwánd, míšúd
+            # káš = if; ne = not; angár = if; yacní = namely; bale = yes
+            "PSUS\tPSUS"  => ['pos' => 'part', 'parttype' => 'mod'], # káš, ne, angár, ya'aní, ble
+            # coarse PUNC: punctuation
+            "PUNC\tPUNC"  => ['pos' => 'punc'], # ., ,, ?, !, "
+            # coarse V: verb
+            "V\tACT"      => ['pos' => 'verb', 'voice' => 'act'], # míknnd, hstnd, dárnd, mídhnd, mítwánnd
+            "V\tPASS"     => ['pos' => 'verb', 'voice' => 'pass'], # míšúnd, šde, dádemíšúnd, zádemíšúnd, gdárdemíšúnd
+            "V\tMODL"     => ['pos' => 'verb', 'verbtype' => 'mod'], # báyd, nbáyd, mítwán, nmítwánd, míšúd
             # coarse SUBR (subordinating conjunction)
-            'SUBR'   => ['pos' => 'conj', 'conjtype' => 'sub'], # ke, agr, tá, zírá, čún
+            "SUBR\tSUBR"  => ['pos' => 'conj', 'conjtype' => 'sub'], # ke, agr, tá, zírá, čún
         },
         'encode_map' =>
         {
-            'pos' => { 'noun' => { 'prontype' => { 'prs' => { 'reflex' => { 'reflex' => 'CREFX',
-                                                                            '@'      => 'SEPER' }},
-                                                   'rcp' => 'RECPR',
-                                                   'dem' => 'DEMON',
-                                                   'int' => 'INTG',
-                                                   '@'   => { 'animateness' => { 'anim' => 'ANM',
-                                                                                 '@'    => 'IANM' }}}},
-                       'adj'  => { 'degree' => { 'sup'  => 'AJSUP',
-                                                 'comp' => 'AJCM',
-                                                 '@'    => 'AJP' }},
-                       'num'  => 'PRENUM',
-                       'verb' => { 'verbtype' => { 'mod' => 'MODL',
-                                                   '@'   => { 'voice' => { 'pass' => 'PASS',
-                                                                           '@'    => 'ACT' }}}},
-                       'adv'  => { 'degree' => { 'pos'  => 'AVP',
-                                                 'comp' => 'AVCM',
-                                                 'sup'  => 'AVCM',
-                                                 '@'    => 'SADV' }},
-                       'adp'  => { 'adpostype' => { 'post' => 'POST',
-                                                    '@'    => 'PREP' }},
-                       'conj' => { 'conjtype' => { 'sub' => 'SUBR',
-                                                   '@'   => 'CONJ' }},
-                       'part' => 'PART',
-                       'punc' => 'PUNC' }
+            'pos' => { 'noun' => { 'prontype' => { 'prs' => { 'reflex' => { 'reflex' => "PR\tCREFX",
+                                                                            '@'      => { 'variant' => { 'short' => "PR\tJOPER",
+                                                                                                         '@'     => "PR\tSEPER" }}}},
+                                                   'rcp' => "PR\tRECPR",
+                                                   'dem' => "PR\tDEMON",
+                                                   'int' => "PR\tINTG",
+                                                   '@'   => { 'other/nountype' => { 'title' => "IDEN\tIDEN",
+                                                                                    '@'     => { 'animateness' => { 'anim' => "N\tANM",
+                                                                                                                    '@'    => "N\tIANM" }}}}}},
+                       'adj'  => { 'prontype' => { 'dem' => "PREM\tDEMAJ",
+                                                   'int' => "PREM\tQUAJ",
+                                                   'exc' => "PREM\tEXAJ",
+                                                   'tot' => "PREM\tAMBAJ",
+                                                   'ind' => "PREM\tAMBAJ",
+                                                   'neg' => "PREM\tAMBAJ",
+                                                   '@'   => { 'degree' => { 'sup'  => "ADJ\tAJSUP",
+                                                                            'comp' => "ADJ\tAJCM",
+                                                                            '@'    => "ADJ\tAJP" }}}},
+                       'num'  => { 'other/numtype' => { 'post' => "POSNUM\tPOSNUM",
+                                                        '@'    => "PRENUM\tPRENUM" }},
+                       'verb' => { 'verbtype' => { 'mod' => "V\tMODL",
+                                                   '@'   => { 'voice' => { 'pass' => "V\tPASS",
+                                                                           '@'    => "V\tACT" }}}},
+                       'adv'  => { 'degree' => { 'pos'  => "ADV\tAVP",
+                                                 'comp' => "ADV\tAVCM",
+                                                 'sup'  => "ADV\tAVSUP",
+                                                 '@'    => "ADV\tSADV" }},
+                       'adp'  => { 'adpostype' => { 'post' => "POSTP\tPOSTP",
+                                                    '@'    => "PREP\tPREP" }},
+                       'conj' => { 'conjtype' => { 'sub' => "SUBR\tSUBR",
+                                                   '@'   => "CONJ\tCONJ" }},
+                       'part' => { 'parttype' => { 'mod' => "PSUS\tPSUS",
+                                                   '@'   => "PART\tPART" }},
+                       'punc' => "PUNC\tPUNC",
+                       'int'  => { 'other/side' => { 'post' => "ADR\tPOSADR",
+                                                     '@'    => "ADR\tPRADR" }}}
         }
     );
     # ATTACHMENT TYPE ####################
@@ -150,7 +176,8 @@ sub _create_atoms
         {
             'other/attachment' => { 'isolated' => 'ISO',
                                     'previous' => 'PRV',
-                                    'next'     => 'NXT' }
+                                    'next'     => 'NXT',
+                                    '@'        => 'ISO' }
         }
     );
     # PERSON ####################
@@ -256,7 +283,7 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
-    my $fs = $self->decode_conll($tag, 'fa::conll'); ###!!! Teď když už je metoda get_tagset_id() povinná všude, by se tenhle parametr mohl zrušit.
+    my $fs = $self->decode_conll($tag, 'fa::conll', 'both'); ###!!! Teď když už je metoda get_tagset_id() povinná všude, by se tenhle parametr mohl zrušit.
     # Default feature values. Used to improve collaboration with other drivers.
     # ... nothing yet ...
     return $fs;
@@ -272,10 +299,9 @@ sub encode
     my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $atoms = $self->atoms();
-    my $subpos = $atoms->{pos}->encode($fs);
+    my ($pos, $subpos) = split(/\t/, $atoms->{pos}->encode($fs));
     my $fpos = $subpos;
     my $feature_names = $self->features_all(); ###!!!$self->get_feature_names($fpos);
-    my $pos = substr($subpos, 0, 1); ###!!! To se musí udělat jinak!
     my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names);
     return $tag;
 }
@@ -290,7 +316,7 @@ sub encode
 #   perl -pe '@x = split(/\s+/, $_); $_ = "$x[3]\t$x[4]\t$x[5]\n"' |\
 #   sort -u | wc -l
 # 880
-# 671 after cleaning and adding 'other'-resistant tags
+# 283 after cleaning and adding 'other'-resistant tags
 #------------------------------------------------------------------------------
 sub list
 {
@@ -298,16 +324,11 @@ sub list
     my $list = <<end_of_list
 ADJ	AJCM	attachment=ISO
 ADJ	AJCM	attachment=NXT
-ADJ	AJP	_
 ADJ	AJP	attachment=ISO
 ADJ	AJP	attachment=ISO|number=SING
 ADJ	AJP	attachment=NXT
 ADJ	AJP	attachment=PRV
 ADJ	AJSUP	attachment=ISO
-ADJ	ANM	attachment=ISO
-ADJ	IANM	attachment=ISO
-ADJ	IANM	attachment=NXT
-ADJ	_	attachment=ISO
 ADR	POSADR	attachment=ISO
 ADR	POSADR	attachment=PRV
 ADR	PRADR	attachment=ISO
@@ -315,40 +336,32 @@ ADV	AVCM	attachment=ISO
 ADV	AVP	attachment=ISO
 ADV	AVP	attachment=NXT
 ADV	AVSUP	attachment=ISO
-ADV	IANM	attachment=ISO
 ADV	SADV	attachment=ISO
 ADV	SADV	attachment=NXT
 ADV	SADV	attachment=PRV
-CL	MEAS	attachment=ISO
 CONJ	CONJ	attachment=ISO
-CONJ	SUBR	attachment=ISO
 IDEN	IDEN	attachment=ISO
 IDEN	IDEN	attachment=ISO|number=SING
-N	ACT	attachment=ISO|number=SING
 N	ANM	attachment=ISO
 N	ANM	attachment=ISO|number=PLUR
 N	ANM	attachment=ISO|number=SING
 N	ANM	attachment=NXT|number=PLUR
 N	ANM	attachment=NXT|number=SING
-N	ANM	number=SING
 N	IANM	attachment=ISO
 N	IANM	attachment=ISO|number=PLUR
 N	IANM	attachment=ISO|number=SING
 N	IANM	attachment=NXT|number=PLUR
 N	IANM	attachment=NXT|number=SING
 N	IANM	attachment=PRV|number=SING
-N	MEAS	attachment=ISO
-N	POST	attachment=ISO
-N	SADV	attachment=ISO|number=SING
 PART	PART	attachment=ISO
 PART	PART	attachment=PRV
 POSNUM	POSNUM	attachment=ISO
-POSTP	IANM	attachment=ISO
 POSTP	POSTP	attachment=ISO
 POSTP	POSTP	attachment=NXT
 POSTP	POSTP	attachment=PRV
 PR	CREFX	attachment=ISO
 PR	CREFX	attachment=ISO|number=SING
+PR	CREFX	person=1|attachment=ISO|number=PLUR
 PR	CREFX	person=1|attachment=ISO|number=SING
 PR	CREFX	person=1|attachment=PRV|number=PLUR
 PR	CREFX	person=1|attachment=PRV|number=SING
@@ -361,6 +374,7 @@ PR	DEMON	attachment=ISO|number=PLUR
 PR	DEMON	attachment=ISO|number=SING
 PR	DEMON	attachment=NXT|number=SING
 PR	DEMON	attachment=PRV|number=SING
+PR	DEMON	person=1|attachment=ISO|number=PLUR
 PR	DEMON	person=1|attachment=ISO|number=SING
 PR	DEMON	person=1|attachment=NXT|number=PLUR
 PR	DEMON	person=3|attachment=ISO
@@ -373,10 +387,13 @@ PR	INTG	attachment=NXT
 PR	INTG	attachment=NXT|number=SING
 PR	INTG	person=1|attachment=ISO|number=SING
 PR	INTG	person=3|attachment=ISO|number=SING
+PR	JOPER	person=1|attachment=ISO|number=PLUR
 PR	JOPER	person=1|attachment=ISO|number=SING
 PR	JOPER	person=1|attachment=NXT|number=SING
 PR	JOPER	person=1|attachment=PRV|number=PLUR
 PR	JOPER	person=1|attachment=PRV|number=SING
+PR	JOPER	person=2|attachment=ISO|number=PLUR
+PR	JOPER	person=2|attachment=ISO|number=SING
 PR	JOPER	person=2|attachment=PRV|number=PLUR
 PR	JOPER	person=2|attachment=PRV|number=SING
 PR	JOPER	person=3|attachment=ISO|number=PLUR
@@ -384,7 +401,6 @@ PR	JOPER	person=3|attachment=ISO|number=SING
 PR	JOPER	person=3|attachment=NXT|number=SING
 PR	JOPER	person=3|attachment=PRV|number=PLUR
 PR	JOPER	person=3|attachment=PRV|number=SING
-PR	JOPER	person=3|number=SING
 PR	SEPER	attachment=ISO
 PR	SEPER	attachment=ISO|number=PLUR
 PR	SEPER	attachment=ISO|number=SING
@@ -398,49 +414,24 @@ PR	SEPER	person=2|attachment=ISO|number=PLUR
 PR	SEPER	person=2|attachment=ISO|number=SING
 PR	SEPER	person=2|attachment=NXT|number=PLUR
 PR	SEPER	person=2|attachment=NXT|number=SING
-PR	SEPER	person=2|number=PLUR
 PR	SEPER	person=3|attachment=ISO|number=PLUR
 PR	SEPER	person=3|attachment=ISO|number=SING
 PR	SEPER	person=3|attachment=NXT|number=PLUR
 PR	SEPER	person=3|attachment=NXT|number=SING
 PR	SEPER	person=3|attachment=PRV|number=SING
-PR	_	attachment=ISO
-PR	_	attachment=ISO|number=SING
-PR	_	attachment=NXT
-PR	_	person=1|attachment=ISO|number=PLUR
-PR	_	person=1|attachment=ISO|number=SING
-PR	_	person=2|attachment=ISO|number=PLUR
-PR	_	person=2|attachment=ISO|number=SING
-PR	_	person=2|attachment=NXT|number=SING
-PR	_	person=3|attachment=ISO|number=PLUR
-PR	_	person=3|attachment=ISO|number=SING
 PREM	AMBAJ	attachment=ISO
 PREM	DEMAJ	attachment=ISO
 PREM	DEMAJ	attachment=PRV
 PREM	EXAJ	attachment=ISO
 PREM	QUAJ	attachment=ISO
-PRENUM	IANM	attachment=ISO
-PRENUM	POST	attachment=ISO
 PRENUM	PRENUM	attachment=ISO
-PREP	ANM	attachment=ISO
-PREP	POST	attachment=ISO
-PREP	POSTP	attachment=ISO
-PREP	PRENUM	attachment=ISO
-PREP	PREP	_
 PREP	PREP	attachment=ISO
 PREP	PREP	attachment=NXT
 PREP	PREP	attachment=PRV
-PREP	SADV	attachment=ISO
-PRO	_	attachment=ISO
 PSUS	PSUS	attachment=ISO
 PSUS	PSUS	attachment=NXT
-PUNC	ACT	person=1|attachment=ISO|number=SING|tma=AY
-PUNC	ACT	person=1|attachment=ISO|number=SING|tma=HEL
-PUNC	ANM	attachment=ISO
-PUNC	IANM	attachment=ISO
 PUNC	PUNC	attachment=ISO
 PUNC	PUNC	attachment=PRV
-SUBR	IANM	attachment=ISO
 SUBR	SUBR	attachment=ISO
 SUBR	SUBR	attachment=PRV
 V	ACT	attachment=ISO|number=PLUR|tma=AY
