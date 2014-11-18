@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+2.022     2014-11-18 22:56:53+01:00 Europe/Prague
+
 Features:
 * New value 'exc' of the feature 'prontype': exclamative determiner or pronoun (e.g. "WHAT a surprise!")
 
