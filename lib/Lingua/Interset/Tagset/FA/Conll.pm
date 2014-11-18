@@ -202,26 +202,112 @@ sub _create_atoms
         }
     );
     # VERB FORM, MOOD, TENSE AND ASPECT ####################
-    # (example verb xordän = to eat)
+    # Here is a website that helps understand Persian verb forms: http://www.jahanshiri.ir/pvc/en/
+    # Some of the examples below are from the website, some from the PDF documentation of the treebank and some directly from the data.
+    # The transliterations of the three sources differ.
     $atoms{tma} = $self->create_atom
     (
         'surfeature' => 'tma',
         'decode_map' =>
         {
-            'HA'    => ['verbform' => 'fin', 'mood' => 'imp'],                                        # boxor
-            'AY'    => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'fut'],                      # xahäm xord (indicative future)
-            'GNES'  => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'past', 'aspect' => 'imp'],  # mixordeäm (indicative imperfective perfect)
-            'GBES'  => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pqp',  'aspect' => 'imp'],  # mixorde budäm (indicative imperfective pluperfect)
-            'GES'   => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'past', 'aspect' => 'imp'],  # mixordäm (indicative imperfective preterite)
-            'GN'    => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'past', 'aspect' => 'perf'], # xordeäm (indicative perfect)
-            'GB'    => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pqp',  'aspect' => 'perf'], # xorde budäm (indicative pluperfect)
-            'H'     => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pres'],                     # mixoräm (indicative present)
-            'GS'    => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'past'],                     # xordäm (indicative preterite)
-            'GBESE' => ['verbform' => 'fin', 'mood' => 'sub', 'tense' => 'pqp',  'aspect' => 'imp'],  # mixorde bude bašäm (subjunctive imperfective pluperfect)
-            'GESEL' => ['verbform' => 'fin', 'mood' => 'sub', 'tense' => 'past', 'aspect' => 'imp'],  # mixorde bašäm (subjunctive imperfective preterite)
-            'GBEL'  => ['verbform' => 'fin', 'mood' => 'sub', 'tense' => 'pqp',  'aspect' => 'perf'], # xorde bude bašäm (subjunctive pluperfect)
-            'HEL'   => ['verbform' => 'fin', 'mood' => 'sub', 'tense' => 'pres'],                     # boxoräm (subjunctive present)
-            'GEL'   => ['verbform' => 'fin', 'mood' => 'sub', 'tense' => 'past'],                     # xorde bašäm (subjunctive preterite)
+            # There are 12 past tenses in Persian. Even some (not all) periphrastic tenses have their dedicated tags because
+            # the participating verb forms are put together in one token in the treebank. Progressive tenses with the auxiliary
+            # verb dáštan (to have) are not tagged, the auxiliary verb is tokenized separately (but note that some other tenses,
+            # that are not called progressive in Persian, partially cover the meaning of the English continuous/progressive tenses).
+            # The remaining past tenses can be classified along three dimensions:
+            # aspect (normal vs. imperfect); narativeness; precedent vs. non-precedent
+            # The tenses that are called narrative in Persian grammar roughly correspond to the English present perfect.
+            # The tenses that are called precedent in Persian grammar roughly correspond to the English past perfect.
+            # Example verb is xordän = to eat.
+            # Simple past (indicative preterite)
+            # xordäm = I ate
+            # past stem + past ending
+            # raftam = I went; rafti = you went; raft = he went; raftim = we went; raftid = you went; raftand = they went
+            # Treebank examples: krd = did; búd = was; dášt = had
+            'GS'    => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'past', 'aspect' => 'perf'],
+            # Narrative past (indicative perfect)
+            # xordeäm = I have eaten
+            # past participle + past ending
+            # rafteam = I have gone; raftei = you have gone; rafte = he has gone; rafteim = we have gone; rafteid = you have gone; rafteand = they have gone
+            # Án ketáb rá čand bár xwándeam. = I have read that book several times.
+            # Treebank examples: krde ast = he has been; krde = he has been; ámde ast = he has come
+            'GN'    => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'nar', 'aspect' => 'perf'],
+            # Precedent past (indicative pluperfect)
+            # xorde budäm = I had eaten
+            # past participle of main verb + past simple of auxiliary budan (to be)
+            # rafte budam = I had gone; rafte budi = you had gone; rafte bud = he had gone; rafte budim = we had gone; rafte budid = you had gone; rafte budand = they have gone
+            # Vaght-i ke residim, ánhá rafte budand. = By the time we arrived, they had gone.
+            # Treebank examples: krde búd = he had been; dáde búd = he had been; zde búd = he had struck
+            'GB'    => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pqp',  'aspect' => 'perf'],
+            # Past imperfect (indicative imperfective preterite)
+            # mixordäm = I was eating
+            # mi + past stem + past ending
+            # miraftam; mirafti; miraft; miraftim; miraftid; miraftand
+            # Hamiše mixwást engelisi yád begirad. = He always wanted to learn English.
+            # Treebank examples: míkrd = would, was; mízd = drew, played; mídád = would, was
+            'GES'   => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'past', 'aspect' => 'imp'],
+            # Narrative imperfect (indicative imperfective perfect?)
+            # mixordeäm = I have been eating
+            # mi + past participle + past ending
+            # mirafteam; miraftei; mirafte; mirafteim; mirafteid; mirafteand
+            # Engelisi mixwánde? = Has she been studying English?
+            # Treebank examples: míkrde ast = he has been, he have had; mídánste = he knew; míkrde = he did
+            'GNES'  => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'nar', 'aspect' => 'imp'],
+            # Precedent imperfect (indicative imperfective pluperfect)
+            # mixorde budäm = I had been eating
+            # mi + past participle of main verb + past simple of auxiliary budan (to be)
+            # mirafte budam; mirafte budi; mirafte bud; mirafte budim; mirafte budid; mirafte budand
+            # No treebank examples found.
+            'GBES'  => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pqp',  'aspect' => 'imp'],
+            # Indicative present
+            # mixoräm = I am eating, I eat
+            # am = I am; i = you are; ast = he is; im = we are; id = you are; and = they are
+            # dáram = I have; dári = you have; dárad = he has; dárim = we have; dárid = you have; dárand = they have
+            # mibandam = I close; mibandi = you close; mibandad = he closes; mibandim = we close; mibandid = you close; mibandand = they close
+            # Treebank examples: ast = he is; míknd = he does; dárd = it has, there is
+            'H'     => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pres', 'aspect' => 'imp'],
+            # Indicative future (simple)
+            # xahäm xord = I will eat
+            # auxiliary verb xwástan (to want) in present simple + main verb in apocopated infinitive
+            # xwáham raft = I will go; xwáhi raft = you will go; xwáhad raft = he will go; xwáhim raft = we will go; xwáhid raft = you will go; xwáhand raft = they will go
+            # Treebank examples: xwáhd krd = he will do; xwáhd šd = he will be; xwáhd búd = he will/would be; xwáhd dád = he will give
+            'AY'    => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'fut'],
+            # Imperative
+            # boxor = eat
+            # It is made from subjunctive present simple.
+            # benevis = write!; benevisim = let's write!; benevisid = write!
+            # Treebank examples: kn = do; báš = remember; bgw = tell
+            'HA'    => ['verbform' => 'fin', 'mood' => 'imp'],
+            # Subjunctive past simple/narrative (subjunctive preterite)
+            # xorde bašäm ~ I would have eaten
+            # past participle of main verb + auxiliary verb budan (to be) in subjunctive present simple
+            # rafte bášam ~ I would have gone; rafte báši; rafte bášad; rafte bášim; rafte bášid; rafte bášand
+            # Treebank examples: krde bášd; dášte bášd; dáde bášd
+            'GEL'   => ['verbform' => 'fin', 'mood' => 'sub', 'tense' => 'past', 'aspect' => 'perf'],
+            # Subjunctive precedent narrative (subjunctive pluperfect)
+            # xorde bude bašäm ~ I would have had eaten
+            # past participle of main verb + auxiliary verb budan (to be) in subjunctive past narrative
+            # rafte bude bášam ~ I would have had gone; rafte bude báši; rafte bude bášad; rafte bude bášim; rafte bude bášid; rafte bude bášand
+            # No treebank examples found.
+            'GBEL'  => ['verbform' => 'fin', 'mood' => 'sub', 'tense' => 'pqp',  'aspect' => 'perf'],
+            # Subjunctive past narrative imperfect (subjunctive imperfective preterite)
+            # mixorde bašäm ~ I would have been eating
+            # mi + past participle of main verb + auxiliary verb budan (to be) in subjunctive present simple
+            # mirafte bášam ~ I would have been going; mirafte báši; mirafte bášad; mirafte bášim; mirafte bášid; mirafte bášand
+            # Treebank example: brmígrdánídm
+            'GESEL' => ['verbform' => 'fin', 'mood' => 'sub', 'tense' => 'past', 'aspect' => 'imp'],
+            # Subjunctive past precedent narrative imperfect (subjunctive imperfective pluperfect)
+            # mixorde bude bašäm ~ I would have had been eating
+            # mi + past participle of main verb + auxiliary verb budan (to be) in subjunctive past narrative
+            # mirafte bude bášam ~ I would have had been going; mirafte bude báši; mirafte bude bášad; mirafte bude bášim; mirafte bude bášid; mirafte bude bášand
+            # Treebank example: bde (???)
+            'GBESE' => ['verbform' => 'fin', 'mood' => 'sub', 'tense' => 'pqp',  'aspect' => 'imp'],
+            # Subjunctive present
+            # boxoräm = I would eat
+            # be + present stem + present ending (but the "be-" prefix is often omitted in light-verb constructions)
+            # benevisam = I would write; benevisi = you would write; benevisad = he would write; benevisim = we would write; benevisid = you would write; benevisand = they would write
+            # Treebank examples: knd = he would do; bášd = he would be; bknd = he would do; dárd = there would be; dhd = he would give
+            'HEL'   => ['verbform' => 'fin', 'mood' => 'sub', 'tense' => 'pres'],
         },
         'encode_map' =>
         {
@@ -229,13 +315,16 @@ sub _create_atoms
                         'sub' => { 'tense' => { 'pres' => 'HEL',
                                                 'past' => { 'aspect' => { 'imp' => 'GESEL',
                                                                           '@'   => 'GEL' }},
+                                                'nar'  => { 'aspect' => { 'imp' => 'GESEL',
+                                                                          '@'   => 'GEL' }},
                                                 'pqp'  => { 'aspect' => { 'imp' => 'GBESE',
                                                                           '@'   => 'GBEL' }}}},
                         '@'   => { 'tense' => { 'fut'  => 'AY',
                                                 'pres' => 'H',
-                                                'past' => { 'aspect' => { 'imp'  => 'GNES',
-                                                                          'perf' => 'GN',
+                                                'past' => { 'aspect' => { 'imp'  => 'GES',
                                                                           '@'    => 'GS' }},
+                                                'nar'  => { 'aspect' => { 'imp'  => 'GNES',
+                                                                          '@'    => 'GN' }},
                                                 'pqp'  => { 'aspect' => { 'imp'  => 'GBES',
                                                                           '@'    => 'GB' }}}}}
         }
@@ -316,7 +405,7 @@ sub encode
 #   perl -pe '@x = split(/\s+/, $_); $_ = "$x[3]\t$x[4]\t$x[5]\n"' |\
 #   sort -u | wc -l
 # 880
-# 283 after cleaning and adding 'other'-resistant tags
+# 271 after cleaning and adding 'other'-resistant tags
 #------------------------------------------------------------------------------
 sub list
 {
@@ -473,8 +562,6 @@ V	ACT	person=1|attachment=PRV|number=PLUR|tma=H
 V	ACT	person=1|attachment=PRV|number=SING|tma=AY
 V	ACT	person=1|attachment=PRV|number=SING|tma=H
 V	ACT	person=1|attachment=PRV|number=SING|tma=HEL
-V	ACT	person=1|number=SING|tma=AY
-V	ACT	person=1|number=SING|tma=H
 V	ACT	person=2|attachment=ISO|number=PLUR
 V	ACT	person=2|attachment=ISO|number=PLUR|tma=AY
 V	ACT	person=2|attachment=ISO|number=PLUR|tma=GB
@@ -530,8 +617,6 @@ V	ACT	person=3|attachment=PRV|number=PLUR|tma=H
 V	ACT	person=3|attachment=PRV|number=SING|tma=AY
 V	ACT	person=3|attachment=PRV|number=SING|tma=GS
 V	ACT	person=3|attachment=PRV|number=SING|tma=H
-V	ACT	person=3|number=SING|tma=H
-V	IANM	person=3|attachment=ISO|number=PLUR|tma=GN
 V	MODL	attachment=ISO|number=SING|tma=H
 V	MODL	attachment=ISO|number=SING|tma=HEL
 V	MODL	attachment=ISO|tma=GEL
