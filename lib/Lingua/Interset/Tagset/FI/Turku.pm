@@ -47,118 +47,601 @@ sub _create_atoms
         'surfeature' => 'pos',
         'decode_map' =>
         {
-            # n = noun (tuul, mees, kraan, riik, naine)
-            'n' => ['pos' => 'noun', 'nountype' => 'com'],
-            # prop = proper noun (Arnold, Lennart, Palts, Savisaar, Telia)
-            'prop' => ['pos' => 'noun', 'nountype' => 'prop'],
-            # art = article ###!!! DOES NOT OCCUR IN THE CORPUS
-            'art' => ['pos' => 'adj', 'prontype' => 'art'],
-            # v = verb (kutsutud, tahtnud, teadnud, tasunud, polnud)
-            'v' => ['pos' => 'verb'],
-            # v-fin = finite verb (roniti, valati, sõidutati, lahkunud, prantsatasimegi)
-            'v-fin' => ['pos' => 'verb', 'verbform' => 'fin'],
-            # v-inf = infinitive?/non-finite verb (lugeda, nuusutada, kiirustamata, laulmast, magama)
-            'v-inf' => ['pos' => 'verb', 'verbform' => 'inf'],
-            # v-pcp2 = verb participle? (sõidutatud, liigutatud, sisenenud, sõudnud, prantsatatud)
-            'v-pcp2' => ['pos' => 'verb', 'verbform' => 'part'],
-            # adj = adjective (suur, väike, noor, aastane, hall)
-            'adj' => ['pos' => 'adj'],
-            # adj-nat = nationality adjective (prantsuse, tšuktši)
-            'adj-nat' => ['pos' => 'adj', 'nountype' => 'prop', 'nametype' => 'nat'],
-            # adv = adverb (välja, edasi, ka, siis, maha)
-            'adv' => ['pos' => 'adv'],
-            # prp = preposition (juurde, taga, all, vastu, kohta)
-            'prp' => ['pos' => 'adp', 'adpostype' => 'prep'],
-            # pst = preposition/postposition (poole, järele, juurde, pealt, peale)
-            'pst' => ['pos' => 'adp', 'adpostype' => 'post'],
-            # conj-s = subordinating conjunction (et, kui, sest, nagu, kuigi)
-            'conj-s' => ['pos' => 'conj', 'conjtype' => 'sub'],
-            # conj-c = coordinating conjunction (ja, aga, või, vaid, a)
-            'conj-c' => ['pos' => 'conj', 'conjtype' => 'coor'],
-            # conj-p = prepositional conjunction ??? ###!!! DOES NOT OCCUR IN THE CORPUS
-            'conj-p' => ['pos' => 'conj', 'other' => {'subpos' => 'prep'}],
-            # pron = pronoun (to be specified) (pronoun type may be specified using features) (nood, sel, niisugusest, selle, sellesama)
-            'pron' => ['pos' => 'noun', 'prontype' => 'prn'],
-            # pron-pers = personal pronoun (ma, mina, sa, ta, tema, me, nad, nemad)
-            'pron-pers' => ['pos' => 'noun', 'prontype' => 'prs'],
-            # pron-rel = relative pronoun (mis, kes)
-            'pron-rel' => ['pos' => 'noun', 'prontype' => 'rel'],
-            # pron-int = interrogative pronoun ###!!! DOES NOT OCCUR IN THE CORPUS (is included under relative pronouns)
-            'pron-int' => ['pos' => 'noun', 'prontype' => 'int'],
-            # pron-dem = demonstrative pronoun (see, üks, siuke, selline, too)
-            'pron-dem' => ['pos' => 'noun', 'prontype' => 'dem'],
-            # pron-indef = indefinite pronoun (mõned)
-            'pron-indef' => ['pos' => 'noun', 'prontype' => 'ind'],
-            # pron-poss = possessive pronoun (ise)
-            'pron-poss' => ['pos' => 'noun', 'prontype' => 'prs', 'poss' => 'poss'],
-            # pron-def = possessive (?) pronoun (keegi, mingi)
-            'pron-def' => ['pos' => 'noun', 'prontype' => 'prs', 'poss' => 'poss'],
-            # pron-refl = reflexive pronoun (enda, endasse)
-            'pron-refl' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex'],
-            # num = numeral (kaks, neli, viis, seitse, kümme)
-            'num' => ['pos' => 'num'],
-            # intj = interjection (no, kurat)
-            'intj' => ['pos' => 'int'],
-            # infm = infinitive marker ###!!! DOES NOT OCCUR IN THE CORPUS
-            'infm' => ['pos' => 'part', 'parttype' => 'inf'],
-            # punc = punctuation (., ,, ', -, :)
-            'punc' => ['pos' => 'punc'],
-            # sta = statement ??? ###!!! DOES NOT OCCUR IN THE CORPUS
-            # abbr = abbreviation (km/h, cm)
-            'abbr' => ['abbr' => 'abbr'],
-            # x = undefined word class (--, pid, viis-, ta-)
-            'x' => [],
-            # b = discourse particle (only in sul.xml (spoken language)) (noh, nigu, vä, nagu, ei)
-            'b' => ['pos' => 'part']
-        },
-        'encode_map' =>
-
-            { 'prontype' => { ''    => { 'pos' => { 'noun' => { 'nountype' => { 'prop' => 'prop',
-                                                                                '@'    => 'n' }},
-                                                    'adj'  => { 'nametype' => { 'nat' => 'adj-nat',
-                                                                                '@'   => 'adj' }},
-                                                    'num'  => 'num',
-                                                    # Encoding of verb forms is inconsistent in the corpus.
-                                                    # The form is encoded in the features but sometimes it is also part of the part-of-speech tag.
-                                                    # We can decode v-(fin|inf|pcp2) but we do not encode it.
-                                                    # Our list of known tags only contains the simple "v" variant.
-                                                    'verb' => 'v',
-                                                    'adv'  => 'adv',
-                                                    'adp'  => { 'adpostype' => { 'post' => 'pst',
-                                                                                 '@'    => 'prp' }},
-                                                    'conj' => { 'conjtype' => { 'sub' => 'conj-s',
-                                                                                '@'   => 'conj-c' }},
-                                                    'part' => { 'parttype' => { 'inf' => 'infm',
-                                                                                '@'   => 'b' }},
-                                                    'int'  => 'intj',
-                                                    'punc' => 'punc',
-                                                    '@'    => { 'abbr' => { 'abbr' => 'abbr',
-                                                                            '@'    => 'x' }}}},
-                              'art' => 'art',
-                              # Encoding of pronoun types is inconsistent in the corpus.
-                              # The type is always the first feature but sometimes it is also part of the part-of-speech tag (pron-dem/dem), next time it is not (pron/dem).
-                              # We can decode pron-(dem|indef|int|rel) but we do not encode it. Our list of known tags only contains the pron/dem variant.
-                              '@'   => 'pron' }}
-    );
-    # NOUNTYPE ####################
-    $atoms{nountype} = $self->create_atom
-    (
-        'surfeature' => 'nountype',
-        'decode_map' =>
-        {
-            # com ... common noun (tuul, mees, kraan, riik, naine)
-            'com'     => ['nountype' => 'com'],
-            # prop ... proper noun (Peeter, Jaan, Jüri, Mare, Erik)
-            'prop'    => ['nountype' => 'prop'],
-            # nominal ... nominal abbreviation (Kaabel-TV, EE, kaabelTV) ... used rarely and inconsistently, should be ignored
-            'nominal' => []
+            'A'    => ['pos' => 'adj'],
+            'ABBR' => ['abbr' => 'abbr'],
+            # see e.g. http://archives.conlang.info/pei/juenchen/phaelbhaduen.html for what ad-adjective is
+            'AD-A' => ['pos' => 'adv', 'advtype' => 'adadj'],
+            'ADV'  => ['pos' => 'adv'],
+            'ART'  => ['pos' => 'adj', 'prontype' => 'art'],
+            'C'    => ['pos' => 'conj'],
+            'INTJ' => ['pos' => 'int'],
+            'N'    => ['pos' => 'noun'],
+            'NUM'  => ['pos' => 'num'],
+            # adposition (pre- or postposition): jälkeen, ennen
+            'PP'   => ['pos' => 'adp'],
+            # foreign preposition: de
+            'PREP' => ['pos' => 'adp', 'adpostype' => 'prep'],
+            # postposition: vieressä
+            'PSP'  => ['pos' => 'adp', 'adpostype' => 'post'],
+            # pronoun: sinä
+            'PRON' => ['pos' => 'noun', 'prontype' => 'prs'],
+            'V'    => ['pos' => 'verb']
         },
         'encode_map' =>
         {
-            'nountype' => { 'prop' => 'prop',
-                            '@'    => 'com' }
+            'pos' => { 'noun' => { 'prontype' => { ''  => 'N',
+                                                   '@' => 'PRON' }},
+                       'adj'  => { 'prontype' => { 'art' => 'ART',
+                                                   '@'   => 'A' }},
+                       'num'  => 'NUM',
+                       'verb' => 'V',
+                       'adv'  => { 'advtype' => { 'adadj' => 'AD-A',
+                                                  '@'     => 'ADV' }},
+                       'adp'  => { 'adpostype' => { 'prep' => 'PREP',
+                                                    'post' => 'PSP',
+                                                    '@'    => 'PP' }},
+                       'conj' => 'C',
+                       'int'  => 'INTJ',
+                       '@'    => { 'abbr' => { 'abbr' => 'ABBR' }}}
         }
     );
+    # DEGREE OF COMPARISON ####################
+    $atoms{degree} = $self->create_simple_atom
+    (
+        'intfeature' => 'degree',
+        'simple_decode_map' =>
+        {
+            # positive (kuuma, hyvä)
+            'POS' => 'pos',
+            # comparative (kuumempi, parempi)
+            'CMP' => 'comp',
+            # superlative (kuumin, paras)
+            'SUP' => 'sup'
+        }
+    );
+    # CASE ####################
+    $atoms{case} = $self->create_simple_atom
+    (
+        'intfeature' => 'case',
+        'simple_decode_map' =>
+        {
+            # nominative (koira = dog)
+            'NOM' => 'nom',
+            # genitive (koiran)
+            'GEN' => 'gen',
+            # partitive (koiraa)
+            'PTV' => 'par',
+            # essive (koirana)
+            'ESS' => 'ess',
+            # translative (koiraksi)
+            'TRA' => 'tra',
+            # inessive (koirassa)
+            'INE' => 'ine',
+            # elative (koirasta)
+            'ELA' => 'ela',
+            # illative (koiraan)
+            'ILL' => 'ill',
+            # adessive (koiralla)
+            'ADE' => 'ade',
+            # ablative (koiralta)
+            'ABL' => 'abl',
+            # allative (koiralle)
+            'ALL' => 'all',
+            # abessive (koiratta)
+            'ABE' => 'abe',
+            # comitative (koirineen)
+            'CMT' => 'com',
+            # instructive (koirin)
+            'INS' => 'ins',
+            # accusative: only with a few pronouns (meidät = us, sinut = thee, hänet = him, minut = me, heidät = them)
+            'ACC' => 'acc'
+        }
+    );
+    # NUMBER ####################
+    $atoms{number} = $self->create_simple_atom
+    (
+        'intfeature' => 'number',
+        'simple_decode_map' =>
+        {
+            # singular (kala = fish)
+            'SG' => 'sing',
+            # plural (kalat)
+            'PL' => 'plur'
+        }
+    );
+    # POSSESSIVE SUFFIX ####################
+    $atoms{poss} = $self->create_atom
+    (
+        'surfeature' => 'poss',
+        'decode_map' =>
+        {
+            # 1st person singular (my) (tyttäreni = my daughter)
+            '1SG' => ['poss' => 'poss', 'possperson' => '1', 'possnumber' => 'sing'],
+            # 2nd person singular (your) (tyttäresi)
+            '2SG' => ['poss' => 'poss', 'possperson' => '2', 'possnumber' => 'sing'],
+            # 3rd person singular or plural (his, her, its, their) (tyttärensä)
+            '3'   => ['poss' => 'poss', 'possperson' => '3'],
+            # 1st person plural (our) (tyttäremme)
+            '1PL' => ['poss' => 'poss', 'possperson' => '1', 'possnumber' => 'plur'],
+            # 2nd person plural (your) (tyttärenne)
+            '2PL' => ['poss' => 'poss', 'possperson' => '2', 'possnumber' => 'plur']
+        },
+        'encode_map' =>
+        {
+            'possperson' => { '1' => { 'possnumber' => { 'plur' => '1PL',
+                                                         '@'    => '1SG' }},
+                              '2' => { 'possnumber' => { 'plur' => '2PL',
+                                                         '@'    => '2SG' }},
+                              '3' => '3' }
+        }
+    );
+    # MOOD ####################
+    $atoms{mood} = $self->create_atom
+    (
+        'surfeature' => 'mood',
+        'decode_map' =>
+        {
+            # There is no feature for indicative forms (lukee = reads, menee = goes).
+            # imperative (lue, mene)
+            'IMPV' => ['verbform' => 'fin', 'mood' => 'imp'],
+            # conditional (lukisi, menisi)
+            'COND' => ['verbform' => 'fin', 'mood' => 'cnd'],
+            # potential (lukenee, mennee)
+            'POTN' => ['verbform' => 'fin', 'mood' => 'pot']
+        },
+        'encode_map' =>
+        {
+            'mood' => { 'imp' => 'IMPV',
+                        'cnd' => 'COND',
+                        'pot' => 'POTN' }
+        }
+    );
+    # TENSE ####################
+    $atoms{tense} = $self->create_simple_atom
+    (
+        'intfeature' => 'tense',
+        'simple_decode_map' =>
+        {
+            # present (haluan = I want to)
+            'PRES' => 'pres',
+            # past (halusin = I wanted to)
+            'PAST' => 'past'
+        }
+    );
+    # VOICE ####################
+    $atoms{voice} = $self->create_simple_atom
+    (
+        'intfeature' => 'voice',
+        'simple_decode_map' =>
+        {
+            # active (uin = I swim)
+            'ACT' => 'act',
+            # passive (uidaan)
+            'PSS' => 'pass'
+        }
+    );
+    # PERSON AND NUMBER OF THE SUBJECT OF THE VERB ####################
+    $atoms{poss} = $self->create_atom
+    (
+        'surfeature' => 'poss',
+        'decode_map' =>
+        {
+            # Person: SG1 SG2 SG3 PL1 PL2 PL3 PE4
+            # 1st person singular (menen = I go)
+            'SG1' => ['number' => 'sing', 'person' => '1'],
+            # 2nd person singular (menet = you go)
+            'SG2' => ['number' => 'sing', 'person' => '2'],
+            # 3rd person singular (menee = he goes)
+            'SG3' => ['number' => 'sing', 'person' => '3'],
+            # 1st person plural (menemme = we go)
+            'PL1' => ['number' => 'plur', 'person' => '1'],
+            # 2nd person plural (menette = you go)
+            'PL2' => ['number' => 'plur', 'person' => '2'],
+            # 3rd person plural (menevät = they go)
+            'PL3' => ['number' => 'plur', 'person' => '3'],
+            # passive ending (mennään)
+            # In modern colloquial Finnish, the passive form of the verb is used instead of the active first person plural indicative and imperative.
+            'PE4' => ['number' => 'plur', 'person' => '1', 'style' => 'coll']
+        },
+        'encode_map' =>
+        {
+            'number' => { 'sing' => { 'person' => { '1' => 'SG1',
+                                                    '2' => 'SG2',
+                                                    '3' => 'SG3' }},
+                          'plur' => { 'person' => { '1' => { 'style' => { 'coll' => 'PE4',
+                                                                          '@'    => 'PL1' }},
+                                                    '2' => 'PL2',
+                                                    '3' => 'PL3' }}}
+        }
+    );
+    # NEGATIVENESS ####################
+    $atoms{neg} = $self->create_atom
+    (
+        'surfeature' => 'neg',
+        'decode_map' =>
+        {
+            # negative verb (en, et, ei)
+            'NEGV' => ['pos' => 'verb', 'negativeness' => 'neg'],
+            # negative form (en tehnyt = I did not do)
+            'NEG'  => ['negativeness' => 'neg']
+        },
+        'encode_map' =>
+        {
+            'negativeness' => { 'neg' => { 'pos' => { 'verb' => 'NEGV',
+                                                      '@'    => 'NEG' }}}
+        }
+    );
+    # INFINITIVE ####################
+    # There are several verb forms in Finnish that are called infinitives.
+    # Infinitives: INF1 INF2 INF3 INF5
+    # The 4th infinitive (tuleminen) is interpreted as a noun.
+    $atoms{inf} = $self->create_atom
+    (
+        'surfeature' => 'inf',
+        'decode_map' =>
+        {
+            # 1st infinitive (tulla, tullakseni = to become)
+            'INF1' => ['verbform' => 'inf', 'variant' => '1'],
+            # 2nd infinitive (tullessaan, tullessa)
+            'INF2' => ['verbform' => 'inf', 'variant' => '2'],
+            # 3rd infinitive (tulemaan)
+            'INF3' => ['verbform' => 'ger'],
+            # 5th infinitive (tulemaisillaan)
+            'INF5' => ['verbform' => 'inf', 'variant' => '5']
+        },
+        'encode_map' =>
+        {
+            'verbform' => { 'inf' => { 'variant' => { '5' => 'INF5',
+                                                      '2' => 'INF2',
+                                                      '@' => 'INF1' }},
+                            'ger' => 'INF3' }
+        }
+    );
+    # PARTICIPLE ####################
+    # Participles: PCP1 PCP2
+    $atoms{pcp} = $self->create_atom
+    (
+        'surfeature' => 'pcp',
+        'decode_map' =>
+        {
+            # 1st participle (lentävä = flying, lennettävä = flown)
+            'PCP1' => ['verbform' => 'part', 'variant' => '1'],
+            # 2nd participle (lentänyt = flown, lennetty = flown)
+            'PCP2' => ['verbform' => 'part', 'variant' => '2']
+        },
+        'encode_map' =>
+        {
+            'verbform' => { 'part' => { 'variant' => { '2' => 'PCP2',
+                                                       '@' => 'PCP1' }}}
+        }
+    );
+    # CLITIC ####################
+    # Clitics: hAn kA kAAn kin kO pA s
+    $atoms{clitic} = $self->create_atom
+    (
+        'surfeature' => 'clitic',
+        'decode_map' =>
+        {
+            # Appealing clitic -han/-hän (poikahan).
+            # This clitic is to appeal to the listener:
+            # Olethan kävellyt?
+            # You have walked, right?
+            'hAn'   => ['other' => {'clitic' => 'hAn'}],
+            # Copulative clitic -ka/-kä (eikä).
+            # This clitic is used in negative forms to work as copula:
+            # en juokse enkä kävele
+            # I don't run nor (do I) walk.
+            'kA'    => ['other' => {'clitic' => 'kA'}],
+            # -kaan/-kään (poikakaan)
+            'kAAn'  => ['other' => {'clitic' => 'kAAn'}],
+            # -kin (poikakin)
+            'kin'   => ['other' => {'clitic' => 'kin'}],
+            # -ko/-kö (oletko)
+            'kO'    => ['other' => {'clitic' => 'kO'}],
+            # -kohan/-köhän (miksiköhän = I wonder why, olisikohan = I wonder if)
+            'kOhAn' => ['other' => {'clitic' => 'kOhAn'}],
+            # -pa/-pä (oletpa)
+            'pA'    => ['other' => {'clitic' => 'pA'}],
+            # Emphatic (zdůrazňovací) clitic -s (onpas)
+            's'     => ['other' => {'clitic' => 's'}]
+        },
+        'encode_map' =>
+        {
+            'other/clitic' => { 'kA'    => 'kA',
+                                'kAAn'  => 'kAAn',
+                                'kin'   => 'kin',
+                                'kO'    => 'kO',
+                                'kOhAn' => 'kOhAn',
+                                'pA'    => 'pA',
+                                's'     => 's' }
+        }
+    );
+    # FOREIGN WORD ####################
+    # foreign word (British)
+    $atoms{foreign} = $self->create_simple_atom
+    (
+        'intfeature' => 'foreign',
+        'simple_decode_map' =>
+        {
+            'FORGN' => 'foreign'
+        }
+    );
+    # PROPER NAME ####################
+    # proper noun (Mikko)
+    $atoms{prop} = $self->create_simple_atom
+    (
+        'intfeature' => 'nountype',
+        'simple_decode_map' =>
+        {
+            'PROP' => 'prop'
+        }
+    );
+    # -pi ####################
+    # -pi (ompi = finer, nicer) ???
+    # Not found in the corpus.
+    # Other features occur in data although they are not documented.
+    # PRONOUN TYPE ####################
+    # Pronoun types: PERS DEM REL Q REFL/Q
+    # Of these, only 'Q' appears in the documentation:
+    # Q = quantifier (moni = many, much)
+    $atoms{prontype} = $self->create_atom
+    (
+        'surfeature' => 'prontype',
+        'decode_map' =>
+        {
+            # Q = quantifier (moni = many, much)
+            # In the data, it occurs always together with PRON, i.e. 'Q|PRON'. Examples (translation by Google):
+            # missään (anywhere), samalla (at the same time), toisen (next), kaikkia (all), jokaista (every), ainoa (only), samaan (same), molemmat (both)
+            'Q' => ['prontype' => 'ind'],
+            # REFL/Q = reflexive quantifying pronoun (itseään = sám = self)
+            'REFL/Q' => ['prontype' => 'ind', 'reflex' => 'reflex'],
+            # PERS = personal pronoun (meidät = us)
+            # minä = I, sinä = you, hän = he/she, me = we, te = you, he = they
+            'PERS' => ['prontype' => 'prs'],
+            # DEM = demonstrative pronoun (se = that, tuolla = there)
+            'DEM' => ['prontype' => 'dem'],
+            # REL = relative pronoun (mihin = where, mitä = what, joka = which)
+            'REL' => ['prontype' => 'rel'],
+            # INTG = interrogative pronoun (kuka = who, mikä = what)
+            'INTG' => ['prontype' => 'int']
+        },
+        'encode_map' =>
+        {
+            'prontype' => { 'prs' => 'PERS',
+                            'dem' => 'DEM',
+                            'ind' => { 'reflex' => { 'reflex' => 'REFL/Q',
+                                                     '@'      => 'Q' }},
+                            'int' => 'INTG',
+                            'rel' => 'REL' }
+        }
+    );
+    # NUMERAL TYPE ####################
+    # We can combine numeral type and form in one atom because they do not occur together.
+    $atoms{numtype} = $self->create_atom
+    (
+        'surfeature' => 'numtype',
+        'decode_map' =>
+        {
+            # ordinal numeral (ensimmäinen = first, toinen = second, kolmas = third)
+            'ORD' => ['numtype' => 'ord'],
+            # number expressed using Arabic digits
+            # it also occurs with compound adjectives and nouns that contain digits (7., 9., 1.3-litrainen, 1980-luvun)
+            'digit' => ['numform' => 'digit'],
+            # number expressed using Roman numerals
+            # (I, D, II, III, V, I:lle, M:lle, X-ryhmä)
+            'roman' => ['numform' => 'roman']
+        },
+        'encode_map' =>
+        {
+            'numtype' => { 'ord' => 'ORD',
+                           '@'   => { 'numform' => { 'digit' => 'digit',
+                                                     'roman' => 'roman' }}}
+        }
+    );
+    # COPULA ####################
+    # Copula verb: COP (olla = to be)
+    $atoms{copula} = $self->create_simple_atom
+    (
+        'intfeature' => 'verbtype',
+        'simple_decode_map' =>
+        {
+            'COP' => 'cop'
+        }
+    );
+    # UNKNOWN FEATURES ####################
+    # LAT REF TEMP
+    $atoms{unknown} = $self->create_atom
+    (
+        'surfeature' => 'unknown',
+        'decode_map' =>
+        {
+            # LAT ???
+            # Typically occurs with the first infinitive (LAT|INF1|V).
+            # It never occurs without INF1 and I found only three INF1 tags without LAT (all three were in the translative case).
+            'LAT' => ['other' => {'lat' => 'yes'}],
+            # REF ???
+            # A very rare feature of verbs. Reflexivity?
+            # PAST|PSS|REF|V: julkaistun = published, mietityn = thought about, tuomitun = convicted
+            # "tuomitun" is homonymous with the second participle in genitive (in nominative, it is "tuomittu")
+            # same with "julkaistun" (nominative participle "julkaistu") but not with "mietityn"
+            # PSS|REF|PRES|V: tultavan (tulla = become), kuvattavan (kuvata = shoot), hoidettavan (hoitaa = manage)
+            # similar to the first participle: tultava
+            'REF' => ['other' => {'ref' => 'yes'}],
+            # TEMP ???
+            # Rare feature of PAST|ACT verbs ending in -tua, -tyä, -tuaan.
+            # Maybe it expresses "after doing the action of the verb"?
+            # tultua = after the entry (tulla = become); iskettyä = struck (iskeä = strike); kirjattua = recognized (kirjata = record)
+            'TEMP' => ['other' => {'temp' => 'yes'}],
+        },
+        'encode_map' =>
+        {
+            'other/lat' => { 'yes' => 'LAT',
+                             '@'   => { 'other/ref' => { 'yes' => 'REF',
+                                                         '@'   => { 'other/temp' => { 'yes' => 'TEMP' }}}}}
+        }
+    );
+    # ADVERB TYPE ####################
+    # MAN INTERR
+    $atoms{advtype} = $self->create_atom
+    (
+        'surfeature' => 'advtype',
+        'decode_map' =>
+        {
+            # manner adverb (rohkeasti = boldly, hitaasti = slowly, henkisesti = mentally)
+            'MAN'    => ['advtype' => 'man'],
+            # interrogative adverb or adjective (kuinka = how, millainen = which, milloin = when, miksei = why not)
+            'INTERR' => ['prontype' => 'int']
+        },
+        'encode_map' =>
+        {
+            'prontype' => { 'int' => 'INTERR',
+                            '@'   => { 'advtype' => { 'man' => 'MAN' }}}
+    );
+    # CONJUNCTION TYPE ####################
+    # COORD SUB
+    $atoms{conjtype} = $self->create_simple_atom
+    (
+        'intfeature' => 'conjtype',
+        'simple_decode_map' =>
+        {
+            # coordinating conjunction (ja, että, vai, sekä, mutta)
+            'COORD' => 'coor',
+            # subordinating conjunction (kun, vaikka, ettei, jos, koska)
+            'SUB'   => 'sub',
+            # comparating conjunction (kuin = as)
+            'CMPR'  => 'comp'
+        }
+    );
+    # UPPERCASE ####################
+    # up: is the first letter of the word form uppercase?
+    # We can decode and recover this information but we will not show it in our list of known tags.
+    $atoms{up} = $self->create_atom
+    (
+        'surfeature' => 'up',
+        'decode_map' =>
+        {
+            'up' => ['other' => {'uppercase' => 'yes'}]
+        },
+        'encode_map' =>
+        {
+            'other/uppercase' => { 'yes' => 'up' }
+        }
+    );
+    # TRUNCATED COMPOUND ####################
+    # TrunCo seems to mark hyphenated prefixes occurring separately.
+    $atoms{trunco} = $self->create_simple_atom
+    (
+        'intfeature' => 'hyph',
+        'simple_decode_map' =>
+        {
+            'TrunCo' => 'hyph'
+        }
+    );
+        # PUNCT = punctuation
+        elsif($feature eq 'PUNCT')
+        {
+            $f{pos} = 'punc';
+        }
+        # DASH|PUNCT, PUNCT|QUOTE, PUNCT|ENDASH...
+        elsif($feature =~ m/^(E[MN])?DASH$/)
+        {
+            $f{punctype} = 'dash';
+        }
+        elsif($feature eq 'QUOTE')
+        {
+            $f{punctype} = 'quot';
+        }
+        # Style: st-arch st-cllq st-derog st-slang st-vrnc st-hi
+        # archaic colloquial derogative slang vernacular hi?
+        # zastaralý hovorový hanlivý slang nářečí knižní?
+        elsif($feature eq 'st-arch')
+        {
+            $f{style} = 'arch';
+        }
+        elsif($feature eq 'st-cllq')
+        {
+            $f{style} = 'coll';
+        }
+        elsif($feature eq 'st-derog')
+        {
+            $f{style} = 'derg';
+        }
+        elsif($feature eq 'st-slang')
+        {
+            $f{style} = 'slng';
+        }
+        elsif($feature eq 'st-vrnc')
+        {
+            $f{style} = 'vrnc';
+        }
+        elsif($feature eq 'st-hi')
+        {
+            $f{style} = 'form';
+        }
+        # Deverbatives? And what is the resulting part of speech? A noun?
+        # DV-NEISUUS      5
+        # DV-NTI  49
+        # DV-NA   2
+        # DV-VAINEN       38
+        # DV-MATON        51
+        # DV-JA   594
+        # DV-SKELE        5
+        # DV-MINEN        382
+        # DV-MA   142
+        # DV-UTTA 1
+        # DV-NTAA 40
+        # DV-NTA  98
+        # DV-ELE  176
+        # DV-TTA  259
+        # DV-US   643
+        # DV-U    505
+        # DV-ILE  63
+        # DV-UTU  46
+        elsif($feature =~ m/^DV-[A-Z]+$/)
+        {
+            $f{pos} = 'noun' unless($f{pos});
+        }
+        # Denominatives. Unlike deverbatives, they usually have their resulting part of speech specified, mostly A or ADV.
+        # DN-INEN 44
+        # DN-ITTAIN       34
+        # DN-LAINEN       168
+        # DN-LLINEN       329
+        # DN-MAINEN       17
+        # DN-TAR  1
+        # DN-TON  40
+        elsif($feature =~ m/^DN-[A-Z]+$/)
+        {
+            $f{pos} = 'adj' unless($f{pos});
+        }
+        # Deadjectives. They usually have their resulting part of speech specified, mostly N.
+        # DA-US 101 ... sairaus = illness, rakkaus = love
+        # DA-UUS 280 ... varmuus = affirmation, tyhjyys = emptiness
+        elsif($feature =~ m/^DA-[A-Z]+$/)
+        {
+            $f{pos} = 'noun' unless($f{pos});
+        }
+        # Word form not found in lexicon: NON-TWOL.
+        elsif($feature eq 'NON-TWOL')
+        {
+            # Do nothing.
+        }
+        # *null* node inserted instead of ellided token; always verb (V|NULL).
+        elsif($feature eq 'NULL')
+        {
+            # Do nothing.
+        }
+        # S mysteriously occurs with a few foreign words (child, monkey, death).
+        elsif($feature eq 'S')
+        {
+            # Do nothing.
+        }
+        # The 't-EUparl' "feature" is probably a bug in data preparation / tagging.
+        # It occurs only once, with the word 'europarlamenttivaaleissa' (= EU Parliament polls).
+        # There are several other similar.
+        elsif($feature =~ m/^t-(EUparl|MSilocat|MSasiakirja|EU-vk|MSolocat|MSlukumäärä)$/)
+        {
+            # Do nothing.
+        }
     return \%atoms;
 }
 
