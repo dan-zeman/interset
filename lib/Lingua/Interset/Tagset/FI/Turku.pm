@@ -47,25 +47,28 @@ sub _create_atoms
         'surfeature' => 'pos',
         'decode_map' =>
         {
-            'A'    => ['pos' => 'adj'],
-            'ABBR' => ['abbr' => 'abbr'],
+            'A'     => ['pos' => 'adj'],
+            'ABBR'  => ['abbr' => 'abbr'],
             # see e.g. http://archives.conlang.info/pei/juenchen/phaelbhaduen.html for what ad-adjective is
-            'AD-A' => ['pos' => 'adv', 'advtype' => 'adadj'],
-            'ADV'  => ['pos' => 'adv'],
-            'ART'  => ['pos' => 'adj', 'prontype' => 'art'],
-            'C'    => ['pos' => 'conj'],
-            'INTJ' => ['pos' => 'int'],
-            'N'    => ['pos' => 'noun'],
-            'NUM'  => ['pos' => 'num'],
+            'AD-A'  => ['pos' => 'adv', 'advtype' => 'adadj'],
+            'ADV'   => ['pos' => 'adv'],
+            'ART'   => ['pos' => 'adj', 'prontype' => 'art'],
+            'C'     => ['pos' => 'conj'],
+            'INTJ'  => ['pos' => 'int'],
+            'N'     => ['pos' => 'noun'],
+            'NUM'   => ['pos' => 'num'],
             # adposition (pre- or postposition): jälkeen, ennen
-            'PP'   => ['pos' => 'adp'],
+            'PP'    => ['pos' => 'adp'],
             # foreign preposition: de
-            'PREP' => ['pos' => 'adp', 'adpostype' => 'prep'],
+            'PREP'  => ['pos' => 'adp', 'adpostype' => 'prep'],
             # postposition: vieressä
-            'PSP'  => ['pos' => 'adp', 'adpostype' => 'post'],
+            'PSP'   => ['pos' => 'adp', 'adpostype' => 'post'],
             # pronoun: sinä
-            'PRON' => ['pos' => 'noun', 'prontype' => 'prs'],
-            'V'    => ['pos' => 'verb']
+            'PRON'  => ['pos' => 'noun', 'prontype' => 'prs'],
+            'V'     => ['pos' => 'verb'],
+            'PUNCT' => ['pos' => 'punc'],
+            # word form not found in lexicon: kiptšakkilais-oguusilaiseksi
+            'NON-TWOL' => []
         },
         'encode_map' =>
         {
@@ -82,7 +85,9 @@ sub _create_atoms
                                                     '@'    => 'PP' }},
                        'conj' => 'C',
                        'int'  => 'INTJ',
-                       '@'    => { 'abbr' => { 'abbr' => 'ABBR' }}}
+                       'punc' => 'PUNCT',
+                       '@'    => { 'abbr' => { 'abbr' => 'ABBR',
+                                               '@'    => 'NON-TWOL' }}}
         }
     );
     # DEGREE OF COMPARISON ####################
@@ -537,111 +542,118 @@ sub _create_atoms
             'TrunCo' => 'hyph'
         }
     );
-        # PUNCT = punctuation
-        elsif($feature eq 'PUNCT')
+    # PUNCTUATION TYPE ####################
+    # DASH|PUNCT, PUNCT|QUOTE, PUNCT|ENDASH...
+    $atoms{punctype} = $self->create_atom
+    (
+        'surfeature' => 'punctype',
+        'decode_map' =>
         {
-            $f{pos} = 'punc';
-        }
-        # DASH|PUNCT, PUNCT|QUOTE, PUNCT|ENDASH...
-        elsif($feature =~ m/^(E[MN])?DASH$/)
+            'DASH'   => ['punctype' => 'dash'],
+            'ENDASH' => ['punctype' => 'dash', 'other' => {'dashtype' => 'en'}],
+            'EMDASH' => ['punctype' => 'dash', 'other' => {'dashtype' => 'em'}],
+            'QUOTE'  => ['punctype' => 'quot']
+        },
+        'encode_map' =>
         {
-            $f{punctype} = 'dash';
+            'punctype' => { 'dash' => { 'other/dashtype' => { 'en' => 'ENDASH',
+                                                              'em' => 'EMDASH',
+                                                              '@'  => 'DASH' }},
+                            'quot' => 'QUOTE' }
         }
-        elsif($feature eq 'QUOTE')
+    );
+    # STYLE ####################
+    # Style: st-arch st-cllq st-derog st-slang st-vrnc st-hi
+    # archaic colloquial derogative slang vernacular hi?
+    # zastaralý hovorový hanlivý slang nářečí knižní?
+    $atoms{style} = $self->create_simple_atom
+    (
+        'intfeature' => 'style',
+        'simple_decode_map' =>
         {
-            $f{punctype} = 'quot';
+            'st-arch'  => 'arch',
+            'st-cllq'  => 'coll',
+            'st-derog' => 'derg',
+            'st-slang' => 'slng',
+            'st-vrnc'  => 'vrnc',
+            'st-hi'    => 'form'
         }
-        # Style: st-arch st-cllq st-derog st-slang st-vrnc st-hi
-        # archaic colloquial derogative slang vernacular hi?
-        # zastaralý hovorový hanlivý slang nářečí knižní?
-        elsif($feature eq 'st-arch')
+    );
+    # DERIVATIONAL MORPHEMES ####################
+    # Various DV-, DN- and DA- features mark morphemes that derive new word and change the part of speech.
+    # Several DX- features can occur in one tag, e.g. 1PL|DV-ILE|ELA|N|DV-U|SG or DA-UUS|3|N|DN-LLINEN|PTV|SG.
+    my @derivations = ('DV-NEISUUS', 'DV-NTI', 'DV-NA', 'DV-VAINEN', 'DV-MATON', 'DV-JA', 'DV-SKELE', 'DV-MINEN', 'DV-MA',
+                       'DV-UTTA', 'DV-NTAA', 'DV-NTA', 'DV-ELE', 'DV-TTA', 'DV-US', 'DV-U', 'DV-ILE', 'DV-UTU',
+                       'DN-INEN', 'DN-ITTAIN', 'DN-LAINEN', 'DN-LLINEN', 'DN-MAINEN', 'DN-TAR', 'DN-TON',
+                       'DA-US', 'DA-UUS');
+    $atoms{derivation} = $self->create_atom
+    (
+        'surfeature' => 'derivation',
+        'decode_map' =>
         {
-            $f{style} = 'arch';
-        }
-        elsif($feature eq 'st-cllq')
+            'DV-NEISUUS' => ['other' => {'dv-neisuus' => 'yes'}]
+        },
+        'encode_map' =>
         {
-            $f{style} = 'coll';
+            'other/dv-neisuus' => { 'yes' => 'DV-NEISUUS' }
         }
-        elsif($feature eq 'st-derog')
-        {
-            $f{style} = 'derg';
-        }
-        elsif($feature eq 'st-slang')
-        {
-            $f{style} = 'slng';
-        }
-        elsif($feature eq 'st-vrnc')
-        {
-            $f{style} = 'vrnc';
-        }
-        elsif($feature eq 'st-hi')
-        {
-            $f{style} = 'form';
-        }
-        # Deverbatives? And what is the resulting part of speech? A noun?
-        # DV-NEISUUS      5
-        # DV-NTI  49
-        # DV-NA   2
-        # DV-VAINEN       38
-        # DV-MATON        51
-        # DV-JA   594
-        # DV-SKELE        5
-        # DV-MINEN        382
-        # DV-MA   142
-        # DV-UTTA 1
-        # DV-NTAA 40
-        # DV-NTA  98
-        # DV-ELE  176
-        # DV-TTA  259
-        # DV-US   643
-        # DV-U    505
-        # DV-ILE  63
-        # DV-UTU  46
-        elsif($feature =~ m/^DV-[A-Z]+$/)
-        {
-            $f{pos} = 'noun' unless($f{pos});
-        }
-        # Denominatives. Unlike deverbatives, they usually have their resulting part of speech specified, mostly A or ADV.
-        # DN-INEN 44
-        # DN-ITTAIN       34
-        # DN-LAINEN       168
-        # DN-LLINEN       329
-        # DN-MAINEN       17
-        # DN-TAR  1
-        # DN-TON  40
-        elsif($feature =~ m/^DN-[A-Z]+$/)
-        {
-            $f{pos} = 'adj' unless($f{pos});
-        }
-        # Deadjectives. They usually have their resulting part of speech specified, mostly N.
-        # DA-US 101 ... sairaus = illness, rakkaus = love
-        # DA-UUS 280 ... varmuus = affirmation, tyhjyys = emptiness
-        elsif($feature =~ m/^DA-[A-Z]+$/)
-        {
-            $f{pos} = 'noun' unless($f{pos});
-        }
-        # Word form not found in lexicon: NON-TWOL.
-        elsif($feature eq 'NON-TWOL')
-        {
-            # Do nothing.
-        }
-        # *null* node inserted instead of ellided token; always verb (V|NULL).
-        elsif($feature eq 'NULL')
-        {
-            # Do nothing.
-        }
-        # S mysteriously occurs with a few foreign words (child, monkey, death).
-        elsif($feature eq 'S')
-        {
-            # Do nothing.
-        }
-        # The 't-EUparl' "feature" is probably a bug in data preparation / tagging.
-        # It occurs only once, with the word 'europarlamenttivaaleissa' (= EU Parliament polls).
-        # There are several other similar.
-        elsif($feature =~ m/^t-(EUparl|MSilocat|MSasiakirja|EU-vk|MSolocat|MSlukumäärä)$/)
-        {
-            # Do nothing.
-        }
+    );
+    ###!!! We cannot decode and encode derivational morphemes using atoms because there can be more than one such features in the sequence
+    ###!!! and we want to be able to restore all of them!
+    my $dm = $atoms{derivation}->decode_map();
+    my $em = $atoms{derivation}->encode_map();
+    foreach my $derivation (@derivations)
+    {
+        my $lcderivation = lc($derivation);
+    }
+    # Deverbatives? And what is the resulting part of speech? A noun?
+    # DV-NEISUUS      5
+    # All examples of DV-NEISUUS are nouns and are tagged N.
+    # eristyneisyys = isolation (eriste = insulation); kuolleisuus = mortality; oppineisuus = erudition (oppia = learn)
+    # DV-NTI  49
+    # All examples of DV-NTI are nouns and are tagged N.
+    # myynti = sale (myydä = sell); luettelointi = listing (luetteloida = list); ulosvienti = going out (viedä = export)
+    # DV-NA   2
+    # All examples of DV-NA are nouns and are tagged N.
+    # kutina = itch; kahina = rustling
+    # DV-VAINEN       38
+    # Examples of DV-VAINEN are tagged as A, ADV or N.
+    # adjective: tyytyväinen = pleased; luottavainen = trusting
+    # adverb: päättäväisemmin = decisively (päättäväinen = resolute)
+    # The noun examples also contain DA-UUS that derives nouns from adjectives.
+    # DA-UUS appears earlier in the feature sequence but it was applied later in the word formation process.
+    # noun (DA-UUS|NOM|SG|DV-VAINEN|N): tulevaisuus = future (tulla = come, become; tulevainen = coming; tulevaisuus = that what is coming)
+    # DV-MATON        51
+    # DV-JA   594
+    # DV-SKELE        5
+    # DV-MINEN        382
+    # DV-MA   142
+    # DV-UTTA 1
+    # DV-NTAA 40
+    # DV-NTA  98
+    # DV-ELE  176
+    # DV-TTA  259
+    # DV-US   643
+    # DV-U    505
+    # DV-ILE  63
+    # DV-UTU  46
+    # Denominatives. Unlike deverbatives, they usually have their resulting part of speech specified, mostly A or ADV.
+    # DN-INEN 44
+    # DN-ITTAIN       34
+    # DN-LAINEN       168
+    # DN-LLINEN       329
+    # DN-MAINEN       17
+    # DN-TAR  1
+    # DN-TON  40
+    # Deadjectives. They usually have their resulting part of speech specified, mostly N.
+    # DA-US 101 ... sairaus = illness, rakkaus = love
+    # DA-UUS 280 ... varmuus = affirmation, tyhjyys = emptiness
+    # *null* node inserted instead of ellided token; it is always tagged as a special case of verb (the tag is "V|NULL").
+    # S mysteriously occurs with a few foreign words (child, monkey, death); tags "S|FORGN" and "S|FORGN|up".
+    # The 't-EUparl' "feature" is probably a bug in data preparation / tagging.
+    # It occurs only once, with the word 'europarlamenttivaaleissa' (= EU Parliament polls).
+    # There are several other similar.
+    # if($feature =~ m/^t-(EUparl|MSilocat|MSasiakirja|EU-vk|MSolocat|MSlukumäärä)$/)
     return \%atoms;
 }
 
