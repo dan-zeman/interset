@@ -15,7 +15,8 @@ use Lingua::Interset qw(hash_drivers list decode encode);
 sub usage
 {
     print STDERR ("Usage:   tagset_to_uposf_table.pl [--italics 0] <tagset> <corpus> 0/1\n");
-    print STDERR ("Example: tagset_to_uposf_table.pl en::penn conll-2007-en 1 > docs/_tagset-conversion/en-penn-uposf.md\n");
+    print STDERR ("Example: tagset_to_uposf_table.pl en::penn conll-2007-en 1 --italics 0 > docs/_tagset-conversion/en-penn-uposf.md\n");
+    print STDERR ("Example: ", 'tagset_to_uposf_table.pl fa::conll persian-dt 0 > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\fa-conll-uposf.md', "\n");
     print STDERR ("         --italics ... should examples be formatted as italics? Default: 1\n");
     print STDERR ("         <tagset> .... e.g. en::conll\n");
     print STDERR ("         <corpus> .... e.g. conll-2007-en; where to take examples from\n");
