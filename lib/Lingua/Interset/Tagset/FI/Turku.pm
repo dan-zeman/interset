@@ -15,6 +15,7 @@ extends 'Lingua::Interset::Tagset';
 
 
 
+has 'features_all' => ( isa => 'ArrayRef', is => 'ro', builder => '_create_features_all', lazy => 1 );
 has 'atoms' => ( isa => 'HashRef', is => 'ro', builder => '_create_atoms', lazy => 1 );
 
 
@@ -34,6 +35,20 @@ sub get_tagset_id
 
 
 #------------------------------------------------------------------------------
+# Creates the list of all surface features that can appear in the tag.
+#------------------------------------------------------------------------------
+sub _create_features_all
+{
+    my $self = shift;
+    my @features = ('pos', 'abbr', 'foreign', 'prop', 'prontype', 'numtype', 'copula', 'advtype', 'conjtype', 'punctype',
+                    'degree', 'case', 'number', 'poss', 'mood', 'tense', 'voice', 'person', 'neg', 'inf', 'pcp', 'clitic',
+                    'style', 'up', 'trunco', 'unknown');
+    return \@features;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Creates atomic drivers for surface features.
 #------------------------------------------------------------------------------
 sub _create_atoms
@@ -41,6 +56,11 @@ sub _create_atoms
     my $self = shift;
     my %atoms;
     # PART OF SPEECH ####################
+    # Some tags contain two parts of speech, e.g. C|...|V. The rightmost is probably the POS of the stem,
+    # while the leftmost one is the resulting POS on the surface. In the list of known tags, I removed the rightmost tag.
+    # Some tags do not contain any part of speech, e.g. the DV-MA derivations.
+    # http://en.wiktionary.org/wiki/-ma#Finnish hints that the result can be either noun or verb.
+    # I added "N" to all "DV-MA" tags in the list of known tags.
     $atoms{pos} = $self->create_atom
     (
         'tagset' => 'fi::turku',
@@ -48,7 +68,6 @@ sub _create_atoms
         'decode_map' =>
         {
             'A'     => ['pos' => 'adj'],
-            'ABBR'  => ['abbr' => 'abbr'],
             # see e.g. http://archives.conlang.info/pei/juenchen/phaelbhaduen.html for what ad-adjective is
             'AD-A'  => ['pos' => 'adv', 'advtype' => 'adadj'],
             'ADV'   => ['pos' => 'adv'],
@@ -64,7 +83,7 @@ sub _create_atoms
             # postposition: vieressä
             'PSP'   => ['pos' => 'adp', 'adpostype' => 'post'],
             # pronoun: sinä
-            'PRON'  => ['pos' => 'noun', 'prontype' => 'prs'],
+            'PRON'  => ['pos' => 'noun'], # We need non-empty prontype but it should be added by another feature/atom.
             'V'     => ['pos' => 'verb'],
             'PUNCT' => ['pos' => 'punc'],
             # word form not found in lexicon: kiptšakkilais-oguusilaiseksi
@@ -86,8 +105,173 @@ sub _create_atoms
                        'conj' => 'C',
                        'int'  => 'INTJ',
                        'punc' => 'PUNCT',
-                       '@'    => { 'abbr' => { 'abbr' => 'ABBR',
-                                               '@'    => 'NON-TWOL' }}}
+                       '@'    => { 'abbr' => { 'abbr' => '', # ABBR will be added by another atom.
+                                               '@'    => { 'foreign' => { 'foreign' => '', # FORGN will be added by another atom.
+                                                                          # Participles (PCP1) sometimes occur without explicit indication whether they should be considered verbs or adjectives.
+                                                                          # Examples: jatkuvalla = continuous (jatkua = continue); käyttävällä = using (käyttää = use)
+                                                                          '@'       => { 'verbform' => { 'part' => '',
+                                                                                                         '@'    => 'NON-TWOL' }}}}}}}
+        }
+    );
+    # ABBREVIATION ####################
+    # abbreviation (eaa., ns., ven.)
+    # This feature can appear as the only part of speech of the word, or it can join
+    # the part of speech of the original word that has been abbreviated ("ADV|ABBR").
+    $atoms{abbr} = $self->create_simple_atom
+    (
+        'intfeature' => 'abbr',
+        'simple_decode_map' =>
+        {
+            'ABBR' => 'abbr'
+        }
+    );
+    # FOREIGN WORD ####################
+    # foreign word (British)
+    $atoms{foreign} = $self->create_simple_atom
+    (
+        'intfeature' => 'foreign',
+        'simple_decode_map' =>
+        {
+            'FORGN' => 'foreign'
+        }
+    );
+    # PROPER NAME ####################
+    # proper noun (Mikko)
+    $atoms{prop} = $self->create_simple_atom
+    (
+        'intfeature' => 'nountype',
+        'simple_decode_map' =>
+        {
+            'PROP' => 'prop'
+        }
+    );
+    # PRONOUN TYPE ####################
+    # Pronoun types: PERS DEM REL Q REFL/Q
+    # Of these, only 'Q' appears in the documentation:
+    # Q = quantifier (moni = many, much)
+    $atoms{prontype} = $self->create_atom
+    (
+        'surfeature' => 'prontype',
+        'decode_map' =>
+        {
+            # Q = quantifier (moni = many, much)
+            # In the data, it occurs always together with PRON, i.e. 'Q|PRON'. Examples (translation by Google):
+            # missään (anywhere), samalla (at the same time), toisen (next), kaikkia (all), jokaista (every), ainoa (only), samaan (same), molemmat (both)
+            # Quantifier can also occur with one of the possessive suffixes.
+            # It happens solely with the lemma "toinen" = "other" and the result translates as "each other" (lit. "my other", "your other", ...)
+            'Q' => ['prontype' => 'ind'],
+            # REFL/Q = reflexive quantifying pronoun (itseään = sám = self)
+            'REFL/Q' => ['prontype' => 'ind', 'reflex' => 'reflex'],
+            # PERS = personal pronoun (meidät = us)
+            # minä = I, sinä = you, hän = he/she, me = we, te = you, he = they
+            'PERS' => ['prontype' => 'prs'],
+            # DEM = demonstrative pronoun (se = that, tuolla = there)
+            'DEM' => ['prontype' => 'dem'],
+            # REL = relative pronoun (mihin = where, mitä = what, joka = which)
+            'REL' => ['prontype' => 'rel'],
+            # There are two different features in the tagset that both say that a word is interrogative: INTG and INTERR.
+            # INTG: only five tags observed, all PRON: lemmas "mikä" (what), "kuka" (who), "ken" (who). Other forms have REL instead of INTG.
+            # INTERR: twelve tags observed with adjectives ("millainen" = "what") and adverbs ("miten" = "how").
+            # interrogative pronoun (kuka = who, mikä = what)
+            'INTG' => ['prontype' => 'int'],
+            # interrogative adverb or adjective (kuinka = how, millainen = which, milloin = when, miksei = why not)
+            # The word "miksei" (why not) is tagged at the same time as adverb and verb!
+            # I am removing its tag from the list (otherwise it will be considered verb because V occurs later).
+            'INTERR' => ['prontype' => 'int']
+        },
+        'encode_map' =>
+        {
+            'prontype' => { 'prs' => 'PERS',
+                            'dem' => 'DEM',
+                            'ind' => { 'reflex' => { 'reflex' => 'REFL/Q',
+                                                     '@'      => 'Q' }},
+                            'int' => { 'pos' => { 'adv' => 'INTERR',
+                                                  'adj' => 'INTERR',
+                                                  '@'   => 'INTG' }},
+                            'rel' => 'REL' }
+        }
+    );
+    # NUMERAL TYPE ####################
+    # We can combine numeral type and form in one atom because they do not occur together.
+    $atoms{numtype} = $self->create_atom
+    (
+        'surfeature' => 'numtype',
+        'decode_map' =>
+        {
+            # ordinal numeral (ensimmäinen = first, toinen = second, kolmas = third)
+            'ORD' => ['numtype' => 'ord'],
+            # number expressed using Arabic digits
+            # it also occurs with compound adjectives and nouns that contain digits (7., 9., 1.3-litrainen, 1980-luvun)
+            'digit' => ['numform' => 'digit'],
+            # number expressed using Roman numerals
+            # (I, D, II, III, V, I:lle, M:lle, X-ryhmä)
+            'roman' => ['numform' => 'roman']
+        },
+        'encode_map' =>
+        {
+            'numtype' => { 'ord' => 'ORD',
+                           '@'   => { 'numform' => { 'digit' => 'digit',
+                                                     'roman' => 'roman' }}}
+        }
+    );
+    # COPULA ####################
+    # Copula verb: COP (olla = to be)
+    $atoms{copula} = $self->create_simple_atom
+    (
+        'intfeature' => 'verbtype',
+        'simple_decode_map' =>
+        {
+            'COP' => 'cop'
+        }
+    );
+    # ADVERB TYPE ####################
+    # MAN
+    $atoms{advtype} = $self->create_atom
+    (
+        'surfeature' => 'advtype',
+        'decode_map' =>
+        {
+            # manner adverb (rohkeasti = boldly, hitaasti = slowly, henkisesti = mentally)
+            'MAN'    => ['advtype' => 'man'],
+        },
+        'encode_map' =>
+        {
+            'advtype' => { 'man' => 'MAN' }
+        }
+    );
+    # CONJUNCTION TYPE ####################
+    # COORD SUB
+    $atoms{conjtype} = $self->create_simple_atom
+    (
+        'intfeature' => 'conjtype',
+        'simple_decode_map' =>
+        {
+            # coordinating conjunction (ja, että, vai, sekä, mutta)
+            'COORD' => 'coor',
+            # subordinating conjunction (kun, vaikka, ettei, jos, koska)
+            'SUB'   => 'sub',
+            # comparating conjunction (kuin = as)
+            'CMPR'  => 'comp'
+        }
+    );
+    # PUNCTUATION TYPE ####################
+    # DASH|PUNCT, PUNCT|QUOTE, PUNCT|ENDASH...
+    $atoms{punctype} = $self->create_atom
+    (
+        'surfeature' => 'punctype',
+        'decode_map' =>
+        {
+            'DASH'   => ['punctype' => 'dash'],
+            'ENDASH' => ['punctype' => 'dash', 'other' => {'dashtype' => 'en'}],
+            'EMDASH' => ['punctype' => 'dash', 'other' => {'dashtype' => 'em'}],
+            'QUOTE'  => ['punctype' => 'quot']
+        },
+        'encode_map' =>
+        {
+            'punctype' => { 'dash' => { 'other/dashtype' => { 'en' => 'ENDASH',
+                                                              'em' => 'EMDASH',
+                                                              '@'  => 'DASH' }},
+                            'quot' => 'QUOTE' }
         }
     );
     # DEGREE OF COMPARISON ####################
@@ -226,7 +410,7 @@ sub _create_atoms
         }
     );
     # PERSON AND NUMBER OF THE SUBJECT OF THE VERB ####################
-    $atoms{poss} = $self->create_atom
+    $atoms{person} = $self->create_atom
     (
         'surfeature' => 'poss',
         'decode_map' =>
@@ -246,15 +430,17 @@ sub _create_atoms
             'PL3' => ['number' => 'plur', 'person' => '3'],
             # passive ending (mennään)
             # In modern colloquial Finnish, the passive form of the verb is used instead of the active first person plural indicative and imperative.
-            'PE4' => ['number' => 'plur', 'person' => '1', 'style' => 'coll']
+            # We cannot set 'style' => 'coll' because the tagset includes means to mark colloquial language and it does not apply it here.
+            # (Setting 'style' => 'coll' would mean that on encoding we would produce the 'st-cllq' feature that was not in the input tag.)
+            'PE4' => ['number' => 'plur', 'person' => '1', 'variant' => '6']
         },
         'encode_map' =>
         {
             'number' => { 'sing' => { 'person' => { '1' => 'SG1',
                                                     '2' => 'SG2',
                                                     '3' => 'SG3' }},
-                          'plur' => { 'person' => { '1' => { 'style' => { 'coll' => 'PE4',
-                                                                          '@'    => 'PL1' }},
+                          'plur' => { 'person' => { '1' => { 'variant' => { '6' => 'PE4',
+                                                                            '@' => 'PL1' }},
                                                     '2' => 'PL2',
                                                     '3' => 'PL3' }}}
         }
@@ -266,14 +452,20 @@ sub _create_atoms
         'decode_map' =>
         {
             # negative verb (en, et, ei)
-            'NEGV' => ['pos' => 'verb', 'negativeness' => 'neg'],
+            # Sometimes even verbs have NEG and not NEGV, so we must remember the distinction in the 'other' feature.
+            'NEGV' => ['negativeness' => 'neg', 'other' => {'negativeness' => 'negv'}],
             # negative form (en tehnyt = I did not do)
-            'NEG'  => ['negativeness' => 'neg']
+            'NEG'  => ['negativeness' => 'neg', 'other' => {'negativeness' => 'neg'}]
         },
         'encode_map' =>
         {
-            'negativeness' => { 'neg' => { 'pos' => { 'verb' => 'NEGV',
-                                                      '@'    => 'NEG' }}}
+            'other/negativeness' => { 'negv' => 'NEGV',
+                                      'neg'  => 'NEG',
+                                      '@'    => { # for some reason, copula verbs do not use NEGV but NEG
+                                                  'negativeness' => { 'neg' => { 'pos' => { 'verb' => { 'verbtype' => { 'cop' => 'NEG',
+                                                                                                                        '@'   => 'NEGV' }},
+                                                                                            'conj' => 'NEGV',
+                                                                                            '@'    => 'NEG' }}}}}
         }
     );
     # INFINITIVE ####################
@@ -352,7 +544,8 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'other/clitic' => { 'kA'    => 'kA',
+            'other/clitic' => { 'hAn'   => 'hAn',
+                                'kA'    => 'kA',
                                 'kAAn'  => 'kAAn',
                                 'kin'   => 'kin',
                                 'kO'    => 'kO',
@@ -361,96 +554,46 @@ sub _create_atoms
                                 's'     => 's' }
         }
     );
-    # FOREIGN WORD ####################
-    # foreign word (British)
-    $atoms{foreign} = $self->create_simple_atom
+    # STYLE ####################
+    # Style: st-arch st-cllq st-derog st-slang st-vrnc st-hi
+    # archaic colloquial derogative slang vernacular hi?
+    # zastaralý hovorový hanlivý slang nářečí knižní?
+    $atoms{style} = $self->create_simple_atom
     (
-        'intfeature' => 'foreign',
+        'intfeature' => 'style',
         'simple_decode_map' =>
         {
-            'FORGN' => 'foreign'
+            'st-arch'  => 'arch',
+            'st-cllq'  => 'coll',
+            'st-derog' => 'derg',
+            'st-slang' => 'slng',
+            'st-vrnc'  => 'vrnc',
+            'st-hi'    => 'form'
         }
     );
-    # PROPER NAME ####################
-    # proper noun (Mikko)
-    $atoms{prop} = $self->create_simple_atom
+    # UPPERCASE ####################
+    # up: is the first letter of the word form uppercase?
+    # We can decode and recover this information but we will not show it in our list of known tags.
+    $atoms{up} = $self->create_atom
     (
-        'intfeature' => 'nountype',
-        'simple_decode_map' =>
-        {
-            'PROP' => 'prop'
-        }
-    );
-    # -pi ####################
-    # -pi (ompi = finer, nicer) ???
-    # Not found in the corpus.
-    # Other features occur in data although they are not documented.
-    # PRONOUN TYPE ####################
-    # Pronoun types: PERS DEM REL Q REFL/Q
-    # Of these, only 'Q' appears in the documentation:
-    # Q = quantifier (moni = many, much)
-    $atoms{prontype} = $self->create_atom
-    (
-        'surfeature' => 'prontype',
+        'surfeature' => 'up',
         'decode_map' =>
         {
-            # Q = quantifier (moni = many, much)
-            # In the data, it occurs always together with PRON, i.e. 'Q|PRON'. Examples (translation by Google):
-            # missään (anywhere), samalla (at the same time), toisen (next), kaikkia (all), jokaista (every), ainoa (only), samaan (same), molemmat (both)
-            'Q' => ['prontype' => 'ind'],
-            # REFL/Q = reflexive quantifying pronoun (itseään = sám = self)
-            'REFL/Q' => ['prontype' => 'ind', 'reflex' => 'reflex'],
-            # PERS = personal pronoun (meidät = us)
-            # minä = I, sinä = you, hän = he/she, me = we, te = you, he = they
-            'PERS' => ['prontype' => 'prs'],
-            # DEM = demonstrative pronoun (se = that, tuolla = there)
-            'DEM' => ['prontype' => 'dem'],
-            # REL = relative pronoun (mihin = where, mitä = what, joka = which)
-            'REL' => ['prontype' => 'rel'],
-            # INTG = interrogative pronoun (kuka = who, mikä = what)
-            'INTG' => ['prontype' => 'int']
+            'up' => ['other' => {'uppercase' => 'yes'}]
         },
         'encode_map' =>
         {
-            'prontype' => { 'prs' => 'PERS',
-                            'dem' => 'DEM',
-                            'ind' => { 'reflex' => { 'reflex' => 'REFL/Q',
-                                                     '@'      => 'Q' }},
-                            'int' => 'INTG',
-                            'rel' => 'REL' }
+            'other/uppercase' => { 'yes' => 'up' }
         }
     );
-    # NUMERAL TYPE ####################
-    # We can combine numeral type and form in one atom because they do not occur together.
-    $atoms{numtype} = $self->create_atom
+    # TRUNCATED COMPOUND ####################
+    # TrunCo seems to mark hyphenated prefixes occurring separately.
+    $atoms{trunco} = $self->create_simple_atom
     (
-        'surfeature' => 'numtype',
-        'decode_map' =>
-        {
-            # ordinal numeral (ensimmäinen = first, toinen = second, kolmas = third)
-            'ORD' => ['numtype' => 'ord'],
-            # number expressed using Arabic digits
-            # it also occurs with compound adjectives and nouns that contain digits (7., 9., 1.3-litrainen, 1980-luvun)
-            'digit' => ['numform' => 'digit'],
-            # number expressed using Roman numerals
-            # (I, D, II, III, V, I:lle, M:lle, X-ryhmä)
-            'roman' => ['numform' => 'roman']
-        },
-        'encode_map' =>
-        {
-            'numtype' => { 'ord' => 'ORD',
-                           '@'   => { 'numform' => { 'digit' => 'digit',
-                                                     'roman' => 'roman' }}}
-        }
-    );
-    # COPULA ####################
-    # Copula verb: COP (olla = to be)
-    $atoms{copula} = $self->create_simple_atom
-    (
-        'intfeature' => 'verbtype',
+        'intfeature' => 'hyph',
         'simple_decode_map' =>
         {
-            'COP' => 'cop'
+            'TrunCo' => 'hyph'
         }
     );
     # UNKNOWN FEATURES ####################
@@ -485,176 +628,99 @@ sub _create_atoms
                                                          '@'   => { 'other/temp' => { 'yes' => 'TEMP' }}}}}
         }
     );
-    # ADVERB TYPE ####################
-    # MAN INTERR
-    $atoms{advtype} = $self->create_atom
-    (
-        'surfeature' => 'advtype',
-        'decode_map' =>
-        {
-            # manner adverb (rohkeasti = boldly, hitaasti = slowly, henkisesti = mentally)
-            'MAN'    => ['advtype' => 'man'],
-            # interrogative adverb or adjective (kuinka = how, millainen = which, milloin = when, miksei = why not)
-            'INTERR' => ['prontype' => 'int']
-        },
-        'encode_map' =>
-        {
-            'prontype' => { 'int' => 'INTERR',
-                            '@'   => { 'advtype' => { 'man' => 'MAN' }}}
-    );
-    # CONJUNCTION TYPE ####################
-    # COORD SUB
-    $atoms{conjtype} = $self->create_simple_atom
-    (
-        'intfeature' => 'conjtype',
-        'simple_decode_map' =>
-        {
-            # coordinating conjunction (ja, että, vai, sekä, mutta)
-            'COORD' => 'coor',
-            # subordinating conjunction (kun, vaikka, ettei, jos, koska)
-            'SUB'   => 'sub',
-            # comparating conjunction (kuin = as)
-            'CMPR'  => 'comp'
-        }
-    );
-    # UPPERCASE ####################
-    # up: is the first letter of the word form uppercase?
-    # We can decode and recover this information but we will not show it in our list of known tags.
-    $atoms{up} = $self->create_atom
-    (
-        'surfeature' => 'up',
-        'decode_map' =>
-        {
-            'up' => ['other' => {'uppercase' => 'yes'}]
-        },
-        'encode_map' =>
-        {
-            'other/uppercase' => { 'yes' => 'up' }
-        }
-    );
-    # TRUNCATED COMPOUND ####################
-    # TrunCo seems to mark hyphenated prefixes occurring separately.
-    $atoms{trunco} = $self->create_simple_atom
-    (
-        'intfeature' => 'hyph',
-        'simple_decode_map' =>
-        {
-            'TrunCo' => 'hyph'
-        }
-    );
-    # PUNCTUATION TYPE ####################
-    # DASH|PUNCT, PUNCT|QUOTE, PUNCT|ENDASH...
-    $atoms{punctype} = $self->create_atom
-    (
-        'surfeature' => 'punctype',
-        'decode_map' =>
-        {
-            'DASH'   => ['punctype' => 'dash'],
-            'ENDASH' => ['punctype' => 'dash', 'other' => {'dashtype' => 'en'}],
-            'EMDASH' => ['punctype' => 'dash', 'other' => {'dashtype' => 'em'}],
-            'QUOTE'  => ['punctype' => 'quot']
-        },
-        'encode_map' =>
-        {
-            'punctype' => { 'dash' => { 'other/dashtype' => { 'en' => 'ENDASH',
-                                                              'em' => 'EMDASH',
-                                                              '@'  => 'DASH' }},
-                            'quot' => 'QUOTE' }
-        }
-    );
-    # STYLE ####################
-    # Style: st-arch st-cllq st-derog st-slang st-vrnc st-hi
-    # archaic colloquial derogative slang vernacular hi?
-    # zastaralý hovorový hanlivý slang nářečí knižní?
-    $atoms{style} = $self->create_simple_atom
-    (
-        'intfeature' => 'style',
-        'simple_decode_map' =>
-        {
-            'st-arch'  => 'arch',
-            'st-cllq'  => 'coll',
-            'st-derog' => 'derg',
-            'st-slang' => 'slng',
-            'st-vrnc'  => 'vrnc',
-            'st-hi'    => 'form'
-        }
-    );
-    # DERIVATIONAL MORPHEMES ####################
-    # Various DV-, DN- and DA- features mark morphemes that derive new word and change the part of speech.
-    # Several DX- features can occur in one tag, e.g. 1PL|DV-ILE|ELA|N|DV-U|SG or DA-UUS|3|N|DN-LLINEN|PTV|SG.
-    my @derivations = ('DV-NEISUUS', 'DV-NTI', 'DV-NA', 'DV-VAINEN', 'DV-MATON', 'DV-JA', 'DV-SKELE', 'DV-MINEN', 'DV-MA',
-                       'DV-UTTA', 'DV-NTAA', 'DV-NTA', 'DV-ELE', 'DV-TTA', 'DV-US', 'DV-U', 'DV-ILE', 'DV-UTU',
-                       'DN-INEN', 'DN-ITTAIN', 'DN-LAINEN', 'DN-LLINEN', 'DN-MAINEN', 'DN-TAR', 'DN-TON',
-                       'DA-US', 'DA-UUS');
-    $atoms{derivation} = $self->create_atom
-    (
-        'surfeature' => 'derivation',
-        'decode_map' =>
-        {
-            'DV-NEISUUS' => ['other' => {'dv-neisuus' => 'yes'}]
-        },
-        'encode_map' =>
-        {
-            'other/dv-neisuus' => { 'yes' => 'DV-NEISUUS' }
-        }
-    );
-    ###!!! We cannot decode and encode derivational morphemes using atoms because there can be more than one such features in the sequence
-    ###!!! and we want to be able to restore all of them!
-    my $dm = $atoms{derivation}->decode_map();
-    my $em = $atoms{derivation}->encode_map();
-    foreach my $derivation (@derivations)
-    {
-        my $lcderivation = lc($derivation);
-    }
-    # Deverbatives? And what is the resulting part of speech? A noun?
-    # DV-NEISUUS      5
-    # All examples of DV-NEISUUS are nouns and are tagged N.
-    # eristyneisyys = isolation (eriste = insulation); kuolleisuus = mortality; oppineisuus = erudition (oppia = learn)
-    # DV-NTI  49
-    # All examples of DV-NTI are nouns and are tagged N.
-    # myynti = sale (myydä = sell); luettelointi = listing (luetteloida = list); ulosvienti = going out (viedä = export)
-    # DV-NA   2
-    # All examples of DV-NA are nouns and are tagged N.
-    # kutina = itch; kahina = rustling
-    # DV-VAINEN       38
-    # Examples of DV-VAINEN are tagged as A, ADV or N.
-    # adjective: tyytyväinen = pleased; luottavainen = trusting
-    # adverb: päättäväisemmin = decisively (päättäväinen = resolute)
-    # The noun examples also contain DA-UUS that derives nouns from adjectives.
-    # DA-UUS appears earlier in the feature sequence but it was applied later in the word formation process.
-    # noun (DA-UUS|NOM|SG|DV-VAINEN|N): tulevaisuus = future (tulla = come, become; tulevainen = coming; tulevaisuus = that what is coming)
-    # DV-MATON        51
-    # DV-JA   594
-    # DV-SKELE        5
-    # DV-MINEN        382
-    # DV-MA   142
-    # DV-UTTA 1
-    # DV-NTAA 40
-    # DV-NTA  98
-    # DV-ELE  176
-    # DV-TTA  259
-    # DV-US   643
-    # DV-U    505
-    # DV-ILE  63
-    # DV-UTU  46
-    # Denominatives. Unlike deverbatives, they usually have their resulting part of speech specified, mostly A or ADV.
-    # DN-INEN 44
-    # DN-ITTAIN       34
-    # DN-LAINEN       168
-    # DN-LLINEN       329
-    # DN-MAINEN       17
-    # DN-TAR  1
-    # DN-TON  40
-    # Deadjectives. They usually have their resulting part of speech specified, mostly N.
-    # DA-US 101 ... sairaus = illness, rakkaus = love
-    # DA-UUS 280 ... varmuus = affirmation, tyhjyys = emptiness
     # *null* node inserted instead of ellided token; it is always tagged as a special case of verb (the tag is "V|NULL").
     # S mysteriously occurs with a few foreign words (child, monkey, death); tags "S|FORGN" and "S|FORGN|up".
     # The 't-EUparl' "feature" is probably a bug in data preparation / tagging.
     # It occurs only once, with the word 'europarlamenttivaaleissa' (= EU Parliament polls).
     # There are several other similar.
     # if($feature =~ m/^t-(EUparl|MSilocat|MSasiakirja|EU-vk|MSolocat|MSlukumäärä)$/)
+    # -pi ####################
+    # -pi (ompi = finer, nicer) ???
+    # Not found in the corpus.
+    # Other features occur in data although they are not documented.
+    # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
+    my @fatoms = map {$atoms{$_}} @{$self->features_all()};
+    $atoms{feature} = $self->create_merged_atom
+    (
+        'surfeature' => 'feature',
+        'atoms'      => \@fatoms
+    );
     return \%atoms;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Various DV-, DN- and DA- features mark morphemes that derive new word and
+# change the part of speech. Several DX- features can occur in one tag, e.g.
+# 1PL|DV-ILE|ELA|N|DV-U|SG or DA-UUS|3|N|DN-LLINEN|PTV|SG.
+#
+# If the tag contains one or more features describing derivational processes,
+# this method will group those features into one. This way we get something
+# that can be handled as one feature and stored in the 'other' feature of
+# Interset.
+#
+# The following derivation features occur in the data:
+#
+# Deverbatives. The resulting part of speech marked in a separate feature and
+# it can be noun, adjective or adverb.
+#
+# DV-NEISUUS 5
+# All examples of DV-NEISUUS are nouns and are tagged N.
+# eristyneisyys = isolation (eriste = insulation); kuolleisuus = mortality; oppineisuus = erudition (oppia = learn)
+#
+# DV-NTI 49
+# All examples of DV-NTI are nouns and are tagged N.
+# myynti = sale (myydä = to sell); luettelointi = listing (luetteloida = to list); ulosvienti = going out (viedä = to export)
+#
+# DV-NA 2
+# All examples of DV-NA are nouns and are tagged N.
+# kutina = itch; kahina = rustling
+#
+# DV-VAINEN 38
+# Examples of DV-VAINEN are tagged as A, ADV or N.
+# adjective: tyytyväinen = pleased; luottavainen = trusting
+# adverb: päättäväisemmin = decisively (päättäväinen = resolute)
+# The noun examples also contain DA-UUS that derives nouns from adjectives.
+# DA-UUS appears earlier in the feature sequence but it was applied later in the word formation process.
+# noun (DA-UUS|NOM|SG|DV-VAINEN|N): tulevaisuus = future (tulla = come, become; tulevainen = coming; tulevaisuus = that what is coming)
+#
+# DV-MATON 51
+# DV-JA 594
+# DV-SKELE 5
+# DV-MINEN 382
+# DV-MA 142
+# DV-UTTA 1
+# DV-NTAA 40
+# DV-NTA 98
+# DV-ELE 176
+# DV-TTA 259
+# DV-US 643
+# DV-U 505
+# DV-ILE 63
+# DV-UTU 46
+#
+# Denominatives. The resulting part of speech is marked in a separate feature
+# and usually it is A or ADV. (It can be noun if there are two derivations,
+# e.g. aktiivisuus has DN-INEN (created aktiivinen = active) and DA-UUS
+# (created aktiivisuus = activity).
+# DN-INEN 44, DN-ITTAIN 34, DN-LAINEN 168, DN-LLINEN 329, DN-MAINEN 17,
+# DN-TAR 1, DN-TON 40
+#
+# Deadjectives. The resulting part of speech is noun and they are tagged "N".
+# DA-US 101 ... sairaus = illness, rakkaus = love
+# DA-UUS 280 ... varmuus = affirmation, tyhjyys = emptiness
+#------------------------------------------------------------------------------
+sub decode_derivation
+{
+    my $self = shift;
+    my $tag = shift;
+    my @features = split(/\|/, $tag);
+    my @features1 = grep {!m/^D[VNA]-/} @features;
+    my $tag1 = join('|', @features1);
+    my @dev = grep {m/^D[VNA]-/} @features;
+    my $derivation = join('+', @dev);
+    return ($tag1, $derivation);
 }
 
 
@@ -673,10 +739,36 @@ sub decode
     # Tag is a sequence of features separated by vertical bars.
     # There are just the feature values, not attribute-value pairs.
     # example: n/com,sg,nom ###!!! replace the Estonian example by a Finnish one
+    # Some words are tagged as conjunctions and verbs at the same time:
+    # muttei = but not (C|NEGV|SG3|COORD|V)
+    # ettei = that there is no (ettemme C|NEGV|SUB|PL1|V)
+    # eivätkä = and not (C|PL3|NEGV|kA|COORD|V)
+    # ellei = unless (C|SUB|SG3|NEGV|V)
+    # The first (left) part-of-speech feature should be preferred.
+    # Features are probably ordered as new affixes are identified and removed during analysis.
+    # The rightmost feature ("V") applies to the stem in the lexicon, while the leftmost feature ("C") identifies the resulting part of speech.
+    # We will remove the "V" from the tags returned by list() so that tests can be passed.
+    # However, we will decode the tag correctly. We will not preserve the "V" when encoding.
+    $tag =~ s/^(C\|.*)\|V$/$1/;
+    # Separate the derivational features. There may be more than one.
+    my $derivation;
+    ($tag, $derivation) = $self->decode_derivation($tag);
     my @features = split(/\|/, $tag);
     foreach my $feature (@features)
     {
         $atoms->{feature}->decode_and_merge_hard($feature, $fs);
+    }
+    # Add the derivational information to the other feature.
+    if(defined($derivation) && $derivation ne '')
+    {
+        my $other = $fs->other();
+        my %hash;
+        if(ref($other) ne 'HASH')
+        {
+            $other = \%hash;
+        }
+        $other->{'derivation'} = $derivation;
+        $fs->set('other', $other);
     }
     return $fs;
 }
@@ -688,52 +780,27 @@ sub decode
 #------------------------------------------------------------------------------
 sub encode
 {
-    ###!!! Dodělat. Tohle je zatím jen kopie estonského encode().
     my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
+    my @feature_names = @{$self->features_all()};
     my $atoms = $self->atoms();
-    my $pos = $atoms->{pos}->encode($fs);
-    my $features = '--';
-    my %feature_names =
-    (
-        'n'     => ['nountype', 'number', 'case'],
-        'prop'  => ['nountype', 'number', 'case'],
-        'aord'  => ['numtype', 'number', 'case', 'numform'],
-        'apart' => ['degree', 'number', 'case', 'mood'],
-        'adj'   => ['degree', 'number', 'case'],
-        'prs'   => ['prontype', 'person', 'number', 'case'],
-        'pron'  => ['prontype', 'number', 'case'],
-        'num'   => ['numtype', 'number', 'case', 'numform'],
-        'vinf'  => ['verbtype', 'mood'],
-        'vpart' => ['verbtype', 'mood', 'tense', 'person', 'number', 'personal'],
-        'vsup'  => ['verbtype', 'mood', 'person', 'number', 'personal', 'case'],
-        'v'     => ['verbtype', 'mood', 'tense', 'person', 'number', 'personal', 'negativeness'],
-        'prp'   => ['adpostype', 'valcase'],
-        'pst'   => ['adpostype', 'valcase'],
-        'conj-c'=> ['conjtype'],
-        'conj-s'=> ['conjtype'],
-        'punc'  => ['punctype']
-    );
-    my $fpos = $pos;
-    $fpos = 'aord'  if($fpos eq 'adj' && $fs->is_ordinal());
-    $fpos = 'apart' if($fpos eq 'adj' && $fs->is_participle());
-    $fpos = 'prs'   if($fpos eq 'pron' && $fs->is_personal_pronoun() && !$fs->is_possessive() && !$fs->is_reflexive());
-    $fpos = 'vinf'  if($fpos eq 'v' && ($fs->is_infinitive() || $fs->is_gerund()));
-    $fpos = 'vpart' if($fpos eq 'v' && ($fs->is_participle() || $fs->is_transgressive()));
-    $fpos = 'vsup'  if($fpos eq 'v' && $fs->is_supine());
-    my $feature_names = $feature_names{$fpos};
-    $feature_names = [] unless(defined($feature_names));
     my @features = ();
-    foreach my $feature (@{$feature_names})
+    # Verbs use the SG1 ... PL3 features and they do not use the SG / PL features.
+    my $number_with_person = $fs->person() ne '';
+    foreach my $feature (@feature_names)
     {
+        next if($number_with_person && $feature eq 'number');
         my $value = $atoms->{$feature}->encode($fs);
         push(@features, $value) unless($value eq '');
     }
-    if(@features)
+    # If there is information on derivational morphology, add it to the features.
+    my $derivation = $fs->get_other_subfeature('fi::turku', 'derivation');
+    my @derivation = split(/\+/, $derivation);
+    if(@derivation)
     {
-        $features = join(',', @features);
+        push(@features, @derivation);
     }
-    my $tag = "$pos/$features";
+    my $tag = join('|', @features);
     return $tag;
 }
 
@@ -890,7 +957,6 @@ ADV|PSS|MAN|PCP2|POS
 ADV|PSS|POS|PCP1|MAN
 ADV|PTV|CMP
 ADV|REL
-ADV|SG3|NEGV|INTERR|V
 ADV|hAn
 ADV|kAAn
 ADV|kAAn|ADE
@@ -906,7 +972,6 @@ ADV|up|INTERR
 ADV|up|MAN
 ADV|up|POS|MAN
 ADV|up|POS|PCP1|PSS|MAN
-ADV|up|SG3|NEGV|INTERR|V
 ADV|up|hAn
 ADV|up|kin
 ALL|1SG|PL|N
@@ -1040,7 +1105,6 @@ A|INE|SG|DV-MATON|POS
 A|INE|SG|POS
 A|INE|SG|POS|kin
 A|INE|SG|SUP
-A|INE|t-EUparl|POS|PL
 A|INE|up|POS|PL
 A|INE|up|SG|POS
 A|INS|PL|CMP
@@ -1075,7 +1139,6 @@ A|NOM|SG|DV-MATON|POS
 A|NOM|SG|DV-VAINEN|POS
 A|NOM|SG|POS
 A|NOM|SG|POS|1PL
-A|NOM|SG|POS|CMP
 A|NOM|SG|POS|INTERR
 A|NOM|SG|POS|TrunCo
 A|NOM|SG|POS|kin
@@ -1290,19 +1353,19 @@ COP|up|SG3|V|kO|PAST|ACT
 COP|up|hAn|SG3|V|ACT|PRES
 C|COORD
 C|FORGN
-C|NEGV|SG3|COORD|V
-C|NEGV|SUB|PL1|V
-C|PL3|NEGV|kA|COORD|V
-C|SG1|NEGV|kA|COORD|V
+C|NEGV|SG3|COORD
+C|NEGV|SUB|PL1
+C|PL3|NEGV|kA|COORD
+C|SG1|NEGV|kA|COORD
 C|SUB
-C|SUB|NEGV|SG3|kO|V
-C|SUB|SG1|NEGV|kO|V
+C|SUB|NEGV|SG3|kO
+C|SUB|SG1|NEGV|kO
 C|SUB|kin
 C|pA|SUB
 C|st-arch|COORD
 C|up|COORD
 C|up|SUB
-C|up|SUB|SG3|NEGV|V
+C|up|SUB|SG3|NEGV
 C|up|SUB|kin
 DA-US|PCP2|N|PTV|PSS|SG
 DA-UUS|3|ABL|PL|N
@@ -1397,37 +1460,37 @@ DV-ILE|POS|PCP1|ACT|PTV|SG
 DV-ILE|POS|PCP1|ACT|SG|GEN
 DV-ILE|SG3|V|DV-TTA|ACT|PRES
 DV-MATON|1PL|DA-UUS|N|SG|GEN
-DV-MA|1SG|ALL|SG
-DV-MA|3|ELA|PL
-DV-MA|3|SG|GEN
-DV-MA|ADE|SG
-DV-MA|ALL|PL
-DV-MA|ALL|SG
-DV-MA|ELA|PL
-DV-MA|ELA|SG
-DV-MA|GEN|PL
-DV-MA|ILL|1SG|PL
-DV-MA|ILL|PL
-DV-MA|ILL|SG
-DV-MA|ILL|SG|3
-DV-MA|INE|3|SG
-DV-MA|INE|PL
-DV-MA|INE|SG
-DV-MA|NOM|1SG|SG
-DV-MA|NOM|3|SG
-DV-MA|NOM|PL
-DV-MA|NOM|SG
-DV-MA|PL|INS
-DV-MA|PTV|1SG|SG
-DV-MA|PTV|3|PL
-DV-MA|PTV|3|PL|DV-TTA
-DV-MA|PTV|3|SG
-DV-MA|PTV|PL
-DV-MA|PTV|SG
-DV-MA|SG|ESS
-DV-MA|SG|GEN
-DV-MA|TRA|SG
-DV-MA|up|PL|INS
+DV-MA|1SG|ALL|SG|N
+DV-MA|3|ELA|PL|N
+DV-MA|3|SG|GEN|N
+DV-MA|ADE|SG|N
+DV-MA|ALL|PL|N
+DV-MA|ALL|SG|N
+DV-MA|ELA|PL|N
+DV-MA|ELA|SG|N
+DV-MA|GEN|PL|N
+DV-MA|ILL|1SG|PL|N
+DV-MA|ILL|PL|N
+DV-MA|ILL|SG|N
+DV-MA|ILL|SG|3|N
+DV-MA|INE|3|SG|N
+DV-MA|INE|PL|N
+DV-MA|INE|SG|N
+DV-MA|NOM|1SG|SG|N
+DV-MA|NOM|3|SG|N
+DV-MA|NOM|PL|N
+DV-MA|NOM|SG|N
+DV-MA|PL|INS|N
+DV-MA|PTV|1SG|SG|N
+DV-MA|PTV|3|PL|N
+DV-MA|PTV|3|PL|DV-TTA|N
+DV-MA|PTV|3|SG|N
+DV-MA|PTV|PL|N
+DV-MA|PTV|SG|N
+DV-MA|SG|ESS|N
+DV-MA|SG|GEN|N
+DV-MA|TRA|SG|N
+DV-MA|up|PL|INS|N
 DV-MINEN|GEN|PL|N
 DV-NA|NOM|SG|N
 DV-NA|PTV|SG|N
@@ -1502,8 +1565,8 @@ DV-U|A|ILL|POS|PL
 DV-U|A|POS|PL|PTV
 DV-U|DV-ELE|GEN|PL|N
 DV-U|DV-ELE|SG|GEN|N
-DV-U|DV-MA|ALL|SG
-DV-U|DV-MA|PL|INE
+DV-U|DV-MA|ALL|SG|N
+DV-U|DV-MA|PL|INE|N
 DV-U|ELA|DV-ELE|SG|N
 DV-U|ELA|PL|N
 DV-U|ELA|SG|N
@@ -1617,7 +1680,6 @@ GEN|3|SG|DV-JA|N
 GEN|DV-ELE|SG|DV-JA|N
 GEN|DV-JA|PL|N
 GEN|N|DV-JA|PL|DV-ILE
-GEN|PL
 GEN|PL|DV-JA|DV-TTA|N
 GEN|PL|N
 GEN|PL|POS|PCP1|ACT
@@ -1803,7 +1865,6 @@ NOM|NUM|SG
 NOM|NUM|SG|up
 NOM|N|3|DV-U|DV-ELE|SG
 NOM|N|DN-LAINEN|PL|PROP
-NOM|N|NUM|ORD|SG|GEN
 NOM|N|PL|DA-US
 NOM|N|SG|DA-US
 NOM|N|SG|DV-ILE
@@ -1887,8 +1948,6 @@ NOM|kin|DV-JA|PL|N
 NOM|kin|PL|N
 NOM|st-cllq|PCP2|POS|ACT|SG
 NOM|st-cllq|PCP2|POS|PSS|SG
-NOM|t-MSilocat|SG|N
-NOM|t-MSilocat|SG|up|N
 NOM|up|1PL|N|PROP|SG
 NOM|up|DA-UUS|DV-VAINEN|N|SG
 NOM|up|DA-UUS|N|DN-INEN|SG
@@ -2050,7 +2109,7 @@ PERS|PRON|up|SG|NOM
 PERS|PRON|up|SG|PTV
 PL3|ACT|COND|V
 PL3|ACT|COND|kin|V
-PL3|C|NEGV|SUB|V
+PL3|C|NEGV|SUB
 PL3|NEGV|V
 PL3|V|kO|ACT|DV-U|PRES
 PL|ABL|POS|PCP1|ACT
@@ -2178,7 +2237,6 @@ PRON|up|SG|DEM|INE
 PRON|up|SG|DEM|NOM
 PRON|up|SG|DEM|PTV
 PRON|up|SG|REL|NOM
-PROP
 PSP
 PSP|1SG|ILL
 PSP|3
@@ -2257,7 +2315,6 @@ PTV|N|SG|up|PROP
 PTV|ORD|NUM|PL
 PTV|ORD|NUM|SG
 PTV|ORD|NUM|SG|up
-PTV|PL
 PTV|PL|DV-JA|DV-TTA|N
 PTV|PL|DV-TTA|N
 PTV|PL|N
@@ -2418,7 +2475,6 @@ SG|ILL|DV-MINEN|N
 SG|ILL|DV-NTA|3|N
 SG|ILL|DV-NTA|N
 SG|ILL|DV-NTI|N
-SG|ILL|t-EUparl|N
 SG|ILL|up|DV-NTA|N
 SG|NUM|ABL
 SG|NUM|ESS
@@ -2588,13 +2644,6 @@ st-cllq|SG|NOM|DV-MINEN|N
 st-cllq|up|INTJ
 st-vrnc|INF3|ILL|V
 st-vrnc|SG|GEN|N
-t-EU-vk|INE|SG|N
-t-EU-vk|SG|GEN|N
-t-MSasiakirja|NOM|PL|N
-t-MSasiakirja|PTV|PL|N
-t-MSilocat|SG|GEN|N
-t-MSlukumäärä|PTV|SG|N
-t-MSolocat|ADE|PL|N
 up|1SG|V|ACT|INE|INF2
 up|ABBR
 up|ABL|N|3|PROP|PL
@@ -2694,7 +2743,6 @@ up|hAn|PRON|DEM|SG|GEN
 up|hAn|SG3|V|ACT|PRES
 up|st-arch|st-derog|N|SG|GEN
 up|st-hi|GEN|PL|N
-up|t-EUparl|GEN|PL|N
 end_of_list
     ;
     my @list = split(/\r?\n/, $list);
