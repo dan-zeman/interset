@@ -17,11 +17,11 @@ my $list = $driver->list();
 my %map;
 foreach my $tag (@{$list})
 {
-    #my $fs = $driver->decode($tag);
-    #my $tag1 = $driver->encode($fs);
-    # Zatím nemáme hotové metody decode() a encode(), ale chceme přepsat značky z formátu, který uměle připomíná CoNLL, do základního.
-    $tag1 = $tag;
-    $tag1 =~ s/^\S+\s+\S+\s+(\S+)$/$1/;
+    # Zatím nemáme hotové metody decode() a encode(), ale chceme odstranit rys "up".
+    #my @features = grep {$_ ne 'up'} split(/\|/, $tag);
+    #my $tag1 = join('|', @features);
+    my $fs = $driver->decode($tag);
+    my $tag1 = $driver->encode($fs);
     $map{$tag1}++;
     # Příliš mnoho informací se ukládá do rysu other. Chceme zajistit, aby i značky, které vzniknou, když tyto informace nebudou k dispozici, byly platné.
     #$fs->set('other', '');
