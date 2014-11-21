@@ -10,7 +10,7 @@ binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 use Carp;
 use Getopt::Long;
-use Lingua::Interset qw(hash_drivers list decode encode);
+use Lingua::Interset qw(hash_drivers list decode encode get_driver_object);
 
 sub usage
 {
@@ -32,6 +32,7 @@ my $tagset = $ARGV[0];
 my $udepformat = 1;
 my $corpus = $ARGV[1]; # where to take examples from (Tagzplorer); e.g. conll-2007-en
 my $reduce = $ARGV[2]; # 0/1: whether to reduce indexed tags to subpos
+my $driver = get_driver_object($tagset);
 if($udepformat)
 {
     print("---\n");
@@ -46,22 +47,8 @@ if($udepformat)
     print("Some tags can only be mapped if we also know the lemma or the syntactic context; such information has not been available here.\n");
     print("The table requires manual postprocessing in order to provide accurate and complete information.\n\n");
 }
-my $drivers = hash_drivers();
-my @tagsets = sort(keys(%{$drivers}));
 my %map; # of features and values across tagsets
-my $old;
-my $status;
-if($drivers->{$tagset}{old})
-{
-    $old = 'old';
-    $status = 'STATUS: LESS RELIABLE (Interset driver is out of date, some values may not be converted correctly)';
-}
-else
-{
-    $old = 'new';
-    $status = 'STATUS: Interset 2 driver (current version)';
-}
-my $list_of_tags = list($tagset);
+my $list_of_tags = $driver->list();
 my $n = scalar(@{$list_of_tags});
 # Některé staré ovladače neobsahují seznam povolených značek, takže z nich žádné tabulky nedostaneme.
 if($n>0)
@@ -71,16 +58,12 @@ if($n>0)
         print("Tagset <tt>$tagset</tt>, total $n tags.\n\n");
         print("<table>\n");
     }
-    else
-    {
-        print("$status\n");
-    }
     my $examples = '';
-    $examples = examples($corpus, $reduce) if($corpus);
+    $examples = examples($corpus, $reduce, $driver) if($corpus);
     my $i = 0;
     foreach my $tag (@{$list_of_tags})
     {
-        my $fs = decode($tagset, $tag);
+        my $fs = $driver->decode($tag);
         my $upos = encode('mul::uposf', $fs);
         my $fstext = $fs->as_string();
         my @examples = @{$examples->{$tag}};
@@ -127,6 +110,8 @@ if($n>0)
 sub examples
 {
     my $corpus = shift;
+    my $reduce = shift;
+    my $driver = shift;
     my $tagzplorer_path = "C:\\Users\\Dan\\Documents\\Web\\cgi\\tags";
     my $corpus_path = "$tagzplorer_path\\$corpus"; # /tindex.txt
     my $indexpath = "$corpus_path/tindex.txt";
@@ -139,8 +124,15 @@ sub examples
         {
             my $tag = $1;
             my $records = $2;
-            ###!!! For en::penn, we have to convert the CoNLL 2007 tag.
+            # In some cases the indexed examples contain CoNLL-like tags
+            # (three tab-separated strings) but our tagset contains only
+            # the POS tag (the second string) and we must reduce the indexed tag to match it.
             $tag =~ s/^(\S+)\s+(\S+)\s+.*/$2/ if($reduce);
+            # For some tagsets we have reordered features in the tags listed in the drivers.
+            # Therefore the listed tags do not match those indexed with the examples.
+            # Recoding the tag using Interset should help.
+            my $fs = $driver->decode($tag);
+            $tag = $driver->encode($fs);
             # Parse records.
             my @records = split('<dr>', $records);
             # Remove frequencies.
