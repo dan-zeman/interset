@@ -53,9 +53,12 @@ sub _create_atoms
             'r' => ['pos' => 'adp', 'adpostype' => 'prep'],
             'p' => ['pos' => 'noun', 'prontype' => 'prn'],
             'm' => ['pos' => 'num'],
+            # Documentation mentions "i" (interjection) and "e" (exclamation).
+            # I found only "e" in the data. So I will decode both but encode "e" only.
             'i' => ['pos' => 'int'], # interjection
             'e' => ['pos' => 'int'], # exclamation
-            'u' => ['pos' => 'punc']
+            'u' => ['pos' => 'punc'],
+            'x' => [] # unknown; sometimes also '-' is used
         },
         'encode_map' =>
         {
@@ -70,9 +73,9 @@ sub _create_atoms
                        'conj' => 'c',
                        'adp'  => 'r',
                        'num'  => 'm',
-                       'int'  => 'i',
+                       'int'  => 'e',
                        'punc' => 'u',
-                       '@'    => '-' }
+                       '@'    => 'x' }
         }
     );
     # PERSON ####################
@@ -296,17 +299,6 @@ sub list
 {
     my $self = shift;
     my $list = <<end_of_list
--	-	pos=-|per=-|num=-|ten=-|mod=-|voi=-|gen=-|cas=-|deg=-
--	-	pos=-|per=-|num=-|ten=a|mod=-|voi=-|gen=-|cas=-|deg=-
--	-	pos=-|per=-|num=p|ten=-|mod=-|voi=-|gen=n|cas=a|deg=-
--	-	pos=-|per=-|num=s|ten=-|mod=-|voi=-|gen=f|cas=a|deg=-
--	-	pos=-|per=-|num=s|ten=-|mod=-|voi=-|gen=m|cas=a|deg=-
--	-	pos=-|per=-|num=s|ten=-|mod=-|voi=-|gen=n|cas=v|deg=-
--	-	pos=-|per=2|num=s|ten=a|mod=s|voi=a|gen=-|cas=-|deg=-
--	-	pos=-|per=3|num=p|ten=a|mod=i|voi=a|gen=-|cas=-|deg=-
--	-	pos=-|per=3|num=p|ten=a|mod=i|voi=m|gen=-|cas=-|deg=-
--	-	pos=-|per=3|num=p|ten=i|mod=i|voi=a|gen=-|cas=-|deg=-
--	-	pos=-|per=3|num=s|ten=i|mod=i|voi=a|gen=-|cas=-|deg=-
 a	a	pos=a|per=-|num=-|ten=-|mod=-|voi=-|gen=n|cas=a|deg=-
 a	a	pos=a|per=-|num=d|ten=-|mod=-|voi=-|gen=-|cas=a|deg=-
 a	a	pos=a|per=-|num=d|ten=-|mod=-|voi=-|gen=-|cas=n|deg=-
@@ -1247,6 +1239,16 @@ v	v	pos=v|per=3|num=s|ten=t|mod=i|voi=e|gen=-|cas=-|deg=-
 v	v	pos=v|per=3|num=s|ten=t|mod=i|voi=m|gen=-|cas=-|deg=-
 v	v	pos=v|per=3|num=s|ten=t|mod=i|voi=p|gen=-|cas=-|deg=-
 x	x	pos=x|per=-|num=-|ten=-|mod=-|voi=-|gen=-|cas=-|deg=-
+x	x	pos=x|per=-|num=-|ten=a|mod=-|voi=-|gen=-|cas=-|deg=-
+x	x	pos=x|per=-|num=p|ten=-|mod=-|voi=-|gen=n|cas=a|deg=-
+x	x	pos=x|per=-|num=s|ten=-|mod=-|voi=-|gen=f|cas=a|deg=-
+x	x	pos=x|per=-|num=s|ten=-|mod=-|voi=-|gen=m|cas=a|deg=-
+x	x	pos=x|per=-|num=s|ten=-|mod=-|voi=-|gen=n|cas=v|deg=-
+x	x	pos=x|per=2|num=s|ten=a|mod=s|voi=a|gen=-|cas=-|deg=-
+x	x	pos=x|per=3|num=p|ten=a|mod=i|voi=a|gen=-|cas=-|deg=-
+x	x	pos=x|per=3|num=p|ten=a|mod=i|voi=m|gen=-|cas=-|deg=-
+x	x	pos=x|per=3|num=p|ten=i|mod=i|voi=a|gen=-|cas=-|deg=-
+x	x	pos=x|per=3|num=s|ten=i|mod=i|voi=a|gen=-|cas=-|deg=-
 end_of_list
     ;
     # Protect from editors that replace tabs by spaces.
