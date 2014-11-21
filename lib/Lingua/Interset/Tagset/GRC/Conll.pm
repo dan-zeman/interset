@@ -84,7 +84,8 @@ sub _create_atoms
             '1' => '1',
             '2' => '2',
             '3' => '3'
-        }
+        },
+        'encode_default' => '-'
     );
     # NUMBER ####################
     $atoms{num} = $self->create_simple_atom
@@ -95,7 +96,8 @@ sub _create_atoms
             's' => 'sing',
             'd' => 'dual',
             'p' => 'plur'
-        }
+        },
+        'encode_default' => '-'
     );
     # TENSE ####################
     $atoms{ten} = $self->create_atom
@@ -121,7 +123,8 @@ sub _create_atoms
                          'imp'  => 'i',
                          'pqp'  => 'l',
                          'fut'  => { 'aspect' => { 'perf' => 't',
-                                                   '@'    => 'f' }}}
+                                                   '@'    => 'f' }},
+                         '@'    => '-' }
         }
     );
     # MOOD ####################
@@ -146,7 +149,9 @@ sub _create_atoms
             'verbform' => { 'inf'  => 'n',
                             'fin'  => { 'mood' => { 'ind' => 'i',
                                                     'sub' => 's',
-                                                    'imp' => 'm' }},
+                                                    'opt' => 'o',
+                                                    'imp' => 'm',
+                                                    '@'   => '-' }},
                             'part' => 'p',
                             'ger'  => 'g',
                             '@'    => '-' }
@@ -188,7 +193,8 @@ sub _create_atoms
             'm' => 'masc',
             'f' => 'fem',
             'n' => 'neut'
-        }
+        },
+        'encode_default' => '-'
     );
     # CASE ####################
     $atoms{cas} = $self->create_simple_atom
@@ -202,7 +208,8 @@ sub _create_atoms
             'a' => 'acc',
             'v' => 'voc',
             'l' => 'loc'
-        }
+        },
+        'encode_default' => '-'
     );
     # DEGREE OF COMPARISON ####################
     $atoms{deg} = $self->create_simple_atom
@@ -212,7 +219,8 @@ sub _create_atoms
         {
             'c' => 'comp',
             's' => 'sup'
-        }
+        },
+        'encode_default' => '-'
     );
     return \%atoms;
 }
