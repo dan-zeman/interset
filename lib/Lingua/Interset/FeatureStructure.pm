@@ -874,15 +874,18 @@ my %matrix = @_matrix =
     'mood' =>
     {
         'priority' => 70,
-        'values' => ['ind', 'imp', 'cnd', 'pot', 'sub', 'jus', 'qot', ''],
+        'values' => ['ind', 'imp', 'cnd', 'pot', 'sub', 'jus', 'opt', 'des', 'nec', 'qot', ''],
         'replacements' =>
         [
             ['ind'],
-            ['imp'],
+            ['imp', 'nec'],
             ['cnd', 'sub'],
             ['pot', 'cnd'],
-            ['sub', 'cnd', 'jus'],
-            ['jus', 'sub'],
+            ['sub', 'cnd', 'jus', 'opt'],
+            ['jus', 'sub', 'opt'],
+            ['opt', 'jus'],
+            ['des', 'jus'],
+            ['nec', 'imp'],
             ['qot', 'ind']
         ],
         'uname' => 'Mood'
@@ -908,11 +911,14 @@ my %matrix = @_matrix =
     'voice' =>
     {
         'priority' => 280,
-        'values' => ['act', 'pass', ''],
+        'values' => ['act', 'mid', 'pass', 'rcp', 'cau', ''],
         'replacements' =>
         [
             ['act'],
-            ['pass']
+            ['mid'],
+            ['pass'],
+            ['rcp'],
+            ['cau']
         ],
         'uname' => 'Voice'
     },
