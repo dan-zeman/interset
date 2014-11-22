@@ -37,45 +37,195 @@ sub _create_atoms
     my $self = shift;
     my %atoms;
     # PART OF SPEECH ####################
+    # Yoav Goldberg:
+    # The tagging conversion was done in a semi-automated process (a heuristic
+    # mapping between the tagsets, which accounts for the tree context, was
+    # defined and applied. Some hard cases were left unresolved in the automatic
+    # process and marked for manual annotation). Words that lack an analysis in
+    # the Morphological Analyzer are assigned the tag !!UNK!!, and words that do
+    # not have a correct analysis in the morphological analyzer are assigned the
+    # tag !!MISS!!
     $atoms{pos} = $self->create_atom
     (
         'surfeature' => 'pos',
         'decode_map' =>
         {
-            'n' => ['pos' => 'noun'],
-            'v' => ['pos' => 'verb'],
-            't' => ['pos' => 'verb', 'verbform' => 'part'],
-            'a' => ['pos' => 'adj'],
-            'd' => ['pos' => 'adv'],
-            'l' => ['pos' => 'adj', 'prontype' => 'art'],
-            'g' => ['pos' => 'part'],
-            'c' => ['pos' => 'conj'],
-            'r' => ['pos' => 'adp', 'adpostype' => 'prep'],
-            'p' => ['pos' => 'noun', 'prontype' => 'prn'],
-            'm' => ['pos' => 'num'],
-            # Documentation mentions "i" (interjection) and "e" (exclamation).
-            # I found only "e" in the data. So I will decode both but encode "e" only.
-            'i' => ['pos' => 'int'], # interjection
-            'e' => ['pos' => 'int'], # exclamation
-            'u' => ['pos' => 'punc'],
-            'x' => [] # unknown; sometimes also '-' is used
+            # Adverb appearing as prefix
+            # כ
+            'ADVERB' => ['pos' => 'adv'],
+            # AT (direct object) marker
+            # תא
+            'AT' => ['pos' => 'part'],
+            # Beinoni (participle) form
+            # רושק, ףסונ, עגונ, רבודמ
+            'BN' => ['pos' => 'verb', 'verbform' => 'part'],
+            # Beinoni Form with a possessive suffix
+            # היבשוי
+            'BN_S_PP' => ['pos' => 'verb', 'verbform' => 'part', 'poss' => 'poss'],
+            # Construct-state Beinoni Form
+            # עבטמ, הברמ, תלזוא, יליחנמ, יכומ
+            'BNT' => ['pos' => 'verb', 'verbform' => 'part'],
+            # Conjunction
+            # ש, דוגינב, לככ, יפכ
+            'CC' => ['pos' => 'conj'],
+            # Coordinating Conjunction other than ו
+            # םג, םא, וא, לבא, קר
+            'CC-COORD' => ['pos' => 'conj', 'conjtype' => 'coor'],
+            # Relativizing Conjunction
+            # רשא
+            'CC-REL' => ['pos' => 'conj'],
+            # Subordinating Conjunction
+            # יכ, ידכ, רחאל, רשאכ, ומכ
+            'CC-SUB' => ['pos' => 'conj', 'conjtype' => 'sub'],
+            # Number
+            # תחא, 1, 0
+            'CD' => ['pos' => 'num'],
+            # Construct Numeral
+            # ינש, יתש, יפלא, תואמ, תורשע
+            'CDT' => ['pos' => 'num'],
+            # The ו coordinating word
+            # ו
+            'CONJ' => ['pos' => 'conj', 'conjtype' => 'coor'],
+            # Copula (present) and Auxiliaries (past and future)
+            # היה, ויה, התיה, וניא, היהי
+            'COP' => ['pos' => 'verb', 'verbtype' => 'cop'],
+            #89 COP-TOINFINITIVE
+            'COP-TOINFINITIVE' => ['pos' => 'verb', 'verbtype' => 'cop'],
+            # H marker (the definite article prefix)
+            # ה
+            'DEF' => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'def'],
+            #53 DEF@DT
+            'DEF@DT' => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'def'],
+            # Determiner
+            # יהשוזיא, רחבמ, לכ
+            'DT' => ['pos' => 'adj', 'prontype' => 'prn'],
+            # Construct-state Determiner
+            # המכ, ותוא, םוש, הברה
+            'DTT' => ['pos' => 'adj', 'prontype' => 'prn'],
+            # Existential
+            # שי, ןיא, םנשי, היה
+            'EX' => ['pos' => 'adv', 'advtype' => 'ex'],
+            # Preposition
+            # לע, ל, םע, ןיב
+            'IN' => ['pos' => 'adp', 'adpostype' => 'prep'],
+            # Interjection
+            # סופ, ףוא, הלילח, אנ, יוא
+            'INTJ' => ['pos' => 'int'],
+            # Adjective
+            # םירחא, םיבר, שדח, לודג, ימואל
+            'JJ' => ['pos' => 'adj'],
+            # Construct-state Adjective
+            # רבודמ, יעדומ, ילוער, תרסח, יבורמ
+            'JJT' => ['pos' => 'adj'],
+            # Modal
+            # רשפא, לוכי, ךירצ, הלוכי, לולע
+            'MD' => ['pos' => 'verb', 'verbtype' => 'mod'],
+            # Numerical Expression
+            # 03.02, 00.02, 11.61, 28.6.6, 11.31
+            'NCD' => ['pos' => 'num'],
+            # Noun
+            # הרטשמ, הלשממ, םוי, ץרא
+            'NN' => ['pos' => 'noun', 'nountype' => 'com'],
+            # Proper Nouns
+            # לארשי, םילשורי, אנהכ, ביבא
+            'NNP' => ['pos' => 'noun', 'nountype' => 'prop'],
+            # Noun with a possessive suffix
+            # ותומ, וירבד, וייח, ופוס, ומש
+            'NN_S_PP' => ['pos' => 'noun', 'poss' => 'poss'],
+            # Construct-state nouns
+            # ידי, תעדוו
+            'NNT' => ['pos' => 'noun'],
+            # “Prefix” wordlets
+            # יתלב, יא, ןיב, תת, יטנא
+            'P' => ['pos' => 'part'],
+            # Possessive
+            # לש
+            'POS' => ['pos' => 'part', 'poss' => 'poss'],
+            # Prefix-Prepositions
+            # ב, ל, מ, כ, שכ
+            'PREPOSITION' => ['pos' => 'adp', 'adpostype' => 'prep'],
+            # Pronouns TODO prontype?
+            # אוה, הז, איה, םה, וז
+            'PRP' => ['pos' => 'noun', 'prontype' => 'prs'],
+            #222 PRP-DEM
+            'PRP-DEM' => ['pos' => 'adj', 'prontype' => 'dem'],
+            #2 PRP-IMP TODO prontype?
+            'PRP-IMP' => ['pos' => 'noun', 'prontype' => 'prn'],
+            # Punctuation
+            # ,, ., ־
+            'PUNC' => ['pos' => 'punc'],
+            # QuestionWord
+            # המ, ימ, םאה, מ, ןכיה
+            'QW' => ['pos' => 'adj', 'prontype' => 'int'],
+            # Adverbs
+            # אל, רתוי, דוע, רבכ, לומתא
+            'RB' => ['pos' => 'adv'],
+            # Relativizer
+            # ש
+            'REL-SUBCONJ' => ['pos' => 'adj', 'prontype' => 'rel'],
+            # Nominative suffix
+            # suffמה, suffאוה, suffאיה
+            'S_ANP' => ['pos' => 'part', 'case' => 'nom'],
+            # Pronomial suffix TODO prontype?
+            # suffאוה, suffמה, suffאיה
+            'S_PRN' => ['pos' => 'part', 'prontype' => 'prs'],
+            # Temporal Suboordinating Conjunction
+            # שכ, שמ
+            'TEMP-SUBCONJ' => ['pos' => 'conj', 'conjtype' => 'sub'],
+            # Titles
+            # ר״ד, ד״וע, בצינ, רוספורפ, רמ
+            'TTL' => ['pos' => 'noun'],
+            # Verbs
+            # רמא, רמוא, הארנ, עדוי
+            'VB' => ['pos' => 'verb'],
+            #1 VB-BAREINFINITIVE
+            'VB-BAREINFINITIVE' => ['pos' => 'verb', 'verbform' => 'inf'],
+            # Infinitive Verbs
+            # תושעל, םלשל, עונמל, תתל, עצבל
+            'VB-TOINFINITIVE' => ['pos' => 'verb', 'verbform' => 'inf'],
+            #550 !!MISS!!
+            # words that do not have a correct analysis in the morphological analyzer
+            '!!MISS!!' => [],
+            #6 !!SOME_!!
+            '!!SOME_!!' => [],
+            #520 !!UNK!!
+            # Words that lack an analysis in the Morphological Analyzer
+            '!!UNK!!' => [],
+            #134 !!ZVL!!
+            '!!ZVL!!' => []
         },
         'encode_map' =>
         {
-            'pos' => { 'noun' => { 'prontype' => { ''  => 'n',
-                                                   '@' => 'p' }},
-                       'verb' => { 'verbform' => { 'part' => 't',
-                                                   '@'    => 'v' }},
-                       'adj'  => { 'prontype' => { 'art' => 'l',
-                                                   '@'   => 'a' }},
-                       'adv'  => 'd',
-                       'part' => 'g',
-                       'conj' => 'c',
-                       'adp'  => 'r',
-                       'num'  => 'm',
-                       'int'  => 'e',
-                       'punc' => 'u',
-                       '@'    => 'x' }
+            'pos' => { 'noun' => { 'prontype' => { ''  => { 'poss' => { 'poss' => 'NN_S_PP',
+                                                                        '@'    => { 'nountype' => { 'prop' => 'NNP',
+                                                                                                    '@'    => 'NN' }}}}, ###!!! NNT construct state; TTL
+                                                   '@' => 'PRP' }}, ###!!! PRP-IMP
+                       'adj'  => { 'prontype' => { 'art' => 'DEF', ###!!! DEF@DT
+                                                   'dem' => 'PRP-DEM',
+                                                   'int' => 'QW',
+                                                   'rel' => 'REL-SUBCONJ',
+                                                   ''    => 'JJ', ###!!! JJT construct state
+                                                   '@'   => 'DT' }}, ###!!! DTT construct state
+                       'num'  => 'CD', ###!!! CDT construct state; NCD
+                       'verb' => { 'verbtype' => { 'cop' => 'COP', ###!!! COP-TOINFINITIVE
+                                                   'mod' => 'MD',
+                                                   '@'   => { 'verbform' => { 'part' => { 'poss' => { 'poss' => 'BN_S_PP',
+                                                                                                      '@'    => 'BN' }}, ###!!! BNT construct state
+                                                                              'inf'  => 'VB-BAREINFINITIVE', ###!!! VB-TOINFINITIVE
+                                                                              '@'    => 'VB' }}}},
+                       'adv'  => { 'advtype' => { 'ex' => 'EX',
+                                                  '@'  => 'ADVERB' }}, ###!!! or RB
+                       'conj' => { 'conjtype' => { 'coor' => 'CC-COORD', ###!!! CONJ
+                                                   'sub'  => 'CC-SUB', ###!!! TEMP-SUBCONJ
+                                                   '@'    => 'CC' }}, ###!!! CC-REL
+                       'adp'  => 'IN', ###!!! PREPOSITION
+                       'part' => { 'poss' => { 'poss' => 'POS',
+                                               '@'    => { 'case' => { 'nom' => 'S-ANP',
+                                                                       '@'   => { 'prontype' => { 'prs' => 'S-PRN',
+                                                                                                  '@'   => 'AT' }}}}}}, ###!!! P
+                       'int'  => 'INTJ',
+                       'punc' => 'PUNC',
+                       '@'    => '!!MISS!!' } ###!!! !!SOME_!!, !!UNK!!, !!ZVL!!
         }
     );
     # PERSON ####################
