@@ -228,17 +228,101 @@ sub _create_atoms
                        '@'    => '!!MISS!!' } ###!!! !!SOME_!!, !!UNK!!, !!ZVL!!
         }
     );
-    # PERSON ####################
-    $atoms{per} = $self->create_simple_atom
+    # NUMBER ####################
+    $atoms{number} = $self->create_atom
     (
-        'intfeature' => 'person',
-        'simple_decode_map' =>
+        'surfeature' => 'number',
+        'decode_map' =>
         {
-            '1' => '1',
-            '2' => '2',
-            '3' => '3'
-        },
-        'encode_default' => '-'
+            # used usually with nouns. pronouns, numerals, verbs and adjectives
+            'S' => ['number' => 'sing'],
+            'P' => ['number' => 'plur'],
+            # used with NN and BN
+            'suf_S' => ['number' => 'sing'],
+            'suf_P' => ['number' => 'plur']
+        }
+    );
+    # GENDER ####################
+    $atoms{gender} = $self->create_atom
+    (
+        'surfeature' => 'gender',
+        'decode_map' =>
+        {
+            # used usually with nouns. pronouns, numerals, verbs and adjectives
+            'M' => ['gender' => 'masc'],
+            'F' => ['gender' => 'fem'],
+            # used with NN and BN
+            'suf_M' => ['gender' => 'masc'],
+            'suf_F' => ['gender' => 'fem']
+        }
+    );
+    # PERSON ####################
+    $atoms{person} = $self->create_atom
+    (
+        'surfeature' => 'person',
+        'decode_map' =>
+        {
+            # used with VB, COP, MD, BN; NN, PRP, S_PRP, S_ANP
+            '1' => ['person' => '1'],
+            '2' => ['person' => '2'],
+            '3' => ['person' => '3'],
+            # used with NN and BN
+            'suf_1' => ['person' => '1'],
+            'suf_2' => ['person' => '2'],
+            'suf_3' => ['person' => '3']
+        }
+    );
+    # VERB FORM ####################
+    $atoms{verbform} = $self->create_atom
+    (
+        'surfeature' => 'verbform',
+        'decode_map' =>
+        {
+            # used with COP and VB
+            'PAST'       => ['tense' => 'past'],
+            'FUTURE'     => ['tense' => 'fut'],
+            'IMPERATIVE' => ['mood' => 'imp'],
+            'BEINONI'    => ['verbform' => 'part']
+        }
+    );
+    # NEGATIVENESS ####################
+    $atoms{negativeness} = $self->create_atom
+    (
+        'surfeature' => 'negativeness',
+        'decode_map' =>
+        {
+            # used with COP
+            'POSITIVE' => ['negativeness' => 'pos'],
+            'NEGATIVE' => ['negativeness' => 'neg']
+        }
+    );
+    # BINYANIM ####################
+    # used with VB, BN and BNT
+    # binyan = building, structure
+    # This seems to be a traditional part of Hebrew morphology. See e.g. page 1347 of:
+    # http://books.google.cz/books?id=l7UWMZq7FGIC&pg=PA1350&lpg=PA1350&dq=HIFIL+HITPAEL+HUFAL+NIFAL+PAAL+PIEL+PUAL+HIFIL&source=bl&ots=bnVti7b3wi&sig=8O9q5x0DA1DqYiH3g8yVY8r9qgM&hl=cs&sa=X&ei=pf1wVLeADcLOygON7YHoAw&ved=0CCkQ6AEwAQ#v=onepage&q=HIFIL%20HITPAEL%20HUFAL%20NIFAL%20PAAL%20PIEL%20PUAL%20HIFIL&f=false
+    # or
+    # http://tzion.org/devarim/The%20Seven%20Binyanim.pdf
+    $atoms{binyanim} = $self->create_atom
+    (
+        'surfeature' => 'binyanim',
+        'decode_map' =>
+        {
+            # PAAL      CaCaC      katav = wrote (basic/simple)
+            'PAAL'    => ['voice' => 'act'],
+            # NIFAL     niCCaC     niktav = was written (basic/simple-passive)
+            'NIFAL'   => ['voice' => 'pass'],
+            # PIEL      CiCeC      kitev = inscribed/engraved (intensive)
+            'PIEL'    => ['voice' => 'act'],
+            # PUAL      CuCaC      kutav = was inscribed/engraved (intensive-passive) (theoretical, to illustrate the binyanim; not used with this root)
+            'PUAL'    => ['voice' => 'pass'],
+            # HIFIL     hiCCiC     hiktiv = dictated (causative)
+            'HIFIL'   => ['voice' => 'cau'],
+            # HUFAL     huCCaC     huktav = was dictated (causative-passive)
+            'HUFAL'   => ['voice' => 'cau|pass'],
+            # HITPAEL   hitCaCeC   hitkatev = corresponded (reflexive/cooperative aspect ... both active and passive)
+            'HITPAEL' => ['voice' => 'mid']
+        }
     );
     return \%atoms;
 }
