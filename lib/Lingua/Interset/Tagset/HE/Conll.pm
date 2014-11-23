@@ -187,14 +187,14 @@ sub _create_atoms
             'VB-TOINFINITIVE' => ['pos' => 'verb', 'verbform' => 'inf'],
             #550 !!MISS!!
             # words that do not have a correct analysis in the morphological analyzer
-            '!!MISS!!' => [],
+            '!!MISS!!' => ['other' => {'unknown' => 'miss'}],
             #6 !!SOME_!!
-            '!!SOME_!!' => [],
+            '!!SOME_!!' => ['other' => {'unknown' => 'some'}],
             #520 !!UNK!!
             # Words that lack an analysis in the Morphological Analyzer
-            '!!UNK!!' => [],
+            '!!UNK!!' => ['other' => {'unknown' => 'unk'}],
             #134 !!ZVL!!
-            '!!ZVL!!' => []
+            '!!ZVL!!' => ['other' => {'unknown' => 'zvl'}]
         },
         'encode_map' =>
         {
@@ -227,7 +227,10 @@ sub _create_atoms
                                                                                                   '@'   => 'AT' }}}}}}, ###!!! P
                        'int'  => 'INTJ',
                        'punc' => 'PUNC',
-                       '@'    => '!!MISS!!' } ###!!! !!SOME_!!, !!UNK!!, !!ZVL!!
+                       '@'    => { 'other/unknown' => { 'miss' => '!!MISS!!',
+                                                        'some' => '!!SOME_!!',
+                                                        'zvl'  => '!!ZVL!!',
+                                                        '@'    => '!!UNK!!' }}} ###!!! !!SOME_!!, !!ZVL!!
         }
     );
     # PRONOUN TYPE ####################
@@ -287,7 +290,7 @@ sub _create_atoms
         'encode_map' =>
         {
             'other/unknown' => { 'miss' => '!!MISS!!',
-                                 'unk'  => '!!UNK!!' }
+                                 '@'    => '!!UNK!!' }
         }
     );
     # NUMBER ####################
@@ -304,6 +307,13 @@ sub _create_atoms
             # used with NN and BN
             'suf_S' => ['number' => 'sing'],
             'suf_P' => ['number' => 'plur']
+        },
+        'encode_map' =>
+        {
+            'number' => { 'sing' => 'S',
+                          'dual|plur' => 'DP',
+                          'dual' => 'D',
+                          'plur' => 'P' }
         }
     );
     # GENDER ####################
@@ -319,6 +329,12 @@ sub _create_atoms
             'suf_M'  => ['gender' => 'masc'],
             'suf_F'  => ['gender' => 'fem'],
             'suf_MF' => ['gender' => 'masc|fem']
+        },
+        'encode_map' =>
+        {
+            'gender' => { 'masc|fem' => 'suf_MF',
+                          'masc' => 'M',
+                          'fem'  => 'F' }
         }
     );
     # PERSON ####################
@@ -342,6 +358,13 @@ sub _create_atoms
             'suf_1' => ['person' => '1'],
             'suf_2' => ['person' => '2'],
             'suf_3' => ['person' => '3']
+        },
+        'encode_map' =>
+        {
+            'person' => { '1' => '1',
+                          '2' => '2',
+                          '3' => '3',
+                          ''  => 'A' }
         }
     );
     # VERB FORM ####################
@@ -355,17 +378,24 @@ sub _create_atoms
             'FUTURE'     => ['tense' => 'fut'],
             'IMPERATIVE' => ['mood' => 'imp'],
             'BEINONI'    => ['verbform' => 'part']
+        },
+        'encode_map' =>
+        {
+            'verbform' => { 'part' => 'BEINONI',
+                            '@'    => { 'mood' => { 'imp' => 'IMPERATIVE',
+                                                    '@'   => { 'tense' => { 'past' => 'PAST',
+                                                                            'fut'  => 'FUTURE' }}}}}
         }
     );
     # NEGATIVENESS ####################
-    $atoms{negativeness} = $self->create_atom
+    $atoms{negativeness} = $self->create_simple_atom
     (
-        'surfeature' => 'negativeness',
-        'decode_map' =>
+        'intfeature' => 'negativeness',
+        'simple_decode_map' =>
         {
             # used with COP
-            'POSITIVE' => ['negativeness' => 'pos'],
-            'NEGATIVE' => ['negativeness' => 'neg']
+            'POSITIVE' => 'pos',
+            'NEGATIVE' => 'neg'
         }
     );
     # BINYANIM ####################
@@ -375,9 +405,9 @@ sub _create_atoms
     # http://books.google.cz/books?id=l7UWMZq7FGIC&pg=PA1350&lpg=PA1350&dq=HIFIL+HITPAEL+HUFAL+NIFAL+PAAL+PIEL+PUAL+HIFIL&source=bl&ots=bnVti7b3wi&sig=8O9q5x0DA1DqYiH3g8yVY8r9qgM&hl=cs&sa=X&ei=pf1wVLeADcLOygON7YHoAw&ved=0CCkQ6AEwAQ#v=onepage&q=HIFIL%20HITPAEL%20HUFAL%20NIFAL%20PAAL%20PIEL%20PUAL%20HIFIL&f=false
     # or
     # http://tzion.org/devarim/The%20Seven%20Binyanim.pdf
-    $atoms{binyanim} = $self->create_atom
+    $atoms{binyan} = $self->create_atom
     (
-        'surfeature' => 'binyanim',
+        'surfeature' => 'binyan',
         'decode_map' =>
         {
             # PAAL      CaCaC      katav = wrote (basic/simple)
@@ -394,7 +424,24 @@ sub _create_atoms
             'HUFAL'   => ['voice' => 'cau|pass'],
             # HITPAEL   hitCaCeC   hitkatev = corresponded (reflexive/cooperative aspect ... both active and passive)
             'HITPAEL' => ['voice' => 'mid']
+        },
+        'encode_map' =>
+        {
+            'voice' => { 'int|pass' => 'PUAL',
+                         'cau|pass' => 'HUFAL',
+                         'pass'     => 'NIFAL',
+                         'mid'      => 'HITPAEL',
+                         'act'      => 'PAAL',
+                         'cau'      => 'HIFIL',
+                         'int'      => 'PIEL' }
         }
+    );
+    # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
+    my @fatoms = map {$atoms{$_}} @{$self->features_all()};
+    $atoms{feature} = $self->create_merged_atom
+    (
+        'surfeature' => 'feature',
+        'atoms'      => \@fatoms
     );
     return \%atoms;
 }
@@ -408,7 +455,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('pos', 'per', 'num', 'ten', 'mod', 'voi', 'gen', 'cas', 'deg');
+    my @features = ('person', 'number', 'gender', 'binyan', 'unknown');
     return \@features;
 }
 
@@ -423,6 +470,9 @@ sub _create_features_pos
     my $self = shift;
     my %features =
     (
+        '!!MISS!!' => ['unknown'],
+        '!!UNK!!'  => ['unknown'],
+        'BN'       => ['gender', 'number', 'person', 'binyan']
     );
     return \%features;
 }
@@ -437,7 +487,20 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
-    my $fs = $self->decode_conll($tag);
+    my $fs = Lingua::Interset::FeatureStructure->new();
+    $fs->set_tagset('he::conll');
+    my $atoms = $self->atoms();
+    # three components: part-of-speech tag, subpart of speech, features
+    # example: NN\tNN\tM|S
+    my ($pos, $subpos, $features) = split(/\s+/, $tag);
+    # The underscore character is used if there are no features.
+    $features = '' if($features eq '_');
+    my @features = split(/\|/, $features);
+    $atoms->{pos}->decode_and_merge_hard($subpos, $fs);
+    foreach my $feature (@features)
+    {
+        $atoms->{feature}->decode_and_merge_hard($feature, $fs);
+    }
     # Default feature values. Used to improve collaboration with other drivers.
     # ... nothing yet ...
     return $fs;
@@ -455,8 +518,9 @@ sub encode
     my $atoms = $self->atoms();
     my $pos = $atoms->{pos}->encode($fs);
     my $subpos = $pos;
-    my $feature_names = $self->features_all();
-    my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names);
+    my $feature_names = $self->get_feature_names($pos);
+    my $value_only = 1;
+    my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names, $value_only);
     return $tag;
 }
 
@@ -476,11 +540,7 @@ sub list
 !!ZVL!!	!!ZVL!!	_
 ADVERB	ADVERB	_
 AT	AT	_
-BN	BN	1|P|M
-BN	BN	A|P|F
-BN	BN	A|P|M
-BN	BN	A|S|F
-BN	BN	A|S|M
+BN	BN	F|S|3
 BN	BN	F|P|A
 BN	BN	F|P|A|HIFIL
 BN	BN	F|P|A|HITPAEL
@@ -489,6 +549,7 @@ BN	BN	F|P|A|NIFAL
 BN	BN	F|P|A|PAAL
 BN	BN	F|P|A|PIEL
 BN	BN	F|P|A|PUAL
+BN	BN	F|S|A
 BN	BN	F|S|A|HIFIL
 BN	BN	F|S|A|HITPAEL
 BN	BN	F|S|A|HUFAL
@@ -496,7 +557,9 @@ BN	BN	F|S|A|NIFAL
 BN	BN	F|S|A|PAAL
 BN	BN	F|S|A|PIEL
 BN	BN	F|S|A|PUAL
+BN	BN	M|P|1
 BN	BN	M|P|3|HIFIL
+BN	BN	M|P|A
 BN	BN	M|P|A|HIFIL
 BN	BN	M|P|A|HITPAEL
 BN	BN	M|P|A|HUFAL
@@ -504,6 +567,7 @@ BN	BN	M|P|A|NIFAL
 BN	BN	M|P|A|PAAL
 BN	BN	M|P|A|PIEL
 BN	BN	M|P|A|PUAL
+BN	BN	M|S|A
 BN	BN	M|S|A|HIFIL
 BN	BN	M|S|A|HITPAEL
 BN	BN	M|S|A|HUFAL
@@ -511,7 +575,6 @@ BN	BN	M|S|A|NIFAL
 BN	BN	M|S|A|PAAL
 BN	BN	M|S|A|PIEL
 BN	BN	M|S|A|PUAL
-BN	BN	S|3|F
 BN	BN_S_PP	M|P|A|PAAL|suf_F|suf_P|suf_3
 BN	BN_S_PP	M|P|A|PAAL|suf_F|suf_S|suf_3
 BN	BN_S_PP	M|P|A|PAAL|suf_M|suf_S|suf_3
@@ -580,7 +643,7 @@ COP	COP	S|1|BEINONI|NEGATIVE|M|F
 COP	COP	S|1|PAST|POSITIVE|M|F
 COP	COP-TOINFINITIVE	POSITIVE
 DEF	DEF	_
-DEF@DT	DEF@DT	_
+DEF\@DT	DEF\@DT	_
 DT	DT	_
 DTT	DTT	_
 EX	EX	M|S|PAST|POSITIVE
