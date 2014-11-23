@@ -149,8 +149,10 @@ sub _create_atoms
             'PRP' => ['pos' => 'noun', 'prontype' => 'prs'],
             #222 PRP-DEM
             'PRP-DEM' => ['pos' => 'adj', 'prontype' => 'dem'],
-            #2 PRP-IMP TODO prontype?
-            'PRP-IMP' => ['pos' => 'noun', 'prontype' => 'prn'],
+            #2 PRP-IMP
+            # כְּלוּם kəlum = anything PRP PRP-IMP _
+            # Used with a negative word, so the combination means "nothing".
+            'PRP-IMP' => ['pos' => 'noun', 'prontype' => 'neg'],
             # Punctuation
             # ,, ., ־
             'PUNC' => ['pos' => 'punc'],
@@ -228,6 +230,66 @@ sub _create_atoms
                        '@'    => '!!MISS!!' } ###!!! !!SOME_!!, !!UNK!!, !!ZVL!!
         }
     );
+    # PRONOUN TYPE ####################
+    # Personal pronouns (PRP PRP PERS):
+    # אֲנִי aní = já
+    # אֲנַחְנוּ anáxnu = my (hovorově)
+    # אָנוּ ánu = my (spisovně)
+    # אַתָּה atá = ty (mužský rod)
+    # אַתְּ át = ty (ženský rod)
+    # אֲתֶּם atém = vy (mužský rod)
+    # אַתֶּן atén = vy (ženský rod)
+    # הוּא hu = on
+    # הִיא hi = ona
+    # הֵם hem = oni
+    # הֵן hen = ony
+    # Demonstrative pronouns (PRP PRP DEM):
+    # זֶה ze = tento
+    # זוֹ zó = tato
+    # Interrogative pronouns:
+    # מָה má = co, který, která
+    # מִי mí = kdo
+    # The undocumented "IMP" feature seems to mean "indefinite, negative or total pronoun".
+    # כולם \ כֻּלָּם kulám = all PRP PRP M|P|3|IMP
+    # כלשהו klšhú (כָּלְשֶׁהוּ) káləšhú = some PRP PRP M|S|3|IMP
+    # כלשהי klšhí (כָּלְשֶׁהִי) káləšhí = some PRP PRP F|S|IMP
+    # כלשהם klšhm (כָּלְשֶׁהֵם) káləšhem = any PRP PRP M|P|IMP
+    # כלשהן klšhn (כָּלְשֶׁהֵן) káləšhen = any PRP PRP F|P|IMP
+    # כְּלוּם kəlum = anything PRP PRP-IMP _
+    # Used with a negative word, so the combination means "nothing".
+    $atoms{prontype} = $self->create_atom
+    (
+        'surfeature' => 'prontype',
+        'decode_map' =>
+        {
+            'PERS' => 'prs',
+            'DEM'  => 'dem',
+            'IMP'  => 'ind|neg|tot'
+        },
+        'encode_map' =>
+        {
+            'prontype' => { 'prs' => 'PERS',
+                            'dem' => 'DEM',
+                            'ind' => 'IMP',
+                            'neg' => 'IMP',
+                            'tot' => 'IMP' }
+        }
+    );
+    # UNKNOWN WORDS ####################
+    $atoms{unknown} = $self->create_atom
+    (
+        'surfeature' => 'unknown',
+        'decode_map' =>
+        {
+            '!!MISS!!' => ['other' => {'unknown' => 'miss'}],
+            '!!UNK!!'  => ['other' => {'unknown' => 'unk'}]
+        },
+        'encode_map' =>
+        {
+            'other/unknown' => { 'miss' => '!!MISS!!',
+                                 'unk'  => '!!UNK!!' }
+        }
+    );
     # NUMBER ####################
     $atoms{number} = $self->create_atom
     (
@@ -236,6 +298,8 @@ sub _create_atoms
         {
             # used usually with nouns. pronouns, numerals, verbs and adjectives
             'S' => ['number' => 'sing'],
+            'D' => ['number' => 'dual'],
+            'DP'=> ['number' => 'dual|plur'], # pseudo-dual, that is dual used as plural
             'P' => ['number' => 'plur'],
             # used with NN and BN
             'suf_S' => ['number' => 'sing'],
@@ -252,11 +316,18 @@ sub _create_atoms
             'M' => ['gender' => 'masc'],
             'F' => ['gender' => 'fem'],
             # used with NN and BN
-            'suf_M' => ['gender' => 'masc'],
-            'suf_F' => ['gender' => 'fem']
+            'suf_M'  => ['gender' => 'masc'],
+            'suf_F'  => ['gender' => 'fem'],
+            'suf_MF' => ['gender' => 'masc|fem']
         }
     );
     # PERSON ####################
+    # The "A" feature:
+    # Used with BN, BNT, MD, VB (i.e. verb forms).
+    # For MD and VB, it always coincides with BEINONI.
+    # MD and VB BEINONI without A exist but they are very rare.
+    # COP BEINONI is always without A.
+    # It seems to replace the person feature, meaning person=all. (COP always has person.)
     $atoms{person} = $self->create_atom
     (
         'surfeature' => 'person',
@@ -266,6 +337,7 @@ sub _create_atoms
             '1' => ['person' => '1'],
             '2' => ['person' => '2'],
             '3' => ['person' => '3'],
+            'A' => [],
             # used with NN and BN
             'suf_1' => ['person' => '1'],
             'suf_2' => ['person' => '2'],
@@ -313,9 +385,9 @@ sub _create_atoms
             # NIFAL     niCCaC     niktav = was written (basic/simple-passive)
             'NIFAL'   => ['voice' => 'pass'],
             # PIEL      CiCeC      kitev = inscribed/engraved (intensive)
-            'PIEL'    => ['voice' => 'act'],
+            'PIEL'    => ['voice' => 'int'],
             # PUAL      CuCaC      kutav = was inscribed/engraved (intensive-passive) (theoretical, to illustrate the binyanim; not used with this root)
-            'PUAL'    => ['voice' => 'pass'],
+            'PUAL'    => ['voice' => 'int|pass'],
             # HIFIL     hiCCiC     hiktiv = dictated (causative)
             'HIFIL'   => ['voice' => 'cau'],
             # HUFAL     huCCaC     huktav = was dictated (causative-passive)
@@ -428,7 +500,9 @@ CoNLL tagsets in Interset are traditionally three values separated by tabs.
 The values come from the CoNLL columns CPOS, POS and FEAT.
 
 Tagset described in Yoav Goldberg: Automatic Syntactic Processing of Modern
-Hebrew Automatic Syntactic Processing of Modern Hebrew (2011), p. 32.
+Hebrew Automatic Syntactic Processing of Modern Hebrew (2011), p. 32,
+L<http://www.cs.bgu.ac.il/~nlpproj/yoav-phd.pdf>
+
 TODO: try to use the official (but not as easy to process) resource:
 BGU Computational Linguistics Group. Hebrew morphological tagging guidelines.
 Technical report, Ben Gurion University of the Negev, 2008.

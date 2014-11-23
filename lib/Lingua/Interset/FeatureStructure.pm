@@ -911,14 +911,15 @@ my %matrix = @_matrix =
     'voice' =>
     {
         'priority' => 280,
-        'values' => ['act', 'mid', 'pass', 'rcp', 'cau', ''],
+        'values' => ['act', 'mid', 'pass', 'rcp', 'cau', 'int', ''],
         'replacements' =>
         [
             ['act'],
             ['mid'],
             ['pass'],
             ['rcp'],
-            ['cau']
+            ['cau'],
+            ['int']
         ],
         'uname' => 'Voice'
     },

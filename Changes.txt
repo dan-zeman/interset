@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+Features:
+* New value 'int' of the feature 'voice': intensive voice/aspect (the PIEL binyan) in Hebrew.
+
 Drivers:
 * HE::Conll
 
