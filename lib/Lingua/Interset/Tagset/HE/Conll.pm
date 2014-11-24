@@ -84,7 +84,8 @@ sub _create_atoms
             # ינש, יתש, יפלא, תואמ, תורשע
             'CDT' => ['pos' => 'num', 'definiteness' => 'red'],
             # The ו coordinating word
-            # ו
+            # ו (wa) = and ... 3707 occurrences; but why is it not CC-COORD? (35 occs. is CC but not CC-COORD.)
+            # We will decode it but we will not list it as a known tag and we will encode CC-COORD back.
             'CONJ' => ['pos' => 'conj', 'conjtype' => 'coor'],
             # Copula (present) and Auxiliaries (past and future)
             # היה, ויה, התיה, וניא, היהי
@@ -664,7 +665,6 @@ CDT	CDT	F|S
 CDT	CDT	M|D
 CDT	CDT	M|P
 CDT	CDT	M|S
-CONJ	CONJ	_
 COP	COP	F|P|3|BEINONI|NEGATIVE
 COP	COP	F|P|3|FUTURE|POSITIVE
 COP	COP	F|S|2|PAST|POSITIVE
