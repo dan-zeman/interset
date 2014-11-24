@@ -1075,4 +1075,8 @@ L<Lingua::Interset::Tagset>,
 L<Lingua::Interset::Tagset::Conll>,
 L<Lingua::Interset::FeatureStructure>
 
+=head1 AUTHOR
+
+Rudolf Rosa <rosa@ufal.mff.cuni.cz>
+
 =cut
