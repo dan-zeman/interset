@@ -64,7 +64,7 @@ sub _create_atoms
             'BN_S_PP' => ['pos' => 'verb', 'verbform' => 'part', 'poss' => 'poss'],
             # Construct-state Beinoni Form
             # עבטמ, הברמ, תלזוא, יליחנמ, יכומ
-            'BNT' => ['pos' => 'verb', 'verbform' => 'part'],
+            'BNT' => ['pos' => 'verb', 'verbform' => 'part', 'definiteness' => 'red'],
             # Conjunction
             # ש, דוגינב, לככ, יפכ
             'CC' => ['pos' => 'conj'],
@@ -72,8 +72,8 @@ sub _create_atoms
             # םג, םא, וא, לבא, קר
             'CC-COORD' => ['pos' => 'conj', 'conjtype' => 'coor'],
             # Relativizing Conjunction
-            # רשא
-            'CC-REL' => ['pos' => 'conj'],
+            # אשר ašər אֲשֶׁר = which, that, who
+            'CC-REL' => ['pos' => 'conj', 'prontype' => 'rel'],
             # Subordinating Conjunction
             # יכ, ידכ, רחאל, רשאכ, ומכ
             'CC-SUB' => ['pos' => 'conj', 'conjtype' => 'sub'],
@@ -82,7 +82,7 @@ sub _create_atoms
             'CD' => ['pos' => 'num'],
             # Construct Numeral
             # ינש, יתש, יפלא, תואמ, תורשע
-            'CDT' => ['pos' => 'num'],
+            'CDT' => ['pos' => 'num', 'definiteness' => 'red'],
             # The ו coordinating word
             # ו
             'CONJ' => ['pos' => 'conj', 'conjtype' => 'coor'],
@@ -101,7 +101,7 @@ sub _create_atoms
             'DT' => ['pos' => 'adj', 'prontype' => 'prn'],
             # Construct-state Determiner
             # המכ, ותוא, םוש, הברה
-            'DTT' => ['pos' => 'adj', 'prontype' => 'prn'],
+            'DTT' => ['pos' => 'adj', 'prontype' => 'prn', 'definiteness' => 'red'],
             # Existential
             # שי, ןיא, םנשי, היה
             'EX' => ['pos' => 'adv', 'advtype' => 'ex'],
@@ -116,7 +116,7 @@ sub _create_atoms
             'JJ' => ['pos' => 'adj'],
             # Construct-state Adjective
             # רבודמ, יעדומ, ילוער, תרסח, יבורמ
-            'JJT' => ['pos' => 'adj'],
+            'JJT' => ['pos' => 'adj', 'definiteness' => 'red'],
             # Modal
             # רשפא, לוכי, ךירצ, הלוכי, לולע
             'MD' => ['pos' => 'verb', 'verbtype' => 'mod'],
@@ -134,7 +134,7 @@ sub _create_atoms
             'NN_S_PP' => ['pos' => 'noun', 'poss' => 'poss'],
             # Construct-state nouns
             # ידי, תעדוו
-            'NNT' => ['pos' => 'noun'],
+            'NNT' => ['pos' => 'noun', 'definiteness' => 'red'],
             # “Prefix” wordlets
             # יתלב, יא, ןיב, תת, יטנא
             'P' => ['pos' => 'part'],
@@ -200,26 +200,32 @@ sub _create_atoms
         {
             'pos' => { 'noun' => { 'prontype' => { ''  => { 'poss' => { 'poss' => 'NN_S_PP',
                                                                         '@'    => { 'nountype' => { 'prop' => 'NNP',
-                                                                                                    '@'    => 'NN' }}}}, ###!!! NNT construct state; TTL
+                                                                                                    '@'    => { 'definiteness' => { 'red' => 'NNT',
+                                                                                                                                    '@'   => 'NN' }}}}}}, ###!!! TTL
                                                    '@' => 'PRP' }}, ###!!! PRP-IMP
                        'adj'  => { 'prontype' => { 'art' => 'DEF', ###!!! DEF@DT
                                                    'dem' => 'PRP-DEM',
                                                    'int' => 'QW',
                                                    'rel' => 'REL-SUBCONJ',
-                                                   ''    => 'JJ', ###!!! JJT construct state
-                                                   '@'   => 'DT' }}, ###!!! DTT construct state
-                       'num'  => 'CD', ###!!! CDT construct state; NCD
+                                                   ''    => { 'definiteness' => { 'red' => 'JJT',
+                                                                                  '@'   => 'JJ' }},
+                                                   '@'   => { 'definiteness' => { 'red' => 'DTT',
+                                                                                  '@'   => 'DT' }}}},
+                       'num'  => { 'definiteness' => { 'red' => 'CDT',
+                                                       '@'   => 'CD' }}, ###!!! NCD
                        'verb' => { 'verbtype' => { 'cop' => 'COP', ###!!! COP-TOINFINITIVE
                                                    'mod' => 'MD',
                                                    '@'   => { 'verbform' => { 'part' => { 'poss' => { 'poss' => 'BN_S_PP',
-                                                                                                      '@'    => 'BN' }}, ###!!! BNT construct state
+                                                                                                      '@'    => { 'definiteness' => { 'red' => 'BNT',
+                                                                                                                                      '@'   => 'BN' }}}},
                                                                               'inf'  => 'VB-BAREINFINITIVE', ###!!! VB-TOINFINITIVE
                                                                               '@'    => 'VB' }}}},
                        'adv'  => { 'advtype' => { 'ex' => 'EX',
                                                   '@'  => 'ADVERB' }}, ###!!! or RB
                        'conj' => { 'conjtype' => { 'coor' => 'CC-COORD', ###!!! CONJ
                                                    'sub'  => 'CC-SUB', ###!!! TEMP-SUBCONJ
-                                                   '@'    => 'CC' }}, ###!!! CC-REL
+                                                   '@'    => { 'prontype' => { 'rel' => 'CC-REL',
+                                                                               '@'   => 'CC' }}}},
                        'adp'  => 'IN', ###!!! PREPOSITION
                        'part' => { 'poss' => { 'poss' => 'POS',
                                                '@'    => { 'case' => { 'nom' => 'S-ANP',
@@ -323,8 +329,8 @@ sub _create_atoms
         'encode_map' =>
         {
             'possgender' => { 'masc|fem' => 'suf_MF',
-                              'masc' => 'suf_M',
-                              'fem'  => 'suf_F' }
+                              'masc'     => 'suf_M',
+                              'fem'      => 'suf_F' }
         }
     );
     # NUMBER ####################
@@ -513,6 +519,9 @@ sub _create_features_pos
         '!!MISS!!' => ['unknown'],
         '!!UNK!!'  => ['unknown'],
         'BN'       => ['gender', 'number', 'person', 'binyan', 'possgender', 'possnumber', 'possperson'],
+        'BNT'      => ['gender', 'number', 'person', 'binyan'],
+        'CD'       => ['gender', 'number'],
+        'CDT'      => ['gender', 'number']
     );
     return \%features;
 }
@@ -558,7 +567,7 @@ sub encode
     my $atoms = $self->atoms();
     my $pos = $atoms->{pos}->encode($fs);
     my $subpos = $pos;
-    $pos =~ s/_S_PP$//;
+    $pos =~ s/(_S_PP|-COORD|-REL|-SUB)$//;
     my $feature_names = $self->get_feature_names($pos);
     my $value_only = 1;
     my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names, $value_only);
@@ -623,17 +632,17 @@ BN	BN_S_PP	M|S|A|HIFIL|suf_M|suf_S|suf_3
 BN	BN_S_PP	M|S|A|PAAL|suf_F|suf_P|suf_3
 BN	BN_S_PP	M|S|A|PAAL|suf_M|suf_P|suf_3
 BN	BN_S_PP	M|S|A|PIEL|suf_M|suf_S|suf_3
-BNT	BNT	A|P|M
-BNT	BNT	A|S|M
 BNT	BNT	F|P|A|HIFIL
 BNT	BNT	F|P|A|HITPAEL
 BNT	BNT	F|S|A|HIFIL
 BNT	BNT	F|S|A|PAAL
+BNT	BNT	M|P|A
 BNT	BNT	M|P|A|HIFIL
 BNT	BNT	M|P|A|HUFAL
 BNT	BNT	M|P|A|NIFAL
 BNT	BNT	M|P|A|PAAL
 BNT	BNT	M|P|A|PIEL
+BNT	BNT	M|S|A
 BNT	BNT	M|S|A|HIFIL
 BNT	BNT	M|S|A|PAAL
 BNT	BNT	M|S|A|PIEL
@@ -642,21 +651,19 @@ CC	CC	_
 CC	CC-COORD	_
 CC	CC-REL	_
 CC	CC-SUB	_
-CD	CD	D|M|F
+CD	CD	F|D
 CD	CD	F|P
 CD	CD	F|S
+CD	CD	M|D
 CD	CD	M|P
 CD	CD	M|S
-CD	CD	P|M|F
-CD	CD	S|F
-CD	CD	S|M
 CD	CD	_
 CDT	CDT	F|D
 CDT	CDT	F|P
+CDT	CDT	F|S
 CDT	CDT	M|D
 CDT	CDT	M|P
 CDT	CDT	M|S
-CDT	CDT	P|M|F
 CONJ	CONJ	_
 COP	COP	F|P|3|BEINONI|NEGATIVE
 COP	COP	F|P|3|FUTURE|POSITIVE
