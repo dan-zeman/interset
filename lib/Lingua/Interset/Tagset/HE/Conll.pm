@@ -201,11 +201,12 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'pos' => { 'noun' => { 'prontype' => { ''  => { 'poss' => { 'poss' => 'NN_S_PP',
-                                                                        '@'    => { 'nountype' => { 'prop' => 'NNP',
-                                                                                                    '@'    => { 'definiteness' => { 'red' => 'NNT',
-                                                                                                                                    '@'   => 'NN' }}}}}}, ###!!! TTL
-                                                   '@' => 'PRP' }}, ###!!! PRP-IMP
+            'pos' => { 'noun' => { 'prontype' => { ''    => { 'poss' => { 'poss' => 'NN_S_PP',
+                                                                          '@'    => { 'nountype' => { 'prop' => 'NNP',
+                                                                                                      '@'    => { 'definiteness' => { 'red' => 'NNT',
+                                                                                                                                      '@'   => 'NN' }}}}}}, ###!!! TTL
+                                                   'neg' => 'PRP-IMP',
+                                                   '@'   => 'PRP' }},
                        'adj'  => { 'prontype' => { 'art' => 'DEF',
                                                    'tot' => 'DEF@DT',
                                                    'dem' => 'PRP-DEM',
@@ -279,9 +280,12 @@ sub _create_atoms
         'surfeature' => 'prontype',
         'decode_map' =>
         {
-            'PERS' => 'prs',
-            'DEM'  => 'dem',
-            'IMP'  => 'ind|neg|tot'
+            'PERS' => ['prontype' => 'prs'],
+            'DEM'  => ['prontype' => 'dem'],
+            # We would want to set prontype => 'ind|neg|tot' here but we cannot because we have to preserve the weird distinction of
+            # PRP PRP-IMP _
+            # PRP PRP    F|P|IMP
+            'IMP'  => ['prontype' => 'ind|tot']
         },
         'encode_map' =>
         {
@@ -509,7 +513,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('gender', 'number', 'person', 'verbform', 'negativeness', 'binyan', 'possgender', 'possnumber', 'possperson', 'unknown');
+    my @features = ('gender', 'number', 'person', 'verbform', 'negativeness', 'binyan', 'possgender', 'possnumber', 'possperson', 'prontype', 'unknown');
     return \@features;
 }
 
@@ -537,7 +541,9 @@ sub _create_features_pos
         'MD'       => ['gender', 'number', 'person', 'verbform'],
         'NN'       => ['gender', 'number', 'possgender', 'possnumber', 'possperson'],
         'NNP'      => ['gender', 'number'],
-        'NNT'      => ['gender', 'number']
+        'NNT'      => ['gender', 'number'],
+        'PRP'      => ['gender', 'number', 'person', 'prontype'],
+        'PRPIMP'   => ['gender', 'number', 'prontype']
     );
     return \%features;
 }
@@ -583,8 +589,16 @@ sub encode
     my $atoms = $self->atoms();
     my $pos = $atoms->{pos}->encode($fs);
     my $subpos = $pos;
-    $pos =~ s/(_S_PP|-COORD|-REL|-SUB|-TOINFINITIVE)$//;
-    my $fpos = $subpos =~ m/INFINITIVE$/ ? $subpos : $pos;
+    $pos =~ s/(_S_PP|-COORD|-DEM|-IMP|-REL|-SUB|-SUBCONJ|-TOINFINITIVE)$//;
+    my $fpos = $pos;
+    if($subpos =~ m/(PRP-DEM|PRP-IMP|INFINITIVE)/)
+    {
+        $fpos = $subpos;
+    }
+    elsif($fs->is_noun() && $fs->prontype() =~ m/ind|neg|tot/)
+    {
+        $fpos = 'PRPIMP';
+    }
     my $feature_names = $self->get_feature_names($fpos);
     my $value_only = 1;
     my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names, $value_only);
@@ -789,40 +803,26 @@ NNT	NNT	M|S
 P	P	_
 POS	POS	_
 PREPOSITION	PREPOSITION	_
-PRP	PRP	1|P|M|F
-PRP	PRP	1|S|M|F
-PRP	PRP	3
+PRP	PRP	F|P|1|PERS
+PRP	PRP	F|P|3|DEM
 PRP	PRP	F|P|3|PERS
 PRP	PRP	F|P|IMP
+PRP	PRP	F|S|1|PERS
 PRP	PRP	F|S|3|DEM
 PRP	PRP	F|S|3|PERS
 PRP	PRP	F|S|IMP
+PRP	PRP	M|P|1|PERS
 PRP	PRP	M|P|2|PERS
 PRP	PRP	M|P|3|DEM
-PRP	PRP	M|P|3|IMP
 PRP	PRP	M|P|3|PERS
 PRP	PRP	M|P|IMP
+PRP	PRP	M|S|1|PERS
 PRP	PRP	M|S|2|PERS
 PRP	PRP	M|S|3|DEM
-PRP	PRP	M|S|3|IMP
+PRP	PRP	M|S|IMP
 PRP	PRP	M|S|3|PERS
-PRP	PRP	P|1|PERS|M|F
-PRP	PRP	P|2|M
-PRP	PRP	P|3|DEM|M|F
-PRP	PRP	P|3|F
-PRP	PRP	P|3|M
-PRP	PRP	P|3|M|F
-PRP	PRP	P|F
-PRP	PRP	P|M
-PRP	PRP	S|1|PERS|M|F
-PRP	PRP	S|2|M
-PRP	PRP	S|3|F
-PRP	PRP	S|F
-PRP	PRP	S|M
-PRP	PRP	S|M|3
 PRP	PRP-DEM	_
 PRP	PRP-IMP	_
-PUNC	PUNC	M|S
 PUNC	PUNC	_
 QW	QW	_
 RB	RB	_
