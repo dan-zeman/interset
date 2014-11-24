@@ -293,6 +293,40 @@ sub _create_atoms
                                  '@'    => '!!UNK!!' }
         }
     );
+    # GENDER ####################
+    $atoms{gender} = $self->create_atom
+    (
+        'surfeature' => 'gender',
+        'decode_map' =>
+        {
+            # used usually with nouns. pronouns, numerals, verbs and adjectives
+            'M' => ['gender' => 'masc'],
+            'F' => ['gender' => 'fem'],
+        },
+        'encode_map' =>
+        {
+            'gender' => { 'masc' => 'M',
+                          'fem'  => 'F' }
+        }
+    );
+    # POSSESSOR'S GENDER ####################
+    $atoms{possgender} = $self->create_atom
+    (
+        'surfeature' => 'possgender',
+        'decode_map' =>
+        {
+            # used with NN and BN
+            'suf_M'  => ['possgender' => 'masc'],
+            'suf_F'  => ['possgender' => 'fem'],
+            'suf_MF' => ['possgender' => 'masc|fem']
+        },
+        'encode_map' =>
+        {
+            'possgender' => { 'masc|fem' => 'suf_MF',
+                              'masc' => 'suf_M',
+                              'fem'  => 'suf_F' }
+        }
+    );
     # NUMBER ####################
     $atoms{number} = $self->create_atom
     (
@@ -304,9 +338,6 @@ sub _create_atoms
             'D' => ['number' => 'dual'],
             'DP'=> ['number' => 'dual|plur'], # pseudo-dual, that is dual used as plural
             'P' => ['number' => 'plur'],
-            # used with NN and BN
-            'suf_S' => ['number' => 'sing'],
-            'suf_P' => ['number' => 'plur']
         },
         'encode_map' =>
         {
@@ -316,25 +347,20 @@ sub _create_atoms
                           'plur' => 'P' }
         }
     );
-    # GENDER ####################
-    $atoms{gender} = $self->create_atom
+    # POSSESSOR'S NUMBER ####################
+    $atoms{possnumber} = $self->create_atom
     (
-        'surfeature' => 'gender',
+        'surfeature' => 'possnumber',
         'decode_map' =>
         {
-            # used usually with nouns. pronouns, numerals, verbs and adjectives
-            'M' => ['gender' => 'masc'],
-            'F' => ['gender' => 'fem'],
             # used with NN and BN
-            'suf_M'  => ['gender' => 'masc'],
-            'suf_F'  => ['gender' => 'fem'],
-            'suf_MF' => ['gender' => 'masc|fem']
+            'suf_S' => ['possnumber' => 'sing'],
+            'suf_P' => ['possnumber' => 'plur']
         },
         'encode_map' =>
         {
-            'gender' => { 'masc|fem' => 'suf_MF',
-                          'masc' => 'M',
-                          'fem'  => 'F' }
+            'possnumber' => { 'sing' => 'suf_S',
+                              'plur' => 'suf_P' }
         }
     );
     # PERSON ####################
@@ -354,10 +380,6 @@ sub _create_atoms
             '2' => ['person' => '2'],
             '3' => ['person' => '3'],
             'A' => [],
-            # used with NN and BN
-            'suf_1' => ['person' => '1'],
-            'suf_2' => ['person' => '2'],
-            'suf_3' => ['person' => '3']
         },
         'encode_map' =>
         {
@@ -365,6 +387,24 @@ sub _create_atoms
                           '2' => '2',
                           '3' => '3',
                           ''  => 'A' }
+        }
+    );
+    # POSSESSOR'S PERSON ####################
+    $atoms{possperson} = $self->create_atom
+    (
+        'surfeature' => 'possperson',
+        'decode_map' =>
+        {
+            # used with NN and BN
+            'suf_1' => ['possperson' => '1'],
+            'suf_2' => ['possperson' => '2'],
+            'suf_3' => ['possperson' => '3']
+        },
+        'encode_map' =>
+        {
+            'possperson' => { '1' => 'suf_1',
+                              '2' => 'suf_2',
+                              '3' => 'suf_3' }
         }
     );
     # VERB FORM ####################
@@ -455,7 +495,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('person', 'number', 'gender', 'binyan', 'unknown');
+    my @features = ('gender', 'number', 'person', 'binyan', 'possgender', 'possnumber', 'possperson', 'unknown');
     return \@features;
 }
 
@@ -472,7 +512,7 @@ sub _create_features_pos
     (
         '!!MISS!!' => ['unknown'],
         '!!UNK!!'  => ['unknown'],
-        'BN'       => ['gender', 'number', 'person', 'binyan']
+        'BN'       => ['gender', 'number', 'person', 'binyan', 'possgender', 'possnumber', 'possperson'],
     );
     return \%features;
 }
@@ -518,6 +558,7 @@ sub encode
     my $atoms = $self->atoms();
     my $pos = $atoms->{pos}->encode($fs);
     my $subpos = $pos;
+    $pos =~ s/_S_PP$//;
     my $feature_names = $self->get_feature_names($pos);
     my $value_only = 1;
     my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names, $value_only);
