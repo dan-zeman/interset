@@ -52,7 +52,7 @@ sub _create_atoms
         {
             # Adverb appearing as prefix
             # כ
-            'ADVERB' => ['pos' => 'adv'],
+            'ADVERB' => ['pos' => 'adv', 'other' => {'advtype' => 'prefix'}],
             # AT (direct object) marker
             # תא
             'AT' => ['pos' => 'part'],
@@ -169,17 +169,41 @@ sub _create_atoms
             # ש
             'REL-SUBCONJ' => ['pos' => 'adj', 'prontype' => 'rel'],
             # Nominative suffix
-            # suffמה, suffאוה, suffאיה
+            # F|P|3: הן~ (-hen)
+            # F|S|3: היא~ (-hya)
+            # M|P|3: הם~ (-hem)
+            # M|S|2: אתה~ (-ath)
+            # M|S|3: הוא~ (-hwa)
             'S_ANP' => ['pos' => 'part', 'case' => 'nom'],
             # Pronomial suffix TODO prontype?
             # suffאוה, suffמה, suffאיה
+            # F|M|P|1: אנחנו~ (-anaxnú)
+            # F|M|S|1: אני~ (-aní)
+            # F|P|3: הן~ (-hen)
+            # F|S|2: את~ (-at)
+            # F|S|3: היא~ (-hya)
+            # M|P|2: אתם~ (-atm)
+            # M|P|3: הם~ (-hem)
+            # M|S|2: אתה~ (-ath)
+            # M|S|3: הוא~ (-hwa)
             'S_PRN' => ['pos' => 'part', 'prontype' => 'prs'],
             # Temporal Suboordinating Conjunction
-            # שכ, שמ
-            'TEMP-SUBCONJ' => ['pos' => 'conj', 'conjtype' => 'sub'],
+            # כש (kš) = when ... 111 occurrences
+            # מש (mš) = duration ... 2 occurrences
+            'TEMP-SUBCONJ' => ['pos' => 'conj', 'conjtype' => 'sub', 'advtype' => 'tim'],
             # Titles
-            # ר״ד, ד״וע, בצינ, רוספורפ, רמ
-            'TTL' => ['pos' => 'noun'],
+            # ד"ר (d"r) = Dr. ... TTL S, 24 occurrences
+            # עו"ד (ew"d) = Attorney ... TTL S, 11 occurrences
+            # זצ"ל (zc"l, zexer cadik livraxa) = holy/righteous person in judaism ... TTL S, 1 occurrence
+            # ניצב (nycv) = commander ... TTL M|S, 9 occurrences
+            # פרופסור (profsor) = proffessor ... TTL M|S, 4 occurrences
+            # מר (mr) = Mr. ... TTL M|S, 4 occurrences
+            # ז"ל (z"l) = late ... TTL M|F|S|P, 3 occurrences
+            # A shorthand way of writing זכרונו\ה\ם\ן לברכה (zikhronó/á/ám/án livrakhá), which means “may his/her/their memory be a blessing”.
+            # The abbreviation ז״ל is nearly always read out as the two words it stands for.
+            # This means that its pronunciation depends on whether the referent is a woman, a man, multiple women, or multiple men and women.
+            # It is, however, also pronounced /zal/.
+            'TTL' => ['pos' => 'noun', 'other' => {'nountype' => 'title'}],
             # Verbs
             # רמא, רמוא, הארנ, עדוי
             'VB' => ['pos' => 'verb'],
@@ -202,9 +226,10 @@ sub _create_atoms
         'encode_map' =>
         {
             'pos' => { 'noun' => { 'prontype' => { ''    => { 'poss' => { 'poss' => 'NN_S_PP',
-                                                                          '@'    => { 'nountype' => { 'prop' => 'NNP',
-                                                                                                      '@'    => { 'definiteness' => { 'red' => 'NNT',
-                                                                                                                                      '@'   => 'NN' }}}}}}, ###!!! TTL
+                                                              '@' => { 'nountype' => { 'prop' => 'NNP',
+                                                                       '@' => { 'definiteness' => { 'red' => 'NNT',
+                                                                                '@' => { 'other/nountype' => { 'title' => 'TTL',
+                                                                                         '@' => 'NN' }}}}}}}},
                                                    'neg' => 'PRP-IMP',
                                                    '@'   => 'PRP' }},
                        'adj'  => { 'prontype' => { 'art' => 'DEF',
@@ -228,16 +253,18 @@ sub _create_atoms
                                                                               'inf'  => 'VB-BAREINFINITIVE', ###!!! VB-TOINFINITIVE
                                                                               '@'    => 'VB' }}}},
                        'adv'  => { 'advtype' => { 'ex' => 'EX',
-                                                  '@'  => 'ADVERB' }}, ###!!! or RB
+                                                  '@'  => { 'other/advtype' => { 'prefix' => 'ADVERB',
+                                                                                 '@'      => 'RB' }}}},
                        'conj' => { 'conjtype' => { 'coor' => 'CC-COORD',
-                                                   'sub'  => 'CC-SUB', ###!!! TEMP-SUBCONJ
+                                                   'sub'  => { 'advtype' => { 'tim' => 'TEMP-SUBCONJ',
+                                                                              '@'   => 'CC-SUB' }},
                                                    '@'    => { 'prontype' => { 'rel' => 'CC-REL',
                                                                                '@'   => 'CC' }}}},
                        'adp|conj'  => 'IN',
                        'adp'  => 'PREPOSITION',
                        'part' => { 'poss' => { 'poss' => 'POS',
-                                               '@'    => { 'case' => { 'nom' => 'S-ANP',
-                                                                       '@'   => { 'prontype' => { 'prs' => 'S-PRN',
+                                               '@'    => { 'case' => { 'nom' => 'S_ANP',
+                                                                       '@'   => { 'prontype' => { 'prs' => 'S_PRN',
                                                                                                   '@'   => { 'other/parttype' => { 'prefix' => 'P',
                                                                                                                                    '@'      => 'AT' }}}}}}}},
                        'int'  => 'INTJ',
@@ -543,7 +570,10 @@ sub _create_features_pos
         'NNP'      => ['gender', 'number'],
         'NNT'      => ['gender', 'number'],
         'PRP'      => ['gender', 'number', 'person', 'prontype'],
-        'PRPIMP'   => ['gender', 'number', 'prontype']
+        'PRPIMP'   => ['gender', 'number', 'prontype'],
+        'S_ANP'    => ['gender', 'number', 'person'],
+        'S_PRN'    => ['gender', 'number', 'person'],
+        'TTL'      => ['gender', 'number']
     );
     return \%features;
 }
@@ -609,7 +639,12 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
-# Tags were collected from the corpus.
+# Tags were collected from the corpus and cleaned (canonical ordering of
+# features).
+###!!! TODO: Some of the original tags contained two values of gender (M|F) if
+###!!! the word did not distinguish gender. We currently cannot detect it
+###!!! because we process every feature independently but we should. For
+###!!! example, the first-person pronouns (and S_PRN) in Hebrew are genderless.
 #------------------------------------------------------------------------------
 sub list
 {
@@ -760,6 +795,7 @@ NN	NN	M|D
 NN	NN	M|DP
 NN	NN	M|P
 NN	NN	M|S
+NN  NN  S
 NN	NN	_
 NN	NN_S_PP	F|P|suf_F|suf_P|suf_3
 NN	NN_S_PP	F|P|suf_F|suf_S|suf_2
@@ -832,28 +868,18 @@ S_ANP	S_ANP	F|S|3
 S_ANP	S_ANP	M|P|3
 S_ANP	S_ANP	M|S|2
 S_ANP	S_ANP	M|S|3
-S_ANP	S_ANP	P|3|F
-S_ANP	S_ANP	P|3|M
-S_ANP	S_ANP	S|3|F
-S_ANP	S_ANP	S|M|3
-S_PRN	S_PRN	1|P|M|F
-S_PRN	S_PRN	1|S|M|F
+S_PRN	S_PRN	F|P|1
 S_PRN	S_PRN	F|P|3
+S_PRN	S_PRN	F|S|1
+S_PRN	S_PRN	F|S|2
 S_PRN	S_PRN	F|S|3
+S_PRN	S_PRN	M|P|1
 S_PRN	S_PRN	M|P|2
 S_PRN	S_PRN	M|P|3
+S_PRN	S_PRN	M|S|1
 S_PRN	S_PRN	M|S|2
 S_PRN	S_PRN	M|S|3
-S_PRN	S_PRN	P|1|M|F
-S_PRN	S_PRN	P|3|F
-S_PRN	S_PRN	P|3|M
-S_PRN	S_PRN	S|1|M|F
-S_PRN	S_PRN	S|2|F
-S_PRN	S_PRN	S|2|M
-S_PRN	S_PRN	S|3|F
-S_PRN	S_PRN	S|M|3
 TEMP	TEMP-SUBCONJ	_
-TTL	TTL	M|F|S|P
 TTL	TTL	M|S
 TTL	TTL	S
 VB	VB	1|PAST|S|M
