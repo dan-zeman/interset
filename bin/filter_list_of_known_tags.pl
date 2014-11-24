@@ -12,23 +12,28 @@ binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 use Lingua::Interset qw(get_driver_object);
 
-my $driver = get_driver_object('fi::turku');
+my $driver = get_driver_object('he::conll');
 my $list = $driver->list();
 my %map;
 foreach my $tag (@{$list})
 {
-    # Zatím nemáme hotové metody decode() a encode(), ale chceme odstranit rys "up".
-    #my @features = grep {$_ ne 'up'} split(/\|/, $tag);
-    #my $tag1 = join('|', @features);
-    my $fs = $driver->decode($tag);
-    my $tag1 = $driver->encode($fs);
+    # Zatím nemáme hotové metody decode() a encode(), ale chceme odstranit rod, jestliže rysy obsahují oba možné rody (M i F).
+    my ($pos, $subpos, $features) = split(/\s+/, $tag);
+    my @features = split(/\|/, $features);
+    if((grep {$_ eq 'M'} @features) && (grep {$_ eq 'F'} @features))
+    {
+        @features = grep {$_ ne 'M' && $_ ne 'F'} @features;
+    }
+    my $tag1 = "$pos\t$subpos\t".join('|', @features);
+    #my $fs = $driver->decode($tag);
+    #my $tag1 = $driver->encode($fs);
     $map{$tag1}++;
     # Dogenerovat chybějící kombinace rysů, u kterých jsme si jisti, že existují.
     #complete_features($tag);
     # Příliš mnoho informací se ukládá do rysu other. Chceme zajistit, aby i značky, které vzniknou, když tyto informace nebudou k dispozici, byly platné.
-    $fs->set('other', '');
-    my $tag2 = $driver->encode($fs);
-    $map{$tag2}++;
+    #$fs->set('other', '');
+    #my $tag2 = $driver->encode($fs);
+    #$map{$tag2}++;
 }
 my @list1 = sort(keys(%map));
 foreach my $tag (@list1)

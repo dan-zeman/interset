@@ -56,15 +56,18 @@ sub _create_atoms
             # AT (direct object) marker
             # תא
             'AT' => ['pos' => 'part'],
+            # There are two ways of tagging participles:
+            # BN (or BN_S_PP or BNT) part of speech ... we decode it as 'adj|verb'.
+            # VB part of speech, BEINONI feature ... we decode it as 'verb'.
             # Beinoni (participle) form
             # רושק, ףסונ, עגונ, רבודמ
-            'BN' => ['pos' => 'verb', 'verbform' => 'part'],
+            'BN' => ['pos' => 'adj|verb', 'verbform' => 'part'],
             # Beinoni Form with a possessive suffix
             # היבשוי
-            'BN_S_PP' => ['pos' => 'verb', 'verbform' => 'part', 'poss' => 'poss'],
+            'BN_S_PP' => ['pos' => 'adj|verb', 'verbform' => 'part', 'poss' => 'poss'],
             # Construct-state Beinoni Form
             # עבטמ, הברמ, תלזוא, יליחנמ, יכומ
-            'BNT' => ['pos' => 'verb', 'verbform' => 'part', 'definiteness' => 'red'],
+            'BNT' => ['pos' => 'adj|verb', 'verbform' => 'part', 'definiteness' => 'red'],
             # Conjunction
             # ש, דוגינב, לככ, יפכ
             'CC' => ['pos' => 'conj'],
@@ -211,7 +214,7 @@ sub _create_atoms
             'VB-BAREINFINITIVE' => ['pos' => 'verb', 'verbform' => 'inf'],
             # Infinitive Verbs
             # תושעל, םלשל, עונמל, תתל, עצבל
-            'VB-TOINFINITIVE' => ['pos' => 'verb', 'verbform' => 'inf'],
+            'VB-TOINFINITIVE' => ['pos' => 'verb', 'verbform' => 'inf', 'other' => {'infinitive' => 'to'}],
             #550 !!MISS!!
             # words that do not have a correct analysis in the morphological analyzer
             '!!MISS!!' => ['other' => {'unknown' => 'miss'}],
@@ -244,13 +247,17 @@ sub _create_atoms
                        'num'  => { 'definiteness' => { 'red' => 'CDT',
                                                        '@'   => { 'numform' => { 'digit' => 'NCD',
                                                                                  '@'     => 'CD' }}}},
+                       # There are two ways of tagging participles:
+                       # BN (or BN_S_PP or BNT) part of speech ... we decode it as 'adj|verb'.
+                       # VB part of speech, BEINONI feature ... we decode it as 'verb'.
+                       'adj|verb' => { 'poss' => { 'poss' => 'BN_S_PP',
+                                                   '@'    => { 'definiteness' => { 'red' => 'BNT',
+                                                                                   '@'   => 'BN' }}}},
                        'verb' => { 'verbtype' => { 'cop' => { 'verbform' => { 'inf' => 'COP-TOINFINITIVE',
                                                                               '@'   => 'COP' }},
                                                    'mod' => 'MD',
-                                                   '@'   => { 'verbform' => { 'part' => { 'poss' => { 'poss' => 'BN_S_PP',
-                                                                                                      '@'    => { 'definiteness' => { 'red' => 'BNT',
-                                                                                                                                      '@'   => 'BN' }}}},
-                                                                              'inf'  => 'VB-BAREINFINITIVE', ###!!! VB-TOINFINITIVE
+                                                   '@'   => { 'verbform' => { 'inf'  => { 'other/infinitive' => { 'to' => 'VB-TOINFINITIVE',
+                                                                                                                  '@'  => 'VB-BAREINFINITIVE' }},
                                                                               '@'    => 'VB' }}}},
                        'adv'  => { 'advtype' => { 'ex' => 'EX',
                                                   '@'  => { 'other/advtype' => { 'prefix' => 'ADVERB',
@@ -272,7 +279,7 @@ sub _create_atoms
                        '@'    => { 'other/unknown' => { 'miss' => '!!MISS!!',
                                                         'some' => '!!SOME_!!',
                                                         'zvl'  => '!!ZVL!!',
-                                                        '@'    => '!!UNK!!' }}} ###!!! !!SOME_!!, !!ZVL!!
+                                                        '@'    => '!!UNK!!' }}}
         }
     );
     # PRONOUN TYPE ####################
@@ -573,7 +580,9 @@ sub _create_features_pos
         'PRPIMP'   => ['gender', 'number', 'prontype'],
         'S_ANP'    => ['gender', 'number', 'person'],
         'S_PRN'    => ['gender', 'number', 'person'],
-        'TTL'      => ['gender', 'number']
+        'TTL'      => ['gender', 'number'],
+        'VB'       => ['gender', 'number', 'person', 'verbform', 'binyan'],
+        'VB-TOINFINITIVE' => ['binyan']
     );
     return \%features;
 }
@@ -619,7 +628,7 @@ sub encode
     my $atoms = $self->atoms();
     my $pos = $atoms->{pos}->encode($fs);
     my $subpos = $pos;
-    $pos =~ s/(_S_PP|-COORD|-DEM|-IMP|-REL|-SUB|-SUBCONJ|-TOINFINITIVE)$//;
+    $pos =~ s/(_S_PP|-BAREINFINITIVE|-COORD|-DEM|-IMP|-REL|-SUB|-SUBCONJ|-TOINFINITIVE)$//;
     my $fpos = $pos;
     if($subpos =~ m/(PRP-DEM|PRP-IMP|INFINITIVE)/)
     {
@@ -641,6 +650,7 @@ sub encode
 # Returns reference to list of known tags.
 # Tags were collected from the corpus and cleaned (canonical ordering of
 # features).
+# 370 tags after cleaning.
 ###!!! TODO: Some of the original tags contained two values of gender (M|F) if
 ###!!! the word did not distinguish gender. We currently cannot detect it
 ###!!! because we process every feature independently but we should. For
@@ -656,7 +666,6 @@ sub list
 !!ZVL!!	!!ZVL!!	_
 ADVERB	ADVERB	_
 AT	AT	_
-BN	BN	F|S|3
 BN	BN	F|P|A
 BN	BN	F|P|A|HIFIL
 BN	BN	F|P|A|HITPAEL
@@ -665,6 +674,7 @@ BN	BN	F|P|A|NIFAL
 BN	BN	F|P|A|PAAL
 BN	BN	F|P|A|PIEL
 BN	BN	F|P|A|PUAL
+BN	BN	F|S|3
 BN	BN	F|S|A
 BN	BN	F|S|A|HIFIL
 BN	BN	F|S|A|HITPAEL
@@ -743,12 +753,12 @@ COP	COP	M|P|1|FUTURE|POSITIVE
 COP	COP	M|P|2|BEINONI|NEGATIVE
 COP	COP	M|P|2|IMPERATIVE|POSITIVE
 COP	COP	M|P|3|BEINONI|NEGATIVE
-COP	COP	M|S|2|BEINONI|NEGATIVE
-COP	COP	M|S|2|IMPERATIVE|POSITIVE
-COP	COP	M|P|3|FUTURE|POSITIVE
 COP	COP	M|P|3|BEINONI|POSITIVE
+COP	COP	M|P|3|FUTURE|POSITIVE
 COP	COP	M|S|1|BEINONI|NEGATIVE
 COP	COP	M|S|1|PAST|POSITIVE
+COP	COP	M|S|2|BEINONI|NEGATIVE
+COP	COP	M|S|2|IMPERATIVE|POSITIVE
 COP	COP	M|S|3|BEINONI|NEGATIVE
 COP	COP	M|S|3|BEINONI|POSITIVE
 COP	COP	M|S|3|FUTURE|POSITIVE
@@ -770,6 +780,7 @@ JJT	JJT	F|P
 JJT	JJT	F|S
 JJT	JJT	M|P
 JJT	JJT	M|S
+MD	MD	A
 MD	MD	F|P|A
 MD	MD	F|P|A|BEINONI
 MD	MD	F|S|3|FUTURE
@@ -784,7 +795,6 @@ MD	MD	M|S|2|FUTURE
 MD	MD	M|S|A
 MD	MD	M|S|A|BEINONI
 MD	MD	M|S|A|PAST
-MD	MD	A
 NCD	NCD	_
 NN	NN	F|D
 NN	NN	F|DP
@@ -795,7 +805,7 @@ NN	NN	M|D
 NN	NN	M|DP
 NN	NN	M|P
 NN	NN	M|S
-NN  NN  S
+NN	NN	S
 NN	NN	_
 NN	NN_S_PP	F|P|suf_F|suf_P|suf_3
 NN	NN_S_PP	F|P|suf_F|suf_S|suf_2
@@ -855,8 +865,8 @@ PRP	PRP	M|P|IMP
 PRP	PRP	M|S|1|PERS
 PRP	PRP	M|S|2|PERS
 PRP	PRP	M|S|3|DEM
-PRP	PRP	M|S|IMP
 PRP	PRP	M|S|3|PERS
+PRP	PRP	M|S|IMP
 PRP	PRP-DEM	_
 PRP	PRP-IMP	_
 PUNC	PUNC	_
@@ -882,11 +892,11 @@ S_PRN	S_PRN	M|S|3
 TEMP	TEMP-SUBCONJ	_
 TTL	TTL	M|S
 TTL	TTL	S
-VB	VB	1|PAST|S|M
 VB	VB	F|P|2|IMPERATIVE
 VB	VB	F|P|2|IMPERATIVE|PAAL
 VB	VB	F|P|3|FUTURE|PAAL
 VB	VB	F|P|3|FUTURE|PIEL
+VB	VB	F|P|3|PAST
 VB	VB	F|P|A|BEINONI|HIFIL
 VB	VB	F|P|A|BEINONI|HITPAEL
 VB	VB	F|P|A|BEINONI|HUFAL
@@ -930,6 +940,7 @@ VB	VB	M|P|2|PAST|PAAL
 VB	VB	M|P|2|PAST|PIEL
 VB	VB	M|P|3|BEINONI|HIFIL
 VB	VB	M|P|3|FUTURE|PIEL
+VB	VB	M|P|3|PAST
 VB	VB	M|P|A|BEINONI|HIFIL
 VB	VB	M|P|A|BEINONI|HITPAEL
 VB	VB	M|P|A|BEINONI|HUFAL
@@ -937,6 +948,7 @@ VB	VB	M|P|A|BEINONI|NIFAL
 VB	VB	M|P|A|BEINONI|PAAL
 VB	VB	M|P|A|BEINONI|PIEL
 VB	VB	M|P|A|BEINONI|PUAL
+VB	VB	M|S|1|PAST
 VB	VB	M|S|2|IMPERATIVE
 VB	VB	M|S|2|IMPERATIVE|HIFIL
 VB	VB	M|S|2|IMPERATIVE|HITPAEL
@@ -964,57 +976,53 @@ VB	VB	M|S|A|BEINONI|NIFAL
 VB	VB	M|S|A|BEINONI|PAAL
 VB	VB	M|S|A|BEINONI|PIEL
 VB	VB	M|S|A|BEINONI|PUAL
-VB	VB	PAST|P|3|M|F
-VB	VB	PAST|S|3|F
-VB	VB	PAST|S|M|3
-VB	VB	P|1|FUTURE|HIFIL|M|F
-VB	VB	P|1|FUTURE|HITPAEL|M|F
-VB	VB	P|1|FUTURE|HUFAL|M|F
-VB	VB	P|1|FUTURE|NIFAL|M|F
-VB	VB	P|1|FUTURE|PAAL|M|F
-VB	VB	P|1|FUTURE|PIEL|M|F
-VB	VB	P|1|PAST|HIFIL|M|F
-VB	VB	P|1|PAST|HITPAEL|M|F
-VB	VB	P|1|PAST|M|F
-VB	VB	P|1|PAST|NIFAL|M|F
-VB	VB	P|1|PAST|PAAL|M|F
-VB	VB	P|1|PAST|PIEL|M|F
-VB	VB	P|1|PAST|PUAL|M|F
-VB	VB	P|2|FUTURE|HIFIL|M|F
-VB	VB	P|2|FUTURE|PAAL|M|F
-VB	VB	P|2|IMPERATIVE|M|F
-VB	VB	P|2|IMPERATIVE|NIFAL|M|F
-VB	VB	P|2|IMPERATIVE|PAAL|M|F
-VB	VB	P|3|FUTURE|HIFIL|M|F
-VB	VB	P|3|FUTURE|HITPAEL|M|F
-VB	VB	P|3|FUTURE|HUFAL|M|F
-VB	VB	P|3|FUTURE|M|F
-VB	VB	P|3|FUTURE|NIFAL|M|F
-VB	VB	P|3|FUTURE|PAAL|M|F
-VB	VB	P|3|FUTURE|PIEL|M|F
-VB	VB	P|3|FUTURE|PUAL|M|F
-VB	VB	P|3|PAST|HIFIL|M|F
-VB	VB	P|3|PAST|HITPAEL|M|F
-VB	VB	P|3|PAST|HUFAL|M|F
-VB	VB	P|3|PAST|M|F
-VB	VB	P|3|PAST|NIFAL|M|F
-VB	VB	P|3|PAST|PAAL|M|F
-VB	VB	P|3|PAST|PIEL|M|F
-VB	VB	P|3|PAST|PUAL|M|F
-VB	VB	P|IMPERATIVE|2|M|F
-VB	VB	S|1|FUTURE|HIFIL|M|F
-VB	VB	S|1|FUTURE|HITPAEL|M|F
-VB	VB	S|1|FUTURE|NIFAL|M|F
-VB	VB	S|1|FUTURE|PAAL|M|F
-VB	VB	S|1|FUTURE|PIEL|M|F
-VB	VB	S|1|FUTURE|PUAL|M|F
-VB	VB	S|1|PAST|HIFIL|M|F
-VB	VB	S|1|PAST|HITPAEL|M|F
-VB	VB	S|1|PAST|HUFAL|M|F
-VB	VB	S|1|PAST|NIFAL|M|F
-VB	VB	S|1|PAST|PAAL|M|F
-VB	VB	S|1|PAST|PIEL|M|F
-VB	VB	S|1|PAST|PUAL|M|F
+VB	VB	P|1|FUTURE|HIFIL
+VB	VB	P|1|FUTURE|HITPAEL
+VB	VB	P|1|FUTURE|HUFAL
+VB	VB	P|1|FUTURE|NIFAL
+VB	VB	P|1|FUTURE|PAAL
+VB	VB	P|1|FUTURE|PIEL
+VB	VB	P|1|PAST
+VB	VB	P|1|PAST|HIFIL
+VB	VB	P|1|PAST|HITPAEL
+VB	VB	P|1|PAST|NIFAL
+VB	VB	P|1|PAST|PAAL
+VB	VB	P|1|PAST|PIEL
+VB	VB	P|1|PAST|PUAL
+VB	VB	P|2|FUTURE|HIFIL
+VB	VB	P|2|FUTURE|PAAL
+VB	VB	P|2|IMPERATIVE
+VB	VB	P|2|IMPERATIVE|NIFAL
+VB	VB	P|2|IMPERATIVE|PAAL
+VB	VB	P|3|FUTURE
+VB	VB	P|3|FUTURE|HIFIL
+VB	VB	P|3|FUTURE|HITPAEL
+VB	VB	P|3|FUTURE|HUFAL
+VB	VB	P|3|FUTURE|NIFAL
+VB	VB	P|3|FUTURE|PAAL
+VB	VB	P|3|FUTURE|PIEL
+VB	VB	P|3|FUTURE|PUAL
+VB	VB	P|3|PAST
+VB	VB	P|3|PAST|HIFIL
+VB	VB	P|3|PAST|HITPAEL
+VB	VB	P|3|PAST|HUFAL
+VB	VB	P|3|PAST|NIFAL
+VB	VB	P|3|PAST|PAAL
+VB	VB	P|3|PAST|PIEL
+VB	VB	P|3|PAST|PUAL
+VB	VB	S|1|FUTURE|HIFIL
+VB	VB	S|1|FUTURE|HITPAEL
+VB	VB	S|1|FUTURE|NIFAL
+VB	VB	S|1|FUTURE|PAAL
+VB	VB	S|1|FUTURE|PIEL
+VB	VB	S|1|FUTURE|PUAL
+VB	VB	S|1|PAST|HIFIL
+VB	VB	S|1|PAST|HITPAEL
+VB	VB	S|1|PAST|HUFAL
+VB	VB	S|1|PAST|NIFAL
+VB	VB	S|1|PAST|PAAL
+VB	VB	S|1|PAST|PIEL
+VB	VB	S|1|PAST|PUAL
 VB	VB-BAREINFINITIVE	_
 VB	VB-TOINFINITIVE	HIFIL
 VB	VB-TOINFINITIVE	HITPAEL
