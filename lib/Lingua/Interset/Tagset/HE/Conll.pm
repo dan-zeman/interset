@@ -91,7 +91,7 @@ sub _create_atoms
             # היה, ויה, התיה, וניא, היהי
             'COP' => ['pos' => 'verb', 'verbtype' => 'cop'],
             #89 COP-TOINFINITIVE
-            'COP-TOINFINITIVE' => ['pos' => 'verb', 'verbtype' => 'cop'],
+            'COP-TOINFINITIVE' => ['pos' => 'verb', 'verbtype' => 'cop', 'verbform' => 'inf'],
             # H marker (the definite article prefix)
             # ה
             'DEF' => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'def'],
@@ -214,7 +214,8 @@ sub _create_atoms
                                                                                   '@'   => 'DT' }}}},
                        'num'  => { 'definiteness' => { 'red' => 'CDT',
                                                        '@'   => 'CD' }}, ###!!! NCD
-                       'verb' => { 'verbtype' => { 'cop' => 'COP', ###!!! COP-TOINFINITIVE
+                       'verb' => { 'verbtype' => { 'cop' => { 'verbform' => { 'inf' => 'COP-TOINFINITIVE',
+                                                                              '@'   => 'COP' }},
                                                    'mod' => 'MD',
                                                    '@'   => { 'verbform' => { 'part' => { 'poss' => { 'poss' => 'BN_S_PP',
                                                                                                       '@'    => { 'definiteness' => { 'red' => 'BNT',
@@ -223,7 +224,7 @@ sub _create_atoms
                                                                               '@'    => 'VB' }}}},
                        'adv'  => { 'advtype' => { 'ex' => 'EX',
                                                   '@'  => 'ADVERB' }}, ###!!! or RB
-                       'conj' => { 'conjtype' => { 'coor' => 'CC-COORD', ###!!! CONJ
+                       'conj' => { 'conjtype' => { 'coor' => 'CC-COORD',
                                                    'sub'  => 'CC-SUB', ###!!! TEMP-SUBCONJ
                                                    '@'    => { 'prontype' => { 'rel' => 'CC-REL',
                                                                                '@'   => 'CC' }}}},
@@ -502,7 +503,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('gender', 'number', 'person', 'binyan', 'possgender', 'possnumber', 'possperson', 'unknown');
+    my @features = ('gender', 'number', 'person', 'verbform', 'negativeness', 'binyan', 'possgender', 'possnumber', 'possperson', 'unknown');
     return \@features;
 }
 
@@ -522,7 +523,9 @@ sub _create_features_pos
         'BN'       => ['gender', 'number', 'person', 'binyan', 'possgender', 'possnumber', 'possperson'],
         'BNT'      => ['gender', 'number', 'person', 'binyan'],
         'CD'       => ['gender', 'number'],
-        'CDT'      => ['gender', 'number']
+        'CDT'      => ['gender', 'number'],
+        'COP'      => ['gender', 'number', 'person', 'verbform', 'negativeness'],
+        'COP-TOINFINITIVE' => ['negativeness']
     );
     return \%features;
 }
@@ -568,8 +571,9 @@ sub encode
     my $atoms = $self->atoms();
     my $pos = $atoms->{pos}->encode($fs);
     my $subpos = $pos;
-    $pos =~ s/(_S_PP|-COORD|-REL|-SUB)$//;
-    my $feature_names = $self->get_feature_names($pos);
+    $pos =~ s/(_S_PP|-COORD|-REL|-SUB|-TOINFINITIVE)$//;
+    my $fpos = $subpos =~ m/INFINITIVE$/ ? $subpos : $pos;
+    my $feature_names = $self->get_feature_names($fpos);
     my $value_only = 1;
     my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names, $value_only);
     return $tag;
@@ -672,23 +676,22 @@ COP	COP	F|S|3|BEINONI|NEGATIVE
 COP	COP	F|S|3|BEINONI|POSITIVE
 COP	COP	F|S|3|FUTURE|POSITIVE
 COP	COP	F|S|3|PAST|POSITIVE
+COP	COP	M|P|1|BEINONI|NEGATIVE
+COP	COP	M|P|1|BEINONI|POSITIVE
+COP	COP	M|P|1|FUTURE|POSITIVE
 COP	COP	M|P|2|BEINONI|NEGATIVE
 COP	COP	M|P|2|IMPERATIVE|POSITIVE
 COP	COP	M|P|3|BEINONI|NEGATIVE
 COP	COP	M|S|2|BEINONI|NEGATIVE
 COP	COP	M|S|2|IMPERATIVE|POSITIVE
+COP	COP	M|P|3|FUTURE|POSITIVE
+COP	COP	M|P|3|BEINONI|POSITIVE
+COP	COP	M|S|1|BEINONI|NEGATIVE
+COP	COP	M|S|1|PAST|POSITIVE
 COP	COP	M|S|3|BEINONI|NEGATIVE
 COP	COP	M|S|3|BEINONI|POSITIVE
 COP	COP	M|S|3|FUTURE|POSITIVE
 COP	COP	M|S|3|PAST|POSITIVE
-COP	COP	PAST|POSITIVE|S|M|3
-COP	COP	P|1|BEINONI|NEGATIVE|M|F
-COP	COP	P|1|BEINONI|POSITIVE|M|F
-COP	COP	P|1|FUTURE|POSITIVE|M|F
-COP	COP	P|3|FUTURE|POSITIVE|M|F
-COP	COP	P|3|M|BEINONI|POSITIVE
-COP	COP	S|1|BEINONI|NEGATIVE|M|F
-COP	COP	S|1|PAST|POSITIVE|M|F
 COP	COP-TOINFINITIVE	POSITIVE
 DEF	DEF	_
 DEF\@DT	DEF\@DT	_
