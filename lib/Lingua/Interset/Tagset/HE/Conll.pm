@@ -92,11 +92,11 @@ sub _create_atoms
             'COP' => ['pos' => 'verb', 'verbtype' => 'cop'],
             #89 COP-TOINFINITIVE
             'COP-TOINFINITIVE' => ['pos' => 'verb', 'verbtype' => 'cop', 'verbform' => 'inf'],
-            # H marker (the definite article prefix)
+            # H marker (the definite article prefix: 15847 occurrences)
             # ה
             'DEF' => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'def'],
-            #53 DEF@DT
-            'DEF@DT' => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'def'],
+            #53 DEF@DT הכל (hkl) = "everything", 46 occurrences
+            'DEF@DT' => ['pos' => 'adj', 'definiteness' => 'def', 'prontype' => 'tot'],
             # Determiner
             # יהשוזיא, רחבמ, לכ
             'DT' => ['pos' => 'adj', 'prontype' => 'prn'],
@@ -121,9 +121,9 @@ sub _create_atoms
             # Modal
             # רשפא, לוכי, ךירצ, הלוכי, לולע
             'MD' => ['pos' => 'verb', 'verbtype' => 'mod'],
-            # Numerical Expression
+            # Numerical Expression: dates, times and other codes composed of numbers and dots.
             # 03.02, 00.02, 11.61, 28.6.6, 11.31
-            'NCD' => ['pos' => 'num'],
+            'NCD' => ['pos' => 'num', 'numform' => 'digit'],
             # Noun
             # הרטשמ, הלשממ, םוי, ץרא
             'NN' => ['pos' => 'noun', 'nountype' => 'com'],
@@ -204,7 +204,8 @@ sub _create_atoms
                                                                                                     '@'    => { 'definiteness' => { 'red' => 'NNT',
                                                                                                                                     '@'   => 'NN' }}}}}}, ###!!! TTL
                                                    '@' => 'PRP' }}, ###!!! PRP-IMP
-                       'adj'  => { 'prontype' => { 'art' => 'DEF', ###!!! DEF@DT
+                       'adj'  => { 'prontype' => { 'art' => 'DEF',
+                                                   'tot' => 'DEF@DT',
                                                    'dem' => 'PRP-DEM',
                                                    'int' => 'QW',
                                                    'rel' => 'REL-SUBCONJ',
@@ -213,7 +214,8 @@ sub _create_atoms
                                                    '@'   => { 'definiteness' => { 'red' => 'DTT',
                                                                                   '@'   => 'DT' }}}},
                        'num'  => { 'definiteness' => { 'red' => 'CDT',
-                                                       '@'   => 'CD' }}, ###!!! NCD
+                                                       '@'   => { 'numform' => { 'digit' => 'NCD',
+                                                                                 '@'     => 'CD' }}}},
                        'verb' => { 'verbtype' => { 'cop' => { 'verbform' => { 'inf' => 'COP-TOINFINITIVE',
                                                                               '@'   => 'COP' }},
                                                    'mod' => 'MD',
@@ -525,7 +527,13 @@ sub _create_features_pos
         'CD'       => ['gender', 'number'],
         'CDT'      => ['gender', 'number'],
         'COP'      => ['gender', 'number', 'person', 'verbform', 'negativeness'],
-        'COP-TOINFINITIVE' => ['negativeness']
+        'COP-TOINFINITIVE' => ['negativeness'],
+        'JJ'       => ['gender', 'number'],
+        'JJT'      => ['gender', 'number'],
+        'MD'       => ['gender', 'number', 'person', 'verbform'],
+        'NN'       => ['gender', 'number', 'possgender', 'possnumber', 'possperson'],
+        'NNP'      => ['gender', 'number'],
+        'NNT'      => ['gender', 'number']
     );
     return \%features;
 }
@@ -697,7 +705,6 @@ DEF	DEF	_
 DEF\@DT	DEF\@DT	_
 DT	DT	_
 DTT	DTT	_
-EX	EX	M|S|PAST|POSITIVE
 EX	EX	_
 IN	IN	_
 INTJ	INTJ	_
@@ -705,39 +712,29 @@ JJ	JJ	F|P
 JJ	JJ	F|S
 JJ	JJ	M|P
 JJ	JJ	M|S
-JJ	JJ	P|F
-JJ	JJ	P|M
-JJ	JJ	S|F
-JJ	JJ	S|M
 JJ	JJ	_
+JJT	JJT	F|P
 JJT	JJT	F|S
 JJT	JJT	M|P
 JJT	JJT	M|S
-JJT	JJT	P|M
-JJT	JJT	S|M
 MD	MD	F|P|A
 MD	MD	F|P|A|BEINONI
-MD	MD	F|S
 MD	MD	F|S|3|FUTURE
 MD	MD	F|S|A
 MD	MD	F|S|A|BEINONI
-MD	MD	M|P
+MD	MD	M|P|1|FUTURE
+MD	MD	M|P|1|PAST
+MD	MD	M|P|3|FUTURE
 MD	MD	M|P|A
 MD	MD	M|P|A|BEINONI
-MD	MD	M|S
 MD	MD	M|S|2|FUTURE
 MD	MD	M|S|A
 MD	MD	M|S|A|BEINONI
-MD	MD	PAST|S|M
-MD	MD	P|1|FUTURE|M|F
-MD	MD	P|1|PAST|M|F
-MD	MD	P|3|FUTURE|M|F
-MD	MD	P|BEINONI|F
-MD	MD	_
+MD	MD	M|S|A|PAST
+MD	MD	A
 NCD	NCD	_
-NN	NN	DP|F
-NN	NN	D|F
 NN	NN	F|D
+NN	NN	F|DP
 NN	NN	F|P
 NN	NN	F|S
 NN	NN	M
@@ -745,15 +742,9 @@ NN	NN	M|D
 NN	NN	M|DP
 NN	NN	M|P
 NN	NN	M|S
-NN	NN	M|S|P
-NN	NN	P|F
-NN	NN	P|M
-NN	NN	P|M|F
-NN	NN	S|F
-NN	NN	S|M
-NN	NN	S|M|F
 NN	NN	_
 NN	NN_S_PP	F|P|suf_F|suf_P|suf_3
+NN	NN_S_PP	F|P|suf_F|suf_S|suf_2
 NN	NN_S_PP	F|P|suf_F|suf_S|suf_3
 NN	NN_S_PP	F|P|suf_MF|suf_P|suf_1
 NN	NN_S_PP	F|P|suf_MF|suf_S|suf_1
@@ -768,8 +759,6 @@ NN	NN_S_PP	F|S|suf_MF|suf_S|suf_1
 NN	NN_S_PP	F|S|suf_M|suf_P|suf_2
 NN	NN_S_PP	F|S|suf_M|suf_P|suf_3
 NN	NN_S_PP	F|S|suf_M|suf_S|suf_3
-NN	NN_S_PP	F|suf_F|M|P|suf_2|suf_S
-NN	NN_S_PP	F|suf_F|M|suf_S|P|suf_3
 NN	NN_S_PP	M|P|suf_F|suf_P|suf_3
 NN	NN_S_PP	M|P|suf_F|suf_S|suf_2
 NN	NN_S_PP	M|P|suf_F|suf_S|suf_3
@@ -786,41 +775,13 @@ NN	NN_S_PP	M|S|suf_MF|suf_S|suf_1
 NN	NN_S_PP	M|S|suf_M|suf_P|suf_2
 NN	NN_S_PP	M|S|suf_M|suf_P|suf_3
 NN	NN_S_PP	M|S|suf_M|suf_S|suf_3
-NN	NN_S_PP	P|M|F|suf_M|suf_P|suf_3
-NN	NN_S_PP	P|M|F|suf_M|suf_S|suf_3
-NN	NN_S_PP	P|suf_MF|M|suf_S|suf_1
-NN	NN_S_PP	P|suf_MF|suf_1|suf_P|F
-NN	NN_S_PP	P|suf_MF|suf_1|suf_S|F
-NN	NN_S_PP	P|suf_M|M|suf_3|suf_P
-NN	NN_S_PP	P|suf_M|M|suf_S|suf_3
-NN	NN_S_PP	P|suf_M|suf_3|suf_P|F
-NN	NN_S_PP	P|suf_M|suf_S|suf_3|F
-NN	NN_S_PP	S|M|suf_MF|suf_P|suf_1
-NN	NN_S_PP	S|suf_M|M|suf_3|suf_P
-NN	NN_S_PP	S|suf_M|M|suf_S|suf_3
-NN	NN_S_PP	S|suf_M|suf_3|suf_P|F
-NN	NN_S_PP	suf_F|P|M|suf_S|suf_3
-NN	NN_S_PP	suf_F|P|suf_S|suf_3|F
-NN	NN_S_PP	suf_F|S|M|suf_S|suf_3
-NN	NN_S_PP	suf_F|S|suf_3|suf_P|F
-NN	NN_S_PP	suf_F|suf_S|S|suf_3|F
-NN	NN_S_PP	suf_M|F|M|P|suf_3|suf_P
-NN	NN_S_PP	suf_M|F|M|suf_S|P|suf_3
-NN	NN_S_PP	suf_S|S|suf_M|suf_3|F
 NNP	NNP	F|S
 NNP	NNP	M|S
-NNP	NNP	S|M|F
 NNP	NNP	_
 NNT	NNT	F|P
 NNT	NNT	F|S
 NNT	NNT	M|P
 NNT	NNT	M|S
-NNT	NNT	P|F
-NNT	NNT	P|M
-NNT	NNT	P|M|F
-NNT	NNT	S|F
-NNT	NNT	S|M
-NNT	NNT	S|M|F
 P	P	_
 POS	POS	_
 PREPOSITION	PREPOSITION	_
