@@ -108,7 +108,7 @@ sub _create_atoms
             'EX' => ['pos' => 'adv', 'advtype' => 'ex'],
             # Preposition
             # לע, ל, םע, ןיב
-            'IN' => ['pos' => 'adp', 'adpostype' => 'prep'],
+            'IN' => ['pos' => 'adp|conj', 'adpostype' => 'prep', 'conjtype' => 'sub'],
             # Interjection
             # סופ, ףוא, הלילח, אנ, יוא
             'INTJ' => ['pos' => 'int'],
@@ -137,8 +137,10 @@ sub _create_atoms
             # ידי, תעדוו
             'NNT' => ['pos' => 'noun', 'definiteness' => 'red'],
             # “Prefix” wordlets
-            # יתלב, יא, ןיב, תת, יטנא
-            'P' => ['pos' => 'part'],
+            # בלתי, אי, בין, אנטי, תת
+            # 22 different word forms in the corpus.
+            # 47 occurrences of the most frequent one, בלתי (vlty).
+            'P' => ['pos' => 'part', 'other' => {'parttype' => 'prefix'}],
             # Possessive
             # לש
             'POS' => ['pos' => 'part', 'poss' => 'poss'],
@@ -230,11 +232,13 @@ sub _create_atoms
                                                    'sub'  => 'CC-SUB', ###!!! TEMP-SUBCONJ
                                                    '@'    => { 'prontype' => { 'rel' => 'CC-REL',
                                                                                '@'   => 'CC' }}}},
-                       'adp'  => 'IN', ###!!! PREPOSITION
+                       'adp|conj'  => 'IN',
+                       'adp'  => 'PREPOSITION',
                        'part' => { 'poss' => { 'poss' => 'POS',
                                                '@'    => { 'case' => { 'nom' => 'S-ANP',
                                                                        '@'   => { 'prontype' => { 'prs' => 'S-PRN',
-                                                                                                  '@'   => 'AT' }}}}}}, ###!!! P
+                                                                                                  '@'   => { 'other/parttype' => { 'prefix' => 'P',
+                                                                                                                                   '@'      => 'AT' }}}}}}}},
                        'int'  => 'INTJ',
                        'punc' => 'PUNC',
                        '@'    => { 'other/unknown' => { 'miss' => '!!MISS!!',
