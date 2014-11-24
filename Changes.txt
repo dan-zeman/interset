@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+2.025     2014-11-24 17:43:29+01:00 Europe/Prague
+
 Features:
 * New value 'int' of the feature 'voice': intensive voice/aspect (the PIEL binyan) in Hebrew.
 
