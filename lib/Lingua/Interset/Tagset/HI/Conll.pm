@@ -49,11 +49,13 @@ sub _create_atoms
         'surfeature' => 'pos',
         'decode_map' =>
         {
-            # These tags come in the POS column of the CoNLL data format (while CPOS contains so-called chunk tag).
+            # These tags come in the CPOS column of the CoNLL data format.
             # Many tags come in two flavors, with and without final 'C'. The 'C' means "compound". Nevertheless, the compounds do not occur in the current data.
             # Documentation contains many tags that do not occur in actual data. The following tags have been observed in the data:
-            # NN (4924), VM (2854), NNP (1540), PRP (1096), JJ (536), CC (448), NULL (388), NST (332), SYM (252), RB (230), WQ (110),
-            # RP (96), QF (20), QC (16), INJ (14), NEG (6), VAUX (6), DEM (4), XC (4), PSP (2), RDP (2)
+            # PSP (53176), NN (52984), VM (28372), NNP (21380), SYM (18178), VAUX (16761), JJ (14703), NNPC (11391), PRP (11039), CC (10672),
+            # NNC (5830), QC (4692), NST (4007), RP (3936), DEM (3500), QF (1973), NEG (1904), RB (1178), QCC (625), QO (451), JJC (311),
+            # WQ (267), INTF (265), RDP (199), UNK (131), VMC (44), PRPC (39), RBC (24), NSTC (19), QFC (16), NULL (8), CCC (8), INJ (7)
+            # UNKC (1), <fs (1), VGF (1)
             # common nouns
             # Examples:
             # কথা (kathā = word), বাতাসে (bātāsē = air), সময় (samaẏa = time), স্যার (syāra = sir), হাত (hāta = hand)
@@ -369,7 +371,7 @@ sub encode
 # from the corpus, i.e. other tags probably exist but were not seen here. We
 # have added manually tags with empty 'vib' and 'tam' to facilitate generating
 # permitted tags with empty 'other' feature.
-# 531 tags
+# 3830 tags from the corpus ###!!! what is the number after cleaning?
 #------------------------------------------------------------------------------
 sub list
 {
