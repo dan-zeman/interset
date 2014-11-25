@@ -1,4 +1,4 @@
-# ABSTRACT: Driver for the Hindi tagset of the ICON 2009 and 2010 Shared Tasks, as used in the CoNLL data format.
+# ABSTRACT: Driver for the Hindi tagset of the shared tasks at ICON 2009, ICON 2010 and COLING 2012, as used in the CoNLL data format.
 # Documentation:
 # http://ltrc.iiit.ac.in/nlptools2010/documentation.php
 # http://ltrc.iiit.ac.in/MachineTrans/publications/technicalReports/tr031/posguidelines.pdf
