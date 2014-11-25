@@ -4511,17 +4511,40 @@ or
 
 =head1 DESCRIPTION
 
-Interset driver for the Hindi tagset of the ICON 2009 and 2010 Shared Tasks,
-as used in the CoNLL data format.
+Interset driver for the Hindi tagset of the shared tasks at
+ICON 2009, ICON 2010 and COLING 2012, as used in the CoNLL data format.
 CoNLL tagsets in Interset are traditionally three values separated by tabs,
 coming from the CoNLL columns CPOS, POS and FEAT.
-ICON shared task data were converted to CoNLL from the native Shakti Standard Format (SSF).
-The CoNLL CPOS column contains so-called chunk tag, which we do not want to decode,
-thus we expect only two tab-separated values in this tagset:
-the POS column (which contains the part of speech of the headword of the chunk)
-and partial contents of the FEAT column (we exclude features that should not be
-considered part of the tag,
-e.g. the C<lex> feature, which contains lemma or word stem).
+
+In the case of Hindi, the CoNLL data had to be filtered before collecting the input tags.
+The data of the ICON shared tasks were converted to CoNLL from the native Shakti Standard
+Fromat (SSF) and the CoNLL CPOS column contained so-called chunk tag, which we do not
+want to decode. The conversion procedure was modified for the COLING 2012 shared task
+and this data did not contain chunk tags in the CPOS column. We expect the 2012 format,
+that is:
+
+The CPOS column contains the part-of-speech tag that was previously (during ICON tasks)
+in the POS column.
+
+The POS column contains the value of the C<cat> feature from the morphological analyzer.
+It is also a part-of-speech category but the set of tags is different, with different
+granularity. As these two POS tags come from different sources, there are occasional
+inconsistencies between their values. Inconsistent combinations may not be decoded
+correctly by this driver. They have been removed from the driver's list of known tags
+and they were not used to test the driver.
+
+Finally the FEAT column contains features and their values.
+Unlike in other CoNLL tagsets, some of the features in the Hindi treebank must not be
+considered part of morphological tag. We have removed the following features
+(it is not necessary to remove them when the driver is used to decode; they will be
+simply ignored. However, we will not output these features when the driver is used
+to encode.)
+
+C<lex> contains lemma or stem.
+C<cat> contains the same value as the POS column.
+C<chunkId> identifies the chunk to which the word belongs.
+C<chunkType> is either I<head> or I<child>.
+C<stype> pertains to the entire sentence (declarative, imperative or interrogative).
 
 Short description of the part of speech tags can be found in
 L<http://ltrc.iiit.ac.in/nlptools2010/documentation.php>.
