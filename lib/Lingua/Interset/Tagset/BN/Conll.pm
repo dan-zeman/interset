@@ -46,7 +46,6 @@ sub _create_atoms
     # PART OF SPEECH ####################
     $atoms{pos} = $self->create_atom
     (
-        'tagset' => 'bn::conll',
         'surfeature' => 'pos',
         'decode_map' =>
         {
@@ -208,7 +207,6 @@ sub _create_atoms
     # PERSON ####################
     $atoms{pers} = $self->create_atom
     (
-        'tagset' => 'bn::conll',
         'surfeature' => 'person',
         'decode_map' =>
         {
