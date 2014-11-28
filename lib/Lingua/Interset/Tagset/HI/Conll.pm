@@ -58,7 +58,14 @@ sub _create_atoms
             # UNKC (1), <fs (1), VGF (1)
             # common nouns
             # Examples:
-            # কথা (kathā = word), বাতাসে (bātāsē = air), সময় (samaẏa = time), স্যার (syāra = sir), হাত (hāta = hand)
+            # NN n m sg 3 d शुरू आज फैसला समय काम  śurū āja phaisalā samaya kāma = beginning day decision time work
+            # NN n m sg 3 o अध्यक्ष नेता सचिव सांसद प्रवक्ता adhyakṣa netā saciva sāṁsada pravaktā
+            # NN n m pl 3 d लोग रुपये नेता सदस्य अधिकारी loga rupaye netā sadasya adhikārī
+            # NN n m pl 3 o नेताओं लोगों अफसरों किसानों मंत्रियों netāoṁ logoṁ aphasaroṁ kisānoṁ maṁtriyoṁ
+            # NN n f sg 3 d सरकार बात जानकारी बार मांग sarakāra bāta jānakārī bāra māṁga
+            # NN n f sg 3 o पत्नी शिक्षा पुलिस मां राजधानी patnī śikṣā pulisa māṁ rājadhānī
+            # NN n f pl 3 d तस्वीरें बार कंपनियां महिलाएं बातें tasvīreṁ bāra kaṁpaniyāṁ mahilāeṁ bāteṁ
+            # NN n f pl 3 o महिलाओं विधवाओं कंपनियों बीमारियों रैलियों mahilāoṁ vidhavāoṁ kaṁpaniyoṁ bīmāriyoṁ railiyoṁ
             'NN'   => ['pos' => 'noun', 'nountype' => 'com'],
             'NNC'  => ['pos' => 'noun', 'nountype' => 'com'],
             # proper nouns
@@ -84,8 +91,21 @@ sub _create_atoms
             'WQ'   => ['pos' => 'noun', 'prontype' => 'int'],
             # adjectives
             # Examples:
-            # পরিণত (pariṇata = become, turned [participle]), বাধ্য (bādhya = forced), ভালো (bhālō = good), দুর্বল (durbala = weak)
+            # masc sing direct ... पूरा (púrá), बड़ा (bará), नया (najá), अच्छा (aččhá), कड़ा (kará)
+            # masc sing oblique .. पिछले (pičhalé), अगले (agalé), नए (naé), पूरे (púré), बड़े (baré)
+            # masc plur direct ... बड़े (baré), नए (naé), अच्छे (aččhé), काले (kálé), पूरे (púré)
+            # masc plur oblique .. पिछले (pičhalé), अगले (agalé), नए (naé), बड़े (baré), पिछड़े (pičharé)
+            # fem sing direct .... पूरी (púrí), बड़ी (barí), नई (naí), अच्छी (aččhí), कड़ी (karí)
+            # fem sing oblique ... पूरी (púrí), बड़ी (barí), नई (naí), पिछली (pičhalí), लंबी (lambí)
+            # fem plur direct .... नई (naí), बड़ी (barí), पक्की (pakkí), ऊंची (úňčí), ठंडी (thandí)
+            # fem plur oblique ... ऊंची (úňčí), नई (naí), पिछड़ी (pičharí), नशीली (naśílí), ठंडी (thandí)
+            # Indifferent to gender and number:
+            # direct ........ भारी (bhárí), पूर्व (púrva), विशेष (viśéš), मुख्य (mukhja), अन्य (anja)
+            # oblique ....... अन्य (anja), पूर्व (púrva), भारतीय (bháratíja), स्थित (sthita), वरिष्ठ (barištha)
             'JJ'   => ['pos' => 'adj'],
+            # compound adjectives
+            # Examples:
+            # गैर (gaira) in गैर कानूनी (gaira kánúní = non legal = illegal)
             'JJC'  => ['pos' => 'adj'],
             # demonstratives
             # यह (yaha = this), वह (vaha = that), जो (jo = that), यही (yahī = this only)
@@ -120,7 +140,7 @@ sub _create_atoms
             'INTF' => ['pos' => 'adv'],
             # negation
             # Example:
-            # না (nā = not)
+            # नहीं (nahīṁ = not), न (na), बिना (binā = without)
             'NEG'  => ['pos' => 'part', 'prontype' => 'neg', 'negativeness' => 'neg'],
             # postpositions
             # Examples:
@@ -372,6 +392,7 @@ sub encode
 # have added manually tags with empty 'vib' and 'tam' to facilitate generating
 # permitted tags with empty 'other' feature.
 # 3830 tags from the corpus ###!!! what is the number after cleaning?
+# 3419 po cisteni NN
 #------------------------------------------------------------------------------
 sub list
 {
@@ -395,35 +416,10 @@ JJ	adj	gen-m|num-sg|pers-|case-d|vib-|tam-|voicetype-
 JJ	adj	gen-m|num-sg|pers-|case-o|vib-|tam-|voicetype-
 JJ	adj	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
 JJ	adj	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
-JJC	adj	gen-f|num-pl|pers-|case-d|vib-|tam-|voicetype-
-JJC	adj	gen-f|num-sg|pers-|case-o|vib-|tam-|voicetype-
-JJC	adj	gen-f|num-sg|pers-|case-|vib-|tam-|voicetype-
-JJC	adj	gen-m|num-pl|pers-|case-d|vib-|tam-|voicetype-
-JJC	adj	gen-m|num-pl|pers-|case-o|vib-|tam-|voicetype-
-JJC	adj	gen-m|num-pl|pers-|case-|vib-|tam-|voicetype-
-JJC	adj	gen-m|num-sg|pers-|case-d|vib-|tam-|voicetype-
-JJC	adj	gen-m|num-sg|pers-|case-o|vib-|tam-|voicetype-
-JJC	adj	gen-m|num-sg|pers-|case-|vib-|tam-|voicetype-
-JJC	adj	gen-m|num-|pers-|case-o|vib-|tam-|voicetype-
 JJC	adj	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
 JJC	adj	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
 JJC	adj	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-JJC	avy	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-JJC	n	gen-f|num-pl|pers-3|case-d|vib-|tam-|voicetype-
-JJC	n	gen-f|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-JJC	n	gen-f|num-sg|pers-3|case-|vib-|tam-|voicetype-
-JJC	n	gen-m|num-pl|pers-3|case-d|vib-|tam-|voicetype-
-JJC	n	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-JJC	n	gen-m|num-sg|pers-3|case-o|vib-|tam-|voicetype-
-JJC	n	gen-m|num-sg|pers-3|case-|vib-|tam-|voicetype-
-JJC	n	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
-JJC	unk	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-JJC	v	gen-m|num-sg|pers-|case-|vib-|tam-|voicetype-
-NEG	_	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NEG	adv	gen-|num-|pers-|case-|vib-|tam-|voicetype-
 NEG	avy	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NEG	avy	gen-|num-|pers-|case-|vib-|tam-|voicetype-active
-NEG	avy	gen-|num-|pers-|case-|vib-|tam-|voicetype-passive
 NN	_	gen-f|num-sg|pers-3|case-o|vib-0_से|tam-|voicetype-
 NN	_	gen-|num-|pers-|case-|vib-0_के|tam-|voicetype-
 NN	_	gen-|num-|pers-|case-|vib-|tam-|voicetype-
@@ -440,9 +436,6 @@ NN	adj	gen-|num-|pers-|case-|vib-|tam-|voicetype-
 NN	avy	gen-|num-|pers-|case-|vib-0_में|tam-|voicetype-
 NN	avy	gen-|num-|pers-|case-|vib-0_से|tam-|voicetype-
 NN	avy	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NN	f	gen-|num-|pers-|case-|vib-0_का|tam-|voicetype-
-NN	n	gen-f|num-pl|pers-3|case-d|vib-0_तक|tam-|voicetype-
-NN	n	gen-f|num-pl|pers-3|case-d|vib-0_भी|tam-|voicetype-
 NN	n	gen-f|num-pl|pers-3|case-d|vib-|tam-|voicetype-
 NN	n	gen-f|num-pl|pers-3|case-o|vib-0_का_ओर|tam-|voicetype-
 NN	n	gen-f|num-pl|pers-3|case-o|vib-0_का_तरफ|tam-|voicetype-
@@ -500,12 +493,6 @@ NN	n	gen-f|num-pl|pers-3|case-o|vib-0_से_आगे|tam-|voicetype-
 NN	n	gen-f|num-pl|pers-3|case-o|vib-0_से_बाहर|tam-|voicetype-
 NN	n	gen-f|num-pl|pers-3|case-o|vib-0_से|tam-|voicetype-
 NN	n	gen-f|num-pl|pers-3|case-o|vib-|tam-|voicetype-
-NN	n	gen-f|num-sg|pers-3|case-d|vib-0_का|tam-|voicetype-
-NN	n	gen-f|num-sg|pers-3|case-d|vib-0_जैसा|tam-|voicetype-
-NN	n	gen-f|num-sg|pers-3|case-d|vib-0_बतौर|tam-|voicetype-
-NN	n	gen-f|num-sg|pers-3|case-d|vib-0_बाद_से|tam-|voicetype-
-NN	n	gen-f|num-sg|pers-3|case-d|vib-0_बाद|tam-|voicetype-
-NN	n	gen-f|num-sg|pers-3|case-d|vib-0_से|tam-|voicetype-
 NN	n	gen-f|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 NN	n	gen-f|num-sg|pers-3|case-o|vib-0_का_अपेक्षा|tam-|voicetype-
 NN	n	gen-f|num-sg|pers-3|case-o|vib-0_का_ओर_से|tam-|voicetype-
@@ -617,20 +604,7 @@ NN	n	gen-f|num-sg|pers-3|case-o|vib-0_से_पूर्व|tam-|voicetype-
 NN	n	gen-f|num-sg|pers-3|case-o|vib-0_से_बाहर|tam-|voicetype-
 NN	n	gen-f|num-sg|pers-3|case-o|vib-0_से|tam-|voicetype-
 NN	n	gen-f|num-sg|pers-3|case-o|vib-|tam-|voicetype-
-NN	n	gen-f|num-sg|pers-3|case-|vib-0_का|tam-|voicetype-
-NN	n	gen-f|num-sg|pers-|case-d|vib-|tam-|voicetype-
-NN	n	gen-f|num-sg|pers-|case-o|vib-0_ने|tam-|voicetype-
-NN	n	gen-f|num-sg|pers-|case-o|vib-0_में|tam-|voicetype-
-NN	n	gen-m|num-pl|pers-3|case-d|vib-0_तक|tam-|voicetype-
-NN	n	gen-m|num-pl|pers-3|case-d|vib-0_दूर|tam-|voicetype-
-NN	n	gen-m|num-pl|pers-3|case-d|vib-0_पहला|tam-|voicetype-
-NN	n	gen-m|num-pl|pers-3|case-d|vib-0_पहले_तक|tam-|voicetype-
-NN	n	gen-m|num-pl|pers-3|case-d|vib-0_पहले_से|tam-|voicetype-
-NN	n	gen-m|num-pl|pers-3|case-d|vib-0_पहले|tam-|voicetype-
-NN	n	gen-m|num-pl|pers-3|case-d|vib-0_पूर्व|tam-|voicetype-
-NN	n	gen-m|num-pl|pers-3|case-d|vib-0_बाद|tam-|voicetype-
 NN	n	gen-m|num-pl|pers-3|case-d|vib-|tam-|voicetype-
-NN	n	gen-m|num-pl|pers-3|case-d|vib-|tam-|voicetype-passive
 NN	n	gen-m|num-pl|pers-3|case-o|vib-0_कर|tam-|voicetype-
 NN	n	gen-m|num-pl|pers-3|case-o|vib-0_का_अपेक्षा|tam-|voicetype-
 NN	n	gen-m|num-pl|pers-3|case-o|vib-0_का_ओर_से|tam-|voicetype-
@@ -710,41 +684,7 @@ NN	n	gen-m|num-pl|pers-3|case-o|vib-0_से_बाहर|tam-|voicetype-
 NN	n	gen-m|num-pl|pers-3|case-o|vib-0_से_लेकर|tam-|voicetype-
 NN	n	gen-m|num-pl|pers-3|case-o|vib-0_से|tam-|voicetype-
 NN	n	gen-m|num-pl|pers-3|case-o|vib-|tam-|voicetype-
-NN	n	gen-m|num-pl|pers-|case-d|vib-|tam-|voicetype-
-NN	n	gen-m|num-pl|pers-|case-o|vib-0_को|tam-|voicetype-
-NN	n	gen-m|num-pl|pers-|case-o|vib-0_से|tam-|voicetype-
-NN	n	gen-m|num-pl|pers-|case-|vib-0_से|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3h|case-d|vib-|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_अंदर|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_आगे|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_ऊपर|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_का_तुलना_में|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_का|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_के_मुकाबला|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_के|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_तक|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_दूर|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_नीचे_तक|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_पर|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_पहला|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_पहले_का|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_पहले_तक|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_पहले|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_पूर्व|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_बतौर|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_बाद_का|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_बाद|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_वाला_को|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_वाला_ने|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_वाला|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_संग|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_साथ|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_से|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-0_स्वरूप|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-|tam-o|voicetype-
 NN	n	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-active
-NN	n	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-passive
 NN	n	gen-m|num-sg|pers-3|case-o|vib-0_उपग्रह|tam-|voicetype-
 NN	n	gen-m|num-sg|pers-3|case-o|vib-0_कंप्यूटर|tam-|voicetype-
 NN	n	gen-m|num-sg|pers-3|case-o|vib-0_का_अपेक्षा|tam-|voicetype-
@@ -888,65 +828,6 @@ NN	n	gen-m|num-sg|pers-3|case-o|vib-0_से_बाहर|tam-|voicetype-
 NN	n	gen-m|num-sg|pers-3|case-o|vib-0_से_लेकर|tam-|voicetype-
 NN	n	gen-m|num-sg|pers-3|case-o|vib-0_से|tam-|voicetype-
 NN	n	gen-m|num-sg|pers-3|case-o|vib-|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-|vib-0_का|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-|vib-0_से|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-|vib-|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-|case-d|vib-|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-|case-o|vib-0_का|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-|case-o|vib-0_को|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-|case-|vib-|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-|case-|vib-या|tam-yA|voicetype-
-NN	n	gen-m|num-|pers-|case-o|vib-0_के_पर|tam-|voicetype-
-NN	n	gen-|num-pl|pers-1|case-o|vib-को|tam-ko|voicetype-
-NN	n	gen-|num-pl|pers-3|case-d|vib-|tam-|voicetype-
-NN	n	gen-|num-pl|pers-3|case-o|vib-0_का|tam-|voicetype-
-NN	n	gen-|num-pl|pers-3|case-o|vib-0_के_खिलाफ|tam-|voicetype-
-NN	n	gen-|num-pl|pers-3|case-o|vib-0_के_पास_से|tam-|voicetype-
-NN	n	gen-|num-pl|pers-3|case-o|vib-0_के_बारे_में|tam-|voicetype-
-NN	n	gen-|num-pl|pers-3|case-o|vib-0_के_बीच_में|tam-|voicetype-
-NN	n	gen-|num-pl|pers-3|case-o|vib-0_के_बीच|tam-|voicetype-
-NN	n	gen-|num-pl|pers-3|case-o|vib-0_के_लिए|tam-|voicetype-
-NN	n	gen-|num-pl|pers-3|case-o|vib-0_को|tam-|voicetype-
-NN	n	gen-|num-pl|pers-3|case-o|vib-0_ने|tam-|voicetype-
-NN	n	gen-|num-pl|pers-3|case-o|vib-0_पर|tam-|voicetype-
-NN	n	gen-|num-pl|pers-3|case-o|vib-0_में|tam-|voicetype-
-NN	n	gen-|num-pl|pers-3|case-o|vib-0_से|tam-|voicetype-
-NN	n	gen-|num-pl|pers-3|case-o|vib-|tam-|voicetype-
-NN	n	gen-|num-pl|pers-|case-d|vib-|tam-|voicetype-
-NN	n	gen-|num-pl|pers-|case-o|vib-0_का|tam-|voicetype-
-NN	n	gen-|num-pl|pers-|case-o|vib-0_के_बीच|tam-|voicetype-
-NN	n	gen-|num-pl|pers-|case-o|vib-|tam-|voicetype-
-NN	n	gen-|num-sg|pers-3|case-d|vib-0_तक|tam-|voicetype-
-NN	n	gen-|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NN	n	gen-|num-sg|pers-3|case-o|vib-0_का_ओर|tam-|voicetype-
-NN	n	gen-|num-sg|pers-3|case-o|vib-0_का|tam-|voicetype-
-NN	n	gen-|num-sg|pers-3|case-o|vib-0_के_करीब|tam-|voicetype-
-NN	n	gen-|num-sg|pers-3|case-o|vib-0_के_बाद|tam-|voicetype-
-NN	n	gen-|num-sg|pers-3|case-o|vib-0_के_बीच|tam-|voicetype-
-NN	n	gen-|num-sg|pers-3|case-o|vib-0_को|tam-|voicetype-
-NN	n	gen-|num-sg|pers-3|case-o|vib-0_तक|tam-|voicetype-
-NN	n	gen-|num-sg|pers-3|case-o|vib-0_ने|tam-|voicetype-
-NN	n	gen-|num-sg|pers-3|case-o|vib-0_पर|tam-|voicetype-
-NN	n	gen-|num-sg|pers-3|case-o|vib-0_में|tam-|voicetype-
-NN	n	gen-|num-sg|pers-3|case-o|vib-0_से|tam-|voicetype-
-NN	n	gen-|num-sg|pers-3|case-o|vib-|tam-|voicetype-
-NN	n	gen-|num-sg|pers-|case-o|vib-0_तक|tam-|voicetype-
-NN	n	gen-|num-|pers-3|case-d|vib-|tam-|voicetype-
-NN	n	gen-|num-|pers-3|case-o|vib-0_पर|tam-|voicetype-
-NN	nst	gen-m|num-sg|pers-3|case-d|vib-0_के|tam-|voicetype-
-NN	nst	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NN	nst	gen-m|num-sg|pers-3|case-o|vib-0_में|tam-|voicetype-
-NN	num	gen-|num-pl|pers-|case-o|vib-0_का|tam-|voicetype-
-NN	num	gen-|num-sg|pers-|case-o|vib-0_से|tam-|voicetype-
-NN	num	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NN	pn	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NN	pn	gen-|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NN	pn	gen-|num-sg|pers-3|case-o|vib-|tam-|voicetype-
-NN	punc	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NN	unk	gen-|num-|pers-|case-|vib-0_का|tam-|voicetype-
-NN	unk	gen-|num-|pers-|case-|vib-0_को|tam-|voicetype-
-NN	unk	gen-|num-|pers-|case-|vib-0_पर|tam-|voicetype-
-NN	unk	gen-|num-|pers-|case-|vib-|tam-|voicetype-
 NNC	_	gen-|num-|pers-|case-|vib-|tam-|voicetype-
 NNC	adj	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 NNC	adj	gen-m|num-sg|pers-3|case-d|vib-०|tam-|voicetype-
