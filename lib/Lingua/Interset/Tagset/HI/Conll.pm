@@ -88,8 +88,7 @@ sub _create_atoms
             'JJ'   => ['pos' => 'adj'],
             'JJC'  => ['pos' => 'adj'],
             # demonstratives
-            # Only 4 occurrences in the corpus, only 2 word types:
-            # এই (ē'i = this), এইসব (ē'isaba = these)
+            # यह (yaha = this), वह (vaha = that), जो (jo = that), यही (yahī = this only)
             'DEM'  => ['pos' => 'adj', 'prontype' => 'dem'],
             # quantifiers
             # Examples:
@@ -117,6 +116,7 @@ sub _create_atoms
             'RB'   => ['pos' => 'adv'],
             'RBC'  => ['pos' => 'adv'],
             # intensifiers
+            # सबसे (sabase = most), बहुत (bahuta = very), बेहद (behada = vastly), सर्वाधिक (sarvādhika = most), अति (ati = very, most)
             'INTF' => ['pos' => 'adv'],
             # negation
             # Example:
@@ -384,57 +384,17 @@ DEM	pn	gen-|num-pl|pers-3|case-o|vib-|tam-|voicetype-
 DEM	pn	gen-|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 DEM	pn	gen-|num-sg|pers-3|case-o|vib-|tam-|voicetype-
 INJ	avy	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-INTF	adj	gen-f|num-sg|pers-|case-d|vib-|tam-|voicetype-
-INTF	adj	gen-f|num-sg|pers-|case-o|vib-|tam-|voicetype-
-INTF	adj	gen-m|num-sg|pers-|case-o|vib-|tam-|voicetype-
-INTF	adj	gen-m|num-sg|pers-|case-|vib-|tam-|voicetype-
-INTF	avy	gen-m|num-pl|pers-|case-d|vib-|tam-|voicetype-
 INTF	avy	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-INTF	unk	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-JJ	_	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
-JJ	_	gen-|num-|pers-|case-|vib-|tam-|voicetype-
 JJ	adj	gen-f|num-pl|pers-|case-d|vib-|tam-|voicetype-
 JJ	adj	gen-f|num-pl|pers-|case-o|vib-|tam-|voicetype-
-JJ	adj	gen-f|num-pl|pers-|case-|vib-|tam-|voicetype-
-JJ	adj	gen-f|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-JJ	adj	gen-f|num-sg|pers-3|case-o|vib-|tam-|voicetype-
 JJ	adj	gen-f|num-sg|pers-|case-d|vib-|tam-|voicetype-
 JJ	adj	gen-f|num-sg|pers-|case-o|vib-|tam-|voicetype-
-JJ	adj	gen-f|num-sg|pers-|case-|vib-|tam-|voicetype-
-JJ	adj	gen-f|num-|pers-|case-d|vib-|tam-|voicetype-
-JJ	adj	gen-f|num-|pers-|case-o|vib-|tam-|voicetype-
-JJ	adj	gen-f|num-|pers-|case-|vib-|tam-|voicetype-
 JJ	adj	gen-m|num-pl|pers-|case-d|vib-|tam-|voicetype-
 JJ	adj	gen-m|num-pl|pers-|case-o|vib-|tam-|voicetype-
-JJ	adj	gen-m|num-pl|pers-|case-|vib-|tam-|voicetype-
-JJ	adj	gen-m|num-sg|pers-3h|case-d|vib-|tam-|voicetype-
-JJ	adj	gen-m|num-sg|pers-3h|case-|vib-|tam-|voicetype-
-JJ	adj	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 JJ	adj	gen-m|num-sg|pers-|case-d|vib-|tam-|voicetype-
 JJ	adj	gen-m|num-sg|pers-|case-o|vib-|tam-|voicetype-
-JJ	adj	gen-m|num-sg|pers-|case-|vib-|tam-|voicetype-
-JJ	adj	gen-m|num-|pers-|case-d|vib-|tam-|voicetype-
-JJ	adj	gen-m|num-|pers-|case-o|vib-|tam-|voicetype-
-JJ	adj	gen-m|num-|pers-|case-|vib-|tam-|voicetype-
-JJ	adj	gen-|num-pl|pers-|case-d|vib-|tam-|voicetype-
-JJ	adj	gen-|num-sg|pers-|case-d|vib-|tam-|voicetype-
-JJ	adj	gen-|num-sg|pers-|case-o|vib-|tam-|voicetype-
 JJ	adj	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
 JJ	adj	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
-JJ	adj	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-JJ	any	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-JJ	avy	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
-JJ	avy	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-JJ	n	gen-f|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-JJ	n	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-JJ	n	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
-JJ	n	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-JJ	num	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
-JJ	pn	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
-JJ	punc	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-JJ	unk	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-JJ	v	gen-m|num-sg|pers-|case-|vib-|tam-|voicetype-
-JJ	v	gen-m|num-sg|pers-|case-|vib-कर|tam-kara|voicetype-
 JJC	adj	gen-f|num-pl|pers-|case-d|vib-|tam-|voicetype-
 JJC	adj	gen-f|num-sg|pers-|case-o|vib-|tam-|voicetype-
 JJC	adj	gen-f|num-sg|pers-|case-|vib-|tam-|voicetype-
