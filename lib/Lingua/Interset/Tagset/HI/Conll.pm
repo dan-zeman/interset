@@ -67,18 +67,22 @@ sub _create_atoms
             # NN n f pl 3 d तस्वीरें बार कंपनियां महिलाएं बातें tasvīreṁ bāra kaṁpaniyāṁ mahilāeṁ bāteṁ
             # NN n f pl 3 o महिलाओं विधवाओं कंपनियों बीमारियों रैलियों mahilāoṁ vidhavāoṁ kaṁpaniyoṁ bīmāriyoṁ railiyoṁ
             'NN'   => ['pos' => 'noun', 'nountype' => 'com'],
+            # NNC example: पुलिस (pulisa) in पुलिस स्टेशन (pulisa sṭeśana) = police station
             'NNC'  => ['pos' => 'noun', 'nountype' => 'com'],
             # proper nouns
             # Examples:
-            # সালে (Sālē), খ্রী (Khrī = America), মদনা (Madanā), গণপতিবাবু (Gaṇapatibābu), কলকাতা (Kalakātā = Kolkata)
+            # NNP n m sg 3 d भारत, मंत्री, प्रधानमंत्री, राष्ट्रपति, सिंह (bhārata, maṁtrī, pradhānamaṁtrī, rāṣṭrapati, siṁha) = India, Minister, Prime Minister, President, Singh
+            # NNP n f sg 3 d दिल्ली, कांग्रेस, भाजपा, सरकार, मुंबई (dillī, kāṁgresa, bhājapā, sarakāra, muṁbaī) = Delhi, Congress, BJP, Government, Mumbai
             'NNP'  => ['pos' => 'noun', 'nountype' => 'prop'],
+            # NNPC example: सोनिया (soniyā) in सोनिया गांधी (soniyā gāṁdhī) = Sonia Gandhi
             'NNPC' => ['pos' => 'noun', 'nountype' => 'prop'],
             # location nouns
             # These words are grammatically nouns but they are used to form a sort of postpositions. Often but not always they specify location.
             # For instance, "on the table" would be constructed as "the table's upper side", and the word for "upper side" would be tagged NST.
             # Examples:
-            # সঙ্গে (saṅgē = with), উপর (upara = up, on), কাছে (kāchē = of), মধ্যে (madhyē = in, between), পর (para = after)
+            # NST nst m sg 3 d: साथ (sātha = with), बाद (bāda = then), बीच (bīca = middle), पहले (pahale = first), दौरान (daurāna = during)
             'NST'  => ['pos' => 'noun', 'adpostype' => 'post'],
+            # NSTC example: आस in उसके आस - पास
             'NSTC' => ['pos' => 'noun', 'adpostype' => 'post'],
             # pronouns
             # Examples (note that the "possessive" pronouns are genitive forms of personal pronouns):
@@ -392,7 +396,7 @@ sub encode
 # have added manually tags with empty 'vib' and 'tam' to facilitate generating
 # permitted tags with empty 'other' feature.
 # 3830 tags from the corpus ###!!! what is the number after cleaning?
-# 3419 po cisteni NN
+# 3194 po čištění podstatných jmen až po NSTC
 #------------------------------------------------------------------------------
 sub list
 {
@@ -420,22 +424,6 @@ JJC	adj	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
 JJC	adj	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
 JJC	adj	gen-|num-|pers-|case-|vib-|tam-|voicetype-
 NEG	avy	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NN	_	gen-f|num-sg|pers-3|case-o|vib-0_से|tam-|voicetype-
-NN	_	gen-|num-|pers-|case-|vib-0_के|tam-|voicetype-
-NN	_	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NN	adj	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
-NN	adj	gen-|num-|pers-|case-o|vib-0_का|tam-|voicetype-
-NN	adj	gen-|num-|pers-|case-o|vib-0_के_तौर_पर|tam-|voicetype-
-NN	adj	gen-|num-|pers-|case-o|vib-0_के_रूप_में|tam-|voicetype-
-NN	adj	gen-|num-|pers-|case-o|vib-0_को|tam-|voicetype-
-NN	adj	gen-|num-|pers-|case-o|vib-0_ने|tam-|voicetype-
-NN	adj	gen-|num-|pers-|case-o|vib-0_सहित|tam-|voicetype-
-NN	adj	gen-|num-|pers-|case-o|vib-0_से|tam-|voicetype-
-NN	adj	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
-NN	adj	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NN	avy	gen-|num-|pers-|case-|vib-0_में|tam-|voicetype-
-NN	avy	gen-|num-|pers-|case-|vib-0_से|tam-|voicetype-
-NN	avy	gen-|num-|pers-|case-|vib-|tam-|voicetype-
 NN	n	gen-f|num-pl|pers-3|case-d|vib-|tam-|voicetype-
 NN	n	gen-f|num-pl|pers-3|case-o|vib-0_का_ओर|tam-|voicetype-
 NN	n	gen-f|num-pl|pers-3|case-o|vib-0_का_तरफ|tam-|voicetype-
@@ -828,17 +816,8 @@ NN	n	gen-m|num-sg|pers-3|case-o|vib-0_से_बाहर|tam-|voicetype-
 NN	n	gen-m|num-sg|pers-3|case-o|vib-0_से_लेकर|tam-|voicetype-
 NN	n	gen-m|num-sg|pers-3|case-o|vib-0_से|tam-|voicetype-
 NN	n	gen-m|num-sg|pers-3|case-o|vib-|tam-|voicetype-
-NNC	_	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNC	adj	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NNC	adj	gen-m|num-sg|pers-3|case-d|vib-०|tam-|voicetype-
-NNC	adj	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
-NNC	adj	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
-NNC	adj	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNC	adv	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNC	avy	gen-|num-|pers-|case-|vib-|tam-|voicetype-
 NNC	n	gen-f|num-pl|pers-3|case-d|vib-|tam-|voicetype-
 NNC	n	gen-f|num-pl|pers-3|case-o|vib-|tam-|voicetype-
-NNC	n	gen-f|num-sg|pers-3|case-d|vib-0_से|tam-|voicetype-
 NNC	n	gen-f|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 NNC	n	gen-f|num-sg|pers-3|case-o|vib-|tam-|voicetype-
 NNC	n	gen-m|num-pl|pers-3|case-d|vib-|tam-|voicetype-
@@ -847,28 +826,6 @@ NNC	n	gen-m|num-sg|pers-3|case-d|vib-|tam-o|voicetype-
 NNC	n	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 NNC	n	gen-m|num-sg|pers-3|case-o|vib-0_को|tam-|voicetype-
 NNC	n	gen-m|num-sg|pers-3|case-o|vib-|tam-|voicetype-
-NNC	n	gen-m|num-sg|pers-3|case-|vib-|tam-|voicetype-
-NNC	n	gen-m|num-sg|pers-|case-d|vib-|tam-|voicetype-
-NNC	n	gen-|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NNC	n	gen-|num-sg|pers-3|case-o|vib-0_को|tam-|voicetype-
-NNC	n	gen-|num-sg|pers-3|case-o|vib-0_ने|tam-|voicetype-
-NNC	n	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
-NNC	n	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
-NNC	num	gen-|num-pl|pers-|case-|vib-|tam-|voicetype-
-NNC	num	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNC	pn	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NNC	psp	gen-m|num-sg|pers-|case-o|vib-|tam-|voicetype-
-NNC	psp	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNC	punc	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNC	s	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NNC	unk	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNP	_	gen-|num-|pers-|case-|vib-0_से|tam-|voicetype-
-NNP	_	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNP	adj	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
-NNP	adj	gen-|num-|pers-|case-o|vib-0_का|tam-|voicetype-
-NNP	adj	gen-|num-|pers-|case-o|vib-0_में|tam-|voicetype-
-NNP	adj	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
-NNP	m	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
 NNP	n	gen-f|num-pl|pers-3|case-d|vib-|tam-|voicetype-
 NNP	n	gen-f|num-pl|pers-3|case-o|vib-0_का|tam-|voicetype-
 NNP	n	gen-f|num-pl|pers-3|case-o|vib-0_के_पास|tam-|voicetype-
@@ -879,9 +836,6 @@ NNP	n	gen-f|num-pl|pers-3|case-o|vib-0_ने|tam-|voicetype-
 NNP	n	gen-f|num-pl|pers-3|case-o|vib-0_में|tam-|voicetype-
 NNP	n	gen-f|num-pl|pers-3|case-o|vib-0_से|tam-|voicetype-
 NNP	n	gen-f|num-pl|pers-3|case-o|vib-|tam-|voicetype-
-NNP	n	gen-f|num-sg|pers-3|case-d|vib-0_का|tam-|voicetype-
-NNP	n	gen-f|num-sg|pers-3|case-d|vib-0_के_जरिये|tam-|voicetype-
-NNP	n	gen-f|num-sg|pers-3|case-d|vib-0_बकौल|tam-|voicetype-
 NNP	n	gen-f|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 NNP	n	gen-f|num-sg|pers-3|case-o|vib-0_का_ओर_से|tam-|voicetype-
 NNP	n	gen-f|num-sg|pers-3|case-o|vib-0_का_ओर|tam-|voicetype-
@@ -941,7 +895,6 @@ NNP	n	gen-f|num-sg|pers-3|case-o|vib-0_से_आगे|tam-|voicetype-
 NNP	n	gen-f|num-sg|pers-3|case-o|vib-0_से_बाहर|tam-|voicetype-
 NNP	n	gen-f|num-sg|pers-3|case-o|vib-0_से|tam-|voicetype-
 NNP	n	gen-f|num-sg|pers-3|case-o|vib-|tam-|voicetype-
-NNP	n	gen-f|num-|pers-3|case-o|vib-0_को|tam-|voicetype-
 NNP	n	gen-m|num-pl|pers-3|case-d|vib-|tam-|voicetype-
 NNP	n	gen-m|num-pl|pers-3|case-o|vib-0_का_तरह|tam-|voicetype-
 NNP	n	gen-m|num-pl|pers-3|case-o|vib-0_का|tam-|voicetype-
@@ -955,14 +908,6 @@ NNP	n	gen-m|num-pl|pers-3|case-o|vib-0_पर|tam-|voicetype-
 NNP	n	gen-m|num-pl|pers-3|case-o|vib-0_में|tam-|voicetype-
 NNP	n	gen-m|num-pl|pers-3|case-o|vib-0_से|tam-|voicetype-
 NNP	n	gen-m|num-pl|pers-3|case-o|vib-|tam-|voicetype-
-NNP	n	gen-m|num-sg|pers-3|case-d|vib-0_का|tam-|voicetype-
-NNP	n	gen-m|num-sg|pers-3|case-d|vib-0_के_बीच|tam-|voicetype-
-NNP	n	gen-m|num-sg|pers-3|case-d|vib-0_के_मुताबिक|tam-|voicetype-
-NNP	n	gen-m|num-sg|pers-3|case-d|vib-0_गैलयां|tam-|voicetype-
-NNP	n	gen-m|num-sg|pers-3|case-d|vib-0_जैसा|tam-|voicetype-
-NNP	n	gen-m|num-sg|pers-3|case-d|vib-0_बकौल|tam-|voicetype-
-NNP	n	gen-m|num-sg|pers-3|case-d|vib-0_मध्य_में|tam-|voicetype-
-NNP	n	gen-m|num-sg|pers-3|case-d|vib-0_में|tam-|voicetype-
 NNP	n	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 NNP	n	gen-m|num-sg|pers-3|case-o|vib-0_का_अनुसार|tam-|voicetype-
 NNP	n	gen-m|num-sg|pers-3|case-o|vib-0_का_अपेक्षा|tam-|voicetype-
@@ -1067,103 +1012,10 @@ NNP	n	gen-m|num-sg|pers-3|case-o|vib-0_से_बाहर|tam-|voicetype-
 NNP	n	gen-m|num-sg|pers-3|case-o|vib-0_से_लेकर|tam-|voicetype-
 NNP	n	gen-m|num-sg|pers-3|case-o|vib-0_से|tam-|voicetype-
 NNP	n	gen-m|num-sg|pers-3|case-o|vib-|tam-|voicetype-
-NNP	n	gen-m|num-sg|pers-3|case-|vib-0_का|tam-|voicetype-
-NNP	n	gen-m|num-sg|pers-3|case-|vib-0_ने|tam-|voicetype-
-NNP	n	gen-m|num-sg|pers-3|case-|vib-|tam-|voicetype-
-NNP	n	gen-m|num-sg|pers-|case-d|vib-|tam-|voicetype-
-NNP	n	gen-m|num-sg|pers-|case-o|vib-0_के_तहत|tam-|voicetype-
-NNP	n	gen-m|num-|pers-3|case-o|vib-0_के_खिलाफ|tam-|voicetype-
-NNP	n	gen-m|num-|pers-3|case-o|vib-0_के_तहत|tam-|voicetype-
-NNP	n	gen-m|num-|pers-3|case-o|vib-0_को|tam-|voicetype-
-NNP	n	gen-m|num-|pers-3|case-o|vib-0_में|tam-|voicetype-
-NNP	n	gen-|num-pl|pers-3|case-o|vib-0_का|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-d|vib-0_का|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-d|vib-0_के_बाद|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-d|vib-0_बकौल|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_का_अनुसार|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_का_ओर_से|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_का_तरफ_से|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_का|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_अनुसार|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_अलावा|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_उलट|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_कारण|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_खिलाफ|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_जरिये|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_तहत|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_दौरान|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_द्वारा|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_निकट|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_पास|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_बाद_से|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_बाद|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_बारे_में|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_बीच|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_मध्य_तक|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_मुताबिक|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_लिए|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_समक्ष|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_साथ|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_सामने|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के_हवाला_से|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_के|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_को|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_जैसा|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_जैसे|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_तक|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_द्वारा|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_नायर|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_ने|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_पर|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_बकौल|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_में|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_वाला|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_वाली|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_समेत|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_सहित|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_से_आगे|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_से_पहले|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_से_पीछे|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-0_से|tam-|voicetype-
-NNP	n	gen-|num-sg|pers-3|case-o|vib-|tam-|voicetype-
-NNP	n	gen-|num-|pers-3|case-o|vib-0_द्वारा|tam-|voicetype-
-NNP	n	gen-|num-|pers-3|case-o|vib-0_ने|tam-|voicetype-
-NNP	n	gen-|num-|pers-|case-o|vib-0_का|tam-|voicetype-
-NNP	num	gen-f|num-sg|pers-|case-d|vib-|tam-|voicetype-
-NNP	num	gen-m|num-sg|pers-3|case-o|vib-0_को|tam-|voicetype-
-NNP	num	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
-NNP	num	gen-|num-|pers-|case-o|vib-0_का|tam-|voicetype-
-NNP	num	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
-NNP	num	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNP	pn	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NNP	pn	gen-m|num-sg|pers-3|case-o|vib-|tam-|voicetype-
-NNP	psp	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNP	unk	gen-|num-|pers-|case-o|vib-0_ने|tam-|voicetype-
-NNP	unk	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
-NNP	unk	gen-|num-|pers-|case-|vib-0_का|tam-|voicetype-
-NNP	unk	gen-|num-|pers-|case-|vib-0_को|tam-|voicetype-
-NNP	unk	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNP	v	gen-|num-|pers-3|case-|vib-|tam-|voicetype-
-NNPC	_	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NNPC	_	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNPC	adj	gen-f|num-sg|pers-|case-d|vib-|tam-|voicetype-
-NNPC	adj	gen-f|num-sg|pers-|case-o|vib-|tam-|voicetype-
-NNPC	adj	gen-m|num-pl|pers-|case-d|vib-|tam-|voicetype-
-NNPC	adj	gen-m|num-sg|pers-|case-d|vib-|tam-|voicetype-
-NNPC	adj	gen-m|num-sg|pers-|case-o|vib-|tam-|voicetype-
-NNPC	adj	gen-|num-|pers-3|case-o|vib-|tam-|voicetype-
-NNPC	adj	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
-NNPC	adj	gen-|num-|pers-|case-o|vib-0_से|tam-|voicetype-
-NNPC	adj	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
-NNPC	adj	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNPC	avy	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNPC	c	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 NNPC	n	gen-f|num-pl|pers-3|case-d|vib-|tam-|voicetype-
 NNPC	n	gen-f|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 NNPC	n	gen-f|num-sg|pers-3|case-o|vib-0_का_तरह|tam-|voicetype-
 NNPC	n	gen-f|num-sg|pers-3|case-o|vib-|tam-|voicetype-
-NNPC	n	gen-f|num-|pers-3|case-d|vib-|tam-|voicetype-
 NNPC	n	gen-m|num-pl|pers-3|case-d|vib-|tam-|voicetype-
 NNPC	n	gen-m|num-pl|pers-3|case-o|vib-|tam-|voicetype-
 NNPC	n	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
@@ -1171,83 +1023,10 @@ NNPC	n	gen-m|num-sg|pers-3|case-o|vib-0_का|tam-|voicetype-
 NNPC	n	gen-m|num-sg|pers-3|case-o|vib-0_के|tam-|voicetype-
 NNPC	n	gen-m|num-sg|pers-3|case-o|vib-0_ने|tam-|voicetype-
 NNPC	n	gen-m|num-sg|pers-3|case-o|vib-|tam-|voicetype-
-NNPC	n	gen-m|num-sg|pers-3|case-|vib-|tam-|voicetype-
-NNPC	n	gen-m|num-sg|pers-|case-d|vib-|tam-|voicetype-
-NNPC	n	gen-m|num-sg|pers-|case-o|vib-|tam-|voicetype-
-NNPC	n	gen-m|num-|pers-3|case-d|vib-|tam-|voicetype-
-NNPC	n	gen-m|num-|pers-|case-o|vib-|tam-|voicetype-
-NNPC	n	gen-|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NNPC	n	gen-|num-sg|pers-3|case-o|vib-0_ने|tam-|voicetype-
-NNPC	n	gen-|num-sg|pers-3|case-o|vib-|tam-|voicetype-
-NNPC	n	gen-|num-sg|pers-|case-d|vib-|tam-|voicetype-
-NNPC	n	gen-|num-|pers-3|case-d|vib-|tam-|voicetype-
-NNPC	n	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
-NNPC	n	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
-NNPC	null	gen-f|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NNPC	num	gen-f|num-sg|pers-|case-o|vib-|tam-|voicetype-
-NNPC	num	gen-m|num-sg|pers-3|case-o|vib-|tam-|voicetype-
-NNPC	num	gen-m|num-sg|pers-|case-o|vib-|tam-|voicetype-
-NNPC	num	gen-|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NNPC	num	gen-|num-|pers-3|case-d|vib-|tam-|voicetype-
-NNPC	num	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
-NNPC	num	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
-NNPC	num	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNPC	pn	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NNPC	pn	gen-|num-sg|pers-2|case-d|vib-|tam-|voicetype-
-NNPC	pn	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNPC	psp	gen-f|num-sg|pers-|case-o|vib-|tam-|voicetype-
-NNPC	psp	gen-m|num-pl|pers-|case-d|vib-|tam-|voicetype-
-NNPC	psp	gen-m|num-pl|pers-|case-o|vib-|tam-|voicetype-
-NNPC	psp	gen-m|num-sg|pers-|case-o|vib-|tam-|voicetype-
-NNPC	psp	gen-m|num-|pers-|case-o|vib-|tam-|voicetype-
-NNPC	psp	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNPC	punc	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNPC	s	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NNPC	unk	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NNPC	v	gen-m|num-sg|pers-3|case-|vib-गा|tam-gA|voicetype-
-NNPC	v	gen-m|num-sg|pers-3|case-|vib-ता|tam-wA|voicetype-
-NNPC	v	gen-|num-sg|pers-2|case-|vib-ओ|tam-ao|voicetype-
-NNPC	v	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NST	_	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NST	n	gen-f|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NST	n	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NST	n	gen-m|num-sg|pers-3|case-o|vib-0_के|tam-|voicetype-
-NST	nst	gen-f|num-pl|pers-3|case-d|vib-|tam-|voicetype-
-NST	nst	gen-f|num-pl|pers-3|case-o|vib-|tam-|voicetype-
 NST	nst	gen-f|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NST	nst	gen-f|num-sg|pers-3|case-o|vib-|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-3|case-d|vib-0_का|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-3|case-d|vib-0_के_मुकाबले|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-3|case-d|vib-0_तक|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-3|case-d|vib-0_वाला|tam-|voicetype-
 NST	nst	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-3|case-o|vib-0_का_तरह|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-3|case-o|vib-0_का_भांति|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-3|case-o|vib-0_का|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-3|case-o|vib-0_के_मुकाबले|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-3|case-o|vib-0_के|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-3|case-o|vib-0_जैसा|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-3|case-o|vib-0_तक|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-3|case-o|vib-0_में|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-3|case-o|vib-0_वाला|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-3|case-o|vib-0_से|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-3|case-o|vib-|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-|case-d|vib-|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-|case-o|vib-0_का|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-|case-o|vib-0_के_मुकाबला|tam-|voicetype-
-NST	nst	gen-m|num-sg|pers-|case-o|vib-|tam-|voicetype-
-NST	nst	gen-m|num-|pers-|case-d|vib-|tam-|voicetype-
-NST	nst	gen-|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NST	nst	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NST	num	gen-m|num-sg|pers-|case-d|vib-|tam-|voicetype-
-NST	psp	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NST	punc	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NSTC	nst	gen-f|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NSTC	nst	gen-m|num-sg|pers-3|case-d|vib-0_का|tam-|voicetype-
 NSTC	nst	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-NSTC	nst	gen-|num-|pers-|case-|vib-0_का|tam-|voicetype-
 NULL	_	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-NULL	_	gen-|num-|pers-|case-|vib-|tam-|voicetype-active
 PRP	_	gen-|num-|pers-|case-|vib-|tam-|voicetype-
 PRP	adj	gen-m|num-sg|pers-|case-d|vib-|tam-|voicetype-
 PRP	avy	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
