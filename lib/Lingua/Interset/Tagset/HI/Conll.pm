@@ -396,7 +396,7 @@ sub encode
 # have added manually tags with empty 'vib' and 'tam' to facilitate generating
 # permitted tags with empty 'other' feature.
 # 3830 tags from the corpus ###!!! what is the number after cleaning?
-# 2751 po čištění pomocných sloves
+# 2678 po čištění
 #------------------------------------------------------------------------------
 sub list
 {
@@ -3038,7 +3038,6 @@ VM	v	gen-|num-|pers-|case-|vib-या_जा+या१|tam-yA|voicetype-
 VM	v	gen-|num-|pers-|case-|vib-या_रख+ना|tam-yA|voicetype-
 VM	v	gen-|num-|pers-|case-|vib-या|tam-yA|voicetype-
 VM	v	gen-|num-|pers-|case-|vib-या|tam-yA|voicetype-active
-VMC	avy	gen-|num-sg|pers-3|case-|vib-एं|tam-eM|voicetype-active
 VMC	v	gen-f|num-pl|pers-|case-|vib-या_हो+ता|tam-yA|voicetype-active
 VMC	v	gen-f|num-sg|pers-3|case-|vib-0_रह+या_है|tam-|voicetype-active
 VMC	v	gen-f|num-sg|pers-|case-|vib-ता|tam-wA|voicetype-
@@ -3061,24 +3060,15 @@ VMC	v	gen-|num-|pers-|case-|vib-0_के_लिए|tam-|voicetype-
 VMC	v	gen-|num-|pers-|case-|vib-|tam-|voicetype-
 VMC	v	gen-|num-|pers-|case-|vib-ना_में|tam-nA|voicetype-
 VMC	v	gen-|num-|pers-|case-|vib-ना|tam-nA|voicetype-
-WQ	adj	gen-f|num-sg|pers-|case-|vib-|tam-|voicetype-
-WQ	adj	gen-m|num-pl|pers-|case-d|vib-|tam-|voicetype-
-WQ	adv	gen-|num-|pers-|case-|vib-|tam-|voicetype-
-WQ	avy	gen-|num-|pers-|case-|vib-|tam-|voicetype-
 WQ	pn	gen-f|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 WQ	pn	gen-f|num-sg|pers-3|case-o|vib-|tam-|voicetype-
 WQ	pn	gen-f|num-sg|pers-3|case-o|vib-का|tam-kA|voicetype-
-WQ	pn	gen-f|num-sg|pers-3|case-|vib-|tam-|voicetype-
-WQ	pn	gen-f|num-sg|pers-|case-|vib-|tam-|voicetype-
-WQ	pn	gen-f|num-|pers-|case-d|vib-|tam-|voicetype-
 WQ	pn	gen-m|num-pl|pers-3|case-d|vib-|tam-|voicetype-
 WQ	pn	gen-m|num-pl|pers-3|case-o|vib-0_को|tam-|voicetype-
 WQ	pn	gen-m|num-pl|pers-3|case-o|vib-|tam-|voicetype-
-WQ	pn	gen-m|num-pl|pers-|case-o|vib-|tam-|voicetype-
 WQ	pn	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 WQ	pn	gen-m|num-sg|pers-3|case-o|vib-|tam-|voicetype-
 WQ	pn	gen-m|num-sg|pers-3|case-o|vib-का|tam-kA|voicetype-
-WQ	pn	gen-m|num-sg|pers-|case-d|vib-|tam-|voicetype-
 WQ	pn	gen-|num-pl|pers-3|case-o|vib-|tam-|voicetype-
 WQ	pn	gen-|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 WQ	pn	gen-|num-sg|pers-3|case-o|vib-|tam-|voicetype-
