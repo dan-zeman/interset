@@ -2,6 +2,7 @@
 
 Drivers:
 * HI::Conll
+* DE::Smor
 
 
 
