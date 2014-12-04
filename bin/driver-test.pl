@@ -112,7 +112,7 @@ sub test
 {
     my $tagset = shift; # e.g. "cs::pdt"
     my $permutations_allowed = 0;
-    my $without_other_unknown_allowed = 0;
+    my $without_other_unknown_allowed = 1;
     my $starttime = time();
     print("Testing $tagset ...");
     my $driver = get_driver_object($tagset);

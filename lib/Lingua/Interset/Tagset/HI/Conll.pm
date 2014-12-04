@@ -58,41 +58,41 @@ sub _create_atoms
             # UNKC (1), <fs (1), VGF (1)
             # common nouns
             # Examples:
-            # NN n m sg 3 d शुरू आज फैसला समय काम  śurū āja phaisalā samaya kāma = beginning day decision time work
-            # NN n m sg 3 o अध्यक्ष नेता सचिव सांसद प्रवक्ता adhyakṣa netā saciva sāṁsada pravaktā
-            # NN n m pl 3 d लोग रुपये नेता सदस्य अधिकारी loga rupaye netā sadasya adhikārī
-            # NN n m pl 3 o नेताओं लोगों अफसरों किसानों मंत्रियों netāoṁ logoṁ aphasaroṁ kisānoṁ maṁtriyoṁ
-            # NN n f sg 3 d सरकार बात जानकारी बार मांग sarakāra bāta jānakārī bāra māṁga
-            # NN n f sg 3 o पत्नी शिक्षा पुलिस मां राजधानी patnī śikṣā pulisa māṁ rājadhānī
-            # NN n f pl 3 d तस्वीरें बार कंपनियां महिलाएं बातें tasvīreṁ bāra kaṁpaniyāṁ mahilāeṁ bāteṁ
-            # NN n f pl 3 o महिलाओं विधवाओं कंपनियों बीमारियों रैलियों mahilāoṁ vidhavāoṁ kaṁpaniyoṁ bīmāriyoṁ railiyoṁ
-            'NN'   => ['pos' => 'noun', 'nountype' => 'com'],
+            # NN n m sg 3 d शुरू (śurū = beginning), आज (āja = day), फैसला (phaisalā = decision), समय (samaya = time), काम (kāma = work)
+            # NN n m sg 3 o अध्यक्ष (adhyakṣa), नेता (netā), सचिव (saciva), सांसद (sāṁsada), प्रवक्ता (pravaktā)
+            # NN n m pl 3 d लोग (loga = people), रुपये (rupaye = rupees), नेता (netā), सदस्य (sadasya), अधिकारी (adhikārī)
+            # NN n m pl 3 o नेताओं (netāoṁ), लोगों (logoṁ), अफसरों (aphasaroṁ), किसानों (kisānoṁ), मंत्रियों (maṁtriyoṁ)
+            # NN n f sg 3 d सरकार (sarakāra), बात (bāta), जानकारी (jānakārī), बार (bāra), मांग (māṁga)
+            # NN n f sg 3 o पत्नी (patnī), शिक्षा (śikṣā), पुलिस (pulisa), मां (māṁ), राजधानी (rājadhānī)
+            # NN n f pl 3 d तस्वीरें (tasvīreṁ), बार (bāra), कंपनियां (kaṁpaniyāṁ), महिलाएं (mahilāeṁ), बातें (bāteṁ)
+            # NN n f pl 3 o महिलाओं (mahilāoṁ), विधवाओं (vidhavāoṁ), कंपनियों (kaṁpaniyoṁ), बीमारियों (bīmāriyoṁ), रैलियों (railiyoṁ)
+            "NN\tn"  => ['pos' => 'noun', 'nountype' => 'com'],
             # NNC example: पुलिस (pulisa) in पुलिस स्टेशन (pulisa sṭeśana) = police station
-            'NNC'  => ['pos' => 'noun', 'nountype' => 'com'],
+            "NNC\tn" => ['pos' => 'noun', 'nountype' => 'com', 'other' => {'compound' => 'yes'}],
             # proper nouns
             # Examples:
-            # NNP n m sg 3 d भारत, मंत्री, प्रधानमंत्री, राष्ट्रपति, सिंह (bhārata, maṁtrī, pradhānamaṁtrī, rāṣṭrapati, siṁha) = India, Minister, Prime Minister, President, Singh
-            # NNP n f sg 3 d दिल्ली, कांग्रेस, भाजपा, सरकार, मुंबई (dillī, kāṁgresa, bhājapā, sarakāra, muṁbaī) = Delhi, Congress, BJP, Government, Mumbai
-            'NNP'  => ['pos' => 'noun', 'nountype' => 'prop'],
+            # NNP n m sg 3 d भारत (bhārata = India), मंत्री (maṁtrī = Minister), प्रधानमंत्री (pradhānamaṁtrī = Prime Minister), राष्ट्रपति (rāṣṭrapati = President), सिंह (siṁha = Singh)
+            # NNP n f sg 3 d दिल्ली (dillī = Delhi), कांग्रेस (kāṁgresa = Congress), भाजपा (bhājapā = BJP), सरकार (sarakāra = Government), मुंबई (muṁbaī = Mumbai)
+            "NNP\tn"  => ['pos' => 'noun', 'nountype' => 'prop'],
             # NNPC example: सोनिया (soniyā) in सोनिया गांधी (soniyā gāṁdhī) = Sonia Gandhi
-            'NNPC' => ['pos' => 'noun', 'nountype' => 'prop'],
+            "NNPC\tn" => ['pos' => 'noun', 'nountype' => 'prop', 'other' => {'compound' => 'yes'}],
             # location nouns
             # These words are grammatically nouns but they are used to form a sort of postpositions. Often but not always they specify location.
             # For instance, "on the table" would be constructed as "the table's upper side", and the word for "upper side" would be tagged NST.
             # Examples:
             # NST nst m sg 3 d: साथ (sātha = with), बाद (bāda = then), बीच (bīca = middle), पहले (pahale = first), दौरान (daurāna = during)
-            'NST'  => ['pos' => 'noun', 'adpostype' => 'post'],
+            "NST\tnst"  => ['pos' => 'noun', 'adpostype' => 'post'],
             # NSTC example: आस in उसके आस - पास
-            'NSTC' => ['pos' => 'noun', 'adpostype' => 'post'],
+            "NSTC\tnst" => ['pos' => 'noun', 'adpostype' => 'post', 'other' => {'compound' => 'yes'}],
             # pronouns
             # Examples (note that the "possessive" pronouns are genitive forms of personal pronouns):
-            # তার (tāra = his), আমি (āmi = I), আমার (āmāra = my), এখন (ēkhana = now), সে (sē = he)
-            'PRP'  => ['pos' => 'noun', 'prontype' => 'prs'],
-            'PRPC' => ['pos' => 'noun', 'prontype' => 'prs'],
+            # मैं (I), आप (you), यह (he/she/it), वह (he/she/it), हम (we), ये (they), वे (they)
+            "PRP\tpn"  => ['pos' => 'noun', 'prontype' => 'prs'],
+            "PRPC\tpn" => ['pos' => 'noun', 'prontype' => 'prs', 'other' => {'compound' => 'yes'}],
             # question words
             # Examples:
-            # কি (ki = what), কী (kī = what), কেন (kēna = why), কোথায় (kōthāẏa = where), কে (kē = who)
-            'WQ'   => ['pos' => 'noun', 'prontype' => 'int'],
+            # कौन (kauna = who), क्या (kyā = what), क्यों (kyoṁ = why)
+            "WQ\tpn"   => ['pos' => 'noun', 'prontype' => 'int'],
             # adjectives
             # Examples:
             # masc sing direct ... पूरा (púrá), बड़ा (bará), नया (najá), अच्छा (aččhá), कड़ा (kará)
@@ -106,110 +106,142 @@ sub _create_atoms
             # Indifferent to gender and number:
             # direct ........ भारी (bhárí), पूर्व (púrva), विशेष (viśéš), मुख्य (mukhja), अन्य (anja)
             # oblique ....... अन्य (anja), पूर्व (púrva), भारतीय (bháratíja), स्थित (sthita), वरिष्ठ (barištha)
-            'JJ'   => ['pos' => 'adj'],
+            "JJ\tadj"   => ['pos' => 'adj'],
             # compound adjectives
             # Examples:
             # गैर (gaira) in गैर कानूनी (gaira kánúní = non legal = illegal)
-            'JJC'  => ['pos' => 'adj'],
+            "JJC\tadj"  => ['pos' => 'adj', 'other' => {'compound' => 'yes'}],
             # demonstratives
             # यह (yaha = this), वह (vaha = that), जो (jo = that), यही (yahī = this only)
-            'DEM'  => ['pos' => 'adj', 'prontype' => 'dem'],
+            "DEM\tpn"  => ['pos' => 'adj', 'prontype' => 'dem'],
             # quantifiers
             # Examples:
-            # একটু (ēkaṭu = a little), কিছুটা (kichuṭā = somewhat), কোনও (kōna'ō = no), খুব (khuba = very), বহু (bahu = many), সব (saba = all)
-            'QF'   => ['pos' => 'adj', 'prontype' => 'ind'],
-            'QFC'  => ['pos' => 'adj', 'prontype' => 'ind'],
+            # कुछ (some), कई (several), सभी (all), कम (less), ज्यादा (more, much), काफी (enough), अधिक (more)
+            "QF\tavy"   => ['pos' => 'adj', 'prontype' => 'ind'],
+            "QFC\tavy"  => ['pos' => 'adj', 'prontype' => 'ind', 'other' => {'compound' => 'yes'}],
             # numerals
             # Examples:
-            # ১৬৯৮ (1698), ১৮৯ (189), এক (ēka = one), সতের (satēra = seventeen), হাজার (hājāra = thousand)
-            'QC'   => ['pos' => 'num', 'numtype' => 'card'],
-            'QCC'  => ['pos' => 'num', 'numtype' => 'card'],
-            'QO'   => ['pos' => 'adj', 'numtype' => 'ord'],
+            # एक (one), दो (two), तीन (three), करोड़ (crore), लाख (lakh), १० (10)
+            # दोनों (both), सैकड़ों (hundreds), हजारों (thousands), दसियों (tens), लाखों (lakhs, millions)
+            "QC\tnum"   => ['pos' => 'num', 'numtype' => 'card'],
+            # QCC example: एक in एक लाख; तीन in तीन हजार करोड़ (three thousand crore = thirty billion)
+            "QCC\tnum"  => ['pos' => 'num', 'numtype' => 'card', 'other' => {'compound' => 'yes'}],
+            # Masculine ordinal examples: दूसरा (other), पहला (first), तीसरा (third), पहले (first), दूसरे (second)
+            # Feminine ordinal examples: दूसरी (other), पहली (first), पांचवीं (fifth), चौथी (fourth), 19वीं (19th)
+            "QO\tnum"   => ['pos' => 'adj', 'numtype' => 'ord'],
             # main verbs (documentation says "verb-finite", are they really always finite forms?)
             # Examples:
-            # করে (karē = do), হয় (haẏa = be), হয়ে (haẏē = be), ছিল (chila = was), করতে (karatē = do)
-            'VM'   => ['pos' => 'verb'],
-            'VMC'  => ['pos' => 'verb'],
+            # कहना (kahanā = say), करना (karanā = do), मानना (mānanā = believe), देना (denā = give), होना (honā = be)
+            "VM\tv"   => ['pos' => 'verb'],
+            "VMC\tv"  => ['pos' => 'verb', 'other' => {'compound' => 'yes'}],
             # auxiliary verbs
-            # Only three occurrences in the corpus:
-            # চায় (cāẏa = want), নেবেন (nēbēna = will), যায় (yāẏa = can)
-            'VAUX' => ['pos' => 'verb', 'verbtype' => 'aux'],
+            # है (hai = is), जाना (jānā = go), देना (denā = give), पाना (pānā = get), रहना (rahanā = stay)
+            "VAUX\tv" => ['pos' => 'verb', 'verbtype' => 'aux'],
             # adverbs
             # Examples:
-            # শুধু (śudhu = only), তারপর (tārapara = then), আর (āra), আবার (ābāra = again), ক্রমে (kramē = gradually)
-            'RB'   => ['pos' => 'adv'],
-            'RBC'  => ['pos' => 'adv'],
+            # फिर (then), जल्द (soon), वहीं (there), फिलहाल (for the time being), लगातार (continuously)
+            "RB\tadv"  => ['pos' => 'adv'],
+            "RBC\tadv" => ['pos' => 'adv', 'other' => {'compound' => 'yes'}],
             # intensifiers
             # सबसे (sabase = most), बहुत (bahuta = very), बेहद (behada = vastly), सर्वाधिक (sarvādhika = most), अति (ati = very, most)
-            'INTF' => ['pos' => 'adv'],
+            "INTF\tavy" => ['pos' => 'adv', 'advtype' => 'deg'],
             # negation
             # Example:
             # नहीं (nahīṁ = not), न (na), बिना (binā = without)
-            'NEG'  => ['pos' => 'part', 'prontype' => 'neg', 'negativeness' => 'neg'],
+            "NEG\tavy"  => ['pos' => 'part', 'prontype' => 'neg', 'negativeness' => 'neg'],
             # postpositions
             # Examples:
-            # সহ (saha = with)
-            'PSP'  => ['pos' => 'adp', 'adpostype' => 'post'],
+            # possessive, with gender and number: का, के, की
+            # without features: में, को, के, ने, से, पर, लिए
+            "PSP\tpsp"  => ['pos' => 'adp', 'adpostype' => 'post'],
             # conjunctions
             # Examples:
             # कि (ki = that), और (aura = and), व (va = and), लेकिन (lekina = but), तो (to = then)
-            'CC'   => ['pos' => 'conj'],
-            'UT'   => ['pos' => 'conj', 'conjtype' => 'sub'],
+            "CC\tavy"   => ['pos' => 'conj'],
             # particles
             # Examples:
-            # তো (tō), করে (karē), যেন (yēna), আর (āra), যে (yē)
-            'RP'   => ['pos' => 'part'],
+            # भी (bhī = also), ही (hī = only), तो (to = then), करीब (karība = nearly), सिर्फ (sirpha = only)
+            "RP\tavy"   => ['pos' => 'part'],
             # interjections
             # Examples:
-            # আচ্ছা (ācchā = well), কি (ki = what), খিলখিল (khilakhila = haha), ছি (chi = bo), ত (ta)
-            'INJ'  => ['pos' => 'int'],
+            # हां (hāṁ = yes), वाह (vāha = wow), अरे (are = hey)
+            "INJ\tavy"  => ['pos' => 'int'],
             # reduplicatives
-            # Only one occurrence in the corpus:
-            # যার (yāra)
-            'RDP'  => ['echo' => 'rdp'],
+            # The RDP tag seems to be the only one that can occur with multiple different values of the cat feature.
+            # Reduplicated pronouns: only the reflexive pronoun apanā. Example: the second apane in: अपने - अपने एकाउंट पर (apane - apane ekāuṁṭa para = on your own account)
+            # Reduplicated avy: only one example: the second kaī in: कई - कई (numerous)
+            "RDP\tadj"  => ['pos' => 'adj', 'echo' => 'rdp'],
+            "RDP\tadv"  => ['pos' => 'adv', 'echo' => 'rdp'],
+            "RDP\tavy"  => ['pos' => 'adj', 'prontype' => 'ind', 'echo' => 'rdp'],
+            "RDP\tn"    => ['pos' => 'noun', 'echo' => 'rdp'],
+            "RDP\tnst"  => ['pos' => 'noun', 'adpostype' => 'post', 'echo' => 'rdp'],
+            "RDP\tnum"  => ['pos' => 'num', 'echo' => 'rdp'],
+            "RDP\tpn"   => ['pos' => 'noun', 'prontype' => 'prs', 'echo' => 'rdp'],
+            "RDP\tv"    => ['pos' => 'verb', 'echo' => 'rdp'],
             # echo words
+            # No occurrence in the corpus.
             'ECH'  => ['echo' => 'ech'],
-            # undocumented (compounds???), two word forms, four occurrences:
-            # টুকরো (Ṭukarō = Trivia), যে (yē = that)
-            'XC'   => [],
             # punctuation
             # Examples (the corpus contains European punctuation):
-            # , . - " ? ; : !
-            'SYM'  => ['pos' => 'punc'],
+            # । (danda = .) , - . '
+            "SYM\tpunc" => ['pos' => 'punc'],
             # foreign or unknown words
-            'UNK'  => ['foreign' => 'foreign'],
+            "UNK\tunk"  => ['foreign' => 'foreign'],
+            "UNKC\tunk" => ['foreign' => 'foreign', 'other' => {'compound' => 'yes'}],
             # The 'NULL' tag is used for artificial NULL nodes.
-            'NULL' => ['other' => {'pos' => 'null'}]
+            "NULL\t_"   => ['other' => {'pos' => 'null'}]
         },
         'encode_map' =>
-
-            { 'pos' => { 'noun' => { 'adpostype' => { 'post' => 'NST',
-                                                      '@'    => { 'prontype' => { ''    => { 'nountype' => { 'prop' => 'NNP',
-                                                                                                             '@'    => 'NN' }},
-                                                                                  'int' => 'WQ',
-                                                                                  '@'   => 'PRP' }}}},
-                         'adj'  => { 'numtype' => { 'ord' => 'QO',
-                                                    '@'   => { 'prontype' => { 'dem' => 'DEM',
-                                                                               'ind' => 'QF',
-                                                                               'tot' => 'QF',
-                                                                               'neg' => 'QF',
-                                                                               '@'   => 'JJ' }}}},
-                         'num'  => 'QC',
-                         'verb' => { 'verbtype' => { 'aux' => 'VAUX',
-                                                     '@'   => 'VM' }},
-                         'adv'  => 'RB',
-                         'adp'  => 'PSP',
-                         'conj' => 'CC',
-                         'part' => { 'prontype' => { 'neg' => 'NEG',
-                                                     '@'   => 'RP' }},
-                         'int'  => 'INJ',
-                         'punc' => 'SYM',
-                         '@'    => { 'echo' => { 'rdp' => 'RDP',
-                                                 '@'   => { 'other/pos' => { 'null' => 'NULL',
-                                                                             '@'    => 'XC' }}}}}}
+        {
+              'pos' => { 'noun' => { 'adpostype' => { 'post' => { 'other/compound' => { 'yes' => "NSTC\tnst",
+                                                                                        '@'   => { 'echo' => { 'rdp' => "RDP\tnst",
+                                                                                                               '@'   => "NST\tnst" }}}},
+                                                      '@'    => { 'prontype' => { ''    => { 'nountype' => { 'prop' => { 'other/compound' => { 'yes' => "NNPC\tn",
+                                                                                                                                               '@'   => "NNP\tn" }},
+                                                                                                             '@'    => { 'other/compound' => { 'yes' => "NNC\tn",
+                                                                                                                                               '@'   => { 'echo' => { 'rdp' => "RDP\tn",
+                                                                                                                                                                      '@'   => "NN\tn" }}}}}},
+                                                                                  'int' => "WQ\tpn",
+                                                                                  '@'   => { 'other/compound' => { 'yes' => "PRPC\tpn",
+                                                                                                                   '@'   => { 'echo' => { 'rdp' => "RDP\tpn",
+                                                                                                                                          '@'   => "PRP\tpn" }}}}}}}},
+                         'adj'  => { 'numtype' => { 'ord' => "QO\tnum",
+                                                    '@'   => { 'prontype' => { 'dem' => "DEM\tpn",
+                                                                               'ind' => { 'other/compound' => { 'yes' => "QFC\tavy",
+                                                                                                                '@'   => { 'echo' => { 'rdp' => "RDP\tavy",
+                                                                                                                                       '@'   => "QF\tavy" }}}},
+                                                                               'tot' => { 'other/compound' => { 'yes' => "QFC\tavy",
+                                                                                                                '@'   => "QF\tavy" }},
+                                                                               'neg' => { 'other/compound' => { 'yes' => "QFC\tavy",
+                                                                                                                '@'   => "QF\tavy" }},
+                                                                               '@'   => { 'other/compound' => { 'yes' => "JJC\tadj",
+                                                                                                                '@'   => { 'echo' => { 'rdp' => "RDP\tadj",
+                                                                                                                                       '@'   => "JJ\tadj" }}}}}}}},
+                         'num'  => { 'other/compound' => { 'yes' => "QCC\tnum",
+                                                           '@'   => { 'echo' => { 'rdp' => "RDP\tnum",
+                                                                                  '@'   => "QC\tnum" }}}},
+                         'verb' => { 'verbtype' => { 'aux' => "VAUX\tv",
+                                                     '@'   => { 'echo' => { 'rdp' => "RDP\tv",
+                                                                            '@'   => { 'other/compound' => { 'yes' => "VMC\tv",
+                                                                                                             '@'   => "VM\tv" }}}}}},
+                         'adv'  => { 'advtype' => { 'deg' => "INTF\tavy",
+                                                    '@'   => { 'other/compound' => { 'yes' => "RBC\tadv",
+                                                                                     '@'   => { 'echo' => { 'rdp' => "RDP\tadv",
+                                                                                                            '@'   => "RB\tadv" }}}}}},
+                         'adp'  => "PSP\tpsp",
+                         'conj' => "CC\tavy",
+                         'part' => { 'prontype' => { 'neg' => "NEG\tavy",
+                                                     '@'   => "RP\tavy" }},
+                         'int'  => "INJ\tavy",
+                         'punc' => "SYM\tpunc",
+                         '@'    => { 'echo' => { 'rdp' => "RDP",
+                                                 '@'   => { 'other/pos' => { 'null' => "NULL\t_",
+                                                                             '@'    => { 'other/compound' => { 'yes' => "UNKC\tunk",
+                                                                                                               '@'   => "UNK\tunk" }}}}}}}
+        }
     );
     # GENDER ####################
-    $atoms{gend} = $self->create_simple_atom
+    $atoms{gen} = $self->create_simple_atom
     (
         'intfeature' => 'gender',
         'simple_decode_map' =>
@@ -238,34 +270,128 @@ sub _create_atoms
         'decode_map' =>
         {
             '1'   => ['person' => '1'],
+            '1h'  => ['person' => '1', 'politeness' => 'pol'],
             '2'   => ['person' => '2'],
+            '2h'  => ['person' => '2', 'politeness' => 'pol'],
             '3'   => ['person' => '3'],
-            ###!!! There are also pers-4, pers-5, pers-6 and pers-7. So far I have not been able to figure out what these values mean.
-            '4'   => ['other' => {'person' => '4'}],
-            '5'   => ['other' => {'person' => '5'}],
-            '6'   => ['other' => {'person' => '6'}],
-            '7'   => ['other' => {'person' => '7'}],
-            'any' => ['person' => '1|2|3']
+            '3h'  => ['person' => '3', 'politeness' => 'pol']
         },
         'encode_map' =>
-
-            { 'other/person' => { '4' => '4',
-                                  '5' => '5',
-                                  '6' => '6',
-                                  '7' => '7',
-                                  '@' => { 'person' => { '1|2|3' => 'any',
-                                                         '1'     => '1',
-                                                         '2'     => '2',
-                                                         '3'     => '3' }}}}
+        {
+            'person' => { '1' => { 'politeness' => { 'pol' => '1h',
+                                                     '@'   => '1' }},
+                          '2' => { 'politeness' => { 'pol' => '2h',
+                                                     '@'   => '2' }},
+                          '3' => { 'politeness' => { 'pol' => '3h',
+                                                     '@'   => '3' }}}
+        }
     );
     # CASE ####################
-    $atoms{case} = $self->create_simple_atom
+    # The case feature is either empty, or 'd' (direct case), or 'o' (oblique case).
+    # Nouns do not have other case forms (except for vocative plural but it did not appear in the corpus).
+    # Pronouns attach postpositions as suffixes, thus we have more "cases". But the case feature is also 'o',
+    # and the suffixes are encoded in the tam feature. Thus we must encode any non-empty, non-direct case as 'o'.
+    $atoms{case} = $self->create_atom
     (
-        'intfeature' => 'case',
-        'simple_decode_map' =>
+        'surfeature' => 'case',
+        'decode_map' =>
         {
-            'd' => 'nom', # direct
-            'o' => 'acc'  # oblique
+            'd' => ['case' => 'nom'], # direct
+            'o' => ['case' => 'acc']  # oblique
+        },
+        'encode_map' =>
+        {
+            'case' => { 'nom' => 'd',
+                        ''    => '',
+                        '@'   => 'o' }
+        }
+    );
+    # TENSE, ASPECT AND MODALITY (TAM) ####################
+    # The value of the tam feature often corresponds to the value of the vib feature and they differ only in the script used: "vib-गा|tam-gA".
+    # When they do not match, then vib contains tam. Vib is the larger context including surrounding words (postpositions, auxiliaries)
+    # while tam always reflects only the morphemes directly in the current word. For example, with verbs we can encounter "vib-ता_था|tam-wA",
+    # meaning that the current word is an imperfect participle and it takes part in periphrastic past tense: वह नियुक्ति करता था = lit. "he appointment doing was".
+    # Unlike vibhakti, tam does not apply to nouns because their vibhakti is always derived from postpositions and other words.
+    # It does however apply to pronouns where some postpositions are transformed to suffixes.
+    # (Note: With pronouns, tam has no more to do with tense, aspect or modality. It is rather an extension to the case system.)
+    $atoms{tam} = $self->create_atom
+    (
+        'surfeature' => 'tam',
+        'decode_map' =>
+        {
+            # ADDITIONAL CASES OF PRONOUNS
+            # kā ... possessive / genitive
+            # मेरा (my), आपका (your), इसका (his/her/its), उसका (his/her/its), हमारा (our), इनका (their), उनका (their)
+            'kA' => ['case' => 'acc|gen', 'poss' => 'poss'],
+            # ke ... also genitive suffix, but the whole phrase is in the oblique case
+            # (so we could say that we have a possessive pronoun in the oblique case)
+            # This is often used with compound postpositions, e.g. इसके बारे में (isake bāre meṁ = about it):
+            # the final postposition में (meṁ = in) requires that its argument is in the oblique case.
+            # Not sure what the direct case of this argument should be, though. इसका बार (isakā bāra = its time)?
+            # मेरे (my), आपके (your), इसके (his/her/its), उसके (his/her/its), हमारे (our), इनके (their), उनके (their)
+            'ke' => ['case' => 'acc|gen', 'poss' => 'poss', 'other' => {'possedcase' => 'obl'}],
+            # ko ... dative
+            # मुझे (me), आपको (you), इसे (him/her/it), उसे (him/her/it), हमें (us), तुम्हें (you), इन्हें (them), उन्हें (them)
+            'ko' => ['case' => 'acc|dat'],
+            # ne ... ergative (used with transitive verbs in past tense)
+            # मैंने (I), आपने (you), इसने (he/she/it), उसने (he/she/it), हमने (we), तुमने (you), इन्होंने (they), उन्होंने (they)
+            'ne' => ['case' => 'acc|erg'],
+            # se ... instrumental
+            # मुझसे (with me), आपसे (with you), इससे (with him/her/it), उससे (with him/her/it), हमसे (with us), इनसे (with them), उनसे (with them)
+            'se' => ['case' => 'acc|ins'],
+            # meṁ ... inessive
+            # मुझमें (in me), इसमें (in him/her/it), उसमें (in him/her/it), हममें (in us), इनमें (in them), उनमें (in them)
+            'meM' => ['case' => 'acc|ine'],
+            # VERB FORM, MOOD, TENSE AND ASPECT
+            # hai ... simple present form of the verb "to be"
+            # हूं, हूँ (I am), है (he/she/it is), हैं (we/you/they are)
+            'hE' => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pres'],
+            # thā ... simple past form of the verb "to be"
+            # था, थे, थी, थीं (was, were)
+            'WA' => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'past'],
+            # gā ... future tense
+            # करूंगा, करूँगी (I will do), करेगा (he will do), करेगी (she will do), करेंगे, करेंगी (we will do)
+            'gA' => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'fut'],
+            # eṁ ... subjunctive
+            # करे, करें (would do)
+            'eM' => ['verbform' => 'fin', 'mood' => 'sub'],
+            # o ... familiar/informal imperative
+            # करो (do), जाओ (go)
+            'ao' => ['verbform' => 'fin', 'mood' => 'imp', 'politeness' => 'inf'],
+            # tā ... imperfect participle
+            # करता, करते, करती (doing)
+            'wA' => ['verbform' => 'part', 'aspect' => 'imp'],
+            # yā ... perfect participle
+            # किया, किए, किये, की, कीं (done)
+            'yA' => ['verbform' => 'part', 'aspect' => 'perf'],
+            # yā1 ... perfect participle, special form of the verb "to go", instead of जाया etc.
+            # गया, गए, गये, गई, गयी, गईं (gone)
+            'yA1' => ['verbform' => 'part', 'aspect' => 'perf', 'variant' => '1'],
+            # kara ... transgressive, adverbial participle
+            # लेकर (having taken)
+            'kara' => ['verbform' => 'trans'],
+            # nā ... infinitive
+            # करना, करने, करनी (to do)
+            'nA' => ['verbform' => 'inf'],
+        },
+        'encode_map' =>
+        {
+            'verbform' => { 'inf'   => 'nA',
+                            'part'  => { 'aspect' => { 'imp' => 'wA',
+                                                       '@'   => { 'variant' => { '1' => 'yA1',
+                                                                                 '@' => 'yA' }}}},
+                            'trans' => 'kara',
+                            '@'     => { 'mood' => { 'sub' => 'eM',
+                                                     'imp' => 'ao',
+                                                     '@'   => { 'tense' => { 'fut'  => 'gA',
+                                                                             'pres' => 'hE',
+                                                                             'past' => 'WA',
+                         '@'   => { 'poss' => { 'poss' => { 'other/possedcase' => { 'obl' => 'ke',
+                                                                                    '@'   => 'kA' }},
+                                                '@'    => { 'case' => { 'dat' => 'ko',
+                                                                        'erg' => 'ne',
+                                                                        'ins' => 'se',
+                                                                        'ine' => 'meM' }}}}}}}}}
         }
     );
     # VOICE ####################
@@ -294,12 +420,10 @@ sub decode
     my $fs = Lingua::Interset::FeatureStructure->new();
     $fs->set_tagset('hi::conll');
     my $atoms = $self->atoms();
-    # Two components: part of speech and features
+    # Three components: part-of-speech tag, part-of-speech category feature, and (the other) features
     # Hindi CoNLL files are converted from the Shakti Standard Format.
-    # The CPOS column contains the chunk tag and is not considered part of the tag for this driver.
-    # The POS column contains part of speech of the chunk headword.
-    # example: NN\tcat-n|gend-|num-sg|pers-|case-d|vib-0|tam-0
-    my ($pos, $features) = split(/\s+/, $tag);
+    # example: NN\tn\tgen-|num-sg|pers-|case-d|vib-|tam-
+    my ($pos, $subpos, $features) = split(/\s+/, $tag);
     $features = '' if($features eq '_');
     my @features_conll = split(/\|/, $features);
     my %features_conll;
@@ -314,15 +438,15 @@ sub decode
             $features_conll{$f} = $f;
         }
     }
-    $atoms->{pos}->decode_and_merge_hard($pos, $fs);
-    foreach my $name ('gend', 'num', 'pers', 'case')
+    $atoms->{pos}->decode_and_merge_hard("$pos\t$subpos", $fs);
+    foreach my $name ('gen', 'num', 'pers', 'case', 'tam', 'voicetype')
     {
         if(defined($features_conll{$name}) && $features_conll{$name} ne '')
         {
             $atoms->{$name}->decode_and_merge_hard($features_conll{$name}, $fs);
         }
     }
-    ###!!! Proper decoding of vibhakti and tense-aspect-modality is not implemented yet.
+    ###!!! Proper decoding of vibhakti is not implemented yet.
     ###!!! A slévání podrysů při plnění other by mělo být k dispozici už ve FeatureStructure, teď je to jen v Atomu, takže to tady nemůžu použít, grr!!!
     my %othervibtam;
     my $ovt_nonempty = 0;
@@ -359,14 +483,14 @@ sub encode
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $atoms = $self->atoms();
     my $pos = $atoms->{pos}->encode($fs);
-    my @feature_names = ('gend', 'num', 'pers', 'case', 'vib', 'tam');
+    my @feature_names = ('gen', 'num', 'pers', 'case', 'vib', 'tam', 'voicetype');
     my @features;
     foreach my $name (@feature_names)
     {
         my $value = '';
-        if($name =~ m/^(vib|tam)$/)
+        if($name eq 'vib')
         {
-            $value = $fs->get_other_subfeature('bn::conll', $name);
+            $value = $fs->get_other_subfeature('hi::conll', $name);
         }
         else
         {
@@ -395,14 +519,13 @@ sub encode
 # from the corpus, i.e. other tags probably exist but were not seen here. We
 # have added manually tags with empty 'vib' and 'tam' to facilitate generating
 # permitted tags with empty 'other' feature.
-# 3830 tags from the corpus ###!!! what is the number after cleaning?
-# 2678 po čištění
+# 3830 tags from the corpus
+# 2677 tags after cleaning
 #------------------------------------------------------------------------------
 sub list
 {
     my $self = shift;
     my $list = <<end_of_list
-CC	_	gen-|num-|pers-|case-|vib-|tam-|voicetype-
 CC	avy	gen-|num-|pers-|case-|vib-|tam-|voicetype-
 DEM	pn	gen-|num-pl|pers-3|case-d|vib-|tam-|voicetype-
 DEM	pn	gen-|num-pl|pers-3|case-o|vib-|tam-|voicetype-
@@ -420,6 +543,7 @@ JJ	adj	gen-m|num-sg|pers-|case-d|vib-|tam-|voicetype-
 JJ	adj	gen-m|num-sg|pers-|case-o|vib-|tam-|voicetype-
 JJ	adj	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
 JJ	adj	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
+JJ	adj	gen-|num-|pers-|case-|vib-|tam-|voicetype-
 JJC	adj	gen-|num-|pers-|case-d|vib-|tam-|voicetype-
 JJC	adj	gen-|num-|pers-|case-o|vib-|tam-|voicetype-
 JJC	adj	gen-|num-|pers-|case-|vib-|tam-|voicetype-
@@ -692,7 +816,6 @@ NN	n	gen-m|num-sg|pers-3|case-o|vib-0_का_वजह_से|tam-|voicetype-
 NN	n	gen-m|num-sg|pers-3|case-o|vib-0_का_साथ|tam-|voicetype-
 NN	n	gen-m|num-sg|pers-3|case-o|vib-0_का_हैसियत_से|tam-|voicetype-
 NN	n	gen-m|num-sg|pers-3|case-o|vib-0_का|tam-|voicetype-
-NN	n	gen-m|num-sg|pers-3|case-o|vib-0_का|tam-|voicetype-active
 NN	n	gen-m|num-sg|pers-3|case-o|vib-0_की_तरह|tam-|voicetype-
 NN	n	gen-m|num-sg|pers-3|case-o|vib-0_की|tam-|voicetype-
 NN	n	gen-m|num-sg|pers-3|case-o|vib-0_के_अंतर्गत|tam-|voicetype-
@@ -822,7 +945,6 @@ NNC	n	gen-f|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 NNC	n	gen-f|num-sg|pers-3|case-o|vib-|tam-|voicetype-
 NNC	n	gen-m|num-pl|pers-3|case-d|vib-|tam-|voicetype-
 NNC	n	gen-m|num-pl|pers-3|case-o|vib-0_के|tam-|voicetype-
-NNC	n	gen-m|num-sg|pers-3|case-d|vib-|tam-o|voicetype-
 NNC	n	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 NNC	n	gen-m|num-sg|pers-3|case-o|vib-0_को|tam-|voicetype-
 NNC	n	gen-m|num-sg|pers-3|case-o|vib-|tam-|voicetype-
@@ -1027,33 +1149,41 @@ NST	nst	gen-f|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 NST	nst	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 NSTC	nst	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 NULL	_	gen-|num-|pers-|case-|vib-|tam-|voicetype-
+PRP	pn	gen-f|num-pl|pers-1|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-f|num-pl|pers-1|case-o|vib-0_ओर_से|tam-kA|voicetype-
 PRP	pn	gen-f|num-pl|pers-1|case-o|vib-का|tam-kA|voicetype-
-PRP	pn	gen-f|num-pl|pers-1|case-|vib-का|tam-kA|voicetype-
-PRP	pn	gen-f|num-pl|pers-3|case-d|vib-का|tam-kA|voicetype-
+PRP	pn	gen-f|num-pl|pers-1|case-o|vib-|tam-|voicetype-
+PRP	pn	gen-f|num-pl|pers-3|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-f|num-pl|pers-3|case-o|vib-0_वजह_से|tam-kA|voicetype-
 PRP	pn	gen-f|num-pl|pers-3|case-o|vib-का|tam-kA|voicetype-
+PRP	pn	gen-f|num-pl|pers-3|case-o|vib-|tam-|voicetype-
 PRP	pn	gen-f|num-sg|pers-1|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-f|num-sg|pers-1|case-o|vib-का|tam-kA|voicetype-
-PRP	pn	gen-f|num-sg|pers-1|case-|vib-का|tam-kA|voicetype-
-PRP	pn	gen-f|num-sg|pers-2h|case-d|vib-का|tam-kA|voicetype-
+PRP	pn	gen-f|num-sg|pers-1|case-o|vib-|tam-|voicetype-
+PRP	pn	gen-f|num-sg|pers-2h|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-f|num-sg|pers-2h|case-o|vib-का|tam-kA|voicetype-
+PRP	pn	gen-f|num-sg|pers-2h|case-o|vib-|tam-|voicetype-
+PRP	pn	gen-f|num-sg|pers-3h|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-f|num-sg|pers-3h|case-o|vib-0_ओर_से|tam-kA|voicetype-
 PRP	pn	gen-f|num-sg|pers-3h|case-o|vib-0_तरफ_से|tam-kA|voicetype-
 PRP	pn	gen-f|num-sg|pers-3h|case-o|vib-0_वजह_से|tam-kA|voicetype-
 PRP	pn	gen-f|num-sg|pers-3h|case-o|vib-का|tam-kA|voicetype-
 PRP	pn	gen-f|num-sg|pers-3h|case-o|vib-को|tam-ko|voicetype-
-PRP	pn	gen-f|num-sg|pers-3|case-d|vib-का|tam-kA|voicetype-
+PRP	pn	gen-f|num-sg|pers-3h|case-o|vib-|tam-|voicetype-
+PRP	pn	gen-f|num-sg|pers-3|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-f|num-sg|pers-3|case-o|vib-0_ओर_से|tam-kA|voicetype-
 PRP	pn	gen-f|num-sg|pers-3|case-o|vib-0_ओर|tam-kA|voicetype-
 PRP	pn	gen-f|num-sg|pers-3|case-o|vib-0_वजह_से|tam-kA|voicetype-
 PRP	pn	gen-f|num-sg|pers-3|case-o|vib-का|tam-kA|voicetype-
 PRP	pn	gen-f|num-sg|pers-3|case-o|vib-ने|tam-ne|voicetype-
-PRP	pn	gen-f|num-|pers-1|case-d|vib-का|tam-kA|voicetype-
+PRP	pn	gen-f|num-sg|pers-3|case-o|vib-|tam-|voicetype-
+PRP	pn	gen-f|num-|pers-1|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-f|num-|pers-1|case-o|vib-का|tam-kA|voicetype-
-PRP	pn	gen-f|num-|pers-1|case-|vib-का|tam-kA|voicetype-
+PRP	pn	gen-f|num-|pers-1|case-o|vib-|tam-|voicetype-
 PRP	pn	gen-f|num-|pers-3h|case-o|vib-का|tam-kA|voicetype-
+PRP	pn	gen-f|num-|pers-3h|case-o|vib-|tam-|voicetype-
 PRP	pn	gen-f|num-|pers-3|case-o|vib-0_ओर_से|tam-|voicetype-
+PRP	pn	gen-f|num-|pers-3|case-o|vib-|tam-|voicetype-
 PRP	pn	gen-m|num-pl|pers-1|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-m|num-pl|pers-1|case-o|vib-0_पास|tam-kA|voicetype-
 PRP	pn	gen-m|num-pl|pers-1|case-o|vib-0_पास|tam-ke|voicetype-
@@ -1062,8 +1192,9 @@ PRP	pn	gen-m|num-pl|pers-1|case-o|vib-0_साथ|tam-ke|voicetype-
 PRP	pn	gen-m|num-pl|pers-1|case-o|vib-0_सामने|tam-ke|voicetype-
 PRP	pn	gen-m|num-pl|pers-1|case-o|vib-|tam-|voicetype-
 PRP	pn	gen-m|num-pl|pers-1|case-o|vib-का|tam-kA|voicetype-
-PRP	pn	gen-m|num-pl|pers-1|case-|vib-का|tam-kA|voicetype-
+PRP	pn	gen-m|num-pl|pers-3h|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-m|num-pl|pers-3h|case-o|vib-का|tam-kA|voicetype-
+PRP	pn	gen-m|num-pl|pers-3h|case-o|vib-|tam-|voicetype-
 PRP	pn	gen-m|num-pl|pers-3|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-m|num-pl|pers-3|case-o|vib-0_अलावा|tam-ke|voicetype-
 PRP	pn	gen-m|num-pl|pers-3|case-o|vib-0_कारण|tam-ke|voicetype-
@@ -1079,16 +1210,21 @@ PRP	pn	gen-m|num-pl|pers-3|case-o|vib-0_संग|tam-ke|voicetype-
 PRP	pn	gen-m|num-pl|pers-3|case-o|vib-0_साथ|tam-ke|voicetype-
 PRP	pn	gen-m|num-pl|pers-3|case-o|vib-का|tam-kA|voicetype-
 PRP	pn	gen-m|num-pl|pers-3|case-o|vib-के|tam-ke|voicetype-
-PRP	pn	gen-m|num-sg|pers-1|case-d|vib-का|tam-kA|voicetype-
+PRP	pn	gen-m|num-pl|pers-3|case-o|vib-|tam-|voicetype-
+PRP	pn	gen-m|num-sg|pers-1|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-m|num-sg|pers-1|case-o|vib-0_साथ|tam-kA|voicetype-
 PRP	pn	gen-m|num-sg|pers-1|case-o|vib-का|tam-kA|voicetype-
 PRP	pn	gen-m|num-sg|pers-1|case-o|vib-के|tam-ke|voicetype-
-PRP	pn	gen-m|num-sg|pers-1|case-|vib-का|tam-kA|voicetype-
+PRP	pn	gen-m|num-sg|pers-1|case-o|vib-|tam-|voicetype-
+PRP	pn	gen-m|num-sg|pers-2h|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-m|num-sg|pers-2h|case-o|vib-0_पास|tam-ke|voicetype-
 PRP	pn	gen-m|num-sg|pers-2h|case-o|vib-0_लिए|tam-ke|voicetype-
 PRP	pn	gen-m|num-sg|pers-2h|case-o|vib-0_सामने|tam-ke|voicetype-
 PRP	pn	gen-m|num-sg|pers-2h|case-o|vib-का|tam-kA|voicetype-
+PRP	pn	gen-m|num-sg|pers-2h|case-o|vib-|tam-|voicetype-
+PRP	pn	gen-m|num-sg|pers-2|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-m|num-sg|pers-2|case-o|vib-0_बारे_में|tam-ke|voicetype-
+PRP	pn	gen-m|num-sg|pers-2|case-o|vib-|tam-|voicetype-
 PRP	pn	gen-m|num-sg|pers-3h|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-m|num-sg|pers-3h|case-o|vib-0_अलावा|tam-ke|voicetype-
 PRP	pn	gen-m|num-sg|pers-3h|case-o|vib-0_ऊपर|tam-ke|voicetype-
@@ -1108,9 +1244,8 @@ PRP	pn	gen-m|num-sg|pers-3h|case-o|vib-के|tam-ke|voicetype-
 PRP	pn	gen-m|num-sg|pers-3h|case-o|vib-को|tam-ko|voicetype-
 PRP	pn	gen-m|num-sg|pers-3h|case-o|vib-ने|tam-ne|voicetype-
 PRP	pn	gen-m|num-sg|pers-3h|case-o|vib-से|tam-se|voicetype-
-PRP	pn	gen-m|num-sg|pers-3|case-d|vib-0_साथ|tam-|voicetype-
+PRP	pn	gen-m|num-sg|pers-3h|case-o|vib-|tam-|voicetype-
 PRP	pn	gen-m|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-PRP	pn	gen-m|num-sg|pers-3|case-d|vib-का|tam-kA|voicetype-
 PRP	pn	gen-m|num-sg|pers-3|case-o|vib-0_अनुसार|tam-ke|voicetype-
 PRP	pn	gen-m|num-sg|pers-3|case-o|vib-0_अलावा|tam-ke|voicetype-
 PRP	pn	gen-m|num-sg|pers-3|case-o|vib-0_आगे|tam-ke|voicetype-
@@ -1165,19 +1300,23 @@ PRP	pn	gen-m|num-sg|pers-3|case-o|vib-के|tam-ke|voicetype-
 PRP	pn	gen-m|num-sg|pers-3|case-o|vib-ने|tam-ne|voicetype-
 PRP	pn	gen-m|num-sg|pers-3|case-o|vib-में|tam-meM|voicetype-
 PRP	pn	gen-m|num-sg|pers-3|case-o|vib-से|tam-se|voicetype-
+PRP	pn	gen-m|num-sg|pers-3|case-o|vib-|tam-|voicetype-
+PRP	pn	gen-m|num-sg|pers-|case-d|vib-|tam-|voicetype-
+PRP	pn	gen-m|num-|pers-|case-d|vib-|tam-|voicetype-
+PRP	pn	gen-m|num-|pers-|case-o|vib-|tam-|voicetype-
 PRP	pn	gen-|num-pl|pers-1|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-|num-pl|pers-1|case-o|vib-0_को|tam-|voicetype-
 PRP	pn	gen-|num-pl|pers-1|case-o|vib-0_जैसे|tam-|voicetype-
 PRP	pn	gen-|num-pl|pers-1|case-o|vib-0_बीच|tam-ke|voicetype-
 PRP	pn	gen-|num-pl|pers-1|case-o|vib-0_में_से|tam-|voicetype-
-PRP	pn	gen-|num-pl|pers-1|case-o|vib-|tam-|voicetype-
 PRP	pn	gen-|num-pl|pers-1|case-o|vib-का|tam-kA|voicetype-
 PRP	pn	gen-|num-pl|pers-1|case-o|vib-को|tam-ko|voicetype-
 PRP	pn	gen-|num-pl|pers-1|case-o|vib-ने|tam-ne|voicetype-
 PRP	pn	gen-|num-pl|pers-1|case-o|vib-में|tam-meM|voicetype-
-PRP	pn	gen-|num-pl|pers-1|case-o|vib-से|tam-se|voicetype-
-PRP	pn	gen-|num-pl|pers-1|case-|vib-0_लिए|tam-ke|voicetype-
+PRP	pn	gen-|num-pl|pers-1|case-o|vib-|tam-|voicetype-
+PRP	pn	gen-|num-pl|pers-2|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-|num-pl|pers-2|case-o|vib-को|tam-ko|voicetype-
+PRP	pn	gen-|num-pl|pers-2|case-o|vib-|tam-|voicetype-
 PRP	pn	gen-|num-pl|pers-3|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-|num-pl|pers-3|case-o|vib-0_अलावा|tam-ke|voicetype-
 PRP	pn	gen-|num-pl|pers-3|case-o|vib-0_का|tam-|voicetype-
@@ -1202,12 +1341,12 @@ PRP	pn	gen-|num-pl|pers-3|case-o|vib-|tam-|voicetype-
 PRP	pn	gen-|num-pl|pers-3|case-o|vib-का|tam-kA|voicetype-
 PRP	pn	gen-|num-pl|pers-3|case-o|vib-को|tam-ko|voicetype-
 PRP	pn	gen-|num-pl|pers-3|case-o|vib-ने|tam-ne|voicetype-
-PRP	pn	gen-|num-pl|pers-3|case-o|vib-में|tam-eM|voicetype-
 PRP	pn	gen-|num-pl|pers-3|case-o|vib-में|tam-meM|voicetype-
-PRP	pn	gen-|num-pl|pers-3|case-o|vib-में|tam-me|voicetype-
 PRP	pn	gen-|num-pl|pers-3|case-o|vib-से|tam-se|voicetype-
-PRP	pn	gen-|num-pl|pers-3|case-|vib-|tam-|voicetype-
+PRP	pn	gen-|num-pl|pers-|case-d|vib-|tam-|voicetype-
+PRP	pn	gen-|num-sg|pers-1h|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-|num-sg|pers-1h|case-o|vib-ने|tam-ne|voicetype-
+PRP	pn	gen-|num-sg|pers-1h|case-o|vib-|tam-|voicetype-
 PRP	pn	gen-|num-sg|pers-1|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-|num-sg|pers-1|case-o|vib-0_जैसा|tam-ke|voicetype-
 PRP	pn	gen-|num-sg|pers-1|case-o|vib-|tam-|voicetype-
@@ -1216,9 +1355,7 @@ PRP	pn	gen-|num-sg|pers-1|case-o|vib-को|tam-ko|voicetype-
 PRP	pn	gen-|num-sg|pers-1|case-o|vib-ने|tam-ne|voicetype-
 PRP	pn	gen-|num-sg|pers-1|case-o|vib-में|tam-meM|voicetype-
 PRP	pn	gen-|num-sg|pers-1|case-o|vib-से|tam-se|voicetype-
-PRP	pn	gen-|num-sg|pers-1|case-|vib-0_लिए|tam-ke|voicetype-
 PRP	pn	gen-|num-sg|pers-2h|case-d|vib-|tam-|voicetype-
-PRP	pn	gen-|num-sg|pers-2h|case-d|vib-को|tam-ko|voicetype-
 PRP	pn	gen-|num-sg|pers-2h|case-o|vib-0_पास|tam-ke|voicetype-
 PRP	pn	gen-|num-sg|pers-2h|case-o|vib-0_से|tam-|voicetype-
 PRP	pn	gen-|num-sg|pers-2h|case-o|vib-|tam-|voicetype-
@@ -1226,7 +1363,9 @@ PRP	pn	gen-|num-sg|pers-2h|case-o|vib-का|tam-kA|voicetype-
 PRP	pn	gen-|num-sg|pers-2h|case-o|vib-को|tam-ko|voicetype-
 PRP	pn	gen-|num-sg|pers-2h|case-o|vib-ने|tam-ne|voicetype-
 PRP	pn	gen-|num-sg|pers-2h|case-o|vib-से|tam-se|voicetype-
+PRP	pn	gen-|num-sg|pers-2|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-|num-sg|pers-2|case-o|vib-ने|tam-ne|voicetype-
+PRP	pn	gen-|num-sg|pers-2|case-o|vib-|tam-|voicetype-
 PRP	pn	gen-|num-sg|pers-3h|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-|num-sg|pers-3h|case-o|vib-0_अलावा|tam-ke|voicetype-
 PRP	pn	gen-|num-sg|pers-3h|case-o|vib-0_खिलाफ|tam-ke|voicetype-
@@ -1244,10 +1383,7 @@ PRP	pn	gen-|num-sg|pers-3h|case-o|vib-ने|tam-ne|voicetype-
 PRP	pn	gen-|num-sg|pers-3h|case-o|vib-ने|tam-|voicetype-
 PRP	pn	gen-|num-sg|pers-3h|case-o|vib-में|tam-meM|voicetype-
 PRP	pn	gen-|num-sg|pers-3h|case-o|vib-से|tam-se|voicetype-
-PRP	pn	gen-|num-sg|pers-3|case-d|vib-0_के_लिए|tam-|voicetype-
-PRP	pn	gen-|num-sg|pers-3|case-d|vib-0_बारे_में|tam-|voicetype-
 PRP	pn	gen-|num-sg|pers-3|case-d|vib-|tam-|voicetype-
-PRP	pn	gen-|num-sg|pers-3|case-d|vib-को|tam-kO|voicetype-
 PRP	pn	gen-|num-sg|pers-3|case-o|vib-0_अतिरिक्त|tam-ke|voicetype-
 PRP	pn	gen-|num-sg|pers-3|case-o|vib-0_अलावा|tam-ke|voicetype-
 PRP	pn	gen-|num-sg|pers-3|case-o|vib-0_आगे|tam-ke|voicetype-
@@ -1296,14 +1432,12 @@ PRP	pn	gen-|num-sg|pers-3|case-o|vib-0_वजह_से|tam-kA|voicetype-
 PRP	pn	gen-|num-sg|pers-3|case-o|vib-0_समक्ष|tam-ke|voicetype-
 PRP	pn	gen-|num-sg|pers-3|case-o|vib-0_साथ|tam-ke|voicetype-
 PRP	pn	gen-|num-sg|pers-3|case-o|vib-0_से|tam-meM|voicetype-
-PRP	pn	gen-|num-sg|pers-3|case-o|vib-0_से|tam-me|voicetype-
 PRP	pn	gen-|num-sg|pers-3|case-o|vib-0_से|tam-|voicetype-
 PRP	pn	gen-|num-sg|pers-3|case-o|vib-|tam-|voicetype-
 PRP	pn	gen-|num-sg|pers-3|case-o|vib-का|tam-kA|voicetype-
 PRP	pn	gen-|num-sg|pers-3|case-o|vib-को|tam-ko|voicetype-
 PRP	pn	gen-|num-sg|pers-3|case-o|vib-ने|tam-ne|voicetype-
 PRP	pn	gen-|num-sg|pers-3|case-o|vib-में|tam-meM|voicetype-
-PRP	pn	gen-|num-sg|pers-3|case-o|vib-में|tam-me|voicetype-
 PRP	pn	gen-|num-sg|pers-3|case-o|vib-से|tam-se|voicetype-
 PRP	pn	gen-|num-sg|pers-|case-d|vib-|tam-|voicetype-
 PRP	pn	gen-|num-sg|pers-|case-o|vib-0_से|tam-|voicetype-
@@ -1378,6 +1512,7 @@ QO	num	gen-m|num-sg|pers-|case-o|vib-|tam-|voicetype-
 QO	num	gen-m|num-|pers-|case-d|vib-|tam-|voicetype-
 QO	num	gen-|num-pl|pers-|case-o|vib-0_का|tam-|voicetype-
 QO	num	gen-|num-pl|pers-|case-o|vib-0_से|tam-|voicetype-
+QO	num	gen-|num-pl|pers-|case-o|vib-|tam-|voicetype-
 QO	num	gen-|num-pl|pers-|case-|vib-|tam-|voicetype-
 QO	num	gen-|num-|pers-|case-|vib-|tam-|voicetype-
 RB	adv	gen-|num-|pers-|case-|vib-|tam-|voicetype-
@@ -1595,7 +1730,6 @@ VM	v	gen-f|num-sg|pers-3|case-d|vib-ना|tam-nA|voicetype-
 VM	v	gen-f|num-sg|pers-3|case-d|vib-या|tam-yA|voicetype-active
 VM	v	gen-f|num-sg|pers-3|case-o|vib-ना_जा_रह+या_है|tam-nA|voicetype-active
 VM	v	gen-f|num-sg|pers-3|case-o|vib-ना_वाला_है|tam-nA|voicetype-active
-VM	v	gen-f|num-sg|pers-3|case-o|vib-ना_वाला|tam-nA_vAlA|voicetype-
 VM	v	gen-f|num-sg|pers-3|case-|vib-0_आ+या_है|tam-|voicetype-active
 VM	v	gen-f|num-sg|pers-3|case-|vib-0_उठ+ता_है|tam-|voicetype-active
 VM	v	gen-f|num-sg|pers-3|case-|vib-0_उठ+या_है|tam-|voicetype-active
@@ -1786,7 +1920,6 @@ VM	v	gen-f|num-sg|pers-|case-|vib-या_हो+या|tam-yA|voicetype-
 VM	v	gen-f|num-sg|pers-|case-|vib-या|tam-yA|voicetype-
 VM	v	gen-f|num-sg|pers-|case-|vib-या|tam-yA|voicetype-active
 VM	v	gen-f|num-sg|pers-|case-|vib-या१|tam-yA1|voicetype-active
-VM	v	gen-f|num-|pers-3|case-o|vib-ना_वाला|tam-nA_vAlA|voicetype-
 VM	v	gen-f|num-|pers-|case-d|vib-ना|tam-nA|voicetype-
 VM	v	gen-f|num-|pers-|case-o|vib-ना_का_खातिर|tam-nA|voicetype-
 VM	v	gen-f|num-|pers-|case-o|vib-ना_का_जगह|tam-nA|voicetype-
@@ -1886,7 +2019,6 @@ VM	v	gen-m|num-pl|pers-3|case-|vib-ना_लग+ता_है|tam-nA|voicetype-
 VM	v	gen-m|num-pl|pers-3|case-|vib-ना_लग+या_है|tam-nA|voicetype-active
 VM	v	gen-m|num-pl|pers-3|case-|vib-ना_लग+या|tam-nA|voicetype-active
 VM	v	gen-m|num-pl|pers-3|case-|vib-ना_वाला_है|tam-nA|voicetype-active
-VM	v	gen-m|num-pl|pers-3|case-|vib-ना_वाला|tam-nA_vAlA|voicetype-
 VM	v	gen-m|num-pl|pers-3|case-|vib-ना_है|tam-nA|voicetype-active
 VM	v	gen-m|num-pl|pers-3|case-|vib-ना_हो+गा|tam-nA|voicetype-active
 VM	v	gen-m|num-pl|pers-3|case-|vib-या_आ+एं|tam-yA|voicetype-active
@@ -2343,7 +2475,6 @@ VM	v	gen-m|num-sg|pers-|case-|vib-0_ले+या_हो+ता|tam-|voicetype-a
 VM	v	gen-m|num-sg|pers-|case-|vib-0_सक+ता_था|tam-|voicetype-active
 VM	v	gen-m|num-sg|pers-|case-|vib-|tam-|voicetype-
 VM	v	gen-m|num-sg|pers-|case-|vib-|tam-|voicetype-active
-VM	v	gen-m|num-sg|pers-|case-|vib-ए|tam-e|voicetype-active
 VM	v	gen-m|num-sg|pers-|case-|vib-एं|tam-eM|voicetype-
 VM	v	gen-m|num-sg|pers-|case-|vib-एं|tam-eM|voicetype-active
 VM	v	gen-m|num-sg|pers-|case-|vib-एं|tam-eM|voicetype-passive
@@ -2525,7 +2656,6 @@ VM	v	gen-|num-pl|pers-3|case-|vib-0_ले+गा|tam-|voicetype-active
 VM	v	gen-|num-pl|pers-3|case-|vib-0_सक+एं|tam-|voicetype-active
 VM	v	gen-|num-pl|pers-3|case-|vib-0_सक+गा|tam-|voicetype-active
 VM	v	gen-|num-pl|pers-3|case-|vib-0_सक+ता|tam-|voicetype-active
-VM	v	gen-|num-pl|pers-3|case-|vib-|tam-o|voicetype-active
 VM	v	gen-|num-pl|pers-3|case-|vib-एं_जा_रह+एं_है|tam-eM|voicetype-passive
 VM	v	gen-|num-pl|pers-3|case-|vib-एं|tam-eM|voicetype-
 VM	v	gen-|num-pl|pers-3|case-|vib-एं|tam-eM|voicetype-active
@@ -2554,7 +2684,6 @@ VM	v	gen-|num-pl|pers-3|case-|vib-या_हो+या_है|tam-yA|voicetype-a
 VM	v	gen-|num-pl|pers-3|case-|vib-या|tam-yA|voicetype-
 VM	v	gen-|num-pl|pers-3|case-|vib-या|tam-yA|voicetype-active
 VM	v	gen-|num-pl|pers-3|case-|vib-है|tam-hE|voicetype-active
-VM	v	gen-|num-pl|pers-3|case-|vib-हैं|tam-hEM|voicetype-active
 VM	v	gen-|num-pl|pers-|case-d|vib-ना|tam-nA|voicetype-
 VM	v	gen-|num-pl|pers-|case-o|vib-ना_का|tam-nA|voicetype-
 VM	v	gen-|num-pl|pers-|case-o|vib-ना_के|tam-nA|voicetype-
@@ -2640,7 +2769,6 @@ VM	v	gen-|num-sg|pers-2h|case-|vib-0_ले+एं|tam-|voicetype-active
 VM	v	gen-|num-sg|pers-2h|case-|vib-0_सक+ता|tam-|voicetype-active
 VM	v	gen-|num-sg|pers-2h|case-|vib-|tam-|voicetype-active
 VM	v	gen-|num-sg|pers-2h|case-|vib-एं|tam-eM|voicetype-active
-VM	v	gen-|num-sg|pers-2h|case-|vib-ओ|tam-ao|voicetype-active
 VM	v	gen-|num-sg|pers-2h|case-|vib-ना_चाह+एं|tam-nA|voicetype-active
 VM	v	gen-|num-sg|pers-2h|case-|vib-ना_चाह+गा|tam-nA|voicetype-active
 VM	v	gen-|num-sg|pers-2h|case-|vib-है|tam-hE|voicetype-active
@@ -3015,8 +3143,6 @@ VM	v	gen-|num-|pers-|case-|vib-एं|tam-eM|voicetype-active
 VM	v	gen-|num-|pers-|case-|vib-कर|tam-kara|voicetype-
 VM	v	gen-|num-|pers-|case-|vib-कर|tam-kara|voicetype-active
 VM	v	gen-|num-|pers-|case-|vib-कर|tam-kara|voicetype-passive
-VM	v	gen-|num-|pers-|case-|vib-कर|tam-kar|voicetype-
-VM	v	gen-|num-|pers-|case-|vib-के|tam-ke|voicetype-
 VM	v	gen-|num-|pers-|case-|vib-ता_वक्त|tam-wA|voicetype-
 VM	v	gen-|num-|pers-|case-|vib-ता_समय|tam-wA|voicetype-
 VM	v	gen-|num-|pers-|case-|vib-ता|tam-wA|voicetype-
