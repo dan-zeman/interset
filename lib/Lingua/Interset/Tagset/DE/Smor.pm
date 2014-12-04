@@ -71,8 +71,12 @@ sub _create_atoms
             '+POSTP'   => ['pos' => 'adp', 'adpostype' => 'post'],
             '+PPRO'    => ['pos' => 'noun', 'prontype' => 'prs'],
             '+PREP'    => ['pos' => 'adp', 'adpostype' => 'prep'],
-            '+PREPART' => ['pos' => 'adp', 'adpostype' => 'prep', 'prontype' => 'preppron'],
-            '+PROADV'  => ['pos' => 'adv', 'prontype' => 'dem'],
+            '+PREPART' => ['pos' => 'adp', 'adpostype' => 'preppron'],
+            # dabei, dadurch, dagegen, damit, danach, daran, darauf, daraus, darunter, darüber, davor, dazu,
+            # demnach, dran, drauf, draus, drunter, hieran, hierauf, wobei, wodurch, womit
+            '+PROADV'  => ['pos' => 'adv', 'prontype' => 'dem|rel'],
+            # answer particle: bitte, doch, ja, nein, nö, schon
+            # negative particle: nicht, net
             '+PTCL'    => ['pos' => 'part'],
             '+PUNCT'   => ['pos' => 'punc'],
             '+REL'     => ['pos' => 'noun', 'prontype' => 'rel'],
@@ -89,17 +93,159 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'pos' => { 'noun' => '+NN',
-                       'adj'  => '+ADJ',
+            'pos' => { 'noun' => { 'prontype' => { 'dem' => '+DEM',
+                                                   'ind' => '+INDEF',
+                                                   'prs' => { 'poss' => { 'poss' => '+POSS',
+                                                                          '@'    => '+PPRO' }},
+                                                   'rcp' => '+PPRO',
+                                                   'rel' => '+REL',
+                                                   '@'   => { 'numtype' => { 'card' => '+CARD',
+                                                                             '@'    => { 'nountype' => { 'prop' => '+NPROP',
+                                                                                                         '@'    => '+NN' }}}}}},
+                       'adj'  => { 'prontype' => { 'art' => '+ART',
+                                                   'dem' => '+DEM',
+                                                   'ind' => '+INDEF',
+                                                   'prs' => '+POSS',
+                                                   'rel' => '+REL',
+                                                   '@'   => { 'numtype' => { 'card' => '+CARD',
+                                                                             'ord'  => '+ORD',
+                                                                             '@'    => '+ADJ' }}}},
                        'num'  => '+CARD',
                        'verb' => '+V',
-                       'adv'  => '+ADV',
-                       'adp'  => '+PREP',
+                       'adv'  => { 'prontype' => { 'dem' => '+PROADV',
+                                                   'rel' => '+PROADV',
+                                                   '@'   => '+ADV' }},
+                       'adp'  => { 'adpostype' => { 'post'     => '+POSTP',
+                                                    'preppron' => '+PREPART',
+                                                    '@'        => '+PREP' }},
                        'conj' => '+CONJ',
                        'part' => '+PTCL',
                        'int'  => '+INTJ',
                        'sym'  => '+SYMBOL',
-                       'punc' => '+PUNCT' }
+                       'punc' => '+PUNCT',
+                       '@'    => { 'hyph' => { 'hyph' => '+TRUNC' }}}
+        }
+    );
+    # UNINFLECTED SHORT FORMS OF ADJECTIVES ####################
+    # Adjectives that modify the following noun inflect for gender, number and case: ein alter Mann, eine alte Frau, ein altes Auto...
+    # Adjectives used adverbially and predicatively do not inflect: der Mann ist alt; ein grün gemaltes Haus.
+    $atoms{adjform} = $self->create_atom
+    (
+        'surfeature' => 'adjform',
+        'decode_map' =>
+        {
+            ###!!! Could we use the 'morphpos' feature? But the Adv and Pred forms never differ, or do they?
+            'Adv'   => ['other' => {'adjform' => 'adv'}],
+            'Pred'  => ['other' => {'adjform' => 'pred'}],
+            # uninflected adjective such as "lila"
+            'Invar' => ['other' => {'adjform' => 'invar'}]
+        },
+        'encode_map' =>
+        {
+            'other/adjform' => { 'adv'   => 'Adv',
+                                 'pred'  => 'Pred',
+                                 'invar' => 'Invar' }
+        }
+    );
+    # SUBSTANTIVE AND ATTRIBUTIVE PRONOUNS AND NUMERALS ####################
+    # Knowing that this feature always comes after part of speech, we silently overwrite the previously decoded value of pos.
+    # <+INDEF><Attr>: all, alle, allen, allerlei, alles, andere, andre, andres, beide, eine, einem, einen, einer, eines, einige
+    # <+INDEF><Subst>: alle, allen, alles, andere, andre, andres, beide, beides, eine, einem, einen, einer, eines, einige, einigen
+    # <+DEM><Attr>: dasselbe, deren, derjenige, derselben, dessen, diejenigen, dies, diese, dieselbe, diesem, diesen, dieser, dieses
+    # <+DEM><Subst>: dasselbe, denen, der, deren, derjenige, derselben, dessen, die, diejenigen, dies, diese, dieselbe, diesem
+    # <+POSS><Attr>: dein, deinem, deinen, euer, eure, euren, eurer, ihr, ihre, ihrem, ihren, ihrer, ihres, mein, meine, meinen
+    # <+POSS><Subst>: deinem, deinen, eure, euren, eurer, ihre, ihrem, ihren, ihrer, ihres, meine, meinen, meiner, meines, seine
+    # <+REL><Attr>: deren, dessen
+    # <+REL><Subst>: das, dem, den, denen, der, deren, derer, dessen, die, was, welche, welchem, welchen, welcher, welches
+    # <+WPRO><Attr>: was, welch, welche, welchem, welchen, welcher, welches, wieviele
+    # <+WPRO><Subst>: was, welche, welchem, welcher, welches, wem, wen, wieviele, wer, wessen
+    # <+CARD><Pro>: acht, achtundfünfzig, achtzehn, anderthalb, drei, dreieinhalb, dreieinviertel, dreihundert, dreizehn, dreißig,
+    # eindreiviertel, eine, eineinhalb, eineinviertel, einem, einen, einer, eines, einhundert, einhundertfünfzig, eintausend, einundvierzig, elf,
+    # fünf, fünfeinhalb, fünfhundert, fünftausend, fünfundzwanzig, fünfzehn, fünfzig, hundert, hunderttausend, I, II, III, IV, L, M, MMD,
+    # neun, neunzehn, neunzig, null, sechs, sechseinhalb, sechzehn, sechzehneinhalb, sechzig, sieben, siebeneinhalb, siebzehn, siebzig,
+    # tausend, VI, VIII, vier, viereinhalb, viertausend, vierzig, X, XIII, XIV, XV,
+    # zehn, zehntausend, zwanzig, zwei, zweidreiviertel, zweidrittel, zweieinhalb, zweieinviertel, zweier, zwölf, zwölfeinhalb, 0, 0,02, ...
+    # <+CARD><Attr>: ein
+    # <+CARD><Subst>: einer, eines, eins, fünfe
+    $atoms{pronform} = $self->create_atom
+    (
+        'surfeature' => 'pronform',
+        'decode_map' =>
+        {
+            # Substituierende Form.
+            'Subst' => ['pos' => 'noun'],
+            # Attributive Form (z.B. attributive Adjektive).
+            'Attr'  => ['pos' => 'adj'],
+            # Documentation: Pronomialer Gebrauch, beispielsweise bei Possessivpronomen "seiner".
+            # However, I never saw this feature with "seiner". I saw it with cardinal numerals.
+            # In fact, most occurrences of cardinals are <Pro> and only some special cases can be <Attr> or <Subst>.
+            # It does not seem to have anything in common with pronouns.
+            'Pro'   => ['other' => {'pronform' => 'pro'}],
+            # <+PPRO><Pers> = personal pronoun (ich, du, er, sie, es, wir, ihr)
+            # <+PPRO><Rec> = reciprocal pronoun (einander)
+            # <+PPRO><Refl> = reflexive pronoun (dich, dir, euch, mich, mir, sich, uns)
+            'Pers'  => ['prontype' => 'prs'],
+            'Rec'   => ['prontype' => 'rcp'],
+            'Refl'  => ['prontype' => 'prs', 'reflex' => 'reflex']
+        },
+        'encode_map' =>
+        {
+            'reflex' => { 'reflex' => 'Refl',
+                          '@'      => { 'prontype' => { 'rcp' => 'Rec',
+                                                        'prs' => { 'poss' => { 'poss' => { 'pos' => { 'noun' => 'Subst',
+                                                                                                      'adj'  => 'Attr' }},
+                                                                               '@'    => 'Pers' }},
+                                                        '@'   => { 'other/pronform' => { 'pro' => 'Pro',
+                                                                                         '@'   => { 'pos' => { 'noun' => 'Subst',
+                                                                                                               'adj'  => 'Attr' }}}}}}}
+        }
+    );
+    # CONJUNCTION TYPE ####################
+    $atoms{conjtype} = $self->create_simple_atom
+    (
+        'intfeature' => 'conjtype',
+        'simple_decode_map' =>
+        {
+            'Coord'  => 'coor',
+            'Sub'    => 'sub',
+            'Compar' => 'comp'
+        }
+    );
+    # PARTICLE TYPE ####################
+    $atoms{parttype} = $self->create_atom
+    (
+        'surfeature' => 'parttype',
+        'decode_map' =>
+        {
+            # response particle: bitte, doch, ja, nein, nö, schon
+            'Ans' => ['parttype' => 'res'],
+            # negative particle: nicht, net
+            'Neg' => ['negativeness' => 'neg']
+        },
+        'encode_map' =>
+        {
+            'parttype' => { 'res' => 'Ans',
+                            '@'   => { 'negativeness' => { 'neg' => 'Neg' }}}
+        }
+    );
+    # PUNCTUATION TYPE ####################
+    $atoms{punctype} = $self->create_atom
+    (
+        'surfeature' => 'punctype',
+        'decode_map' =>
+        {
+            'Comma' => ['punctype' => 'comm'],
+            'Left'  => ['puncside' => 'ini'],
+            'Right' => ['puncside' => 'fin'],
+            # ! . : ; ?
+            'Norm'  => ['punctype' => 'peri']
+        },
+        'encode_map' =>
+        {
+            'punctype' => { 'comm' => 'Comma',
+                            'peri' => 'Norm',
+                            '@'    => { 'puncside' => { 'ini' => 'Left',
+                                                        'fin' => 'Right' }}}
         }
     );
     # GENUS / GENDER ####################
@@ -145,6 +291,16 @@ sub _create_atoms
             'Pos'  => 'pos',
             'Comp' => 'comp',
             'Sup'  => 'sup'
+        }
+    );
+    # DEFINITKEIT / DEFINITENESS ####################
+    $atoms{definiteness} = $self->create_simple_atom
+    (
+        'intfeature' => 'definiteness',
+        'simple_decode_map' =>
+        {
+            'Def'   => 'def',
+            'Indef' => 'ind'
         }
     );
     # PERSON ####################
@@ -201,7 +357,8 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'Ind'  => 'ind',
-            'Subj' => 'sub'
+            'Subj' => 'sub',
+            'Imp'  => 'imp'
         }
     );
     # STARKE UND SCHWACHE FLEXION / STRONG AND WEAK INFLECTION ####################
@@ -219,8 +376,28 @@ sub _create_atoms
                                     'weak'   => 'Wk' }
         }
     );
+    # ALTERNATIVE FORMS ####################
+    # <Old>	Schreibweise	Früherer, heute ungebrauchter Dativ
+    # <Simp>	Schreibweise	Verkürzte Formen im Dativ/Akkusativ (dem Mensch statt dem Menschen)
+    $atoms{variant} = $self->create_atom
+    (
+        'surfeature' => 'variant',
+        'decode_map' =>
+        {
+            # Old form of dative, not used today: "dem Abnahmepreise" instead of "dem Abnahmepreis".
+            'Old'  => ['variant' => '1', 'style' => 'arch'],
+            # Simplified form of dative or accusative: "dem Mensch" instead of "dem Menschen".
+            'Simp' => ['variant' => 'short']
+        },
+        'encode_map' =>
+        {
+            'style' => { 'arch' => 'Old',
+                         '@'    => { 'variant' => { '1'     => 'Old',
+                                                    'short' => 'Simp' }}}
+        }
+    );
     # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
-    my @fatoms = map {$atoms{$_}} (qw(pos gender number case degree person tense partense verbform mood inflection));
+    my @fatoms = map {$atoms{$_}} (qw(pos gender number case degree adjform pronform conjtype parttype punctype definiteness person tense partense verbform mood inflection variant));
     $atoms{feature} = $self->create_merged_atom
     (
         'surfeature' => 'feature',
@@ -264,10 +441,22 @@ sub encode
 {
     my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
-    # Encode the features.
-    my @feature_names = ('pos', 'degree', 'gender', 'case', 'number', 'inflection');
-    my @features;
     my $atoms = $self->atoms();
+    my $pos = '<'.$atoms->{pos}->encode($fs).'>';
+    my @features = ($pos);
+    # Encode the features.
+    my %feature_names =
+    (
+        '@'        => ['degree', 'adjform', 'definiteness', 'gender', 'case', 'number', 'inflection', 'variant', 'conjtype', 'parttype', 'punctype'],
+        '<+CARD>'  => ['pronform', 'gender', 'case', 'number', 'inflection'],
+        '<+DEM>'   => ['pronform', 'gender', 'case', 'number', 'inflection'],
+        '<+INDEF>' => ['pronform', 'adjform', 'gender', 'case', 'number', 'inflection'],
+        '<+POSS>'  => ['pronform', 'gender', 'case', 'number', 'inflection'],
+        '<+PPRO>'  => ['pronform', 'adjform', 'person', 'number', 'gender', 'case', 'inflection'],
+        '<+REL>'   => ['pronform', 'gender', 'case', 'number', 'inflection'],
+        '<+V>'     => ['verbform', 'person', 'number', 'tense', 'mood']
+    );
+    my @feature_names = @{exists($feature_names{$pos}) ? $feature_names{$pos} : $feature_names{'@'}};
     foreach my $name (@feature_names)
     {
         my $feature = $atoms->{$name}->encode($fs);
@@ -280,7 +469,7 @@ sub encode
     # There are multiple ways of indicating empty values, e.g. gender can either
     # not appear, or appear as <NoGend>, or covered by <Invar>.
     # The <NoGend> tag is only used if there are the case and number features.
-    if($tag !~ m/<(Nom|Gen|Dat|Acc)>/)
+    if($tag !~ m/<(Nom|Gen|Dat|Acc)>/ || $tag =~ m/<\+(PREP|POSTP)>/)
     {
         $tag =~ s/<NoGend>//;
     }
@@ -295,6 +484,12 @@ sub encode
 # words from the Tiger treebank (CoNLL 2009 training data) and collecting the
 # tags.
 # 558 tags have been observed.
+# 554 tags remained after adjustment:
+###!!! Removing the following (we would have to distinguish possgender and gender):
+# <+INDEF><Subst><Invar><3><Pl><NoGend> ... ihresgleichen
+# <+INDEF><Subst><Invar><3><Sg><Fem> ...... ihresgleichen
+# <+INDEF><Subst><Invar><3><Sg><Masc> ..... seinesgleichen
+# <+INDEF><Subst><Invar><3><Sg><Neut> ..... seinesgleichen
 #------------------------------------------------------------------------------
 sub list
 {
@@ -522,10 +717,6 @@ sub list
 <+INDEF><Subst><Fem><Nom><Sg>
 <+INDEF><Subst><Fem><Nom><Sg><St>
 <+INDEF><Subst><Invar>
-<+INDEF><Subst><Invar><3><Pl><NoGend>
-<+INDEF><Subst><Invar><3><Sg><Fem>
-<+INDEF><Subst><Invar><3><Sg><Masc>
-<+INDEF><Subst><Invar><3><Sg><Neut>
 <+INDEF><Subst><Masc><Acc><Sg>
 <+INDEF><Subst><Masc><Acc><Sg><St>
 <+INDEF><Subst><Masc><Dat><Sg><St>
