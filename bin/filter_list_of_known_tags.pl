@@ -12,28 +12,42 @@ binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 use Lingua::Interset qw(get_driver_object);
 
-my $driver = get_driver_object('he::conll');
+my $driver = get_driver_object('hi::conll');
+my $action = 'other';
 my $list = $driver->list();
 my %map;
 foreach my $tag (@{$list})
 {
+    my $tag1 = $tag;
     # Zatím nemáme hotové metody decode() a encode(), ale chceme odstranit rod, jestliže rysy obsahují oba možné rody (M i F).
-    my ($pos, $subpos, $features) = split(/\s+/, $tag);
-    my @features = split(/\|/, $features);
-    if((grep {$_ eq 'M'} @features) && (grep {$_ eq 'F'} @features))
+    if($action eq 'gender')
     {
-        @features = grep {$_ ne 'M' && $_ ne 'F'} @features;
+        my ($pos, $subpos, $features) = split(/\s+/, $tag);
+        my @features = split(/\|/, $features);
+        if((grep {$_ eq 'M'} @features) && (grep {$_ eq 'F'} @features))
+        {
+            @features = grep {$_ ne 'M' && $_ ne 'F'} @features;
+        }
+        $tag1 = "$pos\t$subpos\t".join('|', @features);
     }
-    my $tag1 = "$pos\t$subpos\t".join('|', @features);
-    #my $fs = $driver->decode($tag);
-    #my $tag1 = $driver->encode($fs);
+    # If we have implemented decode() and encode(), we can use them to normalize permutations of features.
+    my $fs;
+    if($action eq 'recode' || $action eq 'other')
+    {
+        $fs = $driver->decode($tag);
+        $tag1 = $driver->encode($fs);
+    }
     $map{$tag1}++;
     # Dogenerovat chybějící kombinace rysů, u kterých jsme si jisti, že existují.
     #complete_features($tag);
-    # Příliš mnoho informací se ukládá do rysu other. Chceme zajistit, aby i značky, které vzniknou, když tyto informace nebudou k dispozici, byly platné.
-    #$fs->set('other', '');
-    #my $tag2 = $driver->encode($fs);
-    #$map{$tag2}++;
+    # Too much information is stored in the 'other' feature.
+    # We want to make sure that even if the 'other' feature is not available, the encoder will produce only known (valid) tags.
+    if($action eq 'other')
+    {
+        $fs->set('other', '');
+        my $tag2 = $driver->encode($fs);
+        $map{$tag2}++;
+    }
 }
 my @list1 = sort(keys(%map));
 foreach my $tag (@list1)
