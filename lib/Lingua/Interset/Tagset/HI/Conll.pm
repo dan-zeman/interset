@@ -3668,12 +3668,12 @@ end_of_list
 
   use Lingua::Interset::Tagset::HI::Conll;
   my $driver = Lingua::Interset::Tagset::HI::Conll->new();
-  my $fs = $driver->decode("NN\tcat-n|gend-|num-sg|pers-|case-d|vib-0|tam-0");
+  my $fs = $driver->decode("NN\tn\tgen-|num-sg|pers-|case-d|vib-|tam-|voicetype-");
 
 or
 
   use Lingua::Interset qw(decode);
-  my $fs = decode('hi::conll', "NN\tcat-n|gend-|num-sg|pers-|case-d|vib-0|tam-0");
+  my $fs = decode('hi::conll', "NN\tn\tgen-|num-sg|pers-|case-d|vib-|tam-|voicetype-");
 
 =head1 DESCRIPTION
 
