@@ -386,12 +386,13 @@ sub _create_atoms
                                                      '@'   => { 'tense' => { 'fut'  => 'gA',
                                                                              'pres' => 'hE',
                                                                              'past' => 'WA',
-                         '@'   => { 'poss' => { 'poss' => { 'other/possedcase' => { 'obl' => 'ke',
-                                                                                    '@'   => 'kA' }},
-                                                '@'    => { 'case' => { 'dat' => 'ko',
-                                                                        'erg' => 'ne',
-                                                                        'ins' => 'se',
-                                                                        'ine' => 'meM' }}}}}}}}}
+                                                                             '@'    =>
+            { 'poss' => { 'poss' => { 'other/possedcase' => { 'obl' => 'ke',
+                                                              '@'   => 'kA' }},
+                          '@'    => { 'case' => { 'dat' => 'ko',
+                                                  'erg' => 'ne',
+                                                  'ins' => 'se',
+                                                  'ine' => 'meM' }}}}}}}}}
         }
     );
     # VOICE ####################
@@ -520,7 +521,7 @@ sub encode
 # have added manually tags with empty 'vib' and 'tam' to facilitate generating
 # permitted tags with empty 'other' feature.
 # 3830 tags from the corpus
-# 2677 tags after cleaning
+# 2680 tags after cleaning
 #------------------------------------------------------------------------------
 sub list
 {
