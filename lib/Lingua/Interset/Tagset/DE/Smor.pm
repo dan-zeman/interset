@@ -99,6 +99,7 @@ sub _create_atoms
                                                                           '@'    => '+PPRO' }},
                                                    'rcp' => '+PPRO',
                                                    'rel' => '+REL',
+                                                   'int' => '+WPRO',
                                                    '@'   => { 'numtype' => { 'card' => '+CARD',
                                                                              '@'    => { 'nountype' => { 'prop' => '+NPROP',
                                                                                                          '@'    => '+NN' }}}}}},
@@ -107,6 +108,7 @@ sub _create_atoms
                                                    'ind' => '+INDEF',
                                                    'prs' => '+POSS',
                                                    'rel' => '+REL',
+                                                   'int' => '+WPRO',
                                                    '@'   => { 'numtype' => { 'card' => '+CARD',
                                                                              'ord'  => '+ORD',
                                                                              '@'    => '+ADJ' }}}},
@@ -114,12 +116,14 @@ sub _create_atoms
                        'verb' => '+V',
                        'adv'  => { 'prontype' => { 'dem' => '+PROADV',
                                                    'rel' => '+PROADV',
+                                                   'int' => '+WADV',
                                                    '@'   => '+ADV' }},
                        'adp'  => { 'adpostype' => { 'post'     => '+POSTP',
                                                     'preppron' => '+PREPART',
                                                     '@'        => '+PREP' }},
                        'conj' => '+CONJ',
-                       'part' => '+PTCL',
+                       'part' => { 'parttype' => { 'vbp' => '+VPART',
+                                                   '@'   => '+PTCL' }},
                        'int'  => '+INTJ',
                        'sym'  => '+SYMBOL',
                        'punc' => '+PUNCT',
@@ -293,7 +297,7 @@ sub _create_atoms
             'Sup'  => 'sup'
         }
     );
-    # DEFINITKEIT / DEFINITENESS ####################
+    # DEFINITHEIT / DEFINITENESS ####################
     $atoms{definiteness} = $self->create_simple_atom
     (
         'intfeature' => 'definiteness',
@@ -315,23 +319,30 @@ sub _create_atoms
         }
     );
     # TENSE ####################
-    $atoms{tense} = $self->create_simple_atom
+    $atoms{tense} = $self->create_atom
     (
-        'intfeature' => 'tense',
-        'simple_decode_map' =>
+        'surfeature' => 'tense',
+        'decode_map' =>
         {
-            'Past' => 'past',
-            'Pres' => 'pres'
-        }
-    );
-    # TENSE OF PARTICIPLE ####################
-    $atoms{partense} = $self->create_simple_atom
-    (
-        'intfeature' => 'tense',
-        'simple_decode_map' =>
+            # Simple past (präteritum), not participle.
+            # Examples: abfuhr, abgaben, abschied, abschnitt, abschnitte
+            'Past'  => ['verbform' => 'fin', 'tense' => 'past'],
+            # Present tense, not participle.
+            # Examples: abschweifen, absegnen, absichten, abstoßen, abstreifen
+            'Pres'  => ['verbform' => 'fin', 'tense' => 'pres'],
+            # Past participle, used also for passive voice.
+            # Examples: amüsiert, anerkannt, angeboten, angebunden, angehört
+            'PPast' => ['verbform' => 'part', 'tense' => 'past'],
+            # Present participle.
+            # Examples: anscheinend, anschließend, auffallend, ausgehend, ausreichend
+            'PPres' => ['verbform' => 'part', 'tense' => 'pres']
+        },
+        'encode_map' =>
         {
-            'PPast' => 'past',
-            'PPres' => 'pres'
+            'tense' => { 'pres' => { 'verbform' => { 'part' => 'PPres',
+                                                     '@'    => 'Pres' }},
+                         'past' => { 'verbform' => { 'part' => 'PPast',
+                                                     '@'    => 'Past' }}}
         }
     );
     # VERB FORM ####################
@@ -342,13 +353,29 @@ sub _create_atoms
         {
             # infinitive: "abkommen"
             'Inf'   => ['verbform' => 'inf'],
-            # infinitive with the incorporated "zu" marker: "abzukommen"
-            'Infzu' => ['verbform' => 'inf', 'other' => {'verbform' => 'infzu'}]
+            # Imperative is mood but in the ordering of features it appears at the place of verb form.
+            'Imp'   => ['verbform' => 'fin', 'mood' => 'imp']
         },
         'encode_map' =>
-
-            { 'verbform' => { 'inf' => { 'other/verbform' => { 'infzu' => 'Infzu',
-                                                               '@'     => 'Inf' }}}}
+        {
+            'verbform' => { 'inf' => 'Inf',
+                            '@'   => { 'mood' => { 'imp' => 'Imp' }}}
+        }
+    );
+    # INFINITIVE WITH INCORPORATED PREPOSITION ZU ####################
+    # Example without zu: abkommen
+    # Example with zu: abzukommen
+    $atoms{zu} = $self->create_atom
+    (
+        'surfeature' => 'zu',
+        'decode_map' =>
+        {
+            'zu' => ['other' => {'verbform' => 'infzu'}]
+        },
+        'encode_map' =>
+        {
+            'other/verbform' => { 'infzu' => 'zu' }
+        }
     );
     # MODUS / MOOD ####################
     $atoms{mood} = $self->create_simple_atom
@@ -357,8 +384,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'Ind'  => 'ind',
-            'Subj' => 'sub',
-            'Imp'  => 'imp'
+            'Subj' => 'sub'
         }
     );
     # STARKE UND SCHWACHE FLEXION / STRONG AND WEAK INFLECTION ####################
@@ -397,7 +423,7 @@ sub _create_atoms
         }
     );
     # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
-    my @fatoms = map {$atoms{$_}} (qw(pos gender number case degree adjform pronform conjtype parttype punctype definiteness person tense partense verbform mood inflection variant));
+    my @fatoms = map {$atoms{$_}} (qw(pos gender number case degree adjform pronform conjtype parttype punctype definiteness person tense verbform zu mood inflection variant));
     $atoms{feature} = $self->create_merged_atom
     (
         'surfeature' => 'feature',
@@ -454,7 +480,8 @@ sub encode
         '<+POSS>'  => ['pronform', 'gender', 'case', 'number', 'inflection'],
         '<+PPRO>'  => ['pronform', 'adjform', 'person', 'number', 'gender', 'case', 'inflection'],
         '<+REL>'   => ['pronform', 'gender', 'case', 'number', 'inflection'],
-        '<+V>'     => ['verbform', 'person', 'number', 'tense', 'mood']
+        '<+V>'     => ['verbform', 'zu', 'person', 'number', 'tense', 'mood'],
+        '<+WPRO>'  => ['pronform', 'adjform', 'gender', 'case', 'number', 'inflection']
     );
     my @feature_names = @{exists($feature_names{$pos}) ? $feature_names{$pos} : $feature_names{'@'}};
     foreach my $name (@feature_names)
