@@ -35,13 +35,14 @@ sub get_tagset_id
 
 #------------------------------------------------------------------------------
 # Creates atomic drivers for surface features.
+# http://www.cis.uni-muenchen.de/~schmid/tools/SMOR/dspin/ch01s03.html#id558692
+# https://github.com/rsennrich/SMORLemma/blob/master/symbols.fst
 #------------------------------------------------------------------------------
 sub _create_atoms
 {
     my $self = shift;
     my %atoms;
     # PART OF SPEECH ####################
-    # https://github.com/rsennrich/SMORLemma/blob/master/symbols.fst
     $atoms{pos} = $self->create_atom
     (
         'surfeature' => 'pos',
