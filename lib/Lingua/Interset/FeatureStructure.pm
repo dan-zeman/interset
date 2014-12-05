@@ -1639,6 +1639,56 @@ sub get_other_for_tagset
 
 
 #------------------------------------------------------------------------------
+# If other is a reference to a hash of subfeatures, this method adds (replaces)
+# a value of one subfeature. If other is undefined, empty or non-hash, this
+# method replaces the current value of other by a reference to a new hash, then
+# adds the subfeature.
+#------------------------------------------------------------------------------
+=method set_other_subfeature()
+
+  $fs->set_other_subfeature ('my_weird_feature', 'my_weird_value');
+
+Takes a non-Interset feature and its value and stores it as a subfeature of
+the feature C<other>. If C<other> is currently undefined, empty or anything
+else than a hash reference, the method will first create a new hash and store
+its reference in C<other>, overwriting its previous value (if any).
+
+If C<other> is a reference to a hash of subfeatures, the method will add the
+new subfeature and its value to the hash. If there has been a subfeature of the
+same name, its value will be overwritten.
+
+Only simple scalar values of subfeatures are assumed. It is not verified but
+no deep copy will be made if the value is a reference. Both the feature name
+and the value must be defined and non-empty, otherwise the method will do
+nothing.
+
+Note that the function does not check the current value of the C<tagset>
+feature. It is silently assumed that if you put anything in C<other>, you know
+that this is “your” feature structure.
+
+=cut
+sub set_other_subfeature
+{
+    my $self = shift;
+    my $subfeature = shift;
+    my $value = shift;
+    return unless(defined($subfeature) && defined($value) && $subfeature ne '' && $value ne '');
+    # This will just return the hash reference (provided it is a hashref), no deep copying takes place.
+    my $other = $self->other();
+    if(!defined($other) || ref($other) ne 'HASH')
+    {
+        my %other;
+        $other = \%other;
+        # This will just set the hash reference as the value, no deep copying takes place.
+        # (Unlike $self->set('other', $other), which would deep-copy the hash.)
+        $self->set_other($other);
+    }
+    $other->{$subfeature} = $value;
+}
+
+
+
+#------------------------------------------------------------------------------
 # If tagset matches and if other is a hash, this method returns the value of
 # a subfeature, i.e. a value stored in the hash under a particular key.
 #------------------------------------------------------------------------------

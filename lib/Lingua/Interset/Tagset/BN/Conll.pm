@@ -296,27 +296,13 @@ sub decode
         }
     }
     ###!!! Proper decoding of vibhakti and tense-aspect-modality is not implemented yet.
-    ###!!! A slévání podrysů při plnění other by mělo být k dispozici už ve FeatureStructure, teď je to jen v Atomu, takže to tady nemůžu použít, grr!!!
-    my %othervibtam;
-    my $ovt_nonempty = 0;
-    my $other = $fs->other();
-    if(defined($other) && ref($other) eq 'HASH' && scalar(keys(%{$other})))
-    {
-        %othervibtam = %{$other};
-    }
     if(defined($features_conll{vib}) && $features_conll{vib} ne '')
     {
-        $othervibtam{vib} = $features_conll{vib};
-        $ovt_nonempty = 1;
+        $fs->set_other_subfeature('vib', $features_conll{vib});
     }
     if(defined($features_conll{tam}) && $features_conll{tam} ne '')
     {
-        $othervibtam{tam} = $features_conll{tam};
-        $ovt_nonempty = 1;
-    }
-    if($ovt_nonempty)
-    {
-        $fs->set('other', \%othervibtam);
+        $fs->set_other_subfeature('tam', $features_conll{tam});
     }
     return $fs;
 }

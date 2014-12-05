@@ -447,28 +447,16 @@ sub decode
             $atoms->{$name}->decode_and_merge_hard($features_conll{$name}, $fs);
         }
     }
-    ###!!! Proper decoding of vibhakti is not implemented yet.
-    ###!!! A slévání podrysů při plnění other by mělo být k dispozici už ve FeatureStructure, teď je to jen v Atomu, takže to tady nemůžu použít, grr!!!
-    my %othervibtam;
-    my $ovt_nonempty = 0;
-    my $other = $fs->other();
-    if(defined($other) && ref($other) eq 'HASH' && scalar(keys(%{$other})))
-    {
-        %othervibtam = %{$other};
-    }
+    # Both vib (vibhakti) and tam (tense-aspect-modality) use Hindi morphemes
+    # as values and both are used also outside the scope suggested by their
+    # names (tam for vibhakti of pronouns, vib for verb forms).
+    # The value of tam encodes only properties of the current word.
+    # The value of vib may include other function words in the neighborhood.
+    # We convert the tam values to Interset features but we cannot do that with vib.
+    # We just store the vib values in the other feature of Interset.
     if(defined($features_conll{vib}) && $features_conll{vib} ne '')
     {
-        $othervibtam{vib} = $features_conll{vib};
-        $ovt_nonempty = 1;
-    }
-    if(defined($features_conll{tam}) && $features_conll{tam} ne '')
-    {
-        $othervibtam{tam} = $features_conll{tam};
-        $ovt_nonempty = 1;
-    }
-    if($ovt_nonempty)
-    {
-        $fs->set('other', \%othervibtam);
+        $fs->set_other_subfeature('vib', $features_conll{vib});
     }
     return $fs;
 }
