@@ -1,4 +1,4 @@
-# ABSTRACT: Driver for the German tagset of the SMOR
+# ABSTRACT: Driver for the German tagset of SMOR (Stuttgart Morphology)
 # Modified by Lefteris Avramidis, based on original script from Dan Zeman <zeman@ufal.mff.cuni.cz>
 # Completed by Dan Zeman.
 
