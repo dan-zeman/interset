@@ -1,4 +1,4 @@
-# ABSTRACT: Driver for the tagset of the Czech National Corpus (Cesky narodni korpus).
+# ABSTRACT: Driver for the tagset of the Czech National Corpus (Český národní korpus).
 # Copyright © 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::CS::Cnk;
