@@ -72,6 +72,16 @@ if(scalar(@{$drivers})==0)
         print STDERR ("Total $n_drivers drivers.\n");
         my $driver_hash = Lingua::Interset::get_driver_hash();
         print("Total ", scalar(keys(%{$driver_hash})), " tagsets.\n");
+        my %languages;
+        foreach my $tagset (keys(%{$driver_hash}))
+        {
+            if($tagset =~ m/^([a-z]+)::/)
+            {
+                my $language = $1;
+                $languages{$language}++;
+            }
+        }
+        print("Total ", scalar(keys(%languages)), " languages.\n");
     }
     else
     {

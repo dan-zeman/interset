@@ -425,7 +425,7 @@ sub decode
     # Hindi CoNLL files are converted from the Shakti Standard Format.
     # example: NN\tn\tgen-|num-sg|pers-|case-d|vib-|tam-
     my ($pos, $subpos, $features) = split(/\s+/, $tag);
-    $features = '' if($features eq '_');
+    $features = '' if(!defined($features) || $features eq '_');
     my @features_conll = split(/\|/, $features);
     my %features_conll;
     foreach my $f (@features_conll)
