@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+Interface:
+* FeatureStructure has new methods is_active() and is_passive().
+
+
+
 2.026     2014-12-05 18:56:03+01:00 Europe/Prague
 
 Drivers:
