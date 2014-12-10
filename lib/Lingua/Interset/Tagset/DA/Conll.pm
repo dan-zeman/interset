@@ -38,7 +38,6 @@ sub _create_atoms
     # PART OF SPEECH ####################
     $atoms{pos} = $self->create_atom
     (
-        'tagset' => 'da::conll',
         'surfeature' => 'pos',
         'decode_map' =>
         {
@@ -96,42 +95,43 @@ sub _create_atoms
             'XX' => []
         },
         'encode_map' =>
-
-            { 'pos' => { 'noun' => { 'prontype' => { ''    => { 'nountype' => { 'prop' => 'NP',
-                                                                                '@'    => 'NC' }},
-                                                     'prs' => { 'poss' => { 'poss' => 'PO',
-                                                                            '@'    => 'PP' }},
-                                                     'rcp' => 'PC',
-                                                     'dem' => 'PD',
-                                                     'int' => 'PT',
-                                                     'rel' => 'PT',
-                                                     '@'   => 'PI' }},
-                         'adj'  => { 'prontype' => { ''    => { 'numtype' => { 'card' => 'AC',
-                                                                               'ord'  => 'AO',
-                                                                               '@'    => 'AN' }},
-                                                     'prs' => { 'poss' => { 'poss' => 'PO',
-                                                                            '@'    => 'PP' }},
-                                                     'rcp' => 'PC',
-                                                     'dem' => 'PD',
-                                                     'int' => 'PT',
-                                                     'rel' => 'PT',
-                                                     '@'   => 'PI' }},
-                         'num'  => { 'numtype' => { 'ord' => 'AO',
-                                                    '@'   => 'AC' }},
-                         'verb' => { 'other/verbtype' => { 'medial' => 'VE',
-                                                           '@'      => 'VA' }},
-                         'adv'  => 'RG',
-                         'adp'  => 'SP',
-                         'conj' => { 'conjtype' => { 'sub' => 'CS',
-                                                     '@'   => 'CC' }},
-                         'part' => 'U',
-                         'int'  => 'I',
-                         'punc' => 'XP',
-                         'sym'  => 'XS',
-                         '@'    => { 'abbr' => { 'abbr' => 'XA',
-                                                 '@'    => { 'foreign' => { 'foreign' => 'XF',
-                                                                            '@'       => { 'other/pos' => { 'formula' => 'XR',
-                                                                                                            '@'       => 'XX' }}}}}}}}
+        {
+            'pos' => { 'noun' => { 'prontype' => { ''    => { 'nountype' => { 'prop' => 'NP',
+                                                                              '@'    => 'NC' }},
+                                                   'prs' => { 'poss' => { 'poss' => 'PO',
+                                                                          '@'    => 'PP' }},
+                                                   'rcp' => 'PC',
+                                                   'dem' => 'PD',
+                                                   'int' => 'PT',
+                                                   'rel' => 'PT',
+                                                   '@'   => 'PI' }},
+                       'adj'  => { 'prontype' => { ''    => { 'numtype' => { 'card' => 'AC',
+                                                                             'ord'  => 'AO',
+                                                                             '@'    => 'AN' }},
+                                                   'prs' => { 'poss' => { 'poss' => 'PO',
+                                                                          '@'    => 'PP' }},
+                                                   'rcp' => 'PC',
+                                                   'dem' => 'PD',
+                                                   'int' => 'PT',
+                                                   'rel' => 'PT',
+                                                   '@'   => 'PI' }},
+                       'num'  => { 'numtype' => { 'ord' => 'AO',
+                                                  '@'   => 'AC' }},
+                       'verb' => { 'other/verbtype' => { 'medial' => 'VE',
+                                                         '@'      => 'VA' }},
+                       'adv'  => 'RG',
+                       'adp'  => 'SP',
+                       'conj' => { 'conjtype' => { 'sub' => 'CS',
+                                                   '@'   => 'CC' }},
+                       'part' => 'U',
+                       'int'  => 'I',
+                       'punc' => 'XP',
+                       'sym'  => 'XS',
+                       '@'    => { 'abbr' => { 'abbr' => 'XA',
+                                               '@'    => { 'foreign' => { 'foreign' => 'XF',
+                                                                          '@'       => { 'other/pos' => { 'formula' => 'XR',
+                                                                                                          '@'       => 'XX' }}}}}}}
+        }
     );
     # GENDER ####################
     $atoms{gender} = $self->create_simple_atom
@@ -197,7 +197,6 @@ sub _create_atoms
     # This feature applies to all personal and possessive pronouns.
     $atoms{reflexive} = $self->create_atom
     (
-        'tagset' => 'da::conll',
         'surfeature' => 'reflexive',
         'decode_map' =>
         {
@@ -211,12 +210,13 @@ sub _create_atoms
             'yes/no' => ['other' => {'reflex' => 'maybe'}]
         },
         'encode_map' =>
-
-            { 'reflex' => { 'reflex' => 'yes',
-                            '@'      => { 'other/reflex' => { 'no' => 'no',
-                                                              '@'  => { 'poss' => { 'poss' => 'no',
-                                                                                    '@'    => { 'case' => { 'nom' => 'no',
-                                                                                                            '@'   => 'yes/no' }}}}}}}}
+        {
+            'reflex' => { 'reflex' => 'yes',
+                          '@'      => { 'other/reflex' => { 'no' => 'no',
+                                                            '@'  => { 'poss' => { 'poss' => 'no',
+                                                                                  '@'    => { 'case' => { 'nom' => 'no',
+                                                                                                          '@'   => 'yes/no' }}}}}}}
+        }
     );
     # REGISTER ####################
     $atoms{register} = $self->create_atom
@@ -229,11 +229,12 @@ sub _create_atoms
             'obsolete' => ['style' => 'arch']
         },
         'encode_map' =>
-
-            { 'politeness' => { 'pol' => 'polite',
-                                '@'   => { 'style' => { 'form' => 'formal',
-                                                        'arch' => 'obsolete',
-                                                        '@'    => 'unmarked' }}}}
+        {
+            'politeness' => { 'pol' => 'polite',
+                              '@'   => { 'style' => { 'form' => 'formal',
+                                                      'arch' => 'obsolete',
+                                                      '@'    => 'unmarked' }}}
+        }
     );
     # PERSON ####################
     $atoms{person} = $self->create_simple_atom
@@ -275,13 +276,14 @@ sub _create_atoms
             'gerund' => ['verbform' => 'ger']
         },
         'encode_map' =>
-
-            { 'verbform' => { 'ger'   => 'gerund',
-                              'part'  => 'partic',
-                              'trans' => 'partic',
-                              'inf'   => 'infin',
-                              '@'     => { 'mood' => { 'imp' => 'imper',
-                                                       'ind' => 'indic' }}}}
+        {
+            'verbform' => { 'ger'   => 'gerund',
+                            'part'  => 'partic',
+                            'trans' => 'partic',
+                            'inf'   => 'infin',
+                            '@'     => { 'mood' => { 'imp' => 'imper',
+                                                     'ind' => 'indic' }}}
+        }
     );
     # TENSE ####################
     $atoms{tense} = $self->create_simple_atom
@@ -332,12 +334,13 @@ sub _create_atoms
             'adject/adverb/unmarked' => ['verbform' => 'part|trans']
         },
         'encode_map' =>
-
-            { 'pos' => { 'adj'  => { 'variant' => { 'short' => 'adverbial',
-                                                    'long'  => 'unmarked' }},
-                         'verb' => { 'verbform' => { 'part|trans' => 'adject/adverb/unmarked',
-                                                     'trans'      => 'adverb',
-                                                     'part'       => 'adject' }}}}
+        {
+            'pos' => { 'adj'  => { 'variant' => { 'short' => 'adverbial',
+                                                  'long'  => 'unmarked' }},
+                       'verb' => { 'verbform' => { 'part|trans' => 'adject/adverb/unmarked',
+                                                   'trans'      => 'adverb',
+                                                   'part'       => 'adject' }}}
+        }
     );
     return \%atoms;
 }
