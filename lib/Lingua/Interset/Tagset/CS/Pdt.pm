@@ -455,16 +455,16 @@ sub _create_atoms
         'surfeature' => 'variant',
         'decode_map' =>
         {
-            '0' => ['variant' => '0'],
-            '1' => ['variant' => '1'],
-            '2' => ['variant' => '2', 'style' => 'arch'],
-            '3' => ['variant' => '3', 'style' => 'arch'],
-            '4' => ['variant' => '4', 'style' => 'arch'],
-            '5' => ['variant' => '5', 'style' => 'coll'],
-            '6' => ['variant' => '6', 'style' => 'coll'],
-            '7' => ['variant' => '7', 'style' => 'coll'],
-            '8' => ['variant' => '8', 'abbr' => 'abbr'],
-            '9' => ['variant' => '9']
+            '0' => ['variant' => '0'], # 0 does not occur in the data. Dash ('-') is the neutral value.
+            '1' => ['variant' => '1'],                    # své, roku, roce, svou, mohou
+            '2' => ['variant' => '2', 'style' => 'arch'], # jej, léta, jest, dřív, nejdřív
+            '3' => ['variant' => '3', 'style' => 'arch'], # dosti, nedosti, biblí, bukův, činějí
+            '4' => ['variant' => '4', 'style' => 'arch'], # buď, poznajíce
+            '5' => ['variant' => '5', 'style' => 'coll'], # ty
+            '6' => ['variant' => '6', 'style' => 'coll'], # druhý, které, kytkový, naší, forda
+            '7' => ['variant' => '7', 'style' => 'coll'], # které, naprostým, si
+            '8' => ['variant' => '8', 'abbr' => 'abbr'],  # ČR, LN, ODS, J, r
+            '9' => ['variant' => '9']                     # dne, ap, n
         },
         'encode_map' =>
 
