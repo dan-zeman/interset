@@ -31,8 +31,21 @@ while(<>)
         }
     }
 }
-# Sort the tagset alphabetically and print it to the STDOUT.
 @tagset = sort(keys(%tagset));
+# Examples may contain uppercase letters only if all-lowercase version does not exist.
+foreach my $tag (@tagset)
+{
+    my @examples = keys(%{$examples{$tag}});
+    foreach my $example (@examples)
+    {
+        if(lc($example) ne $example && exists($examples{$tag}{lc($example)}))
+        {
+            $examples{$tag}{lc($example)} += $examples{$tag}{$example};
+            delete($examples{$tag}{$example});
+        }
+    }
+}
+# Sort the tagset alphabetically and print it to the STDOUT.
 foreach my $tag (@tagset)
 {
     my @examples = sort {$examples{$tag}{$b} <=> $examples{$tag}{$a}} (keys(%{$examples{$tag}}));
