@@ -22,9 +22,12 @@ while(<>)
         # Split line into columns.
         my @columns = split(/\s+/, $_);
         my @features = split(/\|/, $columns[$i_feat_column]);
+        my $form = $columns[1];
         foreach my $feature (@features)
         {
             $tagset{$feature}++;
+            # We can also print example words that had the feature.
+            $examples{$feature}{$form}++;
         }
     }
 }
@@ -32,6 +35,8 @@ while(<>)
 @tagset = sort(keys(%tagset));
 foreach my $tag (@tagset)
 {
-    print("$tag\n");
+    my @examples = sort {$examples{$tag}{$b} <=> $examples{$tag}{$a}} (keys(%{$examples{$tag}}));
+    splice(@examples, 10);
+    print($tag, " (", join(', ', @examples), ")\n");
 }
 print("Total ", scalar(@tagset), " feature values.\n");
