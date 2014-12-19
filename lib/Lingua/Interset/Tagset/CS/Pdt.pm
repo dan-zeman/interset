@@ -101,7 +101,7 @@ sub _create_atoms
             # demonstrative pronoun
             # examples: ten tento tenhle onen takový týž tentýž sám
             ###!!! Syntactically they are often adjectives but not always ("to auto je moje" vs. "to je moje").
-            'PD' => ['pos' => 'adj', 'prontype' => 'dem', 'definiteness' => 'def'],
+            'PD' => ['pos' => 'adj', 'prontype' => 'dem'],
             # interrogative or relative pronoun, animate
             # examples: kdo kdož kdos
             'PK' => ['pos' => 'noun', 'prontype' => 'int|rel', 'animateness' => 'anim'],
@@ -128,10 +128,10 @@ sub _create_atoms
             'P1' => ['pos' => 'adj', 'prontype' => 'rel', 'poss' => 'poss'],
             # indefinite pronoun
             # examples: někdo něco nějaký některý něčí ... kdokoli ... kdosi ...
-            'PZ' => ['pos' => 'noun|adj', 'prontype' => 'ind', 'definiteness' => 'ind'],
+            'PZ' => ['pos' => 'noun|adj', 'prontype' => 'ind'],
             # totality pronoun
             # examples: všechen sám
-            'PL' => ['pos' => 'noun', 'prontype' => 'tot', 'definiteness' => 'ind'],
+            'PL' => ['pos' => 'noun', 'prontype' => 'tot'],
             # negative pronoun
             # examples: nikdo nic nijaký ničí žádný
             'PW' => ['pos' => 'noun|adj', 'prontype' => 'neg', 'negativeness' => 'neg'],
