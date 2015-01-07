@@ -142,57 +142,70 @@ sub _create_atoms
             # examples: MCMLXXI
             # { ... syntax highlighting
             'C}' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'roman'],
+            # interrogative or relative cardinal numeral
+            # example: kolik
+            'C?' => ['pos' => 'num', 'numtype' => 'card', 'prontype' => 'int|rel'],
+            # numeral abbreviation
+            # examples: tis. mil.
+            'C3' => ['pos' => 'num', 'abbr' => 'abbr'],
+            # indefinite or demonstrative cardinal numeral
+            # examples: několik mnoho málo kdovíkolik tolik
+            'Ca' => ['pos' => 'num', 'numtype' => 'card', 'prontype' => 'ind|dem'],
+            # generic numeral "twofold"
+            # examples: obojí dvojí trojí
+            # generic adjectival numeral (number of sets of things)
+            # examples: oboje dvoje troje (čtvery patery desatery?)
+            # "oboje", "dvoje" and "troje" appear in the corpus as "Cd" and the feature variant=1 distinguishes them from "obojí", "dvojí" and "trojí".
+            # Larger numerals of this type ("čtvery", "patery" etc.) do not appear in the corpus.
+            'Cd' => ['pos' => 'adj', 'numtype' => 'gen'],
+            # generic numeral "jedny" (plural form of "jeden" = "one"; could mean either "some" (jedni přijdou brzy, druzí pozdě; jedny z nejlepších...),
+            # or "one set of" (mám jen jedny boty))
+            # examples: jedni, jedny
+            'Ch' => ['pos' => 'adj', 'numtype' => 'sets', 'numvalue' => '1'],
+            # generic cardinal numeral
+            # examples: čtvero patero desatero
+            # This tag is documented in the tagset but it does not occur in the PDT.
+            'Cj' => ['pos' => 'num', 'numtype' => 'card|gen'],
+            # ordinal suffix as a separate token
+            # only one occurrence in the corpus: tých ("posledně v letech 60 tých" = "posledně v letech šedesátých")
+            # Syntactic analysis of the above example is Atr(letech, tých); Atr(tých, 60).
+            # Hence we can say that the suffix works as an adjective.
+            'Ck' => ['pos' => 'adj', 'numtype' => 'ord', 'other' => {'numtype' => 'suffix'}],
             # cardinal numeral, low value (agrees with counted noun)
             # examples: jeden dva tři čtyři
             'Cl' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'word', 'numvalue' => '1|2|3'],
             # cardinal numeral, high value (in nominative, accusative and vocative behaves like a noun and the counted noun must be in genitive)
             # examples: pět šest sedm sto
             'Cn' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'word'],
-            # interrogative or relative cardinal numeral
-            # example: kolik
-            'C?' => ['pos' => 'num', 'numtype' => 'card', 'prontype' => 'int|rel'],
-            # indefinite cardinal numeral (###!!! or demonstrative!)
-            # examples: několik mnoho málo kdovíkolik tolik
-            'Ca' => ['pos' => 'num', 'numtype' => 'card', 'prontype' => 'ind'],
-            # cardinal numeral, fraction denominator
-            # examples: polovina třetina čtvrtina setina tisícina
-            'Cy' => ['pos' => 'num', 'numtype' => 'frac'],
-            # generic cardinal numeral
-            # examples: čtvero patero desatero
-            'Cj' => ['pos' => 'num', 'numtype' => 'card|gen'],
-            # generic adjectival numeral (number of sets of things)
-            # examples: čtvery patery desatery
-            'Ck' => ['pos' => 'num', 'numtype' => 'sets'],
-            # ordinal numeral
+            # indefinite multiplicative numeral
+            # examples: několikrát mnohokrát tolikrát kolikrát nesčíslněkrát
+            'Co' => ['pos' => 'adv', 'numtype' => 'mult', 'prontype' => 'ind|dem'],
+            # ordinal numeral (adjectival)
             # examples: první druhý třetí stý tisící
             # (Note: "poprvé" is another type of ordinal numeral, it behaves syntactically as adverb.
             # It is tagged 'Cv', together with multiplicative numerals ("jedenkrát"), which are also syntactic adverbs.)
             'Cr' => ['pos' => 'adj', 'numtype' => 'ord'],
-            # interrogative or relative ordinal numeral
-            # examples: kolikátý
-            'Cz' => ['pos' => 'adj', 'numtype' => 'ord', 'prontype' => 'int|rel'],
-            # generic numeral "twofold"
-            # examples: jedny dvojí desaterý
-            'Cd' => ['pos' => 'adj', 'numtype' => 'gen'],
-            # generic numeral
-            # examples: jedny nejedny
-            'Ch' => ['pos' => 'adj', 'numtype' => 'gen', 'other' => 'h'],
-            # indefinite ordinal numeral
-            # examples: nejeden tolikátý
-            'Cw' => ['pos' => 'adj', 'numtype' => 'ord', 'prontype' => 'ind'],
+            # interrogative or relative multiplicative numeral
+            # examples: kolikrát
+            'Cu' => ['pos' => 'adv', 'numtype' => 'mult', 'prontype' => 'int|rel'],
             # multiplicative numeral or adverbial ordinal numeral
             # examples: jedenkrát dvakrát třikrát stokrát tisíckrát
             # examples: poprvé podruhé potřetí posté potisící
             'Cv' => ['pos' => 'adv', 'numtype' => 'mult'],
-            # interrogative or relative multiplicative numeral
-            # examples: kolikrát
-            'Cu' => ['pos' => 'adv', 'numtype' => 'mult', 'prontype' => 'int|rel'],
-            # indefinite multiplicative numeral
-            # examples: několikrát mnohokrát tolikrát
-            'Co' => ['pos' => 'adv', 'numtype' => 'mult', 'prontype' => 'ind'],
-            # numeral abbreviation
-            # examples: tis. mil.
-            'C3' => ['pos' => 'num', 'abbr' => 'abbr'],
+            # Two different types of agreeing adjectival indefinite numerals are tagged 'Cw':
+            # indefinite numeral "nejeden" = lit. "not one" = "more than one"
+            # examples: nejeden
+            # indefinite or demonstrative adjectival ordinal numeral
+            # examples: několikátý, mnohý, tolikátý
+            'Cw' => ['pos' => 'adj', 'numtype' => 'ord', 'prontype' => 'ind|dem'],
+            # cardinal numeral, fraction denominator
+            # examples: polovina třetina čtvrtina setina tisícina
+            # These words behave morphologically and syntactically as feminine nouns of the paradigm "žena".
+            # (Note that the fraction words "půl" and "čtvrt" are not tagged "Cy".)
+            'Cy' => ['pos' => 'num', 'numtype' => 'frac'],
+            # interrogative or relative ordinal numeral
+            # examples: kolikátý
+            'Cz' => ['pos' => 'adj', 'numtype' => 'ord', 'prontype' => 'int|rel'],
             # verb infinitive
             # examples: nést dělat říci
             'Vf' => ['pos' => 'verb', 'verbform' => 'inf'],
@@ -547,7 +560,7 @@ sub encode
                 # kolik
                 $tag = 'C?-------------';
             }
-            elsif($fs->prontype() eq 'ind')
+            elsif($fs->contains('prontype', 'ind') || $fs->contains('prontype', 'dem'))
             {
                 # několik, mnoho, málo, tolik
                 $tag = 'Ca--X----------';
@@ -568,10 +581,17 @@ sub encode
                 # kolikátý
                 $tag = 'CzXXX----------';
             }
-            elsif($fs->prontype() eq 'ind')
+            elsif($fs->contains('prontype', 'ind') || $fs->contains('prontype', 'dem'))
             {
                 # několikátý, mnohý, tolikátý
+                # but also: nejeden
                 $tag = 'CwXXX----------';
+            }
+            elsif($fs->get_other_subfeature('cs::pdt', 'numtype') eq 'suffix' ||
+               $fs->gender() eq '' && $fs->number() ne '')
+            {
+                # tých
+                $tag = 'Ck-XX----------';
             }
             else
             {
@@ -585,7 +605,7 @@ sub encode
                 # kolikrát
                 $tag = 'Cu-------------';
             }
-            elsif($fs->prontype() eq 'ind')
+            elsif($fs->contains('prontype', 'ind') || $fs->contains('prontype', 'dem'))
             {
                 # několikrát, mnohokrát, tolikrát
                 $tag = 'Co-------------';
@@ -605,20 +625,19 @@ sub encode
             # čtvero, patero, desatero
             $tag = 'Cj-------------';
         }
-        elsif($fs->numtype() eq 'sets')
-        {
-            # čtvery, patery, desatery
-            $tag = 'Ck-------------';
-        }
-        elsif($fs->get_other_for_tagset('cs::pdt') eq 'h' ||
+        elsif($fs->numtype() eq 'sets' ||
               $fs->gender() eq 'masc' && $fs->animateness() eq '' && $fs->number() eq 'plur' && $fs->case() eq 'acc')
         {
-            # jedny, nejedny
+            # jedny
             $tag = 'ChX------------';
+            # "nejedny" is indefinite numeral and has its own tag 'Cw'.
+            # "oboje", "dvoje", "troje" (and "čtvery", "patery", "desatery"?) are included in "Cd", together with "obojí", "dvojí", "trojí".
         }
         else
         {
-            # jedny, dvojí, desaterý
+            # obojí, dvojí, trojí (both-fold, twofold, three-fold)
+            # oboje, dvoje, troje (both sets of, two sets of, three sets of)
+            # The latter are distinguished by variant=1.
             $tag = 'CdX------------';
         }
     }
