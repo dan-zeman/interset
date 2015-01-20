@@ -57,8 +57,10 @@ sub _create_atoms
             # i-adjective, -i ending (yoroshii, ii, nai, chikai, osoi) [yoroshii = good]
             'ADJifin'    => ['pos' => 'adj', 'verbform' => 'fin', 'other' => {'adjtype' => 'i'}],
             # Finite adjective can also occur with the feature "ta" (yokatta, yoroshikatta, tookatta, nakatta) [yokatta = was good].
-            # i-adjective, -ku ending (yoroshiku, arigatou, ohayou, hayaku, yoku) [adverb; yoroshiku = well, properly; best regards ("please treat me favourably")]
-            'ADJiku'     => ['pos' => 'adv'],
+            # i-adjective, -ku ending (yoroshiku, arigatou, ohayou, hayaku, yoku)
+            # These are actually adverbs derived from adjectives.
+            # [adverb; yoroshiku = well, properly; best regards ("please treat me favourably")]
+            'ADJiku'     => ['pos' => 'adv', 'other' => {'adjtype' => 'i', 'advtype' => 'ku'}],
             # i-adjective, -kute ending (nakute, chikakute, yasukute, takakute, yokute) [transgressive form of adjective; str. 74]
             'ADJite'     => ['pos' => 'adj', 'verbform' => 'trans', 'other' => {'adjtype' => 'i'}],
             # n-adjective, concatenating "-na; PV" (daijoubu, kekkou, beNri, hajimete, muri) [daijoubu = safe; all right; kekkou = nice, fine]
@@ -213,14 +215,16 @@ sub _create_atoms
                                                                                    'n'    => 'ADJ_n',
                                                                                    'sf'   => 'ADJsf',
                                                                                    'teki' => 'ADJteki',
-                                                                                   '@'    => 'ADJ' }},
+                                                                                   '@'    => { 'tense' => { 'past' => 'ADJifin',
+                                                                                                            '@'    => 'ADJ' }}}},
                                                    'dem' => 'ADJdem',
                                                    'int' => 'ADJwh' }},
                        'num'  => 'CD',
                        'verb' => 'V',
                        'adv'  => { 'prontype' => { ''    => { 'advtype' => { 'deg' => 'ADVdgr',
                                                                              'tim' => 'ADVtmp',
-                                                                             '@'   => 'ADV' }},
+                                                                             '@'   => { 'other/advtype' => { 'ku' => 'ADJiku',
+                                                                                                             '@'  => 'ADV' }}}},
                                                    'dem' => 'ADVdem',
                                                    'int' => 'ADVwh' }},
                        'adp'  => 'P',
@@ -317,9 +321,20 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
-    my $fs = $self->decode_conll($tag);
-    # Default feature values. Used to improve collaboration with other drivers.
-    # ... nothing yet ...
+    my $fs = Lingua::Interset::FeatureStructure->new();
+    $fs->set_tagset('ja::conll');
+    my $atoms = $self->atoms();
+    # Three components: pos, subpos, features.
+    # example: No\tNoCm\tMa|Sg|Nm
+    my ($pos, $subpos, $features) = split(/\s+/, $tag);
+    # The underscore character is used if there are no features.
+    $features = '' if($features eq '_');
+    my @features = split(/\|/, $features);
+    $atoms->{pos}->decode_and_merge_hard($subpos, $fs);
+    foreach my $feature (@features)
+    {
+        $atoms->{feature}->decode_and_merge_hard($feature, $fs);
+    }
     return $fs;
 }
 
@@ -346,8 +361,9 @@ sub encode
             last;
         }
     }
-    my $feature_names = $self->get_feature_names($pos);
-    my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names);
+    my $feature = $atoms->{feature}->encode($fs);
+    $feature = '_' if($feature eq '');
+    my $tag = "$pos\t$subpos\t$feature";
     return $tag;
 }
 
