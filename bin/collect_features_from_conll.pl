@@ -48,7 +48,16 @@ foreach my $tag (@tagset)
 # Sort the tagset alphabetically and print it to the STDOUT.
 foreach my $tag (@tagset)
 {
-    my @examples = sort {$examples{$tag}{$b} <=> $examples{$tag}{$a}} (keys(%{$examples{$tag}}));
+    my @examples = sort
+    {
+        my $result = $examples{$tag}{$b} <=> $examples{$tag}{$a};
+        unless($result)
+        {
+            $result = $a cmp $b;
+        }
+        $result
+    }
+    (keys(%{$examples{$tag}}));
     splice(@examples, 10);
     print($tag, " (", join(', ', @examples), ")\n");
 }
