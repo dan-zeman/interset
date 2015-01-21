@@ -61,8 +61,10 @@ sub _create_atoms
             # These are actually adverbs derived from adjectives.
             # [adverb; yoroshiku = well, properly; best regards ("please treat me favourably")]
             'ADJiku'     => ['pos' => 'adv', 'other' => {'adjtype' => 'i', 'advtype' => 'ku'}],
-            # i-adjective, -kute ending (nakute, chikakute, yasukute, takakute, yokute) [transgressive form of adjective; str. 74]
-            'ADJite'     => ['pos' => 'adj', 'verbform' => 'trans', 'other' => {'adjtype' => 'i'}],
+            # i-adjective, -kute ending (nakute, chikakute, yasukute, takakute, yokute)
+            # [transgressive/participle form of adjective; str. 74]
+            # We cannot set verbform=trans because that would trigger the 'kute' feature on encoding, and the feature is not used with ADJite.
+            'ADJite'     => ['pos' => 'adv', 'other' => {'adjtype' => 'i', 'advtype' => 'kute'}],
             # n-adjective, concatenating "-na; PV" (daijoubu, kekkou, beNri, hajimete, muri) [daijoubu = safe; all right; kekkou = nice, fine]
             'ADJ_n'      => ['pos' => 'adj', 'other' => {'adjtype' => 'n'}],
             # adjectival suffix "na" (na) [dame na = bad]
@@ -102,7 +104,7 @@ sub _create_atoms
             # demonstrative pronoun (sore = that, kochira = here, sochira = there, kore = this, soko = there)
             'Ndem'       => ['pos' => 'noun', 'prontype' => 'dem'],
             # suffix to nominal phrase (hatsu, chaku, gurai, keiyu, hodo) [hatsu = departure, chaku = arrival, keiyu = via] [NP(furaNkufuruto/NAMEloc/COMP keiyu/Nsf/HD) = via Frankfurt]
-            'Nsf'        => ['pos' => 'prep', 'subpos' => 'post'],
+            'Nsf'        => ['pos' => 'adp', 'adpostype' => 'post'],
             # temporal noun (ima = now, hi = day, asa = morning, yuugata = evening, koNdo = this time)
             'Ntmp'       => ['pos' => 'noun', 'advtype' => 'tim'],
             # interrogative pronoun (dochira = where, itsu = when, naNji = what time, dore = which, docchi = which way, which one)
@@ -223,8 +225,9 @@ sub _create_atoms
                        'verb' => 'V',
                        'adv'  => { 'prontype' => { ''    => { 'advtype' => { 'deg' => 'ADVdgr',
                                                                              'tim' => 'ADVtmp',
-                                                                             '@'   => { 'other/advtype' => { 'ku' => 'ADJiku',
-                                                                                                             '@'  => 'ADV' }}}},
+                                                                             '@'   => { 'other/advtype' => { 'ku'   => 'ADJiku',
+                                                                                                             'kute' => 'ADJite',
+                                                                                                             '@'    => 'ADV' }}}},
                                                    'dem' => 'ADVdem',
                                                    'int' => 'ADVwh' }},
                        'adp'  => 'P',
@@ -265,6 +268,7 @@ sub _create_atoms
             # kute is the transgressive suffix for adjectives [str. 74]
             # In fact it is the suffix 'ku' that converts adjectives to adverbs, then 'te' that makes participles (cs:přechodník) from verbs, and here, from adjectives/adverbs.
             # It occurs with the tags PADJ, VADJi.
+            # It does not occur with ADJ*! The ADJite subpos tag is used instead.
             # examples:
             # nakute, chikakute, yasukute, takakute, yokute
             'kute' => ['verbform' => 'trans']
