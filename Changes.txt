@@ -1,5 +1,13 @@
 {{$NEXT}}
 
+Features:
+* New value 'light' of the feature 'verbtype': light/support verb in Japanese ("suru") and other languages.
+
+Drivers:
+* JA::Conll
+
+
+
 2.029     2015-01-07 11:05:40+01:00 Europe/Prague
 
 Fixes:

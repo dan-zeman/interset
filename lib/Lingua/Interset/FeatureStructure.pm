@@ -233,12 +233,13 @@ my %matrix = @_matrix =
     'verbtype' =>
     {
         'priority' => 140,
-        'values' => ['aux', 'cop', 'mod', 'verbconj', ''],
+        'values' => ['aux', 'cop', 'mod', 'light', 'verbconj', ''],
         'replacements' =>
         [
             ['aux'],
             ['cop', 'aux'],
             ['mod', 'aux'],
+            ['light'],
             ['verbconj'],
         ],
         'uname' => 'VerbType'

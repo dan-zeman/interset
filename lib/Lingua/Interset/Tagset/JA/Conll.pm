@@ -63,8 +63,7 @@ sub _create_atoms
             'ADJiku'     => ['pos' => 'adv', 'other' => {'adjtype' => 'i', 'advtype' => 'ku'}],
             # i-adjective, -kute ending (nakute, chikakute, yasukute, takakute, yokute)
             # [transgressive/participle form of adjective; str. 74]
-            # We cannot set verbform=trans because that would trigger the 'kute' feature on encoding, and the feature is not used with ADJite.
-            'ADJite'     => ['pos' => 'adv', 'other' => {'adjtype' => 'i', 'advtype' => 'kute'}],
+            'ADJite'     => ['pos' => 'adv', 'verbform' => 'trans', 'other' => {'adjtype' => 'i', 'advtype' => 'kute'}],
             # n-adjective, concatenating "-na; PV" (daijoubu, kekkou, beNri, hajimete, muri) [daijoubu = safe; all right; kekkou = nice, fine]
             'ADJ_n'      => ['pos' => 'adj', 'other' => {'adjtype' => 'n'}],
             # adjectival suffix "na" (na) [dame na = bad]
@@ -165,18 +164,21 @@ sub _create_atoms
             # unit (maruku, biN, meetoru, kiro, shitsu) [maruku = mark, meetoru = meter, kiro = kilo]
             'UNIT'       => ['pos' => 'noun', 'other' => {'nountype' => 'unit'}],
             # verb-tense (ittari, nitari, tomarezu, shirabetari, tanoshimetari) [ittari = and go; nitari = barge]
-            'V'          => ['pos' => 'verb', 'other' => {'verbform' => 'V'}], ###!!!???
+            'V'          => ['pos' => 'verb'],
             # verb-tense, stem and 1st/2nd/5th base (mi, tore, nomi, kimari, kiki, tabe) [mi = look at, tabe = eat]
-            'Vbas'       => ['pos' => 'verb'],
+            'Vbas'       => ['pos' => 'verb', 'other' => {'verbform' => 'base'}],
             # verb conditional (shimashitara, shitara, areba, arimashitara, dekimashitara) [str. 160]
             'Vcnd'       => ['pos' => 'verb', 'mood' => 'cnd'],
+            # finite verb + tense (-ru, -ta, -masu, -maseN)
             # Finite verbs occur with three different features:
             # eN (sumimaseN, arimaseN, kamaimaseN, suimaseN, shiremaseN) [honorific negative future] [str. 61]
             # ta (wakarimashita, gozaimashita, itta, kashikomarimashita, hanareta) [past] [str. 61]
             # u (iu, aru, arimasu, narimasu, omoimasu) [present or afirmative future?] [str. 61]
-            'Vfin'       => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'ind'], # finite verb + tense (-ru, -ta, -masu, -maseN)
-            'Vimp'       => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'imp'], # verb imperative (gomeNnasai, kudasai, ie, nome, shiro, kimero) [gomeNnasai = pardon me; kudasai = please do]
-            'Vte'        => ['pos' => 'verb', 'verbform' => 'trans'], # verb tense, -te/-de ending [transgressive?] (aite, shite, tsuite, natte, arimashite) [str. 73]
+            'Vfin'       => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'ind'],
+            # verb imperative (gomeNnasai, kudasai, ie, nome, shiro, kimero) [gomeNnasai = pardon me; kudasai = please do]
+            'Vimp'       => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'imp'],
+            # verb tense, -te/-de ending [transgressive?] (aite, shite, tsuite, natte, arimashite) [str. 73]
+            'Vte'        => ['pos' => 'verb', 'verbform' => 'trans'],
             # Verbal adjectives
             # -sou verbal adjective [str. 153]
             # (ikesou, arisou, toresou, owarisou, awanasasou)
@@ -189,26 +191,39 @@ sub _create_atoms
             # VADJi can also occur with the feature 'ta' (inakatta, ikitakatta, kiitenakatta, dekinakatta)
             # verbal adjective conditional -nakereba (shinakereba, konakereba, ikanakereba, sashitsukaenakereba, iwanakereba) [shinakereba = unless one does something]
             'VADJicnd'   => ['pos' => 'adj', 'mood' => 'cnd', 'other' => {'adjtype' => 'vicnd'}],
-            'VAUX'       => ['pos' => 'verb', 'verbtype' => 'aux', 'other' => {'verbform' => 'VAUX'}], # auxiliary verb - tense (mitari, shimattari) [str. 181]
-            'VAUXbas'    => ['pos' => 'verb', 'verbtype' => 'aux'], # auxiliary verb - tense (itadaki) [itadaku = to take]
-            'VAUXcnd'    => ['pos' => 'verb', 'verbtype' => 'aux', 'mood' => 'cnd'], # auxiliary verb conditional (itadakereba, okanakereba, itadaitara, itadakimashitara, mitara)
+            # auxiliary verb - tense (mitari, shimattari) [str. 181]
+            'VAUX'       => ['pos' => 'verb', 'verbtype' => 'aux'],
+            # auxiliary verb - tense (itadaki) [itadaku = to take]
+            'VAUXbas'    => ['pos' => 'verb', 'verbtype' => 'aux', 'other' => {'verbform' => 'base'}],
+            # auxiliary verb conditional (itadakereba, okanakereba, itadaitara, itadakimashitara, mitara)
+            'VAUXcnd'    => ['pos' => 'verb', 'verbtype' => 'aux', 'mood' => 'cnd'],
+            # finite auxiliary verb +tense following V (iru, ita, kuru, shimau)
             # Finite auxiliary verbs occur with three different features:
             # eN (imaseN, orimaseN, mimaseN, itadakemaseN, shimaimaseN)
             # ta (ita, mita, imashita, kita, oita, itadaita)
             # u (iru, okimasu, imasu, orimasu, itadakimasu)
-            'VAUXfin'    => ['pos' => 'verb', 'verbtype' => 'aux', 'verbform' => 'fin', 'mood' => 'ind'], # finite auxiliary verb +tense following V (iru, ita, kuru, shimau)
-            'VAUXimp'    => ['pos' => 'verb', 'verbtype' => 'aux', 'verbform' => 'fin', 'mood' => 'imp'], # finite auxiliary verb imperative (kudasai, kure)
-            'VAUXte'     => ['pos' => 'verb', 'verbtype' => 'aux', 'verbform' => 'trans'], # auxiliary verb -tense -te/-de ending transgressive (imashite, orimashite, itadaite, oite, shimatte)
-            'VS'         => ['pos' => 'verb'], # support (light) verb -tense VN (shitari, shinagara)
-            'VSbas'      => ['pos' => 'verb'], # support verb -tense VN (shi)
-            'VScnd'      => ['pos' => 'verb', 'mood' => 'cnd'], # support verb conditional (dekireba, sureba, dekitara, dekimashitara, shitara)
+            'VAUXfin'    => ['pos' => 'verb', 'verbtype' => 'aux', 'verbform' => 'fin', 'mood' => 'ind'],
+            # finite auxiliary verb imperative (kudasai, kure)
+            'VAUXimp'    => ['pos' => 'verb', 'verbtype' => 'aux', 'verbform' => 'fin', 'mood' => 'imp'],
+            # auxiliary verb -tense -te/-de ending transgressive (imashite, orimashite, itadaite, oite, shimatte)
+            'VAUXte'     => ['pos' => 'verb', 'verbtype' => 'aux', 'verbform' => 'trans'],
+            # Support verb (light verb) "suru"
+            # support verb -tense VN (shitari, shinagara)
+            'VS'         => ['pos' => 'verb', 'verbtype' => 'light'],
+            # support verb -tense VN (shi)
+            'VSbas'      => ['pos' => 'verb', 'verbtype' => 'light', 'other' => {'verbform' => 'base'}],
+            # support verb conditional (dekireba, sureba, dekitara, dekimashitara, shitara)
+            'VScnd'      => ['pos' => 'verb', 'verbtype' => 'light', 'mood' => 'cnd'],
+            # finite support verb +tense VN (suru, shita)
             # Finite support verbs occur with three different features:
             # eN (shimaseN)
             # ta (shita, shimashita, itashimashita, sareta, dekita)
             # u (shimasu, itashimasu, suru, dekimasu, shimashou, dekiru)
-            'VSfin'      => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'ind'], # finite support verb +tense VN (suru, shita)
-            'VSimp'      => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'imp'], # finite support verb imperative (shiro)
-            'VSte'       => ['pos' => 'verb', 'verbform' => 'trans'], # support verb -tense, -te ending transgressive (shite, sasete, shimashite, sashite, sarete, itashimashite)
+            'VSfin'      => ['pos' => 'verb', 'verbtype' => 'light', 'verbform' => 'fin', 'mood' => 'ind'],
+            # finite support verb imperative (shiro)
+            'VSimp'      => ['pos' => 'verb', 'verbtype' => 'light', 'verbform' => 'fin', 'mood' => 'imp'],
+            # support verb -tense, -te ending transgressive (shite, sasete, shimashite, sashite, sarete, itashimashite)
+            'VSte'       => ['pos' => 'verb', 'verbtype' => 'light', 'verbform' => 'trans'],
             'xxx'        => [], # segmentation problem
         },
         'encode_map' =>
@@ -245,24 +260,31 @@ sub _create_atoms
                                                    'int' => 'ADJwh' }},
                        'num'  => { 'other/numtype' => { 'unit' => 'CDU',
                                                         '@'    => 'CD' }},
-                       'verb' => { 'verbtype' => { 'cop' => { 'mood' => { 'cnd' => 'PVcnd',
-                                                                          '@'   => { 'verbform' => { 'trans' => 'PVte',
-                                                                                                     'part'  => 'PVte',
-                                                                                                     '@'     => 'PVfin' }}}},
-                                                   'aux' => { 'mood' => { 'cnd' => 'VAUXcnd',
-                                                                          'imp' => 'VAUXimp',
-                                                                          '@'   => { 'verbform' => { 'trans' => 'VAUXte',
-                                                                                                     'part'  => 'VAUXte',
-                                                                                                     'fin'   => 'VAUXfin',
-                                                                                                     '@'     => { 'other/verbform' => { 'VAUX' => 'VAUX',
-                                                                                                                                        '@'    => 'VAUXbas' }}}}}},
-                                                   '@'   => { 'mood' => { 'cnd' => 'Vcnd',
-                                                                          'imp' => 'Vimp',
-                                                                          '@'   => { 'verbform' => { 'trans' => 'Vte',
-                                                                                                     'part'  => 'Vte',
-                                                                                                     'fin'   => 'Vfin',
-                                                                                                     '@'     => { 'other/verbform' => { 'V' => 'V',
-                                                                                                                                        '@' => 'Vbas' }}}}}}}},
+                       'verb' => { 'verbtype' => { 'cop'   => { 'mood' => { 'cnd' => 'PVcnd',
+                                                                            '@'   => { 'verbform' => { 'trans' => 'PVte',
+                                                                                                       'part'  => 'PVte',
+                                                                                                       '@'     => 'PVfin' }}}},
+                                                   'aux'   => { 'mood' => { 'cnd' => 'VAUXcnd',
+                                                                            'imp' => 'VAUXimp',
+                                                                            '@'   => { 'verbform' => { 'trans' => 'VAUXte',
+                                                                                                       'part'  => 'VAUXte',
+                                                                                                       'fin'   => 'VAUXfin',
+                                                                                                       '@'     => { 'other/verbform' => { 'base' => 'VAUXbas',
+                                                                                                                                          '@'    => 'VAUX' }}}}}},
+                                                   'light' => { 'mood' => { 'cnd' => 'VScnd',
+                                                                            'imp' => 'VSimp',
+                                                                            '@'   => { 'verbform' => { 'trans' => 'VSte',
+                                                                                                       'part'  => 'VSte',
+                                                                                                       'fin'   => 'VSfin',
+                                                                                                       '@'     => { 'other/verbform' => { 'base' => 'VSbas',
+                                                                                                                                          '@'    => 'VS' }}}}}},
+                                                   '@'     => { 'mood' => { 'cnd' => 'Vcnd',
+                                                                            'imp' => 'Vimp',
+                                                                            '@'   => { 'verbform' => { 'trans' => 'Vte',
+                                                                                                       'part'  => 'Vte',
+                                                                                                       'fin'   => 'Vfin',
+                                                                                                       '@'     => { 'other/verbform' => { 'base' => 'Vbas',
+                                                                                                                                          '@'    => 'V' }}}}}}}},
                        'adv'  => { 'prontype' => { ''    => { 'advtype' => { 'deg' => 'ADVdgr',
                                                                              'tim' => { 'other/advtype' => { 'date' => 'CDdate',
                                                                                                              'time' => 'CDtime',
@@ -329,16 +351,15 @@ sub _create_atoms
             # It does not occur with PV*! The PVte subpos tag is used instead.
             # examples:
             # nakute, chikakute, yasukute, takakute, yokute
-            'kute' => ['verbform' => 'trans']
+            'kute' => ['other' => {'kute' => 'yes'}]
         },
         'encode_map' =>
         {
-            'verbform' => { 'trans' => 'kute',
-                            'part'  => 'kute',
-                            '@'     => { 'negativeness' => { 'neg' => 'eN',
-                                                             '@'   => { 'tense' => { 'past' => 'ta',
-                                                                                     'pres' => 'u',
-                                                                                     'fut'  => 'u' }}}}}
+            'other/kute' => { 'yes' => 'kute',
+                              '@'     => { 'negativeness' => { 'neg' => 'eN',
+                                                               '@'   => { 'tense' => { 'past' => 'ta',
+                                                                                       'pres' => 'u',
+                                                                                       'fut'  => 'u' }}}}}
         }
     );
     return \%atoms;
