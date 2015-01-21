@@ -85,34 +85,36 @@ sub _create_atoms
             'ADVwh'      => ['pos' => 'adv', 'prontype' => 'int'],
             # cardinal numeral (ichi, ni, saN, hyaku) [ichi = one, ni = two, saN = three]
             'CD'         => ['pos' => 'num', 'numtype' => 'card'],
-            # cardinal numeral with unit [CD-shitsu, biN, kiro] (mitsu, hitotsu, ichinichi, futatsu, ichido)
-            'CDU'        => ['pos' => 'num', 'numtype' => 'card'],
+            # cardinal numeral with unit [CD-shitsu, biN, kiro] (mittsu, hitotsu, ichinichi, futatsu, ichido)
+            'CDU'        => ['pos' => 'num', 'numtype' => 'card', 'other' => {'numtype' => 'unit'}],
             # cardinal numeral with date unit (juugatsu, juuninichi, nigatsu, tooka, mikka) [juugatsu = ten-month, October; juuninichi = twelve-day, twelfth day of the month]
-            'CDdate'     => ['pos' => 'adv', 'advtype' => 'tim'],
+            'CDdate'     => ['pos' => 'adv', 'advtype' => 'tim', 'other' => {'advtype' => 'date'}],
             # cardinal numeral with time unit (gojuppuN, juuichiji, juuji, saNjuugofuN, juugofuN) [gojuppuN = fifty minutes; juuichiji = eleven o'clock]
-            'CDtime'     => ['pos' => 'adv', 'advtype' => 'tim'],
+            'CDtime'     => ['pos' => 'adv', 'advtype' => 'tim', 'other' => {'advtype' => 'time'}],
             # conjunction, sentence-initial or between nominals (dewa, de, soredewa, ato, soshitara) [soredewa = now, so; ato = after]
             'CNJ'        => ['pos' => 'conj'],
             # greeting [koNnichiwa = hello; otsukaresama = thank you very much; sayounara = good bye]
-            'GR'         => ['pos' => 'int'],
+            'GR'         => ['pos' => 'int', 'other' => {'inttype' => 'greeting'}],
             # interjection (hai, ee, to, e, a) [hai = yes]
             'ITJ'        => ['pos' => 'int'],
             # formal noun (hou, no, koto, nano, naN) [watakushi no hou = on my part, my way (watakushi = I)]
-            'NF'         => ['pos' => 'noun'],
+            'NF'         => ['pos' => 'noun', 'other' => {'nountype' => 'formal'}],
             # common noun (hoteru = hotel, biN = jar, hikouki = airplane, shiNguru = single, kaeri = return)
             'NN'         => ['pos' => 'noun', 'nountype' => 'com'],
             # demonstrative pronoun (sore = that, kochira = here, sochira = there, kore = this, soko = there)
             'Ndem'       => ['pos' => 'noun', 'prontype' => 'dem'],
             # suffix to nominal phrase (hatsu, chaku, gurai, keiyu, hodo) [hatsu = departure, chaku = arrival, keiyu = via] [NP(furaNkufuruto/NAMEloc/COMP keiyu/Nsf/HD) = via Frankfurt]
-            'Nsf'        => ['pos' => 'adp', 'adpostype' => 'post'],
+            'Nsf'        => ['pos' => 'noun', 'other' => {'nountype' => 'sf'}],
             # temporal noun (ima = now, hi = day, asa = morning, yuugata = evening, koNdo = this time)
             'Ntmp'       => ['pos' => 'noun', 'advtype' => 'tim'],
+            # another tag for temporal noun? (kayoubi = Tuesday, getsuyoubi = Monday, suiyoubi = Wednesday, gogo = afternoon, kiNyoubi = Friday)
+            'NT'         => ['pos' => 'noun', 'advtype' => 'tim', 'other' => {'nountype' => 'weekday'}],
             # interrogative pronoun (dochira = where, itsu = when, naNji = what time, dore = which, docchi = which way, which one)
             'Nwh'        => ['pos' => 'noun', 'prontype' => 'int'],
             # personal pronoun (watashi = I, watakushi = I, boku = I, atashi = I, atakushi = I)
             'PRON'       => ['pos' => 'noun', 'prontype' => 'prs'],
             # verbal (predicative) noun, VN-suru = make-VN (onegai, shuppatsu, yoyaku, kaNkou, shuchhou) [onegai = please; shuppatsu = departure; yoyaku = reservation]
-            'VN'         => ['pos' => 'noun'],
+            'VN'         => ['pos' => 'noun', 'other' => {'nountype' => 'lightverb'}],
             # proper noun (doNjobaNni = Don Giovanni, kurisumasu, zeNnikkuubiN, omamori, nihoNkoukuubiN)
             'NAME'       => ['pos' => 'noun', 'nountype' => 'prop'],
             # name of location (hanoofaa = Hannover, doitsu = Germany, kaNkuu = Kansai International Airport, furaNkufuruto = Frankfurt, roNdoN = London)
@@ -121,37 +123,36 @@ sub _create_atoms
             'NAMEorg'    => ['pos' => 'noun', 'nountype' => 'prop', 'nametype' => 'com'],
             # name of person (matsumoto, miyake, kitahara, yoshikawa, tsutsui)
             'NAMEper'    => ['pos' => 'noun', 'nountype' => 'prop', 'nametype' => 'prs'],
-            # another tag for temporal noun? (kayoubi = Tuesday, getsuyoubi = Monday, suiyoubi = Wednesday, gogo = afternoon, kiNyoubi = Friday)
-            'NT'         => ['pos' => 'noun', 'advtype' => 'tim'],
             # postposition / particle [np];[pp] (ni, de, kara, made, to)
             'P'          => ['pos' => 'adp', 'adpostype' => 'post'],
             # adjectival particle [vp];[ap] (youna, you, mitai, rashii, sou)
             # PADJ also occurs with the feature 'kute' (the only form is rashikute)
-            'PADJ'       => ['pos' => 'adp', 'adpostype' => 'post'],
+            'PADJ'       => ['pos' => 'adp', 'adpostype' => 'post', 'other' => {'parttype' => 'adj'}],
             # adverbial particle [vp];[ap] (youni, fuuni, shidai, nagara, hodo)
-            'PADV'       => ['pos' => 'adp', 'adpostype' => 'post'],
-            # (saN = Mr./Ms., sama)
-            'PNsf'       => ['pos' => 'noun'],
+            'PADV'       => ['pos' => 'adp', 'adpostype' => 'post', 'other' => {'parttype' => 'adv'}],
+            # title suffix to personal name: okamoto saN = Mr./Ms. Okamoto
+            # (saN, sama)
+            'PNsf'       => ['pos' => 'noun', 'other' => {'nountype' => 'title'}],
             # particle of quotation (to, te, naNte, toka, ka, tte)
-            'PQ'         => ['pos' => 'adp', 'adpostype' => 'post'],
+            'PQ'         => ['pos' => 'adp', 'adpostype' => 'post', 'other' => {'parttype' => 'quot'}],
             # accusative particle [np] (o)
             'Pacc'       => ['pos' => 'adp', 'adpostype' => 'post', 'case' => 'acc'],
             # coordinating conjunction / particle (to = and; ka, ya = or; toka, nari)
             'Pcnj'       => ['pos' => 'conj', 'conjtype' => 'coor'],
             # focus particle (wa, mo, demo, koso, nara, sae)
-            'Pfoc'       => ['pos' => 'adp', 'adpostype' => 'post'],
+            'Pfoc'       => ['pos' => 'adp', 'adpostype' => 'post', 'other' => {'parttype' => 'focus'}],
             # genitive particle [np] (no)
             'Pgen'       => ['pos' => 'adp', 'adpostype' => 'post', 'case' => 'gen'],
             # nominative particle [np] (ga)
             'Pnom'       => ['pos' => 'adp', 'adpostype' => 'post', 'case' => 'nom'],
             # S-end (clause-final) particle (ka, ne, yo, na, kana)
-            'PSE'        => ['pos' => 'part'],
+            'PSE'        => ['pos' => 'part', 'other' => {'parttype' => 'send'}],
             # S-conjunctive particle "and" (node, to, shi, kara, nanode)
-            'PSSa'       => ['pos' => 'part'],
+            'PSSa'       => ['pos' => 'part', 'other' => {'parttype' => 'sand'}],
             # S-conjunctive particle "but" (ga, keredomo, kedo, kedomo, keredo)
-            'PSSb'       => ['pos' => 'part'],
+            'PSSb'       => ['pos' => 'part', 'other' => {'parttype' => 'sbut'}],
             # S-conjunctive particle question (ka)
-            'PSSq'       => ['pos' => 'part'],
+            'PSSq'       => ['pos' => 'part', 'other' => {'parttype' => 'qest'}],
             # What they call "particle verb" is regarded by other authors a copula ("to be").
             # particle verb+cond (deshitara, dattara, deshitaraba)
             'PVcnd'      => ['pos' => 'verb', 'verbtype' => 'cop', 'verbform' => 'fin', 'mood' => 'cnd'],
@@ -160,11 +161,11 @@ sub _create_atoms
             # particle verb-tens (de, deshite)
             'PVte'       => ['pos' => 'verb', 'verbtype' => 'cop', 'verbform' => 'trans'],
             # noun prefix (yaku, dai, yoku, maru, Frau)
-            'PreN'       => ['pos' => 'noun'],
+            'PreN'       => ['pos' => 'noun', 'other' => {'nountype' => 'pref'}],
             # unit (maruku, biN, meetoru, kiro, shitsu) [maruku = mark, meetoru = meter, kiro = kilo]
-            'UNIT'       => ['pos' => 'noun'],
+            'UNIT'       => ['pos' => 'noun', 'other' => {'nountype' => 'unit'}],
             # verb-tense (ittari, nitari, tomarezu, shirabetari, tanoshimetari) [ittari = and go; nitari = barge]
-            'V'          => ['pos' => 'verb'],
+            'V'          => ['pos' => 'verb', 'other' => {'verbform' => 'V'}], ###!!!???
             # verb-tense, stem and 1st/2nd/5th base (mi, tore, nomi, kimari, kiki, tabe) [mi = look at, tabe = eat]
             'Vbas'       => ['pos' => 'verb'],
             # verb conditional (shimashitara, shitara, areba, arimashitara, dekimashitara) [str. 160]
@@ -176,12 +177,19 @@ sub _create_atoms
             'Vfin'       => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'ind'], # finite verb + tense (-ru, -ta, -masu, -maseN)
             'Vimp'       => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'imp'], # verb imperative (gomeNnasai, kudasai, ie, nome, shiro, kimero) [gomeNnasai = pardon me; kudasai = please do]
             'Vte'        => ['pos' => 'verb', 'verbform' => 'trans'], # verb tense, -te/-de ending [transgressive?] (aite, shite, tsuite, natte, arimashite) [str. 73]
-            'VADJ_n'     => ['pos' => 'adj'], # verbal adjective -sou (ikesou, arisou, toresou, owarisou, awanasasou) [str. 153] [dono atari ikesou desu ka = how do I go around]
-            'VADJi'      => ['pos' => 'adj'], # verbal adjective -nai/-tai (shitai, mitai, ikitai, kimetai, itadakitai) [str. 67]
+            # Verbal adjectives
+            # -sou verbal adjective [str. 153]
+            # (ikesou, arisou, toresou, owarisou, awanasasou)
+            # [dono atari ikesou desu ka = how do I go around]
+            'VADJ_n'     => ['pos' => 'adj', 'other' => {'adjtype' => 'vn'}],
+            # -nai/-tai verbal adjective [str. 67]
+            # (shitai, mitai, ikitai, kimetai, itadakitai)
+            'VADJi'      => ['pos' => 'adj', 'other' => {'adjtype' => 'vi'}],
             # VADJi can also occur with the feature 'kute' (kimenakute, ikanakute, noranakute, wakaranakute, okanakute)
             # VADJi can also occur with the feature 'ta' (inakatta, ikitakatta, kiitenakatta, dekinakatta)
-            'VADJicnd'   => ['pos' => 'adj', 'mood' => 'cnd'], # verbal adjective conditional -nakereba (shinakereba, konakereba, ikanakereba, sashitsukaenakereba, iwanakereba) [shinakereba = unless one does something]
-            'VAUX'       => ['pos' => 'verb', 'verbtype' => 'aux'], # auxiliary verb - tense (mitari, shimattari) [str. 181]
+            # verbal adjective conditional -nakereba (shinakereba, konakereba, ikanakereba, sashitsukaenakereba, iwanakereba) [shinakereba = unless one does something]
+            'VADJicnd'   => ['pos' => 'adj', 'mood' => 'cnd', 'other' => {'adjtype' => 'vicnd'}],
+            'VAUX'       => ['pos' => 'verb', 'verbtype' => 'aux', 'other' => {'verbform' => 'VAUX'}], # auxiliary verb - tense (mitari, shimattari) [str. 181]
             'VAUXbas'    => ['pos' => 'verb', 'verbtype' => 'aux'], # auxiliary verb - tense (itadaki) [itadaku = to take]
             'VAUXcnd'    => ['pos' => 'verb', 'verbtype' => 'aux', 'mood' => 'cnd'], # auxiliary verb conditional (itadakereba, okanakereba, itadaitara, itadakimashitara, mitara)
             # Finite auxiliary verbs occur with three different features:
@@ -205,8 +213,19 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'pos' => { 'noun' => { 'prontype' => { ''    => { 'nountype' => { 'prop' => 'NAME',
-                                                                              '@'    => 'NN' }},
+            'pos' => { 'noun' => { 'prontype' => { ''    => { 'nountype' => { 'prop' => { 'nametype' => { 'geo' => 'NAMEloc',
+                                                                                                          'com' => 'NAMEorg',
+                                                                                                          'prs' => 'NAMEper',
+                                                                                                          '@'   => 'NAME' }},
+                                                                              '@'    => { 'other/nountype' => { 'formal'    => 'NF',
+                                                                                                                'sf'        => 'Nsf',
+                                                                                                                'lightverb' => 'VN',
+                                                                                                                'weekday'   => 'NT',
+                                                                                                                'title'     => 'PNsf',
+                                                                                                                'unit'      => 'UNIT',
+                                                                                                                'pref'      => 'PreN',
+                                                                                                                '@'         => { 'advtype' => { 'tim' => 'Ntmp',
+                                                                                                                                                '@'   => 'NN' }}}}}},
                                                    'prs' => 'PRON',
                                                    'dem' => 'Ndem',
                                                    'int' => 'Nwh' }},
@@ -217,22 +236,60 @@ sub _create_atoms
                                                                                    'n'    => 'ADJ_n',
                                                                                    'sf'   => 'ADJsf',
                                                                                    'teki' => 'ADJteki',
+                                                                                   'vi'   => 'VADJi',
+                                                                                   'vicnd'=> 'VADJicnd',
+                                                                                   'vn'   => 'VADJ_n',
                                                                                    '@'    => { 'tense' => { 'past' => 'ADJifin',
                                                                                                             '@'    => 'ADJ' }}}},
                                                    'dem' => 'ADJdem',
                                                    'int' => 'ADJwh' }},
-                       'num'  => 'CD',
-                       'verb' => 'V',
+                       'num'  => { 'other/numtype' => { 'unit' => 'CDU',
+                                                        '@'    => 'CD' }},
+                       'verb' => { 'verbtype' => { 'cop' => { 'mood' => { 'cnd' => 'PVcnd',
+                                                                          '@'   => { 'verbform' => { 'trans' => 'PVte',
+                                                                                                     'part'  => 'PVte',
+                                                                                                     '@'     => 'PVfin' }}}},
+                                                   'aux' => { 'mood' => { 'cnd' => 'VAUXcnd',
+                                                                          'imp' => 'VAUXimp',
+                                                                          '@'   => { 'verbform' => { 'trans' => 'VAUXte',
+                                                                                                     'part'  => 'VAUXte',
+                                                                                                     'fin'   => 'VAUXfin',
+                                                                                                     '@'     => { 'other/verbform' => { 'VAUX' => 'VAUX',
+                                                                                                                                        '@'    => 'VAUXbas' }}}}}},
+                                                   '@'   => { 'mood' => { 'cnd' => 'Vcnd',
+                                                                          'imp' => 'Vimp',
+                                                                          '@'   => { 'verbform' => { 'trans' => 'Vte',
+                                                                                                     'part'  => 'Vte',
+                                                                                                     'fin'   => 'Vfin',
+                                                                                                     '@'     => { 'other/verbform' => { 'V' => 'V',
+                                                                                                                                        '@' => 'Vbas' }}}}}}}},
                        'adv'  => { 'prontype' => { ''    => { 'advtype' => { 'deg' => 'ADVdgr',
-                                                                             'tim' => 'ADVtmp',
+                                                                             'tim' => { 'other/advtype' => { 'date' => 'CDdate',
+                                                                                                             'time' => 'CDtime',
+                                                                                                             '@'    => 'ADVtmp' }},
                                                                              '@'   => { 'other/advtype' => { 'ku'   => 'ADJiku',
                                                                                                              'kute' => 'ADJite',
                                                                                                              '@'    => 'ADV' }}}},
                                                    'dem' => 'ADVdem',
                                                    'int' => 'ADVwh' }},
-                       'adp'  => 'P',
-                       'conj' => 'CNJ',
-                       'int'  => 'ITJ',
+                       'adp'  => { 'other/parttype' => { 'adj'   => 'PADJ',
+                                                         'adv'   => 'PADV',
+                                                         'quot'  => 'PQ',
+                                                         'focus' => 'Pfoc',
+                                                         '@'     => { 'verbform' => { 'trans' => 'PADJ',
+                                                                                      '@'     => { 'case' => { 'acc' => 'Pacc',
+                                                                                                               'gen' => 'Pgen',
+                                                                                                               'nom' => 'Pnom',
+                                                                                                               '@'   => 'P' }}}}}},
+                       'conj' => { 'conjtype' => { 'coor' => 'Pcnj',
+                                                   '@'    => 'CNJ' }},
+                       'part' => { 'other/parttype' => { 'send' => 'PSE',
+                                                         'sand' => 'PSSa',
+                                                         'sbut' => 'PSSb',
+                                                         'qest' => 'PSSq',
+                                                         '@'    => 'PSE' }},
+                       'int'  => { 'other/inttype' => { 'greeting' => 'GR',
+                                                        '@'        => 'ITJ' }},
                        'punc' => { 'punctype' => { 'peri' => '.',
                                                    'qest' => '?',
                                                    '@'    => ',' }},
@@ -269,6 +326,7 @@ sub _create_atoms
             # In fact it is the suffix 'ku' that converts adjectives to adverbs, then 'te' that makes participles (cs:přechodník) from verbs, and here, from adjectives/adverbs.
             # It occurs with the tags PADJ, VADJi.
             # It does not occur with ADJ*! The ADJite subpos tag is used instead.
+            # It does not occur with PV*! The PVte subpos tag is used instead.
             # examples:
             # nakute, chikakute, yasukute, takakute, yokute
             'kute' => ['verbform' => 'trans']
@@ -357,12 +415,23 @@ sub encode
     # We do not encode '--', we merge it with 'xxx'.
     my @postags = ('ADJ', 'ADV', 'CD', 'CNJ', 'GR', 'ITJ', 'NAME', 'NT', 'N', 'PreN', 'PUNC', 'PS', 'PV', 'P', 'UNIT', 'VADJ', 'VAUX', 'VS', 'V', 'xxx');
     my $pos = $subpos eq '.' ? '.' : 'xxx';
-    foreach my $p (@postags)
+    if($subpos =~ m/^(PRON|VN)$/)
     {
-        if($subpos =~ m/^$p/)
+        $pos = 'N';
+    }
+    elsif($subpos =~ m/^[,?]$/)
+    {
+        $pos = 'PUNC';
+    }
+    else
+    {
+        foreach my $p (@postags)
         {
-            $pos = $p;
-            last;
+            if($subpos =~ m/^$p/)
+            {
+                $pos = $p;
+                last;
+            }
         }
     }
     my $feature = $atoms->{feature}->encode($fs);
