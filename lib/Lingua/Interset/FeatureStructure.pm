@@ -1,5 +1,5 @@
 # ABSTRACT: Definition of morphosyntactic features and their values.
-# Copyright © 2008-2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2008-2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::FeatureStructure;
 use strict;
@@ -1156,7 +1156,15 @@ sub value_valid
         return 0 unless(feature_valid($feature));
         my @known_values = known_values($feature);
         # If the value is a list of values, each of them must be valid.
+        # This method recognizes array references and serialized arrays using '|' as the separator.
         my $ref = ref($value);
+        my @myarray;
+        if($ref eq '' && $value =~ m/\|/)
+        {
+            @myarray = split(/\|/, $value);
+            $value = \@myarray;
+            $ref = ref($value);
+        }
         if($ref eq 'ARRAY')
         {
             foreach my $svalue (@{$value})
@@ -1996,9 +2004,28 @@ sub is_wh {my $self = shift; return any {m/^(int|rel)$/} ($self->get_list('pront
 
 
 
+#==============================================================================
+# Methods for the universal part-of-speech tags and the universal features as
+# defined in October 2014 for the Universal Dependencies
+# (http://universaldependencies.github.io/docs/).
+#==============================================================================
 use Lingua::Interset::Tagset::MUL::Upos;
 has '_upos_driver' => ( isa => 'Lingua::Interset::Tagset::MUL::Upos', is => 'ro', builder => '_create_upos_driver', lazy => 1 );
 sub _create_upos_driver { return new Lingua::Interset::Tagset::MUL::Upos; }
+has '_map_from_uf' => ( isa => 'HashRef', is => 'ro', builder => '_create_map_from_uf', lazy => 1 );
+sub _create_map_from_uf
+{
+    # A reverse hash will help translate Universal Features to Interset features.
+    my %map_from_uf;
+    foreach my $feature (keys(%matrix))
+    {
+        if(defined($matrix{$feature}{uname}) && !defined($map_from_uf{$matrix{$feature}{uname}}))
+        {
+            $map_from_uf{$matrix{$feature}{uname}} = $feature;
+        }
+    }
+    return \%map_from_uf;
+}
 
 
 
@@ -2042,6 +2069,54 @@ sub get_upos
     return $driver->encode($self);
 }
 sub upos { return get_upos(@_); }
+
+
+
+#------------------------------------------------------------------------------
+# Takes a list of feature=value pairs in the format prescribed by the
+# Universal Dependencies (http://universaldependencies.github.io/docs/), i.e.
+# identifiers are capitalized, some features are renamed and all pairs are
+# ordered alphabetically. Sets our feature values accordingly.
+#------------------------------------------------------------------------------
+=func add_ufeatures()
+
+Takes a list of feature-value pairs in the format prescribed by the
+Universal Dependencies (L<http://universaldependencies.github.io/docs/>), i.e.
+all features and values are capitalized, some features are renamed and all
+feature-value pairs are ordered alphabetically.
+Sets our feature values accordingly.
+Values of our features that are not mentioned in the input list will be left untouched.
+
+This method does not complain about unknown features or values.
+They will be silently ignored.
+Hence it is possible to read the input even if it contains language-specific
+extensions that are not yet known to Interset.
+
+=cut
+sub add_ufeatures
+{
+    my $self = shift;
+    my @pairs = @_;
+    my $map = $self->_map_from_uf();
+    foreach my $pair (@pairs)
+    {
+        if($pair =~ m/^(.+)=(.+)$/)
+        {
+            my $ufeature = $1;
+            my $uvalue = $2;
+            my $feature = $map->{$ufeature};
+            my $value = lc($uvalue);
+            # Interset uses for boolean features the value identical to feature name while universal features use "Yes".
+            $value = $feature if($value eq 'yes');
+            # Universal Features use comma to join multi-values but we use the vertical bar.
+            $value =~ s/,/\|/g;
+            if(defined($feature) && $self->value_valid($feature, $value))
+            {
+                $self->set($feature, $value);
+            }
+        }
+    }
+}
 
 
 
