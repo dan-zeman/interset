@@ -855,17 +855,19 @@ my %matrix = @_matrix =
     ###!!! On the other hand, we may want to make some verb forms self-standing parts of speech:
     # part (participle, properties of both verbs and adjectives)
     # ger (gerund, properties of both verbs and nouns)
+    # gdv (gerundive, properties of both verbs and adjectives)
     # trans (transgressive, properties of both verbs and adverbs)
     'verbform' =>
     {
         'priority' => 60,
-        'values' => ['fin', 'inf', 'sup', 'part', 'trans', 'ger', ''],
+        'values' => ['fin', 'inf', 'sup', 'part', 'trans', 'ger', 'gdv', ''],
         'replacements' =>
         [
             ['inf'],
             ['fin'],
             ['part'],
             ['ger'],
+            ['gdv', 'part'],
             ['sup'],
             ['trans']
         ],
