@@ -408,7 +408,7 @@ sub decode
     $fs->set_tagset('ja::conll');
     my $atoms = $self->atoms();
     # Three components: pos, subpos, features.
-    # example: No\tNoCm\tMa|Sg|Nm
+    # example: N\tNN\t_
     my ($pos, $subpos, $features) = split(/\s+/, $tag);
     # The underscore character is used if there are no features.
     $features = '' if($features eq '_');
@@ -576,21 +576,22 @@ end_of_list
 
 =head1 SYNOPSIS
 
-  use Lingua::Interset::Tagset::IT::Conll;
-  my $driver = Lingua::Interset::Tagset::IT::Conll->new();
-  my $fs = $driver->decode("S\tS\tgen=M|num=S");
+  use Lingua::Interset::Tagset::JA::Conll;
+  my $driver = Lingua::Interset::Tagset::JA::Conll->new();
+  my $fs = $driver->decode("N\tNN\t_");
 
 or
 
   use Lingua::Interset qw(decode);
-  my $fs = decode('it::conll', "S\tS\tgen=M|num=S");
+  my $fs = decode('ja::conll', "N\tNN\t_");
 
 =head1 DESCRIPTION
 
-Interset driver for the Italian tagset of the CoNLL 2007 Shared Task.
+Interset driver for the Japanese tagset of the CoNLL 2006 Shared Task.
 CoNLL tagsets in Interset are traditionally three values separated by tabs.
-The values come from the CoNLL columns CPOS, POS and FEAT. For Italian,
-these values are derived from the tagset of the Italian Syntactic-Semantic Treebank (ISST).
+The values come from the CoNLL columns CPOS, POS and FEAT. For Japanese,
+these values are derived from the tagset of the TüBa J/S Verbmobil
+treebank (Universität Tübingen).
 
 =head1 SEE ALSO
 
