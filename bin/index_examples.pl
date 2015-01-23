@@ -1,25 +1,26 @@
 #!/usr/bin/perl
 # Prepares corpus index for browsing tag examples.
-# Copyright © 2010, 2011 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2010, 2011, 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
 use utf8;
 my $laptop_path = 'C:/Users/Dan/Documents/Web/cgi/tags';
-my $format = 'conll2006'; # default
+my $format = 'conllu'; # default
 sub usage
 {
-    print STDERR ("Usage: perl index_examples.pl corpus-name [-format conll2006|icon|conll2009|csts|pmk] < corpus\n");
-    print STDERR ("       -format ... input corpus format; values: conll2006|conll2009|csts|pmk; default: conll2006\n");
+    print STDERR ("Usage: perl index_examples.pl corpus-name [-format conllu|conll2006|icon|conll2009|csts|pmk] < corpus\n");
+    print STDERR ("       -format ... input corpus format; values: conllu|conll2006|conll2009|csts|pmk; default: conllu\n");
+    print STDERR ("                   conllu: we collect the corpus-specific tags, not upos+ufeats\n");
     print STDERR ("       -o ........ output path\n");
     print STDERR ("                   Because Dan is currently the only user of this script, the default is specific on Dan's laptop:\n");
     print STDERR ("                   If '$laptop_path' exists, it is the default output path.\n");
     print STDERR ("                   Otherwise, the current folder is the default output path.\n");
 }
 
-use open ":utf8";
-binmode(STDIN, ":utf8");
-binmode(STDOUT, ":utf8");
-binmode(STDERR, ":utf8");
+use open ':utf8';
+binmode(STDIN, ':utf8');
+binmode(STDOUT, ':utf8');
+binmode(STDERR, ':utf8');
 use Getopt::Long;
 
 GetOptions
@@ -78,9 +79,9 @@ my $target_path = (-d $laptop_path) ? "$laptop_path/$corpusname" : "./$corpusnam
             }
         }
     }
-    else # conll2006 is the default format
+    else # conllu is the default format
     {
-        $document = read_document_conll_2006();
+        $document = read_document_conllu();
     }
     print STDERR ("Read ", scalar(@{$document}), " sentences.\n");
     # Shuffle the corpus: sort sentences alphabetically.
@@ -101,36 +102,6 @@ foreach my $sentence (@document)
 # Print the tags with examples.
 @keys = sort(keys(%index));
 print STDERR ("Found ", scalar(@keys), " distinct tags.\n");
-###!!! Obsolete - should be moved to a CGI script.
-if(0)
-{
-    print("<html>\n");
-    print("<head>\n");
-    print("<meta http-equiv='content-type' content='text/html; charset=utf8' />\n");
-    print("<title>Tags with examples</title>\n");
-    print("</head>\n");
-    print("<body>\n");
-    print("<table>\n");
-    foreach my $tag (@keys)
-    {
-        my $tag_html = $tag;
-        $tag_html =~ s/&/&amp;/sg;
-        $tag_html =~ s/</&lt;/sg;
-        $tag_html =~ s/>/&gt;/sg;
-        # Sort the examples by frequency.
-        my @examples = sort {$index{$tag}{$b} <=> $index{$tag}{$a}} (keys(%{$index{$tag}}));
-        # Print up to five most frequent examples.
-        splice(@examples, 5);
-        my $examples_html = join(' ', @examples);
-        $examples_html =~ s/&/&amp;/sg;
-        $examples_html =~ s/</&lt;/sg;
-        $examples_html =~ s/>/&gt;/sg;
-        print("<tr><td>$tag_html</td><td>$examples_html</td></tr>\n");
-    }
-    print("</table>\n");
-    print("</body>\n");
-    print("</html>\n");
-}
 print STDERR ("Building the indexes...\n");
 ($fhash, $lhash, $thash) = build_index(\@document);
 if(! -d $target_path)
@@ -391,6 +362,45 @@ sub read_document_conll_2009
             my $form = $columns[1];
             my $lemma = $columns[2];
             my $tag = "$columns[4]\t$columns[6]";
+            push(@sentence, [$form, $lemma, $tag]);
+        }
+    }
+    end_of_sentence_conll_2006(\@document, \@sentence);
+    return \@document;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Reads a document in the CoNLL-U format.
+#------------------------------------------------------------------------------
+sub read_document_conllu
+{
+    my @document;
+    my @sentence;
+    while(<>)
+    {
+        # Skip comments.
+        next if(m/^\#/);
+        # Skip fused tokens. They have no tag anyway.
+        next if(m/^\d+-\d+\t/);
+        # Remove line break.
+        s/\r?\n$//;
+        # Empty line marks end of sentence.
+        if(m/^\s*$/)
+        {
+            end_of_sentence_conll_2006(\@document, \@sentence);
+        }
+        # Non-empty line describes a token.
+        else
+        {
+            my @columns = split(/\t/, $_);
+            my $form = $columns[1];
+            my $lemma = $columns[2];
+            # There are two possibilities what we might want to collect:
+            # 1. universal part of speech [3] + universal features [5]
+            # 2. corpus-specific tag [4]
+            my $tag = $columns[4];
             push(@sentence, [$form, $lemma, $tag]);
         }
     }
