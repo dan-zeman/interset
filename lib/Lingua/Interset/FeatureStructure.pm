@@ -2112,7 +2112,7 @@ sub add_ufeatures
             $value = $feature if($value eq 'yes');
             # Universal Features use comma to join multi-values but we use the vertical bar.
             $value =~ s/,/\|/g;
-            if(defined($feature) && $self->value_valid($feature, $value))
+            if(defined($feature) && value_valid($feature, $value))
             {
                 $self->set($feature, $value);
             }
