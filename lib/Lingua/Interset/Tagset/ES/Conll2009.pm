@@ -8,7 +8,7 @@
 package Lingua::Interset::Tagset::ES::Conll2009;
 use strict;
 use warnings;
-our $VERSION = '2.031';
+our $VERSION = '2.032';
 
 use utf8;
 use open ':utf8';
