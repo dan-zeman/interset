@@ -1,6 +1,6 @@
 # ABSTRACT: Driver for the Universal Part-of-Speech Tagset + Universal Features, version 2014-10-01, part of Universal Dependencies.
 # http://universaldependencies.github.io/docs/
-# Copyright © 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2014, 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::MUL::Uposf;
 use strict;
@@ -44,18 +44,12 @@ sub decode
     my $tag = shift;
     # There are two parts separated by a tabulator: part-of-speech tag and features.
     my ($pos, $features) = split(/\t/, $tag);
-    $features = '' if($features eq '_');
     my $fs = $self->upos_driver()->decode($pos);
     $fs->set_tagset('mul::uposf');
-    my @features = split(/\|/, $features);
-    foreach my $pair (@features)
+    if(defined($features) && $features ne '' && $features ne '_')
     {
-        if($pair =~ m/^(.*?)=(.*)$/)
-        {
-            my $feature = lc($1);
-            my $value = lc($2);
-            $fs->set($feature, $value);
-        }
+        my @features = split(/\|/, $features);
+        $fs->add_ufeatures(@features);
     }
     return $fs;
 }

@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+Drivers:
+* Fixed MUL::Uposf. Decoding was incorrect for features that are named differently in UD and in Interset.
+
+
+
 2.031     2015-01-24 12:35:52+01:00 Europe/Prague
 
 Interface:
