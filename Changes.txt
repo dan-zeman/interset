@@ -3,6 +3,12 @@
 Interface:
 * FeatureStructure has new method add_ufeatures() that performs the dual operation to get_ufeatures().
 
+Features:
+* New value 'gdv' of the feature 'verbform': Latin gerundive (as opposed to the gerund, verbform=ger).
+
+Drivers:
+* LA::Conll
+
 
 
 2.030     2015-01-21 14:45:58+01:00 Europe/Prague

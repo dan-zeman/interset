@@ -855,17 +855,19 @@ my %matrix = @_matrix =
     ###!!! On the other hand, we may want to make some verb forms self-standing parts of speech:
     # part (participle, properties of both verbs and adjectives)
     # ger (gerund, properties of both verbs and nouns)
+    # gdv (gerundive, properties of both verbs and adjectives)
     # trans (transgressive, properties of both verbs and adverbs)
     'verbform' =>
     {
         'priority' => 60,
-        'values' => ['fin', 'inf', 'sup', 'part', 'trans', 'ger', ''],
+        'values' => ['fin', 'inf', 'sup', 'part', 'trans', 'ger', 'gdv', ''],
         'replacements' =>
         [
             ['inf'],
             ['fin'],
             ['part'],
             ['ger'],
+            ['gdv', 'part'],
             ['sup'],
             ['trans']
         ],
@@ -2110,7 +2112,7 @@ sub add_ufeatures
             $value = $feature if($value eq 'yes');
             # Universal Features use comma to join multi-values but we use the vertical bar.
             $value =~ s/,/\|/g;
-            if(defined($feature) && $self->value_valid($feature, $value))
+            if(defined($feature) && value_valid($feature, $value))
             {
                 $self->set($feature, $value);
             }
