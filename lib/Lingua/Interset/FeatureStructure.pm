@@ -2140,7 +2140,9 @@ sub get_ufeatures
 {
     my $self = shift;
     my $fh = $self->get_hash();
-    my @features = sort {$matrix{$a}{uname} cmp $matrix{$b}{uname}} (grep {defined($matrix{$_}{uname})} (keys(%{$fh})));
+    # The Universal Features must be sorted alphabetically, that is, lowercase letters equal to uppercase
+    # and 'Number' < 'NumType'.
+    my @features = sort {lc($matrix{$a}{uname}) cmp lc($matrix{$b}{uname})} (grep {defined($matrix{$_}{uname})} (keys(%{$fh})));
     my @pairs;
     foreach my $feature (@features)
     {
@@ -2148,7 +2150,7 @@ sub get_ufeatures
         my @values = grep {defined($_) && $_ ne ''} $self->get_list($feature);
         next unless(@values);
         # Sort multivalues alphabetically and capitalize them.
-        @values = sort(map {my $x = $_; $x =~ s/^(.)/\u$1/; $x} (@values));
+        @values = sort {lc($a) cmp lc($b)} (map {my $x = $_; $x =~ s/^(.)/\u$1/; $x} (@values));
         # Join values using comma (unlike in get_joined(), with Universal Features we cannot use the vertical bar).
         my $value = join(',', @values);
         # Interset uses for boolean features the value identical to feature name while universal features use "Yes".
