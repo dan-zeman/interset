@@ -10,12 +10,12 @@ binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 # We must declare in advance how many tests we are going to perform.
 # There are currently three tests per tagset driver.
-use Test::More tests => 37*3;
+use Test::More tests => 38*3;
 use Lingua::Interset qw(get_driver_object);
 use Lingua::Interset::Tagset;
 
 # Run standard driver tests for all drivers that are part of the release.
-###!!! Exclude selected tagsets that are too large: cs::conll cs::conll2009 cs::cnk cs::pmk
+###!!! Exclude selected tagsets that are too large: cs::conll cs::conll2009 cs::cnk cs::pmk mul::uposf
 my @tagsets =
 (
     'ar::padt', 'ar::conll', 'ar::conll2007',
