@@ -41,7 +41,7 @@ my @tagsets =
     'la::conll',
     'mul::google', 'mul::upos',
     'pt::cintil',
-    'sv::mamba', 'sv::conll', 'sv::hajic', 'sv::suc'
+    'sv::mamba', 'sv::conll', 'sv::parole', 'sv::suc'
 );
 foreach my $tagset (@tagsets)
 {

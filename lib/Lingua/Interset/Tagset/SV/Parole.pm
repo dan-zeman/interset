@@ -1,7 +1,7 @@
-# ABSTRACT: Driver for the tagset of Jan Hajič's Swedish tagger (slightly modified Parole tagset).
+# ABSTRACT: Driver for the Swedish PAROLE tagset.
 # Copyright © 2006-2009, 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
-package Lingua::Interset::Tagset::SV::Hajic;
+package Lingua::Interset::Tagset::SV::Parole;
 use strict;
 use warnings;
 our $VERSION = '2.032';
@@ -28,7 +28,7 @@ has 'features_pos' => ( isa => 'HashRef', is => 'ro', builder => '_create_featur
 #------------------------------------------------------------------------------
 sub get_tagset_id
 {
-    return 'sv::hajic';
+    return 'sv::parole';
 }
 
 
@@ -318,7 +318,7 @@ sub decode
     my $self = shift;
     my $tag = shift;
     my $fs = Lingua::Interset::FeatureStructure->new();
-    $fs->set_tagset('sv::hajic');
+    $fs->set_tagset('sv::parole');
     my $atoms = $self->atoms();
     my @chars = split(//, $tag);
     my $fpos = shift(@chars);
@@ -557,27 +557,19 @@ end_of_list
 
 =head1 SYNOPSIS
 
-  use Lingua::Interset::Tagset::SV::Hajic;
-  my $driver = Lingua::Interset::Tagset::SV::Hajic->new();
+  use Lingua::Interset::Tagset::SV::Parole;
+  my $driver = Lingua::Interset::Tagset::SV::Parole->new();
   my $fs = $driver->decode('NCNSN@IS');
 
 or
 
   use Lingua::Interset qw(decode);
-  my $fs = decode('sv::hajic', 'NCNSN@IS');
+  my $fs = decode('sv::parole', 'NCNSN@IS');
 
 =head1 DESCRIPTION
 
-Interset driver for the tagset of Jan Hajič's Swedish tagger
-(slightly modified Parole tagset of the Swedish SUC corpus,
-L<http://spraakbanken.gu.se/parole/tags.phtml>).
-
-Modifications by Jan Hajič:
-
-=over
-=item * replace @ by W
-=item * add trailing dashes so every tag has 9 characters
-=back
+Interset driver for the Swedish PAROLE tagset
+(L<http://spraakbanken.gu.se/parole/tags.phtml>).
 
 =head1 SEE ALSO
 
