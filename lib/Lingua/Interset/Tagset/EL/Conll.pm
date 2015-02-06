@@ -330,7 +330,6 @@ sub _create_atoms
     $atoms{feature} = $self->create_merged_atom
     (
         'surfeature' => 'feature',
-        'tagset'     => 'el::conll',
         'atoms'      => \@fatoms
     );
     return \%atoms;

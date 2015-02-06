@@ -79,14 +79,27 @@ sub _create_atoms
         'decode_map' =>
         {
             # adjective type (attr and zelfst applies to numerals and pronouns too)
-            ###!!! podívat se, jak jsem tohle řešil v němčině
-            'adv'    => [], # adverbially used
-            'attr'   => [], # attributively used
-            'zelfst' => [], # independently used
+            # adverbially used adjective
+            # Example: "goed" in "Ben je al goed opgeschoten?" = "Have you done good progress?"
+            # (goed, lang, erg, snel, zeker)
+            'adv'    => ['variant' => 'short', 'other' => {'synpos' => 'adv'}],
+            # attributively or predicatively used adjective
+            # Example: "Dat huis is groot genoeg om in te verdwalen" = "The house is big enough to get lost in"
+            # (groot, goed, bekend, nodig, vorig)
+            'attr'   => ['other' => {'synpos' => 'attr'}],
+            # independently used adjective
+            # Example: "Antwoord in vloeiend Nederlands:" = "Response in fluent Dutch:"
+            # (Nederlands, Frans, rood, groen, Engels)
+            'zelfst' => ['other' => {'synpos' => 'self'}]
         },
         'encode_map' =>
         {
-            'pos' => {}
+            'other/synpos' => { 'adv'  => 'adv',
+                                'attr' => 'attr',
+                                'self' => 'zelfst',
+                                '@'    => { 'variant' => { 'short' => 'adv',
+                                                           '@'     => { 'number' => { 'plur' => 'zelfst',
+                                                                                      '@'    => 'attr' }}}}}
         }
     );
     # DEGREE ####################
@@ -112,19 +125,24 @@ sub _create_atoms
         'decode_map' =>
         {
             'onverv'   => [], # uninflected (best, grootst, kleinst, moeilijkst, mooist)
-            'vervneut' => [], # normal inflected form (mogelijke, ongelukkige, krachtige, denkbare, laatste)
+            'vervneut' => ['case' => 'nom'], # normal inflected form (mogelijke, ongelukkige, krachtige, denkbare, laatste)
             'vervgen'  => ['case' => 'gen'], # genitive form (bijzonders, goeds, nieuws, vreselijks, lekkerders)
             'vervmv'   => ['number' => 'plur'], # plural form (aanwezigen, religieuzen, Fransen, deskundigen, doden)
             'vervdat'  => ['case' => 'dat'], # dative form, verbs only, not found in corpus
-            'vervverg' => ['degree' => 'comp'] # comparative form, verbs only (tegemoetkomender, overrompelender, vermoeider, verfijnder)
+            # comparative form of participles (occurs with "V", not with "Adj")
+            # tegemoetkomender = more accommodating; overrompelender
+            # vermoeider = more tired; verfijnder = more sophisticated
+            'vervverg' => ['degree' => 'comp']
         },
         'encode_map' =>
         {
-            'number' => { 'plur' => 'vervmv',
-                          '@'    => { 'case' => { 'gen' => 'vervgen',
-                                                  'dat' => 'vervdat',
-                                                  '@'   => { 'degree' => { 'comp' => 'vervverg',
-                                                                           '@'    => 'onverv' }}}}}
+            'pos' => { 'verb' => { 'degree' => { 'comp' => 'vervverg',
+                                                 '@'    => 'onverv' }},
+                       '@'    => { 'number' => { 'plur' => 'vervmv',
+                                                 '@'    => { 'case' => { 'nom' => 'vervneut',
+                                                                         'gen' => 'vervgen',
+                                                                         'dat' => 'vervdat',
+                                                                         '@'   => 'onverv' }}}}}
         }
     );
     # ADVERB TYPE ####################
@@ -439,6 +457,13 @@ sub _create_atoms
                                                      'past' => 'verldw' }}}
         }
     );
+    # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
+    my @fatoms = map {$atoms{$_}} (@{$self->features_all()});
+    $atoms{feature} = $self->create_merged_atom
+    (
+        'surfeature' => 'feature',
+        'atoms'      => \@fatoms
+    );
     return \%atoms;
 }
 
@@ -467,8 +492,7 @@ sub _create_features_pos
     my $self = shift;
     my %features =
     (
-        ###!!!
-        'NC' => ['gender', 'number', 'case', 'def'],
+        'Adj' => ['adjtype', 'degree', 'adjform'],
     );
     return \%features;
 }
@@ -483,8 +507,20 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
-    my $fs = $self->decode_conll($tag);
-    # Default feature values. Used to improve collaboration with other drivers.
+    my $fs = Lingua::Interset::FeatureStructure->new();
+    $fs->set_tagset('nl::conll');
+    my $atoms = $self->atoms();
+    # Three components, and the first two are identical: pos, pos, features.
+    # example: N\tN\tsoort|ev|neut
+    my ($pos, $subpos, $features) = split(/\s+/, $tag);
+    # The underscore character is used if there are no features.
+    $features = '' if($features eq '_');
+    my @features = split(/\|/, $features);
+    $atoms->{pos}->decode_and_merge_hard($subpos, $fs);
+    foreach my $feature (@features)
+    {
+        $atoms->{feature}->decode_and_merge_hard($feature, $fs);
+    }
     return $fs;
 }
 
@@ -501,8 +537,9 @@ sub encode
     my $subpos = $atoms->{pos}->encode($fs);
     my $fpos = $subpos;
     my $feature_names = $self->get_feature_names($fpos);
-    my $pos = $subpos =~ m/^(RG|SP)$/ ? $subpos : substr($subpos, 0, 1);
-    my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names);
+    my $pos = $subpos;
+    my $value_only = 1;
+    my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names, $value_only);
     return $tag;
 }
 
