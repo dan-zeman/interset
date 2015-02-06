@@ -60,7 +60,8 @@ sub _create_atoms
         {
             'pos' => { 'noun' => { 'prontype' => { ''    => 'N',
                                                    '@' => 'Pron' }},
-                       'adj'  => { 'prontype' => { ''    => 'Adj',
+                       'adj'  => { 'prontype' => { ''    => { 'numtype' => { ''  => 'Adj',
+                                                                             '@' => 'Num' }},
                                                    'art' => 'Art' }},
                        'num'  => 'Num',
                        'verb' => 'V',
@@ -98,8 +99,12 @@ sub _create_atoms
                                 'attr' => 'attr',
                                 'self' => 'zelfst',
                                 '@'    => { 'variant' => { 'short' => 'adv',
-                                                           '@'     => { 'number' => { 'plur' => 'zelfst',
-                                                                                      '@'    => 'attr' }}}}}
+                                                           '@'     => { 'prontype' => { 'prs' => { 'poss' => { ''  => '',
+                                                                                                               '@' => { 'number' => { 'plur' => 'zelfst',
+                                                                                                                                      '@'    => 'attr' }}}},
+                                                                                        'rcp' => '',
+                                                                                        '@'   => { 'number' => { 'plur' => 'zelfst',
+                                                                                                                 '@'    => 'attr' }}}}}}}
         }
     );
     # DEGREE ####################
@@ -142,7 +147,12 @@ sub _create_atoms
                                                  '@'    => { 'case' => { 'nom' => 'vervneut',
                                                                          'gen' => 'vervgen',
                                                                          'dat' => 'vervdat',
-                                                                         '@'   => 'onverv' }}}}}
+                                                                         # The value 'onverv' occurs also with adverbs but only with those that have degree of comparison.
+                                                                         # With adjectives the degree is also always present, hence we can check on it.
+                                                                         # With numerals it occurs even without the degree.
+                                                                         '@'   => { 'numtype' => { ''  => { 'degree' => { ''  => '',
+                                                                                                                          '@' => 'onverv' }},
+                                                                                                   '@' => 'onverv' }}}}}}}
         }
     );
     # ADVERB TYPE ####################
@@ -152,21 +162,36 @@ sub _create_atoms
         'decode_map' =>
         {
             # normal (zo, nu, dan, hier, altijd)
-            'gew'     => [],
+            # gew|aanw: zo = so; nu = now; dan = then; hier = here; altijd = always
+            # gew|betr: hoe = how; waar = where; wanneer = when; waarom = why; hoeverre = to what extent
+            # gew|er: er = there (existential: er is = there is)
+            # gew|onbep: nooit = never; ooit = ever; ergens = somewhere; overal = everywhere; elders = elsewhere
+            # gew|vrag: waar = where; vanwaar = where from; alwaar = where to
+            # gew|geenfunc|stell|onverv: niet = not; nog = still; ook = also; wel = well; al = already
+            # gew|geenfunc|vergr|onverv: meer = more; vaker = more often; dichter = more densely; dichterbij = closer
+            # gew|geenfunc|overtr|onverv: meest = most
+            'gew'     => ['other' => {'advtype' => 'gew'}],
             # pronominal (daar, daarna, waarin, waarbij)
-            'pron'    => ['prontype' => 'dem|int|rel'],
+            # pron|aanw: daar = there; daarna = then; daardoor = thereby; daarmee = therewith; daarop = thereon
+            # pron|betr: waar = where; waaruit = whence; waaraan = whereat
+            # pron|er: er = there (existential: er is = there is)
+            # pron|onbep: ervan = whose; erop = on; erin; erover; ervoor = therefore
+            # pron|vrag: waarin = wherein; waarbij = whereby; waarmee; waarop = whereupon; waardoor = whereby
+            'pron'    => ['other' => {'advtype' => 'pron'}],
             # adverbial or prepositional part of separable (phrasal) verb (uit, op, aan, af, in)
-            'deelv'   => ['parttype' => 'vbp'],
+            'deelv'   => ['parttype' => 'vbp', 'other' => {'advtype' => 'deelv'}],
             # prepositional part of separed pronominal adverb (van, voor, aan, op, mee)
-            'deeladv' => []
+            'deeladv' => ['parttype' => 'vbp', 'other' => {'advtype' => 'deeladv'}]
         },
         'encode_map' =>
         {
-            'prontype' => { 'dem' => 'pron',
-                            'int' => 'pron',
-                            'rel' => 'pron',
-                            '@'   => { 'parttype' => { 'vbp' => 'deelv',
-                                                       '@'   => 'gew' }}}
+            'other/advtype' => { 'gew'     => 'gew',
+                                 'pron'    => 'pron',
+                                 'deelv'   => 'deelv',
+                                 'deeladv' => 'deeladv',
+                                 '@'       => { 'parttype' => { 'vbp' => 'deelv',
+                                                                '@'   => { 'prontype' => { ''  => 'gew',
+                                                                                           '@' => 'pron' }}}}}
         }
     );
     # FUNCTION OF NORMAL AND PRONOMINAL ADVERBS ####################
@@ -189,7 +214,8 @@ sub _create_atoms
                             'dem' => 'aanw',
                             'ind' => 'onbep',
                             '@'   => { 'advtype' => { 'ex' => 'er',
-                                                      '@'  => 'geenfunc' }}}
+                                                      '@'  => { 'parttype' => { 'vbp' => '',
+                                                                                '@'   => 'geenfunc' }}}}}
         }
     );
     # DEFINITENESS ####################
@@ -240,7 +266,9 @@ sub _create_atoms
                         'gen'     => 'gen',
                         'acc|dat' => 'datofacc',
                         'dat'     => 'dat',
-                        'acc'     => 'acc' }
+                        'acc'     => 'acc',
+                        '@'       => { 'reflex' => { 'reflex' => '',
+                                                     '@'      => 'neut' }}}
         }
     );
     # CONJUNCTION TYPE ####################
@@ -250,15 +278,33 @@ sub _create_atoms
         'decode_map' =>
         {
             'neven' => ['conjtype' => 'coor'], # coordinating (en, maar, of)
-            'onder' => ['conjtype' => 'sub'], # subordinating (dat, als, dan, om, zonder, door)
-            # subordinating conjunction type
-            'metfin' => [], # followed by a finite clause (dat, als, dan, omdat)
-            'metinf' => [], # followed by an infinite clause (om, zonder, door, teneinde)
+            'onder' => ['conjtype' => 'sub'] # subordinating (dat, als, dan, om, zonder, door)
         },
         'encode_map' =>
         {
             'conjtype' => { 'coor' => 'neven',
                             'sub'  => 'onder' }
+        }
+    );
+    # SUBORDINATING CONJUNCTION TYPE ####################
+    $atoms{sconjtype} = $self->create_atom
+    (
+        'surfeature' => 'sconjtype',
+        'decode_map' =>
+        {
+            # followed by a finite clause (dat, als, dan, omdat)
+            # Example: "ik hoop dat we tot een compromis kunnen komen" = "I hope that we can come to a compromise"
+            'metfin' => ['other' => {'sconjtype' => 'fin'}],
+            # followed by an infinite clause (om, zonder, door, teneinde)
+            # Example: "Het was voor ons de kans om een ander Colombia te laten zien." = "It was for us a chance to show a different Colombia."
+            'metinf' => ['other' => {'sconjtype' => 'inf'}]
+        },
+        'encode_map' =>
+        {
+            'other/sconjtype' => { 'inf' => 'metinf',
+                                   'fin' => 'metfin',
+                                   # This feature is required for all subordinating conjunctions.
+                                   '@'   => { 'conjtype' => { 'sub' => 'metfin' }}}
         }
     );
     # NOUN TYPE ####################
@@ -272,14 +318,23 @@ sub _create_atoms
         }
     );
     # NUMBER ####################
-    $atoms{number} = $self->create_simple_atom
+    $atoms{number} = $self->create_atom
     (
-        'intfeature' => 'number',
-        'simple_decode_map' =>
+        'surfeature' => 'number',
+        'decode_map' =>
         {
-            'ev' => 'sing', # enkelvoud (jaar, heer, land, plaats, tijd)
-            'mv' => 'plur', # meervoud (mensen, kinderen, jaren, problemen, landen)
-            'evofmv' => '', # singular undistinguishable from plural (pronouns: ze, zij, zich, zichzelf)
+            # enkelvoud (jaar, heer, land, plaats, tijd)
+            'ev'     => ['number' => 'sing'],
+            # meervoud (mensen, kinderen, jaren, problemen, landen)
+            'mv'     => ['number' => 'plur'],
+            # singular undistinguishable from plural (only pronouns: ze, zij, zich, zichzelf)
+            'evofmv' => ['number' => 'sing|plur']
+        },
+        'encode_map' =>
+        {
+            'number' => { 'plur|sing' => 'evofmv',
+                          'sing'      => 'ev',
+                          'plur'      => 'mv' }
         }
     );
     # NUMERAL TYPE ####################
@@ -315,15 +370,22 @@ sub _create_atoms
         }
     );
     # ADPOSITION TYPE ####################
-    $atoms{adpostype} = $self->create_simple_atom
+    $atoms{adpostype} = $self->create_atom
     (
-        'intfeature' => 'adpostype',
-        'simple_decode_map' =>
+        'surfeature' => 'adpostype',
+        'decode_map' =>
         {
-            'voor'    => 'prep', # preposition (voorzetsel) (van, in, op, met, voor)
-            'achter'  => 'post', # postposition (achterzetsel) (in, incluis, op)
-            'comb'    => 'circ', # second part of combined (split) preposition (toe, heen, af, in, uit) [van het begin af / from the beginning on: van/voor, af/comb]
-            'voorinf' => 'inf' # infinitive marker (te)
+            'voor'    => ['adpostype' => 'prep'], # preposition (voorzetsel) (van, in, op, met, voor)
+            'achter'  => ['adpostype' => 'post'], # postposition (achterzetsel) (in, incluis, op)
+            'comb'    => ['adpostype' => 'circ'], # second part of combined (split) preposition (toe, heen, af, in, uit) [van het begin af / from the beginning on: van/voor, af/comb]
+            'voorinf' => ['parttype' => 'inf'] # infinitive marker (te)
+        },
+        'encode_map' =>
+        {
+            'parttype' => { 'inf' => 'voorinf',
+                            '@'   => { 'adpostype' => { 'prep' => 'voor',
+                                                        'post' => 'achter',
+                                                        'circ' => 'comb' }}}
         }
     );
     # PRONOUN TYPE ####################
@@ -339,10 +401,7 @@ sub _create_atoms
             'aanw'  => ['prontype' => 'dem'], # aanwijzend (deze, dit, die, dat)
             'betr'  => ['prontype' => 'rel'], # betrekkelijk (welk, die, dat, wat, wie)
             'vrag'  => ['prontype' => 'int'], # vragend (wie, wat, welke, welk)
-            'onbep' => ['prontype' => 'ind|neg|tot'], # onbepaald (geen, andere, alle, enkele, wat)
-            # special pronouns
-            'weigen' => [], # eigen = own (eigen)
-            'wzelf'  => [], # zelf = self (zelf, zelve, haarzelve)
+            'onbep' => ['prontype' => 'ind|neg|tot'] # onbepaald (geen, andere, alle, enkele, wat)
         },
         'encode_map' =>
         {
@@ -358,16 +417,40 @@ sub _create_atoms
                             'tot' => 'onbep' }
         }
     );
-    # PERSON ####################
-    $atoms{person} = $self->create_simple_atom
+    # SPECIFIC PRONOUN ####################
+    $atoms{pronoun} = $self->create_atom
     (
-        'intfeature' => 'person',
-        'simple_decode_map' =>
+        'surfeature' => 'pronoun',
+        'decode_map' =>
         {
-            '1' => '1', # (mijn, onze, ons, me, mij, ik, we, mezelf, onszelf)
-            '2' => '2', # (je, uw, jouw, jullie, jou, u, je, jij, jezelf)
-            '3' => '3', # (zijner, zijn, haar, zijnen, zijne, hun, ze, zij, hem, het, hij, ie, zijzelf, zich, zichzelf)
-            '1of2of3' => '', # person not marked; applies only to verbs in imperfect past (was, werd, heette; waren, werden, bleven) and plural imperfect present (zijn, worden, blijven)
+            # eigen = own
+            'weigen' => ['other' => {'pronoun' => 'eigen'}],
+            # zelf = self
+            'wzelf'  => ['other' => {'pronoun' => 'zelf'}]
+        },
+        'encode_map' =>
+        {
+            'other/pronoun' => { 'eigen' => 'weigen',
+                                 'zelf'  => 'wzelf' }
+        }
+    );
+    # PERSON ####################
+    $atoms{person} = $self->create_atom
+    (
+        'surfeature' => 'person',
+        'decode_map' =>
+        {
+            '1' => ['person' => '1'], # (mijn, onze, ons, me, mij, ik, we, mezelf, onszelf)
+            '2' => ['person' => '2'], # (je, uw, jouw, jullie, jou, u, je, jij, jezelf)
+            '3' => ['person' => '3'], # (zijner, zijn, haar, zijnen, zijne, hun, ze, zij, hem, het, hij, ie, zijzelf, zich, zichzelf)
+            '1of2of3' => [], # person not marked; applies only to verbs in imperfect past (was, werd, heette; waren, werden, bleven) and plural imperfect present (zijn, worden, blijven)
+        },
+        'encode_map' =>
+        {
+            'person' => { '1' => '1',
+                          '2' => '2',
+                          '3' => '3',
+                          '@' => { 'pos' => { 'verb' => '1of2of3' }}}
         }
     );
     # PUNCTUATION TYPE ####################
@@ -476,8 +559,8 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('pos', 'adjtype', 'degree', 'adjform', 'advtype', 'function', 'definiteness', 'gender', 'case', 'conjtype', 'nountype', 'number', 'numtype',
-                    'misctype', 'adpostype', 'prontype', 'person', 'punctype', 'verbtype', 'verbform');
+    my @features = ('pos', 'adjtype', 'degree', 'adjform', 'advtype', 'function', 'definiteness', 'gender', 'case', 'conjtype', 'sconjtype', 'nountype', 'number',
+                    'numtype', 'misctype', 'adpostype', 'prontype', 'pronoun', 'person', 'punctype', 'verbtype', 'verbform');
     return \@features;
 }
 
@@ -492,7 +575,15 @@ sub _create_features_pos
     my $self = shift;
     my %features =
     (
-        'Adj' => ['adjtype', 'degree', 'adjform'],
+        'Adj'  => ['adjtype', 'degree', 'adjform'],
+        'Adv'  => ['advtype', 'function', 'degree', 'adjform'],
+        'Art'  => ['definiteness', 'gender', 'case'],
+        'Conj' => ['conjtype', 'sconjtype'],
+        'Misc' => ['misctype'],
+        'N'    => ['nountype', 'number', 'case'],
+        'Num'  => ['numtype', 'definiteness', 'prontype', 'adjtype', 'degree', 'adjform'],
+        'Prep' => ['adpostype'],
+        'Pron' => ['prontype', 'person', 'number', 'case', 'adjtype', 'pronoun']
     );
     return \%features;
 }
@@ -521,6 +612,13 @@ sub decode
     {
         $atoms->{feature}->decode_and_merge_hard($feature, $fs);
     }
+    # The feature 'onbep' can mean indefinite pronoun or indefinite article.
+    # If it is article, we want prontype=art, not prontype=ind.
+    if($tag =~ m/^Art.*onbep/)
+    {
+        $fs->set('prontype', 'art');
+        $fs->set('definiteness', 'ind');
+    }
     return $fs;
 }
 
@@ -548,6 +646,9 @@ sub encode
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
 # Tags were collected from the corpus, 745 distinct tags found.
+# MWU (multi-word-unit) tags were removed because they are sequences of normal
+# tags and we cannot support them.
+# Total 198 tags survived.
 #------------------------------------------------------------------------------
 sub list
 {
@@ -595,553 +696,6 @@ Conj	Conj	neven
 Conj	Conj	onder|metfin
 Conj	Conj	onder|metinf
 Int	Int	_
-MWU	Adj_Adj	adv|vergr|onverv_adv|stell|onverv
-MWU	Adj_Adj	attr|stell|onverv_attr|stell|onverv
-MWU	Adj_Adj	attr|stell|vervneut_attr|stell|onverv
-MWU	Adj_Adj	attr|stell|vervneut_zelfst|stell|vervneut
-MWU	Adj_Adj_N	adv|stell|onverv_attr|stell|onverv_soort|mv|neut
-MWU	Adj_Adj_N	attr|stell|onverv_attr|stell|onverv_eigen|ev|neut
-MWU	Adj_Adj_N	attr|stell|vervneut_attr|stell|vervneut_eigen|ev|neut
-MWU	Adj_Adj_N	attr|stell|vervneut_attr|stell|vervneut_soort|ev|neut
-MWU	Adj_Adj_N_Adj_N_N	attr|stell|vervneut_attr|stell|vervneut_soort|ev|neut_attr|stell|vervneut_soort|ev|neut_eigen|ev|neut
-MWU	Adj_Adj_N_N	attr|stell|onverv_attr|stell|onverv_soort|ev|neut_eigen|ev|neut
-MWU	Adj_Adv	adv|stell|onverv_deelv
-MWU	Adj_Adv	adv|stell|onverv_gew|geenfunc|stell|onverv
-MWU	Adj_Adv	adv|vergr|onverv_gew|geenfunc|stell|onverv
-MWU	Adj_Art	adv|stell|onverv_onbep|zijdofonzijd|neut
-MWU	Adj_Art	attr|stell|onverv_onbep|zijdofonzijd|neut
-MWU	Adj_Conj_V	attr|stell|vervneut_neven_trans|conj
-MWU	Adj_Int	attr|stell|vervneut
-MWU	Adj_Misc_Misc	attr|stell|onverv_vreemd_vreemd
-MWU	Adj_N	adv|stell|onverv_eigen|ev|neut
-MWU	Adj_N	adv|stell|onverv_soort|ev|neut
-MWU	Adj_N	attr|stell|onverv_eigen|ev|neut
-MWU	Adj_N	attr|stell|onverv_soort|ev|neut
-MWU	Adj_N	attr|stell|onverv_soort|mv|neut
-MWU	Adj_N	attr|stell|vervneut_eigen|ev|neut
-MWU	Adj_N	attr|stell|vervneut_soort|ev|neut
-MWU	Adj_N	attr|stell|vervneut_soort|mv|neut
-MWU	Adj_N_Conj_N	attr|stell|vervneut_soort|ev|neut_neven_soort|ev|neut
-MWU	Adj_N_N	adv|stell|onverv_eigen|ev|neut_eigen|ev|neut
-MWU	Adj_N_N	attr|stell|onverv_eigen|ev|neut_eigen|ev|neut
-MWU	Adj_N_N	attr|stell|onverv_soort|ev|neut_eigen|ev|neut
-MWU	Adj_N_N	attr|stell|onverv_soort|ev|neut_soort|ev|neut
-MWU	Adj_N_N	attr|stell|vervneut_eigen|ev|neut_eigen|ev|neut
-MWU	Adj_N_N	attr|stell|vervneut_soort|ev|neut_eigen|ev|neut
-MWU	Adj_N_N	zelfst|stell|onverv_eigen|ev|neut_eigen|ev|neut
-MWU	Adj_N_N_N	attr|stell|onverv_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	Adj_N_N_N_N	attr|stell|onverv_soort|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	Adj_N_N_N_N_N	attr|stell|vervneut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	Adj_N_Num	attr|stell|onverv_soort|ev|neut_hoofd|bep|attr|onverv
-MWU	Adj_N_Prep_Art_Adj_N	attr|stell|vervneut_soort|ev|neut_voor_bep|onzijd|neut_attr|stell|vervneut_soort|ev|neut
-MWU	Adj_N_Prep_Art_N	attr|stell|vervneut_soort|ev|neut_voor_bep|zijdofmv|neut_eigen|ev|neut
-MWU	Adj_N_Prep_N	attr|stell|vervneut_eigen|ev|neut_voor_eigen|ev|neut
-MWU	Adj_N_Prep_N	attr|stell|vervneut_soort|ev|neut_voor_eigen|ev|neut
-MWU	Adj_N_Prep_N_Conj_N	attr|stell|vervneut_soort|ev|neut_voor_eigen|ev|neut_neven_eigen|ev|neut
-MWU	Adj_N_Prep_N_N	attr|stell|vervneut_soort|mv|neut_voor_eigen|ev|neut_eigen|ev|neut
-MWU	Adj_N_Punc	attr|stell|vervneut_soort|ev|neut_punt
-MWU	Adj_Num	adv|stell|onverv_hoofd|bep|attr|onverv
-MWU	Adj_Num	attr|stell|onverv_hoofd|bep|attr|onverv
-MWU	Adj_Num	attr|stell|onverv_hoofd|bep|zelfst|onverv
-MWU	Adj_Prep	adv|stell|vervneut_voor
-MWU	Adj_Prep	adv|vergr|onverv_voor
-MWU	Adj_V	adv|stell|onverv_intrans|inf
-MWU	Adj_V	adv|stell|onverv_trans|imp
-MWU	Adj_V	attr|stell|vervneut_intrans|inf
-MWU	Adj_V_Conj_V	attr|stell|vervneut_intrans|inf|subst_neven_intrans|inf|subst
-MWU	Adj_V_N	attr|stell|vervneut_trans|verldw|vervneut_soort|ev|neut
-MWU	Adv_Adj	gew|geenfunc|stell|onverv_adv|vergr|onverv
-MWU	Adv_Adj	gew|geenfunc|stell|onverv_attr|stell|onverv
-MWU	Adv_Adj_Conj	gew|aanw_adv|stell|onverv_onder|metfin
-MWU	Adv_Adv	gew|aanw_gew|geenfunc|stell|onverv
-MWU	Adv_Adv	gew|geenfunc|stell|onverv_deelv
-MWU	Adv_Adv	gew|geenfunc|stell|onverv_gew|geenfunc|stell|onverv
-MWU	Adv_Adv	gew|geenfunc|stell|onverv_pron|aanw
-MWU	Adv_Adv	pron|vrag_deeladv
-MWU	Adv_Adv_Conj_Adv	gew|aanw_gew|aanw_neven_gew|aanw
-MWU	Adv_Art	gew|betr_onbep|zijdofonzijd|neut
-MWU	Adv_Art	gew|geenfunc|stell|onverv_onbep|zijdofonzijd|neut
-MWU	Adv_Conj	gew|geenfunc|stell|onverv_onder|metinf
-MWU	Adv_Conj_Adv	deelv_neven_gew|geenfunc|stell|onverv
-MWU	Adv_Conj_Adv	gew|aanw_neven_gew|aanw
-MWU	Adv_Conj_Adv	gew|geenfunc|stell|onverv_neven_gew|geenfunc|stell|onverv
-MWU	Adv_Conj_Adv	gew|onbep_neven_gew|onbep
-MWU	Adv_Conj_N	gew|geenfunc|stell|onverv_neven_soort|ev|neut
-MWU	Adv_N	gew|aanw_soort|ev|neut
-MWU	Adv_N	gew|geenfunc|stell|onverv_eigen|ev|neut
-MWU	Adv_Num	gew|betr_hoofd|onbep|zelfst|vergr|onverv
-MWU	Adv_Num	gew|geenfunc|stell|onverv_hoofd|onbep|zelfst|vergr|onverv
-MWU	Adv_Prep	gew|aanw_voor
-MWU	Adv_Prep	gew|geenfunc|stell|onverv_voor
-MWU	Adv_Prep_N	gew|geenfunc|stell|onverv_voor_soort|ev|dat
-MWU	Adv_Prep_Pron	gew|geenfunc|stell|onverv_voor_onbep|neut|zelfst
-MWU	Adv_Pron	gew|geenfunc|stell|onverv_onbep|neut|attr
-MWU	Adv_V	deeladv_intrans|ovt|1of2of3|ev
-MWU	Art_Adj	bep|onzijd|neut_adv|vergr|onverv
-MWU	Art_Adj	bep|onzijd|neut_adv|vergr|vervneut
-MWU	Art_Adj	bep|onzijd|neut_attr|overtr|onverv
-MWU	Art_Adj	bep|onzijd|neut_attr|overtr|vervneut
-MWU	Art_Adj	bep|onzijd|neut_zelfst|overtr|vervneut
-MWU	Art_Adj_N	bep|onzijd|neut_attr|overtr|vervneut_soort|ev|neut
-MWU	Art_Adj_N	bep|zijdofmv|neut_attr|stell|vervneut_soort|ev|neut
-MWU	Art_Adj_N_Prep_Art_N_Conj_V_N	bep|zijdofmv|neut_attr|stell|vervneut_eigen|ev|neut_voor_bep|onzijd|neut_soort|ev|neut_neven_intrans|tegdw|vervneut_soort|ev|neut
-MWU	Art_Adv	bep|onzijd|neut_gew|geenfunc|overtr|onverv
-MWU	Art_Conj_Pron	onbep|zijdofonzijd|neut_neven_onbep|neut|attr
-MWU	Art_Conj_Pron	onbep|zijdofonzijd|neut_neven_onbep|neut|zelfst
-MWU	Art_N	bep|onzijd|neut_eigen|ev|neut
-MWU	Art_N	bep|onzijd|neut_soort|ev|neut
-MWU	Art_N	bep|zijdofmv|neut_eigen|ev|neut
-MWU	Art_N	bep|zijdofmv|neut_soort|ev|neut
-MWU	Art_N	bep|zijdofmv|neut_soort|mv|neut
-MWU	Art_N	bep|zijdofonzijd|gen_soort|ev|gen
-MWU	Art_N	onbep|zijdofonzijd|neut_soort|ev|neut
-MWU	Art_N_Conj	onbep|zijdofonzijd|neut_soort|ev|neut_neven
-MWU	Art_N_Conj_Art_N	bep|onzijd|neut_soort|ev|neut_neven_bep|onzijd|neut_soort|ev|neut
-MWU	Art_N_Conj_Art_V	bep|zijdofmv|neut_soort|ev|neut_neven_bep|zijdofmv|neut_trans|verldw|onverv
-MWU	Art_N_Conj_Pron_N	bep|onzijd|neut_soort|ev|neut_neven_bez|3|ev|neut|attr_soort|mv|neut
-MWU	Art_N_N	bep|zijdofmv|neut_eigen|ev|neut_eigen|ev|neut
-MWU	Art_N_Prep_Adj	onbep|zijdofonzijd|neut_soort|ev|neut_voor_attr|stell|onverv
-MWU	Art_N_Prep_Art_N	onbep|zijdofonzijd|neut_soort|ev|neut_voor_bep|zijdofmv|neut_soort|ev|neut
-MWU	Art_N_Prep_N	bep|onzijd|neut_soort|ev|neut_voor_eigen|ev|neut
-MWU	Art_N_Prep_N	bep|zijdofmv|neut_soort|ev|neut_voor_eigen|ev|neut
-MWU	Art_N_Prep_N	onbep|zijdofonzijd|neut_soort|ev|neut_voor_eigen|ev|neut
-MWU	Art_N_Prep_Pron_N	bep|zijdofmv|neut_soort|ev|neut_voor_bez|1|ev|neut|attr_soort|ev|neut
-MWU	Art_N_Prep_Pron_N	bep|zijdofmv|neut_soort|ev|neut_voor_bez|1|mv|neut|attr_soort|ev|neut
-MWU	Art_Num	bep|onzijd|neut_hoofd|onbep|attr|overtr|onverv
-MWU	Art_Num	bep|onzijd|neut_hoofd|onbep|zelfst|overtr|onverv
-MWU	Art_Num	bep|onzijd|neut_rang|bep|zelfst|onverv
-MWU	Art_Num	onbep|zijdofonzijd|neut_hoofd|onbep|zelfst|stell|onverv
-MWU	Art_Num_Art_Adj	bep|zijdofmv|neut_rang|bep|attr|onverv_bep|zijdofmv|neut_attr|overtr|vervneut
-MWU	Art_Num_N	bep|zijdofmv|neut_rang|bep|attr|onverv_eigen|ev|neut
-MWU	Art_Pron	onbep|zijdofonzijd|neut_onbep|neut|zelfst
-MWU	Art_Pron_N	onbep|zijdofonzijd|neut_aanw|gen|attr_soort|mv|neut
-MWU	Art_V_N	bep|zijdofmv|neut_intrans|tegdw|vervneut_soort|ev|neut
-MWU	Conj_Adj	neven_adv|vergr|onverv
-MWU	Conj_Adj	neven_attr|stell|onverv
-MWU	Conj_Adv	neven_gew|aanw
-MWU	Conj_Adv	neven_gew|geenfunc|stell|onverv
-MWU	Conj_Adv	onder|metfin_gew|geenfunc|stell|onverv
-MWU	Conj_Adv_Adv	neven_gew|aanw_gew|geenfunc|stell|onverv
-MWU	Conj_Art_N	onder|metfin_bep|zijdofmv|neut_soort|ev|neut
-MWU	Conj_Art_N	onder|metinf_bep|onzijd|neut_soort|ev|neut
-MWU	Conj_Conj	neven_onder|metfin
-MWU	Conj_Int	neven
-MWU	Conj_Int	onder|metfin
-MWU	Conj_N	onder|metfin_soort|ev|neut
-MWU	Conj_N_Adv	onder|metfin_soort|ev|neut_pron|aanw
-MWU	Conj_N_Prep	onder|metfin_soort|ev|neut_voor
-MWU	Conj_Pron	neven_aanw|neut|zelfst
-MWU	Conj_Pron_Adv	onder|metinf_per|3|ev|datofacc_gew|geenfunc|stell|onverv
-MWU	Conj_Pron_V	onder|metfin_onbep|neut|zelfst_hulpofkopp|conj
-MWU	Conj_Pron_V	onder|metfin_onbep|neut|zelfst_intrans|conj
-MWU	Conj_Punc_Conj	neven_schuinstreep_neven
-MWU	Conj_V	onder|metfin_intrans|ott|3|ev
-MWU	Int_Adv	gew|aanw
-MWU	Int_Adv	gew|geenfunc|stell|onverv
-MWU	Int_Int	_
-MWU	Int_N_N_Misc_N	eigen|ev|neut_eigen|ev|neut_vreemd_eigen|ev|neut
-MWU	Int_N_Punc_Int_N	soort|ev|neut_komma_soort|ev|neut
-MWU	Int_Punc_Int	komma
-MWU	Misc_Misc	vreemd_vreemd
-MWU	Misc_Misc_Misc	vreemd_vreemd_vreemd
-MWU	Misc_Misc_Misc_Misc	vreemd_vreemd_vreemd_vreemd
-MWU	Misc_Misc_Misc_Misc_Misc_Misc	vreemd_vreemd_vreemd_vreemd_vreemd_vreemd
-MWU	Misc_Misc_Misc_Misc_Misc_Misc_Misc	vreemd_vreemd_vreemd_vreemd_vreemd_vreemd_vreemd
-MWU	Misc_Misc_Misc_Misc_Misc_Misc_Misc_Misc_Misc	vreemd_vreemd_vreemd_vreemd_vreemd_vreemd_vreemd_vreemd_vreemd
-MWU	Misc_Misc_Misc_Misc_Misc_Misc_Punc_Misc_Misc_Misc	vreemd_vreemd_vreemd_vreemd_vreemd_vreemd_komma_vreemd_vreemd_vreemd
-MWU	Misc_Misc_Misc_Misc_Misc_N_Misc_Misc_Misc_Misc_Misc_Misc	vreemd_vreemd_vreemd_vreemd_vreemd_eigen|ev|neut_vreemd_vreemd_vreemd_vreemd_vreemd_vreemd
-MWU	Misc_Misc_Misc_N	vreemd_vreemd_vreemd_eigen|ev|neut
-MWU	Misc_Misc_Misc_N	vreemd_vreemd_vreemd_soort|ev|neut
-MWU	Misc_Misc_N	vreemd_vreemd_soort|mv|neut
-MWU	Misc_Misc_N_N	vreemd_vreemd_eigen|ev|neut_eigen|ev|neut
-MWU	Misc_Misc_N_N	vreemd_vreemd_eigen|ev|neut_soort|ev|neut
-MWU	Misc_Misc_Punc_N_N	vreemd_vreemd_aanhaalenk_eigen|ev|neut_eigen|ev|neut
-MWU	Misc_N	vreemd_eigen|ev|neut
-MWU	Misc_N	vreemd_soort|ev|neut
-MWU	Misc_N_Misc_Misc	vreemd_eigen|ev|neut_vreemd_vreemd
-MWU	Misc_N_N	vreemd_eigen|ev|neut_eigen|ev|neut
-MWU	Misc_N_N	vreemd_soort|ev|neut_soort|ev|neut
-MWU	N_Adj	eigen|ev|neut_adv|stell|onverv
-MWU	N_Adj	eigen|ev|neut_attr|stell|onverv
-MWU	N_Adj	eigen|ev|neut_attr|stell|vervneut
-MWU	N_Adj	soort|ev|neut_adv|stell|onverv
-MWU	N_Adj	soort|ev|neut_attr|stell|onverv
-MWU	N_Adj	soort|ev|neut_attr|stell|vervneut
-MWU	N_Adj	soort|mv|neut_attr|stell|onverv
-MWU	N_Adj	soort|mv|neut_attr|stell|vervneut
-MWU	N_Adj_N	eigen|ev|neut_zelfst|vergr|vervneut_eigen|ev|neut
-MWU	N_Adj_N	soort|ev|neut_attr|stell|vervneut_soort|mv|neut
-MWU	N_Adj_N_Num	soort|ev|neut_attr|stell|onverv_soort|ev|neut_hoofd|bep|zelfst|onverv
-MWU	N_Adv	eigen|ev|neut_gew|geenfunc|stell|onverv
-MWU	N_Adv	soort|ev|neut_deelv
-MWU	N_Adv	soort|ev|neut_gew|geenfunc|stell|onverv
-MWU	N_Adv_Punc_V_Pron_V	soort|ev|neut_gew|geenfunc|stell|onverv_komma_hulp|ott|2|ev_onbep|neut|zelfst_intrans|inf
-MWU	N_Art_Adj_Prep_N	eigen|ev|neut_bep|zijdofmv|neut_attr|vergr|vervneut_voor_eigen|ev|neut
-MWU	N_Art_N	eigen|ev|neut_bep|zijdofmv|gen_soort|mv|neut
-MWU	N_Art_N	eigen|ev|neut_bep|zijdofmv|neut_eigen|ev|neut
-MWU	N_Art_N	eigen|ev|neut_bep|zijdofmv|neut_eigen|mv|neut
-MWU	N_Art_N	soort|ev|neut_bep|zijdofmv|neut_soort|ev|neut
-MWU	N_Art_N	soort|ev|neut_bep|zijdofmv|neut_soort|mv|neut
-MWU	N_Art_N	soort|ev|neut_bep|zijdofonzijd|gen_soort|ev|gen
-MWU	N_Art_N	soort|ev|neut_onbep|zijdofonzijd|neut_soort|ev|neut
-MWU	N_Conj	soort|ev|neut_neven
-MWU	N_Conj_Adv	soort|ev|neut_neven_gew|geenfunc|stell|onverv
-MWU	N_Conj_Art_N	eigen|ev|neut_neven_bep|zijdofmv|neut_eigen|ev|neut
-MWU	N_Conj_Art_N	eigen|ev|neut_neven_bep|zijdofmv|neut_soort|mv|neut
-MWU	N_Conj_Art_N	eigen|ev|neut_neven_onbep|zijdofonzijd|neut_soort|ev|neut
-MWU	N_Conj_Art_N	soort|ev|neut_onder|metinf_bep|zijdofmv|neut_soort|ev|neut
-MWU	N_Conj_N	eigen|ev|neut_neven_eigen|ev|neut
-MWU	N_Conj_N	eigen|ev|neut_neven_eigen|mv|neut
-MWU	N_Conj_N	soort|ev|neut_neven_soort|ev|neut
-MWU	N_Conj_N	soort|ev|neut_neven_soort|mv|neut
-MWU	N_Conj_N	soort|mv|neut_neven_soort|mv|neut
-MWU	N_Conj_N_N	eigen|ev|neut_neven_eigen|ev|neut_eigen|ev|neut
-MWU	N_Conj_N_N	soort|ev|neut_neven_eigen|ev|neut_eigen|ev|neut
-MWU	N_Int_N	eigen|ev|neut_eigen|ev|neut
-MWU	N_Misc	eigen|ev|neut_vreemd
-MWU	N_Misc	soort|ev|neut_vreemd
-MWU	N_Misc_Misc	eigen|ev|neut_vreemd_vreemd
-MWU	N_Misc_Misc	soort|mv|neut_vreemd_vreemd
-MWU	N_Misc_Misc_Misc_Misc	eigen|ev|neut_vreemd_vreemd_vreemd_vreemd
-MWU	N_Misc_Misc_N	eigen|ev|neut_vreemd_vreemd_eigen|ev|neut
-MWU	N_Misc_N	eigen|ev|neut_vreemd_eigen|ev|neut
-MWU	N_Misc_N	soort|ev|neut_vreemd_soort|ev|neut
-MWU	N_Misc_N_N	eigen|ev|neut_vreemd_eigen|ev|neut_eigen|ev|neut
-MWU	N_Misc_N_N_N_N	eigen|ev|neut_vreemd_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_Misc_Num	eigen|ev|neut_vreemd_hoofd|bep|attr|onverv
-MWU	N_N	eigen|ev|gen_eigen|ev|gen
-MWU	N_N	eigen|ev|gen_eigen|ev|neut
-MWU	N_N	eigen|ev|gen_soort|ev|neut
-MWU	N_N	eigen|ev|gen_soort|mv|neut
-MWU	N_N	eigen|ev|neut_eigen|ev|gen
-MWU	N_N	eigen|ev|neut_eigen|ev|neut
-MWU	N_N	eigen|ev|neut_eigen|mv|neut
-MWU	N_N	eigen|ev|neut_soort|ev|neut
-MWU	N_N	eigen|ev|neut_soort|mv|neut
-MWU	N_N	eigen|mv|neut_eigen|mv|neut
-MWU	N_N	soort|ev|neut_eigen|ev|neut
-MWU	N_N	soort|ev|neut_soort|ev|neut
-MWU	N_N	soort|ev|neut_soort|mv|neut
-MWU	N_N	soort|mv|neut_eigen|ev|neut
-MWU	N_N	soort|mv|neut_soort|ev|neut
-MWU	N_N	soort|mv|neut_soort|mv|neut
-MWU	N_N_Adj	eigen|ev|neut_eigen|ev|neut_attr|stell|onverv
-MWU	N_N_Adj	soort|ev|neut_soort|ev|neut_attr|stell|onverv
-MWU	N_N_Adj_Art_N_N	eigen|ev|neut_eigen|ev|neut_adv|stell|onverv_bep|zijdofmv|neut_soort|ev|neut_soort|ev|neut
-MWU	N_N_Adj_N	eigen|ev|neut_eigen|ev|neut_attr|stell|vervneut_eigen|ev|neut
-MWU	N_N_Adv	soort|ev|neut_eigen|ev|neut_gew|aanw
-MWU	N_N_Art_Adv	eigen|ev|neut_eigen|ev|neut_bep|zijdofonzijd|gen_gew|geenfunc|stell|onverv
-MWU	N_N_Art_N	eigen|ev|neut_eigen|ev|neut_bep|onzijd|neut_eigen|ev|neut
-MWU	N_N_Art_N	eigen|ev|neut_eigen|ev|neut_bep|onzijd|neut_soort|ev|neut
-MWU	N_N_Art_N	eigen|ev|neut_eigen|ev|neut_bep|zijdofmv|neut_eigen|ev|neut
-MWU	N_N_Conj	eigen|ev|neut_eigen|ev|neut_onder|metfin
-MWU	N_N_Conj_N	eigen|ev|neut_eigen|ev|neut_neven_eigen|ev|neut
-MWU	N_N_Conj_N	soort|mv|neut_soort|mv|neut_neven_soort|ev|neut
-MWU	N_N_Conj_N_N	eigen|ev|neut_eigen|ev|neut_neven_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_Conj_N_N_N_N_N	eigen|ev|neut_eigen|ev|neut_neven_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_Int_N_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_Misc	eigen|ev|neut_eigen|ev|neut_vreemd
-MWU	N_N_Misc_Misc_Misc	eigen|ev|neut_eigen|ev|neut_vreemd_vreemd_vreemd
-MWU	N_N_N	eigen|ev|gen_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_N	eigen|ev|neut_eigen|ev|neut_eigen|mv|neut
-MWU	N_N_N	eigen|ev|neut_eigen|ev|neut_soort|ev|dat
-MWU	N_N_N	eigen|ev|neut_eigen|ev|neut_soort|ev|neut
-MWU	N_N_N	eigen|ev|neut_eigen|ev|neut_soort|mv|neut
-MWU	N_N_N	eigen|ev|neut_soort|ev|neut_eigen|ev|neut
-MWU	N_N_N	eigen|ev|neut_soort|ev|neut_soort|ev|neut
-MWU	N_N_N	eigen|mv|neut_eigen|mv|neut_eigen|ev|neut
-MWU	N_N_N	eigen|mv|neut_eigen|mv|neut_eigen|mv|neut
-MWU	N_N_N	soort|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_N	soort|ev|neut_eigen|ev|neut_soort|ev|neut
-MWU	N_N_N	soort|ev|neut_soort|ev|neut_eigen|ev|neut
-MWU	N_N_N	soort|ev|neut_soort|ev|neut_soort|ev|neut
-MWU	N_N_N	soort|mv|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_N	soort|mv|neut_soort|ev|neut_eigen|ev|neut
-MWU	N_N_N	soort|mv|neut_soort|mv|neut_soort|mv|neut
-MWU	N_N_N_Adj_N	eigen|ev|neut_eigen|ev|neut_soort|mv|neut_adv|stell|onverv_soort|ev|neut
-MWU	N_N_N_Adv	eigen|ev|neut_eigen|ev|neut_soort|ev|neut_gew|geenfunc|stell|onverv
-MWU	N_N_N_Conj_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_neven_eigen|ev|neut
-MWU	N_N_N_Int	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_N_Misc	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_vreemd
-MWU	N_N_N_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_N_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_soort|ev|neut
-MWU	N_N_N_N	eigen|ev|neut_eigen|ev|neut_soort|ev|neut_eigen|ev|neut
-MWU	N_N_N_N	eigen|ev|neut_soort|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_N_N	eigen|mv|neut_soort|mv|neut_eigen|mv|neut_eigen|mv|neut
-MWU	N_N_N_N	soort|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_N_N	soort|mv|neut_soort|ev|gen_soort|ev|neut_soort|mv|neut
-MWU	N_N_N_N_Conj_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_neven_soort|ev|neut
-MWU	N_N_N_N_Misc	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_vreemd
-MWU	N_N_N_N_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_N_N_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_soort|ev|neut
-MWU	N_N_N_N_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_soort|ev|neut_eigen|ev|neut
-MWU	N_N_N_N_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_soort|mv|neut_soort|mv|neut
-MWU	N_N_N_N_N	eigen|ev|neut_soort|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_N_N_N	soort|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_N_N_N_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_N_N_N_N_Int	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_N_N_N_N_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_N_N_N_N_N	eigen|ev|neut_soort|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_N_N_N_N_Prep_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_voor_eigen|ev|neut
-MWU	N_N_N_N_N_Prep_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_voor_eigen|ev|neut
-MWU	N_N_N_N_Prep_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_voor_eigen|ev|neut
-MWU	N_N_N_N_Punc_N_Punc	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_aanhaaldubb_eigen|ev|neut_aanhaaldubb
-MWU	N_N_N_N_V	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_hulp|ovt|1of2of3|ev
-MWU	N_N_N_Prep_Art_Adj_N	eigen|ev|neut_eigen|ev|neut_soort|ev|neut_voor_onbep|zijdofonzijd|neut_attr|stell|onverv_soort|ev|neut
-MWU	N_N_N_Prep_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_voor_soort|ev|neut
-MWU	N_N_N_Prep_N	eigen|ev|neut_eigen|ev|neut_soort|ev|neut_voor_eigen|ev|neut
-MWU	N_N_N_Prep_N_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_voor_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_N_Punc	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_komma
-MWU	N_N_N_Punc	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_punt
-MWU	N_N_N_Punc_N	eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_komma_eigen|ev|neut
-MWU	N_N_Num	eigen|ev|neut_eigen|ev|neut_hoofd|bep|attr|onverv
-MWU	N_N_Num	eigen|ev|neut_eigen|ev|neut_hoofd|bep|zelfst|onverv
-MWU	N_N_Num	soort|ev|neut_soort|ev|neut_hoofd|bep|attr|onverv
-MWU	N_N_Num_N	eigen|ev|neut_eigen|ev|neut_hoofd|bep|attr|onverv_soort|ev|neut
-MWU	N_N_Prep_Art_Adj_N	soort|ev|neut_soort|ev|neut_voor_bep|onzijd|neut_attr|stell|onverv_soort|ev|neut
-MWU	N_N_Prep_Art_N	eigen|ev|neut_eigen|ev|neut_voor_bep|zijd|dat_eigen|ev|neut
-MWU	N_N_Prep_Art_N_Prep_Art_N	eigen|ev|neut_eigen|ev|neut_voor_bep|zijdofmv|neut_soort|mv|neut_voor_bep|zijdofmv|neut_soort|ev|neut
-MWU	N_N_Prep_N	eigen|ev|gen_soort|ev|neut_voor_eigen|ev|neut
-MWU	N_N_Prep_N	eigen|ev|neut_eigen|ev|neut_voor_eigen|ev|neut
-MWU	N_N_Prep_N	eigen|ev|neut_eigen|ev|neut_voor_soort|ev|neut
-MWU	N_N_Prep_N	eigen|ev|neut_soort|ev|neut_voor_eigen|ev|neut
-MWU	N_N_Prep_N	soort|mv|neut_soort|mv|neut_voor_eigen|ev|neut
-MWU	N_N_Prep_N_N	eigen|ev|neut_eigen|ev|neut_voor_eigen|ev|neut_eigen|ev|neut
-MWU	N_N_Prep_N_Prep_Adj_N	eigen|ev|neut_eigen|ev|neut_voor_eigen|ev|neut_voor_attr|stell|vervneut_soort|mv|neut
-MWU	N_N_Punc_N_Punc	eigen|ev|neut_eigen|ev|neut_aanhaaldubb_eigen|ev|neut_aanhaaldubb
-MWU	N_Num	eigen|ev|gen_rang|bep|zelfst|onverv
-MWU	N_Num	eigen|ev|neut_hoofd|bep|attr|onverv
-MWU	N_Num	eigen|ev|neut_hoofd|bep|zelfst|onverv
-MWU	N_Num	soort|ev|neut_hoofd|bep|attr|onverv
-MWU	N_Num	soort|ev|neut_hoofd|bep|zelfst|onverv
-MWU	N_Num	soort|mv|neut_hoofd|bep|attr|onverv
-MWU	N_Num_N	eigen|ev|neut_hoofd|bep|attr|onverv_eigen|ev|neut
-MWU	N_Num_N	eigen|ev|neut_hoofd|bep|zelfst|onverv_eigen|ev|neut
-MWU	N_Num_N_N	soort|ev|neut_hoofd|bep|attr|onverv_soort|mv|neut_soort|ev|neut
-MWU	N_Num_N_Num	eigen|ev|neut_hoofd|bep|attr|onverv_eigen|ev|neut_hoofd|bep|zelfst|onverv
-MWU	N_Num_Num	soort|ev|neut_hoofd|bep|attr|onverv_hoofd|bep|attr|onverv
-MWU	N_Prep	soort|ev|neut_voor
-MWU	N_Prep_Adj_Adj_N	soort|ev|neut_voor_attr|stell|vervneut_attr|stell|vervneut_soort|mv|neut
-MWU	N_Prep_Adj_N	eigen|ev|neut_voor_attr|stell|vervneut_soort|mv|neut
-MWU	N_Prep_Art_N	eigen|ev|neut_voor_bep|zijdofmv|neut_eigen|ev|neut
-MWU	N_Prep_Art_N	eigen|ev|neut_voor_bep|zijdofmv|neut_soort|mv|neut
-MWU	N_Prep_Art_N	eigen|ev|neut_voor_bep|zijd|dat_eigen|ev|neut
-MWU	N_Prep_Art_N	soort|ev|neut_voor_bep|zijdofmv|neut_eigen|ev|neut
-MWU	N_Prep_Art_N	soort|ev|neut_voor_bep|zijdofmv|neut_soort|ev|neut
-MWU	N_Prep_Art_N	soort|ev|neut_voor_bep|zijdofmv|neut_soort|mv|neut
-MWU	N_Prep_Art_N_Art_N	soort|ev|neut_voor_bep|zijdofmv|neut_soort|ev|neut_bep|zijdofmv|gen_soort|mv|neut
-MWU	N_Prep_Art_N_N	soort|ev|neut_voor_bep|zijdofmv|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_Prep_Art_N_N	soort|ev|neut_voor_bep|zijdofmv|neut_soort|ev|neut_eigen|ev|neut
-MWU	N_Prep_Art_N_Prep_Art_N	soort|ev|neut_voor_bep|onzijd|neut_soort|ev|neut_voor_bep|onzijd|neut_eigen|ev|neut
-MWU	N_Prep_Art_N_Prep_Art_N	soort|ev|neut_voor_bep|zijdofmv|neut_soort|mv|neut_voor_bep|onzijd|neut_soort|ev|neut
-MWU	N_Prep_N	eigen|ev|neut_voor_eigen|ev|neut
-MWU	N_Prep_N	eigen|ev|neut_voor_soort|ev|neut
-MWU	N_Prep_N	eigen|ev|neut_voor_soort|mv|neut
-MWU	N_Prep_N	soort|ev|neut_voor_eigen|ev|neut
-MWU	N_Prep_N	soort|ev|neut_voor_soort|ev|neut
-MWU	N_Prep_N	soort|ev|neut_voor_soort|mv|neut
-MWU	N_Prep_N	soort|mv|neut_voor_eigen|ev|neut
-MWU	N_Prep_N_Art_Adj	eigen|ev|neut_voor_soort|ev|neut_bep|zijdofmv|neut_attr|stell|onverv
-MWU	N_Prep_N_N	eigen|ev|neut_voor_eigen|ev|neut_eigen|ev|neut
-MWU	N_Prep_N_N	soort|ev|neut_voor_eigen|ev|neut_eigen|ev|neut
-MWU	N_Prep_N_Prep_Art_N	eigen|ev|neut_voor_soort|mv|neut_voor_bep|onzijd|neut_eigen|ev|neut
-MWU	N_Prep_N_Prep_N_Conj_N_Prep_Art_N_N	soort|ev|neut_voor_soort|ev|neut_voor_soort|ev|neut_neven_soort|ev|neut_voor_bep|zijdofmv|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_Prep_N_Punc_N_Conj_N	soort|ev|neut_voor_soort|ev|neut_komma_eigen|ev|neut_neven_eigen|ev|neut
-MWU	N_Prep_N_Punc_N_Conj_N	soort|ev|neut_voor_soort|ev|neut_komma_soort|ev|neut_neven_soort|ev|neut
-MWU	N_Prep_Num	soort|ev|neut_voor_hoofd|bep|zelfst|onverv
-MWU	N_Prep_Pron_N	eigen|ev|neut_voor_bez|3|ev|neut|attr_soort|mv|neut
-MWU	N_Pron	eigen|ev|neut_onbep|neut|zelfst
-MWU	N_Punc_Adj_N	eigen|ev|neut_aanhaalenk_attr|stell|onverv_eigen|ev|neut
-MWU	N_Punc_Adj_Pron_Punc	soort|ev|neut_komma_attr|stell|onverv_per|2|ev|nom_uitroep
-MWU	N_Punc_Adv_V_Pron_N	soort|ev|neut_komma_gew|betr_hulpofkopp|ott|3|ev_bez|1|ev|neut|attr_soort|ev|neut
-MWU	N_Punc_Misc_Punc_N	eigen|ev|neut_aanhaalenk_vreemd_aanhaalenk_eigen|ev|neut
-MWU	N_Punc_N	eigen|ev|neut_liggstreep_eigen|ev|neut
-MWU	N_Punc_N	soort|ev|neut_schuinstreep_soort|ev|neut
-MWU	N_Punc_N_Conj_N	soort|ev|neut_komma_eigen|ev|neut_neven_eigen|ev|neut
-MWU	N_Punc_N_N_N_N	soort|ev|neut_komma_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut
-MWU	N_Punc_N_Punc	soort|ev|neut_aanhaaldubb_eigen|ev|neut_aanhaaldubb
-MWU	N_Punc_N_Punc_N	soort|ev|neut_schuinstreep_soort|ev|neut_schuinstreep_soort|ev|neut
-MWU	N_Punc_Punc_N_N_Punc_Punc_N	eigen|ev|neut_haakopen_aanhaaldubb_eigen|ev|neut_eigen|ev|neut_aanhaaldubb_haaksluit_eigen|ev|neut
-MWU	N_V	eigen|ev|neut_hulp|ovt|1of2of3|ev
-MWU	N_V	eigen|ev|neut_intrans|ovt|1of2of3|ev
-MWU	N_V	eigen|ev|neut_intrans|verldw|vervneut
-MWU	N_V	eigen|ev|neut_trans|imp
-MWU	N_V	eigen|ev|neut_trans|verldw|onverv
-MWU	N_V	soort|ev|neut_hulpofkopp|conj
-MWU	N_V	soort|ev|neut_intrans|conj
-MWU	N_V	soort|ev|neut_trans|ovt|1of2of3|ev
-MWU	N_V	soort|ev|neut_trans|verldw|onverv
-MWU	N_V_N	eigen|ev|gen_trans|verldw|vervneut_soort|mv|neut
-MWU	N_V_N	eigen|ev|neut_hulpofkopp|conj_soort|ev|neut
-MWU	N_V_N	eigen|ev|neut_intrans|ott|3|ev_eigen|ev|neut
-MWU	N_V_N	eigen|ev|neut_trans|imp_eigen|ev|neut
-MWU	N_V_N	eigen|ev|neut_trans|inf_eigen|ev|neut
-MWU	N_V_N_N	eigen|ev|neut_trans|verldw|onverv_soort|ev|neut_eigen|ev|neut
-MWU	Num_Adj	hoofd|bep|attr|onverv_attr|stell|onverv
-MWU	Num_Adj	hoofd|bep|attr|onverv_zelfst|stell|vervmv
-MWU	Num_Adj	hoofd|bep|zelfst|onverv_attr|stell|onverv
-MWU	Num_Adj	rang|bep|attr|onverv_attr|stell|vervneut
-MWU	Num_Adj_Adj_N	rang|bep|attr|onverv_attr|stell|vervneut_attr|stell|vervneut_eigen|ev|neut
-MWU	Num_Adj_N	rang|bep|attr|onverv_attr|stell|vervneut_soort|ev|neut
-MWU	Num_Conj_Adj	hoofd|bep|attr|onverv_neven_attr|stell|vervneut
-MWU	Num_Conj_Art_Adj	hoofd|bep|attr|onverv_neven_onbep|zijdofonzijd|neut_attr|stell|onverv
-MWU	Num_Conj_Num	hoofd|onbep|attr|stell|onverv_neven_hoofd|onbep|attr|vergr|onverv
-MWU	Num_Conj_Num	hoofd|onbep|zelfst|stell|onverv_neven_hoofd|onbep|attr|vergr|onverv
-MWU	Num_Conj_Num	hoofd|onbep|zelfst|stell|onverv_neven_hoofd|onbep|zelfst|vergr|onverv
-MWU	Num_Conj_Num_N	hoofd|bep|attr|onverv_neven_hoofd|bep|attr|onverv_eigen|ev|neut
-MWU	Num_N	hoofd|bep|attr|onverv_eigen|ev|neut
-MWU	Num_N	hoofd|bep|attr|onverv_soort|ev|neut
-MWU	Num_N	hoofd|bep|attr|onverv_soort|mv|neut
-MWU	Num_N	hoofd|bep|zelfst|onverv_eigen|ev|neut
-MWU	Num_N	rang|bep|attr|onverv_soort|ev|gen
-MWU	Num_N	rang|bep|attr|onverv_soort|ev|neut
-MWU	Num_N_N	hoofd|bep|attr|onverv_soort|mv|neut_eigen|ev|neut
-MWU	Num_N_N	rang|bep|attr|onverv_eigen|ev|neut_eigen|ev|neut
-MWU	Num_N_Num	hoofd|bep|attr|onverv_eigen|ev|neut_hoofd|bep|attr|onverv
-MWU	Num_N_Num	hoofd|bep|attr|onverv_eigen|ev|neut_hoofd|bep|zelfst|onverv
-MWU	Num_N_Num	hoofd|bep|attr|onverv_soort|ev|neut_hoofd|bep|attr|onverv
-MWU	Num_N_Num_Num_N	hoofd|bep|attr|onverv_soort|mv|neut_hoofd|bep|attr|onverv_hoofd|bep|attr|onverv_soort|mv|neut
-MWU	Num_Num	hoofd|bep|attr|onverv_hoofd|bep|attr|onverv
-MWU	Num_Num	hoofd|bep|attr|onverv_hoofd|bep|zelfst|onverv
-MWU	Num_Num	hoofd|bep|attr|onverv_rang|bep|zelfst|onverv
-MWU	Num_Num	hoofd|bep|zelfst|onverv_hoofd|bep|zelfst|onverv
-MWU	Num_Num_N	hoofd|bep|attr|onverv_hoofd|bep|attr|onverv_soort|ev|neut
-MWU	Num_Prep_Num	hoofd|bep|zelfst|onverv_voor_hoofd|bep|zelfst|onverv
-MWU	Num_Punc	hoofd|bep|zelfst|onverv_haaksluit
-MWU	Num_Punc_Num	hoofd|bep|attr|onverv_liggstreep_hoofd|bep|attr|onverv
-MWU	Num_Punc_Num	hoofd|bep|attr|onverv_maal_hoofd|bep|attr|onverv
-MWU	Num_Punc_Num_N_N	hoofd|bep|attr|onverv_maal_hoofd|bep|attr|onverv_soort|ev|neut_soort|ev|neut
-MWU	Prep_Adj	voor_adv|vergr|vervneut
-MWU	Prep_Adj	voor_attr|stell|onverv
-MWU	Prep_Adj	voor_attr|stell|vervneut
-MWU	Prep_Adj_Conj_Prep_N	voor_attr|stell|onverv_neven_voor_soort|ev|neut
-MWU	Prep_Adj_N	voor_attr|stell|vervneut_soort|mv|neut
-MWU	Prep_Adv	comb_gew|geenfunc|stell|onverv
-MWU	Prep_Adv	voor_gew|aanw
-MWU	Prep_Adv	voor_gew|geenfunc|overtr|vervneut
-MWU	Prep_Adv	voor_gew|geenfunc|stell|onverv
-MWU	Prep_Adv	voor_gew|geenfunc|stell|vervneut
-MWU	Prep_Adv	voor_pron|vrag
-MWU	Prep_Adv	voorinf_gew|geenfunc|stell|onverv
-MWU	Prep_Art	voor_bep|onzijd|neut
-MWU	Prep_Art	voor_onbep|zijdofonzijd|neut
-MWU	Prep_Art_Adj	voor_bep|onzijd|neut_adv|vergr|onverv
-MWU	Prep_Art_Adj	voor_bep|onzijd|neut_zelfst|overtr|onverv
-MWU	Prep_Art_Adj	voor_bep|onzijd|neut_zelfst|stell|vervneut
-MWU	Prep_Art_Adj	voor_bep|zijdofmv|neut_attr|stell|vervneut
-MWU	Prep_Art_Adj_N	voor_bep|zijdofmv|neut_attr|stell|vervneut_soort|ev|neut
-MWU	Prep_Art_Misc_Misc	voor_bep|zijdofmv|neut_vreemd_vreemd
-MWU	Prep_Art_N	voor_bep|onzijd|neut_eigen|ev|neut
-MWU	Prep_Art_N	voor_bep|onzijd|neut_soort|ev|neut
-MWU	Prep_Art_N	voor_bep|zijdofmv|neut_eigen|ev|neut
-MWU	Prep_Art_N	voor_bep|zijdofmv|neut_soort|ev|neut
-MWU	Prep_Art_N	voor_bep|zijdofmv|neut_soort|mv|neut
-MWU	Prep_Art_N	voor_bep|zijd|dat_soort|ev|dat
-MWU	Prep_Art_N	voor_bep|zijd|dat_soort|ev|neut
-MWU	Prep_Art_N	voor_onbep|zijdofonzijd|neut_soort|ev|neut
-MWU	Prep_Art_N_Adv	voor_bep|zijdofmv|neut_soort|ev|neut_deelv
-MWU	Prep_Art_N_Adv	voor_bep|zijdofmv|neut_soort|ev|neut_pron|vrag
-MWU	Prep_Art_N_Art_N	voor_bep|zijdofmv|neut_soort|ev|neut_bep|zijdofmv|gen_soort|mv|neut
-MWU	Prep_Art_N_Prep	voor_bep|onzijd|neut_soort|ev|neut_voor
-MWU	Prep_Art_N_Prep	voor_bep|zijdofmv|neut_soort|ev|neut_voor
-MWU	Prep_Art_N_Prep_Art_N	voor_bep|zijdofmv|neut_soort|ev|neut_voor_bep|zijdofmv|neut_soort|ev|neut
-MWU	Prep_Art_N_V	voor_bep|zijdofmv|neut_soort|mv|neut_intrans|verldw|onverv
-MWU	Prep_Art_V	voor_bep|onzijd|neut_intrans|inf
-MWU	Prep_Art_V	voor_bep|zijdofmv|neut_trans|ott|1|ev
-MWU	Prep_Conj_Prep	voor_neven_voor
-MWU	Prep_Misc	voor_vreemd
-MWU	Prep_N	voor_eigen|ev|neut
-MWU	Prep_N	voor_soort|ev|dat
-MWU	Prep_N	voor_soort|ev|neut
-MWU	Prep_N	voor_soort|mv|neut
-MWU	Prep_N_Adv	voor_soort|ev|neut_deeladv
-MWU	Prep_N_Adv	voor_soort|ev|neut_pron|aanw
-MWU	Prep_N_Adv	voor_soort|ev|neut_pron|vrag
-MWU	Prep_N_Adv	voor_soort|mv|neut_deelv
-MWU	Prep_N_Conj	voor_soort|ev|neut_onder|metinf
-MWU	Prep_N_Conj_N	voor_soort|ev|neut_neven_soort|ev|neut
-MWU	Prep_N_N	voor_soort|ev|neut_soort|ev|neut
-MWU	Prep_N_Prep	voor_soort|ev|dat_voor
-MWU	Prep_N_Prep	voor_soort|ev|neut_voor
-MWU	Prep_N_Prep	voor_soort|mv|neut_voor
-MWU	Prep_N_Prep_N	voor_soort|ev|neut_voor_soort|ev|neut
-MWU	Prep_N_V	voor_soort|ev|dat_trans|verldw|vervneut
-MWU	Prep_Num	voor_hoofd|onbep|zelfst|overtr|vervneut
-MWU	Prep_Num	voor_hoofd|onbep|zelfst|vergr|onverv
-MWU	Prep_Num_N	voor_hoofd|bep|attr|onverv_soort|ev|neut
-MWU	Prep_Prep	voor_voor
-MWU	Prep_Prep_Adj	voor_voor_adv|stell|onverv
-MWU	Prep_Prep_Adv	voor_voor_gew|geenfunc|stell|onverv
-MWU	Prep_Prep_Art_N	voor_voor_bep|zijdofmv|neut_eigen|mv|neut
-MWU	Prep_Pron	voor_aanw|neut|zelfst
-MWU	Prep_Pron	voor_onbep|neut|attr
-MWU	Prep_Pron	voor_onbep|neut|zelfst
-MWU	Prep_Pron	voor_rec|neut
-MWU	Prep_Pron	voor_ref|3|evofmv
-MWU	Prep_Pron_Adj	voor_bez|3|ev|neut|attr_adv|vergr|onverv
-MWU	Prep_Pron_N	voor_aanw|dat|attr_soort|ev|dat
-MWU	Prep_Pron_N	voor_aanw|dat|attr_soort|ev|neut
-MWU	Prep_Pron_N	voor_bez|3|ev|neut|attr_soort|ev|neut
-MWU	Prep_Pron_N_Adv	voor_onbep|neut|attr_soort|mv|neut_deelv
-MWU	Prep_Punc_N_Conj_N	voor_aanhaaldubb_soort|mv|neut_neven_soort|mv|neut
-MWU	Prep_V	voor_intrans|inf
-MWU	Prep_V	voorinf_trans|inf
-MWU	Prep_V_N	voor_intrans|tegdw|vervneut_soort|ev|neut
-MWU	Prep_V_Pron_Pron_Adv	voor_hulp|ott|1|ev_per|1|ev|nom_per|2|ev|datofacc_gew|aanw
-MWU	Pron_Adj	bez|2|ev|neut|attr_attr|overtr|vervneut
-MWU	Pron_Adj	onbep|neut|zelfst_adv|vergr|onverv
-MWU	Pron_Adj_N_Punc_Art_Adj_N_Prep_Art_Adj_N	bez|1|mv|neut|attr_attr|stell|vervneut_soort|ev|neut_komma_bep|zijdofmv|neut_attr|stell|vervneut_eigen|ev|neut_voor_bep|zijdofmv|neut_attr|stell|vervneut_soort|ev|neut
-MWU	Pron_Adv	betr|neut|zelfst_gew|aanw
-MWU	Pron_Adv	vrag|neut|attr_deelv
-MWU	Pron_Art	vrag|neut|attr_onbep|zijdofonzijd|neut
-MWU	Pron_Art	vrag|neut|zelfst_onbep|zijdofonzijd|neut
-MWU	Pron_Art_N_N	onbep|neut|zelfst_onbep|zijdofonzijd|neut_soort|ev|neut_soort|mv|neut
-MWU	Pron_N	aanw|gen|attr_soort|mv|neut
-MWU	Pron_N	onbep|neut|attr_soort|ev|neut
-MWU	Pron_N	onbep|neut|zelfst_eigen|ev|neut
-MWU	Pron_N	onbep|neut|zelfst_soort|ev|gen
-MWU	Pron_N_Adv	onbep|neut|attr_soort|ev|neut_deeladv
-MWU	Pron_N_V_Adv_Num_Punc	onbep|neut|attr_soort|ev|neut_hulpofkopp|ott|3|ev_gew|er_hoofd|bep|attr|onverv_punt
-MWU	Pron_N_V_Conj_N	onbep|neut|attr_soort|ev|neut_hulpofkopp|ott|3|ev_onder|metfin_soort|ev|neut
-MWU	Pron_Prep	betr|neut|zelfst_voor
-MWU	Pron_Prep	onbep|neut|zelfst_voor
-MWU	Pron_Prep	vrag|neut|attr_voor
-MWU	Pron_Prep_Art	betr|neut|zelfst_voor_onbep|zijdofonzijd|neut
-MWU	Pron_Prep_Art	vrag|neut|attr_voor_onbep|zijdofonzijd|neut
-MWU	Pron_Prep_N	vrag|neut|attr_voor_soort|mv|neut
-MWU	Pron_Prep_Pron	onbep|neut|zelfst_voor_onbep|neut|zelfst
-MWU	Pron_Pron	ref|3|evofmv_aanw|neut|attr|wzelf
-MWU	Pron_Pron_V	betr|neut|zelfst_onbep|neut|zelfst_trans|ott|2|ev
-MWU	Pron_V	bez|1|mv|neut|attr_intrans|inf|subst
-MWU	Pron_V	bez|3|ev|gen|attr_intrans|inf|subst
-MWU	Pron_V_V	aanw|neut|zelfst_hulp|ott|3|ev_trans|inf
-MWU	Punc_Int_Punc_N_N_N_Punc_Pron_V_Pron_Adj_V_Punc	aanhaaldubb_komma_eigen|ev|neut_eigen|ev|neut_eigen|ev|neut_komma_vrag|neut|attr_hulpofkopp|ott|2|ev_per|2|ev|nom_adv|stell|onverv_intrans|verldw|onverv_aanhaaldubb
-MWU	Punc_N_Punc_N	aanhaaldubb_eigen|ev|neut_aanhaaldubb_eigen|ev|neut
-MWU	Punc_Num	liggstreep_hoofd|bep|attr|onverv
-MWU	Punc_Num	liggstreep_hoofd|bep|zelfst|onverv
-MWU	Punc_Num_Num	liggstreep_hoofd|bep|attr|onverv_hoofd|bep|zelfst|onverv
-MWU	V_Adj_N	trans|verldw|vervneut_attr|stell|vervneut_soort|mv|neut
-MWU	V_Adv	trans|imp_gew|geenfunc|stell|onverv
-MWU	V_Adv_Art_N_Prep_Pron_N	trans|imp_gew|geenfunc|stell|onverv_onbep|zijdofonzijd|neut_soort|ev|neut_voor_bez|2|ev|neut|attr_soort|mv|neut
-MWU	V_Art_N	trans|imp_bep|zijdofmv|neut_eigen|ev|neut
-MWU	V_Art_N_Num_N	hulp|ott|3|ev_bep|zijdofmv|neut_eigen|ev|neut_hoofd|bep|attr|onverv_soort|mv|neut
-MWU	V_Conj_N_N	trans|verldw|vervneut_neven_eigen|ev|neut_eigen|ev|neut
-MWU	V_Conj_Pron	trans|verldw|onverv_neven_onbep|neut|attr
-MWU	V_N	trans|imp_eigen|ev|neut
-MWU	V_N	trans|verldw|vervneut_soort|mv|neut
-MWU	V_N_Conj_Adj_N_Prep_Art_N	trans|verldw|onverv_soort|mv|neut_neven_attr|stell|vervneut_soort|mv|neut_voor_bep|zijdofmv|neut_soort|ev|neut
-MWU	V_N_Misc_Punc	trans|imp_eigen|ev|neut_vreemd_uitroep
-MWU	V_N_N	intrans|tegdw|onverv_soort|ev|neut_eigen|ev|neut
-MWU	V_N_N	trans|verldw|onverv_soort|ev|neut_eigen|ev|neut
-MWU	V_N_V	intrans|ott|1of2of3|mv_eigen|ev|neut_intrans|inf
-MWU	V_Prep	intrans|verldw|onverv_voor
-MWU	V_Pron	hulpofkopp|conj_onbep|neut|zelfst
-MWU	V_Pron_Adv	trans|ott|1|ev_per|2|ev|nom_gew|geenfunc|stell|onverv
-MWU	V_Pron_Adv_Adv_Pron_V	trans|imp_ref|2|ev_gew|aanw_gew|betr_per|1|ev|nom_intrans|ott|2|ev
-MWU	V_Pron_V	trans|conj_betr|neut|zelfst_trans|ott|3|ev
-MWU	V_V	hulp|imp_intrans|inf
-MWU	V_V	hulp|imp_trans|inf
 Misc	Misc	vreemd
 N	N	eigen|ev|gen
 N	N	eigen|ev|neut
@@ -1151,6 +705,7 @@ N	N	soort|ev|gen
 N	N	soort|ev|neut
 N	N	soort|mv|neut
 Num	Num	hoofd|bep|attr|onverv
+Num	Num	hoofd|bep|attr|vervgen
 Num	Num	hoofd|bep|zelfst|onverv
 Num	Num	hoofd|bep|zelfst|vervgen
 Num	Num	hoofd|bep|zelfst|vervmv
@@ -1181,17 +736,24 @@ Pron	Pron	aanw|neut|attr
 Pron	Pron	aanw|neut|attr|weigen
 Pron	Pron	aanw|neut|attr|wzelf
 Pron	Pron	aanw|neut|zelfst
+Pron	Pron	betr|gen|attr
 Pron	Pron	betr|gen|zelfst
 Pron	Pron	betr|neut|attr
 Pron	Pron	betr|neut|zelfst
 Pron	Pron	bez|1|ev|neut|attr
+Pron	Pron	bez|1|ev|neut|zelfst
 Pron	Pron	bez|1|mv|neut|attr
+Pron	Pron	bez|1|mv|neut|zelfst
 Pron	Pron	bez|2|ev|neut|attr
+Pron	Pron	bez|2|ev|neut|zelfst
 Pron	Pron	bez|2|mv|neut|attr
+Pron	Pron	bez|2|mv|neut|zelfst
 Pron	Pron	bez|3|ev|gen|attr
+Pron	Pron	bez|3|ev|gen|zelfst
 Pron	Pron	bez|3|ev|neut|attr
 Pron	Pron	bez|3|ev|neut|zelfst
 Pron	Pron	bez|3|mv|neut|attr
+Pron	Pron	bez|3|mv|neut|zelfst
 Pron	Pron	onbep|gen|attr
 Pron	Pron	onbep|gen|zelfst
 Pron	Pron	onbep|neut|attr
