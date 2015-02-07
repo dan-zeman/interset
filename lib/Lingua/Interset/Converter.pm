@@ -1,4 +1,4 @@
-# Implements a converter between two physical tagsets via Interset.
+# ABSTRACT: Implements a converter between two physical tagsets via Interset.
 # Copyright © 2015 Univerzita Karlova v Praze / Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Converter;
