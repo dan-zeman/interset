@@ -70,6 +70,7 @@ sub _create_atoms
                        'conj' => 'Conj',
                        'int'  => 'Int',
                        'punc' => 'Punc',
+                       'sym'  => 'Punc',
                        '@'    => 'Misc' }
         }
     );
@@ -129,20 +130,23 @@ sub _create_atoms
         'surfeature' => 'adjform',
         'decode_map' =>
         {
-            'onverv'   => [], # uninflected (best, grootst, kleinst, moeilijkst, mooist)
-            'vervneut' => ['case' => 'nom'], # normal inflected form (mogelijke, ongelukkige, krachtige, denkbare, laatste)
-            'vervgen'  => ['case' => 'gen'], # genitive form (bijzonders, goeds, nieuws, vreselijks, lekkerders)
-            'vervmv'   => ['number' => 'plur'], # plural form (aanwezigen, religieuzen, Fransen, deskundigen, doden)
-            'vervdat'  => ['case' => 'dat'], # dative form, verbs only, not found in corpus
+            'onverv'    => [], # uninflected (best, grootst, kleinst, moeilijkst, mooist)
+            'vervneut'  => ['case' => 'nom'], # normal inflected form (mogelijke, ongelukkige, krachtige, denkbare, laatste)
+            'vervgen'   => ['case' => 'gen'], # genitive form (bijzonders, goeds, nieuws, vreselijks, lekkerders)
+            'vervmv'    => ['number' => 'plur'], # plural form (aanwezigen, religieuzen, Fransen, deskundigen, doden)
+            'vervdat'   => ['case' => 'dat'], # dative form, verbs only, not found in corpus
             # comparative form of participles (occurs with "V", not with "Adj")
             # tegemoetkomender = more accommodating; overrompelender
             # vermoeider = more tired; verfijnder = more sophisticated
-            'vervverg' => ['degree' => 'comp']
+            'vervvergr' => ['degree' => 'comp']
         },
         'encode_map' =>
         {
-            'pos' => { 'verb' => { 'degree' => { 'comp' => 'vervverg',
-                                                 '@'    => 'onverv' }},
+            'pos' => { 'verb' => { 'degree' => { 'comp' => 'vervvergr',
+                                                 '@'    => { 'verbform' => { 'part' => { 'number' => { 'plur' => 'vervmv',
+                                                                                                       '@'    => { 'case' => { 'nom' => 'vervneut',
+                                                                                                                               '@'   => 'onverv' }}}},
+                                                                             '@'    => '' }}}},
                        '@'    => { 'number' => { 'plur' => 'vervmv',
                                                  '@'    => { 'case' => { 'nom' => 'vervneut',
                                                                          'gen' => 'vervgen',
@@ -450,7 +454,7 @@ sub _create_atoms
             'person' => { '1' => '1',
                           '2' => '2',
                           '3' => '3',
-                          '@' => { 'pos' => { 'verb' => '1of2of3' }}}
+                          '@' => { 'pos' => { 'verb' => { 'mood' => { 'ind' => '1of2of3' }}}}}
         }
     );
     # PUNCTUATION TYPE ####################
@@ -460,35 +464,45 @@ sub _create_atoms
         'decode_map' =>
         {
             'aanhaaldubb' => ['punctype' => 'quot'], # "
-            'aanhaalenk'  => ['punctype' => 'quot'], # '
+            'aanhaalenk'  => ['punctype' => 'quot', 'other' => {'punctype' => 'singlequot'}], # '
             'dubbpunt'    => ['punctype' => 'colo'], # :
-            'en'          => ['punctype' => 'symb'], # &
+            'en'          => ['pos' => 'sym', 'other' => {'symbol' => 'and'}], # &
             'gedstreep'   => ['punctype' => 'dash'], # -
             'haakopen'    => ['punctype' => 'brck', 'puncside' => 'ini'], # (
             'haaksluit'   => ['punctype' => 'brck', 'puncside' => 'fin'], # )
-            'isgelijk'    => ['punctype' => 'symb'], # =
+            'hellip'      => ['punctype' => 'peri', 'other' => {'punctype' => 'ellipsis'}], # ...
+            'isgelijk'    => ['pos' => 'sym', 'other' => {'symbol' => 'equals'}], # =
             'komma'       => ['punctype' => 'comm'], # ,
-            'liggstreep'  => ['punctype' => 'symb'], # -, _
-            'maal'        => ['punctype' => 'symb'], # x
-            'plus'        => ['punctype' => 'symb'], # +
+            'liggstreep'  => ['pos' => 'sym', 'other' => {'symbol' => 'underscore'}], # -, _
+            'maal'        => ['pos' => 'sym', 'other' => {'symbol' => 'times'}], # x
+            'plus'        => ['pos' => 'sym', 'other' => {'symbol' => 'plus'}], # +
             'punt'        => ['punctype' => 'peri'], # .
             'puntkomma'   => ['punctype' => 'semi'], # ;
-            'schuinstreep'=> ['punctype' => 'symb'], # /
+            'schuinstreep'=> ['pos' => 'sym', 'other' => {'symbol' => 'slash'}], # /
             'uitroep'     => ['punctype' => 'excl'], # !
             'vraag'       => ['punctype' => 'qest'], # ?
         },
         'encode_map' =>
         {
-            'punctype' => { 'quot' => 'aanhaaldubb',
+            'punctype' => { 'quot' => { 'other/punctype' => { 'singlequot' => 'aanhaalenk',
+                                                              '@'          => 'aanhaaldubb' }},
                             'colo' => 'dubbpunt',
                             'dash' => 'gedstreep',
                             'brck' => { 'puncside' => { 'ini' => 'haakopen',
                                                         '@'   => 'haaksluit' }},
                             'comm' => 'komma',
-                            'peri' => 'punt',
+                            'peri' => { 'other/punctype' => { 'ellipsis' => 'hellip',
+                                                              '@'        => 'punt' }},
                             'semi' => 'puntkomma',
                             'excl' => 'uitroep',
-                            'qest' => 'vraag' }
+                            'qest' => 'vraag',
+                            '@'    => { 'other/symbol' => { 'and'        => 'en',
+                                                            'equals'     => 'isgelijk',
+                                                            'underscore' => 'liggstreep',
+                                                            'times'      => 'maal',
+                                                            'plus'       => 'plus',
+                                                            'slash'      => 'schuinstreep',
+                                                            '@'          => 'isgelijk' }}}
         }
     );
     # VERB TYPE ####################
@@ -526,8 +540,6 @@ sub _create_atoms
             'inf'    => ['verbform' => 'inf'], # (komen, gaan, staan, vertrekken, spelen)
             'conj'   => ['verbform' => 'fin', 'mood' => 'sub'], # (leve, ware, inslape, oordele, zegge)
             'imp'    => ['verbform' => 'fin', 'mood' => 'imp'], # (kijk, kom, ga, denk, wacht)
-            # substantival usage of verb infinitive
-            'subst'  => ['verbform' => 'inf'], # (worden, zijn, optreden, streven, dringen, maken, bereiken)
         },
         'encode_map' =>
         {
@@ -538,6 +550,20 @@ sub _create_atoms
                                                     'imp' => 'imp' }},
                             'part' => { 'tense' => { 'pres' => 'tegdw',
                                                      'past' => 'verldw' }}}
+        }
+    );
+    # SUBSTANTIVAL USAGE OF INFINITIVE ####################
+    $atoms{subst} = $self->create_atom
+    (
+        'surfeature' => 'subst',
+        'decode_map' =>
+        {
+            # (worden, zijn, optreden, streven, dringen, maken, bereiken)
+            'subst' => ['other' => {'infinitive' => 'subst'}]
+        },
+        'encode_map' =>
+        {
+            'other/infinitive' => { 'subst' => 'subst' }
         }
     );
     # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
@@ -560,7 +586,7 @@ sub _create_features_all
 {
     my $self = shift;
     my @features = ('pos', 'adjtype', 'degree', 'adjform', 'advtype', 'function', 'definiteness', 'gender', 'case', 'conjtype', 'sconjtype', 'nountype', 'number',
-                    'numtype', 'misctype', 'adpostype', 'prontype', 'pronoun', 'person', 'punctype', 'verbtype', 'verbform');
+                    'numtype', 'misctype', 'adpostype', 'prontype', 'pronoun', 'person', 'punctype', 'verbtype', 'verbform', 'subst');
     return \@features;
 }
 
@@ -575,15 +601,18 @@ sub _create_features_pos
     my $self = shift;
     my %features =
     (
-        'Adj'  => ['adjtype', 'degree', 'adjform'],
-        'Adv'  => ['advtype', 'function', 'degree', 'adjform'],
-        'Art'  => ['definiteness', 'gender', 'case'],
-        'Conj' => ['conjtype', 'sconjtype'],
-        'Misc' => ['misctype'],
-        'N'    => ['nountype', 'number', 'case'],
-        'Num'  => ['numtype', 'definiteness', 'prontype', 'adjtype', 'degree', 'adjform'],
-        'Prep' => ['adpostype'],
-        'Pron' => ['prontype', 'person', 'number', 'case', 'adjtype', 'pronoun']
+        'Adj'   => ['adjtype', 'degree', 'adjform'],
+        'Adv'   => ['advtype', 'function', 'degree', 'adjform'],
+        'Art'   => ['definiteness', 'gender', 'case'],
+        'Conj'  => ['conjtype', 'sconjtype'],
+        'Misc'  => ['misctype'],
+        'N'     => ['nountype', 'number', 'case'],
+        'Num'   => ['numtype', 'definiteness', 'prontype', 'adjtype', 'degree', 'adjform'],
+        'Prep'  => ['adpostype'],
+        'Pron'  => ['prontype', 'person', 'number', 'case', 'adjtype', 'pronoun'],
+        'Punc'  => ['punctype'],
+        'V'     => ['verbtype', 'verbform', 'subst', 'person', 'number'],
+        'Vpart' => ['verbtype', 'verbform', 'adjform']
     );
     return \%features;
 }
@@ -634,6 +663,7 @@ sub encode
     my $atoms = $self->atoms();
     my $subpos = $atoms->{pos}->encode($fs);
     my $fpos = $subpos;
+    $fpos = 'Vpart' if($fpos eq 'V' && $fs->is_participle());
     my $feature_names = $self->get_feature_names($fpos);
     my $pos = $subpos;
     my $value_only = 1;
@@ -649,6 +679,7 @@ sub encode
 # MWU (multi-word-unit) tags were removed because they are sequences of normal
 # tags and we cannot support them.
 # Total 198 tags survived.
+# Total 208 tags after adding missing tags (without the 'other' feature etc.)
 #------------------------------------------------------------------------------
 sub list
 {
@@ -783,6 +814,7 @@ Pron	Pron	vrag|neut|zelfst
 Punc	Punc	aanhaaldubb
 Punc	Punc	aanhaalenk
 Punc	Punc	dubbpunt
+Punc    Punc    en
 Punc	Punc	haakopen
 Punc	Punc	haaksluit
 Punc	Punc	hellip
@@ -790,6 +822,7 @@ Punc	Punc	isgelijk
 Punc	Punc	komma
 Punc	Punc	liggstreep
 Punc	Punc	maal
+Punc    Punc    plus
 Punc	Punc	punt
 Punc	Punc	puntkomma
 Punc	Punc	schuinstreep

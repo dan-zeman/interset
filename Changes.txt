@@ -3,6 +3,9 @@
 Interface:
 * New class Lingua::Interset::Converter implements conversion between two physical tagsets including caching.
 
+Drivers:
+* NL::Conll
+
 
 
 2.032     2015-01-26 23:27:27+01:00 Europe/Prague
