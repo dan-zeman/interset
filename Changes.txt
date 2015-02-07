@@ -5,6 +5,7 @@ Interface:
 
 Drivers:
 * NL::Conll
+* NL::Cgn
 
 
 
