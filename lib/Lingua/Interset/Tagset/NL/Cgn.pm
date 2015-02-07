@@ -482,12 +482,12 @@ end_of_list
 
   use Lingua::Interset::Tagset::NL::Cgn;
   my $driver = Lingua::Interset::Tagset::NL::Cgn->new();
-  my $fs = $driver->decode('N');
+  my $fs = $driver->decode('N(soort,ev,basis,zijd,stan)');
 
 or
 
   use Lingua::Interset qw(decode);
-  my $fs = decode('nl::cgn', 'N');
+  my $fs = decode('nl::cgn', 'N(soort,ev,basis,zijd,stan)');
 
 =head1 DESCRIPTION
 
