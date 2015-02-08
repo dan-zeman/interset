@@ -1,5 +1,13 @@
 {{$NEXT}}
 
+Features:
+* New value 'dim' of the feature 'degree': diminutive. Applicable to multiple languages, systematically needed in Dutch.
+
+Drivers:
+* Fixed NL::Cgn. Extended list of tags; encoding now includes features.
+
+
+
 2.033     2015-02-08 00:02:03+01:00 Europe/Prague
 
 Interface:

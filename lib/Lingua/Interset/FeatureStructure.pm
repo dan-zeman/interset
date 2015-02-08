@@ -592,13 +592,14 @@ my %matrix = @_matrix =
     'degree' =>
     {
         'priority' => 230,
-        'values' => ['pos', 'comp', 'sup', 'abs', ''],
+        'values' => ['pos', 'comp', 'sup', 'abs', 'dim', ''],
         'replacements' =>
         [
             ['pos'],
             ['comp'],
             ['sup', 'comp'],
-            ['abs', 'sup']
+            ['abs', 'sup'],
+            ['dim']
         ],
         'uname' => 'Degree'
     },
