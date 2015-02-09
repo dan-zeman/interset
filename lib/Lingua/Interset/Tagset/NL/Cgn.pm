@@ -256,10 +256,11 @@ sub _create_atoms
         'intfeature' => 'gender',
         'simple_decode_map' =>
         {
-            'zijd' => 'com',  # zijdig / common, i.e. non-neuter (de)
-            'masc' => 'masc', # masculien / masculine; only third-person pronouns
-            'fem'  => 'fem',  # feminien / feminine; only third-person pronouns
-            'onz'  => 'neut'  # onzijdig / neuter (het)
+            'zijd'  => 'com',  # zijdig / common, i.e. non-neuter (de)
+            'masc'  => 'masc', # masculien / masculine; only third-person pronouns
+            'fem'   => 'fem',  # feminien / feminine; only third-person pronouns
+            'onz'   => 'neut', # onzijdig / neuter (het)
+            'genus' => ''
         }
     );
     # GETAL / NUMBER ####################
@@ -636,36 +637,6 @@ sub _create_features_all
 
 
 #------------------------------------------------------------------------------
-# Creates the list of surface CoNLL features that can appear in the FEATS
-# column with particular parts of speech. This list will be used in encode().
-#------------------------------------------------------------------------------
-sub _create_features_pos
-{
-    my $self = shift;
-    my %features =
-    (
-        'N'       => ['nountype', 'number', 'degree', 'gender', 'case'],
-        'ADJ'     => ['position', 'degree', 'inflection', 'numbern', 'case'],
-        'WWpv'    => ['verbform', 'tense', 'number'],
-        'WWopv'   => ['verbform', 'position', 'inflection', 'numbern'],
-        'TW'      => ['numtype', 'position', 'case', 'numbern', 'degree'],
-        'VNW'     => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'number', 'gender'],
-        'VNWbez'  => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'possnumber', 'position', 'inflection', 'npagr'],
-        'VNWbezn' => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'possnumber', 'position', 'inflection', 'numbern'],
-        'VNWbetr' => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'numbern'],
-        'VNWvb'   => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'npagr', 'degree'],
-        'VNWvbn'  => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'numbern', 'degree'],
-        'VNWvrij' => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'degree'],
-        'LID'     => ['definiteness', 'case', 'npagr'],
-        'VZ'      => ['adpostype'],
-        'VG'      => ['conjtype']
-    );
-    return \%features;
-}
-
-
-
-#------------------------------------------------------------------------------
 # Decodes a physical tag (string) and returns the corresponding feature
 # structure.
 #------------------------------------------------------------------------------
@@ -697,6 +668,38 @@ sub decode
 
 
 #------------------------------------------------------------------------------
+# Creates the list of surface CoNLL features that can appear in the FEATS
+# column with particular parts of speech. This list will be used in encode().
+#------------------------------------------------------------------------------
+sub _create_features_pos
+{
+    my $self = shift;
+    my %features =
+    (
+        'N'       => ['nountype', 'number', 'degree', 'case'],
+        'Ngen'    => ['nountype', 'number', 'degree', 'gender', 'case'],
+        'ADJ'     => ['position', 'degree', 'inflection', 'numbern', 'case'],
+        'WWpv'    => ['verbform', 'tense', 'number'],
+        'WWopv'   => ['verbform', 'position', 'inflection', 'numbern'],
+        'TW'      => ['numtype', 'position', 'case', 'numbern', 'degree'],
+        'VNW'     => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'number'],
+        'VNWgen'  => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'number', 'gender'],
+        'VNWbez'  => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'possnumber', 'position', 'inflection', 'npagr'],
+        'VNWbezn' => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'possnumber', 'position', 'inflection', 'numbern'],
+        'VNWbetr' => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'numbern'],
+        'VNWvb'   => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'npagr', 'degree'],
+        'VNWvbn'  => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'numbern', 'degree'],
+        'VNWvrij' => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'degree'],
+        'LID'     => ['definiteness', 'case', 'npagr'],
+        'VZ'      => ['adpostype'],
+        'VG'      => ['conjtype']
+    );
+    return \%features;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Takes feature structure and returns the corresponding physical tag (string).
 #------------------------------------------------------------------------------
 sub encode
@@ -706,13 +709,22 @@ sub encode
     my $atoms = $self->atoms();
     my $pos = $atoms->{pos}->encode($fs);
     my $fpos = $pos;
-    if($fpos eq 'WW')
+    if($fpos eq 'N' && $fs->case() eq 'acc|nom')
+    {
+        $fpos = 'Ngen';
+    }
+    elsif($fpos eq 'WW')
     {
         $fpos = $fs->is_finite_verb() ? 'WWpv' : 'WWopv';
     }
     elsif($fpos eq 'VNW')
     {
-        if($fs->is_adjective())
+        # Gender is tagged for personal pronouns in the third person singular (or unspecified number), in the standard and oblique cases.
+        if($fs->prontype() eq 'prs' && !$fs->is_reflexive() && !$fs->is_possessive() && $fs->person() eq '3' && $fs->number() ne 'plur' && $fs->case() !~ m/(gen|dat)/)
+        {
+            $fpos = 'VNWgen';
+        }
+        elsif($fs->is_adjective())
         {
             if($fs->is_possessive())
             {
@@ -776,8 +788,8 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
-###!!! We do not have the list of possible tags for this tagset. What follows
-###!!! is just an approximation to enable at least minimal testing.
+# The list is taken from the documentation, Section 4.4. Dialectwoorden and
+# speciale tokens have not been included; without them, there are 285 tags.
 #------------------------------------------------------------------------------
 sub list
 {
@@ -785,6 +797,7 @@ sub list
     my $list = <<end_of_list
 N(soort,ev,basis,zijd,stan)
 N(soort,ev,basis,onz,stan)
+N(soort,ev,basis,genus,stan)
 N(soort,ev,dim,onz,stan)
 N(soort,ev,basis,gen)
 N(soort,ev,dim,gen)
@@ -793,6 +806,7 @@ N(soort,mv,basis)
 N(soort,mv,dim)
 N(eigen,ev,basis,zijd,stan)
 N(eigen,ev,basis,onz,stan)
+N(eigen,ev,basis,genus,stan)
 N(eigen,ev,dim,onz,stan)
 N(eigen,ev,basis,gen)
 N(eigen,ev,dim,gen)
