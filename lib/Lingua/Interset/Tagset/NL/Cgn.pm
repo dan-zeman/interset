@@ -50,7 +50,7 @@ sub _create_atoms
             'ADJ'  => ['pos' => 'adj'],
             # bijwoord / adverb
             # (zo, nu, dan, hier, altijd)
-            'BW'   => ['pos' => 'adv'],
+            'BIJW' => ['pos' => 'adv'],
             # leestekens / punctuation
             # " ' : ( ) ...
             'LET'  => ['pos' => 'punc'],
@@ -89,7 +89,7 @@ sub _create_atoms
                                                    '@'   => 'VNW' }},
                        'num'  => 'TW',
                        'verb' => 'WW',
-                       'adv'  => { 'prontype' => { ''  => 'BW',
+                       'adv'  => { 'prontype' => { ''  => 'BIJW',
                                                    '@' => 'VNW' }},
                        'adp'  => 'VZ',
                        'conj' => 'VG',
@@ -567,12 +567,20 @@ sub _create_atoms
         'surfeature' => 'adpostype',
         'decode_map' =>
         {
-            'fin'   => ['adpostype' => 'post'], # postposition (achterzetsel) (in, incluis, op)
-            'versm' => ['adpostype' => 'comprep'] # fused preposition and article?
+            # initieel / preposition
+            # met een lepeltje, met Jan in het hospitaal, met zo te roepen
+            'init'  => ['adpostype' => 'prep'],
+            # finaal / postposition (achterzetsel)
+            # (in, incluis, op)
+            'fin'   => ['adpostype' => 'post'],
+            # versmolten / fused preposition and article
+            # ten strijde, ten hoogste, ter plaatse
+            'versm' => ['adpostype' => 'comprep']
         },
         'encode_map' =>
         {
-            'adpostype' => { 'post'    => 'fin',
+            'adpostype' => { 'prep'    => 'init',
+                             'post'    => 'fin',
                              'comprep' => 'versm' }
         }
     );
@@ -648,7 +656,9 @@ sub _create_features_pos
         'VNWvb'   => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'npagr', 'degree'],
         'VNWvbn'  => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'numbern', 'degree'],
         'VNWvrij' => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'degree'],
-        'LID'     => ['definiteness', 'case', 'npagr']
+        'LID'     => ['definiteness', 'case', 'npagr'],
+        'VZ'      => ['adpostype'],
+        'VG'      => ['conjtype']
     );
     return \%features;
 }
@@ -739,6 +749,7 @@ sub encode
     }
     my $feature_names = $self->get_feature_names($fpos);
     my $tag = $pos;
+    my $features = '';
     if(defined($feature_names) && ref($feature_names) eq 'ARRAY')
     {
         my @features;
@@ -749,13 +760,13 @@ sub encode
         }
         if(scalar(@features)>0)
         {
-            my $features = join(',', @features);
+            $features = join(',', @features);
             # Possessive pronouns have both number and npagr. In their case number should be interpreted as the possessor's number.
             # Modify the values so that the atoms can distinguish the two numbers.
             $features =~ s/^(bez,det,.+),poss([em]v|getal),/$1,$2,/;
-            $tag .= '('.$features.')';
         }
     }
+    $tag .= '('.$features.')';
     # We must distinguish indefinite articles from indefinite pronouns.
     $tag =~ s/^LID\(onb,(.+)\)$/LID(onbep,$1)/;
     return $tag;
@@ -772,11 +783,6 @@ sub list
 {
     my $self = shift;
     my $list = <<end_of_list
-BW
-LET
-TSW
-VG
-VZ
 N(soort,ev,basis,zijd,stan)
 N(soort,ev,basis,onz,stan)
 N(soort,ev,dim,onz,stan)
@@ -1065,6 +1071,14 @@ LID(bep,dat,evf)
 LID(bep,dat,mv)
 LID(onbep,stan,agr)
 LID(onbep,gen,evf)
+VZ(init)
+VZ(fin)
+VZ(versm)
+VG(neven)
+VG(onder)
+BIJW()
+TSW()
+LET()
 end_of_list
     ;
     # Protect from editors that replace tabs by spaces.
