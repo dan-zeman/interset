@@ -12,7 +12,7 @@ binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 use Lingua::Interset qw(get_driver_object);
 
-my $driver = get_driver_object('de::smor');
+my $driver = get_driver_object('nl::cgn');
 my $action = 'other';
 my $list = $driver->list();
 my %map;
