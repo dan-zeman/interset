@@ -647,7 +647,8 @@ sub _create_features_pos
         'VNWbetr' => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'numbern'],
         'VNWvb'   => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'npagr', 'degree'],
         'VNWvbn'  => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'numbern', 'degree'],
-        'VNWvrij' => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'degree']
+        'VNWvrij' => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'degree'],
+        'LID'     => ['definiteness', 'case', 'npagr']
     );
     return \%features;
 }
@@ -662,6 +663,8 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
+    # We must distinguish indefinite articles from indefinite pronouns.
+    $tag =~ s/^LID\(onbep,(.+)\)$/LID(onb,$1)/;
     my $fs = Lingua::Interset::FeatureStructure->new();
     $fs->set_tagset('nl::cgn');
     my $atoms = $self->atoms();
@@ -753,6 +756,8 @@ sub encode
             $tag .= '('.$features.')';
         }
     }
+    # We must distinguish indefinite articles from indefinite pronouns.
+    $tag =~ s/^LID\(onb,(.+)\)$/LID(onbep,$1)/;
     return $tag;
 }
 
@@ -769,7 +774,6 @@ sub list
     my $list = <<end_of_list
 BW
 LET
-LID
 TSW
 VG
 VZ
@@ -1052,6 +1056,15 @@ VNW(onbep,det,stan,vrij,zonder)
 VNW(onbep,grad,stan,vrij,zonder,basis)
 VNW(onbep,grad,stan,vrij,zonder,sup)
 VNW(onbep,grad,stan,vrij,zonder,comp)
+LID(bep,stan,evon)
+LID(bep,stan,rest)
+LID(bep,gen,evmo)
+LID(bep,gen,rest3)
+LID(bep,dat,evmo)
+LID(bep,dat,evf)
+LID(bep,dat,mv)
+LID(onbep,stan,agr)
+LID(onbep,gen,evf)
 end_of_list
     ;
     # Protect from editors that replace tabs by spaces.
