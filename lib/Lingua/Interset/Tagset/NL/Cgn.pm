@@ -45,17 +45,39 @@ sub _create_atoms
         'surfeature' => 'pos',
         'decode_map' =>
         {
-            'ADJ'  => ['pos' => 'adj'], # adjectief: groot, goed, bekend, nodig, vorig
-            'BW'   => ['pos' => 'adv'], # zo, nu, dan, hier, altijd
-            'LET'  => ['pos' => 'punc'], # " ' : ( ) ...
-            'LID'  => ['pos' => 'adj', 'prontype' => 'art'], # het, der, de, des, den
-            'N'    => ['pos' => 'noun'], # substantief: jaar, heer, land, plaats, tijd
-            'TSW'  => ['pos' => 'int'], # ja, nee
-            'TW'   => ['pos' => 'num'], # telwoord: twee, drie, vier, miljoen, tien
-            'VG'   => ['pos' => 'conj'], # en, maar, of, dat, als, om
-            'VNW'  => ['pos' => 'noun', 'prontype' => 'prs'], # voornaamwoord: ik, we, wij, u, je, jij, jullie, ze, zij, hij, het, ie, zijzelf
-            'VZ'   => ['pos' => 'adp', 'adpostype' => 'prep'], # van, in, op, met, voor
-            'WW'   => ['pos' => 'verb'] # werkwoord: worden, zijn, blijven, komen, wezen
+            # adjectief / adjective
+            # (groot, goed, bekend, nodig, vorig)
+            'ADJ'  => ['pos' => 'adj'],
+            # bijwoord / adverb
+            # (zo, nu, dan, hier, altijd)
+            'BW'   => ['pos' => 'adv'],
+            # leestekens / punctuation
+            # " ' : ( ) ...
+            'LET'  => ['pos' => 'punc'],
+            # lidwoord / article
+            # (het, der, de, des, den)
+            'LID'  => ['pos' => 'adj', 'prontype' => 'art'],
+            # substantief / noun
+            # (jaar, heer, land, plaats, tijd)
+            'N'    => ['pos' => 'noun'],
+            # tussenwerpsel / interjection
+            # (ja, nee)
+            'TSW'  => ['pos' => 'int'],
+            # telwoord / numeral
+            # (twee, drie, vier, miljoen, tien)
+            'TW'   => ['pos' => 'num'],
+            # voegwoord / conjunction
+            # (en, maar, of, dat, als, om)
+            'VG'   => ['pos' => 'conj'],
+            # voornaamwoord / pronoun
+            # (ik, we, wij, u, je, jij, jullie, ze, zij, hij, het, ie, zijzelf)
+            'VNW'  => ['pos' => 'noun', 'prontype' => 'prs'],
+            # voorzetsel / preposition
+            # (van, in, op, met, voor)
+            'VZ'   => ['pos' => 'adp', 'adpostype' => 'prep'],
+            # werkwoord / verb
+            # (worden, zijn, blijven, komen, wezen)
+            'WW'   => ['pos' => 'verb']
         },
         'encode_map' =>
         {
@@ -63,10 +85,12 @@ sub _create_atoms
                                                    '@' => 'VNW' }},
                        'adj'  => { 'prontype' => { ''    => { 'numtype' => { ''  => 'ADJ',
                                                                              '@' => 'TW' }},
-                                                   'art' => 'LID' }},
+                                                   'art' => 'LID',
+                                                   '@'   => 'VNW' }},
                        'num'  => 'TW',
                        'verb' => 'WW',
-                       'adv'  => 'BW',
+                       'adv'  => { 'prontype' => { ''  => 'BW',
+                                                   '@' => 'VNW' }},
                        'adp'  => 'VZ',
                        'conj' => 'VG',
                        'int'  => 'TSW',
@@ -84,8 +108,89 @@ sub _create_atoms
             'eigen' => 'prop' # proper noun (Nederland, Amsterdam, zaterdag, Groningen, Rotterdam)
         }
     );
-    # DEGREE ####################
-    # graad
+    # VWTYPE / PRONOUN TYPE ####################
+    $atoms{prontype} = $self->create_atom
+    (
+        'surfeature' => 'prontype',
+        'decode_map' =>
+        {
+            'pers'  => ['prontype' => 'prs'], # persoonlijk (me, ik, ons, we, je, u, jullie, ze, hem, hij, hen)
+            ###!!! There are no means in Interset to say that the word may or may not be reflexive
+            ###!!! (to distinguish 'pr' from 'pers', which cannot be reflexive, and from 'refl', which is certainly reflexive).
+            'pr'    => ['prontype' => 'prs', 'reflex' => 'reflex'], # persoonlijk of reflexief (mij, me, mijzelf, mezelf, ons, onszelf, je, jezelf, u, uzelf)
+            'refl'  => ['prontype' => 'prs', 'reflex' => 'reflex'], # reflexief (zich, zichzelf)
+            'bez'   => ['prontype' => 'prs', 'poss' => 'poss'], # beztittelijk (mijn, onze, je, jullie, zijner, zijn, hun)
+            'recip' => ['prontype' => 'rcp'], # reciprook (elkaar, elkaars)
+            'aanw'  => ['prontype' => 'dem'], # aanwijzend (deze, dit, die, dat)
+            'betr'  => ['prontype' => 'rel'], # betrekkelijk (welk, die, dat, wat, wie)
+            'vrag'  => ['prontype' => 'int'], # vragend (wie, wat, welke, welk)
+            'vb'    => ['prontype' => 'int|rel'], # vragend of betrekkelijk / interrogative or relative
+            'onbep' => ['prontype' => 'ind|neg|tot'], # onbepaald (geen, andere, alle, enkele, wat)
+            'excl'  => ['prontype' => 'exc'] # exclamatief (wat een dwaasheid = what a folly; wat kan jij liegen zeg = what lie can you say)
+        },
+        'encode_map' =>
+        {
+            'prontype' => { 'prs'     => { 'poss' => { 'poss' => 'bez',
+                                                       '@'    => { 'reflex' => { 'reflex' => { 'person' => { '3' => 'refl',
+                                                                                                             '@' => 'pr' }},
+                                                                                 '@'      => 'pers' }}}},
+                            'rcp'     => 'recip',
+                            'dem'     => 'aanw',
+                            'rel'     => 'betr',
+                            'int'     => 'vrag',
+                            'int|rel' => 'vb',
+                            'ind'     => 'onbep',
+                            'neg'     => 'onbep',
+                            'tot'     => 'onbep',
+                            'exc'     => 'excl' }
+        }
+    );
+    # PDTYPE ####################
+    $atoms{pdtype} = $self->create_atom
+    (
+        'surfeature' => 'pdtype',
+        'decode_map' =>
+        {
+            'pron'     => ['pos' => 'noun'],
+            # VNW(bez,det,...) ... possessive pronoun (determiner)
+            # VNW(betr,det,stan,nom,zonder,zonder-n): hetgeen je daar ziet, het feest tijdens hetwelk
+            # VNW(betr,det,stan,nom,met-e,zonder-n): op hetgene de gemeente doet = on what the municipality does
+            'det'      => ['pos' => 'adj'],
+            # gradable determiner
+            # VNW(onbep,grad,stan,prenom,zonder,agr,basis): veel plezier = much fun, weinig geld = little money
+            # VNW(onbep,grad,stan,prenom,zonder,agr,comp): meer tijd = more time, minder werk = less work
+            # VNW(onbep,grad,stan,prenom,met-e,agr,sup): de meeste mensen = most people, het minste tijd = the least time
+            'grad'     => ['pos' => 'adj', 'numtype' => 'card'],
+            # adv-pronomen / pronominal adverb
+            # VNW(vb,adv-pron,obl,vol,3o,getal): waar ga je naartoe = where are you going, de trein waar we op staan te wachten = the train we are waiting for
+            # VNW(aanw,adv-pron,obl,vol,3o,getal): hier, daar
+            # VNW(onbep,adv-pron,obl,vol,3o,getal): ergens, nergens, overal
+            'adv-pron' => ['pos' => 'adv']
+        },
+        'encode_map' =>
+        {
+            'pos' => { 'noun' => 'pron',
+                       'adj'  => { 'numtype' => { 'card' => 'grad',
+                                                  '@'    => 'det' }},
+                       'adv'  => 'adv-pron' }
+        }
+    );
+    # NUMERAL TYPE ####################
+    $atoms{numtype} = $self->create_atom
+    (
+        'surfeature' => 'numtype',
+        'decode_map' =>
+        {
+            'hoofd' => ['pos' => 'num', 'numtype' => 'card'], # hoofdtelwoord (twee, 1969, beider, minst, veel)
+            'rang'  => ['pos' => 'adj', 'numtype' => 'ord'], # rangtelwoord (eerste, tweede, derde, vierde, vijfde)
+        },
+        'encode_map' =>
+        {
+            'numtype' => { 'card' => 'hoofd',
+                           'ord'  => 'rang' }
+        }
+    );
+    # GRAAD / DEGREE ####################
     $atoms{degree} = $self->create_simple_atom
     (
         'intfeature' => 'degree',
@@ -102,8 +207,7 @@ sub _create_atoms
             'dim'   => 'dim'
         }
     );
-    # POSITION OF ADJECTIVE, NUMERAL OR NON-FINITE VERB FORM ####################
-    # positie
+    # POSITIE / POSITION OF ADJECTIVE, DETERMINER, NUMERAL OR NON-FINITE VERB FORM ####################
     $atoms{position} = $self->create_atom
     (
         'surfeature' => 'position',
@@ -134,43 +238,16 @@ sub _create_atoms
                                                                                                                  '@'   => 'prenom' }}}}}}}
         }
     );
-    # INFLECTED FORM ####################
-    # buiging, getal-n
-    $atoms{inflection} = $self->create_atom
-    (
-        'surfeature' => 'inflection',
-        'decode_map' =>
-        {
-            # base form (een mooi huis)
-            'zonder' => ['other' => {'inflection' => '0'}],
-            # -e (een groote pot, een niet te verstane verleiding); adjectives, verbs
-            # ADJ(prenom,basis,met-e,stan): mooie huizen, een grote pot
-            # ADJ(prenom,basis,met-e,bijz): zaliger gedachtenis, van goeden huize
-            # ADJ(prenom,comp,met-e,stan): mooiere huizen, een grotere pot
-            # ADJ(prenom,comp,met-e,bijz): van beteren huize
-            'met-e'  => ['other' => {'inflection' => 'e'}],
-            # -s (iets moois)
-            'met-s'  => ['other' => {'inflection' => 's'}],
-        },
-        'encode_map' =>
-        {
-            'other/inflection' => { '0' => 'zonder',
-                                    'e' => 'met-e',
-                                    's' => 'met-s',
-                                    # Non-empty number ("mv-n") or case ("stan" or "bijz") means inflection cannot be "zonder".
-                                    '@' => { 'number' => { ''  => { 'case' => { ''  => 'zonder',
-                                                                                '@' => 'met-e' }},
-                                                           '@' => 'met-e' }}}
-        }
-    );
     # DEFINITENESS ####################
+    # The tagset does not distinguish indefinite type of pronouns from indefinite definiteness of articles.
+    # Both use the value 'onbep'. We have to distinguish them, so we change 'onbep' of articles to 'onb'.
     $atoms{definiteness} = $self->create_simple_atom
     (
         'intfeature' => 'definiteness',
         'simple_decode_map' =>
         {
-            'bep'   => 'def', # (het, der, de, des, den)
-            'onbep' => 'ind'  # (een)
+            'bep' => 'def', # (het, der, de, des, den)
+            'onb' => 'ind'  # (een)
         }
     );
     # GENUS / GENDER ####################
@@ -180,8 +257,8 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'zijd' => 'com',  # zijdig / common, i.e. non-neuter (de)
-            'masc' => 'masc', # masculien / masculine; only pronouns
-            'fem'  => 'fem',  # feminien / feminine; only pronouns
+            'masc' => 'masc', # masculien / masculine; only third-person pronouns
+            'fem'  => 'fem',  # feminien / feminine; only third-person pronouns
             'onz'  => 'neut'  # onzijdig / neuter (het)
         }
     );
@@ -193,9 +270,6 @@ sub _create_atoms
         {
             # enkelvoud (jaar, heer, land, plaats, tijd)
             'ev'    => ['number' => 'sing'],
-            'evf'   => ['number' => 'sing'],
-            'evmo'  => ['number' => 'sing'],
-            'evon'  => ['number' => 'sing'],
             # meervoud (mensen, kinderen, jaren, problemen, landen)
             'mv'    => ['number' => 'plur'],
             # finite verbs: polite form of 2nd and 3rd person singular and plural
@@ -209,6 +283,28 @@ sub _create_atoms
                           'plur' => 'mv',
                           '@'    => { 'verbform' => { 'fin' => { 'politeness' => { 'pol' => 'met-t' }},
                                                       '@'   => 'getal' }}}
+        }
+    );
+    # POSSESSOR'S NUMBER ####################
+    # There are no specific feature values but number of possessive pronouns is to be interpreted as
+    # the possessor's number. In order to make this work, we modify the values before decoding and after encoding.
+    $atoms{possnumber} = $self->create_atom
+    (
+        'surfeature' => 'possnumber',
+        'decode_map' =>
+        {
+            # enkelvoud (mijn = my, jouw = your, zijn = his, haar = her)
+            'possev'    => ['possnumber' => 'sing'],
+            # meervoud (ons = our, hun = their)
+            'possmv'    => ['possnumber' => 'plur'],
+            # underspecified number (uw = your)
+            'possgetal' => []
+        },
+        'encode_map' =>
+        {
+            'possnumber' => { 'sing' => 'possev',
+                              'plur' => 'possmv',
+                              '@'    => 'possgetal' }
         }
     );
     # GETAL-N / NUMBER-N ####################
@@ -260,83 +356,81 @@ sub _create_atoms
                         'acc'     => 'obl' }
         }
     );
-    # NUMERAL TYPE ####################
-    $atoms{numtype} = $self->create_atom
+    # BUIGING / INFLECTION ####################
+    $atoms{inflection} = $self->create_atom
     (
-        'surfeature' => 'numtype',
+        'surfeature' => 'inflection',
         'decode_map' =>
         {
-            'hoofd' => ['pos' => 'num', 'numtype' => 'card'], # hoofdtelwoord (twee, 1969, beider, minst, veel)
-            'rang'  => ['pos' => 'adj', 'numtype' => 'ord'], # rangtelwoord (eerste, tweede, derde, vierde, vijfde)
+            # base form (een mooi huis)
+            'zonder' => ['other' => {'inflection' => '0'}],
+            # -e (een groote pot, een niet te verstane verleiding); adjectives, verbs
+            # ADJ(prenom,basis,met-e,stan): mooie huizen, een grote pot
+            # ADJ(prenom,basis,met-e,bijz): zaliger gedachtenis, van goeden huize
+            # ADJ(prenom,comp,met-e,stan): mooiere huizen, een grotere pot
+            # ADJ(prenom,comp,met-e,bijz): van beteren huize
+            'met-e'  => ['other' => {'inflection' => 'e'}],
+            # -s (iets moois)
+            'met-s'  => ['other' => {'inflection' => 's'}],
         },
         'encode_map' =>
         {
-            'numtype' => { 'card' => 'hoofd',
-                           'ord'  => 'rang' }
+            'other/inflection' => { '0' => 'zonder',
+                                    'e' => 'met-e',
+                                    's' => 'met-s',
+                                    # Non-empty number ("mv-n") or case ("stan" or "bijz") means inflection cannot be "zonder".
+                                    '@' => { 'number' => { ''     => { 'case' => { ''  => 'zonder',
+                                                                                   '@' => 'met-e' }},
+                                                           'sing' => 'zonder',
+                                                           '@'    => 'met-e' }}}
         }
     );
-    # PRONOUN TYPE ####################
-    # vwtype
-    $atoms{prontype} = $self->create_atom
-    (
-        'surfeature' => 'prontype',
-        'decode_map' =>
-        {
-            'pers'  => ['prontype' => 'prs'], # persoonlijk (me, ik, ons, we, je, u, jullie, ze, hem, hij, hen)
-            'pr'    => ['prontype' => 'prs'],
-            'bez'   => ['prontype' => 'prs', 'poss' => 'poss'], # beztittelijk (mijn, onze, je, jullie, zijner, zijn, hun)
-            'refl'  => ['prontype' => 'prs', 'reflex' => 'reflex'], # reflexief (me, mezelf, mij, ons, onszelf, je, jezelf, zich, zichzelf)
-            'recip' => ['prontype' => 'rcp'], # reciprook (elkaar, elkaars)
-            'aanw'  => ['prontype' => 'dem'], # aanwijzend (deze, dit, die, dat)
-            'betr'  => ['prontype' => 'rel'], # betrekkelijk (welk, die, dat, wat, wie)
-            'vrag'  => ['prontype' => 'int'], # vragend (wie, wat, welke, welk)
-            'onbep' => ['prontype' => 'ind|neg|tot'] # onbepaald (geen, andere, alle, enkele, wat)
-        },
-        'encode_map' =>
-        {
-            'prontype' => { 'prs' => { 'poss' => { 'poss' => 'bez',
-                                                   '@'    => { 'reflex' => { 'reflex' => 'refl',
-                                                                             '@'      => 'pers' }}}},
-                            'rcp' => 'recip',
-                            'dem' => 'aanw',
-                            'rel' => 'betr',
-                            'int' => 'vrag',
-                            'ind' => 'onbep',
-                            'neg' => 'onbep',
-                            'tot' => 'onbep' }
-        }
-    );
-    # PDTYPE ####################
-    $atoms{pdtype} = $self->create_atom
-    (
-        'surfeature' => 'pdtype',
-        'decode_map' =>
-        {
-            'pron'     => ['pos' => 'noun'],
-            'det'      => ['pos' => 'adj'],
-            # pronominal adverbs
-            'adv-pron' => ['pos' => 'adv']
-        },
-        'encode_map' =>
-        {
-            'pos' => { 'noun' => 'pron',
-                       'adj'  => 'det',
-                       'adv'  => 'adv-pron' }
-        }
-    );
-    # PERSON ####################
+    # PERSOON / PERSON ####################
     $atoms{person} = $self->create_atom
     (
         'surfeature' => 'person',
         'decode_map' =>
         {
-            '1'  => ['person' => '1'], # (mijn, onze, ons, me, mij, ik, we, mezelf, onszelf)
-            '2'  => ['person' => '2'], # (je, uw, jouw, jullie, jou, u, je, jij, jezelf)
-            '2v' => ['person' => '2', 'politeness' => 'inf'], # (je, jouw, jullie, jou, je, jij, jezelf)
-            '2b' => ['person' => '2', 'politeness' => 'pol'], # (u, uw)
-            '3'  => ['person' => '3'], # (zijner, zijn, haar, zijnen, zijne, hun, ze, zij, hem, het, hij, ie, zijzelf, zich, zichzelf)
-            '3o' => ['person' => '3'], # (iets)
-            '3p' => ['person' => '3'], # (iemand)
+            # 1st person singular: ik, 'k, ikzelf, ikke
+            # 1st person plural: wij, we, wijzelf
+            '1'  => ['person' => '1'],
+            # 2nd person vertrouwelijke vorm / informal form
+            # singular: jij, je, jijzelf
+            # plural: jullie
+            '2v' => ['person' => '2', 'politeness' => 'inf'],
+            # 2nd person beleefdheidsvorm / polite form
+            # singular or plural: u, uzelf
+            '2b' => ['person' => '2', 'politeness' => 'pol'],
+            # politeness-neutral form used in Vlaanderen
+            # singular or plural: gij, ge, gijzelf
+            '2'  => ['person' => '2'],
+            # Documentation p. 43–44:
+            # "Bemerk dat het hier niet om het morfo-syntactische genus van het woord gaat, maar om het natuurlijke geslacht van de referent."
+            # We cannot encode the 3m vs. 3v distinction using the gender feature because it sometimes co-occurs with a separate value of gender:
+            # VNW(pers,pron,nomin,nadr,3m,ev,masc) ... hijzelf
+            # VNW(pers,pron,nomin,red,3p,ev,masc) ... men
+            # VNW(pers,pron,nomin,red,3,ev,masc) ... ie
+            # VNW(pers,pron,nomin,vol,3p,mv) ... zij
+            # VNW(pers,pron,gen,vol,3m,ev) ... zijns gelijke, zijner
+            # mannelijke referent
+            # (wiens)
+            # 3rd person singular masculine: hij, ie, hijzelf
+            '3m' => ['person' => '3', 'animateness' => 'anim', 'other' => {'geslacht' => 'm'}],
+            # vrouwelijke referent
+            # (wier)
+            # 3rd person singular feminine: zij, ze, zijzelf
+            '3v' => ['person' => '3', 'animateness' => 'anim', 'other' => {'geslacht' => 'v'}],
+            # 3rd person singular neuter: het, 't
+            '3'  => ['person' => '3'],
+            # persoonlijke referent
+            # 3rd person plural animate: zij, ze, zijzelf
+            # (wie, iemand, niemand, iedereen)
+            '3p' => ['person' => '3', 'animateness' => 'anim', 'other' => {'geslacht' => 'p'}],
+            # onpersoonlijke referent
+            # (wat, iets, niets, alles)
+            '3o' => ['person' => '3', 'animateness' => 'inan', 'other' => {'geslacht' => 'o'}],
+            # underspecified person (e.g. with some pronouns)
+            'persoon' => []
         },
         'encode_map' =>
         {
@@ -344,7 +438,62 @@ sub _create_atoms
                           '2' => { 'politeness' => { 'inf' => '2v',
                                                      'pol' => '2b',
                                                      '@'   => '2' }},
-                          '3' => '3' }
+                          '3' => { 'other/geslacht' => { 'o' => '3o',
+                                                         'p' => '3p',
+                                                         'm' => '3m',
+                                                         'v' => '3v',
+                                                         '@' => '3' }},
+                          '@' => 'persoon' }
+        }
+    );
+    # NP AGREEMENT ####################
+    # NPAGR ... NPAGR = agr (evon, rest (evz, mv)), agr3 (evmo, rest3 (evf, mv)).
+    # evon ... enkelvoudig onzijdig
+    # evz .... enkelvoudig zijdig
+    # evmo ... enkelvoudig masculien onzijdig
+    # evf .... enkelvoudig feminien
+    # mv ..... meervoudig
+    # sommige determiners vereisen een enkelvoudig onzijdig substantief (dit, dat, welk, elk, ieder)
+    # andere determiners vereisen een enkelvoudig zijdig substantief (elke, iedere)
+    # nog andere determiners vereisen een enkelvoudig zijdig of een meervoudig substantief (deze, die, welke)
+    # ons huis (our house): GETAL = meervoud; NPAGR = enkelvoud onzijdig
+    ###!!! To je špatná zpráva, protože to znamená, že u slov, která mají rys NPAGR, bychom měli brát rod a číslo z něj
+    ###!!! a rys GETAL by se potom vykládal jako intersetí rys possnumber.
+    $atoms{npagr} = $self->create_atom
+    (
+        'surfeature' => 'npagr',
+        'decode_map' =>
+        {
+            # VNW(bez,det,stan,vol,1,ev,prenom,zonder,agr) ... mijn paard(en) = my horse(s)
+            'agr'   => [],
+            # VNW(bez,det,stan,vol,1,mv,prenom,zonder,evon) ... ons paard = our horse
+            'evon'  => ['number' => 'sing', 'gender' => 'neut'],
+            # VNW(bez,det,stan,vol,1,ev,prenom,met-e,rest) ... mijne heren = (my) gentlemen
+            'rest'  => ['number' => 'plur', 'gender' => 'com'],
+            'evz'   => ['number' => 'sing', 'gender' => 'com'],
+            'mv'    => ['number' => 'plur'],
+            'agr3'  => ['gender' => 'masc|fem'],
+            # VNW(bez,det,gen,vol,1,ev,prenom,zonder,evmo) ... mijns inziens = in my opinion
+            'evmo'  => ['number' => 'sing', 'gender' => 'masc'],
+            # VNW(bez,det,gen,vol,1,ev,prenom,met-e,rest3) ... een mijner vrienden = one of my friends
+            # VNW(bez,det,dat,vol,1,ev,prenom,met-e,evmo) ... te mijnen huize = to my house
+            'rest3' => ['number' => 'plur', 'gender' => 'fem'],
+            # VNW(bez,det,dat,vol,1,ev,prenom,met-e,evf) ... te mijner ere = to my honor
+            'evf'   => ['number' => 'sing', 'gender' => 'fem']
+        },
+        'encode_map' =>
+        {
+            'number' => { 'sing' => { 'gender' => { 'neut' => 'evon',
+                                                    'com'  => 'evz',
+                                                    'masc' => 'evmo',
+                                                    'fem'  => 'evf',
+                                                    '@'    => 'agr' }},
+                          'plur' => { 'gender' => { 'com'  => 'rest',
+                                                    'fem'  => 'rest3',
+                                                    '@'    => 'mv' }},
+                          '@'    => { 'gender' => { 'masc' => 'agr3',
+                                                    'fem'  => 'agr3',
+                                                    '@'    => 'agr' }}}
         }
     );
     # PRONOUN FORM ####################
@@ -471,7 +620,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('pos', 'nountype', 'position', 'degree', 'inflection', 'definiteness', 'gender', 'case', 'number', 'numbern',
+    my @features = ('pos', 'nountype', 'position', 'degree', 'inflection', 'definiteness', 'gender', 'case', 'number', 'possnumber', 'numbern', 'npagr',
                     'prontype', 'pdtype', 'person', 'pronform', 'numtype', 'verbform', 'tense', 'adpostype', 'conjtype', 'symbol');
     return \@features;
 }
@@ -487,12 +636,18 @@ sub _create_features_pos
     my $self = shift;
     my %features =
     (
-        'N'     => ['nountype', 'number', 'degree', 'gender', 'case'],
-        'ADJ'   => ['position', 'degree', 'inflection', 'numbern', 'case'],
-        'WWpv'  => ['verbform', 'tense', 'number'],
-        'WWopv' => ['verbform', 'position', 'inflection', 'numbern'],
-        'TW'    => ['numtype', 'position', 'case', 'numbern', 'degree'],
-        'VNW'   => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'number', 'gender']
+        'N'       => ['nountype', 'number', 'degree', 'gender', 'case'],
+        'ADJ'     => ['position', 'degree', 'inflection', 'numbern', 'case'],
+        'WWpv'    => ['verbform', 'tense', 'number'],
+        'WWopv'   => ['verbform', 'position', 'inflection', 'numbern'],
+        'TW'      => ['numtype', 'position', 'case', 'numbern', 'degree'],
+        'VNW'     => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'number', 'gender'],
+        'VNWbez'  => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'possnumber', 'position', 'inflection', 'npagr'],
+        'VNWbezn' => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'possnumber', 'position', 'inflection', 'numbern'],
+        'VNWbetr' => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'numbern'],
+        'VNWvb'   => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'npagr', 'degree'],
+        'VNWvbn'  => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'numbern', 'degree'],
+        'VNWvrij' => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'degree']
     );
     return \%features;
 }
@@ -514,6 +669,9 @@ sub decode
     # example: N(soort,ev)
     my ($pos, $features) = split(/[\(\)]/, $tag);
     $features = '' if(!defined($features));
+    # Possessive pronouns have both number and npagr. In their case number should be interpreted as the possessor's number.
+    # Modify the values so that the atoms can distinguish the two numbers.
+    $features =~ s/^(bez,det,.+),([em]v|getal),/$1,poss$2,/;
     my @features = split(/,/, $features);
     $atoms->{pos}->decode_and_merge_hard($pos, $fs);
     foreach my $feature (@features)
@@ -539,6 +697,43 @@ sub encode
     {
         $fpos = $fs->is_finite_verb() ? 'WWpv' : 'WWopv';
     }
+    elsif($fpos eq 'VNW')
+    {
+        if($fs->is_adjective())
+        {
+            if($fs->is_possessive())
+            {
+                if($fs->get_other_subfeature('nl::cgn', 'usage') eq 'nom')
+                {
+                    $fpos = 'VNWbezn';
+                }
+                else
+                {
+                    $fpos = 'VNWbez';
+                }
+            }
+            elsif($fs->is_relative() && !$fs->is_interrogative()) # betrekkelijk
+            {
+                $fpos = 'VNWbetr';
+            }
+            else # vb (vragend|betrekkelijk) or aanwijzend
+            {
+                my $usage = $fs->get_other_subfeature('nl::cgn', 'usage');
+                if($usage eq 'nom')
+                {
+                    $fpos = 'VNWvbn';
+                }
+                elsif($usage eq 'vrij')
+                {
+                    $fpos = 'VNWvrij';
+                }
+                else
+                {
+                    $fpos = 'VNWvb';
+                }
+            }
+        }
+    }
     my $feature_names = $self->get_feature_names($fpos);
     my $tag = $pos;
     if(defined($feature_names) && ref($feature_names) eq 'ARRAY')
@@ -551,7 +746,11 @@ sub encode
         }
         if(scalar(@features)>0)
         {
-            $tag .= '('.join(',', @features).')';
+            my $features = join(',', @features);
+            # Possessive pronouns have both number and npagr. In their case number should be interpreted as the possessor's number.
+            # Modify the values so that the atoms can distinguish the two numbers.
+            $features =~ s/^(bez,det,.+),poss([em]v|getal),/$1,$2,/;
+            $tag .= '('.$features.')';
         }
     }
     return $tag;
@@ -667,22 +866,32 @@ VNW(pers,pron,nomin,vol,2,getal)
 VNW(pers,pron,nomin,nadr,2,getal)
 VNW(pers,pron,nomin,red,2,getal)
 VNW(pers,pron,nomin,vol,3,ev,masc)
+VNW(pers,pron,nomin,nadr,3,ev,masc)
 VNW(pers,pron,nomin,nadr,3m,ev,masc)
 VNW(pers,pron,nomin,red,3,ev,masc)
 VNW(pers,pron,nomin,red,3p,ev,masc)
 VNW(pers,pron,nomin,vol,3v,ev,fem)
+VNW(pers,pron,nomin,vol,3,ev,fem)
 VNW(pers,pron,nomin,nadr,3v,ev,fem)
+VNW(pers,pron,nomin,nadr,3,ev,fem)
 VNW(pers,pron,nomin,vol,3p,mv)
+VNW(pers,pron,nomin,vol,3,mv)
 VNW(pers,pron,nomin,nadr,3p,mv)
+VNW(pers,pron,nomin,nadr,3,mv)
 VNW(pers,pron,obl,vol,2v,ev)
 VNW(pers,pron,obl,vol,3,ev,masc)
 VNW(pers,pron,obl,nadr,3m,ev,masc)
+VNW(pers,pron,obl,nadr,3,ev,masc)
 VNW(pers,pron,obl,red,3,ev,masc)
 VNW(pers,pron,obl,vol,3,getal,fem)
 VNW(pers,pron,obl,nadr,3v,getal,fem)
+VNW(pers,pron,obl,nadr,3,getal,fem)
 VNW(pers,pron,obl,red,3v,getal,fem)
+VNW(pers,pron,obl,red,3,getal,fem)
 VNW(pers,pron,obl,vol,3p,mv)
+VNW(pers,pron,obl,vol,3,mv)
 VNW(pers,pron,obl,nadr,3p,mv)
+VNW(pers,pron,obl,nadr,3,mv)
 VNW(pers,pron,stan,nadr,2v,mv)
 VNW(pers,pron,stan,red,3,ev,onz)
 VNW(pers,pron,stan,red,3,ev,fem)
@@ -691,8 +900,20 @@ VNW(pers,pron,gen,vol,1,ev)
 VNW(pers,pron,gen,vol,1,mv)
 VNW(pers,pron,gen,vol,2,getal)
 VNW(pers,pron,gen,vol,3m,ev)
+VNW(pers,pron,gen,vol,3,ev)
 VNW(pers,pron,gen,vol,3v,getal)
+VNW(pers,pron,gen,vol,3,getal)
 VNW(pers,pron,gen,vol,3p,mv)
+VNW(pers,pron,gen,vol,3,mv)
+VNW(pr,pron,obl,vol,1,ev)
+VNW(pr,pron,obl,nadr,1,ev)
+VNW(pr,pron,obl,red,1,ev)
+VNW(pr,pron,obl,vol,1,mv)
+VNW(pr,pron,obl,nadr,1,mv)
+VNW(pr,pron,obl,red,2v,getal)
+VNW(pr,pron,obl,nadr,2v,getal)
+VNW(pr,pron,obl,vol,2,getal)
+VNW(pr,pron,obl,nadr,2,getal)
 VNW(refl,pron,obl,red,3,getal)
 VNW(refl,pron,obl,nadr,3,getal)
 VNW(recip,pron,obl,vol,persoon,mv)

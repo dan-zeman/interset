@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+Interface:
+* FeatureStructure has new methods is_interrogative() and is_relative().
+
 Features:
 * New value 'dim' of the feature 'degree': diminutive. Applicable to multiple languages, systematically needed in Dutch.
 
