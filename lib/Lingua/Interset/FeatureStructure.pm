@@ -837,6 +837,20 @@ my %matrix = @_matrix =
         ],
         'uname' => 'Gender[dat]'
     },
+    # Position / usage of adjectives, determiners, participles etc.
+    'position' =>
+    {
+        'priority' => 411,
+        'values' => ['prenom', 'postnom', 'nom', 'free', ''],
+        'replacements' =>
+        [
+            ['prenom'],
+            ['postnom'],
+            ['nom'],
+            ['free']
+        ],
+        'uname' => 'Position'
+    },
     # Subcategorization.
     # So far this feature only keeps the transitive-intransitive distinction encoded in some tagsets.
     # However, real verb subcategorization is in fact much more complex.

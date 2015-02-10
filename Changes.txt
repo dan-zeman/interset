@@ -5,6 +5,7 @@ Interface:
 
 Features:
 * New value 'dim' of the feature 'degree': diminutive. Applicable to multiple languages, systematically needed in Dutch.
+* New feature 'position' for the position (usage) of Dutch adjectives.
 
 Drivers:
 * Fixed NL::Cgn. Extended list of tags; encoding now includes features.

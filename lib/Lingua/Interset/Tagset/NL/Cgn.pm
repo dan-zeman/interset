@@ -208,34 +208,23 @@ sub _create_atoms
         }
     );
     # POSITIE / POSITION OF ADJECTIVE, DETERMINER, NUMERAL OR NON-FINITE VERB FORM ####################
-    $atoms{position} = $self->create_atom
+    $atoms{position} = $self->create_simple_atom
     (
-        'surfeature' => 'position',
-        'decode_map' =>
+        'intfeature' => 'position',
+        'simple_decode_map' =>
         {
-            # attribute modifying a following noun (adjectives, verbs "de nog te lezen post")
-            'prenom'   => ['other' => {'usage' => 'prenom'}],
+            # attribute modifying a following noun
+            # een vrije vogel, een mooi huis
+            'prenom'  => 'prenom',
             # attribute modifying a preceding noun
-            'postnom'  => ['other' => {'usage' => 'postnom'}],
-            # independently used (adjectives, verbs)
-            'vrij'     => ['other' => {'usage' => 'vrij'}],
-            # substantively used (adjectives, verbs)
-            'nom'      => ['other' => {'usage' => 'nom'}],
-        },
-        'encode_map' =>
-        {
-            'other/usage' => { 'prenom'  => 'prenom',
-                               'nom'     => 'nom',
-                               'postnom' => 'postnom',
-                               'vrij'    => 'vrij',
-                               '@'       => { 'numtype' => { 'card' => { 'degree' => { ''  => { 'case' => { ''  => 'vrij',
-                                                                                                            '@' => 'prenom' }},
-                                                                                       '@' => 'nom' }},
-                                                             'ord'  => { 'case' => { ''  => 'nom',
-                                                                                     '@' => 'prenom' }},
-                                                             '@'    => { 'number' => { 'plur' => 'nom',
-                                                                                       '@'    => { 'degree' => { 'dim' => 'vrij',
-                                                                                                                 '@'   => 'prenom' }}}}}}}
+            # rivieren bevaarbaar in de winter
+            'postnom' => 'postnom',
+            # substantively used
+            # de rijken = the rich
+            'nom'     => 'nom',
+            # independently (predicatively or adverbially) used
+            # "vrij" in "de vogels vrij laten rondvliegen"
+            'vrij'    => 'free'
         }
     );
     # DEFINITENESS ####################
@@ -315,17 +304,14 @@ sub _create_atoms
         'decode_map' =>
         {
             # nominal usage without plural -n (het groen)
-            'zonder-n' => ['other' => {'numbern' => 'without'}],
+            'zonder-n' => [],
             # nominal usage with plural -n (de rijken)
             'mv-n'     => ['number' => 'plur']
         },
         'encode_map' =>
         {
             'number' => { 'plur' => 'mv-n',
-                          '@'    => { 'other/numbern' => { 'without' => 'zonder-n',
-                                                           '@'       => { 'numtype' => { 'card' => { 'degree' => { ''  => '',
-                                                                                                                   '@' => 'zonder-n' }},
-                                                                                         'ord'  => { 'case' => { '' => 'zonder-n' }}}}}}}
+                          '@'    => 'zonder-n' }
         }
     );
     # NAAMVAL / CASE ####################
@@ -379,11 +365,11 @@ sub _create_atoms
             'other/inflection' => { '0' => 'zonder',
                                     'e' => 'met-e',
                                     's' => 'met-s',
-                                    # Non-empty number ("mv-n") or case ("stan" or "bijz") means inflection cannot be "zonder".
-                                    '@' => { 'number' => { ''     => { 'case' => { ''  => 'zonder',
-                                                                                   '@' => 'met-e' }},
-                                                           'sing' => 'zonder',
-                                                           '@'    => 'met-e' }}}
+                                    '@' => { 'poss' => { 'poss' => 'zonder',
+                                                         '@'    => { 'number' => { ''     => { 'case' => { ''  => 'zonder',
+                                                                                                           '@' => 'met-e' }},
+                                                                                   'sing' => 'zonder',
+                                                                                   '@'    => 'met-e' }}}}}
         }
     );
     # PERSOON / PERSON ####################
@@ -443,7 +429,11 @@ sub _create_atoms
                                                          'p' => '3p',
                                                          'm' => '3m',
                                                          'v' => '3v',
-                                                         '@' => '3' }},
+                                                         '@' => { 'animateness' => { 'anim' => { 'gender' => { 'masc' => '3m',
+                                                                                                               'fem'  => '3v',
+                                                                                                               '@'    => '3p' }},
+                                                                                     'inan' => '3o',
+                                                                                     '@'    => '3' }}}},
                           '@' => 'persoon' }
         }
     );
@@ -678,10 +668,13 @@ sub _create_features_pos
     (
         'N'       => ['nountype', 'number', 'degree', 'case'],
         'Ngen'    => ['nountype', 'number', 'degree', 'gender', 'case'],
-        'ADJ'     => ['position', 'degree', 'inflection', 'numbern', 'case'],
+        'ADJ'     => ['position', 'degree', 'inflection', 'case'],
+        'ADJn'    => ['position', 'degree', 'inflection', 'numbern', 'case'],
         'WWpv'    => ['verbform', 'tense', 'number'],
-        'WWopv'   => ['verbform', 'position', 'inflection', 'numbern'],
-        'TW'      => ['numtype', 'position', 'case', 'numbern', 'degree'],
+        'WWopv'   => ['verbform', 'position', 'inflection'],
+        'WWopvn'  => ['verbform', 'position', 'inflection', 'numbern'],
+        'TW'      => ['numtype', 'position', 'case', 'degree'],
+        'TWn'     => ['numtype', 'position', 'case', 'numbern', 'degree'],
         'VNW'     => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'number'],
         'VNWgen'  => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'number', 'gender'],
         'VNWbez'  => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'possnumber', 'position', 'inflection', 'npagr'],
@@ -709,13 +702,19 @@ sub encode
     my $atoms = $self->atoms();
     my $pos = $atoms->{pos}->encode($fs);
     my $fpos = $pos;
+    # Adjectives (ADJ) and determiners (VNW) in the nominal position have the 'getal-n' feature. They do not have it in other positions.
+    my $position = $fs->position();
     if($fpos eq 'N' && $fs->case() eq 'acc|nom')
     {
         $fpos = 'Ngen';
     }
+    elsif($fpos =~ m/^(ADJ|TW)$/)
+    {
+        $fpos .= 'n' if($position eq 'nom');
+    }
     elsif($fpos eq 'WW')
     {
-        $fpos = $fs->is_finite_verb() ? 'WWpv' : 'WWopv';
+        $fpos = $fs->is_finite_verb() ? 'WWpv' : $position eq 'nom' ? 'WWopvn' : 'WWopv';
     }
     elsif($fpos eq 'VNW')
     {
@@ -728,14 +727,7 @@ sub encode
         {
             if($fs->is_possessive())
             {
-                if($fs->get_other_subfeature('nl::cgn', 'usage') eq 'nom')
-                {
-                    $fpos = 'VNWbezn';
-                }
-                else
-                {
-                    $fpos = 'VNWbez';
-                }
+                $fpos = $position eq 'nom' ? 'VNWbezn' : 'VNWbez';
             }
             elsif($fs->is_relative() && !$fs->is_interrogative()) # betrekkelijk
             {
@@ -743,19 +735,7 @@ sub encode
             }
             else # vb (vragend|betrekkelijk) or aanwijzend
             {
-                my $usage = $fs->get_other_subfeature('nl::cgn', 'usage');
-                if($usage eq 'nom')
-                {
-                    $fpos = 'VNWvbn';
-                }
-                elsif($usage eq 'vrij')
-                {
-                    $fpos = 'VNWvrij';
-                }
-                else
-                {
-                    $fpos = 'VNWvb';
-                }
+                $fpos = $position eq 'nom' ? 'VNWvbn' : $position eq 'vrij' ? 'VNWvrij' : 'VNWvb';
             }
         }
     }
@@ -1085,6 +1065,12 @@ end_of_list
     # Protect from editors that replace tabs by spaces.
     $list =~ s/ \s+/\t/sg;
     my @list = split(/\r?\n/, $list);
+    # We have to add the following tags to the list.
+    # They are not described in the documentation, which means that they are not supposed to appear in data.
+    # However, we cannot avoid generating them during encoding if the 'other' feature is not available.
+    push(@list, 'VNW(pers,pron,nomin,red,3m,ev,masc)');
+    push(@list, 'VNW(pers,pron,gen,vol,3p,ev)');
+    push(@list, 'VNW(pers,pron,gen,vol,3p,getal)');
     return \@list;
 }
 
