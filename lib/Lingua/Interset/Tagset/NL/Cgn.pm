@@ -365,11 +365,11 @@ sub _create_atoms
             'other/inflection' => { '0' => 'zonder',
                                     'e' => 'met-e',
                                     's' => 'met-s',
-                                    '@' => { 'poss' => { 'poss' => 'zonder',
-                                                         '@'    => { 'number' => { ''     => { 'case' => { ''  => 'zonder',
-                                                                                                           '@' => 'met-e' }},
-                                                                                   'sing' => 'zonder',
-                                                                                   '@'    => 'met-e' }}}}}
+                                    '@' => { 'position' => { 'free' => 'zonder',
+                                                             '@'    => { 'gender' => { ''  => { 'number' => { ''  => { 'case' => { ''  => 'zonder',
+                                                                                                                                   '@' => 'met-e' }},
+                                                                                                              '@' => 'met-e' }},
+                                                                                       '@' => 'met-e' }}}}}
         }
     );
     # PERSOON / PERSON ####################
@@ -733,9 +733,9 @@ sub encode
             {
                 $fpos = 'VNWbetr';
             }
-            else # vb (vragend|betrekkelijk) or aanwijzend
+            else # vb (vragend|betrekkelijk) or aanwijzend or onbepaald
             {
-                $fpos = $position eq 'nom' ? 'VNWvbn' : $position eq 'vrij' ? 'VNWvrij' : 'VNWvb';
+                $fpos = $position eq 'nom' ? 'VNWvbn' : $position eq 'free' ? 'VNWvrij' : 'VNWvb';
             }
         }
     }
@@ -770,6 +770,8 @@ sub encode
 # Returns reference to list of known tags.
 # The list is taken from the documentation, Section 4.4. Dialectwoorden and
 # speciale tokens have not been included; without them, there are 285 tags.
+# A few non-existent tags have been added because we generate them if the
+# 'other' feature is not available; this results in 323 tags in total.
 #------------------------------------------------------------------------------
 sub list
 {
@@ -1068,9 +1070,48 @@ end_of_list
     # We have to add the following tags to the list.
     # They are not described in the documentation, which means that they are not supposed to appear in data.
     # However, we cannot avoid generating them during encoding if the 'other' feature is not available.
-    push(@list, 'VNW(pers,pron,nomin,red,3m,ev,masc)');
-    push(@list, 'VNW(pers,pron,gen,vol,3p,ev)');
-    push(@list, 'VNW(pers,pron,gen,vol,3p,getal)');
+    my $list2 = <<end_of_list
+VNW(pers,pron,nomin,red,3m,ev,masc)
+VNW(pers,pron,gen,vol,3p,ev)
+VNW(pers,pron,gen,vol,3p,getal)
+VNW(bez,det,stan,vol,3p,ev,prenom,met-e,rest)
+VNW(bez,det,gen,vol,3v,mv,prenom,met-e,rest3)
+VNW(bez,det,dat,vol,3m,ev,prenom,met-e,evmo)
+VNW(bez,det,dat,vol,3m,mv,prenom,met-e,evmo)
+VNW(bez,det,dat,vol,3v,mv,prenom,met-e,evf)
+VNW(bez,det,stan,vol,3p,ev,nom,met-e,zonder-n)
+VNW(bez,det,stan,vol,3p,ev,nom,met-e,zonder-n)
+VNW(bez,det,stan,vol,3p,ev,nom,met-e,mv-n)
+VNW(bez,det,stan,vol,3p,ev,nom,met-e,mv-n)
+VNW(bez,det,dat,vol,3p,ev,nom,met-e,zonder-n)
+VNW(vb,pron,gen,vol,3p,ev)
+VNW(aanw,pron,gen,vol,3p,ev)
+WW(vd,nom,zonder,zonder-n)
+WW(od,nom,zonder,zonder-n)
+VNW(bez,det,stan,vol,1,ev,prenom,met-e,agr)
+VNW(bez,det,stan,red,1,ev,prenom,met-e,agr)
+VNW(bez,det,stan,vol,1,mv,prenom,met-e,evon)
+VNW(bez,det,stan,vol,2,getal,prenom,met-e,agr)
+VNW(bez,det,stan,vol,2v,ev,prenom,met-e,agr)
+VNW(bez,det,stan,red,2v,ev,prenom,met-e,agr)
+VNW(bez,det,stan,nadr,2v,mv,prenom,met-e,agr)
+VNW(bez,det,stan,vol,3,ev,prenom,met-e,agr)
+VNW(bez,det,stan,red,3,ev,prenom,met-e,agr)
+VNW(bez,det,stan,vol,3,mv,prenom,met-e,agr)
+VNW(bez,det,stan,red,3,getal,prenom,met-e,agr)
+VNW(bez,det,gen,vol,1,ev,prenom,met-e,evmo)
+VNW(bez,det,gen,vol,2,getal,prenom,met-e,evmo)
+VNW(bez,det,gen,vol,3,ev,prenom,met-e,evmo)
+VNW(bez,det,gen,vol,3m,ev,prenom,met-e,evmo)
+VNW(bez,det,gen,vol,3m,mv,prenom,met-e,evmo)
+VNW(vb,det,stan,prenom,met-e,evon)
+VNW(aanw,det,stan,prenom,met-e,evon)
+VNW(aanw,det,stan,prenom,met-e,agr)
+VNW(onbep,det,stan,prenom,met-e,evon)
+VNW(onbep,grad,stan,nom,met-e,mv-n,dim)
+end_of_list
+    ;
+    push(@list, split(/\r?\n/, $list2));
     return \@list;
 }
 
