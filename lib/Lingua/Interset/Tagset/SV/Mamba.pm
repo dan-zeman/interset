@@ -5,7 +5,7 @@
 package Lingua::Interset::Tagset::SV::Mamba;
 use strict;
 use warnings;
-our $VERSION = '2.035';
+our $VERSION = '2.036';
 
 use utf8;
 use open ':utf8';
