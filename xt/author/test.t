@@ -41,6 +41,7 @@ my @tagsets =
     'la::conll',
     'mul::google', 'mul::upos',
     'nl::cgn', 'nl::conll',
+    'no::conll',
     'pt::cintil',
     'sv::mamba', 'sv::conll', 'sv::parole', 'sv::suc'
 );
