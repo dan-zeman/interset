@@ -2,6 +2,7 @@
 
 Drivers:
 * NO::Conll
+* NL::Cgn: added the old tag for adverbs, BW() (besides the new tag, BIJW()).
 
 
 

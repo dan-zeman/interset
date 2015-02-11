@@ -4,6 +4,7 @@
 
 # tagset documentation at
 # http://www.let.rug.nl/~vannoord/Lassy/POS_manual.pdf
+# http://www.ccl.kuleuven.be/Papers/POSmanual_febr2004.pdf
 
 package Lingua::Interset::Tagset::NL::Cgn;
 use strict;
@@ -50,7 +51,11 @@ sub _create_atoms
             'ADJ'  => ['pos' => 'adj'],
             # bijwoord / adverb
             # (zo, nu, dan, hier, altijd)
+            # Note that in the 2005.07 version of the documentation the authors suggested to change the tag for adverbs
+            # from BW to BIJW. But they still did not change it in the list of tags at the end of the document, and more
+            # importantly, the old tag (BW) is used in the corpus. We will decode both versions and encode BW.
             'BIJW' => ['pos' => 'adv'],
+            'BW'   => ['pos' => 'adv'],
             # leestekens / punctuation
             # " ' : ( ) ...
             'LET'  => ['pos' => 'punc'],
@@ -89,7 +94,7 @@ sub _create_atoms
                                                    '@'   => 'VNW' }},
                        'num'  => 'TW',
                        'verb' => 'WW',
-                       'adv'  => { 'prontype' => { ''  => 'BIJW',
+                       'adv'  => { 'prontype' => { ''  => 'BW',
                                                    '@' => 'VNW' }},
                        'adp'  => 'VZ',
                        'conj' => 'VG',
@@ -1059,7 +1064,7 @@ VZ(fin)
 VZ(versm)
 VG(neven)
 VG(onder)
-BIJW()
+BW()
 TSW()
 LET()
 end_of_list
