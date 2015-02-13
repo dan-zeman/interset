@@ -125,9 +125,10 @@ sub _create_atoms
                                                                           '@'      => { 'person' => { '3' => 'ppron3',
                                                                                                       '@' => 'ppron12' }}}}}},
                        'adj'  => { 'other/adjtype' => { 'winien' => 'winien',
-                                                        '@'      => { 'hyph' => { 'hyph' => 'adja',
-                                                                                  '@'    => { 'prepcase' => { 'pre' => 'adjp',
-                                                                                                              '@'   => 'adj' }}}}}},
+                                                        '@'      => { 'aspect' => { ''  => { 'hyph' => { 'hyph' => 'adja',
+                                                                                                         '@'    => { 'prepcase' => { 'pre' => 'adjp',
+                                                                                                                                     '@'   => 'adj' }}}},
+                                                                                    '@' => 'winien' }}}},
                        'num'  => 'num',
                        'verb' => { 'other/verbtype' => { 'pred' => 'pred',
                                                          '@'    => { 'verbform' => { 'inf'   => 'inf',
@@ -142,7 +143,7 @@ sub _create_atoms
                                                                                      'ger'   => 'ger',
                                                                                      'trans' => { 'tense' => { 'pres' => 'pcon',
                                                                                                                '@'    => 'pant' }},
-                                                                                     '@'     => 'inf' }}}},
+                                                                                     '@'     => 'pred' }}}},
                        'adv'  => 'adv',
                        'adp'  => 'prep',
                        'conj' => 'conj',
@@ -322,8 +323,8 @@ sub _create_atoms
         'intfeature' => 'variant',
         'simple_decode_map' =>
         {
-            'nakc' => 'short',
-            'akc'  => 'long'
+            'nwok' => 'short',
+            'wok'  => 'long'
         }
     );
     # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
@@ -345,8 +346,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('pos', 'nountype', 'position', 'degree', 'inflection', 'definiteness', 'gender', 'case', 'number', 'possnumber', 'numbern', 'npagr',
-                    'prontype', 'pdtype', 'person', 'pronform', 'numtype', 'verbform', 'tense', 'adpostype', 'conjtype', 'symbol');
+    my @features = ('pos', 'gender', 'number', 'case', 'person', 'degree', 'aspect', 'negativeness', 'accentability', 'prepcase', 'accommodability', 'agglutination', 'vocalicity');
     return \@features;
 }
 
@@ -360,20 +360,12 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
-    # We must distinguish indefinite articles from indefinite pronouns.
-    $tag =~ s/^LID\(onbep,(.+)\)$/LID(onb,$1)/;
     my $fs = Lingua::Interset::FeatureStructure->new();
-    $fs->set_tagset('nl::cgn');
+    $fs->set_tagset('pl::ipipan');
     my $atoms = $self->atoms();
-    # Two components, part-of-speech tag and features.
-    # example: N(soort,ev)
-    my ($pos, $features) = split(/[\(\)]/, $tag);
-    $features = '' if(!defined($features));
-    # Possessive pronouns have both number and npagr. In their case number should be interpreted as the possessor's number.
-    # Modify the values so that the atoms can distinguish the two numbers.
-    $features =~ s/^(bez,det,.+),([em]v|getal),/$1,poss$2,/;
-    my @features = split(/,/, $features);
-    $atoms->{pos}->decode_and_merge_hard($pos, $fs);
+    # The part of speech and all other features form one string with colons as delimiters.
+    # example: subst:sg:nom:m1
+    my @features = split(/:/, $tag);
     foreach my $feature (@features)
     {
         $atoms->{feature}->decode_and_merge_hard($feature, $fs);
@@ -392,26 +384,28 @@ sub _create_features_pos
     my $self = shift;
     my %features =
     (
-        'N'       => ['nountype', 'number', 'degree', 'case'],
-        'Ngen'    => ['nountype', 'number', 'degree', 'gender', 'case'],
-        'ADJ'     => ['position', 'degree', 'inflection', 'case'],
-        'ADJn'    => ['position', 'degree', 'inflection', 'numbern', 'case'],
-        'WWpv'    => ['verbform', 'tense', 'number'],
-        'WWopv'   => ['verbform', 'position', 'inflection'],
-        'WWopvn'  => ['verbform', 'position', 'inflection', 'numbern'],
-        'TW'      => ['numtype', 'position', 'case', 'degree'],
-        'TWn'     => ['numtype', 'position', 'case', 'numbern', 'degree'],
-        'VNW'     => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'number'],
-        'VNWgen'  => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'number', 'gender'],
-        'VNWbez'  => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'possnumber', 'position', 'inflection', 'npagr'],
-        'VNWbezn' => ['prontype', 'pdtype', 'case', 'pronform', 'person', 'possnumber', 'position', 'inflection', 'numbern'],
-        'VNWbetr' => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'numbern'],
-        'VNWvb'   => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'npagr', 'degree'],
-        'VNWvbn'  => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'numbern', 'degree'],
-        'VNWvrij' => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'degree'],
-        'LID'     => ['definiteness', 'case', 'npagr'],
-        'VZ'      => ['adpostype'],
-        'VG'      => ['conjtype']
+        'adj'     => ['number', 'case', 'gender', 'degree'],
+        'adv'     => ['degree'],
+        'aglt'    => ['number', 'person', 'aspect', 'vocalicity'],
+        'bedzie'  => ['number', 'person', 'aspect'],
+        'depr'    => ['number', 'case', 'gender'],
+        'fin'     => ['number', 'person', 'aspect'],
+        'ger'     => ['number', 'case', 'gender', 'aspect', 'negativeness'],
+        'imps'    => ['aspect'],
+        'impt'    => ['number', 'person', 'aspect'],
+        'inf'     => ['aspect'],
+        'num'     => ['number', 'case', 'gender', 'accommodability'],
+        'pact'    => ['number', 'case', 'gender', 'aspect', 'negativeness'],
+        'pant'    => ['aspect'],
+        'pcon'    => ['aspect'],
+        'ppas'    => ['number', 'case', 'gender', 'aspect', 'negativeness'],
+        'ppron12' => ['number', 'case', 'gender', 'person', 'accentability'],
+        'ppron3'  => ['number', 'case', 'gender', 'person', 'accentability', 'prepcase'],
+        'praet'   => ['number', 'gender', 'aspect', 'agglutination'],
+        'prep'    => ['case', 'vocalicity'],
+        'siebie'  => ['case'],
+        'subst'   => ['number', 'case', 'gender'],
+        'winien'  => ['number', 'gender', 'aspect']
     );
     return \%features;
 }
@@ -428,65 +422,17 @@ sub encode
     my $atoms = $self->atoms();
     my $pos = $atoms->{pos}->encode($fs);
     my $fpos = $pos;
-    # Adjectives (ADJ) and determiners (VNW) in the nominal position have the 'getal-n' feature. They do not have it in other positions.
-    my $position = $fs->position();
-    if($fpos eq 'N' && $fs->case() eq 'acc|nom')
-    {
-        $fpos = 'Ngen';
-    }
-    elsif($fpos =~ m/^(ADJ|TW)$/)
-    {
-        $fpos .= 'n' if($position eq 'nom');
-    }
-    elsif($fpos eq 'WW')
-    {
-        $fpos = $fs->is_finite_verb() ? 'WWpv' : $position eq 'nom' ? 'WWopvn' : 'WWopv';
-    }
-    elsif($fpos eq 'VNW')
-    {
-        # Gender is tagged for personal pronouns in the third person singular (or unspecified number), in the standard and oblique cases.
-        if($fs->prontype() eq 'prs' && !$fs->is_reflexive() && !$fs->is_possessive() && $fs->person() eq '3' && $fs->number() ne 'plur' && $fs->case() !~ m/(gen|dat)/)
-        {
-            $fpos = 'VNWgen';
-        }
-        elsif($fs->is_adjective())
-        {
-            if($fs->is_possessive())
-            {
-                $fpos = $position eq 'nom' ? 'VNWbezn' : 'VNWbez';
-            }
-            elsif($fs->is_relative() && !$fs->is_interrogative()) # betrekkelijk
-            {
-                $fpos = 'VNWbetr';
-            }
-            else # vb (vragend|betrekkelijk) or aanwijzend or onbepaald
-            {
-                $fpos = $position eq 'nom' ? 'VNWvbn' : $position eq 'free' ? 'VNWvrij' : 'VNWvb';
-            }
-        }
-    }
     my $feature_names = $self->get_feature_names($fpos);
-    my $tag = $pos;
-    my $features = '';
+    my @features = ($pos);
     if(defined($feature_names) && ref($feature_names) eq 'ARRAY')
     {
-        my @features;
         foreach my $feature (@{$feature_names})
         {
             my $value = $atoms->{$feature}->encode($fs);
             push(@features, $value) unless($value eq '');
         }
-        if(scalar(@features)>0)
-        {
-            $features = join(',', @features);
-            # Possessive pronouns have both number and npagr. In their case number should be interpreted as the possessor's number.
-            # Modify the values so that the atoms can distinguish the two numbers.
-            $features =~ s/^(bez,det,.+),poss([em]v|getal),/$1,$2,/;
-        }
     }
-    $tag .= '('.$features.')';
-    # We must distinguish indefinite articles from indefinite pronouns.
-    $tag =~ s/^LID\(onb,(.+)\)$/LID(onbep,$1)/;
+    my $tag = join(':', @features);
     return $tag;
 }
 
@@ -1784,7 +1730,7 @@ winien:sg:n:imperf
 xxx
 end_of_list
     ;
-    push(@list, split(/\r?\n/, $list2));
+    my @list = split(/\r?\n/, $list);
     return \@list;
 }
 
