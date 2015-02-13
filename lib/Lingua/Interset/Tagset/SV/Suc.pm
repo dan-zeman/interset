@@ -82,7 +82,7 @@ sub _create_atoms
             'MAD' => ['pos' => 'punc', 'punctype' => 'peri|qest|excl|colo'],
             # punctuation inside of sentence / interpunktion
             # examples: , - : * ;
-            'MID' => ['pos' => 'punc', 'punctype' => 'comm|dash|semi|colo'],
+            'MID' => ['pos' => 'punc', 'punctype' => 'comm|dash|semi'], # or 'colo'; but we do not want a conflict with 'MAD'
             # noun / substantiv
             # examples: år, arbete, barn, sätt, äktenskap
             'NN' => ['pos' => 'noun', 'nountype' => 'com'],
