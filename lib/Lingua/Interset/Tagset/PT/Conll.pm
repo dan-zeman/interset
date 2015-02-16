@@ -88,20 +88,29 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'pos' => { 'noun' => { 'prontype' => { ''    => 'N',
-                                                   '@' => 'Pron' }},
-                       'adj'  => { 'prontype' => { ''    => { 'numtype' => { ''  => 'Adj',
-                                                                             '@' => 'Num' }},
-                                                   'art' => 'Art' }},
-                       'num'  => 'Num',
-                       'verb' => 'V',
-                       'adv'  => 'Adv',
-                       'adp'  => 'Prep',
-                       'conj' => 'Conj',
-                       'int'  => 'Int',
-                       'punc' => 'Punc',
-                       'sym'  => 'Punc',
-                       '@'    => 'Misc' }
+            'pos' => { 'noun' => { 'prontype' => { ''    => { 'nountype' => { 'prop' => 'prop',
+                                                                              '@'    => 'n' }},
+                                                   'prs' => 'pron-pers',
+                                                   '@'   => 'pron-indp' }},
+                       'adj'  => { 'prontype' => { ''    => { 'other/pos' => { 'vp' => 'vp',
+                                                                               '@'  => 'adj' }},
+                                                   'art' => 'art',
+                                                   '@'   => 'pron-det' }},
+                       'num'  => 'num',
+                       'verb' => { 'verbform' => { 'inf'  => 'v-inf',
+                                                   'fin'  => 'v-fin',
+                                                   'part' => 'v-pcp',
+                                                   'ger'  => 'v-ger' }},
+                       'adv'  => { 'other/pos' => { 'pp' => 'pp',
+                                                    '@'  => 'adv' }},
+                       'adp'  => 'prp',
+                       'conj' => { 'conjtype' => { 'sub' => 'conj-s',
+                                                   '@'   => 'conj-c' }},
+                       'part' => 'ec',
+                       'int'  => 'in',
+                       'punc' => 'punc',
+                       'sym'  => 'punc',
+                       '@'    => '?' }
         }
     );
     # ADJECTIVE TYPE ####################
