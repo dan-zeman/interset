@@ -114,22 +114,15 @@ sub _create_atoms
         }
     );
     # GENDER ####################
-    $atoms{gender} = $self->create_atom
+    $atoms{gender} = $self->create_simple_atom
     (
-        'surfeature' => 'gender',
-        'decode_map' =>
+        'intfeature' => 'gender',
+        'simple_decode_map' =>
         {
-            # gender = F|F/M|M|M/F
-            'F'   => ['gender' => 'fem'],
-            'F/M' => ['gender' => 'fem|masc'],
-            'M'   => ['gender' => 'masc'],
-            'M/F' => ['gender' => 'masc|fem']
-        },
-        'encode_map' =>
-        {
-            'gender' => { 'fem|masc' => 'F/M',
-                          'fem'      => 'F',
-                          'masc'     => 'M' }
+            # gender = F|M/F|M|M/F
+            'F'   => 'fem',
+            'M'   => 'masc',
+            'M/F' => ''
         }
     );
     # NUMBER ####################
@@ -241,6 +234,171 @@ sub _create_atoms
                                                       'sub' => 'SUBJ' }}}
         }
     );
+    # Features in angle brackets are secondary tags, word subclasses etc.
+    # DEGREE OF COMPARISON ####################
+    # Occurs at adjectives and determiners (quantifiers).
+    # Both <KOMP> and <SUP> may occur at one token!
+    # <KOMP>|<SUP> ... melhor, superior, pior, inferior
+    # <KOMP> ... maior, melhor, menor, superior, pior
+    # <SUP> ... principal, ótimo, máximo, mínimo, péssimo
+    $atoms{degree} = $self->create_atom
+    (
+        'surfeature' => 'degree',
+        'decode_map' =>
+        {
+            # Comparative degree.
+            '<KOMP>' => ['degree' => 'comp'],
+            # Superlative degree.
+            '<SUP>'  => ['degree' => 'sup']
+        },
+        'encode_map' =>
+        {
+            'degree' => { 'comp' => '<KOMP>',
+                          'sup'  => '<SUP>' }
+        }
+    );
+    # NUMERAL TYPE ####################
+    $atoms{numtype} = $self->create_atom
+    (
+        'surfeature' => 'numtype',
+        'decode_map' =>
+        {
+            # Ordinal number (subclass of adjectives).
+            '<NUM-ord>' => ['numtype' => 'ord'],
+            # Cardinal number.
+            # This can co-occur with subpos=prop (proper noun).
+            # If it is the case, we may want to keep "prop" and discard "card".
+            '<card>' => ['numtype' => 'card'],
+        },
+        'encode_map' =>
+        {
+            'numtype' => { 'card' => '<card>',
+                           'ord'  => '<NUM-ord>' }
+        }
+    );
+    # TYPO, ALTERNATIVE SPELLING ####################
+    $atoms{alt} = $self->create_simple_atom
+    (
+        'intfeature' => 'typo',
+        'simple_decode_map' =>
+        {
+            '<ALT>' => 'typo'
+        }
+    );
+    # OTHER FEATURES IN ANGLE BRACKETS ####################
+    $atoms{anglefeature} = $self->create_atom
+    (
+        'surfeature' => 'anglefeature',
+        'decode_map' =>
+        {
+            # Derivation by prefixation.
+            '<DERP>' => ['other' => {'derp' => '1'}],
+            # Derivation by suffixation.
+            '<DERS>' => ['other' => {'ders' => '1'}],
+            # Definite article.
+            # Occurs with pron-det as well, so do not set prontype = art, or we cannot distinguish the original pos = art.
+            # Set other instead, to preserve the <artd> feature.
+            '<artd>' => ['definiteness' => 'def', 'other' => {'artd' => '1'}],
+            # Indefinite article.
+            # Occurs with pron-det as well, so do not set prontype = art, or we cannot distinguish the original pos = art.
+            # Set other instead, to preserve the <arti> feature.
+            '<arti>' => ['definiteness' => 'ind', 'other' => {'arti' => '1'}],
+            # Kind of nodes coordinated by this conjunction.
+            '<co-acc>'  => ['other' => {'co-acc' => '1'}],
+            '<co-advl>' => ['other' => {'co-advl' => '1'}],
+            '<co-advo>' => ['other' => {'co-advo' => '1'}],
+            '<co-advs>' => ['other' => {'co-advs' => '1'}],
+            '<co-app>'  => ['other' => {'co-app' => '1'}],
+            '<co-fmc>'  => ['other' => {'co-fmc' => '1'}],
+            '<co-ger>'  => ['other' => {'co-ger' => '1'}],
+            '<co-inf>'  => ['other' => {'co-inf' => '1'}],
+            '<co-oc>'   => ['other' => {'co-oc'  => '1'}],
+            '<co-pass>' => ['other' => {'co-pass' => '1'}],
+            '<co-pcv>'  => ['other' => {'co-pcv' => '1'}],
+            '<co-piv>'  => ['other' => {'co-piv' => '1'}],
+            '<co-postad>' => ['other' => {'co-postad' => '1'}],
+            '<co-postnom>' => ['other' => {'co-postnom' => '1'}],
+            '<co-pred>' => ['other' => {'co-pred' => '1'}],
+            '<co-prenom>' => ['other' => {'co-prenom' => '1'}],
+            '<co-prparg>' => ['other' => {'co-prparg' => '1'}],
+            '<co-sc>'   => ['other' => {'co-sc' => '1'}],
+            '<co-subj>' => ['other' => {'co-subj' => '1'}],
+            '<co-vfin>' => ['other' => {'co-vfin' => '1'}],
+            # Collective reflexive pronoun (reunir-se, associar-se).
+            '<coll>'    => ['other' => {'coll' => '1'}],
+            # Demonstrative pronoun or adverb.
+            '<dem>'     => ['prontype' => 'dem'],
+            # Interrogative pronoun or adverb.
+            '<interr>'  => ['prontype' => 'int'],
+            # Relative pronoun or adverb.
+            '<rel>'     => ['prontype' => 'rel'],
+            # Possessive determiner pronoun.
+            '<poss'     => ['prontype' => 'prs', 'poss' => 'poss'],
+            # (Indefinite) quantifier pronoun or adverb.
+            # independent pronouns: algo, tudo, nada
+            # independent relative pronouns: todo_o_que
+            # determiners (pronouns): algum, alguma, alguns, algumas, uns, umas, vários, várias,
+            #    qualquer, pouco, poucos, muitos, mais,
+            #    todo, todo_o, todos, todas, ambos, ambas
+            # adverbs: pouco, menos, muito, mais, mais_de, quase, tanto, mesmo, demais, bastante, suficiente, bem
+            # demonstrative adverbs: t~ao
+            # This is not the class of indefinite pronouns. This class contains pronouns and adverbs of quantity.
+            # The pronouns and adverbs in this class can be indefinite (algo), total (todo), negative (nada), demonstrative (tanto, tao),
+            # interrogative (quanto), relative (todo_o_que). Many are indefinite, but not all.
+            '<quant>' => ['prontype' => 'ind|neg|tot', 'numtype' => 'card'],
+            # Reciprocal reflexive (amar-se).
+            '<reci>'  => ['prontype' => 'rcp'],
+            # Reflexive pronoun.
+            '<refl>'  => ['reflex' => 'reflex'],
+            # Reflexive usage of 3rd person possessive (seu, seus, sua, suas).
+            '<si>'    => ['reflex' => 'reflex', 'poss' => 'poss', 'person' => '3'],
+            # Differentiator (mesmo, outro, semelhante, tal).
+            '<diff>'  => ['other' => {'diff' => '1'}],
+            # Identifier pronoun (mesmo, próprio).
+            '<ident>' => ['other' => {'ident' => '1'}],
+            # Annotation or processing error.
+            '<error>' => ['other' => {'error' => '1'}],
+            # Verb heading finite main clause.
+            '<fmc>'   => ['other' => {'fmc' => '1'}],
+            # Focus marker, adverb or pronoun.
+            '<foc>'   => ['other' => {'foc' => '1'}],
+            # First part in contracted word.
+            '<sam->'  => ['other' => {'sam-' => '1'}],
+            # Second part in contracted word.
+            '<-sam>'  => ['other' => {'-sam' => '1'}],
+            # Hyphenated prefix, usually of reflexive verbs.
+            '<hyfen>' => ['hyph' => 'hyph'],
+        },
+        'encode_map' =>
+        {
+            'hyph' => { 'hyph' => '<hyfen>',
+                        '@'    => { 'other/derp' => { '1' => '<DERP>',
+                                                      '@' => { 'other/ders' => { '1' => '<DERS>' }}}}}
+        }
+    );
+    # WORDS USED AS WORD CLASSES OTHER THAN THOSE THEY BELONG TO ####################
+    $atoms{transcat} = $self->create_atom
+    (
+        'surfeature' => 'transcat',
+        'decode_map' =>
+        {
+            '<det>'   => ['other' => {'transcat' => 'det'}],
+            '<kc>'    => ['other' => {'transcat' => 'kc'}],
+            '<ks>'    => ['other' => {'transcat' => 'ks'}],
+            '<n>'     => ['other' => {'transcat' => 'n'}],
+            '<prop>'  => ['other' => {'transcat' => 'prop'}],
+            '<prp>'   => ['other' => {'transcat' => 'prp'}]
+        },
+        'encode_map' =>
+        {
+            'other/transcat' => { 'det'  => '<det>',
+                                  'kc'   => '<kc>',
+                                  'ks'   => '<ks>',
+                                  'n'    => '<n>',
+                                  'prop' => '<prop>',
+                                  'prp'  => '<prp>' }
+        }
+    );
     # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
     my @fatoms = map {$atoms{$_}} (@{$self->features_all()});
     $atoms{feature} = $self->create_merged_atom
@@ -260,8 +418,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('pos', 'adjtype', 'degree', 'adjform', 'advtype', 'function', 'definiteness', 'gender', 'case', 'conjtype', 'sconjtype', 'nountype', 'number',
-                    'numtype', 'misctype', 'adpostype', 'prontype', 'pronoun', 'person', 'punctype', 'verbtype', 'verbform', 'subst');
+    my @features = ('pos', 'gender', 'number', 'case', 'person', 'tense', 'degree', 'alt', 'numtype', 'anglefeature', 'transcat');
     return \@features;
 }
 
@@ -276,18 +433,7 @@ sub _create_features_pos
     my $self = shift;
     my %features =
     (
-        'Adj'   => ['adjtype', 'degree', 'adjform'],
-        'Adv'   => ['advtype', 'function', 'degree', 'adjform'],
-        'Art'   => ['definiteness', 'gender', 'case'],
-        'Conj'  => ['conjtype', 'sconjtype'],
-        'Misc'  => ['misctype'],
-        'N'     => ['nountype', 'number', 'case'],
-        'Num'   => ['numtype', 'definiteness', 'prontype', 'adjtype', 'degree', 'adjform'],
-        'Prep'  => ['adpostype'],
-        'Pron'  => ['prontype', 'person', 'number', 'case', 'adjtype', 'pronoun'],
-        'Punc'  => ['punctype'],
-        'V'     => ['verbtype', 'verbform', 'subst', 'person', 'number'],
-        'Vpart' => ['verbtype', 'verbform', 'adjform']
+        'adj' => ['anglefeature', 'transcat', 'numtype', 'alt', 'degree', 'gender', 'number'],
     );
     return \%features;
 }
@@ -303,7 +449,7 @@ sub decode
     my $self = shift;
     my $tag = shift;
     my $fs = Lingua::Interset::FeatureStructure->new();
-    $fs->set_tagset('nl::conll');
+    $fs->set_tagset('pt::conll');
     my $atoms = $self->atoms();
     # Three components, and the first two are identical: pos, pos, features.
     # example: N\tN\tsoort|ev|neut
@@ -315,13 +461,6 @@ sub decode
     foreach my $feature (@features)
     {
         $atoms->{feature}->decode_and_merge_hard($feature, $fs);
-    }
-    # The feature 'onbep' can mean indefinite pronoun or indefinite article.
-    # If it is article, we want prontype=art, not prontype=ind.
-    if($tag =~ m/^Art.*onbep/)
-    {
-        $fs->set('prontype', 'art');
-        $fs->set('definiteness', 'ind');
     }
     return $fs;
 }
@@ -338,7 +477,6 @@ sub encode
     my $atoms = $self->atoms();
     my $subpos = $atoms->{pos}->encode($fs);
     my $fpos = $subpos;
-    $fpos = 'Vpart' if($fpos eq 'V' && $fs->is_participle());
     my $feature_names = $self->get_feature_names($fpos);
     my $pos = $subpos;
     my $value_only = 1;
@@ -350,11 +488,7 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
-# Tags were collected from the corpus, 745 distinct tags found.
-# MWU (multi-word-unit) tags were removed because they are sequences of normal
-# tags and we cannot support them.
-# Total 198 tags survived.
-# Total 208 tags after adding missing tags (without the 'other' feature etc.)
+# Tags were collected from the corpus, 671 distinct tags found.
 #------------------------------------------------------------------------------
 sub list
 {
@@ -365,7 +499,6 @@ adj	adj	<ALT>|<SUP>|M|S
 adj	adj	<ALT>|F|P
 adj	adj	<ALT>|F|S
 adj	adj	<ALT>|M|S
-adj	adj	<DERP>|<DERS>|F|S
 adj	adj	<DERP>|<n>|M|P
 adj	adj	<DERP>|F|P
 adj	adj	<DERP>|F|S
@@ -390,9 +523,7 @@ adj	adj	<SUP>|F|P
 adj	adj	<SUP>|F|S
 adj	adj	<SUP>|M|P
 adj	adj	<SUP>|M|S
-adj	adj	<error>|M|S
 adj	adj	<hyfen>|F|P
-adj	adj	<n>
 adj	adj	<n>|<KOMP>|F|P
 adj	adj	<n>|<KOMP>|F|S
 adj	adj	<n>|<KOMP>|M|P
@@ -424,7 +555,6 @@ adj	adj	M/F|S
 adj	adj	M/F|S/P
 adj	adj	M|P
 adj	adj	M|S
-adj	adj	_
 adv	adv	<-sam>
 adv	adv	<ALT>
 adv	adv	<DERP>|<DERS>
@@ -438,7 +568,6 @@ adv	adv	<co-sc>
 adv	adv	<dem>
 adv	adv	<dem>|<quant>
 adv	adv	<dem>|<quant>|<KOMP>
-adv	adv	<error>
 adv	adv	<foc>
 adv	adv	<interr>
 adv	adv	<interr>|<ks>
@@ -491,7 +620,6 @@ art	art	<arti>|F|S
 art	art	<arti>|M|S
 art	art	<dem>|F|S
 art	art	<dem>|M|S
-art	art	<error>|<arti>|F|S
 art	art	F|P
 art	art	F|S
 art	art	M|P
@@ -550,7 +678,6 @@ n	n	<DERS>|M|P
 n	n	<DERS>|M|S
 n	n	<NUM-ord>|F|S
 n	n	<co-prparg>|M|P
-n	n	<error>|F|P
 n	n	<fmc>|F|S
 n	n	<hyfen>|F|S
 n	n	<hyfen>|M|P
@@ -895,7 +1022,6 @@ prop	prop	_
 prp	prp	<-sam>
 prp	prp	<ALT>
 prp	prp	<co-prparg>
-prp	prp	<error>
 prp	prp	<kc>
 prp	prp	<kc>|<co-acc>
 prp	prp	<kc>|<co-prparg>
