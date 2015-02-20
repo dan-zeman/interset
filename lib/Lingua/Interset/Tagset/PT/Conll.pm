@@ -577,7 +577,8 @@ sub _create_features_pos
         'pp'        => ['sam'],
         'pron-det'  => ['transcat', 'sam', 'possessor', 'prontype', 'definiteness', 'degree', 'gender', 'number'],
         'pron-indp' => ['sam', 'alt', 'prontype', 'gender', 'number'],
-        'pron-pers' => ['anglefeature', 'sam', 'prontype', 'gender', 'person', 'case']
+        'pron-pers' => ['anglefeature', 'sam', 'prontype', 'gender', 'person', 'case'],
+        'prop'      => ['anglefeature', 'alt', 'gender', 'number']
     );
     return \%features;
 }
@@ -1088,9 +1089,6 @@ prop	prop	<DERS>|M|S
 prop	prop	<hyfen>|F|P
 prop	prop	<hyfen>|F|S
 prop	prop	<hyfen>|M|S
-prop	prop	<prop>|F|S
-prop	prop	<prop>|M|P
-prop	prop	<prop>|M|S
 prop	prop	F|P
 prop	prop	F|S
 prop	prop	M/F|P
@@ -1098,7 +1096,6 @@ prop	prop	M/F|S
 prop	prop	M/F|S/P
 prop	prop	M|P
 prop	prop	M|S
-prop	prop	_
 prp	prp	<-sam>
 prp	prp	<ALT>
 prp	prp	<co-prparg>
