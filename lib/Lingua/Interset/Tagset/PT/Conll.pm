@@ -79,7 +79,7 @@ sub _create_atoms
             # example: de_facto, ao_mesmo_tempo, em_causa, por_vezes, de_acordo
             'pp'        => ['pos' => 'adv', 'other' => {'pos' => 'pp'}],
             # prp = preposition
-            # example: a, abaixo_de, ao, com, de, em, por, que...
+            # example: de, em, para, a, com, por, sobre, entre
             'prp'       => ['pos' => 'adp', 'adpostype' => 'prep'],
             # coordinating conjunction
             # example: e, mais, mas, nem, ou, quer, tampouco, tanto
@@ -578,7 +578,8 @@ sub _create_features_pos
         'pron-det'  => ['transcat', 'sam', 'possessor', 'prontype', 'definiteness', 'degree', 'gender', 'number'],
         'pron-indp' => ['sam', 'alt', 'prontype', 'gender', 'number'],
         'pron-pers' => ['anglefeature', 'sam', 'prontype', 'gender', 'person', 'case'],
-        'prop'      => ['anglefeature', 'alt', 'gender', 'number']
+        'prop'      => ['anglefeature', 'alt', 'gender', 'number'],
+        'prp'       => ['sam', 'transcat', 'co', 'alt']
     );
     return \%features;
 }
@@ -1096,22 +1097,14 @@ prop	prop	M/F|S
 prop	prop	M/F|S/P
 prop	prop	M|P
 prop	prop	M|S
-prp	prp	<-sam>
 prp	prp	<ALT>
-prp	prp	<co-prparg>
 prp	prp	<kc>
 prp	prp	<kc>|<co-acc>
 prp	prp	<kc>|<co-prparg>
 prp	prp	<ks>
-prp	prp	<quant>
-prp	prp	<rel>
-prp	prp	<rel>|<ks>
-prp	prp	<rel>|<prp>
 prp	prp	<sam->
 prp	prp	<sam->|<co-acc>
 prp	prp	<sam->|<kc>
-prp	prp	F|S
-prp	prp	M|S
 prp	prp	_
 punc	punc	_
 v	v-fin	<ALT>|IMPF|3S|IND
