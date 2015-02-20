@@ -101,6 +101,7 @@ sub _create_atoms
             'pos' => { 'noun' => { 'prontype' => { ''    => { 'nountype' => { 'prop' => 'prop',
                                                                               '@'    => 'n' }},
                                                    'prs' => 'pron-pers',
+                                                   'rcp' => 'pron-pers',
                                                    '@'   => 'pron-indp' }},
                        'adj'  => { 'prontype' => { ''    => { 'other/pos' => { 'vp' => 'vp',
                                                                                '@'  => 'adj' }},
@@ -193,6 +194,7 @@ sub _create_atoms
             'number' => { 'sing' => { 'person' => { '1|3' => '1/3S',
                                                     '1'   => '1S',
                                                     '2'   => '2S',
+                                                    '3'   => '3S',
                                                     '@'   => '3S' }},
                           'plur' => { 'person' => { '1'   => '1P',
                                                     '2'   => '2P',
@@ -336,7 +338,7 @@ sub _create_atoms
             # Reciprocal reflexive (amar-se).
             '<reci>'  => ['prontype' => 'rcp'],
             # Reflexive pronoun.
-            '<refl>'  => ['reflex' => 'reflex'],
+            '<refl>'  => ['prontype' => 'prs', 'reflex' => 'reflex'],
             # Reflexive usage of 3rd person possessive (seu, seus, sua, suas).
             '<si>'    => ['prontype' => 'prs', 'poss' => 'poss', 'person' => '3', 'reflex' => 'reflex'],
             # Differentiator (mesmo, outro, semelhante, tal).
@@ -346,7 +348,7 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'other/coll' => { '1' => '<coll>',
+            'other/coll' => { '1' => '<refl>|<coll>',
                               '@' => { 'other/prontype' => { 'diff'  => '<diff>',
                                                              'ident' => '<ident>',
                                                              '@'     => { 'prontype' => { 'dem' => '<dem>',
@@ -358,7 +360,8 @@ sub _create_atoms
                                                                                           'ind' => { 'numtype' => { 'card' => '<quant>' }},
                                                                                           'neg' => { 'numtype' => { 'card' => '<quant>' }},
                                                                                           'tot' => { 'numtype' => { 'card' => '<quant>' }},
-                                                                                          'prs' => { 'poss' => { 'poss' => { 'reflex' => { 'reflex' => '<si>' }}}}}}}}}
+                                                                                          'prs' => { 'reflex' => { 'reflex' => { 'poss' => { 'poss' => '<si>',
+                                                                                                                                             '@'    => '<refl>' }}}}}}}}}
         }
     );
     # DEFINITENESS ####################
@@ -573,7 +576,8 @@ sub _create_features_pos
         'num'       => ['transcat', 'sam', 'alt', 'numtype', 'gender', 'number'],
         'pp'        => ['sam'],
         'pron-det'  => ['transcat', 'sam', 'possessor', 'prontype', 'definiteness', 'degree', 'gender', 'number'],
-        'pron-indp' => ['sam', 'alt', 'prontype', 'gender', 'number']
+        'pron-indp' => ['sam', 'alt', 'prontype', 'gender', 'number'],
+        'pron-pers' => ['anglefeature', 'sam', 'prontype', 'gender', 'person', 'case']
     );
     return \%features;
 }
