@@ -62,15 +62,20 @@ sub _create_atoms
             # num = number
             # example: 0,05, cento_e_quatro, cinco, setenta_e_dois, um, zero
             'num'       => ['pos' => 'num'],
-            # v-inf = infinitive # example: abafar, abandonar, abastecer...
+            # v-inf = infinitive
+            # example: ser, ter, fazer, ver, dar
             'v-inf'     => ['pos' => 'verb', 'verbform' => 'inf'],
-            # v-fin = finite # example: abafaram, abalou, abandonará...
+            # v-fin = finite
+            # example: abafaram, abalou, abandonará...
             'v-fin'     => ['pos' => 'verb', 'verbform' => 'fin'],
-            # v-pcp = participle # example: abafado, abalada, abandonadas...
+            # v-pcp = participle
+            # example: passado, feito, eleito, aberto, considerado
             'v-pcp'     => ['pos' => 'verb', 'verbform' => 'part'],
-            # v-ger = gerund # example: abraçando, abrindo, acabando...
+            # v-ger = gerund
+            # example: abraçando, abrindo, acabando...
             'v-ger'     => ['pos' => 'verb', 'verbform' => 'ger'],
-            # vp = verb phrase # 1 occurrence in CoNLL 2006 data ("existente"), looks like an error
+            # vp = verb phrase
+            # 1 occurrence in CoNLL 2006 data ("existente"), looks like an error
             'vp'        => ['pos' => 'adj', 'other' => {'pos' => 'vp'}],
             # adv = adverb
             # example: não, também, ontem, ainda, já
@@ -199,7 +204,7 @@ sub _create_atoms
                           'plur' => { 'person' => { '1'   => '1P',
                                                     '2'   => '2P',
                                                     '@'   => '3P' }},
-                          '@'    => '3S/P' }
+                          '@'    => { 'person' => { '3'   => '3S/P' }}}
         }
     );
     # POSSESSOR'S PERSON AND NUMBER ####################
@@ -235,24 +240,46 @@ sub _create_atoms
                               '@'    => { 'poss' => { 'poss' => '<poss3S/P>' }}}
         }
     );
-    # MOOD AND TENSE ####################
+    # MOOD ####################
+    $atoms{mood} = $self->create_atom
+    (
+        'surfeature' => 'mood',
+        'decode_map' =>
+        {
+            # mood = IND|SUBJ
+            'IND'    => ['mood' => 'ind'],
+            'SUBJ'   => ['mood' => 'sub']
+        },
+        'encode_map' =>
+        {
+            'mood' => { 'ind' => 'IND',
+                        'sub' => 'SUBJ' }
+        }
+    );
+    # TENSE ####################
     $atoms{tense} = $self->create_atom
     (
         'surfeature' => 'tense',
         'decode_map' =>
         {
-            # tense/mood = COND|FUT|IMP|IMPF|IND|MQP|PR|PR/PS|PS|PS/MQP|SUBJ
-            'IND'    => ['mood' => 'ind'],
+            # sê, move, olha, chega
             'IMP'    => ['mood' => 'imp'],
+            # é, está, tem, há, vai
             'PR'     => ['tense' => 'pres'],
+            # decidimos, conhecemos, conseguimos
             'PR/PS'  => ['tense' => 'pres|past'],
+            # foi, disse, fez, afirmou, teve
             'PS'     => ['tense' => 'past'],
+            # era, tinha, estava, havia, ia
             'IMPF'   => ['tense' => 'imp'],
+            # foram, chegaram, fizeram, tiveram, ficaram
             'PS/MQP' => ['tense' => 'imp|pqp'],
+            # fora, fizera, desaparecera, acabara, levara
             'MQP'    => ['tense' => 'pqp'],
+            # será, terá, deverá, poderá, irá
             'FUT'    => ['tense' => 'fut'],
-            'COND'   => ['mood' => 'cnd'],
-            'SUBJ'   => ['mood' => 'sub']
+            # seria, poderia, teria, deveria, iria
+            'COND'   => ['mood' => 'cnd']
         },
         'encode_map' =>
         {
@@ -263,10 +290,8 @@ sub _create_atoms
                          'imp|pqp'   => 'PS/MQP',
                          'pqp'       => 'MQP',
                          'fut'       => 'FUT',
-                         '@'         => { 'mood' => { 'ind' => 'IND',
-                                                      'imp' => 'IMP',
-                                                      'cnd' => 'COND',
-                                                      'sub' => 'SUBJ' }}}
+                         '@'         => { 'mood' => { 'imp' => 'IMP',
+                                                      'cnd' => 'COND' }}}
         }
     );
     # Features in angle brackets are secondary tags, word subclasses etc.
@@ -552,7 +577,8 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('pos', 'gender', 'number', 'case', 'person', 'tense', 'degree', 'alt', 'possessor', 'prontype', 'definiteness', 'numtype', 'anglefeature', 'sam', 'co', 'transcat');
+    my @features = ('pos', 'gender', 'number', 'case', 'person', 'tense', 'mood',
+                    'degree', 'alt', 'possessor', 'prontype', 'definiteness', 'numtype', 'anglefeature', 'sam', 'co', 'transcat');
     return \@features;
 }
 
@@ -579,7 +605,11 @@ sub _create_features_pos
         'pron-indp' => ['sam', 'alt', 'prontype', 'gender', 'number'],
         'pron-pers' => ['anglefeature', 'sam', 'prontype', 'gender', 'person', 'case'],
         'prop'      => ['anglefeature', 'alt', 'gender', 'number'],
-        'prp'       => ['sam', 'transcat', 'co', 'alt']
+        'prp'       => ['sam', 'transcat', 'co', 'alt'],
+        'v-fin'     => ['anglefeature', 'transcat', 'alt', 'tense', 'person', 'mood'],
+        'v-ger'     => ['anglefeature', 'alt'],
+        'v-inf'     => ['anglefeature', 'transcat', 'alt', 'person'],
+        'v-pcp'     => ['anglefeature', 'transcat', 'alt', 'gender', 'number']
     );
     return \%features;
 }
@@ -650,6 +680,8 @@ sub encode
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
 # Tags were collected from the corpus, 671 distinct tags found.
+# Cleaned up suspicious combinations of features that were hard to replicate.
+# 564 tags survived.
 #------------------------------------------------------------------------------
 sub list
 {
@@ -1112,13 +1144,10 @@ v	v-fin	<ALT>|IMPF|3S|SUBJ
 v	v-fin	<ALT>|PR|3S|IND
 v	v-fin	<ALT>|PS|3S|IND
 v	v-fin	<ALT>|PS|3S|SUBJ
-v	v-fin	<DERP>|<DERS>|IMPF|3S|SUBJ
 v	v-fin	<DERP>|PR|1S|IND
 v	v-fin	<DERP>|PR|3P|IND
 v	v-fin	<DERP>|PR|3S|IND
 v	v-fin	<DERP>|PS|3S|IND
-v	v-fin	<fmc>|PR|3S|SUBJ
-v	v-fin	<hyfen>|<DERP>|PR|3S|IND
 v	v-fin	<hyfen>|COND|1S
 v	v-fin	<hyfen>|COND|3S
 v	v-fin	<hyfen>|FUT|3S|IND
@@ -1140,7 +1169,6 @@ v	v-fin	<hyfen>|PS|2S|IND
 v	v-fin	<hyfen>|PS|3P|IND
 v	v-fin	<hyfen>|PS|3S|IND
 v	v-fin	<n>|PR|3S|IND
-v	v-fin	<sam->|PR|3S|IND
 v	v-fin	COND|1/3S
 v	v-fin	COND|1P
 v	v-fin	COND|1S
@@ -1192,7 +1220,6 @@ v	v-fin	PS|1S|IND
 v	v-fin	PS|2S|IND
 v	v-fin	PS|3P|IND
 v	v-fin	PS|3S|IND
-v	v-fin	_
 v	v-ger	<ALT>
 v	v-ger	<hyfen>
 v	v-ger	_
@@ -1209,10 +1236,8 @@ v	v-inf	<hyfen>|3P
 v	v-inf	<hyfen>|3S
 v	v-inf	<n>
 v	v-inf	<n>|3S
-v	v-inf	FUT|3S|IND
 v	v-inf	_
 v	v-pcp	<ALT>|F|S
-v	v-pcp	<DERP>|<DERS>|M|S
 v	v-pcp	<DERP>|M|P
 v	v-pcp	<DERS>|F|P
 v	v-pcp	<DERS>|M|S
@@ -1226,7 +1251,6 @@ v	v-pcp	F|P
 v	v-pcp	F|S
 v	v-pcp	M|P
 v	v-pcp	M|S
-v	v-pcp	_
 end_of_list
     ;
     # Protect from editors that replace tabs by spaces.
