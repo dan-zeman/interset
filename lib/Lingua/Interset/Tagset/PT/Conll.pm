@@ -41,21 +41,26 @@ sub _create_atoms
         'surfeature' => 'pos',
         'decode_map' =>
         {
-            # n = common noun # example: revivalismo
+            # n = common noun
+            # example: ano, dia, país, grupo, governo; parte, semana, empresa, cidade, forma
             'n'         => ['pos' => 'noun', 'nountype' => 'com'],
-            # prop = proper noun # example: Castro_Verde, João_Pedro_Henriques
+            # prop = proper noun
+            # example: Portugal, Brasil, São_Paulo; Coimbra, Alvalade; EUA, Estados_Unidos
             'prop'      => ['pos' => 'noun', 'nountype' => 'prop'],
-            # adj = adjective # example: refrescante, algarvio
+            # adj = adjective
+            # example: novo, grande, próximo, bom, nacional
             'adj'       => ['pos' => 'adj'],
-            # art = article # example: a, as, o, os, uma, um
+            # art = article
+            # example: a, as, o, os, uma, um
             'art'       => ['pos' => 'adj', 'prontype' => 'art'],
             # pron-pers = personal # example: ela, elas, ele, eles, eu, nós, se, tu, você, vós
             'pron-pers' => ['pos' => 'noun', 'prontype' => 'prs'],
             # pron-det = determiner # example: algo, ambos, bastante, demais, este, menos, nosso, o, que, todo_o
-            'pron-det'  => ['pos' => 'adj', 'prontype' => 'ind'],
+            'pron-det'  => ['pos' => 'adj', 'prontype' => 'prn'],
             # pron-indp = independent # example: algo, aquilo, cada_qual, o, o_que, que, todo_o_mundo, um_pouco
             'pron-indp' => ['pos' => 'noun', 'prontype' => 'ind'],
-            # num = number # example: 0,05, cento_e_quatro, cinco, setenta_e_dois, um, zero
+            # num = number
+            # example: 0,05, cento_e_quatro, cinco, setenta_e_dois, um, zero
             'num'       => ['pos' => 'num'],
             # v-inf = infinitive # example: abafar, abandonar, abastecer...
             'v-inf'     => ['pos' => 'verb', 'verbform' => 'inf'],
@@ -67,15 +72,20 @@ sub _create_atoms
             'v-ger'     => ['pos' => 'verb', 'verbform' => 'ger'],
             # vp = verb phrase # 1 occurrence in CoNLL 2006 data ("existente"), looks like an error
             'vp'        => ['pos' => 'adj', 'other' => {'pos' => 'vp'}],
-            # adv = adverb # example: 20h45, abaixo, abertamente, a_bordo...
+            # adv = adverb
+            # example: não, também, ontem, ainda, já
             'adv'       => ['pos' => 'adv'],
-            # pp = prepositional phrase # example: ao_mesmo_tempo, de_acordo, por_último...
+            # pp = prepositional phrase
+            # example: de_facto, ao_mesmo_tempo, em_causa, por_vezes, de_acordo
             'pp'        => ['pos' => 'adv', 'other' => {'pos' => 'pp'}],
-            # prp = preposition # example: a, abaixo_de, ao, com, de, em, por, que...
+            # prp = preposition
+            # example: a, abaixo_de, ao, com, de, em, por, que...
             'prp'       => ['pos' => 'adp', 'adpostype' => 'prep'],
-            # coordinating conjunction # example: e, mais, mas, nem, ou, quer, tampouco, tanto
+            # coordinating conjunction
+            # example: e, mais, mas, nem, ou, quer, tampouco, tanto
             'conj-c'    => ['pos' => 'conj', 'conjtype' => 'coor'],
-            # subordinating conjunction # example: a_fim_de_que, como, desde_que, para_que, que...
+            # subordinating conjunction
+            # example: que, se, porque, do_que, embora
             'conj-s'    => ['pos' => 'conj', 'conjtype' => 'sub'],
             # in = interjection # example: adeus, ai, alô
             'in'        => ['pos' => 'int'],
@@ -169,24 +179,14 @@ sub _create_atoms
         'decode_map' =>
         {
             # person+number = 1/3S|1S|1P|2S|2P|3S|3S/P|3P
-            # for possessives, this is the possnumber
-            # elsewhere, this is the normal number
             '1/3S'  => ['person' => '1|3', 'number' => 'sing'],
-            '1/3S>' => ['person' => '1|3', 'number' => 'sing'],
             '1S'    => ['person' => '1', 'number' => 'sing'],
-            '1S>'   => ['person' => '1', 'number' => 'sing'],
             '1P'    => ['person' => '1', 'number' => 'plur'],
-            '1P>'   => ['person' => '1', 'number' => 'plur'],
             '2S'    => ['person' => '2', 'number' => 'sing'],
-            '2S>'   => ['person' => '2', 'number' => 'sing'],
             '2P'    => ['person' => '2', 'number' => 'plur'],
-            '2P>'   => ['person' => '2', 'number' => 'plur'],
             '3S'    => ['person' => '3', 'number' => 'sing'],
-            '3S>'   => ['person' => '3', 'number' => 'sing'],
             '3S/P'  => ['person' => '3'],
-            '3S/P>' => ['person' => '3'],
             '3P'    => ['person' => '3', 'number' => 'plur'],
-            '3P>'   => ['person' => '3', 'number' => 'plur'],
         },
         'encode_map' =>
         {
@@ -198,6 +198,39 @@ sub _create_atoms
                                                     '2'   => '2P',
                                                     '@'   => '3P' }},
                           '@'    => '3S/P' }
+        }
+    );
+    # POSSESSOR'S PERSON AND NUMBER ####################
+    # Possessive pronouns (determiners) have double feautres like "<poss|1S>".
+    # We remove the vertical bar during preprocessing so that we can process it as one feature.
+    $atoms{possessor} = $self->create_atom
+    (
+        'surfeature' => 'possessor',
+        'decode_map' =>
+        {
+            # meu, meus, minha, minhas
+            '<poss1S>'   => ['prontype' => 'prs', 'poss' => 'poss', 'person' => '1', 'possnumber' => 'sing'],
+            # teu, teus, tua, tuas
+            '<poss2S>'   => ['prontype' => 'prs', 'poss' => 'poss', 'person' => '2', 'possnumber' => 'sing'],
+            # seu, seus, sua, suas
+            '<poss3S>'   => ['prontype' => 'prs', 'poss' => 'poss', 'person' => '3', 'possnumber' => 'sing'],
+            '<poss3S/P>' => ['prontype' => 'prs', 'poss' => 'poss', 'person' => '3'],
+            # nosso, nossos, nossa, nossas
+            '<poss1P>'   => ['prontype' => 'prs', 'poss' => 'poss', 'person' => '1', 'possnumber' => 'plur'],
+            # vosso, vossos, vossa, vossas
+            '<poss2P>'   => ['prontype' => 'prs', 'poss' => 'poss', 'person' => '2', 'possnumber' => 'plur'],
+            # seu, seus, sua, suas
+            '<poss3P>'   => ['prontype' => 'prs', 'poss' => 'poss', 'person' => '3', 'possnumber' => 'plur'],
+        },
+        'encode_map' =>
+        {
+            'possnumber' => { 'sing' => { 'person' => { '1'   => '<poss1S>',
+                                                        '2'   => '<poss2S>',
+                                                        '@'   => '<poss3S>' }},
+                              'plur' => { 'person' => { '1'   => '<poss1P>',
+                                                        '2'   => '<poss2P>',
+                                                        '@'   => '<poss3P>' }},
+                              '@'    => { 'poss' => { 'poss' => '<poss3S/P>' }}}
         }
     );
     # MOOD AND TENSE ####################
@@ -257,6 +290,91 @@ sub _create_atoms
                           'sup'  => '<SUP>' }
         }
     );
+    # PRONOUN TYPE ####################
+    $atoms{prontype} = $self->create_atom
+    (
+        'surfeature' => 'prontype',
+        'decode_map' =>
+        {
+            # Collective reflexive pronoun ("se" in "reunir-se", "associar-se").
+            # This feature is relatively rare. It should always co-occur with the <reflex> feature
+            # but sometimes it does not so we make sure to set reflex here as well.
+            '<coll>'   => ['reflex' => 'reflex', 'other' => {'coll' => '1'}],
+            # Demonstrative pronoun or adverb.
+            # adv <dem>|<quant>: tão
+            # For adverbs, <dem> almost always comes together with <quant>. There was one occurrence of <dem> without <quant> (an error?)
+            # and it also came with the word "tão".
+            '<dem>'    => ['prontype' => 'dem'],
+            # Interrogative pronoun or adverb.
+            # adv <interr>: como, onde, porque, quando, para_onde
+            '<interr>'   => ['prontype' => 'int'],
+            '<intquant>' => ['prontype' => 'int', 'numtype' => 'card'],
+            # Relative pronoun or adverb.
+            # adv <rel>: como, onde, quando, enquanto, tal_como
+            # adv <rel>|<quant>: quanto, quanto_mais
+            # pron-det <rel>: cujo, qual, quanto, o_que
+            # pron-indp <rel>: que, o_que, quem, o_qual
+            # pron-indp <rel>|<quant>: tudo_o_que
+            # We preprocess <rel>|<quant> into <relquant>.
+            '<rel>'      => ['prontype' => 'rel'],
+            '<relquant>' => ['prontype' => 'rel', 'numtype' => 'card'],
+            # (Indefinite) quantifier pronoun or adverb.
+            # independent pronouns: algo, tudo, nada
+            # independent relative pronouns: todo_o_que
+            # determiners (pronouns): algum, alguma, alguns, algumas, uns, umas, vários, várias,
+            #    qualquer, pouco, poucos, muitos, mais,
+            #    todo, todo_o, todos, todas, ambos, ambas
+            # adverbs: pouco, menos, muito, mais, mais_de, quase, tanto, mesmo, demais, bastante, suficiente, bem
+            # demonstrative adverbs: t~ao
+            # This is not the class of indefinite pronouns. This class contains pronouns and adverbs of quantity.
+            # The pronouns and adverbs in this class can be indefinite (algo), total (todo), negative (nada), demonstrative (tanto, tao),
+            # interrogative (quanto), relative (todo_o_que). Many are indefinite, but not all.
+            # adv <quant> (no other features): muito, bem, mais, quase, mais_de
+            # adv <quant>|<KOMP>: mais, menos, tão, tanto, nada_mais_nada_menos
+            # adv <dem>|<quant>: tão
+            '<quant>' => ['prontype' => 'ind|neg|tot', 'numtype' => 'card'],
+            # Reciprocal reflexive (amar-se).
+            '<reci>'  => ['prontype' => 'rcp'],
+            # Reflexive pronoun.
+            '<refl>'  => ['reflex' => 'reflex'],
+            # Reflexive usage of 3rd person possessive (seu, seus, sua, suas).
+            '<si>'    => ['prontype' => 'prs', 'poss' => 'poss', 'person' => '3', 'reflex' => 'reflex'],
+            # Differentiator (mesmo, outro, semelhante, tal).
+            '<diff>'  => ['other' => {'prontype' => 'diff'}],
+            # Identifier pronoun (mesmo, próprio).
+            '<ident>' => ['other' => {'prontype' => 'ident'}]
+        },
+        'encode_map' =>
+        {
+            'other/coll' => { '1' => '<coll>',
+                              '@' => { 'other/prontype' => { 'diff'  => '<diff>',
+                                                             'ident' => '<ident>',
+                                                             '@'     => { 'prontype' => { 'dem' => '<dem>',
+                                                                                          'int' => { 'numtype' => { 'card' => '<intquant>',
+                                                                                                                    '@'    => '<interr>' }},
+                                                                                          'rel' => { 'numtype' => { 'card' => '<relquant>',
+                                                                                                                    '@'    => '<rel>' }},
+                                                                                          'rcp' => '<reci>',
+                                                                                          'ind' => { 'numtype' => { 'card' => '<quant>' }},
+                                                                                          'neg' => { 'numtype' => { 'card' => '<quant>' }},
+                                                                                          'tot' => { 'numtype' => { 'card' => '<quant>' }},
+                                                                                          'prs' => { 'poss' => { 'poss' => { 'reflex' => { 'reflex' => '<si>' }}}}}}}}}
+        }
+    );
+    # DEFINITENESS ####################
+    $atoms{definiteness} = $self->create_simple_atom
+    (
+        'intfeature' => 'definiteness',
+        'simple_decode_map' =>
+        {
+            # Definite article: o, os, a, as
+            # Occurs with pron-det as well, so do not set prontype = art, or we cannot distinguish the original pos = art.
+            '<artd>' => 'def',
+            # Indefinite article: um, uma
+            # Occurs with pron-det as well, so do not set prontype = art, or we cannot distinguish the original pos = art.
+            '<arti>' => 'ind'
+        }
+    );
     # NUMERAL TYPE ####################
     $atoms{numtype} = $self->create_atom
     (
@@ -285,95 +403,79 @@ sub _create_atoms
             '<ALT>' => 'typo'
         }
     );
-    # OTHER FEATURES IN ANGLE BRACKETS ####################
-    $atoms{anglefeature} = $self->create_atom
+    # CONTRACTIONS ####################
+    # There are many contracted words in Portuguese. Most of them involve a preposition
+    # and an article: "em" + "o" = "no"
+    # http://en.wikibooks.org/wiki/Portuguese/Contents/Common_Prepositions_and_Contractions
+    # Contracted words have been split during tokenization and the original tokens act as tree nodes.
+    # The <sam-> and <-sam> features indicate that there was a contraction.
+    # The contracted form is not indicated (but it is probably deterministic to derive it from the parts).
+    $atoms{sam} = $self->create_atom
     (
-        'surfeature' => 'anglefeature',
+        'surfeature' => 'sam',
         'decode_map' =>
         {
-            # Derivation by prefixation.
-            '<DERP>' => ['other' => {'derp' => '1'}],
-            # Derivation by suffixation.
-            '<DERS>' => ['other' => {'ders' => '1'}],
-            # Definite article.
-            # Occurs with pron-det as well, so do not set prontype = art, or we cannot distinguish the original pos = art.
-            # Set other instead, to preserve the <artd> feature.
-            '<artd>' => ['definiteness' => 'def', 'other' => {'artd' => '1'}],
-            # Indefinite article.
-            # Occurs with pron-det as well, so do not set prontype = art, or we cannot distinguish the original pos = art.
-            # Set other instead, to preserve the <arti> feature.
-            '<arti>' => ['definiteness' => 'ind', 'other' => {'arti' => '1'}],
-            # Kind of nodes coordinated by this conjunction.
-            '<co-acc>'  => ['other' => {'co-acc' => '1'}],
-            '<co-advl>' => ['other' => {'co-advl' => '1'}],
-            '<co-advo>' => ['other' => {'co-advo' => '1'}],
-            '<co-advs>' => ['other' => {'co-advs' => '1'}],
-            '<co-app>'  => ['other' => {'co-app' => '1'}],
-            '<co-fmc>'  => ['other' => {'co-fmc' => '1'}],
-            '<co-ger>'  => ['other' => {'co-ger' => '1'}],
-            '<co-inf>'  => ['other' => {'co-inf' => '1'}],
-            '<co-oc>'   => ['other' => {'co-oc'  => '1'}],
-            '<co-pass>' => ['other' => {'co-pass' => '1'}],
-            '<co-pcv>'  => ['other' => {'co-pcv' => '1'}],
-            '<co-piv>'  => ['other' => {'co-piv' => '1'}],
-            '<co-postad>' => ['other' => {'co-postad' => '1'}],
-            '<co-postnom>' => ['other' => {'co-postnom' => '1'}],
-            '<co-pred>' => ['other' => {'co-pred' => '1'}],
-            '<co-prenom>' => ['other' => {'co-prenom' => '1'}],
-            '<co-prparg>' => ['other' => {'co-prparg' => '1'}],
-            '<co-sc>'   => ['other' => {'co-sc' => '1'}],
-            '<co-subj>' => ['other' => {'co-subj' => '1'}],
-            '<co-vfin>' => ['other' => {'co-vfin' => '1'}],
-            # Collective reflexive pronoun (reunir-se, associar-se).
-            '<coll>'    => ['other' => {'coll' => '1'}],
-            # Demonstrative pronoun or adverb.
-            '<dem>'     => ['prontype' => 'dem'],
-            # Interrogative pronoun or adverb.
-            '<interr>'  => ['prontype' => 'int'],
-            # Relative pronoun or adverb.
-            '<rel>'     => ['prontype' => 'rel'],
-            # Possessive determiner pronoun.
-            '<poss'     => ['prontype' => 'prs', 'poss' => 'poss'],
-            # (Indefinite) quantifier pronoun or adverb.
-            # independent pronouns: algo, tudo, nada
-            # independent relative pronouns: todo_o_que
-            # determiners (pronouns): algum, alguma, alguns, algumas, uns, umas, vários, várias,
-            #    qualquer, pouco, poucos, muitos, mais,
-            #    todo, todo_o, todos, todas, ambos, ambas
-            # adverbs: pouco, menos, muito, mais, mais_de, quase, tanto, mesmo, demais, bastante, suficiente, bem
-            # demonstrative adverbs: t~ao
-            # This is not the class of indefinite pronouns. This class contains pronouns and adverbs of quantity.
-            # The pronouns and adverbs in this class can be indefinite (algo), total (todo), negative (nada), demonstrative (tanto, tao),
-            # interrogative (quanto), relative (todo_o_que). Many are indefinite, but not all.
-            '<quant>' => ['prontype' => 'ind|neg|tot', 'numtype' => 'card'],
-            # Reciprocal reflexive (amar-se).
-            '<reci>'  => ['prontype' => 'rcp'],
-            # Reflexive pronoun.
-            '<refl>'  => ['reflex' => 'reflex'],
-            # Reflexive usage of 3rd person possessive (seu, seus, sua, suas).
-            '<si>'    => ['reflex' => 'reflex', 'poss' => 'poss', 'person' => '3'],
-            # Differentiator (mesmo, outro, semelhante, tal).
-            '<diff>'  => ['other' => {'diff' => '1'}],
-            # Identifier pronoun (mesmo, próprio).
-            '<ident>' => ['other' => {'ident' => '1'}],
-            # Annotation or processing error.
-            '<error>' => ['other' => {'error' => '1'}],
-            # Verb heading finite main clause.
-            '<fmc>'   => ['other' => {'fmc' => '1'}],
-            # Focus marker, adverb or pronoun.
-            '<foc>'   => ['other' => {'foc' => '1'}],
             # First part in contracted word.
-            '<sam->'  => ['other' => {'sam-' => '1'}],
+            '<sam->'  => ['other' => {'sam' => 'first'}],
             # Second part in contracted word.
-            '<-sam>'  => ['other' => {'-sam' => '1'}],
-            # Hyphenated prefix, usually of reflexive verbs.
-            '<hyfen>' => ['hyph' => 'hyph'],
+            '<-sam>'  => ['other' => {'sam' => 'second'}]
         },
         'encode_map' =>
         {
-            'hyph' => { 'hyph' => '<hyfen>',
-                        '@'    => { 'other/derp' => { '1' => '<DERP>',
-                                                      '@' => { 'other/ders' => { '1' => '<DERS>' }}}}}
+            'other/sam' => { 'first'  => '<sam->',
+                             'second' => '<-sam>' }
+        }
+    );
+    # KIND OF NODES COORDINATED BY CONJUNCTION ####################
+    $atoms{co} = $self->create_atom
+    (
+        'surfeature' => 'co',
+        'decode_map' =>
+        {
+            # Kind of nodes coordinated by this conjunction.
+            '<co-acc>'     => ['other' => {'co' => 'acc'}],
+            '<co-advl>'    => ['other' => {'co' => 'advl'}],
+            '<co-advo>'    => ['other' => {'co' => 'advo'}],
+            '<co-advs>'    => ['other' => {'co' => 'advs'}],
+            '<co-app>'     => ['other' => {'co' => 'app'}],
+            '<co-fmc>'     => ['other' => {'co' => 'fmc'}],
+            '<co-ger>'     => ['other' => {'co' => 'ger'}],
+            '<co-inf>'     => ['other' => {'co' => 'inf'}],
+            '<co-oc>'      => ['other' => {'co' => 'oc'}],
+            '<co-pass>'    => ['other' => {'co' => 'pass'}],
+            '<co-pcv>'     => ['other' => {'co' => 'pcv'}],
+            '<co-piv>'     => ['other' => {'co' => 'piv'}],
+            '<co-postad>'  => ['other' => {'co' => 'postad'}],
+            '<co-postnom>' => ['other' => {'co' => 'postnom'}],
+            '<co-pred>'    => ['other' => {'co' => 'pred'}],
+            '<co-prenom>'  => ['other' => {'co' => 'prenom'}],
+            '<co-prparg>'  => ['other' => {'co' => 'prparg'}],
+            '<co-sc>'      => ['other' => {'co' => 'sc'}],
+            '<co-subj>'    => ['other' => {'co' => 'subj'}],
+            '<co-vfin>'    => ['other' => {'co' => 'vfin'}]
+        },
+        'encode_map' =>
+        {
+            'other/co' => { 'acc'     => '<co-acc>',
+                            'advl'    => '<co-advl>',
+                            'advo'    => '<co-advo>',
+                            'advs'    => '<co-advs>',
+                            'app'     => '<co-app>',
+                            'fmc'     => '<co-fmc>',
+                            'ger'     => '<co-ger>',
+                            'inf'     => '<co-inf>',
+                            'oc'      => '<co-oc>',
+                            'pass'    => '<co-pass>',
+                            'pcv'     => '<co-pcv>',
+                            'piv'     => '<co-piv>',
+                            'postad'  => '<co-postad>',
+                            'postnom' => '<co-postnom>',
+                            'pred'    => '<co-pred>',
+                            'prenom'  => '<co-prenom>',
+                            'prparg'  => '<co-prparg>',
+                            'sc'      => '<co-sc>',
+                            'subj'    => '<co-subj>',
+                            'vfin'    => '<co-vfin>' }
         }
     );
     # WORDS USED AS WORD CLASSES OTHER THAN THOSE THEY BELONG TO ####################
@@ -386,6 +488,7 @@ sub _create_atoms
             '<kc>'    => ['other' => {'transcat' => 'kc'}],
             '<ks>'    => ['other' => {'transcat' => 'ks'}],
             '<n>'     => ['other' => {'transcat' => 'n'}],
+            # n <prop>: Estado, Presidente, Congresso, Janeiro, Maio
             '<prop>'  => ['other' => {'transcat' => 'prop'}],
             '<prp>'   => ['other' => {'transcat' => 'prp'}]
         },
@@ -397,6 +500,34 @@ sub _create_atoms
                                   'n'    => '<n>',
                                   'prop' => '<prop>',
                                   'prp'  => '<prp>' }
+        }
+    );
+    # OTHER FEATURES IN ANGLE BRACKETS ####################
+    $atoms{anglefeature} = $self->create_atom
+    (
+        'surfeature' => 'anglefeature',
+        'decode_map' =>
+        {
+            # Derivation by prefixation.
+            '<DERP>' => ['other' => {'derp' => '1'}],
+            # Derivation by suffixation.
+            '<DERS>' => ['other' => {'ders' => '1'}],
+            # Annotation or processing error.
+            '<error>' => ['other' => {'error' => '1'}],
+            # Verb heading finite main clause.
+            '<fmc>'   => ['other' => {'fmc' => '1'}],
+            # Focus marker, adverb or pronoun.
+            # adv <foc>: que, é_que, foi, é, era
+            '<foc>'   => ['other' => {'foc' => '1'}],
+            # Hyphenated prefix, usually of reflexive verbs.
+            '<hyfen>' => ['hyph' => 'hyph'],
+        },
+        'encode_map' =>
+        {
+            'hyph' => { 'hyph' => '<hyfen>',
+                        '@'    => { 'other/derp' => { '1' => '<DERP>',
+                                                      '@' => { 'other/ders' => { '1' => '<DERS>',
+                                                                                 '@' => { 'other/foc' => { '1' => '<foc>' }}}}}}}
         }
     );
     # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
@@ -418,7 +549,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('pos', 'gender', 'number', 'case', 'person', 'tense', 'degree', 'alt', 'numtype', 'anglefeature', 'transcat');
+    my @features = ('pos', 'gender', 'number', 'case', 'person', 'tense', 'degree', 'alt', 'possessor', 'prontype', 'definiteness', 'numtype', 'anglefeature', 'sam', 'co', 'transcat');
     return \@features;
 }
 
@@ -433,7 +564,16 @@ sub _create_features_pos
     my $self = shift;
     my %features =
     (
-        'adj' => ['anglefeature', 'transcat', 'numtype', 'alt', 'degree', 'gender', 'number'],
+        'adj'       => ['anglefeature', 'transcat', 'numtype', 'alt', 'degree', 'gender', 'number'],
+        'adv'       => ['prontype', 'transcat', 'anglefeature', 'sam', 'co', 'alt', 'degree'],
+        'art'       => ['sam', 'alt', 'definiteness', 'gender', 'number'],
+        'conj-c'    => ['co'],
+        'conj-s'    => ['transcat'],
+        'n'         => ['anglefeature', 'transcat', 'alt', 'gender', 'number'],
+        'num'       => ['transcat', 'sam', 'alt', 'numtype', 'gender', 'number'],
+        'pp'        => ['sam'],
+        'pron-det'  => ['transcat', 'sam', 'possessor', 'prontype', 'definiteness', 'degree', 'gender', 'number'],
+        'pron-indp' => ['sam', 'alt', 'prontype', 'gender', 'number']
     );
     return \%features;
 }
@@ -448,6 +588,13 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
+    # Preprocess the tag. Processing of some features depends on processing of some other features.
+    # For adverbs, <dem> almost always comes together with <quant>.
+    # There was one occurrence of <dem> without <quant> (an error?) and it also came with the word "tão".
+    $tag =~ s/(adv\s+<dem>)\|<quant>/$1/;
+    $tag =~ s/<rel>\|<quant>/<relquant>/;
+    $tag =~ s/<interr>\|<quant>/<intquant>/;
+    $tag =~ s/<poss\|([123](S|P|S\/P))>/<poss$1>/;
     my $fs = Lingua::Interset::FeatureStructure->new();
     $fs->set_tagset('pt::conll');
     my $atoms = $self->atoms();
@@ -476,11 +623,19 @@ sub encode
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $atoms = $self->atoms();
     my $subpos = $atoms->{pos}->encode($fs);
+    my $pos = $subpos;
+    $pos =~ s/-.*//;
     my $fpos = $subpos;
     my $feature_names = $self->get_feature_names($fpos);
-    my $pos = $subpos;
     my $value_only = 1;
     my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names, $value_only);
+    # Postprocess the tag. Processing of some features depends on processing of some other features.
+    # For adverbs, <dem> almost always comes together with <quant>.
+    # There was one occurrence of <dem> without <quant> (an error?) and it also came with the word "tão".
+    $tag =~ s/<poss([123](S|P|S\/P))>/<poss|$1>/;
+    $tag =~ s/<intquant>/<interr>|<quant>/;
+    $tag =~ s/<relquant>/<rel>|<quant>/;
+    $tag =~ s/(adv\s+<dem>)/$1|<quant>/;
     return $tag;
 }
 
@@ -557,7 +712,6 @@ adj	adj	M|P
 adj	adj	M|S
 adv	adv	<-sam>
 adv	adv	<ALT>
-adv	adv	<DERP>|<DERS>
 adv	adv	<DERS>
 adv	adv	<KOMP>
 adv	adv	<SUP>
@@ -565,13 +719,11 @@ adv	adv	<co-acc>
 adv	adv	<co-advl>
 adv	adv	<co-prparg>
 adv	adv	<co-sc>
-adv	adv	<dem>
 adv	adv	<dem>|<quant>
 adv	adv	<dem>|<quant>|<KOMP>
 adv	adv	<foc>
 adv	adv	<interr>
 adv	adv	<interr>|<ks>
-adv	adv	<interr>|<quant>
 adv	adv	<kc>
 adv	adv	<kc>|<-sam>
 adv	adv	<kc>|<KOMP>
@@ -585,25 +737,18 @@ adv	adv	<n>|<KOMP>
 adv	adv	<prp>
 adv	adv	<quant>
 adv	adv	<quant>|<KOMP>
-adv	adv	<quant>|<KOMP>|F|P
 adv	adv	<quant>|<det>
 adv	adv	<rel>
 adv	adv	<rel>|<ks>
-adv	adv	<rel>|<ks>|<quant>
 adv	adv	<rel>|<prp>
 adv	adv	<rel>|<prp>|<co-advl>
 adv	adv	<rel>|<quant>
 adv	adv	<sam->
-adv	adv	F|S
-adv	adv	M|P
-adv	adv	M|S
 adv	adv	_
 art	art	<-sam>|<artd>|F|P
 art	art	<-sam>|<artd>|F|S
 art	art	<-sam>|<artd>|M|P
 art	art	<-sam>|<artd>|M|S
-art	art	<-sam>|<artd>|P
-art	art	<-sam>|<artd>|S
 art	art	<-sam>|<arti>|F|S
 art	art	<-sam>|<arti>|M|S
 art	art	<-sam>|F|P
@@ -611,22 +756,16 @@ art	art	<-sam>|F|S
 art	art	<-sam>|M|S
 art	art	<ALT>|<artd>|F|S
 art	art	<ALT>|F|S
-art	art	<artd>
 art	art	<artd>|F|P
 art	art	<artd>|F|S
 art	art	<artd>|M|P
 art	art	<artd>|M|S
 art	art	<arti>|F|S
 art	art	<arti>|M|S
-art	art	<dem>|F|S
-art	art	<dem>|M|S
 art	art	F|P
 art	art	F|S
 art	art	M|P
 art	art	M|S
-art	art	P
-art	art	S
-art	art	_
 conj	conj-c	<co-acc>
 conj	conj-c	<co-advl>
 conj	conj-c	<co-advo>
@@ -635,7 +774,6 @@ conj	conj-c	<co-app>
 conj	conj-c	<co-fmc>
 conj	conj-c	<co-ger>
 conj	conj-c	<co-inf>
-conj	conj-c	<co-inf>|<co-fmc>
 conj	conj-c	<co-oc>
 conj	conj-c	<co-pass>
 conj	conj-c	<co-pcv>
@@ -648,26 +786,14 @@ conj	conj-c	<co-prparg>
 conj	conj-c	<co-sc>
 conj	conj-c	<co-subj>
 conj	conj-c	<co-vfin>
-conj	conj-c	<co-vfin>|<co-fmc>
-conj	conj-c	<fmc>
-conj	conj-c	<quant>|<KOMP>
 conj	conj-c	_
-conj	conj-s	<co-prparg>
-conj	conj-s	<kc>
 conj	conj-s	<prp>
-conj	conj-s	<rel>
 conj	conj-s	_
 ec	ec	_
-in	in	F|S
-in	in	M|S
-in	in	PS|3S|IND
 in	in	_
 n	n	<ALT>|F|S
 n	n	<ALT>|M|P
 n	n	<ALT>|M|S
-n	n	<DERP>|<DERS>|F|P
-n	n	<DERP>|<DERS>|M|P
-n	n	<DERP>|<DERS>|M|S
 n	n	<DERP>|F|P
 n	n	<DERP>|F|S
 n	n	<DERP>|M|P
@@ -676,21 +802,14 @@ n	n	<DERS>|F|P
 n	n	<DERS>|F|S
 n	n	<DERS>|M|P
 n	n	<DERS>|M|S
-n	n	<NUM-ord>|F|S
-n	n	<co-prparg>|M|P
-n	n	<fmc>|F|S
 n	n	<hyfen>|F|S
 n	n	<hyfen>|M|P
 n	n	<hyfen>|M|S
-n	n	<n>|<NUM-ord>|F|S
-n	n	<n>|M|P
-n	n	<n>|M|S
 n	n	<prop>|F|P
 n	n	<prop>|F|S
 n	n	<prop>|M/F|S
 n	n	<prop>|M|P
 n	n	<prop>|M|S
-n	n	F
 n	n	F|P
 n	n	F|S
 n	n	F|S/P
@@ -699,7 +818,6 @@ n	n	M/F|S
 n	n	M|P
 n	n	M|S
 n	n	M|S/P
-n	n	_
 num	num	<-sam>|<card>|M|S
 num	num	<-sam>|M|S
 num	num	<ALT>|<card>|M|P
@@ -719,17 +837,8 @@ num	num	F|P
 num	num	M/F|P
 num	num	M|P
 num	num	M|S
-num	num	_
 pp	pp	<sam->
-pp	pp	F|S
 pp	pp	_
-pron	pron-det	<-sam>|<artd>|F|P
-pron	pron-det	<-sam>|<artd>|F|S
-pron	pron-det	<-sam>|<artd>|M|P
-pron	pron-det	<-sam>|<artd>|M|S
-pron	pron-det	<-sam>|<artd>|M|S/P
-pron	pron-det	<-sam>|<arti>|F|S
-pron	pron-det	<-sam>|<arti>|M|S
 pron	pron-det	<-sam>|<dem>|F|P
 pron	pron-det	<-sam>|<dem>|F|S
 pron	pron-det	<-sam>|<dem>|M|P
@@ -740,35 +849,12 @@ pron	pron-det	<-sam>|<diff>|M|P
 pron	pron-det	<-sam>|<diff>|M|S
 pron	pron-det	<-sam>|<quant>|F|P
 pron	pron-det	<-sam>|<quant>|M|P
-pron	pron-det	<-sam>|F|P
-pron	pron-det	<-sam>|F|S
-pron	pron-det	<-sam>|M|P
-pron	pron-det	<-sam>|M|S
-pron	pron-det	<KOMP>|F|P
-pron	pron-det	<KOMP>|F|S
-pron	pron-det	<KOMP>|M/F|S
-pron	pron-det	<KOMP>|M|P
-pron	pron-det	<KOMP>|M|S
-pron	pron-det	<artd>|F|P
-pron	pron-det	<artd>|F|S
-pron	pron-det	<artd>|M|P
-pron	pron-det	<artd>|M|S
-pron	pron-det	<arti>|F|S
-pron	pron-det	<arti>|M|S
 pron	pron-det	<dem>|<KOMP>|F|P
 pron	pron-det	<dem>|<KOMP>|M|P
-pron	pron-det	<dem>|<foc>|M|S
-pron	pron-det	<dem>|<quant>|F|S
-pron	pron-det	<dem>|<quant>|M|S
 pron	pron-det	<dem>|F|P
 pron	pron-det	<dem>|F|S
 pron	pron-det	<dem>|M|P
 pron	pron-det	<dem>|M|S
-pron	pron-det	<diff>|<KOMP>|F|P
-pron	pron-det	<diff>|<KOMP>|F|S
-pron	pron-det	<diff>|<KOMP>|M/F|S
-pron	pron-det	<diff>|<KOMP>|M|P
-pron	pron-det	<diff>|<KOMP>|M|S
 pron	pron-det	<diff>|F|P
 pron	pron-det	<diff>|F|S
 pron	pron-det	<diff>|M/F|S
@@ -788,8 +874,6 @@ pron	pron-det	<interr>|M/F|S/P
 pron	pron-det	<interr>|M|P
 pron	pron-det	<interr>|M|S
 pron	pron-det	<n>|<dem>|M|S
-pron	pron-det	<n>|<diff>|<KOMP>|F|S
-pron	pron-det	<n>|<diff>|<KOMP>|M|P
 pron	pron-det	<poss|1P>|F|P
 pron	pron-det	<poss|1P>|F|S
 pron	pron-det	<poss|1P>|M|P
@@ -820,7 +904,6 @@ pron	pron-det	<poss|3S>|F|P
 pron	pron-det	<poss|3S>|F|S
 pron	pron-det	<poss|3S>|M|P
 pron	pron-det	<poss|3S>|M|S
-pron	pron-det	<quant>
 pron	pron-det	<quant>|<KOMP>|F|P
 pron	pron-det	<quant>|<KOMP>|F|S
 pron	pron-det	<quant>|<KOMP>|M/F|S/P
@@ -850,8 +933,6 @@ pron	pron-indp	<-sam>|<rel>|F|S
 pron	pron-indp	<-sam>|<rel>|M|P
 pron	pron-indp	<-sam>|<rel>|M|S
 pron	pron-indp	<ALT>|<rel>|F|S
-pron	pron-indp	<artd>|F|S
-pron	pron-indp	<artd>|M|S
 pron	pron-indp	<dem>|M/F|S/P
 pron	pron-indp	<dem>|M|S
 pron	pron-indp	<diff>|M|S
@@ -862,10 +943,8 @@ pron	pron-indp	<interr>|M/F|S
 pron	pron-indp	<interr>|M/F|S/P
 pron	pron-indp	<interr>|M|P
 pron	pron-indp	<interr>|M|S
-pron	pron-indp	<quant>
 pron	pron-indp	<quant>|M/F|S
 pron	pron-indp	<quant>|M|S
-pron	pron-indp	<rel>
 pron	pron-indp	<rel>|F|P
 pron	pron-indp	<rel>|F|S
 pron	pron-indp	<rel>|M/F|P
@@ -897,9 +976,6 @@ pron	pron-pers	<-sam>|M|3S|ACC
 pron	pron-pers	<-sam>|M|3S|NOM
 pron	pron-pers	<-sam>|M|3S|NOM/PIV
 pron	pron-pers	<-sam>|M|3S|PIV
-pron	pron-pers	<coll>|F|3P|ACC
-pron	pron-pers	<coll>|M|3P|ACC
-pron	pron-pers	<coll>|M|3S|ACC
 pron	pron-pers	<hyfen>|<refl>|F|3S|ACC
 pron	pron-pers	<hyfen>|<refl>|M/F|1S|DAT
 pron	pron-pers	<hyfen>|F|3S|ACC
