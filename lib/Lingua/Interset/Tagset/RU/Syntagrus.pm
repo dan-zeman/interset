@@ -41,7 +41,7 @@ sub _create_atoms
 {
     my $self = shift;
     my %atoms;
-    # 1. PART OF SPEECH ####################
+    # PART OF SPEECH ####################
     $atoms{pos} = $self->create_atom
     (
         'surfeature' => 'pos',
@@ -75,29 +75,39 @@ sub _create_atoms
                                                '@'    => 'NID' }}}
         }
     );
-    foreach my $p (@positions)
-    {
-        # Part of speech
-        elsif($p eq 'V')
+    # SHORT (NOMINAL) FORM OF ADJECTIVES ####################
+    $atoms{shortadj} = $self->create_simple_atom
+    (
+        'intfeature' => 'variant',
+        'simple_decode_map' =>
         {
-            $f{pos} = 'verb';
+            'КР' => 'short'
         }
-        # Short (nominal) variant of adjectives
-        elsif($p eq 'КР')
+    );
+    # PART OF COMPOUND ####################
+    $atoms{compart} = $self->create_simple_atom
+    (
+        'intfeature' => 'hyph',
+        'simple_decode_map' =>
         {
-            $f{variant} = 'short';
+            'СЛ' => 'hyph'
         }
-        # Compound part
-        elsif($p eq 'СЛ')
+    );
+    # PO- (SMJAG) ####################
+    # For adjectives and adverbs: distinguishes forms with prefix по-
+    # (поближе, поскорее, подальше) from normal forms (больше, меньше, быстрей, дальше, позже).
+    $atoms{smjag} = $self->create_atom
+    (
+        'surfeature' => 'smjag',
+        'decode_map' =>
         {
-            $f{hyph} = 'hyph';
-        }
-        # For adjectives and adverbs: distinguishes forms with prefix по-
-        # (поближе, поскорее, подальше) from normal forms (больше, меньше, быстрей, дальше, позже).
-        elsif($p eq 'СМЯГ')
+            'СМЯГ' => ['other' => {'smjag' => '1'}]
+        },
+        'encode_map' =>
         {
-            $f{other}{smjag}++;
+            'other/smjag' => { '1' => 'СМЯГ' }
         }
+    );
         # Number
         elsif($p eq 'ЕД')
         {
