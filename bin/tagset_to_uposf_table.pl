@@ -82,6 +82,9 @@ if($n>0)
             $style = ' style="background:lightgray"' if($i%2==0);
             # Na výstupu chceme dva sloupce oddělené tabulátorem. Některé značky ale samy obsahují tabulátory, které musíme nejdříve něčím nahradit.
             $tag =~ s/\t/ /g;
+            $tag =~ s/&/&amp;/g;
+            $tag =~ s/</&lt;/g;
+            $tag =~ s/>/&gt;/g;
             $upos =~ s/\t/<\/td><td>/g;
             print("  <tr$style><td>$tag</td><td>=&gt;</td><td>$upos</td><td>${examples}</td></tr>\n");
         }
