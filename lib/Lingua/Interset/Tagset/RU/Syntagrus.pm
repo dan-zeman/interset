@@ -41,49 +41,43 @@ sub _create_atoms
 {
     my $self = shift;
     my %atoms;
+    # 1. PART OF SPEECH ####################
+    $atoms{pos} = $self->create_atom
+    (
+        'surfeature' => 'pos',
+        'decode_map' =>
+        {
+            'A'    => ['pos' => 'adj'],
+            'ADV'  => ['pos' => 'adv'],
+            'COM'  => ['hyph' => 'hyph'],
+            'CONJ' => ['pos' => 'conj'],
+            'INTJ' => ['pos' => 'int'],
+            'NID'  => [], # unknown word
+            'NUM'  => ['pos' => 'num'],
+            'P'    => ['pos' => 'part'],
+            'PART' => ['pos' => 'part'],
+            'PR'   => ['pos' => 'adp', 'adpostype' => 'prep'],
+            'S'    => ['pos' => 'noun'],
+            'V'    => ['pos' => 'verb']
+        },
+        'encode_map' =>
+        {
+            'pos' => { 'noun' => 'S',
+                       'adj'  => 'A',
+                       'num'  => 'NUM',
+                       'verb' => 'V',
+                       'adv'  => 'ADV',
+                       'adp'  => 'PR',
+                       'conj' => 'CONJ',
+                       'part' => 'PART',
+                       'int'  => 'INTJ',
+                       '@'    => { 'hyph' => { 'hyph' => 'COM',
+                                               '@'    => 'NID' }}}
+        }
+    );
     foreach my $p (@positions)
     {
         # Part of speech
-        if($p eq 'A')
-        {
-            $f{pos} = 'adj';
-        }
-        elsif($p eq 'ADV')
-        {
-            $f{pos} = 'adv';
-        }
-        elsif($p eq 'COM')
-        {
-            $f{hyph} = 'hyph';
-        }
-        elsif($p eq 'CONJ')
-        {
-            $f{pos} = 'conj';
-        }
-        elsif($p eq 'INTJ')
-        {
-            $f{pos} = 'int';
-        }
-        elsif($p eq 'NID')
-        {
-            # Unknown word. Nothing to set in Interset.
-        }
-        elsif($p eq 'NUM')
-        {
-            $f{pos} = 'num';
-        }
-        elsif($p =~ m/^P(ART)?$/)
-        {
-            $f{pos} = 'part';
-        }
-        elsif($p eq 'PR')
-        {
-            $f{pos} = 'prep';
-        }
-        elsif($p eq 'S')
-        {
-            $f{pos} = 'noun';
-        }
         elsif($p eq 'V')
         {
             $f{pos} = 'verb';
@@ -272,130 +266,6 @@ sub _create_atoms
             print STDERR ("Unknown tag '$p'.\n");
         }
     }
-    # 1. PART OF SPEECH ####################
-    $atoms{pos} = $self->create_atom
-    (
-        'surfeature' => 'pos',
-        'decode_map' =>
-        {
-            # adverb / adverb
-            # examples: inte, också, så, bara, nu
-            'AB' => ['pos' => 'adv'],
-            # determiner / determinerare
-            # examples: en, ett, den, det, alla, några, inga, de
-            'DT' => ['pos' => 'adj', 'prontype' => 'prn'],
-            # interrogative/relative adverb / frågande/relativt adverb
-            # example: när, där, hur, som, då
-            'HA' => ['pos' => 'adv', 'prontype' => 'int|rel'],
-            # interrogative/relative determiner / frågande/relativ determinerare
-            # examples: vilken, vilket, vilka
-            'HD' => ['pos' => 'adj', 'prontype' => 'int|rel'],
-            # interrogative/relative pronoun / frågande/relativt pronomen
-            # examples: som, vilken, vem, vilket, vad, vilka
-            'HP' => ['pos' => 'noun', 'prontype' => 'int|rel'],
-            # interrogative/relative possessive pronoun / frågande/relativt possesivt pronomen
-            # example: vars
-            'HS' => ['pos' => 'adj', 'prontype' => 'int|rel', 'poss' => 'poss'],
-            # infinitive marker / infinitivmärke
-            # example: att
-            'IE' => ['pos' => 'part', 'verbform' => 'inf'], ###!!! what is the current standard about infinitive markers?
-            # interjection / interjektion
-            # example: jo, ja, nej
-            'IN' => ['pos' => 'int'],
-            # adjective / adjektiv
-            # examples: stor, annan, själv, sådan, viss
-            'JJ' => ['pos' => 'adj'],
-            # coordinating conjunction / konjunktion
-            # examples: och, eller, som, än, men
-            'KN' => ['pos' => 'conj', 'conjtype' => 'coor'],
-            # meaning separating punctuation / meningsskiljande interpunktion
-            # examples: . ? : ! ...
-            'MAD' => ['pos' => 'punc', 'punctype' => 'peri|qest|excl|colo'],
-            # punctuation inside of sentence / interpunktion
-            # examples: , - : * ;
-            'MID' => ['pos' => 'punc', 'punctype' => 'comm|dash|semi'], # or 'colo'; but we do not want a conflict with 'MAD'
-            # noun / substantiv
-            # examples: år, arbete, barn, sätt, äktenskap
-            'NN' => ['pos' => 'noun', 'nountype' => 'com'],
-            # paired punctuation / interpunktion
-            # examples: ' ( )
-            'PAD' => ['pos' => 'punc', 'punctype' => 'quot|brck'],
-            # participle / particip
-            # examples: särskild, ökad, beredd, gift, oförändrad
-            'PC' => ['pos' => 'verb', 'verbform' => 'part'],
-            # particle / partikel
-            # examples: ut, upp, in, till, med
-            ###!!! Joakim currently converts the particles to adpositions because these are the Germanic verb particles.
-            'PL' => ['pos' => 'part'],
-            # proper name / egennamn
-            # example: F, N, Liechtenstein, Danmark, DK
-            'PM' => ['pos' => 'noun', 'nountype' => 'prop'],
-            # pronoun / pronomen
-            # examples: han, den, vi, det, denne, de, dessa
-            'PN' => ['pos' => 'noun', 'prontype' => 'prn'],
-            # preposition / preposition
-            # examples: i, av, på, för, till
-            'PP' => ['pos' => 'adp', 'adpostype' => 'prep'],
-            # possessive pronoun / possesivt pronomen
-            # examples: min, din, sin, vår, er, mitt, ditt, sitt, vårt, ert, mina, dina, sina, våra
-            'PS' => ['pos' => 'adj', 'prontype' => 'prs', 'poss' => 'poss'],
-            # cardinal numeral / grundtal
-            # examples: en, ett, två, tre, 1, 20, 2
-            'RG' => ['pos' => 'num', 'numtype' => 'card'],
-            # ordinal numeral / ordningstal
-            # examples: första, andra, tredje, fjärde, femte
-            'RO' => ['pos' => 'adj', 'numtype' => 'ord'],
-            # subordinating conjunction / subjunktion
-            # examples: att, om, innan, eftersom, medan
-            'SN' => ['pos' => 'conj', 'conjtype' => 'sub'],
-            # foreign word / utländskt ord
-            # examples: companionship, vice, versa, family, capita
-            'UO' => ['foreign' => 'foreign'],
-            # verb / verb
-            # examples: vara, få, ha, bli, kunna
-            'VB' => ['pos' => 'verb'],
-        },
-        'encode_map' =>
-        {
-            'pos' => { 'noun' => { 'prontype' => { ''    => { 'nountype' => { 'prop' => 'PM',
-                                                                              '@'    => 'NN' }},
-                                                   'int' => { 'poss' => { 'poss' => 'HS',
-                                                                          '@'    => 'HP' }},
-                                                   '@'   => { 'poss' => { 'poss' => 'PS',
-                                                                          '@'    => 'PN' }}}},
-                       'adj'  => { 'prontype' => { ''    => { 'verbform' => { 'part' => 'PC',
-                                                                              '@'    => { 'numtype' => { 'ord' => 'RO',
-                                                                                                         '@'   => 'JJ' }}}},
-                                                   'int' => { 'poss' => { 'poss' => 'HS',
-                                                                          '@'    => 'HD' }},
-                                                   '@'   => { 'poss' => { 'poss' => 'PS',
-                                                                          '@'    => 'DT' }}}},
-                       'num'  => { 'numtype' => { 'ord' => 'RO',
-                                                  '@'   => 'RG' }},
-                       'verb' => { 'verbform' => { 'part' => 'PC',
-                                                   '@'    => 'VB' }},
-                       'adv'  => { 'prontype' => { 'int' => 'HA',
-                                                   '@'   => 'AB' }},
-                       'adp'  => 'PP',
-                       'conj' => { 'verbform' => { 'inf' => 'IE',
-                                                   '@'   => { 'conjtype' => { 'sub' => 'SN',
-                                                                              '@'   => 'KN' }}}},
-                       'part' => { 'verbform' => { 'inf' => 'IE',
-                                                   '@'   => 'PL' }},
-                       'int'  => 'IN',
-                       'punc' => { 'punctype' => { 'peri' => 'MAD',
-                                                   'qest' => 'MAD',
-                                                   'excl' => 'MAD',
-                                                   'colo' => 'MAD', # or MID
-                                                   'comm' => 'MID',
-                                                   'semi' => 'MID',
-                                                   'dash' => 'MID',
-                                                   'quot' => 'PAD',
-                                                   'brck' => 'PAD',
-                                                   '@'    => 'MID' }},
-                       '@'    => 'UO' }
-        }
-    );
     # 2. DEGREE ####################
     $atoms{degree} = $self->create_simple_atom
     (
