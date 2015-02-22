@@ -108,312 +108,172 @@ sub _create_atoms
             'other/smjag' => { '1' => 'СМЯГ' }
         }
     );
-        # Number
-        elsif($p eq 'ЕД')
-        {
-            $f{number} = 'sing';
-        }
-        elsif($p eq 'МН')
-        {
-            $f{number} = 'plu';
-        }
-        # Gender
-        elsif($p eq 'ЖЕН')
-        {
-            $f{gender} = 'fem';
-        }
-        elsif($p eq 'МУЖ')
-        {
-            $f{gender} = 'masc';
-        }
-        elsif($p eq 'СРЕД')
-        {
-            $f{gender} = 'neut';
-        }
-        # Animateness
-        elsif($p eq 'НЕОД')
-        {
-            $f{animateness} = 'inan';
-        }
-        elsif($p eq 'ОД')
-        {
-            $f{animateness} = 'anim';
-        }
-        # Case
-        elsif($p eq 'ИМ') # Именительный / Номинатив (Nominative)
-        {
-            $f{case} = 'nom';
-        }
-        elsif($p eq 'РОД') # Родительный / Генитив (Genitive)
-        {
-            $f{case} = 'gen';
-        }
-        elsif($p eq 'ПАРТ') # Количественно-отделительный (партитив, или второй родительный) (Partitive) [not in Russian schools]
-        {
-            # Subcase of РОД. Occasionally the word form differs if the genitive
-            # is used for the noun describing a whole in relation to parts;
-            # these forms may also be preferred with mass nouns.
-            # «нет сахара» vs. «положить сахару»
-            $f{case} = 'gen';
-        }
-        elsif($p eq 'ДАТ') # Дательный / Датив (Dative)
-        {
-            $f{case} = 'dat';
-        }
-        elsif($p eq 'ВИН') # Винительный / Аккузатив (Accusative)
-        {
-            $f{case} = 'acc';
-        }
-        elsif($p eq 'ЗВ') # only one word type: "Господи" # Звательный (вокатив) (Vocative) [not in Russian schools]
-        {
-            $f{case} = 'voc';
-        }
-        elsif($p eq 'ПР') # Предложный / Препозитив (Prepositional) [in Russian schools taught as the last one after instrumental?]
-        {
-            $f{case} = 'loc';
-        }
-        elsif($p eq 'МЕСТН') # [not in Russian schools]
-        {
-            # Subcase of ПР. ПР is used for two meanings: 'about what?' (о чём?) and 'where?' (где?).
-            # The word forms of the two meanings mostly overlap but there are about 100 words whose forms differ:
-            # «о шкафе» — «в шкафу»
-            $f{case} = 'loc';
-        }
-        elsif($p eq 'ТВОР') # Творительный / Аблатив (объединяет инструментатив [Instrumental], локатив и аблатив)
-        {
-            $f{case} = 'ins';
-        }
-        # Degree of comparison
-        elsif($p eq 'СРАВ')
-        {
-            $f{degree} = 'comp';
-        }
-        elsif($p eq 'ПРЕВ')
-        {
-            $f{degree} = 'sup';
-        }
-        # Aspect
-        elsif($p eq 'НЕСОВ')
-        {
-            $f{aspect} = 'imp';
-        }
-        elsif($p eq 'СОВ')
-        {
-            $f{aspect} = 'perf';
-        }
-        # Verb form
-        elsif($p eq 'ДЕЕПР')
-        {
-            $f{verbform} = 'trans';
-        }
-        elsif($p eq 'ИЗЪЯВ')
-        {
-            $f{verbform} = 'fin';
-            $f{mood} = 'ind';
-        }
-        elsif($p eq 'ИНФ')
-        {
-            $f{verbform} = 'inf';
-        }
-        elsif($p eq 'ПОВ')
-        {
-            $f{verbform} = 'fin';
-            $f{mood} = 'imp';
-        }
-        elsif($p eq 'ПРИЧ')
-        {
-            $f{verbform} = 'part';
-        }
-        # Tense
-        elsif($p eq 'НЕПРОШ')
-        {
-            $f{tense} = ['pres'|'fut'];
-        }
-        elsif($p eq 'ПРОШ')
-        {
-            $f{tense} = 'past';
-        }
-        elsif($p eq 'НАСТ')
-        {
-            $f{tense} = 'pres';
-        }
-        # Person
-        elsif($p eq '1-Л')
-        {
-            $f{person} = 1;
-        }
-        elsif($p eq '2-Л')
-        {
-            $f{person} = 2;
-        }
-        elsif($p eq '3-Л')
-        {
-            $f{person} = 3;
-        }
-        # Voice: страдательный залог = passive voice
-        elsif($p eq 'СТРАД')
-        {
-            $f{voice} = 'pass';
-        }
-        # Non-standard spelling
-        elsif($p eq 'НЕСТАНД')
-        {
-            $f{typo} = typo;
-        }
-        # Obsolete tags
-        elsif($p eq 'МЕТА')
-        {
-            # This tag has been encountered at one token only, without any obvious purpose.
-            $f{other}{meta}++;
-        }
-        elsif($p eq 'НЕПРАВ')
-        {
-            # This tag has been encountered at two tokens only, without any obvious purpose.
-            $f{other}{neprav}++;
-        }
-        else
-        {
-            print STDERR ("Unknown tag '$p'.\n");
-        }
-    }
-    # 2. DEGREE ####################
-    $atoms{degree} = $self->create_simple_atom
-    (
-        'intfeature' => 'degree',
-        'simple_decode_map' =>
-        {
-            'POS' => 'pos',
-            'KOM' => 'comp',
-            'SUV' => 'sup'
-        }
-    );
-    # 3. GENDER ####################
-    $atoms{gender} = $self->create_simple_atom
-    (
-        'intfeature' => 'gender',
-        'simple_decode_map' =>
-        {
-            'MAS' => 'masc',
-            'UTR' => 'com',
-            'NEU' => 'neut',
-            'UTR/NEU' => ''
-        }
-    );
-    # 4. NUMBER ####################
+    # NUMBER ####################
     $atoms{number} = $self->create_simple_atom
     (
         'intfeature' => 'number',
         'simple_decode_map' =>
         {
-            'SIN' => 'sing',
-            'PLU' => 'plur',
-            'SIN/PLU' => ''
+            'ЕД' => 'sing',
+            'МН' => 'plur'
         }
     );
-    # 5. CASE ####################
+    # GENDER ####################
+    $atoms{gender} = $self->create_simple_atom
+    (
+        'intfeature' => 'gender',
+        'simple_decode_map' =>
+        {
+            'ЖЕН'  => 'fem',
+            'МУЖ'  => 'masc',
+            'СРЕД' => 'neut'
+        }
+    );
+    # ANIMACY ####################
+    $atoms{animateness} = $self->create_simple_atom
+    (
+        'intfeature' => 'animateness',
+        'simple_decode_map' =>
+        {
+            'НЕОД' => 'inan',
+            'ОД'   => 'anim'
+        }
+    );
+    # CASE ####################
     $atoms{case} = $self->create_simple_atom
     (
         'intfeature' => 'case',
         'simple_decode_map' =>
         {
-            'NOM' => 'nom',
-            'GEN' => 'gen'
+            # Именительный / Номинатив (Nominative)
+            'ИМ'    => 'nom',
+            # Родительный / Генитив (Genitive)
+            'РОД'   => 'gen',
+            # Количественно-отделительный (партитив, или второй родительный) (Partitive) [not in Russian schools]
+            # Subcase of РОД. Occasionally the word form differs if the genitive.
+            # It is used for the noun describing a whole in relation to parts;
+            # these forms may also be preferred with mass nouns.
+            # «нет сахара» vs. «положить сахару»
+            'ПАРТ'  => 'par',
+            # Дательный / Датив (Dative)
+            'ДАТ'   => 'dat',
+            # Винительный / Аккузатив (Accusative)
+            'ВИН'   => 'acc',
+            # Звательный (вокатив) (Vocative) [not in Russian schools]
+            # only one word type: "Господи"
+            'ЗВ'    => 'voc',
+            # Предложный / Препозитив (Prepositional) [in Russian schools taught as the last one after instrumental?]
+            'ПР'    => 'loc',
+            # [not in Russian schools]
+            # Subcase of ПР. ПР is used for two meanings: 'about what?' (о чём?) and 'where?' (где?).
+            # The word forms of the two meanings mostly overlap but there are about 100 words whose forms differ:
+            # «о шкафе» — «в шкафу»
+            'МЕСТН' => 'loc',
+            # Творительный / Аблатив (объединяет инструментатив [Instrumental], локатив и аблатив)
+            'ТВОР'  => 'ins'
         }
     );
-    # 6. SUBJECT / OBJECT FORM ####################
-    $atoms{subjobj} = $self->create_simple_atom
+    # DEGREE OF COMPARISON ####################
+    $atoms{degree} = $self->create_simple_atom
     (
-        'intfeature' => 'case',
+        'intfeature' => 'degree',
         'simple_decode_map' =>
         {
-            'SUB' => 'nom',
-            'OBJ' => 'acc',
-            'SUB/OBJ' => ''
+            'СРАВ' => 'comp',
+            'ПРЕВ' => 'sup'
         }
     );
-    # 7. DEFINITENESS ####################
-    $atoms{definiteness} = $self->create_simple_atom
+    # ASPECT ####################
+    $atoms{aspect} = $self->create_simple_atom
     (
-        'intfeature' => 'definiteness',
+        'intfeature' => 'aspect',
         'simple_decode_map' =>
         {
-            'DEF' => 'def',
-            'IND' => 'ind',
-            'IND/DEF' => ''
+            'НЕСОВ' => 'imp',
+            'СОВ'   => 'perf'
         }
     );
-    # 8. VERB FORM, MOOD, TENSE AND ASPECT ####################
+    # VERB FORM ####################
     $atoms{verbform} = $self->create_atom
     (
         'surfeature' => 'verbform',
         'decode_map' =>
         {
-            # infinitive / infinitiv
-            'INF' => ['verbform' => 'inf'],
-            # perfect participle / particip perfekt
-            'PRF' => ['verbform' => 'part', 'aspect' => 'perf', 'tense' => 'past'],
-            # present indicative or present subjunctive or present participle / presens eller particip presens
-            'PRS' => ['tense' => 'pres'],
-            # past indicative or subjunctive / preteritum
-            'PRT' => ['verbform' => 'fin', 'tense' => 'past'],
-            # imperative / imperativ
-            'IMP' => ['verbform' => 'fin', 'mood' => 'imp'],
-            # subjunctive / konjunktiv
-            'KON' => ['verbform' => 'fin', 'mood' => 'sub'],
-            # supine / supinum
-            'SUP' => ['verbform' => 'sup']
+            'ДЕЕПР' => ['verbform' => 'trans'],
+            'ИЗЪЯВ' => ['verbform' => 'fin', 'mood' => 'ind'],
+            'ИНФ'   => ['verbform' => 'inf'],
+            'ПОВ'   => ['verbform' => 'fin', 'mood' => 'imp'],
+            'ПРИЧ'  => ['verbform' => 'part']
         },
         'encode_map' =>
         {
-            'verbform' => { 'inf'  => 'INF',
-                            'fin'  => { 'mood' => { 'ind' => { 'tense' => { 'pres' => 'PRS',
-                                                                            'past' => 'PRT' }},
-                                                    'sub' => { 'tense' => { 'pres' => 'KON|PRS',
-                                                                            'past' => 'KON|PRT' }},
-                                                    'imp' => 'IMP',
-                                                    '@'   => { 'tense' => { 'pres' => 'PRS',
-                                                                            'past' => 'PRT' }}}},
-                            'sup'  => 'SUP',
-                            'part' => { 'tense' => { 'pres' => 'PRS',
-                                                     'past' => 'PRF' }},
-                            '@'    => { 'tense' => { 'pres' => 'PRS' }}}
+            'verbform' => { 'inf'   => 'ИНФ',
+                            'fin'   => { 'mood' => { 'imp' => 'ПОВ',
+                                                     '@'   => 'ИЗЪЯВ' }},
+                            'part'  => 'ПРИЧ',
+                            'trans' => 'ДЕЕПР' }
         }
     );
-    # 9. VOICE ####################
+    # TENSE ####################
+    $atoms{tense} = $self->create_simple_atom
+    (
+        'intfeature' => 'tense',
+        'simple_decode_map' =>
+        {
+            'НЕПРОШ' => 'pres|fut',
+            'ПРОШ'   => 'past',
+            'НАСТ'   => 'pres'
+        }
+    );
+    # PERSON ####################
+    $atoms{person} = $self->create_simple_atom
+    (
+        'intfeature' => 'person',
+        'simple_decode_map' =>
+        {
+            '1-Л' => '1',
+            '2-Л' => '2',
+            '3-Л' => '3'
+        }
+    );
+    # VOICE ####################
     $atoms{voice} = $self->create_simple_atom
     (
         'intfeature' => 'voice',
         'simple_decode_map' =>
         {
-            # E.g. verb preteritum aktiv
-            # Example: hänvisade = referred
-            'AKT' => 'act',
-            # E.g. verb preteritum s-form
-            # Example: tillfrågades = asked
-            ###!!! How did we come to conclude that "s-form" means passive?
-            ###!!! But Joakim also decodes it as passive.
-            'SFO' => 'pass'
+            # Voice: страдательный залог = passive voice
+            'СТРАД' => 'pass'
         }
     );
-    # 10. FORM ####################
-    $atoms{form} = $self->create_atom
+    # NON-STANDARD SPELLING ####################
+    $atoms{typo} = $self->create_simple_atom
     (
-        'surfeature' => 'form',
+        'intfeature' => 'typo',
+        'simple_decode_map' =>
+        {
+            'НЕСТАНД' => 'typo'
+        }
+    );
+    # OBSOLETE TAGS ####################
+    $atoms{obsolete} = $self->create_atom
+    (
+        'surfeature' => 'obsolete',
         'decode_map' =>
         {
-            # hyphenated prefix / sammansättningsform
-            'SMS' => ['hyph' => 'hyph'],
-            # abbreviation / förkortning
-            'AN' => ['abbr' => 'abbr']
+            # This tag has been encountered at one token only, without any obvious purpose.
+            'МЕТА'   => ['other' => {'obsolete' => 'meta'}],
+            # This tag has been encountered at two tokens only, without any obvious purpose.
+            'НЕПРАВ' => ['other' => {'obsolete' => 'neprav'}]
         },
         'encode_map' =>
         {
-            'hyph' => { 'hyph' => 'SMS',
-                        '@'    => { 'abbr' => { 'abbr' => 'AN' }}}
+            'other/obsolete' => { 'meta'   => 'МЕТА',
+                                  'neprav' => 'НЕПРАВ' }
         }
     );
     # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
-    my @fatoms = map {$atoms{$_}} (qw(pos degree gender number case subjobj definiteness verbform voice form));
+    my @fatoms = map {$atoms{$_}} (qw(pos shortadj compart smjag number gender animateness case degree aspect verbform tense person voice typo obsolete));
     $atoms{feature} = $self->create_merged_atom
     (
         'surfeature' => 'feature',
@@ -434,22 +294,6 @@ sub _create_features_pos
     my %features =
     (
         'NN' => ['gender', 'number', 'definiteness', 'case', 'form'],
-        'PM' => ['case', 'form'],
-        'JJ' => ['degree', 'gender', 'number', 'definiteness', 'case', 'form'],
-        'PC' => ['verbform', 'gender', 'number', 'definiteness', 'case', 'form'],
-        'DT' => ['gender', 'number', 'definiteness', 'form'],
-        'HD' => ['gender', 'number', 'definiteness', 'form'],
-        'PN' => ['gender', 'number', 'definiteness', 'subjobj', 'form'],
-        'PS' => ['gender', 'number', 'definiteness', 'form'],
-        'HP' => ['gender', 'number', 'definiteness', 'form'],
-        'HS' => ['definiteness'],
-        'RG' => ['gender', 'number', 'definiteness', 'case', 'form'],
-        'RO' => ['gender', 'number', 'definiteness', 'case', 'form'],
-        'VB' => ['verbform', 'tense', 'voice', 'form'],
-        'AB' => ['degree', 'form'],
-        'PP' => ['form'],
-        'KN' => ['form'],
-        'PL' => ['form']
     );
     return \%features;
 }
@@ -465,9 +309,9 @@ sub decode
     my $self = shift;
     my $tag = shift;
     my $fs = Lingua::Interset::FeatureStructure->new();
-    $fs->set_tagset('sv::suc');
+    $fs->set_tagset('ru::syntagrus');
     my $atoms = $self->atoms();
-    my @features = split(/\|/, $tag);
+    my @features = split(/\s+/, $tag);
     foreach my $feature (@features)
     {
         $atoms->{feature}->decode_and_merge_hard($feature, $fs);
@@ -502,16 +346,7 @@ sub encode
             }
         }
     }
-    my $tag = join('|', @features);
-    # A few tags have other forms than expected.
-    $tag =~ s:HP\|UTR/NEU\|SIN/PLU\|IND/DEF:HP|-|-|-:;
-    $tag =~ s:(JJ|NN|PC|PS)\|.*\|AN:$1|AN:;
-    $tag =~ s:JJ\|POS\|UTR\|SIN/PLU\|IND/DEF\|SMS:JJ|POS|UTR|-|-|SMS:;
-    $tag =~ s:NN\|UTR/NEU\|SIN/PLU\|IND/DEF$:NN|-|-|-|-:;
-    $tag =~ s:NN\|UTR/NEU\|SIN/PLU\|IND/DEF\|SMS:NN|SMS:;
-    $tag =~ s:NN\|(NEU|UTR)\|SIN/PLU\|IND/DEF$:NN|$1|-|-|-:;
-    $tag =~ s:NN\|(NEU|UTR)\|SIN/PLU\|IND/DEF\|SMS:NN|$1|-|-|SMS:;
-    $tag =~ s:(RG|RO)\|UTR/NEU\|SIN/PLU\|IND/DEF:$1:;
+    my $tag = join(' ', @features);
     return $tag;
 }
 
