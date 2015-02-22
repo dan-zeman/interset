@@ -15,7 +15,7 @@ extends 'Lingua::Interset::Tagset';
 
 
 has 'atoms' => ( isa => 'HashRef', is => 'ro', builder => '_create_atoms', lazy => 1 );
-has 'features_pos' => ( isa => 'HashRef', is => 'ro', builder => '_create_features_pos', lazy => 1 );
+has 'features_all' => ( isa => 'ArrayRef', is => 'ro', builder => '_create_features_all', lazy => 1 );
 
 
 
@@ -163,12 +163,14 @@ sub _create_atoms
             # only one word type: "Господи"
             'ЗВ'    => 'voc',
             # Предложный / Препозитив (Prepositional) [in Russian schools taught as the last one after instrumental?]
+            # See also "МЕСТН" below. Since "ПР" is the more widely used value and since it is parallel to locative
+            # cases in other Slavic languages, I use "loc" for "ПР" and seek another Interset value for "МЕСТН".
             'ПР'    => 'loc',
             # [not in Russian schools]
             # Subcase of ПР. ПР is used for two meanings: 'about what?' (о чём?) and 'where?' (где?).
             # The word forms of the two meanings mostly overlap but there are about 100 words whose forms differ:
             # «о шкафе» — «в шкафу»
-            'МЕСТН' => 'loc',
+            'МЕСТН' => 'ine',
             # Творительный / Аблатив (объединяет инструментатив [Instrumental], локатив и аблатив)
             'ТВОР'  => 'ins'
         }
@@ -273,7 +275,7 @@ sub _create_atoms
         }
     );
     # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
-    my @fatoms = map {$atoms{$_}} (qw(pos shortadj compart smjag number gender animateness case degree aspect verbform tense person voice typo obsolete));
+    my @fatoms = map {$atoms{$_}} (@{$self->features_all()});
     $atoms{feature} = $self->create_merged_atom
     (
         'surfeature' => 'feature',
@@ -285,17 +287,17 @@ sub _create_atoms
 
 
 #------------------------------------------------------------------------------
-# Creates the list of surface features (character positions) that can appear
-# with particular parts of speech.
+# Creates the list of all surface CoNLL features that can appear in the FEATS
+# column. This list will be used in decode().
 #------------------------------------------------------------------------------
-sub _create_features_pos
+sub _create_features_all
 {
     my $self = shift;
-    my %features =
-    (
-        'NN' => ['gender', 'number', 'definiteness', 'case', 'form'],
-    );
-    return \%features;
+    my @features = ('pos', 'degree', 'smjag',
+                    'aspect', 'voice', 'verbform', 'tense', 'shortadj',
+                    'number', 'gender', 'case', 'animateness', 'person',
+                    'compart', 'typo', 'obsolete');
+    return \@features;
 }
 
 
@@ -329,9 +331,8 @@ sub encode
     my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $atoms = $self->atoms();
-    my $pos = $atoms->{pos}->encode($fs);
-    my $features = $self->features_pos()->{$pos};
-    my @features = ($pos);
+    my $features = $self->features_all();
+    my @features = ();
     if(defined($features))
     {
         foreach my $feature (@{$features})
@@ -354,11 +355,8 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
-# The source list is the tagset of the Swedish SUC corpus; see also the
-# UD Swedish treebank.
-# http://spraakbanken.gu.se/parole/tags.phtml
-# total tags:
-# 155
+# The corpus contains 376 different tags.
+# After cleaning up (PART vs. P; COM) we have 374 tags.
 #------------------------------------------------------------------------------
 sub list
 {
@@ -416,7 +414,6 @@ ADV
 ADV НЕСТАНД
 ADV СРАВ
 ADV СРАВ СМЯГ
-COM
 COM СЛ
 CONJ
 INTJ
@@ -459,7 +456,6 @@ NUM СЛ
 NUM СРЕД ВИН
 NUM СРЕД ИМ
 NUM ТВОР
-P
 PART
 PART НЕПРАВ
 PR
