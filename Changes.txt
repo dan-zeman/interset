@@ -3,6 +3,7 @@
 Drivers:
 * RO::Rdt
 * RU::Syntagrus
+* SK::Snk
 
 
 
