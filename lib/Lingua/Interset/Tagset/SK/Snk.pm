@@ -14,6 +14,10 @@ extends 'Lingua::Interset::Tagset';
 
 
 
+has 'atoms' => ( isa => 'HashRef', is => 'ro', builder => '_create_atoms', lazy => 1 );
+
+
+
 #------------------------------------------------------------------------------
 # Returns the tagset id that should be set as the value of the 'tagset' feature
 # during decoding. Every derived class must (re)define this method! The result
@@ -334,7 +338,7 @@ sub _create_atoms
     );
     # SPELLING ERROR / CHYBNÝ ZÁPIS ####################
     # Optional appendix to the tag.
-    $atoms{proper} = $self->create_simple_atom
+    $atoms{typo} = $self->create_simple_atom
     (
         'intfeature' => 'typo',
         'simple_decode_map' =>
@@ -343,7 +347,87 @@ sub _create_atoms
             ':q' => 'typo'
         }
     );
-    return $atoms;
+    # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
+    my @fatoms = map {$atoms{$_}} (qw(pos morphpos gender number case degree agglutination verbform aspect person negativeness voice adpostype conditionality proper typo));
+    $atoms{feature} = $self->create_merged_atom
+    (
+        'surfeature' => 'feature',
+        'atoms'      => \@fatoms
+    );
+    return \%atoms;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Decodes a physical tag (string) and returns the corresponding feature
+# structure.
+#------------------------------------------------------------------------------
+sub decode
+{
+    my $self = shift;
+    my $tag = shift;
+    my $fs = Lingua::Interset::FeatureStructure->new();
+    $fs->set_tagset('sk::snk');
+    my ($pos, $features, $appendix);
+    if($tag =~ m/^(.)([^:]*)(:.*)?$/)
+    {
+        $pos = $1;
+        $features = $2;
+        $appendix = $3;
+        $appendix = '' if(!defined($appendix));
+    }
+    else
+    {
+        # We do not throw exceptions from Interset drivers but if we did, this would be a good occasion.
+        $features = $tag;
+    }
+    my @features = split(//, $features);
+    # Both appendices could be present.
+    while($appendix =~ s/^(:.)//)
+    {
+        push(@features, $1);
+    }
+    my $atoms = $self->atoms();
+    # Decode part of speech.
+    $atoms->{pos}->decode_and_merge_hard($pos, $fs);
+    # Decode feature values.
+    foreach my $feature (@features)
+    {
+        $atoms->{feature}->decode_and_merge_hard($feature, $fs);
+    }
+    return $fs;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Takes feature structure and returns the corresponding physical tag (string).
+#------------------------------------------------------------------------------
+sub encode
+{
+    my $self = shift;
+    my $fs = shift; # Lingua::Interset::FeatureStructure
+    my $atoms = $self->atoms();
+    my $pos = $atoms->{pos}->encode($fs);
+    my $features;# = $self->features_pos()->{$pos};
+    my @features = ($pos);
+    if(defined($features))
+    {
+        foreach my $feature (@{$features})
+        {
+            if(defined($feature) && defined($atoms->{$feature}))
+            {
+                my $value = $atoms->{$feature}->encode($fs);
+                if(defined($value) && $value ne '')
+                {
+                    push(@features, $value);
+                }
+            }
+        }
+    }
+    my $tag = join('', @features);
+    return $tag;
 }
 
 
