@@ -106,10 +106,27 @@ sub _create_atoms
         'encode_map' =>
         {
             'pos' => { 'noun' => { 'nountype' => { 'prop' => 'Noun-proper',
-                                                   '@'    => 'Noun-common' }},
-                       'adj'  => { 'poss' => { 'poss' => 'Adjective-possessive',
-                                               '@'    => { 'other/adjtype' => { 'ordinal' => 'Adjective-ordinal',
-                                                                                '@'       => 'Adjective-qualificative' }}}},
+                                                   '@'    => { 'prontype' => { 'dem' => 'Pronoun-demonstrative',
+                                                                               'tot' => 'Pronoun-general',
+                                                                               'ind' => 'Pronoun-indefinite',
+                                                                               'int' => 'Pronoun-interrogative',
+                                                                               'neg' => 'Pronoun-negative',
+                                                                               'prs' => { 'reflex' => { 'reflex' => 'Pronoun-reflexive',
+                                                                                                        '@'      => 'Pronoun-personal' }},
+                                                                               'rel' => 'Pronoun-relative',
+                                                                               '@'   => 'Noun-common' }}}},
+                       'adj'  => { 'numtype' => { 'ord' => 'Numeral-ordinal',
+                                                  '@'   => { 'prontype' => { 'dem' => 'Pronoun-demonstrative',
+                                                                             'tot' => 'Pronoun-general',
+                                                                             'ind' => 'Pronoun-indefinite',
+                                                                             'int' => 'Pronoun-interrogative',
+                                                                             'neg' => 'Pronoun-negative',
+                                                                             'prs' => { 'reflex' => { 'reflex' => 'Pronoun-reflexive',
+                                                                                                      '@'      => 'Pronoun-possessive' }},
+                                                                             'rel' => 'Pronoun-relative',
+                                                                             '@'   => { 'poss' => { 'poss' => 'Adjective-possessive',
+                                                                                                    '@'    => { 'other/adjtype' => { 'ordinal' => 'Adjective-ordinal',
+                                                                                                                                     '@'       => 'Adjective-qualificative' }}}}}}}},
                        'num'  => { 'numtype' => { 'ord'  => 'Numeral-ordinal',
                                                   'mult' => 'Numeral-multiple',
                                                   'gen'  => 'Numeral-special',
@@ -117,14 +134,15 @@ sub _create_atoms
                        'verb' => { 'verbtype' => { 'cop' => 'Verb-copula',
                                                    'mod' => 'Verb-modal',
                                                    '@'   => 'Verb-main' }},
-                       'adv'  => 'Adverb-general',
+                       'adv'  => { 'numtype' => { 'mult' => 'Numeral-multiple',
+                                                  '@'    => 'Adverb-general' }},
                        'adp'  => 'Adposition-preposition',
                        'conj' => { 'conjtype' => { 'sub' => 'Conjunction-subordinating',
                                                    '@'   => 'Conjunction-coordinating' }},
                        'part' => 'Particle',
                        'int'  => 'Interjection',
-                       'punc' => 'Punctuation',
-                       'sym'  => 'Punctuation',
+                       'punc' => 'PUNC',
+                       'sym'  => 'PUNC',
                        '@'    => { 'abbr' => { 'abbr' => 'Abbreviation' }}}
         }
     );
@@ -150,6 +168,16 @@ sub _create_atoms
             'neuter'    => 'neut'
         }
     );
+    # ANIMACY ####################
+    $atoms{Animate} = $self->create_simple_atom
+    (
+        'intfeature' => 'animateness',
+        'simple_decode_map' =>
+        {
+            'yes' => 'anim',
+            'no'  => 'inan'
+        }
+    );
     # NUMBER ####################
     $atoms{Number} = $self->create_simple_atom
     (
@@ -173,6 +201,23 @@ sub _create_atoms
             'accusative'   => 'acc',
             'locative'     => 'loc',
             'instrumental' => 'ins'
+        }
+    );
+    # DEFINITENESS ####################
+    # This feature is not the same as definiteness in Germanic and Romance languages.
+    # It distinguishes two forms of some adjectives: the short form (nominal) from the long form (pronominal).
+    # To maintain analogy with other Slavic languages, we decode it as the variant feature, not as definiteness.
+    $atoms{Definiteness} = $self->create_simple_atom
+    (
+        'intfeature' => 'variant',
+        'simple_decode_map' =>
+        {
+            # Definite = long form, also called pronominal.
+            # stari, veliki, edini, miselni, poglavitni
+            'yes' => 'long',
+            # Indefinite = short form, also called nominal.
+            # sam, star, preden, poln, živ
+            'no'  => 'short'
         }
     );
     # FORMATION OF PREPOSITIONS ####################
@@ -239,7 +284,8 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'masculine' => 'masc',
-            'feminine'  => 'fem'
+            'feminine'  => 'fem',
+            'neuter'    => 'neut'
         }
     );
     # REFERENT TYPE ####################
@@ -339,7 +385,8 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('Degree', 'Gender', 'Number', 'Case', 'Formation', 'Form', 'Syntactic-Type', 'Clitic', 'Owner-Number', 'Owner-Gender', 'Referent-Type',
+    my @features = ('Degree', 'Gender', 'Animate', 'Number', 'Case',
+                    'Definiteness', 'Formation', 'Form', 'Syntactic-Type', 'Clitic', 'Owner-Number', 'Owner-Gender', 'Referent-Type',
                     'VForm', 'Tense', 'Person', 'Negative', 'Voice');
     return \@features;
 }
@@ -355,7 +402,33 @@ sub _create_features_pos
     my $self = shift;
     my %features =
     (
-        'adj'       => ['anglefeature', 'transcat', 'numtype', 'alt', 'degree', 'gender', 'number'],
+        'Adjective-ordinal' => ['Degree', 'Gender', 'Number', 'Case', 'Animate'],
+        'Adjective-possessive' => ['Degree', 'Gender', 'Number', 'Case', 'Animate'],
+        'Adjective-qualificative' => ['Degree', 'Gender', 'Number', 'Case', 'Definiteness', 'Animate'],
+        'Adposition-preposition' => ['Formation', 'Case'],
+        'Adverb-general' => ['Degree'],
+        'Conjunction-coordinating' => ['Formation'],
+        'Conjunction-subordinating' => ['Formation'],
+        'Noun-common' => ['Gender', 'Number', 'Case', 'Animate'],
+        'Noun-proper' => ['Gender', 'Number', 'Case', 'Animate'],
+        'Numeral-cardinal' => ['Gender', 'Number', 'Case', 'Form', 'Animate'],
+        'Numeral-multiple' => ['Gender', 'Number', 'Case', 'Form'],
+        'Numeral-ordinal' => ['Gender', 'Number', 'Case', 'Form', 'Animate'],
+        'Numeral-special' => ['Gender', 'Number', 'Case', 'Form'],
+        'Pronoun-demonstrative' => ['Gender', 'Number', 'Case', 'Syntactic-Type', 'Animate'],
+        'Pronoun-general' => ['Gender', 'Number', 'Case', 'Syntactic-Type', 'Animate'],
+        'Pronoun-indefinite' => ['Gender', 'Number', 'Case', 'Syntactic-Type', 'Animate'],
+        'Pronoun-interrogative' => ['Gender', 'Number', 'Case', 'Syntactic-Type', 'Animate'],
+        'Pronoun-negative' => ['Gender', 'Number', 'Case', 'Syntactic-Type', 'Animate'],
+        'Pronoun-personal' => ['Person', 'Gender', 'Number', 'Case', 'Clitic', 'Syntactic-Type'],
+        'Pronoun-possessive' => ['Person', 'Gender', 'Number', 'Case', 'Owner-Number', 'Owner-Gender', 'Syntactic-Type', 'Animate'],
+        'Pronoun-reflexive' => ['Gender', 'Number', 'Case', 'Clitic', 'Referent-Type', 'Syntactic-Type'],
+        'Pronoun-reflexive0' => ['Clitic'],
+        'Pronoun-possessive-reflexive' => ['Gender', 'Number', 'Case', 'Referent-Type', 'Syntactic-Type', 'Animate'],
+        'Pronoun-relative' => ['Gender', 'Number', 'Case', 'Syntactic-Type', 'Animate'],
+        'Verb-copula' => ['VForm', 'Tense', 'Person', 'Number', 'Gender', 'Voice', 'Negative'],
+        'Verb-main' => ['VForm', 'Tense', 'Person', 'Number', 'Gender', 'Voice', 'Negative'],
+        'Verb-modal' => ['VForm', 'Tense', 'Person', 'Number', 'Gender', 'Voice', 'Negative']
     );
     return \%features;
 }
@@ -386,7 +459,19 @@ sub encode
     my $atoms = $self->atoms();
     my $subpos = $atoms->{pos}->encode($fs);
     my $pos = $subpos;
+    $pos =~ s/-.*//;
     my $fpos = $subpos;
+    if($fpos eq 'Pronoun-reflexive')
+    {
+        if($fs->is_possessive())
+        {
+            $fpos = 'Pronoun-possessive-reflexive';
+        }
+        elsif($fs->case() eq '')
+        {
+            $fpos = 'Pronoun-reflexive0';
+        }
+    }
     my $feature_names = $self->get_feature_names($fpos);
     my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names);
     return $tag;
@@ -396,7 +481,7 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
-# Tags were collected from the corpus, 671 distinct tags found.
+# Tags were collected from the corpus, 766 distinct tags found.
 #------------------------------------------------------------------------------
 sub list
 {

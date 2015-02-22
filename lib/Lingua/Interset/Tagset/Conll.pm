@@ -78,7 +78,7 @@ sub decode_conll
     my %features_conll;
     foreach my $f (@features_conll)
     {
-        if($f =~ m/^(\w+)$delimiter(.+)$/)
+        if($f =~ m/^([-\w]+)$delimiter(.+)$/)
         {
             $features_conll{$1} = $2;
         }

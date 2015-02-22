@@ -4,6 +4,7 @@ Drivers:
 * RO::Rdt
 * RU::Syntagrus
 * SK::Snk
+* SL::Conll
 
 
 
