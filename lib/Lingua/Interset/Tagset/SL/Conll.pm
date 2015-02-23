@@ -474,6 +474,10 @@ sub encode
     }
     my $feature_names = $self->get_feature_names($fpos);
     my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names);
+    # We cannot distinguish Adjective-ordinal and Adjective-qualificative without the 'other' feature.
+    # If the feature is not available, we should make sure that we only generate valid tags.
+    # We change all ordinal adjectives to qualificatives. But these should have the definiteness feature in certain contexts.
+    $tag =~ s/(Adjective-qualificative\tDegree=positive\|Gender=masculine\|Number=singular\|Case=(nominative|accusative))(\|Animate=no$|$)/$1|Definiteness=yes$3/;
     return $tag;
 }
 
