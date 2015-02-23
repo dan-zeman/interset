@@ -4,7 +4,7 @@
 package Lingua::Interset::Tagset::SV::Suc;
 use strict;
 use warnings;
-our $VERSION = '2.038';
+our $VERSION = '2.039';
 
 use utf8;
 use open ':utf8';
