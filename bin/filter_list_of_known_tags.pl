@@ -12,18 +12,26 @@ binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 use Lingua::Interset qw(get_driver_object);
 
-my $driver = get_driver_object('ta::tamiltb');
-my $action = 'deconll';
+my $driver = get_driver_object('te::conll');
+my $action = 'remove_features';
 my $list = $driver->list();
 my %map;
 foreach my $tag (@{$list})
 {
     my $tag1 = $tag;
-    # Zatím nemáme hotové metody decode() a encode(), ale chceme upravit seznam značek z třísloupcového CoNLL formátu na pouze prostřední sloupec.
+    # Zatím nemáme hotové metody decode() a encode(), ale chceme upravit seznam značek z třísloupcového CoNLL formátu na jeho část.
     if($action eq 'deconll')
     {
         my ($pos, $subpos, $features) = split(/\s+/, $tag);
-        $tag1 = $subpos;
+        $tag1 = "$subpos\t$features";
+    }
+    # Zatím nemáme hotové metody decode() a encode(), ale chceme vyhodit některé rysy, které nemají být součástí značky.
+    if($action eq 'remove_features')
+    {
+        my ($pos, $features) = split(/\s+/, $tag);
+        my @features = grep {$_ !~ m/^cat-/} (split(/\|/, $features));
+        $features = join('|', @features);
+        $tag1 = "$pos\t$features";
     }
     # If we have implemented decode() and encode(), we can use them to normalize permutations of features.
     my $fs;
