@@ -29,7 +29,7 @@ foreach my $tag (@{$list})
     if($action eq 'remove_features')
     {
         my ($pos, $features) = split(/\s+/, $tag);
-        my @features = grep {$_ !~ m/^cat-/} (split(/\|/, $features));
+        my @features = map {s/^(vib|tam)-0(_avy)?$/$1-/; s/-any$/-/; $_} (grep {$_ !~ m/^((posl)?cat|pbank|stype|voicetype)-/} (split(/\|/, $features)));
         $features = join('|', @features);
         $tag1 = "$pos\t$features";
     }
