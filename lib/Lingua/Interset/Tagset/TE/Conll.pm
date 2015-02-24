@@ -55,48 +55,30 @@ sub _create_atoms
             # NN (4924), VM (2854), NNP (1540), PRP (1096), JJ (536), CC (448), NULL (388), NST (332), SYM (252), RB (230), WQ (110),
             # RP (96), QF (20), QC (16), INJ (14), NEG (6), VAUX (6), DEM (4), XC (4), PSP (2), RDP (2)
             # common nouns
-            # Examples:
-            # কথা (kathā = word), বাতাসে (bātāsē = air), সময় (samaẏa = time), স্যার (syāra = sir), হাত (hāta = hand)
             'NN'   => ['pos' => 'noun', 'nountype' => 'com'],
             'NNC'  => ['pos' => 'noun', 'nountype' => 'com'],
             # proper nouns
-            # Examples:
-            # সালে (Sālē), খ্রী (Khrī = America), মদনা (Madanā), গণপতিবাবু (Gaṇapatibābu), কলকাতা (Kalakātā = Kolkata)
             'NNP'  => ['pos' => 'noun', 'nountype' => 'prop'],
             'NNPC' => ['pos' => 'noun', 'nountype' => 'prop'],
             # location nouns
             # These words are grammatically nouns but they are used to form a sort of postpositions. Often but not always they specify location.
             # For instance, "on the table" would be constructed as "the table's upper side", and the word for "upper side" would be tagged NST.
-            # Examples:
-            # সঙ্গে (saṅgē = with), উপর (upara = up, on), কাছে (kāchē = of), মধ্যে (madhyē = in, between), পর (para = after)
             'NST'  => ['pos' => 'noun', 'adpostype' => 'post'],
             'NSTC' => ['pos' => 'noun', 'adpostype' => 'post'],
             # pronouns
-            # Examples (note that the "possessive" pronouns are genitive forms of personal pronouns):
-            # তার (tāra = his), আমি (āmi = I), আমার (āmāra = my), এখন (ēkhana = now), সে (sē = he)
             'PRP'  => ['pos' => 'noun', 'prontype' => 'prs'],
             'PRPC' => ['pos' => 'noun', 'prontype' => 'prs'],
             # question words
-            # Examples:
-            # কি (ki = what), কী (kī = what), কেন (kēna = why), কোথায় (kōthāẏa = where), কে (kē = who)
             'WQ'   => ['pos' => 'noun', 'prontype' => 'int'],
             # adjectives
-            # Examples:
-            # পরিণত (pariṇata = become, turned [participle]), বাধ্য (bādhya = forced), ভালো (bhālō = good), দুর্বল (durbala = weak)
             'JJ'   => ['pos' => 'adj'],
             'JJC'  => ['pos' => 'adj'],
             # demonstratives
-            # Only 4 occurrences in the corpus, only 2 word types:
-            # এই (ē'i = this), এইসব (ē'isaba = these)
             'DEM'  => ['pos' => 'adj', 'prontype' => 'dem'],
             # quantifiers
-            # Examples:
-            # একটু (ēkaṭu = a little), কিছুটা (kichuṭā = somewhat), কোনও (kōna'ō = no), খুব (khuba = very), বহু (bahu = many), সব (saba = all)
             'QF'   => ['pos' => 'adj', 'prontype' => 'ind'],
             'QFC'  => ['pos' => 'adj', 'prontype' => 'ind'],
             # numerals
-            # Examples:
-            # ১৬৯৮ (1698), ১৮৯ (189), এক (ēka = one), সতের (satēra = seventeen), হাজার (hājāra = thousand)
             'QC'   => ['pos' => 'num', 'numtype' => 'card'],
             'QCC'  => ['pos' => 'num', 'numtype' => 'card'],
             'QO'   => ['pos' => 'adj', 'numtype' => 'ord'],
@@ -106,32 +88,20 @@ sub _create_atoms
             # Example: padi mandi pillalu = lit. ten persons children ("mandi" is classifier).
             'CL'   => ['pos' => 'noun', 'nountype' => 'class'],
             # main verbs (documentation says "verb-finite", are they really always finite forms?)
-            # Examples:
-            # করে (karē = do), হয় (haẏa = be), হয়ে (haẏē = be), ছিল (chila = was), করতে (karatē = do)
             'VM'   => ['pos' => 'verb'],
             'VMC'  => ['pos' => 'verb'],
             # auxiliary verbs
-            # Only three occurrences in the corpus:
-            # চায় (cāẏa = want), নেবেন (nēbēna = will), যায় (yāẏa = can)
             'VAUX' => ['pos' => 'verb', 'verbtype' => 'aux'],
             # adverbs
-            # Examples:
-            # শুধু (śudhu = only), তারপর (tārapara = then), আর (āra), আবার (ābāra = again), ক্রমে (kramē = gradually)
             'RB'   => ['pos' => 'adv'],
             'RBC'  => ['pos' => 'adv'],
             # intensifiers
             'INTF' => ['pos' => 'adv', 'advtype' => 'deg'],
             # negation
-            # Example:
-            # না (nā = not)
             'NEG'  => ['pos' => 'part', 'prontype' => 'neg', 'negativeness' => 'neg'],
             # postpositions
-            # Examples:
-            # সহ (saha = with)
             'PSP'  => ['pos' => 'adp', 'adpostype' => 'post'],
             # conjunctions
-            # Examples:
-            # ও (ō = and), এবং (ēbaṁ = and), কিন্তু (kintu = but), আর (āra = and), বা (bā = or)
             'CC'   => ['pos' => 'conj'],
             # quotatives
             # A quotative introduces a quote. Typically, it is a verb.
@@ -140,21 +110,14 @@ sub _create_atoms
             # English: He said that he would come.
             'UT'   => ['pos' => 'conj', 'conjtype' => 'sub'],
             # particles
-            # Examples:
-            # তো (tō), করে (karē), যেন (yēna), আর (āra), যে (yē)
             'RP'   => ['pos' => 'part'],
             # interjections
-            # Examples:
-            # আচ্ছা (ācchā = well), কি (ki = what), খিলখিল (khilakhila = haha), ছি (chi = bo), ত (ta)
             'INJ'  => ['pos' => 'int'],
             # reduplicatives
-            # Only one occurrence in the corpus:
-            # যার (yāra)
             'RDP'  => ['echo' => 'rdp'],
             # echo words
             'ECH'  => ['echo' => 'ech'],
-            # undocumented (compounds???), two word forms, four occurrences:
-            # টুকরো (Ṭukarō = Trivia), যে (yē = that)
+            # undocumented (compounds???)
             'XC'   => [],
             # punctuation
             # Examples (the corpus contains European punctuation):
