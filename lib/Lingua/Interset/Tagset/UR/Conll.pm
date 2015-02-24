@@ -455,7 +455,7 @@ sub decode
     my $self = shift;
     my $tag = shift;
     my $fs = Lingua::Interset::FeatureStructure->new();
-    $fs->set_tagset('hi::conll');
+    $fs->set_tagset('ur::conll');
     my $atoms = $self->atoms();
     # Three components: part-of-speech tag, part-of-speech category feature, and (the other) features
     # Hindi CoNLL files are converted from the Shakti Standard Format.
@@ -515,7 +515,7 @@ sub encode
         my $value = '';
         if($name eq 'vib')
         {
-            $value = $fs->get_other_subfeature('hi::conll', $name);
+            $value = $fs->get_other_subfeature('ur::conll', $name);
         }
         else
         {
