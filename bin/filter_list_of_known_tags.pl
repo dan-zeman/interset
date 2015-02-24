@@ -13,7 +13,7 @@ binmode(STDERR, ':utf8');
 use Lingua::Interset qw(get_driver_object);
 
 my $driver = get_driver_object('te::conll');
-my $action = 'remove_features';
+my $action = 'other';
 my $list = $driver->list();
 my %map;
 foreach my $tag (@{$list})
