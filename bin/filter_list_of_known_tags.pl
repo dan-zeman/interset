@@ -12,23 +12,18 @@ binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 use Lingua::Interset qw(get_driver_object);
 
-my $driver = get_driver_object('nl::cgn');
-my $action = 'other';
+my $driver = get_driver_object('ta::tamiltb');
+my $action = 'deconll';
 my $list = $driver->list();
 my %map;
 foreach my $tag (@{$list})
 {
     my $tag1 = $tag;
-    # Zatím nemáme hotové metody decode() a encode(), ale chceme odstranit rod, jestliže rysy obsahují oba možné rody (M i F).
-    if($action eq 'gender')
+    # Zatím nemáme hotové metody decode() a encode(), ale chceme upravit seznam značek z třísloupcového CoNLL formátu na pouze prostřední sloupec.
+    if($action eq 'deconll')
     {
         my ($pos, $subpos, $features) = split(/\s+/, $tag);
-        my @features = split(/\|/, $features);
-        if((grep {$_ eq 'M'} @features) && (grep {$_ eq 'F'} @features))
-        {
-            @features = grep {$_ ne 'M' && $_ ne 'F'} @features;
-        }
-        $tag1 = "$pos\t$subpos\t".join('|', @features);
+        $tag1 = $subpos;
     }
     # If we have implemented decode() and encode(), we can use them to normalize permutations of features.
     my $fs;
