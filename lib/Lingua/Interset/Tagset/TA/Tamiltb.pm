@@ -404,7 +404,6 @@ sub encode
     my $tag = $pos.'-------';
     my @tag = split(//, $tag);
     my @features = ('pos', 'subpos', 'case', 'tense', 'person', 'number', 'gender', 'voice', 'negativeness');
-    my $atoms = $self->atoms();
     for(my $i = 2; $i<9; $i++)
     {
         my $atag = $atoms->{$features[$i]}->encode($fs);
