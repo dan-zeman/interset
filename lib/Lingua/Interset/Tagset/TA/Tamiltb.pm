@@ -65,8 +65,9 @@ sub _create_atoms
             # NE: proper name (intiya, ilangkai, atimuka, pakistan, kirikket)
             'NE' => ['pos' => 'noun', 'nountype' => 'prop'],
             # NO: oblique noun (intiya, amerikka, tamilaka, carvateca, manila)
+            # What does 'oblique' mean in this context?
             # Only one tag found in the corpus: NO--3SN--. Does it apply to location names only?
-            'NO' => ['pos' => 'noun', 'nountype' => 'prop'],
+            'NO' => ['pos' => 'noun', 'nountype' => 'prop', 'other' => {'nountype' => 'oblique'}],
             # NP: participial noun (otiyaval = she who ran; utaviyavar = he/she who helped)
             'NP' => ['pos' => 'noun', 'verbform' => 'part'],
             # postposition
@@ -88,46 +89,46 @@ sub _create_atoms
             # Not found in the corpus.
             'RG' => ['pos' => 'noun', 'prontype' => 'ind'],
             # Tb: comparative particle (kAttilum = than, vita = than)
-            'Tb' => ['pos' => 'part'],
+            'Tb' => ['pos' => 'part', 'other' => {'parttype' => 'comp'}],
             # Tc: connective particle (um = also, and)
             'Tc' => ['pos' => 'part'],
             # Td: adjectival particle (??? - see also Jd, participial adjectives)
             # Td-D----A ... enra (17 occurrences)
             # Td-P----A ... enkira (3 occurrences)
-            'Td' => ['pos' => 'part'],
+            'Td' => ['pos' => 'part', 'verbform' => 'part', 'other' => {'parttype' => 'adj'}],
             # Te: interrogative particle (A)
-            'Te' => ['pos' => 'part', 'prontype' => 'int'],
+            'Te' => ['pos' => 'part', 'other' => {'parttype' => 'int'}],
             # Tf: civility particle (um = may please: varavum = may you please come)
             'Tf' => ['pos' => 'part'],
             # Tg: particle, general (Ana, Aka, Akav, Akat, Akak)
             'Tg' => ['pos' => 'part'],
             # Tk: intensifier particle (E = very, indeed, itself)
-            'Tk' => ['pos' => 'part'],
+            'Tk' => ['pos' => 'part', 'other' => {'parttype' => 'intens'}],
             # Tl: particle "Avatu" = "at least"
-            'Tl' => ['pos' => 'part'],
+            'Tl' => ['pos' => 'part', 'other' => {'parttype' => 'atlst'}],
             # Tm: particle "mattum" = "only"
-            'Tm' => ['pos' => 'part'],
+            'Tm' => ['pos' => 'part', 'other' => {'parttype' => 'only'}],
             # Tn: particle complementizing nouns (pati, mAtiri = manner, way; pOtu = when)
-            'Tn' => ['pos' => 'part'],
+            'Tn' => ['pos' => 'part', 'other' => {'parttype' => 'noun'}],
             # To: particle of doubt or indefiniteness (O)
-            'To' => ['pos' => 'part'],
+            'To' => ['pos' => 'part', 'other' => {'parttype' => 'doubt'}],
             # Tq: emphatic particle (tAn: rAmantAn = it was Ram)
-            'Tq' => ['pos' => 'part'],
+            'Tq' => ['pos' => 'part', 'other' => {'parttype' => 'emph'}],
             # Ts: concessive particle (um: Otiyum = although ran; utavinAlum = even if helps)
-            'Ts' => ['pos' => 'part'],
+            'Ts' => ['pos' => 'part', 'other' => {'parttype' => 'conc'}],
             # Tt-T----A: verbal partic(ip?)le (enru, ena, enr, enat, enak, enav)
-            # See also Vt?
-            'Tt' => ['pos' => 'part'],
+            # See also Vt? I am adding a non-empty verbform just to make sure that tense will be output as 'T', not as '-'.
+            'Tt' => ['pos' => 'part', 'other' => {'parttype' => 'verb'}, 'verbform' => 'inf'],
             # Tv: inclusive particle (um = also: rAmanum = also Raman)
-            'Tv' => ['pos' => 'part'],
+            'Tv' => ['pos' => 'part', 'other' => {'parttype' => 'incl'}],
             # Tw-T----A: conditional verbal particle (enrAl)
             # See also Vw?
-            'Tw' => ['pos' => 'part', 'mood' => 'cnd'],
+            'Tw' => ['pos' => 'part', 'verbform' => 'fin', 'mood' => 'cnd', 'other' => {'parttype' => 'cnd'}],
             # Tz: verbal noun particle (enpatu, etuppat, kotuppat)
             # See also Vz?
-            'Tz' => ['pos' => 'part'],
+            'Tz' => ['pos' => 'part', 'verbform' => 'ger', 'other' => {'parttype' => 'ger'}],
             # TS: immediacy particle (um: vawtatum = as soon as came; otiyatum = as soon as ran)
-            'TS' => ['pos' => 'part'],
+            'TS' => ['pos' => 'part', 'other' => {'parttype' => 'imm'}],
             # U=: number expressed using digits
             'U=' => ['pos' => 'num', 'numform' => 'digit'],
             # Ux: cardinal number (iru, ayiram, munru, latcam, irantu)
@@ -166,8 +167,11 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'pos' => { 'noun' => { 'prontype' => { ''  => { 'nountype' => { 'prop' => 'NE',
-                                                                            '@'    => 'NN' }},
+            'pos' => { 'noun' => { 'prontype' => { ''  => { 'other/nountype' => { 'oblique' => 'NO',
+                                                                                  '@'       => { 'case' => { ''  => 'NO',
+                                                                                                             '@' => { 'nountype' => { 'prop' => 'NE',
+                                                                                                                                      '@'    => { 'verbform' => { 'part' => 'NP',
+                                                                                                                                                                  '@'    => 'NN' }}}}}}}},
                                                    '@' => { 'reflex' => { 'reflex' => 'Rh',
                                                                           '@'      => { 'prontype' => { 'int' => 'Ri',
                                                                                                         'prs' => 'Rp',
@@ -198,7 +202,26 @@ sub _create_atoms
                        'adv'  => 'AA',
                        'adp'  => 'PP',
                        'conj' => 'CC',
-                       'part' => 'Tg', ###!!! There are many kinds of particles and we must distinguish them here.
+                       'part' => { 'other/parttype' => { 'imm'    => 'TS',
+                                                         'comp'   => 'Tb',
+                                                         'adj'    => 'Td',
+                                                         'int'    => 'Te',
+                                                         'intens' => 'Tk',
+                                                         'atlst'  => 'Tl',
+                                                         'only'   => 'Tm',
+                                                         'noun'   => 'Tn',
+                                                         'doubt'  => 'To',
+                                                         'emph'   => 'Tq',
+                                                         'conc'   => 'Ts',
+                                                         'verb'   => 'Tt',
+                                                         'incl'   => 'Tv',
+                                                         'cnd'    => 'Tw',
+                                                         'ger'    => 'Tz',
+                                                         '@'      => { 'verbform' => { 'inf'  => 'Tt',
+                                                                                       'fin'  => 'Tw',
+                                                                                       'ger'  => 'Tz',
+                                                                                       'part' => 'Td',
+                                                                                       '@'    => 'Tg' }}}},
                        'int'  => 'II',
                        'punc' => { 'punctype' => { 'peri' => 'Z#',
                                                    'excl' => 'Z#',
@@ -222,20 +245,30 @@ sub _create_atoms
             'G' => 'gen',
             'L' => 'loc',
             'N' => 'nom',
-            'S' => 'soc'
+            # sociative = comitative
+            'S' => 'com'
         }
     );
     # 4. TENSE ####################
-    $atoms{tense} = $self->create_simple_atom
+    $atoms{tense} = $self->create_atom
     (
-        'intfeature' => 'tense',
-        'simple_decode_map' =>
+        'surfeature' => 'tense',
+        'decode_map' =>
         {
-            'D' => 'past',
-            'P' => 'pres',
-            'F' => 'fut',
+            'D' => ['tense' => 'past'],
+            'P' => ['tense' => 'pres'],
+            'F' => ['tense' => 'fut'],
             # tenseless form, e.g. the negative auxiliary "illai"
-            'T' => ''
+            # We cannot map it (bidirectionally) to the empty value because we do not want 'T' to appear in tags for non-verbs.
+            'T' => []
+        },
+        'encode_map' =>
+        {
+            'tense' => { 'past' => 'D',
+                         'pres' => 'P',
+                         'fut'  => 'F',
+                         '@'    => { 'verbform' => { ''  => '',
+                                                     '@' => 'T' }}}
         }
     );
     # 5. PERSON ####################
@@ -246,8 +279,7 @@ sub _create_atoms
         {
             '1' => '1',
             '2' => '2',
-            '3' => '3',
-            'X' => ''
+            '3' => '3'
         }
     );
     # 6. NUMBER ####################
@@ -257,8 +289,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'S' => 'sing',
-            'P' => 'plur',
-            'X' => ''
+            'P' => 'plur'
         }
     );
     # 7. GENDER ####################
@@ -370,30 +401,25 @@ sub encode
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $atoms = $self->atoms();
     my $pos = $atoms->{pos}->encode($fs);
-    my $fpos = $pos;
-    if($fs->is_verb() && $fs->tense() eq 'past')
+    my $tag = $pos.'-------';
+    my @tag = split(//, $tag);
+    my @features = ('pos', 'subpos', 'case', 'tense', 'person', 'number', 'gender', 'voice', 'negativeness');
+    my $atoms = $self->atoms();
+    for(my $i = 2; $i<9; $i++)
     {
-        $fpos = 'VL';
-    }
-    my $features = $self->features_pos()->{$fpos};
-    my @features = ($pos);
-    if(defined($features))
-    {
-        foreach my $feature (@{$features})
+        my $atag = $atoms->{$features[$i]}->encode($fs);
+        # If we got undef, there is something wrong with our encoding tables.
+        if(!defined($atag))
         {
-            if(defined($feature) && defined($atoms->{$feature}))
-            {
-                my $value = $atoms->{$feature}->encode($fs);
-                if(defined($value) && $value ne '')
-                {
-                    push(@features, $value);
-                }
-            }
+            print STDERR ("\n", $fs->as_string(), "\n");
+            confess("Cannot encode '$features[$i]'");
+        }
+        if($atag ne '')
+        {
+            $tag[$i] = $atag;
         }
     }
-    my $tag = join('', @features);
-    # Some tags have different forms than generated by the atoms.
-    $tag =~ s/^([NP])Dh$/$1D/;
+    $tag = join('', @tag);
     return $tag;
 }
 
@@ -401,8 +427,8 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
-# Got this list from Johanka and cleaned it a bit There are 1457 tags.
-# 1457
+# The tags were collected from the corpus.
+# 233 tags found.
 #------------------------------------------------------------------------------
 sub list
 {
