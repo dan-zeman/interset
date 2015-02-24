@@ -100,6 +100,11 @@ sub _create_atoms
             'QC'   => ['pos' => 'num', 'numtype' => 'card'],
             'QCC'  => ['pos' => 'num', 'numtype' => 'card'],
             'QO'   => ['pos' => 'adj', 'numtype' => 'ord'],
+            # classifiers
+            # A classifier is a word or morpheme used to classify a noun according to its meaning.
+            # (http://en.wikipedia.org/wiki/Classifier_%28linguistics%29)
+            # Example: padi mandi pillalu = lit. ten persons children ("mandi" is classifier).
+            'CL'   => ['pos' => 'noun', 'nountype' => 'class'],
             # main verbs (documentation says "verb-finite", are they really always finite forms?)
             # Examples:
             # করে (karē = do), হয় (haẏa = be), হয়ে (haẏē = be), ছিল (chila = was), করতে (karatē = do)
@@ -158,8 +163,9 @@ sub _create_atoms
         'encode_map' =>
 
             { 'pos' => { 'noun' => { 'adpostype' => { 'post' => 'NST',
-                                                      '@'    => { 'prontype' => { ''    => { 'nountype' => { 'prop' => 'NNP',
-                                                                                                             '@'    => 'NN' }},
+                                                      '@'    => { 'prontype' => { ''    => { 'nountype' => { 'prop'  => 'NNP',
+                                                                                                             'class' => 'CL',
+                                                                                                             '@'     => 'NN' }},
                                                                                   'int' => 'WQ',
                                                                                   '@'   => 'PRP' }}}},
                          'adj'  => { 'numtype' => { 'ord' => 'QO',
@@ -354,39 +360,40 @@ sub encode
 # from the corpus, i.e. other tags probably exist but were not seen here. We
 # have added manually tags with empty 'vib' and 'tam' to facilitate generating
 # permitted tags with empty 'other' feature.
+# Only the POS and FEATS columns of the CoNLL file are used (no CPOS, which
+# actually contains the chunk tag).
+# The cat feature was removed.
+# Zero values of the vib and tam features were replaced by empty values.
 # 531 tags
 #------------------------------------------------------------------------------
 sub list
 {
     my $self = shift;
     my $list = <<end_of_list
-CC	gend-|num-|pers-|case-|vib-0|tam-0_avy
-CC	gend-|num-|pers-|case-|vib-wo|tam-wo_adv
 CC	gend-|num-|pers-|case-|vib-|tam-
-CL	gend-|num-pl|pers-|case-d|vib-0|tam-0
+CL	gend-|num-pl|pers-|case-d|vib-|tam-
 CL	gend-|num-pl|pers-|case-|vib-ni|tam-ni
 CL	gend-|num-pl|pers-|case-|vib-nu|tam-nu
-DEM	gend-fn|num-sg|pers-3|case-|vib-0|tam-0_o
+DEM	gend-fn|num-sg|pers-3|case-|vib-|tam-0_o
 ECH	gend-|num-sg|pers-|case-|vib-gA|tam-gA
-INTF	gend-|num-|pers-|case-|vib-0|tam-0_avy
+INTF	gend-|num-|pers-|case-|vib-|tam-
 JJ	gend-|num-pl|pers-|case-|vib-lAMti_xi|tam-lAMti_xi_0
 JJ	gend-|num-sg|pers-2|case-|vib-AjFArWa|tam-AjFArWa
-JJ	gend-|num-sg|pers-|case-d|vib-0|tam-0
-JJ	gend-|num-sg|pers-|case-d|vib-0|tam-0|poslcat-NM
-JJ	gend-|num-sg|pers-|case-o|vib-0|tam-0_adj
-JJ	gend-|num-sg|pers-|case-|vib-0|tam-0_e
+JJ	gend-|num-sg|pers-|case-d|vib-|tam-
+JJ	gend-|num-sg|pers-|case-d|vib-|tam-|poslcat-NM
+JJ	gend-|num-sg|pers-|case-o|vib-|tam-0_adj
 JJ	gend-|num-sg|pers-|case-|vib-Ena|tam-Ena
 JJ	gend-|num-sg|pers-|case-|vib-gA|tam-gA
 JJ	gend-|num-sg|pers-|case-|vib-lAti|tam-lAti
 JJ	gend-|num-sg|pers-|case-|vib-vi|tam-vi
 JJ	gend-|num-sg|pers-|case-|vib-xi_0|tam-xi_0_o
 JJ	gend-|num-sg|pers-|case-|vib-xi|tam-xi_adj
-JJ	gend-|num-|pers-|case-|vib-0|tam-0_adj
-JJ	gend-|num-|pers-|case-|vib-0|tam-0_avy
+JJ	gend-|num-sg|pers-|case-|vib-|tam-0_e
 JJ	gend-|num-|pers-|case-|vib-e|tam-e_avy
 JJ	gend-|num-|pers-|case-|vib-gA|tam-gA_adj
 JJ	gend-|num-|pers-|case-|vib-|tam-
-NEG	gend-|num-|pers-|case-|vib-0|tam-0_avy
+JJ	gend-|num-|pers-|case-|vib-|tam-0_adj
+NEG	gend-|num-|pers-|case-|vib-|tam-
 NN	gend-any|num-any|pers-any|case-|vib-0_nuMdi|tam-an
 NN	gend-any|num-any|pers-any|case-|vib-an|tam-an
 NN	gend-fm|num-pl|pers-3|case-|vib-xi|tam-xi
@@ -394,11 +401,11 @@ NN	gend-fn|num-sg|pers-3|case-|vib-A|tam-A
 NN	gend-fn|num-sg|pers-3|case-|vib-ki|tam-ki
 NN	gend-fn|num-sg|pers-3|case-|vib-xi|tam-xi
 NN	gend-f|num-sg|pers-3|case-|vib-xi|tam-xi
-NN	gend-|num-pl|pers-|case-d|vib-0_kUdA|tam-0
-NN	gend-|num-pl|pers-|case-d|vib-0_mAwraM|tam-0
-NN	gend-|num-pl|pers-|case-d|vib-0_sEwaM|tam-0
-NN	gend-|num-pl|pers-|case-d|vib-0|tam-0
+NN	gend-|num-pl|pers-|case-d|vib-0_kUdA|tam-
+NN	gend-|num-pl|pers-|case-d|vib-0_mAwraM|tam-
+NN	gend-|num-pl|pers-|case-d|vib-0_sEwaM|tam-
 NN	gend-|num-pl|pers-|case-d|vib-ru|tam-ru
+NN	gend-|num-pl|pers-|case-d|vib-|tam-
 NN	gend-|num-pl|pers-|case-o|vib-0_kosaM|tam-ti
 NN	gend-|num-pl|pers-|case-o|vib-0_mIxa|tam-ti
 NN	gend-|num-pl|pers-|case-o|vib-0_nuMci|tam-ti
@@ -409,9 +416,6 @@ NN	gend-|num-pl|pers-|case-o|vib-ti|tam-ti
 NN	gend-|num-pl|pers-|case-|vib-0_batti|tam-ni
 NN	gend-|num-pl|pers-|case-|vib-0_kUdA|tam-ki
 NN	gend-|num-pl|pers-|case-|vib-0_nuMci|tam-0_o
-NN	gend-|num-pl|pers-|case-|vib-0|tam-0_A
-NN	gend-|num-pl|pers-|case-|vib-0|tam-0_e
-NN	gend-|num-pl|pers-|case-|vib-0|tam-0_o
 NN	gend-|num-pl|pers-|case-|vib-I|tam-I
 NN	gend-|num-pl|pers-|case-|vib-e_vAlYlu|tam-e_vAlYlu_0
 NN	gend-|num-pl|pers-|case-|vib-gAru_ki|tam-gAru_ki
@@ -436,22 +440,25 @@ NN	gend-|num-pl|pers-|case-|vib-wopAtu|tam-wopAtu
 NN	gend-|num-pl|pers-|case-|vib-wo|tam-wo
 NN	gend-|num-pl|pers-|case-|vib-xi_0|tam-xi_0_e
 NN	gend-|num-pl|pers-|case-|vib-xi|tam-xi_0
+NN	gend-|num-pl|pers-|case-|vib-|tam-0_A
+NN	gend-|num-pl|pers-|case-|vib-|tam-0_e
+NN	gend-|num-pl|pers-|case-|vib-|tam-0_o
 NN	gend-|num-sg|pers-2|case-|vib-AjFArWa|tam-AjFArWa
-NN	gend-|num-sg|pers-|case-d|vib-0_aMxulo|tam-0
-NN	gend-|num-sg|pers-|case-d|vib-0_guriMci|tam-0
-NN	gend-|num-sg|pers-|case-d|vib-0_kUdA|tam-0
-NN	gend-|num-sg|pers-|case-d|vib-0_koVraku|tam-0
-NN	gend-|num-sg|pers-|case-d|vib-0_kosaM|tam-0
-NN	gend-|num-sg|pers-|case-d|vib-0_lopala|tam-0
-NN	gend-|num-sg|pers-|case-d|vib-0_lo|tam-0
-NN	gend-|num-sg|pers-|case-d|vib-0_mAwraM|tam-0
-NN	gend-|num-sg|pers-|case-d|vib-0_nuMci|tam-0
-NN	gend-|num-sg|pers-|case-d|vib-0_nuMdi|tam-0
-NN	gend-|num-sg|pers-|case-d|vib-0_varaku|tam-0
-NN	gend-|num-sg|pers-|case-d|vib-0_warvAwa|tam-0
-NN	gend-|num-sg|pers-|case-d|vib-0_xAkA|tam-0
-NN	gend-|num-sg|pers-|case-d|vib-0_xvArA|tam-0
-NN	gend-|num-sg|pers-|case-d|vib-0|tam-0
+NN	gend-|num-sg|pers-|case-d|vib-0_aMxulo|tam-
+NN	gend-|num-sg|pers-|case-d|vib-0_guriMci|tam-
+NN	gend-|num-sg|pers-|case-d|vib-0_kUdA|tam-
+NN	gend-|num-sg|pers-|case-d|vib-0_koVraku|tam-
+NN	gend-|num-sg|pers-|case-d|vib-0_kosaM|tam-
+NN	gend-|num-sg|pers-|case-d|vib-0_lopala|tam-
+NN	gend-|num-sg|pers-|case-d|vib-0_lo|tam-
+NN	gend-|num-sg|pers-|case-d|vib-0_mAwraM|tam-
+NN	gend-|num-sg|pers-|case-d|vib-0_nuMci|tam-
+NN	gend-|num-sg|pers-|case-d|vib-0_nuMdi|tam-
+NN	gend-|num-sg|pers-|case-d|vib-0_varaku|tam-
+NN	gend-|num-sg|pers-|case-d|vib-0_warvAwa|tam-
+NN	gend-|num-sg|pers-|case-d|vib-0_xAkA|tam-
+NN	gend-|num-sg|pers-|case-d|vib-0_xvArA|tam-
+NN	gend-|num-sg|pers-|case-d|vib-|tam-
 NN	gend-|num-sg|pers-|case-o|vib-0_xAkA|tam-ti
 NN	gend-|num-sg|pers-|case-o|vib-ti|tam-ti
 NN	gend-|num-sg|pers-|case-|vib-0_batti|tam-nu
@@ -464,11 +471,6 @@ NN	gend-|num-sg|pers-|case-|vib-0_kUdA|tam-niMci
 NN	gend-|num-sg|pers-|case-|vib-0_le|tam-0_le
 NN	gend-|num-sg|pers-|case-|vib-0_nuMci|tam-lo
 NN	gend-|num-sg|pers-|case-|vib-0_pAtu|tam-wo
-NN	gend-|num-sg|pers-|case-|vib-0|tam-0_A
-NN	gend-|num-sg|pers-|case-|vib-0|tam-0_V
-NN	gend-|num-sg|pers-|case-|vib-0|tam-0_e
-NN	gend-|num-sg|pers-|case-|vib-0|tam-0_e|pbank-ARG3
-NN	gend-|num-sg|pers-|case-|vib-0|tam-0_o
 NN	gend-|num-sg|pers-|case-|vib-Ena_xi|tam-Ena_xi_0
 NN	gend-|num-sg|pers-|case-|vib-aMte|tam-aMte
 NN	gend-|num-sg|pers-|case-|vib-cotlo|tam-cotlo
@@ -501,30 +503,32 @@ NN	gend-|num-sg|pers-|case-|vib-xi_0|tam-xi_0_o|poslcat-NM
 NN	gend-|num-sg|pers-|case-|vib-xi_nu|tam-xi_nu
 NN	gend-|num-sg|pers-|case-|vib-xi|tam-xi
 NN	gend-|num-sg|pers-|case-|vib-xi|tam-xi_0
+NN	gend-|num-sg|pers-|case-|vib-|tam-0_A
+NN	gend-|num-sg|pers-|case-|vib-|tam-0_V
+NN	gend-|num-sg|pers-|case-|vib-|tam-0_e
+NN	gend-|num-sg|pers-|case-|vib-|tam-0_e|pbank-ARG3
+NN	gend-|num-sg|pers-|case-|vib-|tam-0_o
 NN	gend-|num-|pers-|case-|vib-0_ku|tam-
 NN	gend-|num-|pers-|case-|vib-0_mAwrame|tam-|poslcat-NM
 NN	gend-|num-|pers-|case-|vib-0_wo|tam-
-NN	gend-|num-|pers-|case-|vib-0|tam-0_adj
-NN	gend-|num-|pers-|case-|vib-0|tam-0_adj|poslcat-NM
-NN	gend-|num-|pers-|case-|vib-0|tam-0_avy
 NN	gend-|num-|pers-|case-|vib-aMwa_0_A|tam-aMwa_0_A_adv
 NN	gend-|num-|pers-|case-|vib-kiMxa_yoVkka|tam-kiMxa_yoVkka_adv
 NN	gend-|num-|pers-|case-|vib-ru|tam-ru
 NN	gend-|num-|pers-|case-|vib-xi|tam-xi_adj
 NN	gend-|num-|pers-|case-|vib-|tam-
-NNP	gend-|num-pl|pers-|case-d|vib-0|tam-0
-NNP	gend-|num-pl|pers-|case-|vib-0|tam-0_o
+NN	gend-|num-|pers-|case-|vib-|tam-0_adj
+NN	gend-|num-|pers-|case-|vib-|tam-0_adj|poslcat-NM
+NNP	gend-|num-pl|pers-|case-d|vib-|tam-
 NNP	gend-|num-pl|pers-|case-|vib-ki|tam-ki
-NNP	gend-|num-sg|pers-|case-d|vib-0_cewa|tam-0
-NNP	gend-|num-sg|pers-|case-d|vib-0_kUdA|tam-0
-NNP	gend-|num-sg|pers-|case-d|vib-0_kosaM|tam-0
-NNP	gend-|num-sg|pers-|case-d|vib-0_lo|tam-0
-NNP	gend-|num-sg|pers-|case-d|vib-0_nuMci|tam-0
-NNP	gend-|num-sg|pers-|case-d|vib-0|tam-0
+NNP	gend-|num-pl|pers-|case-|vib-|tam-0_o
+NNP	gend-|num-sg|pers-|case-d|vib-0_cewa|tam-
+NNP	gend-|num-sg|pers-|case-d|vib-0_kUdA|tam-
+NNP	gend-|num-sg|pers-|case-d|vib-0_kosaM|tam-
+NNP	gend-|num-sg|pers-|case-d|vib-0_lo|tam-
+NNP	gend-|num-sg|pers-|case-d|vib-0_nuMci|tam-
+NNP	gend-|num-sg|pers-|case-d|vib-|tam-
 NNP	gend-|num-sg|pers-|case-o|vib-ti|tam-ti
 NNP	gend-|num-sg|pers-|case-|vib-0_kUdA|tam-ki
-NNP	gend-|num-sg|pers-|case-|vib-0|tam-0_V
-NNP	gend-|num-sg|pers-|case-|vib-0|tam-0_e
 NNP	gend-|num-sg|pers-|case-|vib-ki|tam-ki
 NNP	gend-|num-sg|pers-|case-|vib-ki|tam-ki_V
 NNP	gend-|num-sg|pers-|case-|vib-ki|tam-ki_e
@@ -536,105 +540,105 @@ NNP	gend-|num-sg|pers-|case-|vib-wo|tam-wo
 NNP	gend-|num-sg|pers-|case-|vib-xi_0|tam-xi_0_A
 NNP	gend-|num-sg|pers-|case-|vib-xi|tam-xi
 NNP	gend-|num-sg|pers-|case-|vib-xi|tam-xi_0
+NNP	gend-|num-sg|pers-|case-|vib-|tam-0_V
+NNP	gend-|num-sg|pers-|case-|vib-|tam-0_e
 NNP	gend-|num-|pers-|case-|vib-0_nuMdi|tam-
 NNP	gend-|num-|pers-|case-|vib-0_wo|tam-
 NNP	gend-|num-|pers-|case-|vib-|tam-
 NNP	gend-|num-|pers-|case-|vib-|tam-|poslcat-NM
 NST	gend-any|num-any|pers-any|case-|vib-0_nuMci|tam-i
 NST	gend-any|num-any|pers-any|case-|vib-ina|tam-ina
-NST	gend-|num-sg|pers-|case-d|vib-0_kUdA|tam-0
-NST	gend-|num-sg|pers-|case-d|vib-0_nuMdi|tam-0
-NST	gend-|num-sg|pers-|case-d|vib-0|tam-0
-NST	gend-|num-sg|pers-|case-d|vib-0|tam-0|poslcat-NM
-NST	gend-|num-sg|pers-|case-|vib-0|tam-0_V
+NST	gend-|num-sg|pers-|case-d|vib-0_kUdA|tam-
+NST	gend-|num-sg|pers-|case-d|vib-0_nuMdi|tam-
+NST	gend-|num-sg|pers-|case-d|vib-|tam-
+NST	gend-|num-sg|pers-|case-d|vib-|tam-|poslcat-NM
 NST	gend-|num-sg|pers-|case-|vib-ki|tam-ki
 NST	gend-|num-sg|pers-|case-|vib-na|tam-na
 NST	gend-|num-sg|pers-|case-|vib-niMci|tam-niMci
 NST	gend-|num-sg|pers-|case-|vib-ni|tam-ni_e
 NST	gend-|num-sg|pers-|case-|vib-varaku|tam-varaku
+NST	gend-|num-sg|pers-|case-|vib-|tam-0_V
 NST	gend-|num-|pers-|case-|vib-0_e|tam-0_e_adv
 NST	gend-|num-|pers-|case-|vib-0_kUdA|tam-0_adv
 NST	gend-|num-|pers-|case-|vib-0_nuMci|tam-yoVkka_adv
 NST	gend-|num-|pers-|case-|vib-0_o|tam-0_o_adv
 NST	gend-|num-|pers-|case-|vib-0_varaku|tam-yoVkka_adv
-NST	gend-|num-|pers-|case-|vib-0|tam-0_adv
-NST	gend-|num-|pers-|case-|vib-0|tam-0_adv|poslcat-NM
-NST	gend-|num-|pers-|case-|vib-0|tam-0_avy
 NST	gend-|num-|pers-|case-|vib-V|tam-V_avy
 NST	gend-|num-|pers-|case-|vib-ku|tam-ku_adv
 NST	gend-|num-|pers-|case-|vib-ku|tam-ku_adv|poslcat-NM
 NST	gend-|num-|pers-|case-|vib-lo|tam-lo_adv
 NST	gend-|num-|pers-|case-|vib-yoVkka|tam-yoVkka_adv
 NST	gend-|num-|pers-|case-|vib-|tam-
+NST	gend-|num-|pers-|case-|vib-|tam-0_adv
+NST	gend-|num-|pers-|case-|vib-|tam-0_adv|poslcat-NM
 PRP	gend-any|num-pl|pers-1|case-o|vib-ti|tam-ti
-PRP	gend-any|num-pl|pers-1|case-|vib-0|tam-0_e
+PRP	gend-any|num-pl|pers-1|case-|vib-|tam-0_e
 PRP	gend-any|num-pl|pers-2|case-o|vib-ti|tam-ti
-PRP	gend-any|num-pl|pers-2|case-|vib-0|tam-0_e
 PRP	gend-any|num-pl|pers-2|case-|vib-ki|tam-ki
-PRP	gend-any|num-sg|pers-1|case-d|vib-0_kUdA|tam-0
-PRP	gend-any|num-sg|pers-1|case-d|vib-0|tam-0
+PRP	gend-any|num-pl|pers-2|case-|vib-|tam-0_e
+PRP	gend-any|num-sg|pers-1|case-d|vib-0_kUdA|tam-
+PRP	gend-any|num-sg|pers-1|case-d|vib-|tam-
 PRP	gend-any|num-sg|pers-1|case-o|vib-0_woti|tam-ti
 PRP	gend-any|num-sg|pers-1|case-o|vib-ti|tam-ti
 PRP	gend-any|num-sg|pers-1|case-|vib-0_kUdA|tam-ki
-PRP	gend-any|num-sg|pers-1|case-|vib-0|tam-0_e
 PRP	gend-any|num-sg|pers-1|case-|vib-aMte|tam-aMte
 PRP	gend-any|num-sg|pers-1|case-|vib-kaMteV|tam-kaMteV
 PRP	gend-any|num-sg|pers-1|case-|vib-ki|tam-ki
 PRP	gend-any|num-sg|pers-1|case-|vib-mIxa|tam-mIxa
 PRP	gend-any|num-sg|pers-1|case-|vib-ni|tam-ni
 PRP	gend-any|num-sg|pers-1|case-|vib-wo|tam-wo
-PRP	gend-any|num-sg|pers-2|case-d|vib-0|tam-0
+PRP	gend-any|num-sg|pers-1|case-|vib-|tam-0_e
+PRP	gend-any|num-sg|pers-2|case-d|vib-|tam-
 PRP	gend-any|num-sg|pers-2|case-o|vib-ti|tam-ti
 PRP	gend-any|num-sg|pers-2|case-|vib-0_kUdA|tam-ki
 PRP	gend-any|num-sg|pers-2|case-|vib-ki|tam-ki
 PRP	gend-any|num-sg|pers-2|case-|vib-ki|tam-ki_e
 PRP	gend-any|num-sg|pers-2|case-|vib-ni|tam-ni
 PRP	gend-any|num-sg|pers-2|case-|vib-wo|tam-wo
-PRP	gend-fm|num-pl|pers-3|case-d|vib-0|tam-0
 PRP	gend-fm|num-pl|pers-3|case-d|vib-nu|tam-nu
+PRP	gend-fm|num-pl|pers-3|case-d|vib-|tam-
 PRP	gend-fm|num-pl|pers-3|case-o|vib-ki|tam-ki
 PRP	gend-fm|num-pl|pers-3|case-o|vib-ti|tam-ti
 PRP	gend-fm|num-pl|pers-3|case-|vib-ki|tam-ki
 PRP	gend-fm|num-pl|pers-3|case-|vib-lo|tam-lo
 PRP	gend-fm|num-pl|pers-3|case-|vib-mIxa|tam-mIxa
-PRP	gend-fn|num-pl|pers-3|case-d|vib-0|tam-0
-PRP	gend-fn|num-pl|pers-3|case-|vib-0|tam-0_V
+PRP	gend-fn|num-pl|pers-3|case-d|vib-|tam-
 PRP	gend-fn|num-pl|pers-3|case-|vib-lo|tam-lo
 PRP	gend-fn|num-pl|pers-3|case-|vib-ni|tam-ni
-PRP	gend-fn|num-sg|pers-3|case-d|vib-0|tam-0
+PRP	gend-fn|num-pl|pers-3|case-|vib-|tam-0_V
+PRP	gend-fn|num-sg|pers-3|case-d|vib-|tam-
 PRP	gend-fn|num-sg|pers-3|case-o|vib-0_guriMcayinA|tam-ti
 PRP	gend-fn|num-sg|pers-3|case-o|vib-0_valana_kUdA|tam-ti
 PRP	gend-fn|num-sg|pers-3|case-o|vib-0_valana|tam-ti
 PRP	gend-fn|num-sg|pers-3|case-o|vib-0_xvArA|tam-ti
 PRP	gend-fn|num-sg|pers-3|case-o|vib-ti|tam-ti
-PRP	gend-fn|num-sg|pers-3|case-|vib-0|tam-0_V
-PRP	gend-fn|num-sg|pers-3|case-|vib-0|tam-0_e
-PRP	gend-fn|num-sg|pers-3|case-|vib-0|tam-0_o
 PRP	gend-fn|num-sg|pers-3|case-|vib-ki|tam-ki
 PRP	gend-fn|num-sg|pers-3|case-|vib-lo|tam-lo
 PRP	gend-fn|num-sg|pers-3|case-|vib-nu|tam-nu
 PRP	gend-fn|num-sg|pers-3|case-|vib-valana|tam-valana
 PRP	gend-fn|num-sg|pers-3|case-|vib-wo|tam-wo
-PRP	gend-f|num-sg|pers-3|case-d|vib-0_vaxxa|tam-0
-PRP	gend-f|num-sg|pers-3|case-d|vib-0|tam-0
-PRP	gend-f|num-sg|pers-3|case-|vib-0|tam-0_e
+PRP	gend-fn|num-sg|pers-3|case-|vib-|tam-0_V
+PRP	gend-fn|num-sg|pers-3|case-|vib-|tam-0_e
+PRP	gend-fn|num-sg|pers-3|case-|vib-|tam-0_o
+PRP	gend-f|num-sg|pers-3|case-d|vib-0_vaxxa|tam-
+PRP	gend-f|num-sg|pers-3|case-d|vib-|tam-
 PRP	gend-f|num-sg|pers-3|case-|vib-ki|tam-ki
 PRP	gend-f|num-sg|pers-3|case-|vib-ki|tam-ki_o
 PRP	gend-f|num-sg|pers-3|case-|vib-ni|tam-ni
 PRP	gend-f|num-sg|pers-3|case-|vib-wo|tam-wo
-PRP	gend-m|num-sg|pers-3|case-d|vib-0_kUdA|tam-0
-PRP	gend-m|num-sg|pers-3|case-d|vib-0|tam-0
+PRP	gend-f|num-sg|pers-3|case-|vib-|tam-0_e
+PRP	gend-m|num-sg|pers-3|case-d|vib-0_kUdA|tam-
+PRP	gend-m|num-sg|pers-3|case-d|vib-|tam-
 PRP	gend-m|num-sg|pers-3|case-o|vib-0_koVraku|tam-ti
 PRP	gend-m|num-sg|pers-3|case-o|vib-0_kosaM|tam-ti
 PRP	gend-m|num-sg|pers-3|case-o|vib-ti|tam-ti
-PRP	gend-m|num-sg|pers-3|case-|vib-0|tam-0_e
 PRP	gend-m|num-sg|pers-3|case-|vib-ki|tam-ki
 PRP	gend-m|num-sg|pers-3|case-|vib-ni|tam-ni
 PRP	gend-m|num-sg|pers-3|case-|vib-nu|tam-nu
-PRP	gend-|num-pl|pers-|case-d|vib-0_kUdA|tam-0
-PRP	gend-|num-pl|pers-|case-d|vib-0|tam-0
+PRP	gend-m|num-sg|pers-3|case-|vib-|tam-0_e
+PRP	gend-|num-pl|pers-|case-d|vib-0_kUdA|tam-
+PRP	gend-|num-pl|pers-|case-d|vib-|tam-
 PRP	gend-|num-pl|pers-|case-o|vib-ti|tam-ti
-PRP	gend-|num-pl|pers-|case-|vib-0|tam-0_V
 PRP	gend-|num-pl|pers-|case-|vib-e_axi|tam-e_axi_0
 PRP	gend-|num-pl|pers-|case-|vib-ki|tam-ki
 PRP	gend-|num-pl|pers-|case-|vib-ki|tam-ki_V
@@ -643,9 +647,10 @@ PRP	gend-|num-pl|pers-|case-|vib-ni|tam-ni_V
 PRP	gend-|num-pl|pers-|case-|vib-nu|tam-nu
 PRP	gend-|num-pl|pers-|case-|vib-wo|tam-wo
 PRP	gend-|num-pl|pers-|case-|vib-wo|tam-wo_V
+PRP	gend-|num-pl|pers-|case-|vib-|tam-0_V
 PRP	gend-|num-sg|pers-2|case-|vib-AjFArWa|tam-AjFArWa
-PRP	gend-|num-sg|pers-|case-d|vib-0_valana|tam-0
-PRP	gend-|num-sg|pers-|case-d|vib-0|tam-0
+PRP	gend-|num-sg|pers-|case-d|vib-0_valana|tam-
+PRP	gend-|num-sg|pers-|case-d|vib-|tam-
 PRP	gend-|num-sg|pers-|case-o|vib-ti|tam-ti
 PRP	gend-|num-sg|pers-|case-|vib-e_axi_0|tam-e_axi_0_o
 PRP	gend-|num-sg|pers-|case-|vib-kaMteV|tam-kaMteV
@@ -653,58 +658,52 @@ PRP	gend-|num-sg|pers-|case-|vib-ki|tam-ki
 PRP	gend-|num-sg|pers-|case-|vib-ni|tam-ni
 PRP	gend-|num-sg|pers-|case-|vib-wo|tam-wo
 PRP	gend-|num-sg|pers-|case-|vib-xAkA|tam-xAkA
-PRP	gend-|num-|pers-|case-|vib-0_kUdA|tam-0_avy
-PRP	gend-|num-|pers-|case-|vib-0|tam-0_avy
-PRP	gend-|num-|pers-|case-|vib-0|tam-0_avy|poslcat-NM
+PRP	gend-|num-|pers-|case-|vib-0_kUdA|tam-
 PRP	gend-|num-|pers-|case-|vib-e|tam-e_avy
 PRP	gend-|num-|pers-|case-|vib-|tam-
 PRP	gend-|num-|pers-|case-|vib-|tam-|poslcat-NM
-PSP	gend-|num-sg|pers-|case-d|vib-0|tam-0
-QC	gend-|num-sg|pers-|case-d|vib-0_nuMdi|tam-0
-QC	gend-|num-sg|pers-|case-d|vib-0_xAkA|tam-0
-QC	gend-|num-sg|pers-|case-d|vib-0|tam-0
+PSP	gend-|num-sg|pers-|case-d|vib-|tam-
+QC	gend-|num-sg|pers-|case-d|vib-0_nuMdi|tam-
+QC	gend-|num-sg|pers-|case-d|vib-0_xAkA|tam-
+QC	gend-|num-sg|pers-|case-d|vib-|tam-
 QC	gend-|num-sg|pers-|case-o|vib-0_nuMci|tam-ti
 QC	gend-|num-sg|pers-|case-|vib-xAkA|tam-xAkA
 QC	gend-|num-|pers-|case-|vib-0_nuMdi|tam-
-QC	gend-|num-|pers-|case-|vib-0|tam-0_adj
 QC	gend-|num-|pers-|case-|vib-unnara|tam-unnara
 QC	gend-|num-|pers-|case-|vib-|tam-
-QF	gend-|num-pl|pers-|case-d|vib-0|tam-0
+QC	gend-|num-|pers-|case-|vib-|tam-0_adj
+QF	gend-|num-pl|pers-|case-d|vib-|tam-
 QF	gend-|num-pl|pers-|case-o|vib-ti|tam-ti
 QF	gend-|num-sg|pers-2|case-|vib-AjFArWa|tam-AjFArWa
-QF	gend-|num-sg|pers-|case-d|vib-0|tam-0
+QF	gend-|num-sg|pers-|case-d|vib-|tam-
 QF	gend-|num-sg|pers-|case-|vib-na|tam-na
-QF	gend-|num-|pers-|case-|vib-0|tam-0_adj
-QF	gend-|num-|pers-|case-|vib-0|tam-0_avy
 QF	gend-|num-|pers-|case-|vib-iMwa|tam-iMwa
 QF	gend-|num-|pers-|case-|vib-|tam-
-QO	gend-|num-sg|pers-|case-d|vib-0|tam-0
+QF	gend-|num-|pers-|case-|vib-|tam-0_adj
+QO	gend-|num-sg|pers-|case-d|vib-|tam-
 RB	gend-any|num-any|pers-any|case-|vib-akuMdA|tam-akuMdA
 RB	gend-any|num-any|pers-any|case-|vib-i|tam-i
 RB	gend-|num-pl|pers-|case-|vib-gA|tam-gA
-RB	gend-|num-sg|pers-|case-d|vib-0|tam-0
-RB	gend-|num-sg|pers-|case-o|vib-0|tam-0_adv
-RB	gend-|num-sg|pers-|case-|vib-0|tam-0_e
+RB	gend-|num-sg|pers-|case-d|vib-|tam-
+RB	gend-|num-sg|pers-|case-o|vib-|tam-0_adv
 RB	gend-|num-sg|pers-|case-|vib-gA|tam-gA
-RB	gend-|num-|pers-|case-|vib-0|tam-0_adj
-RB	gend-|num-|pers-|case-|vib-0|tam-0_avy
+RB	gend-|num-sg|pers-|case-|vib-|tam-0_e
 RB	gend-|num-|pers-|case-|vib-A|tam-A_avy
 RB	gend-|num-|pers-|case-|vib-V|tam-V_avy
 RB	gend-|num-|pers-|case-|vib-e|tam-e_avy
 RB	gend-|num-|pers-|case-|vib-gA|tam-gA_adj
 RB	gend-|num-|pers-|case-|vib-iMwa|tam-iMwa
 RB	gend-|num-|pers-|case-|vib-|tam-
-RDP	gend-|num-|pers-|case-|vib-0|tam-0_avy
+RB	gend-|num-|pers-|case-|vib-|tam-0_adj
+RDP	gend-|num-|pers-|case-|vib-|tam-
 RP	gend-any|num-any|pers-any|case-|vib-we|tam-we
-RP	gend-|num-sg|pers-|case-d|vib-0|tam-0
-RP	gend-|num-|pers-|case-|vib-0|tam-0_avy
+RP	gend-|num-sg|pers-|case-d|vib-|tam-
 RP	gend-|num-|pers-|case-|vib-V|tam-V_avy
 RP	gend-|num-|pers-|case-|vib-|tam-
 SYM	gend-punc|num-|pers-|case-|vib-|tam-
 SYM	gend-|num-|pers-|case-|vib-0_aMxulo|tam-
 SYM	gend-|num-|pers-|case-|vib-|tam-
 SYM	gend-|num-|pers-|case-|vib-|tam-|poslcat-NM
-UT	gend-|num-|pers-|case-|vib-0|tam-0_avy
 UT	gend-|num-|pers-|case-|vib-|tam-
 VAUX	gend-any|num-any|pers-any|case-|vib-ina|tam-ina
 VAUX	gend-fn|num-sg|pers-3|case-|vib-A|tam-A
@@ -909,7 +908,7 @@ VM	gend-|num-pl|pers-3|case-|vib-wA|tam-wA
 VM	gend-|num-pl|pers-3|case-|vib-wA|tam-wA_o
 VM	gend-|num-pl|pers-3|case-|vib-wU_uMdu_wA|tam-wU_uMdu_wA
 VM	gend-|num-pl|pers-3|case-|vib-wunn|tam-wunn
-VM	gend-|num-pl|pers-|case-d|vib-0|tam-0
+VM	gend-|num-pl|pers-|case-d|vib-|tam-
 VM	gend-|num-pl|pers-|case-|vib-e_vAlYlu_nu|tam-e_vAlYlu_nu
 VM	gend-|num-pl|pers-|case-|vib-e_vAru_0|tam-e_vAru_0_e
 VM	gend-|num-pl|pers-|case-|vib-e_vAru|tam-e_vAru_0
@@ -947,8 +946,7 @@ VM	gend-|num-sg|pers-3|case-|vib-0_po+A|tam-
 VM	gend-|num-sg|pers-3|case-|vib-a_vaccu+a|tam-a_e
 VM	gend-|num-sg|pers-3|case-|vib-e_axi_avvu+a|tam-e_axi_0
 VM	gend-|num-sg|pers-3|case-|vib-e_vAdu_avvu+a|tam-e_vAdu_0
-VM	gend-|num-sg|pers-|case-d|vib-0|tam-0
-VM	gend-|num-sg|pers-|case-|vib-0|tam-0_A
+VM	gend-|num-sg|pers-|case-d|vib-|tam-
 VM	gend-|num-sg|pers-|case-|vib-adaM_0|tam-adaM_0_e
 VM	gend-|num-sg|pers-|case-|vib-adaM_ki|tam-adaM_ki
 VM	gend-|num-sg|pers-|case-|vib-adaM_wo|tam-adaM_wo
@@ -960,30 +958,29 @@ VM	gend-|num-sg|pers-|case-|vib-lo|tam-lo
 VM	gend-|num-sg|pers-|case-|vib-na|tam-na
 VM	gend-|num-sg|pers-|case-|vib-wunna_axi|tam-wunna_axi_0
 VM	gend-|num-sg|pers-|case-|vib-xi|tam-xi
+VM	gend-|num-sg|pers-|case-|vib-|tam-0_A
 VM	gend-|num-|pers-|case-|vib-0_V|tam-0_V_adv
 VM	gend-|num-|pers-|case-|vib-0_mAwrame|tam-
-VM	gend-|num-|pers-|case-|vib-0|tam-0_adj
-VM	gend-|num-|pers-|case-|vib-0|tam-0_adv
-VM	gend-|num-|pers-|case-|vib-0|tam-0_avy
 VM	gend-|num-|pers-|case-|vib-_e_appudu_0_V|tam-_e_appudu_0_V_adv
 VM	gend-|num-|pers-|case-|vib-o|tam-o_avy
 VM	gend-|num-|pers-|case-|vib-xi|tam-xi_adj
 VM	gend-|num-|pers-|case-|vib-|tam-
+VM	gend-|num-|pers-|case-|vib-|tam-0_adj
+VM	gend-|num-|pers-|case-|vib-|tam-0_adv
 VM	gend-|num-|pers-|case-|vib-|tam-|poslcat-NM
 WQ	gend-fm|num-pl|pers-3|case-o|vib-ti|tam-ti
 WQ	gend-fm|num-pl|pers-3|case-|vib-ki|tam-ki_V
 WQ	gend-fm|num-pl|pers-3|case-|vib-ni|tam-ni
-WQ	gend-fn|num-pl|pers-3|case-|vib-0|tam-0_V
-WQ	gend-fn|num-sg|pers-3|case-|vib-0|tam-0_o
+WQ	gend-fn|num-pl|pers-3|case-|vib-|tam-0_V
+WQ	gend-fn|num-sg|pers-3|case-|vib-|tam-0_o
 WQ	gend-|num-pl|pers-|case-|vib-ni|tam-ni
-WQ	gend-|num-sg|pers-|case-d|vib-0|tam-0
+WQ	gend-|num-sg|pers-|case-d|vib-|tam-
 WQ	gend-|num-sg|pers-|case-|vib-e_axi_0|tam-e_axi_0_o
 WQ	gend-|num-sg|pers-|case-|vib-ni|tam-ni_o
-WQ	gend-|num-|pers-|case-|vib-0|tam-0_adv
-WQ	gend-|num-|pers-|case-|vib-0|tam-0_avy
-WQ	gend-|num-|pers-|case-|vib-0|tam-0_avy|poslcat-NM
 WQ	gend-|num-|pers-|case-|vib-o|tam-o_avy
 WQ	gend-|num-|pers-|case-|vib-|tam-
+WQ	gend-|num-|pers-|case-|vib-|tam-0_adv
+WQ	gend-|num-|pers-|case-|vib-|tam-|poslcat-NM
 end_of_list
     ;
     # Protect from editors that replace tabs by spaces.
