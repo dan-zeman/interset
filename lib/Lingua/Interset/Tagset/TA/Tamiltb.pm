@@ -1,9 +1,9 @@
-# ABSTRACT: Driver for the tagset of the (Prague) Tamil Treebank (TamilTB)
+# ABSTRACT: Driver for the tagset of the (Prague) Tamil Dependency Treebank (TamilTB)
 # Copyright © 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # Copyright © 2011 Loganathan Ramasamy <ramasamy@ufal.mff.cuni.cz>
 # Documentation at http://ufal.mff.cuni.cz/~ramasamy/tamiltb/0.1/morph_annotation.html
 
-package Lingua::Interset::Tagset::SK::Snk;
+package Lingua::Interset::Tagset::TA::Tamiltb;
 use strict;
 use warnings;
 our $VERSION = '2.039';
@@ -115,7 +115,7 @@ sub _create_atoms
             'Tq' => ['pos' => 'part'],
             # Ts: concessive particle (um: Otiyum = although ran; utavinAlum = even if helps)
             'Ts' => ['pos' => 'part'],
-            # Tt-T----A: verbal particle (enru, ena, enr, enat, enak, enav)
+            # Tt-T----A: verbal partic(ip?)le (enru, ena, enr, enat, enak, enav)
             # See also Vt?
             'Tt' => ['pos' => 'part'],
             # Tv: inclusive particle (um = also: rAmanum = also Raman)
@@ -138,8 +138,8 @@ sub _create_atoms
             'Vj' => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'imp'],
             # Vr: lexical verb, finite form (terikiratu, terivikkiratu, irukkiratu, kUrukiratu, nilavukiratu)
             'Vr' => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'ind'],
-            # Vt: lexical verb, verbal particle (vawtu = having come; Oti = having run; utavi = having helped)
-            'Vt' => ['pos' => 'verb'],
+            # Vt: lexical verb, verbal participle (vawtu = having come; Oti = having run; utavi = having helped)
+            'Vt' => ['pos' => 'verb', 'verbform' => 'part'],
             # Vu: lexical verb, infinitive (ceyyap, terivikkap, valangkap, ceyya, niyamikkap)
             'Vu' => ['pos' => 'verb', 'verbform' => 'inf'],
             # Vw: lexical verb, conditional (vawtal = if come; otinal = if ran; utavinal = if helped)
@@ -166,22 +166,46 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'pos' => { 'noun' => { 'prontype' => { ''  => 'N',
-                                                   '@' => 'R' }},
-                       'adj'  => { 'prontype' => { ''  => 'J',
-                                                   '@' => { 'numtype' => { 'card' => 'Q',
-                                                                           '@'    => 'D' }}}},
-                       'num'  => { 'prontype' => { ''  => 'U',
-                                                   '@' => 'Q' }},
-                       'verb' => 'V',
-                       'adv'  => 'A',
-                       'adp'  => 'P',
-                       'conj' => 'C',
-                       'part' => 'T',
-                       'int'  => 'I',
-                       'punc' => 'Z',
-                       'sym'  => 'Z',
-                       '@'    => 'X' }
+            'pos' => { 'noun' => { 'prontype' => { ''  => { 'nountype' => { 'prop' => 'NE',
+                                                                            '@'    => 'NN' }},
+                                                   '@' => { 'reflex' => { 'reflex' => 'Rh',
+                                                                          '@'      => { 'prontype' => { 'int' => 'Ri',
+                                                                                                        'prs' => 'Rp',
+                                                                                                        '@'   => 'RB' }}}}}},
+                       'adj'  => { 'prontype' => { ''  => { 'numtype' => { 'card' => 'Ux',
+                                                                           'ord'  => 'Uy',
+                                                                           '@'    => { 'verbform' => { 'part' => 'Jd',
+                                                                                                       '@'    => 'JJ' }}}},
+                                                   '@' => { 'numtype' => { 'card' => 'QQ',
+                                                                           '@'    => 'DD' }}}},
+                       'num'  => { 'prontype' => { ''  => { 'numform' => { 'digit' => 'U=',
+                                                                           '@'     => { 'numtype' => { 'ord' => 'Uy',
+                                                                                                       '@'   => 'Ux' }}}},
+                                                   '@' => 'QQ' }},
+                       'verb' => { 'verbtype' => { 'aux' => { 'verbform' => { 'inf'   => 'VU',
+                                                                              'ger'   => 'VZ',
+                                                                              'part'  => 'VT',
+                                                                              'trans' => 'VT',
+                                                                              '@'     => { 'mood' => { 'cnd' => 'VW',
+                                                                                                       '@'   => 'VR' }}}},
+                                                   '@'   => { 'verbform' => { 'inf'   => 'Vu',
+                                                                              'ger'   => 'Vz',
+                                                                              'part'  => 'Vt',
+                                                                              'trans' => 'Vt',
+                                                                              '@'     => { 'mood' => { 'imp' => 'Vj',
+                                                                                                       'cnd' => 'Vw',
+                                                                                                       '@'   => 'Vr' }}}}}},
+                       'adv'  => 'AA',
+                       'adp'  => 'PP',
+                       'conj' => 'CC',
+                       'part' => 'Tg', ###!!! There are many kinds of particles and we must distinguish them here.
+                       'int'  => 'II',
+                       'punc' => { 'punctype' => { 'peri' => 'Z#',
+                                                   'excl' => 'Z#',
+                                                   'qest' => 'Z#',
+                                                   '@'    => 'Z:' }},
+                       'sym'  => 'Z:',
+                       '@'    => 'XX' }
         }
     );
     # 3. CASE ####################
