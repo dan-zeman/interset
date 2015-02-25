@@ -206,51 +206,104 @@ sub _create_atoms
             'PCIns' => 'ins'
         }
     );
+    # DEGREE OF COMPARISON ####################
+    $atoms{degree} = $self->create_simple_atom
+    (
+        'intfeature' => 'degree',
+        'simple_decode_map' =>
+        {
+            'Cp' => 'comp',
+            'Su' => 'sup'
+        }
+    );
+    # ADJECTIVE TYPE ####################
+    # We save it in 'other/adjvtype' together with adverb types. We merge the two features so that
+    # we do not have to distinguish them later on encoding.
+    $atoms{adjtype} = $self->create_atom
+    (
+        'surfeature' => 'adjtype',
+        'decode_map' =>
+        {
+            # Adj Adj _ examples: büyük (big), yeni (new), iyi (good), aynı (same), çok (many)
+            # Adj Adj Agt examples: üretici (manufacturing), ürkütücü (scary), rahatlatıcı (relaxing), yakıcı (burning), barışçı (pacific)
+            'Agt'       => ['other' => {'adjvtype' => 'agt'}],
+            # Adj Adj AsIf examples: böylece (so that), onca (all that), delice (insane), aptalca (stupid), çılgınca (wild)
+            'AsIf'      => ['other' => {'adjvtype' => 'asif'}],
+            # Adj Adj FitFor examples: dolarlık (in dollars), yıllık (annual), saatlik (hourly), trilyonluk (trillions worth), liralık (in pounds)
+            'FitFor'    => ['other' => {'adjvtype' => 'fitfor'}],
+            # Adj Adj InBetween example: uluslararası (international)
+            'InBetween' => ['other' => {'adjvtype' => 'inbetween'}],
+            # Adj Adj JustLike example: konyakımsı (just like brandy), redingotumsu (just like redingot)
+            'JustLike'  => ['other' => {'adjvtype' => 'justlike'}],
+            # Adj Adj Rel examples: önceki (previous), arasındaki (in-between), içindeki (intra-), üzerindeki (upper), öteki (other)
+            'Rel'       => ['other' => {'adjvtype' => 'rel'}],
+            # Adj Adj Related examples: ideolojik (ideological), teknolojik (technological), meteorolojik (meteorological), bilimsel (scientific), psikolojik (psychological)
+            'Related'   => ['other' => {'adjvtype' => 'related'}],
+            # Adj Adj With examples: önemli (important), ilgili (related), vadeli (forward), yaşlı (elderly), yararlı (helpful)
+            'With'      => ['other' => {'adjvtype' => 'with'}],
+            # Adj Adj Without examples: sessiz (quiet), savunmasız (vulnerable), anlamsız (meaningless), gereksiz (unnecessary), rahatsız (uncomfortable)
+            'Without'   => ['other' => {'adjvtype' => 'without'}]
+        },
+        'encode_map' =>
+        {
+            'other/adjvtype' => { 'agt'       => 'Agt',
+                                  'asif'      => 'AsIf',
+                                  'fitfor'    => 'FitFor',
+                                  'inbetween' => 'InBetween',
+                                  'justlike'  => 'JustLike',
+                                  'rel'       => 'Rel',
+                                  'related'   => 'Related',
+                                  'with'      => 'With',
+                                  'without'   => 'Without' }
+        }
+    );
+    # ADVERB TYPE ####################
+    # We save it in 'other/adjvtype' together with adverb types. We merge the two features so that
+    # we do not have to distinguish them later on encoding.
+    $atoms{advtype} = $self->create_atom
+    (
+        'surfeature' => 'advtype',
+        'decode_map' =>
+        {
+            # The non-"_" non-Ly non-Since adverbs seem to be derived from verbs, i.e. they could be called adverbial participles (transgressives).
+            # Adv Adv _ examples: daha (more), çok (very), en (most), bile (even), hiç (never)
+            # Adv Adv Ly examples: hafifçe (slightly), rahatça (easily), iyice (thoroughly), öylece (just), aptalca (stupidly)
+            'Ly'                  => ['other' => {'adjvtype' => 'ly'}],
+            # Adv Adv Since examples: yıldır (for years), yıllardır (for years), saattir (for hours)
+            'Since'               => ['other' => {'adjvtype' => 'since'}],
+            # Adv Adv AfterDoingSo examples: gidip (having gone), gelip (having come), deyip (having said), kesip (having cut out), çıkıp (having gotten out)
+            'AfterDoingSo'        => ['other' => {'adjvtype' => 'afterdoingso'}, 'verbform' => 'trans'],
+            # Adv Adv As examples: istemedikçe (unless you want to), arttıkça (as increases), konuştukça (as you talk), oldukça (rather), gördükçe (as you see)
+            'As'                  => ['other' => {'adjvtype' => 'as'}, 'verbform' => 'trans'],
+            # Adv Adv AsIf examples: güneşiymişçesine, okumuşçasına (as if reads), etmişçesine, taparcasına (as if worships), okşarcasına (as if strokes)
+            'AsIf'                => ['other' => {'adjvtype' => 'asif'}, 'verbform' => 'trans'],
+            # Adv Adv ByDoingSo examples: olarak (by being), diyerek (by saying), belirterek (by specifying), koşarak (by running), çekerek (by pulling)
+            'ByDoingSo'           => ['other' => {'adjvtype' => 'bydoingso'}, 'verbform' => 'trans'],
+            # Adv Adv SinceDoingSo examples: olalı (since being), geleli (since coming), dönüşeli (since returning), başlayalı (since starting), kapılalı
+            'SinceDoingSo'        => ['other' => {'adjvtype' => 'sincedoingso'}, 'verbform' => 'trans'],
+            # Adv Adv When examples: görünce (when/on seeing), deyince (when we say), olunca (when), açılınca (when opening), gelince (when coming)
+            'When'                => ['other' => {'adjvtype' => 'when'}, 'verbform' => 'trans'],
+            # Adv Adv While examples: giderken (en route), konuşurken (while talking), derken (while saying), çıkarken (on the way out), varken (when there is)
+            'While'               => ['other' => {'adjvtype' => 'while'}, 'verbform' => 'trans'],
+            # Adv Adv WithoutHavingDoneSo examples: olmadan (without being), düşünmeden (without thinking), geçirmeden (without passing), çıkarmadan (without removing), almadan (without taking)
+            'WithoutHavingDoneSo' => ['other' => {'adjvtype' => 'withouthavingdoneso'}, 'verbform' => 'trans'],
+        },
+        'encode_map' =>
+        {
+            'other/adjvtype' => { 'ly'                  => 'Ly',
+                                  'since'               => 'Since',
+                                  'afterdoingso'        => 'AfterDoingSo',
+                                  'as'                  => 'As',
+                                  'asif'                => 'AsIf',
+                                  'bydoingso'           => 'ByDoingSo',
+                                  'sincedoingso'        => 'SinceDoingSo',
+                                  'when'                => 'When',
+                                  'while'               => 'While',
+                                  'withouthavingdoneso' => 'WithoutHavingDoneSo' }
+        }
+    );
     foreach my $feature (@features)
     {
-        # Adjectives
-        # Adj Adj _ examples: büyük (big), yeni (new), iyi (good), aynı (same), çok (many)
-        # Adj Adj Agt examples: üretici (manufacturing), ürkütücü (scary), rahatlatıcı (relaxing), yakıcı (burning), barışçı (pacific)
-        # Adj Adj AsIf examples: böylece (so that), onca (all that), delice (insane), aptalca (stupid), çılgınca (wild)
-        # Adj Adj FitFor examples: dolarlık (in dollars), yıllık (annual), saatlik (hourly), trilyonluk (trillions worth), liralık (in pounds)
-        # Adj Adj InBetween example: uluslararası (international)
-        # Adj Adj JustLike example: konyakımsı (just like brandy), redingotumsu (just like redingot)
-        # Adj Adj Rel examples: önceki (previous), arasındaki (in-between), içindeki (intra-), üzerindeki (upper), öteki (other)
-        # Adj Adj Related examples: ideolojik (ideological), teknolojik (technological), meteorolojik (meteorological), bilimsel (scientific), psikolojik (psychological)
-        # Adj Adj With examples: önemli (important), ilgili (related), vadeli (forward), yaşlı (elderly), yararlı (helpful)
-        # Adj Adj Without examples: sessiz (quiet), savunmasız (vulnerable), anlamsız (meaningless), gereksiz (unnecessary), rahatsız (uncomfortable)
-        if($feature =~ m/^(Agt|AsIf|FitFor|InBetween|JustLike|Rel|Related|With|Without)$/)
-        {
-            # Merge adjtype and advtype into one feature so that we do not have to distinguish them later on encoding.
-            $f{other}{advtype} = $feature;
-        }
-
-        # Adverbs
-        # The non-"_" non-Ly non-Since adverbs seem to be derived from verbs, i.e. they could be called adverbial participles (transgressives).
-        # Adv Adv _ examples: daha (more), çok (very), en (most), bile (even), hiç (never)
-        # Adv Adv Ly examples: hafifçe (slightly), rahatça (easily), iyice (thoroughly), öylece (just), aptalca (stupidly)
-        # Adv Adv Since examples: yıldır (for years), yıllardır (for years), saattir (for hours)
-        # Adv Adv AfterDoingSo examples: gidip (having gone), gelip (having come), deyip (having said), kesip (having cut out), çıkıp (having gotten out)
-        # Adv Adv As examples: istemedikçe (unless you want to), arttıkça (as increases), konuştukça (as you talk), oldukça (rather), gördükçe (as you see)
-        # Adv Adv AsIf examples: güneşiymişçesine, okumuşçasına (as if reads), etmişçesine, taparcasına (as if worships), okşarcasına (as if strokes)
-        # Adv Adv ByDoingSo examples: olarak (by being), diyerek (by saying), belirterek (by specifying), koşarak (by running), çekerek (by pulling)
-        # Adv Adv SinceDoingSo examples: olalı (since being), geleli (since coming), dönüşeli (since returning), başlayalı (since starting), kapılalı
-        # Adv Adv When examples: görünce (when/on seeing), deyince (when we say), olunca (when), açılınca (when opening), gelince (when coming)
-        # Adv Adv While examples: giderken (en route), konuşurken (while talking), derken (while saying), çıkarken (on the way out), varken (when there is)
-        # Adv Adv WithoutHavingDoneSo examples: olmadan (without being), düşünmeden (without thinking), geçirmeden (without passing), çıkarmadan (without removing), almadan (without taking)
-        if($feature =~ m/^(AfterDoingSo|As|AsIf|ByDoingSo|SinceDoingSo|When|While|WithoutHavingDoneSo)$/)
-        {
-            $f{verbform} = 'trans';
-            $f{other}{advtype} = $feature;
-        }
-        elsif($feature =~ m/^(Ly|Since)$/)
-        {
-            $f{other}{advtype} = $feature;
-        }
-
-        $f{degree} = "comp" if $feature eq "Cp";
-        $f{degree} = "sup" if $feature eq "Su";
-
         # Compounding and modality features (here explained on the English verb "to do"; Turkish examples are not translations of "to do"!)
         # +Able ... able to do ... examples: olabilirim, olabilirsin, olabilir ... bunu demis olabilirim = I may have said (demis = said)
         # +Repeat ... do repeatedly ... no occurrence
