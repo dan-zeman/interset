@@ -449,6 +449,13 @@ sub _create_atoms
             # Caus|Pos|Prog1|A3sg examples: karıştırıyor (is confusing), korkutuyor (is scaring), geçiriyor (is taking), koparıyor (is breaking), döktürüyor
             # Caus|Pos|Prog1|Past|A3sg examples: karıştırıyordu (was scooping), geçiriyordu (was giving), dolduruyordu (was filling), sürdürüyordu (was continuing), azaltıyordu (was diminishing)
             'Caus'   => ['voice' => 'cau']
+        },
+        'encode_map' =>
+        {
+            'voice' => { 'pass' => 'Pass',
+                         'rcp'  => 'Recip',
+                         'cau'  => 'Caus',
+                         '@'    => { 'reflex' => { 'reflex' => 'Reflex' }}}
         }
     );
     # COPULA ####################
