@@ -114,26 +114,96 @@ sub _create_atoms
                        'sym'  => 'Punc Punc' }
         }
     );
-    # DEGREE OF COMPARISON ####################
-    $atoms{Degree} = $self->create_simple_atom
-    (
-        'intfeature' => 'degree',
-        'simple_decode_map' =>
-        {
-            'positive'    => 'pos',
-            'comparative' => 'comp',
-            'superlative' => 'sup'
-        }
-    );
     # GENDER ####################
-    $atoms{Gender} = $self->create_simple_atom
+    $atoms{gender} = $self->create_simple_atom
     (
         'intfeature' => 'gender',
         'simple_decode_map' =>
         {
-            'masculine' => 'masc',
-            'feminine'  => 'fem',
-            'neuter'    => 'neut'
+            'Ma' => 'masc',
+            'Fe' => 'fem',
+            'Ne' => 'neut'
+        }
+    );
+    # AGREEMENT ####################
+    $atoms{agreement} = $self->create_atom
+    (
+        'surfeature' => 'agreement',
+        'decode_map' =>
+        {
+            'A1sg' => ['person' => '1', 'number' => 'sing'],
+            'A1pl' => ['person' => '1', 'number' => 'plur'],
+            'A2sg' => ['person' => '2', 'number' => 'sing'],
+            'A2pl' => ['person' => '2', 'number' => 'plur'],
+            'A3sg' => ['person' => '3', 'number' => 'sing'],
+            'A3pl' => ['person' => '3', 'number' => 'plur']
+        },
+        'encode_map' =>
+        {
+            'number' => { 'sing' => { 'person' => { '1' => 'A1sg',
+                                                    '2' => 'A2sg',
+                                                    '3' => 'A3sg' }},
+                          'plur' => { 'person' => { '1' => 'A1pl',
+                                                    '2' => 'A2pl',
+                                                    '3' => 'A3pl' }}}
+        }
+    );
+    # POSSESSIVE AGREEMENT ####################
+    $atoms{possagreement} = $self->create_atom
+    (
+        'surfeature' => 'possagreement',
+        'decode_map' =>
+        {
+            'P1sg' => ['possperson' => '1', 'possnumber' => 'sing'],
+            'P1pl' => ['possperson' => '1', 'possnumber' => 'plur'],
+            'P2sg' => ['possperson' => '2', 'possnumber' => 'sing'],
+            'P2pl' => ['possperson' => '2', 'possnumber' => 'plur'],
+            'P3sg' => ['possperson' => '3', 'possnumber' => 'sing'],
+            'P3pl' => ['possperson' => '3', 'possnumber' => 'plur'],
+            'Pnon' => [] # no overt agreement
+        },
+        'encode_map' =>
+        {
+            'possnumber' => { 'sing' => { 'possperson' => { '1' => 'P1sg',
+                                                            '2' => 'P2sg',
+                                                            '3' => 'P3sg' }},
+                              'plur' => { 'possperson' => { '1' => 'P1pl',
+                                                            '2' => 'P2pl',
+                                                            '3' => 'P3pl' }}}
+        }
+    );
+    # CASE ####################
+    $atoms{case} = $self->create_simple_atom
+    (
+        'intfeature' => 'case',
+        'simple_decode_map' =>
+        {
+            'Nom' => 'nom',
+            'Gen' => 'gen',
+            'Acc' => 'acc',
+            'Abl' => 'abl',
+            'Dat' => 'dat',
+            'Loc' => 'loc',
+            'Ins' => 'ins',
+            # There is also the 'Equ' feature. It seems to appear in place of case but it is not documented.
+            # And descriptions of Turkish grammar that I have seen do not list other cases than the above.
+            # Nevertheless, until further notice, I am going to use another case value to store the feature.
+            'Equ' => 'com'
+        }
+    );
+    # PC (???) CASE ####################
+    $atoms{pccase} = $self->create_simple_atom
+    (
+        'intfeature' => 'case',
+        'simple_decode_map' =>
+        {
+            'PCNom' => 'nom',
+            'PCGen' => 'gen',
+            'PCAcc' => 'acc',
+            'PCAbl' => 'abl',
+            'PCDat' => 'dat',
+            'PCLoc' => 'loc',
+            'PCIns' => 'ins'
         }
     );
     foreach my $feature (@features)
@@ -177,43 +247,6 @@ sub _create_atoms
         {
             $f{other}{advtype} = $feature;
         }
-
-        # gender
-        $f{gender} = "masc" if $feature eq "Ma";
-        $f{gender} = "fem" if $feature eq "Fe";
-        $f{gender} = "neut" if $feature eq "Ne";
-
-        # agreement
-        # person
-        $f{person} = "1" if ($feature =~ /^A1(sg|pl)$/);
-        $f{person} = "2" if ($feature =~ /^A2(sg|pl)$/);
-        $f{person} = "3" if ($feature =~ /^A3(sg|pl)$/);
-        # number
-        $f{number} = "sing" if ($feature =~ /^A(1|2|3)sg$/);
-        $f{number} = "plu" if ($feature =~ /^A(1|2|3)pl$/);
-
-        # possessive agreement
-        # person
-        $f{possperson} = "1" if ($feature =~ /^P1(sg|pl)$/);
-        $f{possperson} = "2" if ($feature =~ /^P2(sg|pl)$/);
-        $f{possperson} = "3" if ($feature =~ /^P3(sg|pl)$/);
-        # number
-        $f{possnumber} = "sing" if ($feature =~ /^P(1|2|3)sg$/);
-        $f{possnumber} = "plu" if ($feature =~ /^P(1|2|3)pl$/);
-        # Pnon = no overt agreement
-
-        # case features
-        $f{case} = "nom" if $feature =~ m/^(PC)?Nom$/;
-        $f{case} = "gen" if $feature =~ m/^(PC)?Gen$/;
-        $f{case} = "acc" if $feature =~ m/^(PC)?Acc$/;
-        $f{case} = "abl" if $feature =~ m/^(PC)?Abl$/;
-        $f{case} = "dat" if $feature =~ m/^(PC)?Dat$/;
-        $f{case} = "loc" if $feature =~ m/^(PC)?Loc$/;
-        $f{case} = "ins" if $feature =~ m/^(PC)?Ins$/;
-        # There is also the 'Equ' feature. It seems to appear in place of case but it is not documented.
-        # And descriptions of Turkish grammar that I have seen do not list other cases than the above.
-        # Nevertheless, until further notice, I am going to use another case value to store the feature.
-        $f{case} = 'com' if($feature eq 'Equ');
 
         $f{degree} = "comp" if $feature eq "Cp";
         $f{degree} = "sup" if $feature eq "Su";
