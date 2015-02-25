@@ -302,147 +302,169 @@ sub _create_atoms
                                   'withouthavingdoneso' => 'WithoutHavingDoneSo' }
         }
     );
-    foreach my $feature (@features)
-    {
-        # Compounding and modality features (here explained on the English verb "to do"; Turkish examples are not translations of "to do"!)
-        # +Able ... able to do ... examples: olabilirim, olabilirsin, olabilir ... bunu demis olabilirim = I may have said (demis = said)
-        # +Repeat ... do repeatedly ... no occurrence
-        # +Hastily ... do hastily ... examples: aliverdi, doluverdi, gidiverdi
-        # +EverSince ... have been doing ever since ... no occurrence
-        # +Almost ... almost did but did not ... no occurrence
-        # +Stay ... stayed frozen whlie doing ... just two examples: şaşakalmıştık, uyuyakalmıştı (Google translates the latter as "fallen asleep")
-        # +Start ... start doing immediately ... no occurrence
-        ###!!! Loganathan's solution of marking the verbs as auxiliaries is not ideal. These are normal verb stems but with additional morphemes.
-        $f{subpos} = "aux" if $feature eq "Able";
-        $f{subpos} = "aux" if $feature eq "Repeat";
-        $f{subpos} = "aux" if $feature eq "Start";
-        $f{subpos} = "aux" if $feature eq "Hastily";
-        $f{subpos} = "aux" if $feature eq "Stay";
-        $f{subpos} = "aux" if $feature eq "EverSince";
-        $f{subpos} = "aux" if $feature eq "Almost";
-        # Verbs derived from nouns or adjectives:
-        1 if($feature eq 'Acquire'); # to acquire the noun
-        1 if($feature eq 'Become'); # to become the noun
-
-        # The "Pres" tag is not frequent.
-        # It occurs with "Verb Zero" more often than with "Verb Verb". It often occurs with copulae ("Cop").
-        # According to documentation, it is intended for predicative nominals or adjectives.
-        # Pres|Cop|A3sg examples: vardır (there are), yoktur (there is no), demektir (means), sebzedir, nedir (what is the)
-        $f{tense} = "pres" if $feature eq "Pres";
-        # The "Fut" tag can be combined with "Past" and occasionally with "Narr".
-        # Pos|Fut|A3sg examples: olacak (will), verecek (will give), gelecek, sağlayacak, yapacak
-        # Pos|Fut|Past|A3sg examples: olacaktı (would), öğrenecekti (would learn), yapacaktı (would make), ölecekti, sokacaktı
-        $f{tense} = "fut" if $feature eq "Fut";
-        # Pos|Past|A3sg examples: dedi (said), oldu (was), söyledi (said), geldi (came), sordu (asked)
-        # Pos|Prog1|Past|A3sg examples: geliyordu (was coming), oturuyordu (was sitting), bakıyordu, oluyordu, titriyordu
-        if($feature eq 'Past')
+    # COMPOUNDING AND MODALITY ####################
+    # Compounding and modality features (here explained on the English verb "to do"; Turkish examples are not translations of "to do"!)
+    # +Able ... able to do ... examples: olabilirim, olabilirsin, olabilir ... bunu demis olabilirim = I may have said (demis = said)
+    # +Repeat ... do repeatedly ... no occurrence
+    # +Hastily ... do hastily ... examples: aliverdi, doluverdi, gidiverdi
+    # +EverSince ... have been doing ever since ... no occurrence
+    # +Almost ... almost did but did not ... no occurrence
+    # +Stay ... stayed frozen whlie doing ... just two examples: şaşakalmıştık, uyuyakalmıştı (Google translates the latter as "fallen asleep")
+    # +Start ... start doing immediately ... no occurrence
+    # Verbs derived from nouns or adjectives:
+    #1 if($feature eq 'Acquire'); # to acquire the noun
+    #1 if($feature eq 'Become'); # to become the noun
+    # TENSE ####################
+    # Two (but not more) tenses may be combined together.
+    # We have to preprocess the tags so that two tense features appear as one, e.g. "Fut|Past" becomse "FutPast".
+    $atoms{tense} = $self->create_atom
+    (
+        'surfeature' => 'tense',
+        'decode_map' =>
         {
-            # Is it combined with another tense? At most two tenses can be combined together.
-            if($f{tense} eq 'narr')
-            {
-                $f{tense} = ['narr', 'past'];
-            }
-            elsif($f{tense} eq 'fut')
-            {
-                $f{tense} = ['fut', 'past'];
-            }
-            else
-            {
-                $f{tense} = 'past';
-            }
-        }
-        # Pos|Narr|A3sg examples: olmuş (was), demiş (said), bayılmış (fainted), gelmiş (came), çıkmış (emerged)
-        # Pos|Narr|Past|A3sg examples: başlamıştı (started), demişti (said), gelmişti (was), geçmişti (passed), kalkmıştı (sailed)
-        # Pos|Prog1|Narr|A3sg examples: oluyormuş (was happening), bakıyormuş (was staring), çırpınıyormuş, yaşıyormuş, istiyormuş
-        # enwiki:
-        # The definite past or di-past is used to assert that something did happen in the past.
-        # The inferential past or miş-past can be understood as asserting that a past participle is applicable now;
-        # hence it is used when the fact of a past event, as such, is not important;
-        # in particular, the inferential past is used when one did not actually witness the past event.
-        # A newspaper will generally use the di-past, because it is authoritative.
-        if($feature eq 'Narr')
+            # The "Pres" tag is not frequent.
+            # It occurs with "Verb Zero" more often than with "Verb Verb". It often occurs with copulae ("Cop").
+            # According to documentation, it is intended for predicative nominals or adjectives.
+            # Pres|Cop|A3sg examples: vardır (there are), yoktur (there is no), demektir (means), sebzedir, nedir (what is the)
+            'Pres'     => ['tense' => 'pres'],
+            # The "Fut" tag can be combined with "Past" and occasionally with "Narr".
+            # Pos|Fut|A3sg examples: olacak (will), verecek (will give), gelecek, sağlayacak, yapacak
+            # Pos|Fut|Past|A3sg examples: olacaktı (would), öğrenecekti (would learn), yapacaktı (would make), ölecekti, sokacaktı
+            'Fut'      => ['tense' => 'fut'],
+            'FutPast'  => ['tense' => 'fut|past'],
+            # Pos|Past|A3sg examples: dedi (said), oldu (was), söyledi (said), geldi (came), sordu (asked)
+            # Pos|Prog1|Past|A3sg examples: geliyordu (was coming), oturuyordu (was sitting), bakıyordu, oluyordu, titriyordu
+            'NarrPast' => ['tense' => 'narr|past'],
+            'Past'     => ['tense' => 'past'],
+            # Pos|Narr|A3sg examples: olmuş (was), demiş (said), bayılmış (fainted), gelmiş (came), çıkmış (emerged)
+            # Pos|Narr|Past|A3sg examples: başlamıştı (started), demişti (said), gelmişti (was), geçmişti (passed), kalkmıştı (sailed)
+            # Pos|Prog1|Narr|A3sg examples: oluyormuş (was happening), bakıyormuş (was staring), çırpınıyormuş, yaşıyormuş, istiyormuş
+            # enwiki:
+            # The definite past or di-past is used to assert that something did happen in the past.
+            # The inferential past or miş-past can be understood as asserting that a past participle is applicable now;
+            # hence it is used when the fact of a past event, as such, is not important;
+            # in particular, the inferential past is used when one did not actually witness the past event.
+            # A newspaper will generally use the di-past, because it is authoritative.
+            'FutNarr'  => ['tense' => 'fut|narr'],
+            'Narr'     => ['tense' => 'narr'],
+            # Pos|Aor|A3sg examples: olur (will), gerekir (must), yeter (is enough), alır (takes), gelir (income)
+            # Pos|Aor|Narr|A3sg examples: olurmuş (bustled), inanırmış, severmiş (loved), yaşarmış (lived), bitermiş
+            # Pos|Aor|Past|A3sg examples: olurdu (would), otururdu (sat), yapardı (would), bilirdi (knew), derdi (used to say)
+            # enwiki:
+            # In Turkish the aorist is a habitual aspect. (Geoffrey Lewis, Turkish Grammar (2nd ed, 2000, Oxford))
+            # So it is not a tense (unlike e.g. Bulgarian aorist) and it can be combined with tenses.
+            # Habitual aspect means repetitive actions (they take place "usually"). It is a type of imperfective aspect.
+            # English has habitual past: "I used to visit him frequently."
+            'Aor'      => ['tense' => 'aor']
+        },
+        'encode_map' =>
         {
-            # Is it combined with another tense? At most two tenses can be combined together.
-            if($f{tense} eq 'fut')
-            {
-                $f{tense} = ['fut', 'narr'];
-            }
-            else
-            {
-                $f{tense} = 'narr';
-            }
+            'tense' => { 'aor'       => 'Aor',
+                         'fut'       => 'Fut',
+                         'fut|narr'  => 'FutNarr',
+                         'fut|past'  => 'FutPast',
+                         'narr'      => 'Narr',
+                         'narr|past' => 'NarrPast',
+                         'past'      => 'Past',
+                         'pres'      => 'Pres' }
         }
-        # Pos|Aor|A3sg examples: olur (will), gerekir (must), yeter (is enough), alır (takes), gelir (income)
-        # Pos|Aor|Narr|A3sg examples: olurmuş (bustled), inanırmış, severmiş (loved), yaşarmış (lived), bitermiş
-        # Pos|Aor|Past|A3sg examples: olurdu (would), otururdu (sat), yapardı (would), bilirdi (knew), derdi (used to say)
-        # enwiki:
-        # In Turkish the aorist is a habitual aspect. (Geoffrey Lewis, Turkish Grammar (2nd ed, 2000, Oxford))
-        # So it is not a tense (unlike e.g. Bulgarian aorist) and it can be combined with tenses.
-        # Habitual aspect means repetitive actions (they take place "usually"). It is a type of imperfective aspect.
-        # English has habitual past: "I used to visit him frequently."
-        $f{subtense} = "aor" if $feature eq "Aor";
-        # Documentation calls the following two tenses "present continuous".
-        # Prog1 = "present continuous, process"
-        # Prog2 = "present continuous, state"
-        # However, there are also combinations with past tags, e.g. "Prog1|Past".
-        # Pos|Prog1|A3sg examples: diyor (is saying), geliyor (is coming), oluyor (is being), yapıyor (is doing), biliyor (is knowing)
-        # Pos|Prog1|Past|A3sg examples: geliyordu (was coming), oturuyordu (was sitting), bakıyordu, oluyordu, titriyordu
-        # Pos|Prog1|Narr|A3sg examples: oluyormuş (was happening), bakıyormuş (was staring), çırpınıyormuş, yaşıyormuş, istiyormuş
-        $f{aspect} = "prog" if $feature eq "Prog1";
-        # Pos|Prog2|A3sg examples: oturmakta (is sitting), kapamakta (is closing), soymakta (is peeling), kullanmakta, taşımakta
-        if($feature eq 'Prog2')
+    );
+    # ASPECT ####################
+    $atoms{aspect} = $self->create_atom
+    (
+        'surfeature' => 'aspect',
+        'decode_map' =>
         {
-            $f{aspect} = 'prog';
-            $f{variant} = 2;
+            # Documentation calls the following two tenses "present continuous".
+            # Prog1 = "present continuous, process"
+            # Prog2 = "present continuous, state"
+            # However, there are also combinations with past tags, e.g. "Prog1|Past".
+            # Pos|Prog1|A3sg examples: diyor (is saying), geliyor (is coming), oluyor (is being), yapıyor (is doing), biliyor (is knowing)
+            # Pos|Prog1|Past|A3sg examples: geliyordu (was coming), oturuyordu (was sitting), bakıyordu, oluyordu, titriyordu
+            # Pos|Prog1|Narr|A3sg examples: oluyormuş (was happening), bakıyormuş (was staring), çırpınıyormuş, yaşıyormuş, istiyormuş
+            # Pos|Prog2|A3sg examples: oturmakta (is sitting), kapamakta (is closing), soymakta (is peeling), kullanmakta, taşımakta
+            'Prog1' => ['aspect' => 'prog'],
+            'Prog2' => ['aspect' => 'prog', 'variant' => '2']
+        },
+        'encode_map' =>
+        {
+            'aspect' => { 'prog' => { 'variant' => { '2' => 'Prog2',
+                                                     '@' => 'Prog1' }}}
         }
-        # mood: wish-must case (dilek-şart kipi)
-        # Pos|Imp|A2sg examples: var (be), gerek (need), bak (look), kapa (expand), anlat (tell)
-        $f{mood} = "imp" if $feature eq "Imp";
-        # Pos|Neces|A3sg examples: olmalı (should be), almalı (should buy), sağlamalı (should provide), kapsamalı (should cover)
-        $f{mood} = "nec" if $feature eq "Neces";
-        # Optative mood (indicates a wish or hope). "May you have a long life! If only I were rich!"
-        # Oflazer: "Let me/him/her do..." / "Kéž by ..."
-        # Pos|Opt|A3sg examples: diye (if only said), sevine (if only exulted), güle (if only laughed), ola (if only were), otura (if only sat)
-        $f{mood} = "opt" if $feature eq "Opt";
-        ###!!! What's the difference between Desr and Cond?
-        # Pos|Desr|A3sg examples: olsa (wants to be), ise, varsa, istese (if wanted), bıraksa (wants to leave)
-        $f{mood} = "des" if $feature eq "Desr";
-        # Pos|Aor|Cond|A3sg examples: verirse (if), isterse, kalırsa (if remains), başlarsa (if begins), derse
-        # Pos|Fut|Cond|A3sg example: olacaksa (if will)
-        # Pos|Narr|Cond|A3sg example: oturmuşsa
-        # Pos|Past|Cond|A3sg example: olduysa (if (would have been)), uyuduysa
-        # Pos|Prog1|Cond|A3sg examples: geliyorsa (would be coming), öpüyorsa, uyuşuyorsa, seviyorsa (would be loving)
-        $f{mood} = "cnd" if $feature eq "Cond";
-
-        # negativeness
-        # Pos|Prog1|A3sg examples: diyor (is saying), geliyor (is coming), oluyor (is being), yapıyor (is doing), biliyor (is knowing)
-        # Neg|Prog1|A3sg examples: olmuyor (is not), tutmuyor (does not match), bilmiyor (does not know), gerekmiyor, benzemiyor
-        $f{negativeness} = "pos" if $feature eq "Pos";;
-        $f{negativeness} = "neg" if $feature eq "Neg";;
-
-        # voice
-        # Pass|Pos|Past|A3sg examples: belirtildi (was said), söylendi (was told), istendi (was asked), öğrenildi (was learned), kaldırıldı
-        $f{voice} = "pass" if $feature eq "Pass";
-        # Reflex|Pos|Prog1|A3sg example: hazırlanıyor (is preparing itself)
-        $f{reflex} = 'reflex' if($feature eq 'Reflex');
-        # Recip|Pos|Past|A3sg example: karıştı (confused each other?)
-        $f{voice} = 'rcp' if($feature eq 'Recip');
-        # Caus ... causative
-        # Oflazer's documentation classifies this as a value of the voice feature.
-        # Caus|Pos|Narr|A3sg examples: bastırmış (suppressed), bitirmiş (completed), oluşturmuş (created), çoğaltmış (multiplied), çıkartmış (issued)
-        # Caus|Pos|Past|A3sg examples: belirtti (said), bildirdi (reported), uzattı (extended), indirdi (reduced), sürdürdü (continued)
-        # Caus|Pos|Prog1|A3sg examples: karıştırıyor (is confusing), korkutuyor (is scaring), geçiriyor (is taking), koparıyor (is breaking), döktürüyor
-        # Caus|Pos|Prog1|Past|A3sg examples: karıştırıyordu (was scooping), geçiriyordu (was giving), dolduruyordu (was filling), sürdürüyordu (was continuing), azaltıyordu (was diminishing)
-        $f{voice} = "cau" if $feature eq "Caus";
-
-        # Copula in Turkish is not an independent word. It is a bound morpheme (tur/tır/tir/dur etc.)
-        # It is not clear to me though, what meaning it adds when attached to a verb.
-        # Pos|Narr|Cop|A3sg examples: olmuştur (has been), açmıştır (has led), ulaşmıştır (has reached), başlamıştır, gelmiştir
-        # Pos|Prog1|Cop|A3sg examples: oturuyordur (is sitting), öpüyordur (is kissing), tanıyordur (knows)
-        # Pos|Fut|Cop|A3sg examples: olacaktır (will), akacaktır (will flow), alacaktır (will take), çarpacaktır, görecektir
-        $f{subpos} = 'cop' if($feature eq 'Cop');
-
-    }
+    );
+    # MOOD ####################
+    # mood: wish-must case (dilek-şart kipi)
+    $atoms{mood} = $self->create_simple_atom
+    (
+        'intfeature' => 'mood',
+        'simple_decode_map' =>
+        {
+            # Pos|Imp|A2sg examples: var (be), gerek (need), bak (look), kapa (expand), anlat (tell)
+            'Imp'   => 'imp',
+            # Pos|Neces|A3sg examples: olmalı (should be), almalı (should buy), sağlamalı (should provide), kapsamalı (should cover)
+            'Neces' => 'nec',
+            # Optative mood (indicates a wish or hope). "May you have a long life! If only I were rich!"
+            # Oflazer: "Let me/him/her do..." / "Kéž by ..."
+            # Pos|Opt|A3sg examples: diye (if only said), sevine (if only exulted), güle (if only laughed), ola (if only were), otura (if only sat)
+            'Opt'   => 'opt',
+            ###!!! What's the difference between Desr and Cond?
+            # Pos|Desr|A3sg examples: olsa (wants to be), ise, varsa, istese (if wanted), bıraksa (wants to leave)
+            'Desr'  => 'des',
+            # Pos|Aor|Cond|A3sg examples: verirse (if), isterse, kalırsa (if remains), başlarsa (if begins), derse
+            # Pos|Fut|Cond|A3sg example: olacaksa (if will)
+            # Pos|Narr|Cond|A3sg example: oturmuşsa
+            # Pos|Past|Cond|A3sg example: olduysa (if (would have been)), uyuduysa
+            # Pos|Prog1|Cond|A3sg examples: geliyorsa (would be coming), öpüyorsa, uyuşuyorsa, seviyorsa (would be loving)
+            'Cond'  => 'cnd'
+        }
+    );
+    # NEGATIVENESS ####################
+    $atoms{negativeness} = $self->create_simple_atom
+    (
+        'intfeature' => 'negativeness',
+        'simple_decode_map' =>
+        {
+            # Pos|Prog1|A3sg examples: diyor (is saying), geliyor (is coming), oluyor (is being), yapıyor (is doing), biliyor (is knowing)
+            'Pos' => 'pos',
+            # Neg|Prog1|A3sg examples: olmuyor (is not), tutmuyor (does not match), bilmiyor (does not know), gerekmiyor, benzemiyor
+            'Neg' => 'neg'
+        }
+    );
+    # VOICE ####################
+    $atoms{voice} = $self->create_atom
+    (
+        'surfeature' => 'voice',
+        'decode_map' =>
+        {
+            # Pass|Pos|Past|A3sg examples: belirtildi (was said), söylendi (was told), istendi (was asked), öğrenildi (was learned), kaldırıldı
+            'Pass'   => ['voice' => 'pass'],
+            # Reflex|Pos|Prog1|A3sg example: hazırlanıyor (is preparing itself)
+            'Reflex' => ['reflex' => 'reflex'],
+            # Recip|Pos|Past|A3sg example: karıştı (confused each other?)
+            'Recip'  => ['voice' => 'rcp'],
+            # Caus ... causative
+            # Oflazer's documentation classifies this as a value of the voice feature.
+            # Caus|Pos|Narr|A3sg examples: bastırmış (suppressed), bitirmiş (completed), oluşturmuş (created), çoğaltmış (multiplied), çıkartmış (issued)
+            # Caus|Pos|Past|A3sg examples: belirtti (said), bildirdi (reported), uzattı (extended), indirdi (reduced), sürdürdü (continued)
+            # Caus|Pos|Prog1|A3sg examples: karıştırıyor (is confusing), korkutuyor (is scaring), geçiriyor (is taking), koparıyor (is breaking), döktürüyor
+            # Caus|Pos|Prog1|Past|A3sg examples: karıştırıyordu (was scooping), geçiriyordu (was giving), dolduruyordu (was filling), sürdürüyordu (was continuing), azaltıyordu (was diminishing)
+            'Caus'   => ['voice' => 'cau']
+        }
+    );
+    # COPULA ####################
+    # Copula in Turkish is not an independent word. It is a bound morpheme (tur/tır/tir/dur etc.)
+    # It is not clear to me though, what meaning it adds when attached to a verb.
+    $atoms{copula} = $self->create_simple_atom
+    (
+        'intfeature' => 'verbtype',
+        'simple_decode_map' =>
+        {
+            # Pos|Narr|Cop|A3sg examples: olmuştur (has been), açmıştır (has led), ulaşmıştır (has reached), başlamıştır, gelmiştir
+            # Pos|Prog1|Cop|A3sg examples: oturuyordur (is sitting), öpüyordur (is kissing), tanıyordur (knows)
+            # Pos|Fut|Cop|A3sg examples: olacaktır (will), akacaktır (will flow), alacaktır (will take), çarpacaktır, görecektir
+            'Cop' => 'cop'
+        }
+    );
     return \%atoms;
 }
 
