@@ -217,8 +217,6 @@ sub _create_atoms
         }
     );
     # ADJECTIVE TYPE ####################
-    # We save it in 'other/adjvtype' together with adverb types. We merge the two features so that
-    # we do not have to distinguish them later on encoding.
     $atoms{adjtype} = $self->create_atom
     (
         'surfeature' => 'adjtype',
@@ -226,40 +224,38 @@ sub _create_atoms
         {
             # Adj Adj _ examples: büyük (big), yeni (new), iyi (good), aynı (same), çok (many)
             # Adj Adj Agt examples: üretici (manufacturing), ürkütücü (scary), rahatlatıcı (relaxing), yakıcı (burning), barışçı (pacific)
-            'Agt'       => ['other' => {'adjvtype' => 'agt'}],
+            'Agt'       => ['other' => {'adjtype' => 'agt'}],
             # Adj Adj AsIf examples: böylece (so that), onca (all that), delice (insane), aptalca (stupid), çılgınca (wild)
-            'AsIf'      => ['other' => {'adjvtype' => 'asif'}],
+            'AsIf'      => ['other' => {'adjtype' => 'asif'}],
             # Adj Adj FitFor examples: dolarlık (in dollars), yıllık (annual), saatlik (hourly), trilyonluk (trillions worth), liralık (in pounds)
-            'FitFor'    => ['other' => {'adjvtype' => 'fitfor'}],
+            'FitFor'    => ['other' => {'adjtype' => 'fitfor'}],
             # Adj Adj InBetween example: uluslararası (international)
-            'InBetween' => ['other' => {'adjvtype' => 'inbetween'}],
+            'InBetween' => ['other' => {'adjtype' => 'inbetween'}],
             # Adj Adj JustLike example: konyakımsı (just like brandy), redingotumsu (just like redingot)
-            'JustLike'  => ['other' => {'adjvtype' => 'justlike'}],
+            'JustLike'  => ['other' => {'adjtype' => 'justlike'}],
             # Adj Adj Rel examples: önceki (previous), arasındaki (in-between), içindeki (intra-), üzerindeki (upper), öteki (other)
-            'Rel'       => ['other' => {'adjvtype' => 'rel'}],
+            'Rel'       => ['other' => {'adjtype' => 'rel'}],
             # Adj Adj Related examples: ideolojik (ideological), teknolojik (technological), meteorolojik (meteorological), bilimsel (scientific), psikolojik (psychological)
-            'Related'   => ['other' => {'adjvtype' => 'related'}],
+            'Related'   => ['other' => {'adjtype' => 'related'}],
             # Adj Adj With examples: önemli (important), ilgili (related), vadeli (forward), yaşlı (elderly), yararlı (helpful)
-            'With'      => ['other' => {'adjvtype' => 'with'}],
+            'With'      => ['other' => {'adjtype' => 'with'}],
             # Adj Adj Without examples: sessiz (quiet), savunmasız (vulnerable), anlamsız (meaningless), gereksiz (unnecessary), rahatsız (uncomfortable)
-            'Without'   => ['other' => {'adjvtype' => 'without'}]
+            'Without'   => ['other' => {'adjtype' => 'without'}]
         },
         'encode_map' =>
         {
-            'other/adjvtype' => { 'agt'       => 'Agt',
-                                  'asif'      => 'AsIf',
-                                  'fitfor'    => 'FitFor',
-                                  'inbetween' => 'InBetween',
-                                  'justlike'  => 'JustLike',
-                                  'rel'       => 'Rel',
-                                  'related'   => 'Related',
-                                  'with'      => 'With',
-                                  'without'   => 'Without' }
+            'other/adjtype' => { 'agt'       => 'Agt',
+                                 'asif'      => 'AsIf',
+                                 'fitfor'    => 'FitFor',
+                                 'inbetween' => 'InBetween',
+                                 'justlike'  => 'JustLike',
+                                 'rel'       => 'Rel',
+                                 'related'   => 'Related',
+                                 'with'      => 'With',
+                                 'without'   => 'Without' }
         }
     );
     # ADVERB TYPE ####################
-    # We save it in 'other/adjvtype' together with adverb types. We merge the two features so that
-    # we do not have to distinguish them later on encoding.
     $atoms{advtype} = $self->create_atom
     (
         'surfeature' => 'advtype',
@@ -268,38 +264,38 @@ sub _create_atoms
             # The non-"_" non-Ly non-Since adverbs seem to be derived from verbs, i.e. they could be called adverbial participles (transgressives).
             # Adv Adv _ examples: daha (more), çok (very), en (most), bile (even), hiç (never)
             # Adv Adv Ly examples: hafifçe (slightly), rahatça (easily), iyice (thoroughly), öylece (just), aptalca (stupidly)
-            'Ly'                  => ['other' => {'adjvtype' => 'ly'}],
+            'Ly'                  => ['other' => {'advtype' => 'ly'}],
             # Adv Adv Since examples: yıldır (for years), yıllardır (for years), saattir (for hours)
-            'Since'               => ['other' => {'adjvtype' => 'since'}],
+            'Since'               => ['other' => {'advtype' => 'since'}],
             # Adv Adv AfterDoingSo examples: gidip (having gone), gelip (having come), deyip (having said), kesip (having cut out), çıkıp (having gotten out)
-            'AfterDoingSo'        => ['other' => {'adjvtype' => 'afterdoingso'}, 'verbform' => 'trans'],
+            'AfterDoingSo'        => ['other' => {'advtype' => 'afterdoingso'}, 'verbform' => 'trans'],
             # Adv Adv As examples: istemedikçe (unless you want to), arttıkça (as increases), konuştukça (as you talk), oldukça (rather), gördükçe (as you see)
-            'As'                  => ['other' => {'adjvtype' => 'as'}, 'verbform' => 'trans'],
+            'As'                  => ['other' => {'advtype' => 'as'}, 'verbform' => 'trans'],
             # Adv Adv AsIf examples: güneşiymişçesine, okumuşçasına (as if reads), etmişçesine, taparcasına (as if worships), okşarcasına (as if strokes)
-            'AsIf'                => ['other' => {'adjvtype' => 'asif'}, 'verbform' => 'trans'],
+            'AsIf'                => ['other' => {'advtype' => 'asif'}, 'verbform' => 'trans'],
             # Adv Adv ByDoingSo examples: olarak (by being), diyerek (by saying), belirterek (by specifying), koşarak (by running), çekerek (by pulling)
-            'ByDoingSo'           => ['other' => {'adjvtype' => 'bydoingso'}, 'verbform' => 'trans'],
+            'ByDoingSo'           => ['other' => {'advtype' => 'bydoingso'}, 'verbform' => 'trans'],
             # Adv Adv SinceDoingSo examples: olalı (since being), geleli (since coming), dönüşeli (since returning), başlayalı (since starting), kapılalı
-            'SinceDoingSo'        => ['other' => {'adjvtype' => 'sincedoingso'}, 'verbform' => 'trans'],
+            'SinceDoingSo'        => ['other' => {'advtype' => 'sincedoingso'}, 'verbform' => 'trans'],
             # Adv Adv When examples: görünce (when/on seeing), deyince (when we say), olunca (when), açılınca (when opening), gelince (when coming)
-            'When'                => ['other' => {'adjvtype' => 'when'}, 'verbform' => 'trans'],
+            'When'                => ['other' => {'advtype' => 'when'}, 'verbform' => 'trans'],
             # Adv Adv While examples: giderken (en route), konuşurken (while talking), derken (while saying), çıkarken (on the way out), varken (when there is)
-            'While'               => ['other' => {'adjvtype' => 'while'}, 'verbform' => 'trans'],
+            'While'               => ['other' => {'advtype' => 'while'}, 'verbform' => 'trans'],
             # Adv Adv WithoutHavingDoneSo examples: olmadan (without being), düşünmeden (without thinking), geçirmeden (without passing), çıkarmadan (without removing), almadan (without taking)
-            'WithoutHavingDoneSo' => ['other' => {'adjvtype' => 'withouthavingdoneso'}, 'verbform' => 'trans'],
+            'WithoutHavingDoneSo' => ['other' => {'advtype' => 'withouthavingdoneso'}, 'verbform' => 'trans'],
         },
         'encode_map' =>
         {
-            'other/adjvtype' => { 'ly'                  => 'Ly',
-                                  'since'               => 'Since',
-                                  'afterdoingso'        => 'AfterDoingSo',
-                                  'as'                  => 'As',
-                                  'asif'                => 'AsIf',
-                                  'bydoingso'           => 'ByDoingSo',
-                                  'sincedoingso'        => 'SinceDoingSo',
-                                  'when'                => 'When',
-                                  'while'               => 'While',
-                                  'withouthavingdoneso' => 'WithoutHavingDoneSo' }
+            'other/advtype' => { 'ly'                  => 'Ly',
+                                 'since'               => 'Since',
+                                 'afterdoingso'        => 'AfterDoingSo',
+                                 'as'                  => 'As',
+                                 'asif'                => 'AsIf',
+                                 'bydoingso'           => 'ByDoingSo',
+                                 'sincedoingso'        => 'SinceDoingSo',
+                                 'when'                => 'When',
+                                 'while'               => 'While',
+                                 'withouthavingdoneso' => 'WithoutHavingDoneSo' }
         }
     );
     # COMPOUNDING AND MODALITY ####################
@@ -472,6 +468,13 @@ sub _create_atoms
             'Cop' => 'cop'
         }
     );
+    # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
+    my @fatoms = map {$atoms{$_}} (@{$self->features_all()});
+    $atoms{feature} = $self->create_merged_atom
+    (
+        'surfeature' => 'feature',
+        'atoms'      => \@fatoms
+    );
     return \%atoms;
 }
 
@@ -484,9 +487,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('Degree', 'Gender', 'Animate', 'Number', 'Case',
-                    'Definiteness', 'Formation', 'Form', 'Syntactic-Type', 'Clitic', 'Owner-Number', 'Owner-Gender', 'Referent-Type',
-                    'VForm', 'Tense', 'Person', 'Negative', 'Voice');
+    my @features = ('pos', 'gender', 'agreement', 'possagreement', 'case', 'degree', 'adjtype', 'advtype', 'tense', 'aspect', 'mood', 'negativeness', 'voice', 'copula');
     return \@features;
 }
 
@@ -501,33 +502,7 @@ sub _create_features_pos
     my $self = shift;
     my %features =
     (
-        'Adjective-ordinal' => ['Degree', 'Gender', 'Number', 'Case', 'Animate'],
-        'Adjective-possessive' => ['Degree', 'Gender', 'Number', 'Case', 'Animate'],
-        'Adjective-qualificative' => ['Degree', 'Gender', 'Number', 'Case', 'Definiteness', 'Animate'],
-        'Adposition-preposition' => ['Formation', 'Case'],
-        'Adverb-general' => ['Degree'],
-        'Conjunction-coordinating' => ['Formation'],
-        'Conjunction-subordinating' => ['Formation'],
-        'Noun-common' => ['Gender', 'Number', 'Case', 'Animate'],
-        'Noun-proper' => ['Gender', 'Number', 'Case', 'Animate'],
-        'Numeral-cardinal' => ['Gender', 'Number', 'Case', 'Form', 'Animate'],
-        'Numeral-multiple' => ['Gender', 'Number', 'Case', 'Form'],
-        'Numeral-ordinal' => ['Gender', 'Number', 'Case', 'Form', 'Animate'],
-        'Numeral-special' => ['Gender', 'Number', 'Case', 'Form'],
-        'Pronoun-demonstrative' => ['Gender', 'Number', 'Case', 'Syntactic-Type', 'Animate'],
-        'Pronoun-general' => ['Gender', 'Number', 'Case', 'Syntactic-Type', 'Animate'],
-        'Pronoun-indefinite' => ['Gender', 'Number', 'Case', 'Syntactic-Type', 'Animate'],
-        'Pronoun-interrogative' => ['Gender', 'Number', 'Case', 'Syntactic-Type', 'Animate'],
-        'Pronoun-negative' => ['Gender', 'Number', 'Case', 'Syntactic-Type', 'Animate'],
-        'Pronoun-personal' => ['Person', 'Gender', 'Number', 'Case', 'Clitic', 'Syntactic-Type'],
-        'Pronoun-possessive' => ['Person', 'Gender', 'Number', 'Case', 'Owner-Number', 'Owner-Gender', 'Syntactic-Type', 'Animate'],
-        'Pronoun-reflexive' => ['Gender', 'Number', 'Case', 'Clitic', 'Referent-Type', 'Syntactic-Type'],
-        'Pronoun-reflexive0' => ['Clitic'],
-        'Pronoun-possessive-reflexive' => ['Gender', 'Number', 'Case', 'Referent-Type', 'Syntactic-Type', 'Animate'],
-        'Pronoun-relative' => ['Gender', 'Number', 'Case', 'Syntactic-Type', 'Animate'],
-        'Verb-copula' => ['VForm', 'Tense', 'Person', 'Number', 'Gender', 'Voice', 'Negative'],
-        'Verb-main' => ['VForm', 'Tense', 'Person', 'Number', 'Gender', 'Voice', 'Negative'],
-        'Verb-modal' => ['VForm', 'Tense', 'Person', 'Number', 'Gender', 'Voice', 'Negative']
+        'Adj' => ['adjtype'],
     );
     return \%features;
 }
@@ -542,7 +517,20 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
-    my $fs = $self->decode_conll($tag);
+    my $fs = Lingua::Interset::FeatureStructure->new();
+    $fs->set_tagset('tr::conll');
+    my $atoms = $self->atoms();
+    # Three components: pos, subpos, features.
+    # example: Noun\tNoun\tA3sg|Pnon|Nom
+    my ($pos, $subpos, $features) = split(/\s+/, $tag);
+    # The underscore character is used if there are no features.
+    $features = '' if($features eq '_');
+    my @features = split(/\|/, $features);
+    $atoms->{pos}->decode_and_merge_hard("$pos $subpos", $fs);
+    foreach my $feature (@features)
+    {
+        $atoms->{feature}->decode_and_merge_hard($feature, $fs);
+    }
     return $fs;
 }
 
@@ -556,27 +544,12 @@ sub encode
     my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $atoms = $self->atoms();
-    my $subpos = $atoms->{pos}->encode($fs);
-    my $pos = $subpos;
-    $pos =~ s/-.*//;
+    my $possubpos = $atoms->{pos}->encode($fs);
+    my ($pos, $subpos) = split(/\s+/, $possubpos);
     my $fpos = $subpos;
-    if($fpos eq 'Pronoun-reflexive')
-    {
-        if($fs->is_possessive())
-        {
-            $fpos = 'Pronoun-possessive-reflexive';
-        }
-        elsif($fs->case() eq '')
-        {
-            $fpos = 'Pronoun-reflexive0';
-        }
-    }
     my $feature_names = $self->get_feature_names($fpos);
-    my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names);
-    # We cannot distinguish Adjective-ordinal and Adjective-qualificative without the 'other' feature.
-    # If the feature is not available, we should make sure that we only generate valid tags.
-    # We change all ordinal adjectives to qualificatives. But these should have the definiteness feature in certain contexts.
-    $tag =~ s/(Adjective-qualificative\tDegree=positive\|Gender=masculine\|Number=singular\|Case=(nominative|accusative))(\|Animate=no$|$)/$1|Definiteness=yes$3/;
+    my $value_only = 1;
+    my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names, $value_only);
     return $tag;
 }
 
@@ -584,7 +557,7 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
-# Tags were collected from the corpus, 766 distinct tags found.
+# Tags were collected from the corpus, 1061 distinct tags found.
 #------------------------------------------------------------------------------
 sub list
 {
