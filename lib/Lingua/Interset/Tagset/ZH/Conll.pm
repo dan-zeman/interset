@@ -70,10 +70,38 @@ sub _create_atoms
             # verb
             'V'   => ['pos' => 'verb'],
             # adverb
-            'D'   => ['pos' => 'adv'],
+            # D Daa: 只 = only, 約 = approximately, 才 = only, 共 = altogether, 僅 = only
+            # D Dab: 都 = all, 所, 均 = all, 皆 = all, 完全 = entirely
+            # D Dbaa: 是 = is, 會 = can/will, 可能 = maybe, 不會 = will not, 一定 = for sure
+            # D Dbab: 要 = want, 能 = can, 可以 = can, 可 = can, 來 = come
+            # D Dbb: 也 = also, 還 = also, 則 = then, 卻 = yet, 並 = and
+            # D Dbc: 看起來 = looks, 看來 = seems, 說起來 = speaks, 聽起來 = sounds, 吃起來 = tastes
+            # D Dc: 不 = not, 未 = not, 沒有 = there is no, 沒 = not, 非 = non-
+            # D Dd: 就 = then, 又 = again, 已 = already, 將 = will, 才 = only
+            # D Dfa: 很 = very, 最 = most, 更 = more, 較 = relatively, 非常 = very much
+            # D Dfb: 一點 = a little, 極了 = extremely, 些 = some, 得很 = very, 多 = more
+            # D Dg: 一路 = all the way, 到處 = everywhere, 四處 = around, 處處 = everywhere, 當場 = on the spot
+            # D Dh: 如何 = how, 一起 = together, 更 = more, 分別 = respectively, 這麼 = so
+            # D Dj: 為什麼 = why, 是否 = whether, 怎麼 = how, 為何 = why, 有沒有 = is there?
+            # D Dk: 結果 = result, 那 = then, 據說 = reportedly, 據了解 = it is understood that, 那麼 = then
+            'Daa'  => ['pos' => 'adv'],
+            'Dab'  => ['pos' => 'adv', 'other' => {'subpos' => 'ab'}],
+            'Dbaa' => ['pos' => 'adv', 'other' => {'subpos' => 'baa'}],
+            'Dbab' => ['pos' => 'adv', 'other' => {'subpos' => 'bab'}],
+            'Dbb'  => ['pos' => 'adv', 'other' => {'subpos' => 'bb'}],
+            'Dbc'  => ['pos' => 'adv', 'other' => {'subpos' => 'bc'}],
+            'Dc'   => ['pos' => 'adv', 'negativeness' => 'neg'],
+            'Dd'   => ['pos' => 'adv', 'other' => {'subpos' => 'd'}],
+            'Dfa'  => ['pos' => 'adv', 'other' => {'subpos' => 'fa'}],
+            'Dfb'  => ['pos' => 'adv', 'other' => {'subpos' => 'fb'}],
+            'Dg'   => ['pos' => 'adv', 'other' => {'subpos' => 'g'}],
+            'Dh'   => ['pos' => 'adv', 'other' => {'subpos' => 'h'}],
+            'Dj'   => ['pos' => 'adv', 'prontype' => 'int'],
+            'Dk'   => ['pos' => 'adv', 'other' => {'subpos' => 'k'}],
             # measure word, quantifier
-            ###!!! There ought to be a better solution but from the examples from the corpus I seem unable to grasp the nature of these words.
-            'DM'  => ['pos' => 'adv'],
+            # DM DM: 一個 yīgè = a, 這個 zhège = this one, 這種 zhèzhǒng = this kind, 個 gè, 一種 yīzhǒng = one kind
+            ###!!! There ought to be a better solution!
+            'DM'  => ['pos' => 'adj', 'nountype' => 'class'],
             # postposition (qian = before)
             'Ng'  => ['pos' => 'adp', 'adpostype' => 'post'],
             # preposition (66 kinds, 66 different tags)
@@ -90,15 +118,18 @@ sub _create_atoms
             # C Cbca: 而 = and, 但 = but, 因此 = as such, 所以 = and so, 但是 = but
             # C Cbcb: 並 = and, 而且 = and, 且 = and, 並且 = and, 反而 = instead
             'Caa'  => ['pos' => 'conj', 'conjtype' => 'coor'],
-            'Cab'  => ['pos' => 'conj', 'conjtype' => 'coor'],
+            'Cab'  => ['pos' => 'conj', 'conjtype' => 'coor', 'other' => {'subpos' => 'ab'}],
             'Cbaa' => ['pos' => 'conj', 'conjtype' => 'sub'],
-            'Cbab' => ['pos' => 'conj', 'conjtype' => 'sub'],
-            'Cbba' => ['pos' => 'conj', 'conjtype' => 'sub'],
-            'Cbbb' => ['pos' => 'conj', 'conjtype' => 'sub'],
-            'Cbca' => ['pos' => 'conj', 'conjtype' => 'coor'],
-            'Cbcb' => ['pos' => 'conj', 'conjtype' => 'coor'],
+            'Cbab' => ['pos' => 'conj', 'conjtype' => 'sub', 'other' => {'subpos' => 'bab'}],
+            'Cbba' => ['pos' => 'conj', 'conjtype' => 'sub', 'other' => {'subpos' => 'bba'}],
+            'Cbbb' => ['pos' => 'conj', 'conjtype' => 'sub', 'other' => {'subpos' => 'bbb'}],
+            'Cbca' => ['pos' => 'conj', 'conjtype' => 'coor', 'other' => {'subpos' => 'bca'}],
+            'Cbcb' => ['pos' => 'conj', 'conjtype' => 'coor', 'other' => {'subpos' => 'bcb'}],
             # the "de" particle (two kinds)
-            'DE'  => ['pos' => 'part'],
+            # DE DE: 的 de = of, 之 zhī = of, 得 dé = get, 地 de = ground/land/earth (tagging error?)
+            # DE Di: 了 le, 著 zhe, 過 guò, 起來 qǐlái, 起 qǐ
+            'DE'   => ['pos' => 'part', 'case' => 'gen'],
+            'Di'   => ['pos' => 'part', 'case' => 'gen', 'other' => {'subpos' => 'Di'}],
             # particle
             'T'   => ['pos' => 'part'],
             # interjection
@@ -107,15 +138,37 @@ sub _create_atoms
         'encode_map' =>
         {
             'pos' => { 'noun' => 'Na',
-                       'adj'  => 'A',
+                       'adj'  => { 'nountype' => { 'class' => 'DM',
+                                                   '@'     => 'A' }},
                        'num'  => 'Neu',
                        'verb' => 'V',
-                       'adv'  => 'D',
+                       'adv'  => { 'prontype' => { 'int' => 'Dj',
+                                                   '@'   => { 'negativeness' => { 'neg' => 'Dc',
+                                                                                  '@'   => { 'other/subpos' => { 'ab'  => 'Dab',
+                                                                                                                 'baa' => 'Dbaa',
+                                                                                                                 'bab' => 'Dbab',
+                                                                                                                 'bb'  => 'Dbb',
+                                                                                                                 'bc'  => 'Dbc',
+                                                                                                                 'd'   => 'Dd',
+                                                                                                                 'fa'  => 'Dfa',
+                                                                                                                 'fb'  => 'Dfb',
+                                                                                                                 'g'   => 'Dg',
+                                                                                                                 'h'   => 'Dh',
+                                                                                                                 'k'   => 'Dk',
+                                                                                                                 '@'   => 'Daa' }}}}}},
                        'adp'  => { 'adpostype' => { 'prep' => 'P',
                                                     'post' => 'Ng' }},
-                       'conj' => { 'conjtype' => { 'coor' => 'Caa',
-                                                   'sub'  => 'Cbaa' }},
-                       'part' => 'T',
+                       'conj' => { 'conjtype' => { 'coor' => { 'other/subpos' => { 'ab'  => 'Cab',
+                                                                                   'bca' => 'Cbca',
+                                                                                   'bcb' => 'Cbcb',
+                                                                                   '@'   => 'Caa' }},
+                                                   'sub'  => { 'other/subpos' => { 'bab' => 'Cbab',
+                                                                                   'bba' => 'Cbba',
+                                                                                   'bbb' => 'Cbbb',
+                                                                                   '@'   => 'Cbaa' }}}},
+                       'part' => { 'case' => { 'gen' => { 'other/subpos' => { 'Di' => 'Di',
+                                                                              '@'  => 'DE' }},
+                                               '@'   => 'T' }},
                        'int'  => 'I' }
         }
     );
@@ -167,7 +220,13 @@ sub decode
     # example: N\tNaa\t_
     my ($pos, $subpos, $features) = split(/\s+/, $tag);
     ###!!! We cannot currently decode the tag extensions in brackets, e.g. "[P1]" in "Caa[P1]".
-    $subpos =~ s/\[.*?\]//;
+    ###!!! In future we will want to create an atom to take care of them. For the moment, just a quick hack:
+    $subpos =~ s/(\[.*?\])//;
+    my $bracket = $1;
+    if(defined($bracket))
+    {
+        $fs->set_other_subfeature('bracket', $bracket);
+    }
     $atoms->{pos}->decode_and_merge_hard($subpos, $fs);
     return $fs;
 }
@@ -183,7 +242,14 @@ sub encode
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $atoms = $self->atoms();
     my $subpos = $atoms->{pos}->encode($fs);
-    my $pos = substr($subpos, 0, 1);
+    my $pos = $subpos =~ m/^(DE|Di)$/ ? 'DE' : $subpos eq 'DM' ? 'DM' : substr($subpos, 0, 1);
+    ###!!! We cannot currently decode the tag extensions in brackets, e.g. "[P1]" in "Caa[P1]".
+    ###!!! In future we will want to create an atom to take care of them. For the moment, just a quick hack:
+    my $bracket = $fs->get_other_subfeature('zh::conll', 'bracket');
+    if($bracket ne '')
+    {
+        $subpos .= $bracket;
+    }
     my $tag = "$pos\t$subpos\t_";
     return $tag;
 }
@@ -227,7 +293,6 @@ D\tDk\t_
 DE\tDE\t_
 DE\tDi\t_
 DM\tDM\t_
-Head\tHead\t_
 I\tI\t_
 Ne\tNep\t_
 Ne\tNeqa\t_
