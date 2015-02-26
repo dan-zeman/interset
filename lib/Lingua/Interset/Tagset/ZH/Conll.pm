@@ -43,29 +43,119 @@ sub _create_atoms
         'decode_map' =>
         {
             # noun or pronoun
-            'Na' => ['pos' => 'noun', 'nountype' => 'com'],
-            'Nb' => ['pos' => 'noun', 'nountype' => 'prop'],
+            # N Naa: 水 = water, 地 = ground, 茶 = tea, 土地 = land, 食物 = food
+            # N Nab: 人 = people, 者 = person, 媽媽 = mother, 地方 = place, 爸爸 = father
+            # N Nac: 國家 = country, 政府 = government, 問題 = issue, 事 = thing, 社會 = society
+            # N Nad: 時候 = time, 時間 = time, 文化 = culture, 生活 = life, 歷史 = history
+            # N Naea: 們 = they, 人人 = everyone, 國人 = people, 百貨 = merchandise, 飲食 = diet/food
+            # N Naeb: 錢 = money, 人民 = people, 人們 = people, 海鮮 = seafood, 父母 = parents
+            'Naa'  => ['pos' => 'noun', 'nountype' => 'com'],
+            'Nab'  => ['pos' => 'noun', 'nountype' => 'com', 'other' => {'subpos' => 'ab'}],
+            'Nac'  => ['pos' => 'noun', 'nountype' => 'com', 'other' => {'subpos' => 'ac'}],
+            'Nad'  => ['pos' => 'noun', 'nountype' => 'com', 'other' => {'subpos' => 'ad'}],
+            'Naea' => ['pos' => 'noun', 'nountype' => 'com', 'other' => {'subpos' => 'aea'}],
+            'Naeb' => ['pos' => 'noun', 'nountype' => 'com', 'other' => {'subpos' => 'aeb'}],
+            # N Nba: 中共 = Chinese Communist Party, 國民黨 = Kuomintang, 民進黨 = DPP, 老包 = Old Package, 布希 = Bush
+            # N Nbc: 李 Lǐ, 林 Lín, 郝 Hǎo, 張 Zhāng, 于 Yú (probably Chinese surnames?)
+            'Nba'  => ['pos' => 'noun', 'nountype' => 'prop'],
+            'Nbc'  => ['pos' => 'noun', 'nountype' => 'prop', 'other' => {'subpos' => 'bc'}],
             # location noun (including some proper nouns, e.g. Feizhou = Africa)
-            'Nc' => ['pos' => 'noun', 'advtype' => 'loc'],
+            # N Nca: 台灣 = Taiwan, 中國 = China, 美國 = USA, 日本 = Japan, 蘇聯 = Soviet Union
+            # N Ncb: 公司 = company, 世界 = world, 家 = home, 國 = country, 公園 = park
+            # N Ncc: 國內 = domestic, 國際 = international, 民間 = folk, 國外 = foreign, 眼前 = present
+            # N Ncda: 上 shàng = on, 裡 lǐ = in, 中 zhōng = in, 內 nèi = within, 邊 biān = edge, border
+            # N Ncdb: 這裡 zhèlǐ = here, 那裡 nàlǐ = there, 西方 xīfāng = west, 哪裡 nǎlǐ = where, 內部 nèibù = interior
+            # N Nce: 當地 = local, 兩岸 = both sides, 全球 = global, 外國 = foreign, 本土 = local
+            'Nca'  => ['pos' => 'noun', 'advtype' => 'loc'],
+            'Ncb'  => ['pos' => 'noun', 'advtype' => 'loc', 'other' => {'subpos' => 'cb'}],
+            'Ncc'  => ['pos' => 'noun', 'advtype' => 'loc', 'other' => {'subpos' => 'cc'}],
+            'Ncda' => ['pos' => 'noun', 'advtype' => 'loc', 'other' => {'subpos' => 'cda'}],
+            'Ncdb' => ['pos' => 'noun', 'advtype' => 'loc', 'other' => {'subpos' => 'cdb'}],
+            'Nce'  => ['pos' => 'noun', 'advtype' => 'loc', 'other' => {'subpos' => 'ce'}],
             # time noun
-            'Nd' => ['pos' => 'noun', 'advtype' => 'tim'],
+            # N Ndaaa: 年代 = era, １７世紀 = 17th century, １９世紀, １８世紀, １５世紀
+            # N Ndaab: 民國 = Republic, 明 = Ming, 清 = Qing, 明朝 = Ming Dynasty, 清朝 = Qing Dynasty
+            # N Ndaac: 光緒 = Guangxu, 明治 = Meiji, 江戶 = Edo, 寬永 = Kanei, 萬曆 = Wanli
+            # N Ndaad: 西元 xīyuán = AD, 一九九０年 = 1990, 七十九年 = 1990, １９９２年 = 1992, 七十六年 = 76 years (of the Republic?) / 1987
+            # N Ndaba: 今年 = this year, 去年 = last year, 明年 = next year, 隔年 = next year, 元年 = first year
+            # N Ndabb: 春天 = spring, 夏天 = summer, 秋天 = fall, 冬天 = winter, 春 = spring
+            # N Ndabc: 月 = month, 十月 = October, 十一月 = November, 九月 = September, 八月 = August
+            # N Ndabd: 昨天 = yesterday, 今天 = today, 昨日 = yesterday, 今日 = today, 明天 = tomorrow
+            # N Ndabe: 當時 = at the time, 同時 = at the same time, 下午 = in the afternoon, 晚上 = at night, 上午 = morning
+            # N Ndabf: 季 = season, 當年 = that year, 際 = occasion, 假日 = holiday, 新年 = New Year
+            # N Ndbb: 末期 = late, 後 = later (only these two words, each occurred once)
+            # N Ndc: 盤中 = middle of the day, 戰後 = after the war, 晚間 = evening, 日後 = future, 午後 = afternoon
+            # N Ndda: 過去 = past, 以前 = before, 古代 = ancient times, 當時 = at the time, 從前 = before
+            # N Nddb: 後來 = later, 未來 = future, 不久 = soon, 將來 = future, 以後 = after
+            # N Nddc: 目前 = for now, 現在 = right now, 最後 = finally, 如今 = now, 最近 = recently
+            'Ndaaa' => ['pos' => 'noun', 'advtype' => 'tim'],
+            'Ndaab' => ['pos' => 'noun', 'advtype' => 'tim', 'other' => {'subpos' => 'daab'}],
+            'Ndaac' => ['pos' => 'noun', 'advtype' => 'tim', 'other' => {'subpos' => 'daac'}],
+            'Ndaad' => ['pos' => 'noun', 'advtype' => 'tim', 'other' => {'subpos' => 'daad'}],
+            'Ndaba' => ['pos' => 'noun', 'advtype' => 'tim', 'other' => {'subpos' => 'daba'}],
+            'Ndabb' => ['pos' => 'noun', 'advtype' => 'tim', 'other' => {'subpos' => 'dabb'}],
+            'Ndabc' => ['pos' => 'noun', 'advtype' => 'tim', 'other' => {'subpos' => 'dabc'}],
+            'Ndabd' => ['pos' => 'noun', 'advtype' => 'tim', 'other' => {'subpos' => 'dabd'}],
+            'Ndabe' => ['pos' => 'noun', 'advtype' => 'tim', 'other' => {'subpos' => 'dabe'}],
+            'Ndabf' => ['pos' => 'noun', 'advtype' => 'tim', 'other' => {'subpos' => 'dabf'}],
+            'Ndbb'  => ['pos' => 'noun', 'advtype' => 'tim', 'other' => {'subpos' => 'dbb'}],
+            'Ndc'   => ['pos' => 'noun', 'advtype' => 'tim', 'other' => {'subpos' => 'dc'}],
+            'Ndda'  => ['pos' => 'noun', 'advtype' => 'tim', 'other' => {'subpos' => 'dda'}],
+            'Nddb'  => ['pos' => 'noun', 'advtype' => 'tim', 'other' => {'subpos' => 'ddb'}],
+            'Nddc'  => ['pos' => 'noun', 'advtype' => 'tim', 'other' => {'subpos' => 'ddc'}],
             # classifier (measure word)
-            'Nf' => ['pos' => 'noun', 'nountype' => 'class'],
+            ###!!! There are much less occurrences than I would expect for this sort of words!
+            # N Nfa: 個 gè (months), 次 cì (times), 句 jù (sentences), 隻 zhī (only), 頁 yè (pages)
+            # N Nfc: 攤 = stalls, 項 = items, 席 = seats
+            # N Nfd: 點 = points, 層 = layers, 段 = sections, 些 = some
+            # N Nfe: 杯 = cups, 桶 = buckets
+            # N Nfg: 年 = years, 歲 = years, 元 = yuans, 美元 = dollars, 天 = days
+            # N Nfh: 成, 股 = shares
+            # N Nfi: 次 = times, 場 = fields
+            'Nfa' => ['pos' => 'noun', 'nountype' => 'class'],
+            'Nfc' => ['pos' => 'noun', 'nountype' => 'class', 'other' => {'subpos' => 'fc'}],
+            'Nfd' => ['pos' => 'noun', 'nountype' => 'class', 'other' => {'subpos' => 'fd'}],
+            'Nfe' => ['pos' => 'noun', 'nountype' => 'class', 'other' => {'subpos' => 'fe'}],
+            'Nfg' => ['pos' => 'noun', 'nountype' => 'class', 'other' => {'subpos' => 'fg'}],
+            'Nfh' => ['pos' => 'noun', 'nountype' => 'class', 'other' => {'subpos' => 'fh'}],
+            'Nfi' => ['pos' => 'noun', 'nountype' => 'class', 'other' => {'subpos' => 'fi'}],
             # pronoun
-            'Nh' => ['pos' => 'noun', 'prontype' => 'prn'],
-            ###!!! ???
-            'Nv' => ['pos' => 'noun', 'other' => {'subpos' => 'Nv'}],
+            # N Nhaa: 我 wǒ = I, 他 tā = he, 我們 wǒmen = we, 你 nǐ = you, 他們 tāmen = they
+            # N Nhab: 自己 zìjǐ = oneself, 大家 dàjiā = everyone, 雙方 shuāngfāng = both sides, 個人 gèrén = person, 自我 zìwǒ = self
+            # N Nhac: 您 nín = you, 敝國 bìguó = mine, 筆者 bǐzhě = author/I, 貴國 guìguó = your, 本人 běnrén = myself/himself
+            # N Nhb: 誰 shuí = who, 您 nín = you, 筆者 bǐzhě = author/I, 孰 shú = what, 各人 gèrén = everyone
+            # N Nhc: 之 zhī = it, 前者 = the former, 後者 = the latter, 凡此種種 = all these, 兩者 = both
+            'Nhaa' => ['pos' => 'noun', 'prontype' => 'prs'],
+            'Nhab' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex'],
+            'Nhac' => ['pos' => 'noun', 'prontype' => 'prs', 'politeness' => 'pol'],
+            'Nhb'  => ['pos' => 'noun', 'prontype' => 'int'],
+            'Nhc'  => ['pos' => 'noun', 'prontype' => 'prn', 'gender' => 'neut'],
+            # verbal noun
+            # N Nv1: 發展 = development, 服務 = service, 醫療 = medical treatment, 攻擊 = attack, 經營 = run
+            # N Nv2: 注意 = attention, 同意 = consent, 認同 = identification, 欣賞 = appreciation, 了解 = understanding
+            # N Nv3: 有關 = relation, 重視 = importance, 優惠 = preference, 認識 = understanding, 領先 = lead
+            # N Nv4: 旅遊 = travel, 購物 = shopping, 觀光 = sightseeing, 旅行 = travel, 反彈 = rally
+            'Nv1' => ['pos' => 'noun', 'verbform' => 'ger'],
+            'Nv2' => ['pos' => 'noun', 'verbform' => 'ger', 'other' => {'subpos' => 'v2'}],
+            'Nv3' => ['pos' => 'noun', 'verbform' => 'ger', 'other' => {'subpos' => 'v3'}],
+            'Nv4' => ['pos' => 'noun', 'verbform' => 'ger', 'other' => {'subpos' => 'v4'}],
             # A A adjective
             # Examples: 主要 = main, 一般 = general, 共同 = common, 最佳 = optimal, 唯一 = the only
-            'A'  => ['pos' => 'adj'],
+            'A'    => ['pos' => 'adj'],
             # determiner
             # anaphoric determiner (this, that)
-            'Nep' => ['pos' => 'adj', 'prontype' => 'dem'],
+            # Ne Nep: 這 zhè = this, 此 cǐ = this, 其 qí = its, 什麼 shénme = any, 那 nà = that
+            'Nep'  => ['pos' => 'adj', 'prontype' => 'dem'],
             # classifying determiner (much, half)
-            'Neq' => ['pos' => 'adj', 'prontype' => 'prn'],
+            # Ne Neqa: 全 quán = all, 許多 xǔduō = a lot of, 這些 zhèxiē = these, 一些 yīxiē = some, 其他 qítā = other
+            # Ne Neqb: 多 duō = many, 以上 = more/above, 左右 zuǒyòu = about/approximately, 許 xǔ = perhaps, 上下 shàngxià = up and down
+            'Neqa' => ['pos' => 'adj', 'prontype' => 'prn'],
+            'Neqb' => ['pos' => 'adj', 'prontype' => 'prn', 'other' => {'subpos' => 'qb'}],
             # specific determiner (you, shang, ge = every)
-            'Nes' => ['pos' => 'adj', 'prontype' => 'prn'],
+            # Ne Nes: 各 gè = each, 有 yǒu = there is, 該 gāi = that, 本 běn = this, 另 lìng = other
+            'Nes' => ['pos' => 'adj', 'prontype' => 'prn', 'other' => {'subpos' => 's'}],
             # numeric determiner (one, two, three)
+            # Ne Neu: 一 yī = one, 二 èr = two, 兩 liǎng = two, 三 sān = three, 四 sì = four
             'Neu' => ['pos' => 'num', 'numtype' => 'card'],
             # verb
             'V'   => ['pos' => 'verb'],
@@ -103,6 +193,7 @@ sub _create_atoms
             ###!!! There ought to be a better solution!
             'DM'  => ['pos' => 'adj', 'nountype' => 'class'],
             # postposition (qian = before)
+            # Ng Ng: 中 zhōng = middle, 時 shí = during, 後 hòu = after, 上 shàng = on, 前 qián = ago
             'Ng'  => ['pos' => 'adp', 'adpostype' => 'post'],
             # preposition (66 kinds, 66 different tags)
             'P'   => ['pos' => 'adp', 'adpostype' => 'prep'],
@@ -131,15 +222,63 @@ sub _create_atoms
             'DE'   => ['pos' => 'part', 'case' => 'gen'],
             'Di'   => ['pos' => 'part', 'case' => 'gen', 'other' => {'subpos' => 'Di'}],
             # particle
-            'T'   => ['pos' => 'part'],
+            'T'    => ['pos' => 'part'],
             # interjection
-            'I'   => ['pos' => 'int']
+            'I'    => ['pos' => 'int']
         },
         'encode_map' =>
         {
-            'pos' => { 'noun' => 'Na',
-                       'adj'  => { 'nountype' => { 'class' => 'DM',
-                                                   '@'     => 'A' }},
+            'pos' => { 'noun' => { 'nountype' => { 'com'   => { 'other/subpos' => { 'ab'  => 'Nab',
+                                                                                    'ac'  => 'Nac',
+                                                                                    'ad'  => 'Nad',
+                                                                                    'aea' => 'Naea',
+                                                                                    'aeb' => 'Naeb',
+                                                                                    '@'   => 'Naa' }},
+                                                   'prop'  => { 'other/subpos' => { 'bc'  => 'Nbc',
+                                                                                    '@'   => 'Nba' }},
+                                                   'class' => { 'other/subpos' => { 'fc'  => 'Nfc',
+                                                                                    'fd'  => 'Nfd',
+                                                                                    'fe'  => 'Nfe',
+                                                                                    'fg'  => 'Nfg',
+                                                                                    'fh'  => 'Nfh',
+                                                                                    'fi'  => 'Nfi',
+                                                                                    '@'   => 'Nfa' }},
+                                                   '@'     => { 'advtype' => { 'loc' => { 'other/subpos' => { 'cb'  => 'Ncb',
+                                                                                                              'cc'  => 'Ncc',
+                                                                                                              'cda' => 'Ncda',
+                                                                                                              'cdb' => 'Ncdb',
+                                                                                                              'ce'  => 'Nce',
+                                                                                                              '@'   => 'Nca' }},
+                                                                               'tim' => { 'other/subpos' => { 'daab' => 'Ndaab',
+                                                                                                              'daac' => 'Ndaac',
+                                                                                                              'daad' => 'Ndaad',
+                                                                                                              'daba' => 'Ndaba',
+                                                                                                              'dabb' => 'Ndabb',
+                                                                                                              'dabc' => 'Ndabc',
+                                                                                                              'dabd' => 'Ndabd',
+                                                                                                              'dabe' => 'Ndabe',
+                                                                                                              'dabf' => 'Ndabf',
+                                                                                                              'dbb'  => 'Ndbb',
+                                                                                                              'dc'   => 'Ndc',
+                                                                                                              'dda'  => 'Ndda',
+                                                                                                              'ddb'  => 'Nddb',
+                                                                                                              'ddc'  => 'Nddc',
+                                                                                                              '@'    => 'Ndaaa' }},
+                                                                               '@'   => { 'prontype' => { 'prs' => { 'reflex' => { 'reflex' => 'Nhab',
+                                                                                                                                   '@'      => { 'politeness' => { 'pol' => 'Nhac',
+                                                                                                                                                                   '@'   => 'Nhaa' }}}},
+                                                                                                          'int' => 'Nhb',
+                                                                                                          'prn' => 'Nhc',
+                                                                                                          '@'   => { 'other/subpos' => { 'v2' => 'Nv2',
+                                                                                                                                         'v3' => 'Nv3',
+                                                                                                                                         'v4' => 'Nv4',
+                                                                                                                                         '@'  => 'Nv1' }}}}}}}},
+                       'adj'  => { 'prontype' => { 'dem' => 'Nep',
+                                                   'prn' => { 'other/subpos' => { 'qb' => 'Neqb',
+                                                                                  's'  => 'Nes',
+                                                                                  '@'  => 'Neqa' }},
+                                                   '@'   => { 'nountype' => { 'class' => 'DM',
+                                                                              '@'     => 'A' }}}},
                        'num'  => 'Neu',
                        'verb' => 'V',
                        'adv'  => { 'prontype' => { 'int' => 'Dj',
@@ -242,7 +381,7 @@ sub encode
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $atoms = $self->atoms();
     my $subpos = $atoms->{pos}->encode($fs);
-    my $pos = $subpos =~ m/^(DE|Di)$/ ? 'DE' : $subpos eq 'DM' ? 'DM' : substr($subpos, 0, 1);
+    my $pos = $subpos =~ m/^(DE|Di)$/ ? 'DE' : $subpos eq 'DM' ? 'DM' : $subpos =~ m/^(N[eg])/ ? $1 : substr($subpos, 0, 1);
     ###!!! We cannot currently decode the tag extensions in brackets, e.g. "[P1]" in "Caa[P1]".
     ###!!! In future we will want to create an atom to take care of them. For the moment, just a quick hack:
     my $bracket = $fs->get_other_subfeature('zh::conll', 'bracket');
