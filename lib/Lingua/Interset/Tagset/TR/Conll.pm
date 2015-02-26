@@ -94,24 +94,35 @@ sub _create_atoms
                                                                                'int' => 'Pron QuesP',
                                                                                'prs' => { 'reflex' => { 'reflex' => 'Pron ReflexP',
                                                                                                         '@'      => 'Pron PersP' }},
-                                                                               ''    => 'Noun Noun',
+                                                                               ''    => { 'verbform' => { 'part' => { 'tense' => { 'fut'  => 'Noun NFutPart',
+                                                                                                                                   'pres' => 'Noun NPresPart',
+                                                                                                                                   '@'    => 'Noun NPastPart' }},
+                                                                                                          'inf'  => 'Noun NInf',
+                                                                                                          '@'    => { 'other/zero' => { '1' => 'Noun Zero',
+                                                                                                                                        '@' => 'Noun Noun' }}}},
                                                                                '@'   => 'Pron Pron' }}}},
                        'adj'  => { 'numtype' => { 'ord' => 'Num Ord',
-                                                  '@'   => { 'prontype' => { ''  => 'Adj Adj',
+                                                  '@'   => { 'prontype' => { ''  => { 'verbform' => { 'part' => { 'tense' => { 'fut'  => 'Adj AFutPart',
+                                                                                                                               'pres' => 'Adj APresPart',
+                                                                                                                               '@'    => 'Adj APastPart' }},
+                                                                                                      '@'    => { 'other/zero' => { '1' => 'Adj Zero',
+                                                                                                                                    '@' => 'Adj Adj' }}}},
                                                                              '@' => 'Det Det' }}}},
                        'num'  => { 'numtype' => { 'ord'   => 'Num Ord',
                                                   'dist'  => 'Num Distrib',
                                                   'range' => 'Num Range',
                                                   '@'     => { 'numform' => { 'digit' => 'Num Real',
                                                                               '@'     => 'Num Card' }}}},
-                       'verb' => 'Verb Verb',
+                       'verb' => { 'other/zero' => { '1' => 'Verb Zero',
+                                                     '@' => 'Verb Verb' }},
                        'adv'  => 'Adv Adv',
                        'adp'  => 'Postp Postp',
                        'conj' => 'Conj Conj',
                        'part' => 'Ques Ques',
                        'int'  => 'Interj Interj',
                        'punc' => 'Punc Punc',
-                       'sym'  => 'Punc Punc' }
+                       'sym'  => 'Punc Punc',
+                       '@'    => 'Dup Dup' }
         }
     );
     # GENDER ####################
@@ -169,7 +180,8 @@ sub _create_atoms
                                                             '3' => 'P3sg' }},
                               'plur' => { 'possperson' => { '1' => 'P1pl',
                                                             '2' => 'P2pl',
-                                                            '3' => 'P3pl' }}}
+                                                            '3' => 'P3pl' }},
+                              '@'    => 'Pnon' }
         }
     );
     # CASE ####################
@@ -192,6 +204,7 @@ sub _create_atoms
         }
     );
     # PC (???) CASE ####################
+    # This feature is used with postpositions. Is it their valency case?
     $atoms{pccase} = $self->create_simple_atom
     (
         'intfeature' => 'case',
@@ -216,90 +229,90 @@ sub _create_atoms
             'Su' => 'sup'
         }
     );
-    # ADJECTIVE TYPE ####################
-    $atoms{adjtype} = $self->create_atom
+    # ADJECTIVE OR ADVERB TYPE ####################
+    # We have to join these two features (adjtype and advtype) because they overlap in the AsIf value.
+    # They never occur together, thus there is no harm in joining them.
+    # The non-"_" non-Ly non-Since adverbs seem to be derived from verbs, i.e. they could be called adverbial participles (transgressives).
+    $atoms{adjvtype} = $self->create_atom
     (
-        'surfeature' => 'adjtype',
+        'surfeature' => 'adjvtype',
         'decode_map' =>
         {
             # Adj Adj _ examples: büyük (big), yeni (new), iyi (good), aynı (same), çok (many)
             # Adj Adj Agt examples: üretici (manufacturing), ürkütücü (scary), rahatlatıcı (relaxing), yakıcı (burning), barışçı (pacific)
-            'Agt'       => ['other' => {'adjtype' => 'agt'}],
+            'Agt'       => ['other' => {'adjvtype' => 'agt'}],
             # Adj Adj AsIf examples: böylece (so that), onca (all that), delice (insane), aptalca (stupid), çılgınca (wild)
-            'AsIf'      => ['other' => {'adjtype' => 'asif'}],
+            # Adv Adv AsIf examples: güneşiymişçesine, okumuşçasına (as if reads), etmişçesine, taparcasına (as if worships), okşarcasına (as if strokes)
+            'AsIf'      => ['other' => {'adjvtype' => 'asif'}], # 'verbform' => 'trans' for the Adv cases? ###!!!
             # Adj Adj FitFor examples: dolarlık (in dollars), yıllık (annual), saatlik (hourly), trilyonluk (trillions worth), liralık (in pounds)
-            'FitFor'    => ['other' => {'adjtype' => 'fitfor'}],
+            'FitFor'    => ['other' => {'adjvtype' => 'fitfor'}],
             # Adj Adj InBetween example: uluslararası (international)
-            'InBetween' => ['other' => {'adjtype' => 'inbetween'}],
+            'InBetween' => ['other' => {'adjvtype' => 'inbetween'}],
             # Adj Adj JustLike example: konyakımsı (just like brandy), redingotumsu (just like redingot)
-            'JustLike'  => ['other' => {'adjtype' => 'justlike'}],
+            'JustLike'  => ['other' => {'adjvtype' => 'justlike'}],
             # Adj Adj Rel examples: önceki (previous), arasındaki (in-between), içindeki (intra-), üzerindeki (upper), öteki (other)
-            'Rel'       => ['other' => {'adjtype' => 'rel'}],
+            'Rel'       => ['other' => {'adjvtype' => 'rel'}],
             # Adj Adj Related examples: ideolojik (ideological), teknolojik (technological), meteorolojik (meteorological), bilimsel (scientific), psikolojik (psychological)
-            'Related'   => ['other' => {'adjtype' => 'related'}],
+            'Related'   => ['other' => {'adjvtype' => 'related'}],
             # Adj Adj With examples: önemli (important), ilgili (related), vadeli (forward), yaşlı (elderly), yararlı (helpful)
-            'With'      => ['other' => {'adjtype' => 'with'}],
+            'With'      => ['other' => {'adjvtype' => 'with'}],
             # Adj Adj Without examples: sessiz (quiet), savunmasız (vulnerable), anlamsız (meaningless), gereksiz (unnecessary), rahatsız (uncomfortable)
-            'Without'   => ['other' => {'adjtype' => 'without'}]
-        },
-        'encode_map' =>
-        {
-            'other/adjtype' => { 'agt'       => 'Agt',
-                                 'asif'      => 'AsIf',
-                                 'fitfor'    => 'FitFor',
-                                 'inbetween' => 'InBetween',
-                                 'justlike'  => 'JustLike',
-                                 'rel'       => 'Rel',
-                                 'related'   => 'Related',
-                                 'with'      => 'With',
-                                 'without'   => 'Without' }
-        }
-    );
-    # ADVERB TYPE ####################
-    $atoms{advtype} = $self->create_atom
-    (
-        'surfeature' => 'advtype',
-        'decode_map' =>
-        {
-            # The non-"_" non-Ly non-Since adverbs seem to be derived from verbs, i.e. they could be called adverbial participles (transgressives).
+            'Without'   => ['other' => {'adjvtype' => 'without'}],
             # Adv Adv _ examples: daha (more), çok (very), en (most), bile (even), hiç (never)
             # Adv Adv Ly examples: hafifçe (slightly), rahatça (easily), iyice (thoroughly), öylece (just), aptalca (stupidly)
-            'Ly'                  => ['other' => {'advtype' => 'ly'}],
+            'Ly'                  => ['other' => {'adjvtype' => 'ly'}],
             # Adv Adv Since examples: yıldır (for years), yıllardır (for years), saattir (for hours)
-            'Since'               => ['other' => {'advtype' => 'since'}],
+            'Since'               => ['other' => {'adjvtype' => 'since'}],
             # Adv Adv AfterDoingSo examples: gidip (having gone), gelip (having come), deyip (having said), kesip (having cut out), çıkıp (having gotten out)
-            'AfterDoingSo'        => ['other' => {'advtype' => 'afterdoingso'}, 'verbform' => 'trans'],
+            'AfterDoingSo'        => ['other' => {'adjvtype' => 'afterdoingso'}, 'verbform' => 'trans'],
             # Adv Adv As examples: istemedikçe (unless you want to), arttıkça (as increases), konuştukça (as you talk), oldukça (rather), gördükçe (as you see)
-            'As'                  => ['other' => {'advtype' => 'as'}, 'verbform' => 'trans'],
-            # Adv Adv AsIf examples: güneşiymişçesine, okumuşçasına (as if reads), etmişçesine, taparcasına (as if worships), okşarcasına (as if strokes)
-            'AsIf'                => ['other' => {'advtype' => 'asif'}, 'verbform' => 'trans'],
+            'As'                  => ['other' => {'adjvtype' => 'as'}, 'verbform' => 'trans'],
             # Adv Adv ByDoingSo examples: olarak (by being), diyerek (by saying), belirterek (by specifying), koşarak (by running), çekerek (by pulling)
-            'ByDoingSo'           => ['other' => {'advtype' => 'bydoingso'}, 'verbform' => 'trans'],
+            'ByDoingSo'           => ['other' => {'adjvtype' => 'bydoingso'}, 'verbform' => 'trans'],
             # Adv Adv SinceDoingSo examples: olalı (since being), geleli (since coming), dönüşeli (since returning), başlayalı (since starting), kapılalı
-            'SinceDoingSo'        => ['other' => {'advtype' => 'sincedoingso'}, 'verbform' => 'trans'],
+            'SinceDoingSo'        => ['other' => {'adjvtype' => 'sincedoingso'}, 'verbform' => 'trans'],
             # Adv Adv When examples: görünce (when/on seeing), deyince (when we say), olunca (when), açılınca (when opening), gelince (when coming)
-            'When'                => ['other' => {'advtype' => 'when'}, 'verbform' => 'trans'],
+            'When'                => ['other' => {'adjvtype' => 'when'}, 'verbform' => 'trans'],
             # Adv Adv While examples: giderken (en route), konuşurken (while talking), derken (while saying), çıkarken (on the way out), varken (when there is)
-            'While'               => ['other' => {'advtype' => 'while'}, 'verbform' => 'trans'],
+            'While'               => ['other' => {'adjvtype' => 'while'}, 'verbform' => 'trans'],
             # Adv Adv WithoutHavingDoneSo examples: olmadan (without being), düşünmeden (without thinking), geçirmeden (without passing), çıkarmadan (without removing), almadan (without taking)
-            'WithoutHavingDoneSo' => ['other' => {'advtype' => 'withouthavingdoneso'}, 'verbform' => 'trans'],
+            'WithoutHavingDoneSo' => ['other' => {'adjvtype' => 'withouthavingdoneso'}, 'verbform' => 'trans'],
+            # Additional categories apply to nouns:
+            'Dim'  => ['other' => {'adjvtype' => 'dim'}],
+            'Inf2' => ['other' => {'adjvtype' => 'inf2'}],
+            'Inf3' => ['other' => {'adjvtype' => 'inf3'}],
+            'Ness' => ['other' => {'adjvtype' => 'ness'}]
         },
         'encode_map' =>
         {
-            'other/advtype' => { 'ly'                  => 'Ly',
-                                 'since'               => 'Since',
-                                 'afterdoingso'        => 'AfterDoingSo',
-                                 'as'                  => 'As',
-                                 'asif'                => 'AsIf',
-                                 'bydoingso'           => 'ByDoingSo',
-                                 'sincedoingso'        => 'SinceDoingSo',
-                                 'when'                => 'When',
-                                 'while'               => 'While',
-                                 'withouthavingdoneso' => 'WithoutHavingDoneSo' }
+            'other/adjvtype' => { 'agt'       => 'Agt',
+                                  'asif'      => 'AsIf',
+                                  'fitfor'    => 'FitFor',
+                                  'inbetween' => 'InBetween',
+                                  'justlike'  => 'JustLike',
+                                  'rel'       => 'Rel',
+                                  'related'   => 'Related',
+                                  'with'      => 'With',
+                                  'without'   => 'Without',
+                                  'ly'                  => 'Ly',
+                                  'since'               => 'Since',
+                                  'afterdoingso'        => 'AfterDoingSo',
+                                  'as'                  => 'As',
+                                  #'asif'                => 'AsIf',
+                                  'bydoingso'           => 'ByDoingSo',
+                                  'sincedoingso'        => 'SinceDoingSo',
+                                  'when'                => 'When',
+                                  'while'               => 'While',
+                                  'withouthavingdoneso' => 'WithoutHavingDoneSo',
+                                  'dim'  => 'Dim',
+                                  'inf2' => 'Inf2',
+                                  'inf3' => 'Inf3',
+                                  'ness' => 'Ness' }
         }
     );
     # COMPOUNDING AND MODALITY ####################
-    # Compounding and modality features (here explained on the English verb "to do"; Turkish examples are not translations of "to do"!)
+    # These features apply to verbs. Only 3 features actually occur in the corpus: Able, Hastily and Stay.
+    # (The features are explained below on the English verb "to do"; Turkish examples are not translations of "to do"!)
     # +Able ... able to do ... examples: olabilirim, olabilirsin, olabilir ... bunu demis olabilirim = I may have said (demis = said)
     # +Repeat ... do repeatedly ... no occurrence
     # +Hastily ... do hastily ... examples: aliverdi, doluverdi, gidiverdi
@@ -307,9 +320,37 @@ sub _create_atoms
     # +Almost ... almost did but did not ... no occurrence
     # +Stay ... stayed frozen whlie doing ... just two examples: şaşakalmıştık, uyuyakalmıştı (Google translates the latter as "fallen asleep")
     # +Start ... start doing immediately ... no occurrence
-    # Verbs derived from nouns or adjectives:
-    #1 if($feature eq 'Acquire'); # to acquire the noun
-    #1 if($feature eq 'Become'); # to become the noun
+    $atoms{comod} = $self->create_atom
+    (
+        'surfeature' => 'comod',
+        'decode_map' =>
+        {
+            'Able'      => ['other' => {'comod' => 'able'}],
+            'Repeat'    => ['other' => {'comod' => 'repeat'}],
+            'Hastily'   => ['other' => {'comod' => 'hastily'}],
+            'EverSince' => ['other' => {'comod' => 'eversince'}],
+            'Almost'    => ['other' => {'comod' => 'almost'}],
+            'Stay'      => ['other' => {'comod' => 'stay'}],
+            'Start'     => ['other' => {'comod' => 'start'}],
+            # Verbs derived from nouns or adjectives:
+            # to acquire the noun
+            'Acquire'   => ['other' => {'comod' => 'acquire'}],
+            # to become the noun
+            'Become'    => ['other' => {'comod' => 'become'}]
+        },
+        'encode_map' =>
+        {
+            'other/comod' => { 'able'      => 'Able',
+                               'repeat'    => 'Repeat',
+                               'hastily'   => 'Hastily',
+                               'eversince' => 'EverSince',
+                               'almost'    => 'Almost',
+                               'stay'      => 'Stay',
+                               'start'     => 'Start',
+                               'acquire'   => 'Acquire',
+                               'become'    => 'Become' }
+        }
+    );
     # TENSE ####################
     # Two (but not more) tenses may be combined together.
     # We have to preprocess the tags so that two tense features appear as one, e.g. "Fut|Past" becomse "FutPast".
@@ -328,9 +369,9 @@ sub _create_atoms
             # Pos|Fut|Past|A3sg examples: olacaktı (would), öğrenecekti (would learn), yapacaktı (would make), ölecekti, sokacaktı
             'Fut'      => ['tense' => 'fut'],
             'FutPast'  => ['tense' => 'fut|past'],
+            'FutNarr'  => ['tense' => 'fut|nar'],
             # Pos|Past|A3sg examples: dedi (said), oldu (was), söyledi (said), geldi (came), sordu (asked)
             # Pos|Prog1|Past|A3sg examples: geliyordu (was coming), oturuyordu (was sitting), bakıyordu, oluyordu, titriyordu
-            'NarrPast' => ['tense' => 'narr|past'],
             'Past'     => ['tense' => 'past'],
             # Pos|Narr|A3sg examples: olmuş (was), demiş (said), bayılmış (fainted), gelmiş (came), çıkmış (emerged)
             # Pos|Narr|Past|A3sg examples: başlamıştı (started), demişti (said), gelmişti (was), geçmişti (passed), kalkmıştı (sailed)
@@ -341,8 +382,8 @@ sub _create_atoms
             # hence it is used when the fact of a past event, as such, is not important;
             # in particular, the inferential past is used when one did not actually witness the past event.
             # A newspaper will generally use the di-past, because it is authoritative.
-            'FutNarr'  => ['tense' => 'fut|narr'],
-            'Narr'     => ['tense' => 'narr'],
+            'Narr'     => ['tense' => 'nar'],
+            'NarrPast' => ['tense' => 'nar|past'],
             # Pos|Aor|A3sg examples: olur (will), gerekir (must), yeter (is enough), alır (takes), gelir (income)
             # Pos|Aor|Narr|A3sg examples: olurmuş (bustled), inanırmış, severmiş (loved), yaşarmış (lived), bitermiş
             # Pos|Aor|Past|A3sg examples: olurdu (would), otururdu (sat), yapardı (would), bilirdi (knew), derdi (used to say)
@@ -351,16 +392,20 @@ sub _create_atoms
             # So it is not a tense (unlike e.g. Bulgarian aorist) and it can be combined with tenses.
             # Habitual aspect means repetitive actions (they take place "usually"). It is a type of imperfective aspect.
             # English has habitual past: "I used to visit him frequently."
-            'Aor'      => ['tense' => 'aor']
+            'Aor'      => ['tense' => 'aor'],
+            'AorPast'  => ['tense' => 'aor|past'],
+            'AorNarr'  => ['tense' => 'aor|nar']
         },
         'encode_map' =>
         {
             'tense' => { 'aor'       => 'Aor',
+                         'aor|nar'   => 'AorNarr',
+                         'aor|past'  => 'AorPast',
                          'fut'       => 'Fut',
-                         'fut|narr'  => 'FutNarr',
+                         'fut|nar'   => 'FutNarr',
                          'fut|past'  => 'FutPast',
-                         'narr'      => 'Narr',
-                         'narr|past' => 'NarrPast',
+                         'nar'       => 'Narr',
+                         'nar|past'  => 'NarrPast',
                          'past'      => 'Past',
                          'pres'      => 'Pres' }
         }
@@ -487,7 +532,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('pos', 'gender', 'agreement', 'possagreement', 'case', 'degree', 'adjtype', 'advtype', 'tense', 'aspect', 'mood', 'negativeness', 'voice', 'copula');
+    my @features = ('pos', 'gender', 'agreement', 'possagreement', 'case', 'pccase', 'degree', 'adjvtype', 'tense', 'aspect', 'comod', 'mood', 'negativeness', 'voice', 'copula');
     return \@features;
 }
 
@@ -502,7 +547,26 @@ sub _create_features_pos
     my $self = shift;
     my %features =
     (
-        'Adj' => ['adjtype'],
+        'Adj Adj'        => ['adjvtype'],
+        'Adj AFutPart'   => ['possagreement'],
+        'Adj APastPart'  => ['possagreement'],
+        'Adv Adv'        => ['adjvtype'],
+        'Noun NFutPart'  => ['agreement', 'possagreement', 'case'],
+        'Noun NInf'      => ['agreement', 'possagreement', 'case'],
+        'Noun Noun'      => ['adjvtype', 'agreement', 'possagreement', 'case'],
+        'Noun NPastPart' => ['agreement', 'possagreement', 'case'],
+        'Noun NPresPart' => ['agreement', 'possagreement', 'case'],
+        'Noun Prop'      => ['agreement', 'possagreement', 'case'],
+        'Noun Zero'      => ['agreement', 'possagreement', 'case'],
+        'Postp Postp'    => ['pccase'],
+        'Pron DemonsP'   => ['agreement', 'possagreement', 'case'],
+        'Pron PersP'     => ['agreement', 'possagreement', 'case'],
+        'Pron Pron'      => ['agreement', 'possagreement', 'case'],
+        'Pron QuesP'     => ['agreement', 'possagreement', 'case'],
+        'Pron ReflexP'   => ['agreement', 'possagreement', 'case'],
+        'Ques Ques'      => ['tense', 'copula', 'agreement'],
+        'Verb Verb'      => ['comod', 'voice', 'negativeness', 'mood', 'aspect', 'tense', 'copula', 'agreement'],
+        'Verb Zero'      => ['negativeness', 'mood', 'tense', 'copula', 'agreement']
     );
     return \%features;
 }
@@ -517,6 +581,9 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
+    # Preprocess the tag. There may be up to two different tense features.
+    # If there are two tense features, we want to merge them so that they are later processed together.
+    $tag =~ s/(Aor|Fut|Narr)\|(Past|Narr)/$1$2/;
     my $fs = Lingua::Interset::FeatureStructure->new();
     $fs->set_tagset('tr::conll');
     my $atoms = $self->atoms();
@@ -546,10 +613,13 @@ sub encode
     my $atoms = $self->atoms();
     my $possubpos = $atoms->{pos}->encode($fs);
     my ($pos, $subpos) = split(/\s+/, $possubpos);
-    my $fpos = $subpos;
+    my $fpos = $possubpos;
     my $feature_names = $self->get_feature_names($fpos);
     my $value_only = 1;
     my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names, $value_only);
+    # Postprocess the tag. There may be up to two different tense features.
+    # If there are two tense features, we have merged them and processed together, but now we have to split them again.
+    $tag =~ s/(Aor|Fut|Narr)(Past|Narr)/$1|$2/;
     return $tag;
 }
 
@@ -558,21 +628,13 @@ sub encode
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
 # Tags were collected from the corpus, 1061 distinct tags found.
+# One erroneous tag removed, permutations normalized, 1058 tags survived.
+# Added tags generated when 'other' is not available: 1112 tags total.
 #------------------------------------------------------------------------------
 sub list
 {
     my $self = shift;
     my $list = <<end_of_list
-Adj	Adj	_
-Adj	Adj	Agt
-Adj	Adj	AsIf
-Adj	Adj	FitFor
-Adj	Adj	InBetween
-Adj	Adj	JustLike
-Adj	Adj	Rel
-Adj	Adj	Related
-Adj	Adj	With
-Adj	Adj	Without
 Adj	AFutPart	P1pl
 Adj	AFutPart	P1sg
 Adj	AFutPart	P3pl
@@ -586,8 +648,17 @@ Adj	APastPart	P3pl
 Adj	APastPart	P3sg
 Adj	APastPart	Pnon
 Adj	APresPart	_
+Adj	Adj	Agt
+Adj	Adj	AsIf
+Adj	Adj	FitFor
+Adj	Adj	InBetween
+Adj	Adj	JustLike
+Adj	Adj	Rel
+Adj	Adj	Related
+Adj	Adj	With
+Adj	Adj	Without
+Adj	Adj	_
 Adj	Zero	_
-Adv	Adv	_
 Adv	Adv	AfterDoingSo
 Adv	Adv	As
 Adv	Adv	AsIf
@@ -598,6 +669,7 @@ Adv	Adv	SinceDoingSo
 Adv	Adv	When
 Adv	Adv	While
 Adv	Adv	WithoutHavingDoneSo
+Adv	Adv	_
 Conj	Conj	_
 Det	Det	_
 Dup	Dup	_
@@ -683,6 +755,57 @@ Noun	NInf	A3sg|Pnon|Gen
 Noun	NInf	A3sg|Pnon|Ins
 Noun	NInf	A3sg|Pnon|Loc
 Noun	NInf	A3sg|Pnon|Nom
+Noun	NPastPart	A3pl|P1sg|Abl
+Noun	NPastPart	A3pl|P1sg|Acc
+Noun	NPastPart	A3pl|P1sg|Dat
+Noun	NPastPart	A3pl|P1sg|Gen
+Noun	NPastPart	A3pl|P1sg|Ins
+Noun	NPastPart	A3pl|P1sg|Loc
+Noun	NPastPart	A3pl|P1sg|Nom
+Noun	NPastPart	A3pl|P2pl|Acc
+Noun	NPastPart	A3pl|P2pl|Ins
+Noun	NPastPart	A3pl|P2pl|Nom
+Noun	NPastPart	A3pl|P2sg|Acc
+Noun	NPastPart	A3pl|P3pl|Abl
+Noun	NPastPart	A3pl|P3pl|Acc
+Noun	NPastPart	A3pl|P3pl|Dat
+Noun	NPastPart	A3pl|P3pl|Loc
+Noun	NPastPart	A3pl|P3pl|Nom
+Noun	NPastPart	A3pl|P3sg|Abl
+Noun	NPastPart	A3pl|P3sg|Acc
+Noun	NPastPart	A3pl|P3sg|Dat
+Noun	NPastPart	A3pl|P3sg|Loc
+Noun	NPastPart	A3pl|P3sg|Nom
+Noun	NPastPart	A3pl|Pnon|Acc
+Noun	NPastPart	A3sg|P1pl|Acc
+Noun	NPastPart	A3sg|P1pl|Loc
+Noun	NPastPart	A3sg|P1pl|Nom
+Noun	NPastPart	A3sg|P1sg|Abl
+Noun	NPastPart	A3sg|P1sg|Acc
+Noun	NPastPart	A3sg|P1sg|Dat
+Noun	NPastPart	A3sg|P1sg|Gen
+Noun	NPastPart	A3sg|P1sg|Loc
+Noun	NPastPart	A3sg|P1sg|Nom
+Noun	NPastPart	A3sg|P2pl|Abl
+Noun	NPastPart	A3sg|P2pl|Acc
+Noun	NPastPart	A3sg|P2pl|Loc
+Noun	NPastPart	A3sg|P2pl|Nom
+Noun	NPastPart	A3sg|P2sg|Abl
+Noun	NPastPart	A3sg|P2sg|Loc
+Noun	NPastPart	A3sg|P2sg|Nom
+Noun	NPastPart	A3sg|P3pl|Acc
+Noun	NPastPart	A3sg|P3pl|Dat
+Noun	NPastPart	A3sg|P3pl|Loc
+Noun	NPastPart	A3sg|P3pl|Nom
+Noun	NPastPart	A3sg|P3sg|Abl
+Noun	NPastPart	A3sg|P3sg|Acc
+Noun	NPastPart	A3sg|P3sg|Dat
+Noun	NPastPart	A3sg|P3sg|Equ
+Noun	NPastPart	A3sg|P3sg|Gen
+Noun	NPastPart	A3sg|P3sg|Loc
+Noun	NPastPart	A3sg|P3sg|Nom
+Noun	NPastPart	A3sg|Pnon|Abl
+Noun	NPresPart	A3sg|P3sg|Nom
 Noun	Noun	A1pl|P3sg|Nom
 Noun	Noun	A3pl|P1pl|Abl
 Noun	Noun	A3pl|P1pl|Acc
@@ -707,6 +830,7 @@ Noun	Noun	A3pl|P2pl|Nom
 Noun	Noun	A3pl|P2sg|Abl
 Noun	Noun	A3pl|P2sg|Acc
 Noun	Noun	A3pl|P2sg|Dat
+Noun	Noun	A3pl|P2sg|Equ
 Noun	Noun	A3pl|P2sg|Gen
 Noun	Noun	A3pl|P2sg|Ins
 Noun	Noun	A3pl|P2sg|Nom
@@ -853,57 +977,6 @@ Noun	Noun	Ness|A3sg|Pnon|Gen
 Noun	Noun	Ness|A3sg|Pnon|Ins
 Noun	Noun	Ness|A3sg|Pnon|Loc
 Noun	Noun	Ness|A3sg|Pnon|Nom
-Noun	NPastPart	A3pl|P1sg|Abl
-Noun	NPastPart	A3pl|P1sg|Acc
-Noun	NPastPart	A3pl|P1sg|Dat
-Noun	NPastPart	A3pl|P1sg|Gen
-Noun	NPastPart	A3pl|P1sg|Ins
-Noun	NPastPart	A3pl|P1sg|Loc
-Noun	NPastPart	A3pl|P1sg|Nom
-Noun	NPastPart	A3pl|P2pl|Acc
-Noun	NPastPart	A3pl|P2pl|Ins
-Noun	NPastPart	A3pl|P2pl|Nom
-Noun	NPastPart	A3pl|P2sg|Acc
-Noun	NPastPart	A3pl|P3pl|Abl
-Noun	NPastPart	A3pl|P3pl|Acc
-Noun	NPastPart	A3pl|P3pl|Dat
-Noun	NPastPart	A3pl|P3pl|Loc
-Noun	NPastPart	A3pl|P3pl|Nom
-Noun	NPastPart	A3pl|P3sg|Abl
-Noun	NPastPart	A3pl|P3sg|Acc
-Noun	NPastPart	A3pl|P3sg|Dat
-Noun	NPastPart	A3pl|P3sg|Loc
-Noun	NPastPart	A3pl|P3sg|Nom
-Noun	NPastPart	A3pl|Pnon|Acc
-Noun	NPastPart	A3sg|P1pl|Acc
-Noun	NPastPart	A3sg|P1pl|Loc
-Noun	NPastPart	A3sg|P1pl|Nom
-Noun	NPastPart	A3sg|P1sg|Abl
-Noun	NPastPart	A3sg|P1sg|Acc
-Noun	NPastPart	A3sg|P1sg|Dat
-Noun	NPastPart	A3sg|P1sg|Gen
-Noun	NPastPart	A3sg|P1sg|Loc
-Noun	NPastPart	A3sg|P1sg|Nom
-Noun	NPastPart	A3sg|P2pl|Abl
-Noun	NPastPart	A3sg|P2pl|Acc
-Noun	NPastPart	A3sg|P2pl|Loc
-Noun	NPastPart	A3sg|P2pl|Nom
-Noun	NPastPart	A3sg|P2sg|Abl
-Noun	NPastPart	A3sg|P2sg|Loc
-Noun	NPastPart	A3sg|P2sg|Nom
-Noun	NPastPart	A3sg|P3pl|Acc
-Noun	NPastPart	A3sg|P3pl|Dat
-Noun	NPastPart	A3sg|P3pl|Loc
-Noun	NPastPart	A3sg|P3pl|Nom
-Noun	NPastPart	A3sg|P3sg|Abl
-Noun	NPastPart	A3sg|P3sg|Acc
-Noun	NPastPart	A3sg|P3sg|Dat
-Noun	NPastPart	A3sg|P3sg|Equ
-Noun	NPastPart	A3sg|P3sg|Gen
-Noun	NPastPart	A3sg|P3sg|Loc
-Noun	NPastPart	A3sg|P3sg|Nom
-Noun	NPastPart	A3sg|Pnon|Abl
-Noun	NPresPart	A3sg|P3sg|Nom
 Noun	Prop	A3pl|P3sg|Dat
 Noun	Prop	A3pl|P3sg|Gen
 Noun	Prop	A3pl|P3sg|Loc
@@ -1124,7 +1197,6 @@ Ques	Ques	Pres|A2pl
 Ques	Ques	Pres|A2sg
 Ques	Ques	Pres|A3sg
 Ques	Ques	Pres|Cop|A3sg
-Verb	Verb	_
 Verb	Verb	A1pl
 Verb	Verb	A3sg
 Verb	Verb	Able
@@ -1134,23 +1206,24 @@ Verb	Verb	Able|Aor|A1sg
 Verb	Verb	Able|Aor|A2pl
 Verb	Verb	Able|Aor|A2sg
 Verb	Verb	Able|Aor|A3pl
-Verb	Verb	Able|Aor|Past|A3pl
 Verb	Verb	Able|Aor|A3sg
-Verb	Verb	Able|Cond|Aor|A3sg
 Verb	Verb	Able|Aor|Narr|A3sg
 Verb	Verb	Able|Aor|Past|A1pl
 Verb	Verb	Able|Aor|Past|A1sg
+Verb	Verb	Able|Aor|Past|A3pl
 Verb	Verb	Able|Aor|Past|A3sg
+Verb	Verb	Able|Cond|Aor|A3sg
+Verb	Verb	Able|Cond|Prog1|A2pl
 Verb	Verb	Able|Desr|A1pl
 Verb	Verb	Able|Desr|A1sg
 Verb	Verb	Able|Desr|Past|A3pl
 Verb	Verb	Able|Desr|Past|A3sg
 Verb	Verb	Able|Fut|A1sg
 Verb	Verb	Able|Fut|A3pl
-Verb	Verb	Able|Fut|Past|A3pl
 Verb	Verb	Able|Fut|A3sg
 Verb	Verb	Able|Fut|Cop|A3sg
 Verb	Verb	Able|Fut|Past|A1pl
+Verb	Verb	Able|Fut|Past|A3pl
 Verb	Verb	Able|Imp|A3sg
 Verb	Verb	Able|Narr
 Verb	Verb	Able|Narr|A3sg
@@ -1164,17 +1237,17 @@ Verb	Verb	Able|Neg|Aor|A1sg
 Verb	Verb	Able|Neg|Aor|A2pl
 Verb	Verb	Able|Neg|Aor|A2sg
 Verb	Verb	Able|Neg|Aor|A3pl
-Verb	Verb	Able|Neg|Aor|Past|A3pl
 Verb	Verb	Able|Neg|Aor|A3sg
-Verb	Verb	Able|Neg|Cond|Aor|A1sg
-Verb	Verb	Able|Neg|Cond|Aor|A2pl
 Verb	Verb	Able|Neg|Aor|Narr|A3sg
 Verb	Verb	Able|Neg|Aor|Past|A1sg
+Verb	Verb	Able|Neg|Aor|Past|A3pl
 Verb	Verb	Able|Neg|Aor|Past|A3sg
+Verb	Verb	Able|Neg|Cond|Aor|A1sg
+Verb	Verb	Able|Neg|Cond|Aor|A2pl
+Verb	Verb	Able|Neg|Cond|Fut|A3sg
 Verb	Verb	Able|Neg|Desr|A3sg
 Verb	Verb	Able|Neg|Fut|A1sg
 Verb	Verb	Able|Neg|Fut|A3sg
-Verb	Verb	Able|Neg|Fut|Cond|A3sg
 Verb	Verb	Able|Neg|Narr
 Verb	Verb	Able|Neg|Narr|A1pl
 Verb	Verb	Able|Neg|Narr|A1sg
@@ -1193,9 +1266,9 @@ Verb	Verb	Able|Neg|Prog1|A1sg
 Verb	Verb	Able|Neg|Prog1|A2pl
 Verb	Verb	Able|Neg|Prog1|A2sg
 Verb	Verb	Able|Neg|Prog1|A3pl
-Verb	Verb	Able|Neg|Prog1|Past|A3pl
 Verb	Verb	Able|Neg|Prog1|A3sg
 Verb	Verb	Able|Neg|Prog1|Past|A1sg
+Verb	Verb	Able|Neg|Prog1|Past|A3pl
 Verb	Verb	Able|Neg|Prog1|Past|A3sg
 Verb	Verb	Able|Past|A1pl
 Verb	Verb	Able|Past|A1sg
@@ -1205,7 +1278,6 @@ Verb	Verb	Able|Prog1|A1sg
 Verb	Verb	Able|Prog1|A2sg
 Verb	Verb	Able|Prog1|A3pl
 Verb	Verb	Able|Prog1|A3sg
-Verb	Verb	Able|Prog1|Cond|A2pl
 Verb	Verb	Able|Prog1|Past|A1sg
 Verb	Verb	Able|Prog1|Past|A3sg
 Verb	Verb	Acquire
@@ -1217,7 +1289,7 @@ Verb	Verb	Acquire|Pos
 Verb	Verb	Acquire|Pos|Aor
 Verb	Verb	Acquire|Pos|Aor|A3pl
 Verb	Verb	Acquire|Pos|Aor|A3sg
-Verb	Verb	Acquire|Pos|Fut|Cond|A3sg
+Verb	Verb	Acquire|Pos|Cond|Fut|A3sg
 Verb	Verb	Acquire|Pos|Imp|A2sg
 Verb	Verb	Acquire|Pos|Imp|A3sg
 Verb	Verb	Acquire|Pos|Narr
@@ -1235,13 +1307,25 @@ Verb	Verb	Acquire|Pos|Prog1|A3pl
 Verb	Verb	Acquire|Pos|Prog1|A3sg
 Verb	Verb	Acquire|Pos|Prog1|Past|A3sg
 Verb	Verb	Acquire|Pos|Prog2|A3sg
+Verb	Verb	Aor
+Verb	Verb	Aor|A1pl
+Verb	Verb	Aor|A1sg
+Verb	Verb	Aor|A2pl
+Verb	Verb	Aor|A2sg
+Verb	Verb	Aor|A3pl
+Verb	Verb	Aor|A3sg
+Verb	Verb	Aor|Narr|A3sg
+Verb	Verb	Aor|Past|A1pl
+Verb	Verb	Aor|Past|A1sg
+Verb	Verb	Aor|Past|A3pl
+Verb	Verb	Aor|Past|A3sg
 Verb	Verb	Become
 Verb	Verb	Become|Neg|Aor
 Verb	Verb	Become|Neg|Aor|A3sg
 Verb	Verb	Become|Neg|Imp|A2sg
 Verb	Verb	Become|Pos
-Verb	Verb	Become|Pos|Aor|Past|A3pl
 Verb	Verb	Become|Pos|Aor|A3sg
+Verb	Verb	Become|Pos|Aor|Past|A3pl
 Verb	Verb	Become|Pos|Desr|A3sg
 Verb	Verb	Become|Pos|Narr|A3sg
 Verb	Verb	Become|Pos|Narr|Cop|A3sg
@@ -1251,8 +1335,8 @@ Verb	Verb	Become|Pos|Past|A2sg
 Verb	Verb	Become|Pos|Past|A3sg
 Verb	Verb	Become|Pos|Prog1|A1pl
 Verb	Verb	Become|Pos|Prog1|A2sg
-Verb	Verb	Become|Pos|Prog1|Past|A3pl
 Verb	Verb	Become|Pos|Prog1|A3sg
+Verb	Verb	Become|Pos|Prog1|Past|A3pl
 Verb	Verb	Become|Pos|Prog1|Past|A3sg
 Verb	Verb	Caus
 Verb	Verb	Caus|Neg
@@ -1269,9 +1353,9 @@ Verb	Verb	Caus|Pos|Aor|A1pl
 Verb	Verb	Caus|Pos|Aor|A1sg
 Verb	Verb	Caus|Pos|Aor|A2pl
 Verb	Verb	Caus|Pos|Aor|A3pl
-Verb	Verb	Caus|Pos|Cond|Aor|A3pl
 Verb	Verb	Caus|Pos|Aor|A3sg
 Verb	Verb	Caus|Pos|Aor|Past|A3sg
+Verb	Verb	Caus|Pos|Cond|Aor|A3pl
 Verb	Verb	Caus|Pos|Desr|A1sg
 Verb	Verb	Caus|Pos|Desr|A3sg
 Verb	Verb	Caus|Pos|Fut|A1pl
@@ -1287,13 +1371,13 @@ Verb	Verb	Caus|Pos|Narr
 Verb	Verb	Caus|Pos|Narr|A1pl
 Verb	Verb	Caus|Pos|Narr|A2sg
 Verb	Verb	Caus|Pos|Narr|A3pl
-Verb	Verb	Caus|Pos|Narr|Cop|A3pl
-Verb	Verb	Caus|Pos|Narr|Past|A3pl
 Verb	Verb	Caus|Pos|Narr|A3sg
+Verb	Verb	Caus|Pos|Narr|Cop|A3pl
 Verb	Verb	Caus|Pos|Narr|Cop|A3sg
 Verb	Verb	Caus|Pos|Narr|Past|A1pl
 Verb	Verb	Caus|Pos|Narr|Past|A1sg
 Verb	Verb	Caus|Pos|Narr|Past|A2sg
+Verb	Verb	Caus|Pos|Narr|Past|A3pl
 Verb	Verb	Caus|Pos|Narr|Past|A3sg
 Verb	Verb	Caus|Pos|Neces|A3sg
 Verb	Verb	Caus|Pos|Opt|A1pl
@@ -1307,15 +1391,28 @@ Verb	Verb	Caus|Pos|Past|A3sg
 Verb	Verb	Caus|Pos|Prog1|A1sg
 Verb	Verb	Caus|Pos|Prog1|A2sg
 Verb	Verb	Caus|Pos|Prog1|A3pl
-Verb	Verb	Caus|Pos|Prog1|Past|A3pl
 Verb	Verb	Caus|Pos|Prog1|A3sg
 Verb	Verb	Caus|Pos|Prog1|Narr|A3sg
 Verb	Verb	Caus|Pos|Prog1|Past|A1sg
 Verb	Verb	Caus|Pos|Prog1|Past|A2sg
+Verb	Verb	Caus|Pos|Prog1|Past|A3pl
 Verb	Verb	Caus|Pos|Prog1|Past|A3sg
 Verb	Verb	Caus|Pos|Prog2|A3sg
 Verb	Verb	Caus|Pos|Prog2|Cop|A3sg
+Verb	Verb	Cond|A1sg
 Verb	Verb	Cond|A3sg
+Verb	Verb	Cond|Aor|A3sg
+Verb	Verb	Cond|Prog1|A2pl
+Verb	Verb	Desr|A1pl
+Verb	Verb	Desr|A1sg
+Verb	Verb	Desr|Past|A3pl
+Verb	Verb	Desr|Past|A3sg
+Verb	Verb	Fut|A1sg
+Verb	Verb	Fut|A3pl
+Verb	Verb	Fut|A3sg
+Verb	Verb	Fut|Cop|A3sg
+Verb	Verb	Fut|Past|A1pl
+Verb	Verb	Fut|Past|A3pl
 Verb	Verb	Hastily
 Verb	Verb	Hastily|Aor|A3sg
 Verb	Verb	Hastily|Imp|A2sg
@@ -1323,7 +1420,20 @@ Verb	Verb	Hastily|Narr|Past|A2sg
 Verb	Verb	Hastily|Narr|Past|A3sg
 Verb	Verb	Hastily|Past|A3sg
 Verb	Verb	Hastily|Prog1|A3sg
+Verb	Verb	Imp|A2sg
+Verb	Verb	Imp|A3sg
+Verb	Verb	Narr
+Verb	Verb	Narr|A1pl
+Verb	Verb	Narr|A1sg
+Verb	Verb	Narr|A2sg
+Verb	Verb	Narr|A3pl
 Verb	Verb	Narr|A3sg
+Verb	Verb	Narr|Cop|A3sg
+Verb	Verb	Narr|Past|A1pl
+Verb	Verb	Narr|Past|A2sg
+Verb	Verb	Narr|Past|A3sg
+Verb	Verb	Neces|A3sg
+Verb	Verb	Neces|Cop|A3sg
 Verb	Verb	Neg
 Verb	Verb	Neg|Aor
 Verb	Verb	Neg|Aor|A1pl
@@ -1331,15 +1441,21 @@ Verb	Verb	Neg|Aor|A1sg
 Verb	Verb	Neg|Aor|A2pl
 Verb	Verb	Neg|Aor|A2sg
 Verb	Verb	Neg|Aor|A3pl
-Verb	Verb	Neg|Aor|Past|A3pl
 Verb	Verb	Neg|Aor|A3sg
+Verb	Verb	Neg|Aor|Narr|A3sg
+Verb	Verb	Neg|Aor|Past|A1sg
+Verb	Verb	Neg|Aor|Past|A3pl
+Verb	Verb	Neg|Aor|Past|A3sg
 Verb	Verb	Neg|Cond|Aor|A1pl
 Verb	Verb	Neg|Cond|Aor|A1sg
 Verb	Verb	Neg|Cond|Aor|A2pl
 Verb	Verb	Neg|Cond|Aor|A3sg
-Verb	Verb	Neg|Aor|Narr|A3sg
-Verb	Verb	Neg|Aor|Past|A1sg
-Verb	Verb	Neg|Aor|Past|A3sg
+Verb	Verb	Neg|Cond|Fut|A3sg
+Verb	Verb	Neg|Cond|Past|A2pl
+Verb	Verb	Neg|Cond|Prog1|A1sg
+Verb	Verb	Neg|Cond|Prog1|A2pl
+Verb	Verb	Neg|Cond|Prog1|A3pl
+Verb	Verb	Neg|Cond|Prog1|A3sg
 Verb	Verb	Neg|Desr|A1pl
 Verb	Verb	Neg|Desr|A1sg
 Verb	Verb	Neg|Desr|A2pl
@@ -1360,13 +1476,15 @@ Verb	Verb	Neg|Imp|A2pl
 Verb	Verb	Neg|Imp|A2sg
 Verb	Verb	Neg|Imp|A3sg
 Verb	Verb	Neg|Narr
+Verb	Verb	Neg|Narr|A1pl
 Verb	Verb	Neg|Narr|A1sg
+Verb	Verb	Neg|Narr|A2sg
 Verb	Verb	Neg|Narr|A3pl
-Verb	Verb	Neg|Narr|Past|A3pl
 Verb	Verb	Neg|Narr|A3sg
 Verb	Verb	Neg|Narr|Cop|A3sg
 Verb	Verb	Neg|Narr|Past|A1pl
 Verb	Verb	Neg|Narr|Past|A1sg
+Verb	Verb	Neg|Narr|Past|A3pl
 Verb	Verb	Neg|Narr|Past|A3sg
 Verb	Verb	Neg|Neces|Past|A2pl
 Verb	Verb	Neg|Opt|A1pl
@@ -1375,7 +1493,6 @@ Verb	Verb	Neg|Opt|A3sg
 Verb	Verb	Neg|Past|A1pl
 Verb	Verb	Neg|Past|A1sg
 Verb	Verb	Neg|Past|A2pl
-Verb	Verb	Neg|Cond|Past|A2pl
 Verb	Verb	Neg|Past|A2sg
 Verb	Verb	Neg|Past|A3pl
 Verb	Verb	Neg|Past|A3sg
@@ -1384,16 +1501,12 @@ Verb	Verb	Neg|Prog1|A1sg
 Verb	Verb	Neg|Prog1|A2pl
 Verb	Verb	Neg|Prog1|A2sg
 Verb	Verb	Neg|Prog1|A3pl
-Verb	Verb	Neg|Prog1|Cond|A3pl
-Verb	Verb	Neg|Prog1|Narr|A3pl
-Verb	Verb	Neg|Prog1|Past|A3pl
 Verb	Verb	Neg|Prog1|A3sg
-Verb	Verb	Neg|Prog1|Cond|A1sg
-Verb	Verb	Neg|Prog1|Cond|A2pl
-Verb	Verb	Neg|Prog1|Cond|A3sg
 Verb	Verb	Neg|Prog1|Cop|A3sg
+Verb	Verb	Neg|Prog1|Narr|A3pl
 Verb	Verb	Neg|Prog1|Past|A1sg
 Verb	Verb	Neg|Prog1|Past|A2sg
+Verb	Verb	Neg|Prog1|Past|A3pl
 Verb	Verb	Neg|Prog1|Past|A3sg
 Verb	Verb	Neg|Prog2|Cop|A3sg
 Verb	Verb	Pass
@@ -1422,10 +1535,11 @@ Verb	Verb	Pass|Pos|Aor|A1sg
 Verb	Verb	Pass|Pos|Aor|A2sg
 Verb	Verb	Pass|Pos|Aor|A3pl
 Verb	Verb	Pass|Pos|Aor|A3sg
-Verb	Verb	Pass|Pos|Cond|Aor|A1sg
-Verb	Verb	Pass|Pos|Cond|Aor|A3sg
 Verb	Verb	Pass|Pos|Aor|Narr|A3sg
 Verb	Verb	Pass|Pos|Aor|Past|A3sg
+Verb	Verb	Pass|Pos|Cond|Aor|A1sg
+Verb	Verb	Pass|Pos|Cond|Aor|A3sg
+Verb	Verb	Pass|Pos|Cond|Narr|A3sg
 Verb	Verb	Pass|Pos|Desr|A3sg
 Verb	Verb	Pass|Pos|Fut|A3pl
 Verb	Verb	Pass|Pos|Fut|A3sg
@@ -1434,10 +1548,9 @@ Verb	Verb	Pass|Pos|Fut|Past|A3sg
 Verb	Verb	Pass|Pos|Imp|A3sg
 Verb	Verb	Pass|Pos|Narr
 Verb	Verb	Pass|Pos|Narr|A2sg
-Verb	Verb	Pass|Pos|Narr|Past|A3pl
 Verb	Verb	Pass|Pos|Narr|A3sg
-Verb	Verb	Pass|Pos|Cond|Narr|A3sg
 Verb	Verb	Pass|Pos|Narr|Cop|A3sg
+Verb	Verb	Pass|Pos|Narr|Past|A3pl
 Verb	Verb	Pass|Pos|Narr|Past|A3sg
 Verb	Verb	Pass|Pos|Neces|A3sg
 Verb	Verb	Pass|Pos|Neces|Cop|A3pl
@@ -1457,8 +1570,11 @@ Verb	Verb	Pass|Pos|Prog1|Past|A1sg
 Verb	Verb	Pass|Pos|Prog1|Past|A3sg
 Verb	Verb	Pass|Pos|Prog2|A3sg
 Verb	Verb	Pass|Pos|Prog2|Cop|A3sg
+Verb	Verb	Past|A1pl
 Verb	Verb	Past|A1sg
+Verb	Verb	Past|A2pl
 Verb	Verb	Past|A2sg
+Verb	Verb	Past|A3pl
 Verb	Verb	Past|A3sg
 Verb	Verb	Pos
 Verb	Verb	Pos|Aor
@@ -1467,49 +1583,55 @@ Verb	Verb	Pos|Aor|A1sg
 Verb	Verb	Pos|Aor|A2pl
 Verb	Verb	Pos|Aor|A2sg
 Verb	Verb	Pos|Aor|A3pl
-Verb	Verb	Pos|Cond|Aor|A3pl
-Verb	Verb	Pos|Aor|Narr|A3pl
-Verb	Verb	Pos|Aor|Past|A3pl
 Verb	Verb	Pos|Aor|A3sg
-Verb	Verb	Pos|Cond|Aor|A1pl
-Verb	Verb	Pos|Cond|Aor|A1sg
-Verb	Verb	Pos|Cond|Aor|A2pl
-Verb	Verb	Pos|Cond|Aor|A2sg
-Verb	Verb	Pos|Cond|Aor|A3sg
 Verb	Verb	Pos|Aor|Narr|A1sg
+Verb	Verb	Pos|Aor|Narr|A3pl
 Verb	Verb	Pos|Aor|Narr|A3sg
 Verb	Verb	Pos|Aor|Past|A1pl
 Verb	Verb	Pos|Aor|Past|A1sg
 Verb	Verb	Pos|Aor|Past|A2sg
+Verb	Verb	Pos|Aor|Past|A3pl
 Verb	Verb	Pos|Aor|Past|A3sg
+Verb	Verb	Pos|Cond|Aor|A1pl
+Verb	Verb	Pos|Cond|Aor|A1sg
+Verb	Verb	Pos|Cond|Aor|A2pl
+Verb	Verb	Pos|Cond|Aor|A2sg
+Verb	Verb	Pos|Cond|Aor|A3pl
+Verb	Verb	Pos|Cond|Aor|A3sg
 Verb	Verb	Pos|Cond|Fut|A2sg
 Verb	Verb	Pos|Cond|Fut|A3sg
+Verb	Verb	Pos|Cond|Narr|A3pl
+Verb	Verb	Pos|Cond|Narr|A3sg
 Verb	Verb	Pos|Cond|Past|A2sg
 Verb	Verb	Pos|Cond|Past|A3sg
+Verb	Verb	Pos|Cond|Prog1|A1pl
+Verb	Verb	Pos|Cond|Prog1|A1sg
+Verb	Verb	Pos|Cond|Prog1|A2sg
+Verb	Verb	Pos|Cond|Prog1|A3sg
 Verb	Verb	Pos|Desr|A1pl
 Verb	Verb	Pos|Desr|A1sg
 Verb	Verb	Pos|Desr|A2pl
 Verb	Verb	Pos|Desr|A2sg
 Verb	Verb	Pos|Desr|A3pl
-Verb	Verb	Pos|Desr|Past|A3pl
 Verb	Verb	Pos|Desr|A3sg
 Verb	Verb	Pos|Desr|Past|A1sg
 Verb	Verb	Pos|Desr|Past|A2pl
 Verb	Verb	Pos|Desr|Past|A2sg
+Verb	Verb	Pos|Desr|Past|A3pl
 Verb	Verb	Pos|Desr|Past|A3sg
 Verb	Verb	Pos|Fut|A1pl
 Verb	Verb	Pos|Fut|A1sg
 Verb	Verb	Pos|Fut|A2pl
 Verb	Verb	Pos|Fut|A2sg
 Verb	Verb	Pos|Fut|A3pl
-Verb	Verb	Pos|Fut|Narr|A3pl
-Verb	Verb	Pos|Fut|Past|A3pl
 Verb	Verb	Pos|Fut|A3sg
 Verb	Verb	Pos|Fut|Cop|A3sg
+Verb	Verb	Pos|Fut|Narr|A3pl
 Verb	Verb	Pos|Fut|Narr|A3sg
 Verb	Verb	Pos|Fut|Past|A1pl
 Verb	Verb	Pos|Fut|Past|A1sg
 Verb	Verb	Pos|Fut|Past|A2sg
+Verb	Verb	Pos|Fut|Past|A3pl
 Verb	Verb	Pos|Fut|Past|A3sg
 Verb	Verb	Pos|Imp|A2pl
 Verb	Verb	Pos|Imp|A2sg
@@ -1518,20 +1640,18 @@ Verb	Verb	Pos|Imp|A3sg
 Verb	Verb	Pos|Narr
 Verb	Verb	Pos|Narr|A1pl
 Verb	Verb	Pos|Narr|A1sg
-Verb	Verb	Pos|Narr|Cop|A1sg
 Verb	Verb	Pos|Narr|A2pl
 Verb	Verb	Pos|Narr|A2sg
 Verb	Verb	Pos|Narr|A3pl
-Verb	Verb	Pos|Cond|Narr|A3pl
-Verb	Verb	Pos|Narr|Cop|A3pl
-Verb	Verb	Pos|Narr|Past|A3pl
 Verb	Verb	Pos|Narr|A3sg
-Verb	Verb	Pos|Cond|Narr|A3sg
+Verb	Verb	Pos|Narr|Cop|A1sg
+Verb	Verb	Pos|Narr|Cop|A3pl
 Verb	Verb	Pos|Narr|Cop|A3sg
 Verb	Verb	Pos|Narr|Past|A1pl
 Verb	Verb	Pos|Narr|Past|A1sg
 Verb	Verb	Pos|Narr|Past|A2pl
 Verb	Verb	Pos|Narr|Past|A2sg
+Verb	Verb	Pos|Narr|Past|A3pl
 Verb	Verb	Pos|Narr|Past|A3sg
 Verb	Verb	Pos|Neces|A1pl
 Verb	Verb	Pos|Neces|A1sg
@@ -1556,30 +1676,35 @@ Verb	Verb	Pos|Prog1|A1sg
 Verb	Verb	Pos|Prog1|A2pl
 Verb	Verb	Pos|Prog1|A2sg
 Verb	Verb	Pos|Prog1|A3pl
-Verb	Verb	Pos|Prog1|Narr|A3pl
-Verb	Verb	Pos|Prog1|Past|A3pl
 Verb	Verb	Pos|Prog1|A3sg
-Verb	Verb	Pos|Prog1|Cond|A1pl
-Verb	Verb	Pos|Prog1|Cond|A1sg
-Verb	Verb	Pos|Prog1|Cond|A2sg
-Verb	Verb	Pos|Prog1|Cond|A3sg
 Verb	Verb	Pos|Prog1|Cop|A3sg
 Verb	Verb	Pos|Prog1|Narr|A1sg
+Verb	Verb	Pos|Prog1|Narr|A3pl
 Verb	Verb	Pos|Prog1|Narr|A3sg
 Verb	Verb	Pos|Prog1|Past|A1pl
 Verb	Verb	Pos|Prog1|Past|A1sg
 Verb	Verb	Pos|Prog1|Past|A2pl
 Verb	Verb	Pos|Prog1|Past|A2sg
+Verb	Verb	Pos|Prog1|Past|A3pl
 Verb	Verb	Pos|Prog1|Past|A3sg
 Verb	Verb	Pos|Prog2|A3sg
 Verb	Verb	Pos|Prog2|Cop|A3pl
 Verb	Verb	Pos|Prog2|Cop|A3sg
 Verb	Verb	Pres|A1pl
 Verb	Verb	Pres|A1sg
+Verb	Verb	Pres|A2pl
 Verb	Verb	Pres|A2sg
 Verb	Verb	Pres|A3pl
 Verb	Verb	Pres|A3sg
+Verb	Verb	Pres|Cop|A2pl
+Verb	Verb	Pres|Cop|A3pl
 Verb	Verb	Pres|Cop|A3sg
+Verb	Verb	Prog1|A1sg
+Verb	Verb	Prog1|A2sg
+Verb	Verb	Prog1|A3pl
+Verb	Verb	Prog1|A3sg
+Verb	Verb	Prog1|Past|A1sg
+Verb	Verb	Prog1|Past|A3sg
 Verb	Verb	Recip
 Verb	Verb	Recip|Neg
 Verb	Verb	Recip|Pos
@@ -1597,16 +1722,14 @@ Verb	Verb	Stay
 Verb	Verb	Stay|Narr|A3sg
 Verb	Verb	Stay|Narr|Past|A1pl
 Verb	Verb	Stay|Narr|Past|A3sg
-Verb	Zero	_
-Verb	Zero	A3e
-Verb	Zero	Narr|A3pl
-Verb	Zero	Past|A3pl
+Verb	Verb	_
 Verb	Zero	A3sg
 Verb	Zero	Cond|A1sg
 Verb	Zero	Cond|A3sg
 Verb	Zero	Narr|A1pl
 Verb	Zero	Narr|A1sg
 Verb	Zero	Narr|A2sg
+Verb	Zero	Narr|A3pl
 Verb	Zero	Narr|A3sg
 Verb	Zero	Past|A1pl
 Verb	Zero	Past|A1sg
@@ -1618,12 +1741,12 @@ Verb	Zero	Pos|Imp|A2sg
 Verb	Zero	Pres|A1pl
 Verb	Zero	Pres|A1sg
 Verb	Zero	Pres|A2pl
-Verb	Zero	Pres|A2pl|Cop
 Verb	Zero	Pres|A2sg
 Verb	Zero	Pres|A3pl
-Verb	Zero	Pres|Cop|A3pl
+Verb	Zero	Pres|Cop|A2pl
 Verb	Zero	Pres|Cop|A3pl
 Verb	Zero	Pres|Cop|A3sg
+Verb	Zero	_
 end_of_list
     ;
     # Protect from editors that replace tabs by spaces.

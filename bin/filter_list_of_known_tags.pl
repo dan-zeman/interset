@@ -12,7 +12,7 @@ binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 use Lingua::Interset qw(get_driver_object);
 
-my $driver = get_driver_object('te::conll');
+my $driver = get_driver_object('tr::conll');
 my $action = 'other';
 my $list = $driver->list();
 my %map;
