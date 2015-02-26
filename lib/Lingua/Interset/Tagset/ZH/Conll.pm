@@ -196,6 +196,25 @@ sub _create_atoms
             # Ng Ng: 中 zhōng = middle, 時 shí = during, 後 hòu = after, 上 shàng = on, 前 qián = ago
             'Ng'  => ['pos' => 'adp', 'adpostype' => 'post'],
             # preposition (66 kinds, 66 different tags)
+            # P P01: 承, 似, 承蒙, 為, 深為 (like, thanks to, for) max 3 occ.
+            # P P02: 被, 受, 為, 深受, 備受 (for, by) max 588 occ.
+            # P P03: 為 wèi, 為了 wèile (for, in order to) max 354 occ.
+            # P P04: 給 gěi, 對 duì (to, for) max 132 occ.
+            # P P06: 由 yóu, 遭, 改由, 每逢 (from, by, instead of) max 492 occ.
+            # P P07: 把 bǎ, 將 jiāng (to) max 537 occ.
+            # P P08: 拿 ná, 拿著, 直至 (take, hold, until, up to) max 8 occ.
+            # P P09: 管, 尤以 () max 2 occ.
+            # P P10: 為, 作 (for, as) max 6 occ.
+            # P P11: 以 yǐ (with) max 990 occ.
+            # P P12: 自從 (since) max 23 occ.
+            # P P13: 等, 待, 逢, 每當, 趁 (wait, etc., whenever) max 19 occ.
+            # P P14: 有 yǒu (there is) max 11 occ.
+            # P P15: 離, 距, 距離, 臨, 去 (from, off, apart) max 21 occ.
+            # P P16: 當 dāng (when, as) max 150 occ.
+            # P P17: 打從, 打 dǎ () max 1 occ.
+            # P P18: 直到, 等到, 直至, 及至 (until) max 44 occ.
+            # P P19: 從 cóng (from) max 514 occ.
+            # P P20: 就 jiù (on) max 37 occ.
             'P'   => ['pos' => 'adp', 'adpostype' => 'prep'],
             # conjunction
             # C Caa: 、, 和 = and, 及 = and, 與 = versus, 或 = or
