@@ -55,7 +55,8 @@ sub _create_atoms
             'Nh' => ['pos' => 'noun', 'prontype' => 'prn'],
             ###!!! ???
             'Nv' => ['pos' => 'noun', 'other' => {'subpos' => 'Nv'}],
-            # adjective
+            # A A adjective
+            # Examples: 主要 = main, 一般 = general, 共同 = common, 最佳 = optimal, 唯一 = the only
             'A'  => ['pos' => 'adj'],
             # determiner
             # anaphoric determiner (this, that)
@@ -78,7 +79,24 @@ sub _create_atoms
             # preposition (66 kinds, 66 different tags)
             'P'   => ['pos' => 'adp', 'adpostype' => 'prep'],
             # conjunction
-            'C'   => ['pos' => 'conj'],
+            # C Caa: 、, 和 = and, 及 = and, 與 = versus, 或 = or
+            # C Caa[P1]: 從 = from, 又 = again, 既 = already, 由 = from, 或 = or
+            # C Caa[P2]: 又 = again, 到 = to, 至 = to, 或 = or, 也 = also
+            # C Cab: 等 = etc., 等等 = and so on, 之類 = the class, 什麼的 = something, 、
+            # C Cbaa: 因為 = because, 如果 = in case, 因 = because, 雖然 = though, 若 = if
+            # C Cbab: 的話 = if, 應該 = should, 而 = while, 能 = can/able, 並 = and
+            # C Cbba: 由於 = due to, 雖 = although, 連 = even though, 既然 = since, 就是 = that
+            # C Cbbb: 不但 = not only, 不僅 = not only, 一方面 = on the one hand, 首先 = first of all, 二 = two
+            # C Cbca: 而 = and, 但 = but, 因此 = as such, 所以 = and so, 但是 = but
+            # C Cbcb: 並 = and, 而且 = and, 且 = and, 並且 = and, 反而 = instead
+            'Caa'  => ['pos' => 'conj', 'conjtype' => 'coor'],
+            'Cab'  => ['pos' => 'conj', 'conjtype' => 'coor'],
+            'Cbaa' => ['pos' => 'conj', 'conjtype' => 'sub'],
+            'Cbab' => ['pos' => 'conj', 'conjtype' => 'sub'],
+            'Cbba' => ['pos' => 'conj', 'conjtype' => 'sub'],
+            'Cbbb' => ['pos' => 'conj', 'conjtype' => 'sub'],
+            'Cbca' => ['pos' => 'conj', 'conjtype' => 'coor'],
+            'Cbcb' => ['pos' => 'conj', 'conjtype' => 'coor'],
             # the "de" particle (two kinds)
             'DE'  => ['pos' => 'part'],
             # particle
@@ -95,7 +113,8 @@ sub _create_atoms
                        'adv'  => 'D',
                        'adp'  => { 'adpostype' => { 'prep' => 'P',
                                                     'post' => 'Ng' }},
-                       'conj' => 'C',
+                       'conj' => { 'conjtype' => { 'coor' => 'Caa',
+                                                   'sub'  => 'Cbaa' }},
                        'part' => 'T',
                        'int'  => 'I' }
         }
@@ -112,7 +131,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('pos', 'gender', 'agreement', 'possagreement', 'case', 'pccase', 'degree', 'adjvtype', 'tense', 'aspect', 'comod', 'mood', 'negativeness', 'voice', 'copula');
+    my @features = ();
     return \@features;
 }
 
@@ -147,14 +166,9 @@ sub decode
     # Three components: pos, subpos, features (always empty).
     # example: N\tNaa\t_
     my ($pos, $subpos, $features) = split(/\s+/, $tag);
-    # The underscore character is used if there are no features.
-    $features = '' if($features eq '_');
-    my @features = split(/\|/, $features);
-    $atoms->{pos}->decode_and_merge_hard("$pos $subpos", $fs);
-    foreach my $feature (@features)
-    {
-        $atoms->{feature}->decode_and_merge_hard($feature, $fs);
-    }
+    ###!!! We cannot currently decode the tag extensions in brackets, e.g. "[P1]" in "Caa[P1]".
+    $subpos =~ s/\[.*?\]//;
+    $atoms->{pos}->decode_and_merge_hard($subpos, $fs);
     return $fs;
 }
 
@@ -168,12 +182,9 @@ sub encode
     my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $atoms = $self->atoms();
-    my $possubpos = $atoms->{pos}->encode($fs);
-    my ($pos, $subpos) = split(/\s+/, $possubpos);
-    my $fpos = $possubpos;
-    my $feature_names = $self->get_feature_names($fpos);
-    my $value_only = 1;
-    my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names, $value_only);
+    my $subpos = $atoms->{pos}->encode($fs);
+    my $pos = substr($subpos, 0, 1);
+    my $tag = "$pos\t$subpos\t_";
     return $tag;
 }
 
@@ -182,6 +193,7 @@ sub encode
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
 # Tags were collected from the corpus, 294 distinct tags found.
+# Cleaned up erroneous instances (e.g. with "[P2}" instead of "[P2]").
 #------------------------------------------------------------------------------
 sub list
 {
@@ -190,10 +202,7 @@ sub list
 A\tA\t_
 C\tCaa\t_
 C\tCaa[P1]\t_
-C\tCaa[P1}\t_
-C\tCaa[+P2]\t_
 C\tCaa[P2]\t_
-C\tCaa[P2}\t_
 C\tCab\t_
 C\tCbaa\t_
 C\tCbab\t_
@@ -318,12 +327,9 @@ P\tP28\t_
 P\tP29\t_
 P\tP30\t_
 P\tP31\t_
-P\tP31[+P1]\t_
 P\tP31[P1]\t_
-P\tP31[+P2]\t_
 P\tP31[P2]\t_
 P\tP31[+part]\t_
-P\tP31[part]\t_
 P\tP32\t_
 P\tP32[+part]\t_
 P\tP35\t_
@@ -435,7 +441,6 @@ V\tVG2\t_
 V\tVG2[+DE]\t_
 V\tVG2[+NEG]\t_
 V\tVH11\t_
-V\tVH11[+asp]\t_
 V\tVH11[+ASP]\t_
 V\tVH11[+DE]\t_
 V\tVH11[+NEG]\t_
