@@ -174,12 +174,12 @@ sub _create_atoms
             # V VA2:  動, 聚集, 上演, 轉, 集合
             # V VA3:  下雨, 日出, 退潮, 出太陽, 地震
             # V VA4:  笑, 出發, 讀書, 工作, 旅行
-            'VA11' => ['pos' => 'verb', 'other' => {'subpos' => 'A11'}],
-            'VA12' => ['pos' => 'verb', 'other' => {'subpos' => 'A12'}],
-            'VA13' => ['pos' => 'verb', 'other' => {'subpos' => 'A13'}],
-            'VA2'  => ['pos' => 'verb', 'other' => {'subpos' => 'A2'}],
-            'VA3'  => ['pos' => 'verb', 'other' => {'subpos' => 'A3'}],
-            'VA4'  => ['pos' => 'verb', 'other' => {'subpos' => 'A4'}],
+            'VA11' => ['pos' => 'verb', 'subcat' => 'intr', 'other' => {'subpos' => 'A11'}],
+            'VA12' => ['pos' => 'verb', 'subcat' => 'intr', 'other' => {'subpos' => 'A12'}],
+            'VA13' => ['pos' => 'verb', 'subcat' => 'intr', 'other' => {'subpos' => 'A13'}],
+            'VA2'  => ['pos' => 'verb', 'subcat' => 'intr', 'other' => {'subpos' => 'A2'}],
+            'VA3'  => ['pos' => 'verb', 'subcat' => 'intr', 'other' => {'subpos' => 'A3'}],
+            'VA4'  => ['pos' => 'verb', 'subcat' => 'intr', 'other' => {'subpos' => 'A4'}],
             # VB = active pseudo-transitive verb
             # V VB11: 打電話, 相較, 拍照, 再見, 開玩笑
             # V VB12: 提前, 完工, 相比, 加油, 說出來
@@ -193,28 +193,28 @@ sub _create_atoms
             # V VC31: 做, 吃, 喝, 作, 接受
             # V VC32: 帶, 進, 攜帶, 載, 投
             # V VC33: 寫, 成立, 建, 放, 設
-            'VC1'  => ['pos' => 'verb', 'other' => {'subpos' => 'C1'}],
-            'VC2'  => ['pos' => 'verb', 'other' => {'subpos' => 'C2'}],
-            'VC31' => ['pos' => 'verb', 'other' => {'subpos' => 'C31'}],
-            'VC32' => ['pos' => 'verb', 'other' => {'subpos' => 'C32'}],
-            'VC33' => ['pos' => 'verb', 'other' => {'subpos' => 'C33'}],
+            'VC1'  => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'C1'}],
+            'VC2'  => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'C2'}],
+            'VC31' => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'C31'}],
+            'VC32' => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'C32'}],
+            'VC33' => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'C33'}],
             # VD = ditransitive verb
             # V VD1:  提供, 給, 賣, 送, 送給
             # V VD2:  搶, 租, 借, 索, 贏
-            'VD1'  => ['pos' => 'verb', 'other' => {'subpos' => 'D1'}],
-            'VD2'  => ['pos' => 'verb', 'other' => {'subpos' => 'D2'}],
+            'VD1'  => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'D1'}],
+            'VD2'  => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'D2'}],
             # VE = active transitive verb with sentential object
             # V VE11: 問, 詢問, 請問, 質詢, 質問
             # V VE12: 告訴, 回答, 安排, 答應, 反映
             # V VE2:  說, 表示, 想, 指出, 認為
-            'VE11' => ['pos' => 'verb', 'other' => {'subpos' => 'E11'}],
-            'VE12' => ['pos' => 'verb', 'other' => {'subpos' => 'E12'}],
-            'VE2'  => ['pos' => 'verb', 'other' => {'subpos' => 'E2'}],
+            'VE11' => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'E11'}],
+            'VE12' => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'E12'}],
+            'VE2'  => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'E2'}],
             # VF = active transitive verb with VP object
             # V VF1:  繼續, 準備, 拒絕, 申請, 停止
             # V VF2:  請, 要求, 供, 叫, 派
-            'VF1'  => ['pos' => 'verb', 'other' => {'subpos' => 'F1'}],
-            'VF2'  => ['pos' => 'verb', 'other' => {'subpos' => 'F2'}],
+            'VF1'  => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'F1'}],
+            'VF2'  => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'F2'}],
             # VG = classificatory verb
             # V VG1:  為, 作為, 叫, 稱, 視為
             # V VG2:  為, 成為, 像, 成, 做
@@ -231,15 +231,15 @@ sub _create_atoms
             # V VH17: 死, 敗, 掉, 餓, 遺失
             # V VH21: 快樂, 興奮, 失望, 愉快, 緊張
             # V VH22: 滿足, 感動, 可憐, 驚, 委屈
-            'VH11' => ['pos' => 'verb', 'other' => {'subpos' => 'H11'}],
-            'VH12' => ['pos' => 'verb', 'other' => {'subpos' => 'H12'}],
-            'VH13' => ['pos' => 'verb', 'other' => {'subpos' => 'H13'}],
-            'VH14' => ['pos' => 'verb', 'other' => {'subpos' => 'H14'}],
-            'VH15' => ['pos' => 'verb', 'other' => {'subpos' => 'H15'}],
-            'VH16' => ['pos' => 'verb', 'other' => {'subpos' => 'H16'}],
-            'VH17' => ['pos' => 'verb', 'other' => {'subpos' => 'H17'}],
-            'VH21' => ['pos' => 'verb', 'other' => {'subpos' => 'H21'}],
-            'VH22' => ['pos' => 'verb', 'other' => {'subpos' => 'H22'}],
+            'VH11' => ['pos' => 'verb', 'subcat' => 'intr', 'other' => {'subpos' => 'H11'}],
+            'VH12' => ['pos' => 'verb', 'subcat' => 'intr', 'other' => {'subpos' => 'H12'}],
+            'VH13' => ['pos' => 'verb', 'subcat' => 'intr', 'other' => {'subpos' => 'H13'}],
+            'VH14' => ['pos' => 'verb', 'subcat' => 'intr', 'other' => {'subpos' => 'H14'}],
+            'VH15' => ['pos' => 'verb', 'subcat' => 'intr', 'other' => {'subpos' => 'H15'}],
+            'VH16' => ['pos' => 'verb', 'subcat' => 'intr', 'other' => {'subpos' => 'H16'}],
+            'VH17' => ['pos' => 'verb', 'subcat' => 'intr', 'other' => {'subpos' => 'H17'}],
+            'VH21' => ['pos' => 'verb', 'subcat' => 'intr', 'other' => {'subpos' => 'H21'}],
+            'VH22' => ['pos' => 'verb', 'subcat' => 'intr', 'other' => {'subpos' => 'H22'}],
             # VI = stative pseudo-transitive verb
             # V VI1:  陌生, 感興趣, 過敏, 沈醉, 恭敬
             # V VI2:  為主, 聞名, 沒辦法, 著稱, 留念
@@ -251,23 +251,23 @@ sub _create_atoms
             # V VJ1:  發生, 超過, 維持, 歡迎, 靠
             # V VJ2:  欣賞, 享受, 尊重, 謝謝, 熟悉
             # V VJ3:  沒有, 無, 具, 獲得, 擁有
-            'VJ1'  => ['pos' => 'verb', 'other' => {'subpos' => 'J1'}],
-            'VJ2'  => ['pos' => 'verb', 'other' => {'subpos' => 'J2'}],
-            'VJ3'  => ['pos' => 'verb', 'other' => {'subpos' => 'J3'}],
+            'VJ1'  => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'J1'}],
+            'VJ2'  => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'J2'}],
+            'VJ3'  => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'J3'}],
             # VK = stative transitive verb with sentential object
             # V VK1:  知道, 希望, 覺得, 喜歡, 怕
             # V VK2:  包括, 造成, 需要, 顯示, 所謂
-            'VK1'  => ['pos' => 'verb', 'other' => {'subpos' => 'K1'}],
-            'VK2'  => ['pos' => 'verb', 'other' => {'subpos' => 'K2'}],
+            'VK1'  => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'K1'}],
+            'VK2'  => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'K2'}],
             # VL = stative transitive verb with VP object
             # V VL1:  愛, 敢, 肯, 喜愛, 不禁
             # V VL2:  開始, 負責, 持續, 用來, 不宜
             # V VL3:  輪到, 輪, 該, 輪由
             # V VL4:  讓, 使, 令, 使得, 導致
-            'VL1'  => ['pos' => 'verb', 'other' => {'subpos' => 'L1'}],
-            'VL2'  => ['pos' => 'verb', 'other' => {'subpos' => 'L2'}],
-            'VL3'  => ['pos' => 'verb', 'other' => {'subpos' => 'L3'}],
-            'VL4'  => ['pos' => 'verb', 'other' => {'subpos' => 'L4'}],
+            'VL1'  => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'L1'}],
+            'VL2'  => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'L2'}],
+            'VL3'  => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'L3'}],
+            'VL4'  => ['pos' => 'verb', 'subcat' => 'tran', 'other' => {'subpos' => 'L4'}],
             # adverb
             # Da = possibly preceding a noun
             # D Daa: 只 = only, 約 = approximately, 才 = only, 共 = altogether, 僅 = only
