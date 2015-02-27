@@ -215,6 +215,48 @@ sub _create_atoms
             # P P18: 直到, 等到, 直至, 及至 (until) max 44 occ.
             # P P19: 從 cóng (from) max 514 occ.
             # P P20: 就 jiù (on) max 37 occ.
+            # P P21: 在 zài (in, at) max 3616 occ.
+            # P P22: 繼 jì (following) max 10 occ.
+            # P P23: 於 yú (to, in, on) max 569 occ.
+            # P P24: 沿著 yánzhe, 沿, 跟, 延著 (along) max 29 occ.
+            # P P25: 順著 shùnzhe, 循, 循著, 順 (following, along) max 5 occ.
+            # P P26: 經 jīng, 經過, 經由, 業經, 一經 (after) max 66 occ.
+            # P P27: 靠 kào, 靠著 (by, near, against) max 24 occ.
+            # P P28: 朝 cháo, 假, 朝著 (towards) max 8 occ.
+            # P P29: 朝 cháo, 朝著 (towards) max 2 occ.
+            # P P30: 往 wǎng (to, towards) max 71 occ.
+            # P P31: 對 duì, 針對, 對著, 針對了 (to, against) max 784 occ.
+            # P P32: 對於 duìyú (for, about, regarding) max 110 occ.
+            # P P35: 與 yǔ, 和 hé (versus, and, with) max 424 occ.
+            # P P36: 代, 跟著 (on behalf of, following, in accord with) max 3 occ.
+            # P P37: 替 tì, 幫 bāng (for, on behalf of, with the help of) max 62 occ.
+            # P P38: 藉 jí, 藉著, 憑, 藉由, 憑藉 (by means of, through, based on, with) max 20 occ.
+            # P P39: 用 yòng, 透過 (using, through) max 191 occ.
+            # P P40: 基於 (because of, due to) max 15 occ.
+            # P P41: 至於 zhìyú, 有關, 關於 (touching, as for, with respect to) max 95 occ.
+            # P P42: 依 yī, 按, 照, 依著, 照著 (according to) max 75 occ.
+            # P P43: 據 jù, 根據, 依據, 依照, 按照 (according to) max 97 occ.
+            # P P44: 依循, 比照, 仿照 (following, in contrast to, cf.) max 2 occ.
+            # P P45: 逐 (individually, one by one) max 2 occ.
+            # P P46: 視 shì, 每隔 (depending on) max 26 occ.
+            # P P47: 如 rú (according to) max 164 occ.
+            # P P48: 有如 yǒurú, 一如, 如同, 似, 猶如 (like) max 7 occ.
+            # P P49: 比 bǐ, 較, 比起, 相對於 (comparison particle) max 140 occ.
+            # P P50: 除了 chúle, 除 chú (apart from, except) max 129 occ.
+            # P P51: 連同 (together with, along of) max 1 occ.
+            # P P52: 因 yīn, 因著 yīnzhe, 因為 yīnwèi (because of) max 7 occ.
+            # P P53: 途經, 隨著 (via) max 2 occ.
+            # P P54: 例如 lìrú, 譬如, 比如, 諸如, 誠如 (for example, such as) max 61 occ.
+            # P P55: 像 xiàng, 好像 (like) max 169 occ.
+            # P P58: 隨著 suízhe, 隨 (along with, along of) max 52 occ.
+            # P P59: 自 zì (from, since) max 129 occ.
+            # P P60: 遭 zāo, 慘遭, 險遭, 遭到, 遭受 (missing, suffering from) max 47 occ.
+            # P P61: 到 dào, 至, 迄, 到了, 去 (to, up to, until) max 334 occ.
+            # P P62: 向 xiàng, 向著 xiàngzhe (to, toward) max 355 occ.
+            # P P63: 跟 gēn, 跟著 gēnzhe (with) max 141 occ.
+            # P P64: 隨同, 偕 (accompanying) max 4 occ.
+            # P P65: 隔 gé (at a distance from, after an interval of) max 3 occ.
+            # P P66: 為 wèi (for) max 9 occ.
             'P'   => ['pos' => 'adp', 'adpostype' => 'prep'],
             # conjunction
             # C Caa: 、, 和 = and, 及 = and, 與 = versus, 或 = or
