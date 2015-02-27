@@ -158,7 +158,100 @@ sub _create_atoms
             # Ne Neu: 一 yī = one, 二 èr = two, 兩 liǎng = two, 三 sān = three, 四 sì = four
             'Neu' => ['pos' => 'num', 'numtype' => 'card'],
             # verb
-            'V'   => ['pos' => 'verb'],
+            # V V_11: 是 shì = be, 乃是, 像是, 可說是, 有
+            # V V_12: 是 shì = be
+            # V V_2:  有 yǒu = have/there is, 有沒有, 是, 包括有
+            'V_11' => ['pos' => 'verb'],
+            'V_12' => ['pos' => 'verb', 'other' => {'subpos' => '_12'}],
+            'V_2'  => ['pos' => 'verb', 'other' => {'subpos' => '_2'}],
+            # V VA11: 來, 走, 飛, 回來, 出來
+            # V VA12: 站, 坐, 生活, 存在, 消失
+            # V VA13: 回家, 出國, 爬山, 回國, 上場
+            # V VA2:  動, 聚集, 上演, 轉, 集合
+            # V VA3:  下雨, 日出, 退潮, 出太陽, 地震
+            # V VA4:  笑, 出發, 讀書, 工作, 旅行
+            'VA11' => ['pos' => 'verb', 'other' => {'subpos' => 'A11'}],
+            'VA12' => ['pos' => 'verb', 'other' => {'subpos' => 'A12'}],
+            'VA13' => ['pos' => 'verb', 'other' => {'subpos' => 'A13'}],
+            'VA2'  => ['pos' => 'verb', 'other' => {'subpos' => 'A2'}],
+            'VA3'  => ['pos' => 'verb', 'other' => {'subpos' => 'A3'}],
+            'VA4'  => ['pos' => 'verb', 'other' => {'subpos' => 'A4'}],
+            # V VB11: 打電話, 相較, 拍照, 再見, 開玩笑
+            # V VB12: 提前, 完工, 相比, 加油, 說出來
+            # V VB2:  拿出來, 撕票, 送醫, 挖出來, 吞下去
+            'VB11' => ['pos' => 'verb', 'other' => {'subpos' => 'B11'}],
+            'VB12' => ['pos' => 'verb', 'other' => {'subpos' => 'B12'}],
+            'VB2'  => ['pos' => 'verb', 'other' => {'subpos' => 'B2'}],
+            # V VC1:  在, 到, 去, 過, 進入
+            # V VC2:  看, 參加, 進行, 玩, 打
+            # V VC31: 做, 吃, 喝, 作, 接受
+            # V VC32: 帶, 進, 攜帶, 載, 投
+            # V VC33: 寫, 成立, 建, 放, 設
+            'VC1'  => ['pos' => 'verb', 'other' => {'subpos' => 'C1'}],
+            'VC2'  => ['pos' => 'verb', 'other' => {'subpos' => 'C2'}],
+            'VC31' => ['pos' => 'verb', 'other' => {'subpos' => 'C31'}],
+            'VC32' => ['pos' => 'verb', 'other' => {'subpos' => 'C32'}],
+            'VC33' => ['pos' => 'verb', 'other' => {'subpos' => 'C33'}],
+            # V VD1:  提供, 給, 賣, 送, 送給
+            # V VD2:  搶, 租, 借, 索, 贏
+            'VD1'  => ['pos' => 'verb', 'other' => {'subpos' => 'D1'}],
+            'VD2'  => ['pos' => 'verb', 'other' => {'subpos' => 'D2'}],
+            # V VE11: 問, 詢問, 請問, 質詢, 質問
+            # V VE12: 告訴, 回答, 安排, 答應, 反映
+            # V VE2:  說, 表示, 想, 指出, 認為
+            'VE11' => ['pos' => 'verb', 'other' => {'subpos' => 'E11'}],
+            'VE12' => ['pos' => 'verb', 'other' => {'subpos' => 'E12'}],
+            'VE2'  => ['pos' => 'verb', 'other' => {'subpos' => 'E2'}],
+            # V VF1:  繼續, 準備, 拒絕, 申請, 停止
+            # V VF2:  請, 要求, 供, 叫, 派
+            'VF1'  => ['pos' => 'verb', 'other' => {'subpos' => 'F1'}],
+            'VF2'  => ['pos' => 'verb', 'other' => {'subpos' => 'F2'}],
+            # V VG1:  為, 作為, 叫, 稱, 視為
+            # V VG2:  為, 成為, 像, 成, 做
+            'VG1'  => ['pos' => 'verb', 'other' => {'subpos' => 'G1'}],
+            'VG2'  => ['pos' => 'verb', 'other' => {'subpos' => 'G2'}],
+            # V VH11: 好, 新, 這樣, 一樣, 不同
+            # V VH12: 長, 深, 成長, 重, 漲
+            # V VH13: 大, 小, 高, 多, 快
+            # V VH14: 出現, 流行, 生長, 生存, 林立
+            # V VH15: 值得, 容易, 可惜, 適合, 夠
+            # V VH16: 增加, 結束, 統一, 產生, 豐富
+            # V VH17: 死, 敗, 掉, 餓, 遺失
+            # V VH21: 快樂, 興奮, 失望, 愉快, 緊張
+            # V VH22: 滿足, 感動, 可憐, 驚, 委屈
+            'VH11' => ['pos' => 'verb', 'other' => {'subpos' => 'H11'}],
+            'VH12' => ['pos' => 'verb', 'other' => {'subpos' => 'H12'}],
+            'VH13' => ['pos' => 'verb', 'other' => {'subpos' => 'H13'}],
+            'VH14' => ['pos' => 'verb', 'other' => {'subpos' => 'H14'}],
+            'VH15' => ['pos' => 'verb', 'other' => {'subpos' => 'H15'}],
+            'VH16' => ['pos' => 'verb', 'other' => {'subpos' => 'H16'}],
+            'VH17' => ['pos' => 'verb', 'other' => {'subpos' => 'H17'}],
+            'VH21' => ['pos' => 'verb', 'other' => {'subpos' => 'H21'}],
+            'VH22' => ['pos' => 'verb', 'other' => {'subpos' => 'H22'}],
+            # V VI1:  陌生, 感興趣, 過敏, 沈醉, 恭敬
+            # V VI2:  為主, 聞名, 沒辦法, 著稱, 留念
+            # V VI3:  受雇, 取材, 來自, 薰陶, 取自
+            'VI1'  => ['pos' => 'verb', 'other' => {'subpos' => 'I1'}],
+            'VI2'  => ['pos' => 'verb', 'other' => {'subpos' => 'I2'}],
+            'VI3'  => ['pos' => 'verb', 'other' => {'subpos' => 'I3'}],
+            # V VJ1:  發生, 超過, 維持, 歡迎, 靠
+            # V VJ2:  欣賞, 享受, 尊重, 謝謝, 熟悉
+            # V VJ3:  沒有, 無, 具, 獲得, 擁有
+            'VJ1'  => ['pos' => 'verb', 'other' => {'subpos' => 'J1'}],
+            'VJ2'  => ['pos' => 'verb', 'other' => {'subpos' => 'J2'}],
+            'VJ3'  => ['pos' => 'verb', 'other' => {'subpos' => 'J3'}],
+            # V VK1:  知道, 希望, 覺得, 喜歡, 怕
+            # V VK2:  包括, 造成, 需要, 顯示, 所謂
+            'VK1'  => ['pos' => 'verb', 'other' => {'subpos' => 'K1'}],
+            'VK2'  => ['pos' => 'verb', 'other' => {'subpos' => 'K2'}],
+            # V VL1:  愛, 敢, 肯, 喜愛, 不禁
+            # V VL2:  開始, 負責, 持續, 用來, 不宜
+            # V VL3:  輪到, 輪, 該, 輪由
+            # V VL4:  讓, 使, 令, 使得, 導致
+            'VL1'  => ['pos' => 'verb', 'other' => {'subpos' => 'L1'}],
+            'VL2'  => ['pos' => 'verb', 'other' => {'subpos' => 'L2'}],
+            'VL3'  => ['pos' => 'verb', 'other' => {'subpos' => 'L3'}],
+            'VL4'  => ['pos' => 'verb', 'other' => {'subpos' => 'L4'}],
             # adverb
             # D Daa: 只 = only, 約 = approximately, 才 = only, 共 = altogether, 僅 = only
             # D Dab: 都 = all, 所, 均 = all, 皆 = all, 完全 = entirely
@@ -413,7 +506,53 @@ sub _create_atoms
                                                    '@'   => { 'nountype' => { 'class' => 'DM',
                                                                               '@'     => 'A' }}}},
                        'num'  => 'Neu',
-                       'verb' => 'V',
+                       'verb' => { 'other/subpos' => { 'A11' => 'VA11',
+                                                       'A12' => 'VA12',
+                                                       'A13' => 'VA13',
+                                                       'A2'  => 'VA2',
+                                                       'A3'  => 'VA3',
+                                                       'A4'  => 'VA4',
+                                                       'B11' => 'VB11',
+                                                       'B12' => 'VB12',
+                                                       'B2'  => 'VB2',
+                                                       'C1'  => 'VC1',
+                                                       'C2'  => 'VC2',
+                                                       'C31' => 'VC31',
+                                                       'C32' => 'VC32',
+                                                       'C33' => 'VC33',
+                                                       'D1'  => 'VD1',
+                                                       'D2'  => 'VD2',
+                                                       'E11' => 'VE11',
+                                                       'E12' => 'VE12',
+                                                       'E2'  => 'VE2',
+                                                       'F1'  => 'VF1',
+                                                       'F2'  => 'VF2',
+                                                       'G1'  => 'VG1',
+                                                       'G2'  => 'VG2',
+                                                       'H11' => 'VH11',
+                                                       'H12' => 'VH12',
+                                                       'H13' => 'VH13',
+                                                       'H14' => 'VH14',
+                                                       'H15' => 'VH15',
+                                                       'H16' => 'VH16',
+                                                       'H17' => 'VH17',
+                                                       'H21' => 'VH21',
+                                                       'H22' => 'VH22',
+                                                       'I1'  => 'VI1',
+                                                       'I2'  => 'VI2',
+                                                       'I3'  => 'VI3',
+                                                       'J1'  => 'VJ1',
+                                                       'J2'  => 'VJ2',
+                                                       'J3'  => 'VJ3',
+                                                       'K1'  => 'VK1',
+                                                       'K2'  => 'VK2',
+                                                       'L1'  => 'VL1',
+                                                       'L2'  => 'VL2',
+                                                       'L3'  => 'VL3',
+                                                       'L4'  => 'VL4',
+                                                       '_12' => 'V_12',
+                                                       '_2'  => 'V_2',
+                                                       '@'   => 'V_11' }},
                        'adv'  => { 'prontype' => { 'int' => 'Dj',
                                                    '@'   => { 'negativeness' => { 'neg' => 'Dc',
                                                                                   '@'   => { 'other/subpos' => { 'ab'  => 'Dab',
@@ -600,6 +739,7 @@ sub encode
 # Returns reference to list of known tags.
 # Tags were collected from the corpus, 294 distinct tags found.
 # Cleaned up erroneous instances (e.g. with "[P2}" instead of "[P2]").
+# 283 tags survived.
 #------------------------------------------------------------------------------
 sub list
 {
@@ -780,7 +920,6 @@ T\tTd\t_
 V\tV_11\t_
 V\tV_12\t_
 V\tV_2\t_
-V\tVA\t_
 V\tVA11\t_
 V\tVA11[+ASP]\t_
 V\tVA11[+NEG]\t_
@@ -889,7 +1028,6 @@ V\tVL1\t_
 V\tVL2\t_
 V\tVL3\t_
 V\tVL4\t_
-V\tVP\t_
 end_of_list
     ;
     # Protect from editors that replace tabs by spaces.
