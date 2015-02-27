@@ -1,5 +1,6 @@
 # ABSTRACT: Driver for the Chinese tagset of the CoNLL 2006 & 2007 Shared Tasks (derived from the Academia Sinica Treebank).
-# Documentation in Huang, Chen, Lin: Corpus on Web: Introducing the First Tagged and Balanced Chinese Corpus.
+# Documentation in Chu-Ren Huang, Keh-Jiann Chen, Shin Lin (1997): Corpus on Web: Introducing the First Tagged and Balanced Chinese Corpus.
+# See also here: http://ckip.iis.sinica.edu.tw/CKIP/engversion/20corpus.htm
 # Copyright © 2007, 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::ZH::Conll;
@@ -63,6 +64,7 @@ sub _create_atoms
             # N Nca: 台灣 = Taiwan, 中國 = China, 美國 = USA, 日本 = Japan, 蘇聯 = Soviet Union
             # N Ncb: 公司 = company, 世界 = world, 家 = home, 國 = country, 公園 = park
             # N Ncc: 國內 = domestic, 國際 = international, 民間 = folk, 國外 = foreign, 眼前 = present
+            # Ncd = localizer
             # N Ncda: 上 shàng = on, 裡 lǐ = in, 中 zhōng = in, 內 nèi = within, 邊 biān = edge, border
             # N Ncdb: 這裡 zhèlǐ = here, 那裡 nàlǐ = there, 西方 xīfāng = west, 哪裡 nǎlǐ = where, 內部 nèibù = interior
             # N Nce: 當地 = local, 兩岸 = both sides, 全球 = global, 外國 = foreign, 本土 = local
@@ -139,7 +141,7 @@ sub _create_atoms
             'Nv2' => ['pos' => 'noun', 'verbform' => 'ger', 'other' => {'subpos' => 'v2'}],
             'Nv3' => ['pos' => 'noun', 'verbform' => 'ger', 'other' => {'subpos' => 'v3'}],
             'Nv4' => ['pos' => 'noun', 'verbform' => 'ger', 'other' => {'subpos' => 'v4'}],
-            # A A adjective
+            # A A non-predicative adjective
             # Examples: 主要 = main, 一般 = general, 共同 = common, 最佳 = optimal, 唯一 = the only
             'A'    => ['pos' => 'adj'],
             # determiner
@@ -148,6 +150,7 @@ sub _create_atoms
             'Nep'  => ['pos' => 'adj', 'prontype' => 'dem'],
             # classifying determiner (much, half)
             # Ne Neqa: 全 quán = all, 許多 xǔduō = a lot of, 這些 zhèxiē = these, 一些 yīxiē = some, 其他 qítā = other
+            # Neqb = postposed classifier determiner
             # Ne Neqb: 多 duō = many, 以上 = more/above, 左右 zuǒyòu = about/approximately, 許 xǔ = perhaps, 上下 shàngxià = up and down
             'Neqa' => ['pos' => 'adj', 'prontype' => 'prn'],
             'Neqb' => ['pos' => 'adj', 'prontype' => 'prn', 'other' => {'subpos' => 'qb'}],
@@ -161,9 +164,10 @@ sub _create_atoms
             # V V_11: 是 shì = be, 乃是, 像是, 可說是, 有
             # V V_12: 是 shì = be
             # V V_2:  有 yǒu = have/there is, 有沒有, 是, 包括有
-            'V_11' => ['pos' => 'verb'],
+            'V_11' => ['pos' => 'verb', 'other' => {'subpos' => '_11'}],
             'V_12' => ['pos' => 'verb', 'other' => {'subpos' => '_12'}],
             'V_2'  => ['pos' => 'verb', 'other' => {'subpos' => '_2'}],
+            # VA = active intransitive verb
             # V VA11: 來, 走, 飛, 回來, 出來
             # V VA12: 站, 坐, 生活, 存在, 消失
             # V VA13: 回家, 出國, 爬山, 回國, 上場
@@ -176,12 +180,14 @@ sub _create_atoms
             'VA2'  => ['pos' => 'verb', 'other' => {'subpos' => 'A2'}],
             'VA3'  => ['pos' => 'verb', 'other' => {'subpos' => 'A3'}],
             'VA4'  => ['pos' => 'verb', 'other' => {'subpos' => 'A4'}],
+            # VB = active pseudo-transitive verb
             # V VB11: 打電話, 相較, 拍照, 再見, 開玩笑
             # V VB12: 提前, 完工, 相比, 加油, 說出來
             # V VB2:  拿出來, 撕票, 送醫, 挖出來, 吞下去
-            'VB11' => ['pos' => 'verb', 'other' => {'subpos' => 'B11'}],
+            'VB11' => ['pos' => 'verb'], # default because occurs also with +SPV, +NEG, +ASP, +DE
             'VB12' => ['pos' => 'verb', 'other' => {'subpos' => 'B12'}],
             'VB2'  => ['pos' => 'verb', 'other' => {'subpos' => 'B2'}],
+            # VC = active transitive verb
             # V VC1:  在, 到, 去, 過, 進入
             # V VC2:  看, 參加, 進行, 玩, 打
             # V VC31: 做, 吃, 喝, 作, 接受
@@ -192,24 +198,30 @@ sub _create_atoms
             'VC31' => ['pos' => 'verb', 'other' => {'subpos' => 'C31'}],
             'VC32' => ['pos' => 'verb', 'other' => {'subpos' => 'C32'}],
             'VC33' => ['pos' => 'verb', 'other' => {'subpos' => 'C33'}],
+            # VD = ditransitive verb
             # V VD1:  提供, 給, 賣, 送, 送給
             # V VD2:  搶, 租, 借, 索, 贏
             'VD1'  => ['pos' => 'verb', 'other' => {'subpos' => 'D1'}],
             'VD2'  => ['pos' => 'verb', 'other' => {'subpos' => 'D2'}],
+            # VE = active transitive verb with sentential object
             # V VE11: 問, 詢問, 請問, 質詢, 質問
             # V VE12: 告訴, 回答, 安排, 答應, 反映
             # V VE2:  說, 表示, 想, 指出, 認為
             'VE11' => ['pos' => 'verb', 'other' => {'subpos' => 'E11'}],
             'VE12' => ['pos' => 'verb', 'other' => {'subpos' => 'E12'}],
             'VE2'  => ['pos' => 'verb', 'other' => {'subpos' => 'E2'}],
+            # VF = active transitive verb with VP object
             # V VF1:  繼續, 準備, 拒絕, 申請, 停止
             # V VF2:  請, 要求, 供, 叫, 派
             'VF1'  => ['pos' => 'verb', 'other' => {'subpos' => 'F1'}],
             'VF2'  => ['pos' => 'verb', 'other' => {'subpos' => 'F2'}],
+            # VG = classificatory verb
             # V VG1:  為, 作為, 叫, 稱, 視為
             # V VG2:  為, 成為, 像, 成, 做
             'VG1'  => ['pos' => 'verb', 'other' => {'subpos' => 'G1'}],
             'VG2'  => ['pos' => 'verb', 'other' => {'subpos' => 'G2'}],
+            # VH = stative intransitive verb
+            # VHC = stative causative verb
             # V VH11: 好, 新, 這樣, 一樣, 不同
             # V VH12: 長, 深, 成長, 重, 漲
             # V VH13: 大, 小, 高, 多, 快
@@ -228,22 +240,26 @@ sub _create_atoms
             'VH17' => ['pos' => 'verb', 'other' => {'subpos' => 'H17'}],
             'VH21' => ['pos' => 'verb', 'other' => {'subpos' => 'H21'}],
             'VH22' => ['pos' => 'verb', 'other' => {'subpos' => 'H22'}],
+            # VI = stative pseudo-transitive verb
             # V VI1:  陌生, 感興趣, 過敏, 沈醉, 恭敬
             # V VI2:  為主, 聞名, 沒辦法, 著稱, 留念
             # V VI3:  受雇, 取材, 來自, 薰陶, 取自
             'VI1'  => ['pos' => 'verb', 'other' => {'subpos' => 'I1'}],
             'VI2'  => ['pos' => 'verb', 'other' => {'subpos' => 'I2'}],
             'VI3'  => ['pos' => 'verb', 'other' => {'subpos' => 'I3'}],
+            # VJ = stative transitive verb
             # V VJ1:  發生, 超過, 維持, 歡迎, 靠
             # V VJ2:  欣賞, 享受, 尊重, 謝謝, 熟悉
             # V VJ3:  沒有, 無, 具, 獲得, 擁有
             'VJ1'  => ['pos' => 'verb', 'other' => {'subpos' => 'J1'}],
             'VJ2'  => ['pos' => 'verb', 'other' => {'subpos' => 'J2'}],
             'VJ3'  => ['pos' => 'verb', 'other' => {'subpos' => 'J3'}],
+            # VK = stative transitive verb with sentential object
             # V VK1:  知道, 希望, 覺得, 喜歡, 怕
             # V VK2:  包括, 造成, 需要, 顯示, 所謂
             'VK1'  => ['pos' => 'verb', 'other' => {'subpos' => 'K1'}],
             'VK2'  => ['pos' => 'verb', 'other' => {'subpos' => 'K2'}],
+            # VL = stative transitive verb with VP object
             # V VL1:  愛, 敢, 肯, 喜愛, 不禁
             # V VL2:  開始, 負責, 持續, 用來, 不宜
             # V VL3:  輪到, 輪, 該, 輪由
@@ -253,6 +269,7 @@ sub _create_atoms
             'VL3'  => ['pos' => 'verb', 'other' => {'subpos' => 'L3'}],
             'VL4'  => ['pos' => 'verb', 'other' => {'subpos' => 'L4'}],
             # adverb
+            # Da = possibly preceding a noun
             # D Daa: 只 = only, 約 = approximately, 才 = only, 共 = altogether, 僅 = only
             # D Dab: 都 = all, 所, 均 = all, 皆 = all, 完全 = entirely
             # D Dbaa: 是 = is, 會 = can/will, 可能 = maybe, 不會 = will not, 一定 = for sure
@@ -261,11 +278,15 @@ sub _create_atoms
             # D Dbc: 看起來 = looks, 看來 = seems, 說起來 = speaks, 聽起來 = sounds, 吃起來 = tastes
             # D Dc: 不 = not, 未 = not, 沒有 = there is no, 沒 = not, 非 = non-
             # D Dd: 就 = then, 又 = again, 已 = already, 將 = will, 才 = only
+            # Dfa = preceding VH through VL
             # D Dfa: 很 = very, 最 = most, 更 = more, 較 = relatively, 非常 = very much
+            # Dfb = following a V
             # D Dfb: 一點 = a little, 極了 = extremely, 些 = some, 得很 = very, 多 = more
             # D Dg: 一路 = all the way, 到處 = everywhere, 四處 = around, 處處 = everywhere, 當場 = on the spot
             # D Dh: 如何 = how, 一起 = together, 更 = more, 分別 = respectively, 這麼 = so
+            # Di = post-verbal
             # D Dj: 為什麼 = why, 是否 = whether, 怎麼 = how, 為何 = why, 有沒有 = is there?
+            # Dk = sentence-initial
             # D Dk: 結果 = result, 那 = then, 據說 = reportedly, 據了解 = it is understood that, 那麼 = then
             'Daa'  => ['pos' => 'adv'],
             'Dab'  => ['pos' => 'adv', 'other' => {'subpos' => 'ab'}],
@@ -350,12 +371,13 @@ sub _create_atoms
             # P P64: 隨同, 偕 (accompanying) max 4 occ.
             # P P65: 隔 gé (at a distance from, after an interval of) max 3 occ.
             # P P66: 為 wèi (for) max 9 occ.
-            'P01'   => ['pos' => 'adp', 'adpostype' => 'prep'],
+            'P01'   => ['pos' => 'adp', 'adpostype' => 'prep', 'other' => {'subpos' => 'P01'}],
             'P02'   => ['pos' => 'adp', 'adpostype' => 'prep', 'other' => {'subpos' => 'P02'}],
             'P03'   => ['pos' => 'adp', 'adpostype' => 'prep', 'other' => {'subpos' => 'P03'}],
             'P04'   => ['pos' => 'adp', 'adpostype' => 'prep', 'other' => {'subpos' => 'P04'}],
             'P05'   => ['pos' => 'adp', 'adpostype' => 'prep', 'other' => {'subpos' => 'P05'}],
-            'P06'   => ['pos' => 'adp', 'adpostype' => 'prep', 'other' => {'subpos' => 'P06'}],
+            # P06 is default because it also exists with P1, P2 and +part.
+            'P06'   => ['pos' => 'adp', 'adpostype' => 'prep'],
             'P07'   => ['pos' => 'adp', 'adpostype' => 'prep', 'other' => {'subpos' => 'P07'}],
             'P08'   => ['pos' => 'adp', 'adpostype' => 'prep', 'other' => {'subpos' => 'P08'}],
             'P09'   => ['pos' => 'adp', 'adpostype' => 'prep', 'other' => {'subpos' => 'P09'}],
@@ -423,8 +445,10 @@ sub _create_atoms
             # C Cab: 等 = etc., 等等 = and so on, 之類 = the class, 什麼的 = something, 、
             # C Cbaa: 因為 = because, 如果 = in case, 因 = because, 雖然 = though, 若 = if
             # C Cbab: 的話 = if, 應該 = should, 而 = while, 能 = can/able, 並 = and
+            # Cbb = following a subject
             # C Cbba: 由於 = due to, 雖 = although, 連 = even though, 既然 = since, 就是 = that
             # C Cbbb: 不但 = not only, 不僅 = not only, 一方面 = on the one hand, 首先 = first of all, 二 = two
+            # Cbc = sentence-initial
             # C Cbca: 而 = and, 但 = but, 因此 = as such, 所以 = and so, 但是 = but
             # C Cbcb: 並 = and, 而且 = and, 且 = and, 並且 = and, 反而 = instead
             'Caa'  => ['pos' => 'conj', 'conjtype' => 'coor'],
@@ -550,9 +574,10 @@ sub _create_atoms
                                                        'L2'  => 'VL2',
                                                        'L3'  => 'VL3',
                                                        'L4'  => 'VL4',
+                                                       '_11' => 'V_11',
                                                        '_12' => 'V_12',
                                                        '_2'  => 'V_2',
-                                                       '@'   => 'V_11' }},
+                                                       '@'   => 'VB11' }},
                        'adv'  => { 'prontype' => { 'int' => 'Dj',
                                                    '@'   => { 'negativeness' => { 'neg' => 'Dc',
                                                                                   '@'   => { 'other/subpos' => { 'ab'  => 'Dab',
@@ -567,11 +592,11 @@ sub _create_atoms
                                                                                                                  'h'   => 'Dh',
                                                                                                                  'k'   => 'Dk',
                                                                                                                  '@'   => 'Daa' }}}}}},
-                       'adp'  => { 'adpostype' => { 'prep' => { 'other/subpos' => { 'P02' => 'P02',
+                       'adp'  => { 'adpostype' => { 'prep' => { 'other/subpos' => { 'P01' => 'P01',
+                                                                                    'P02' => 'P02',
                                                                                     'P03' => 'P03',
                                                                                     'P04' => 'P04',
                                                                                     'P05' => 'P05',
-                                                                                    'P06' => 'P06',
                                                                                     'P07' => 'P07',
                                                                                     'P08' => 'P08',
                                                                                     'P09' => 'P09',
@@ -632,7 +657,8 @@ sub _create_atoms
                                                                                     'P64' => 'P64',
                                                                                     'P65' => 'P65',
                                                                                     'P66' => 'P66',
-                                                                                    '@'   => 'P01' }},
+                                                                                    # P06 is default because it also exists with P1, P2 and +part.
+                                                                                    '@'   => 'P06' }},
                                                     'post' => 'Ng' }},
                        'conj' => { 'conjtype' => { 'coor' => { 'other/subpos' => { 'ab'  => 'Cab',
                                                                                    'bca' => 'Cbca',
@@ -651,6 +677,94 @@ sub _create_atoms
                        'int'  => 'I' }
         }
     );
+    # PAIRED TOKENS ####################
+    # Certain tokens (e.g. some conjunctions) occur in pairs.
+    # This feature tells whether this is the first or the second token in the pair.
+    # Example: 又 yòu = also; it can be used in pairs: "又 X 又 Y" means "both X and Y".
+    # The first 又 will be tagged Caa[P1]. The second 又 will be tagged Caa[P2].
+    ###!!! At the moment we abuse the 'puncside' feature for this purpose.
+    ###!!! We may want to rename the feature in future because in this case we do not work with punctuation.
+    $atoms{pair} = $self->create_simple_atom
+    (
+        'intfeature' => 'puncside',
+        'simple_decode_map' =>
+        {
+            'P1' => 'ini',
+            'P2' => 'fin'
+        }
+    );
+    # +SPO ####################
+    # An undocumented and rare feature of nouns.
+    # +SPV ####################
+    # An undocumented and rare feature of verbs.
+    # +part ####################
+    # An undocumented and rare feature of prepositions.
+    $atoms{undoc} = $self->create_atom
+    (
+        'surfeature' => 'undoc',
+        'decode_map' =>
+        {
+            '+SPO'  => ['other' => {'undoc' => 'spo'}],
+            '+SPV'  => ['other' => {'undoc' => 'spv'}],
+            '+part' => ['other' => {'undoc' => 'part'}]
+        },
+        'encode_map' =>
+        {
+            'other/undoc' => { 'spo'  => '+SPO',
+                               'spv'  => '+SPV',
+                               'part' => '+part' }
+        }
+    );
+    # +ASP ####################
+    # A verb with incorporated aspect morpheme 了 le.
+    # 走了過來 zǒuliǎoguòlái = go over
+    # 走 zǒu = go
+    # 走了 zǒuliǎo = gone (action completed)
+    $atoms{asp} = $self->create_simple_atom
+    (
+        'intfeature' => 'aspect',
+        'simple_decode_map' =>
+        {
+            '+ASP' => 'perf'
+        }
+    );
+    # +NEG ####################
+    # A verb with incorporated negative morpheme 不 bù.
+    # 回不去 huíbùqù = return+not+go = not return there
+    # 回不來 huíbùlái = return+not+come = not return here
+    $atoms{neg} = $self->create_simple_atom
+    (
+        'intfeature' => 'negativeness',
+        'simple_decode_map' =>
+        {
+            '+NEG' => 'neg'
+        }
+    );
+    # +DE ####################
+    # A verb with incorporated morpheme 得 dé = get.
+    # 得 is a particle used after a verb or an adjective to express possibility or capability.
+    # 看得見 kàndéjiàn = look+get+view = be able to see
+    # 拿得到 nádédào = take+get+to = get them
+    # 做得好 zuòdéhǎo = do+get+good = do well
+    $atoms{de} = $self->create_atom
+    (
+        'surfeature' => 'de',
+        'decode_map' =>
+        {
+            '+DE' => ['other' => {'de' => '1'}]
+        },
+        'encode_map' =>
+        {
+            'other/de' => { '1' => '+DE' }
+        }
+    );
+    # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
+    my @fatoms = map {$atoms{$_}} (@{$self->features_all()});
+    $atoms{feature} = $self->create_merged_atom
+    (
+        'surfeature' => 'feature',
+        'atoms'      => \@fatoms
+    );
     return \%atoms;
 }
 
@@ -663,7 +777,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ();
+    my @features = ('pair', 'undoc', 'neg', 'de', 'asp');
     return \@features;
 }
 
@@ -697,16 +811,17 @@ sub decode
     my $atoms = $self->atoms();
     # Three components: pos, subpos, features (always empty).
     # example: N\tNaa\t_
-    my ($pos, $subpos, $features) = split(/\s+/, $tag);
-    ###!!! We cannot currently decode the tag extensions in brackets, e.g. "[P1]" in "Caa[P1]".
-    ###!!! In future we will want to create an atom to take care of them. For the moment, just a quick hack:
-    $subpos =~ s/(\[.*?\])//;
-    my $bracket = $1;
-    if(defined($bracket))
+    my ($pos, $subpos, $dummy_features) = split(/\s+/, $tag);
+    my @bracket_features;
+    if($subpos =~ s/\[(.*)\]//)
     {
-        $fs->set_other_subfeature('bracket', $bracket);
+        @bracket_features = split(/,/, $1);
     }
     $atoms->{pos}->decode_and_merge_hard($subpos, $fs);
+    foreach my $bf (@bracket_features)
+    {
+        $atoms->{feature}->decode_and_merge_hard($bf, $fs);
+    }
     return $fs;
 }
 
@@ -722,13 +837,22 @@ sub encode
     my $atoms = $self->atoms();
     my $subpos = $atoms->{pos}->encode($fs);
     my $pos = $subpos =~ m/^(DE|Di)$/ ? 'DE' : $subpos eq 'DM' ? 'DM' : $subpos =~ m/^(N[eg])/ ? $1 : substr($subpos, 0, 1);
-    ###!!! We cannot currently decode the tag extensions in brackets, e.g. "[P1]" in "Caa[P1]".
-    ###!!! In future we will want to create an atom to take care of them. For the moment, just a quick hack:
-    my $bracket = $fs->get_other_subfeature('zh::conll', 'bracket');
-    if($bracket ne '')
+    my @bracket_feature_names = @{$self->features_all()};
+    my @features;
+    foreach my $bfn (@bracket_feature_names)
     {
-        $subpos .= $bracket;
+        my $value = $atoms->{$bfn}->encode($fs);
+        unless($value eq '')
+        {
+            push(@features, $value);
+        }
     }
+    if(@features)
+    {
+        $subpos .= '['.join(',', @features).']';
+    }
+    # Dc is implicitly negative and it does not take the explicit [+NEG] feature.
+    $subpos =~ s/Dc\[\+NEG\]/Dc/;
     my $tag = "$pos\t$subpos\t_";
     return $tag;
 }
@@ -942,6 +1066,7 @@ V\tVB11\t_
 V\tVB11[+ASP]\t_
 V\tVB11[+DE]\t_
 V\tVB11[+NEG]\t_
+V\tVB11[+NEG,+ASP]\t_
 V\tVB11[+SPV]\t_
 V\tVB12\t_
 V\tVB12[+ASP]\t_
@@ -1001,7 +1126,6 @@ V\tVH16[+SPV]\t_
 V\tVH17\t_
 V\tVH21\t_
 V\tVH21[+ASP]\t_
-V\tVH21[+Dbab]\t_
 V\tVH21[+DE]\t_
 V\tVH21[+NEG]\t_
 V\tVH22\t_
@@ -1058,6 +1182,9 @@ CoNLL tagsets in Interset are traditionally three values separated by tabs.
 The values come from the CoNLL columns CPOS, POS and FEAT. For Chinese,
 these values are derived from the tagset of the Academia Sinica Treebank
 and the FEAT column is always empty.
+
+Some documentation can be found here:
+L<http://ckip.iis.sinica.edu.tw/CKIP/engversion/20corpus.htm>.
 
 =head1 SEE ALSO
 
