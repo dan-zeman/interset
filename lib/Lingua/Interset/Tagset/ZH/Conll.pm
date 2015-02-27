@@ -257,7 +257,7 @@ sub _create_atoms
             # P P64: 隨同, 偕 (accompanying) max 4 occ.
             # P P65: 隔 gé (at a distance from, after an interval of) max 3 occ.
             # P P66: 為 wèi (for) max 9 occ.
-            'P'   => ['pos' => 'adp', 'adpostype' => 'prep'],
+            'P02'   => ['pos' => 'adp', 'adpostype' => 'prep', 'other' => {'subpos' => 'P02'}],
             # conjunction
             # C Caa: 、, 和 = and, 及 = and, 與 = versus, 或 = or
             # C Caa[P1]: 從 = from, 又 = again, 既 = already, 由 = from, 或 = or
