@@ -537,7 +537,7 @@ my %matrix = @_matrix =
     'case' =>
     {
         'priority' => 330,
-        'values' => ['nom', 'gen', 'dat', 'acc', 'voc', 'loc', 'ins', 'ist',
+        'values' => ['nom', 'gen', 'dat', 'acc', 'voc', 'loc', 'ins',
                      'abl', 'del', 'par', 'dis', 'ess', 'tra', 'com', 'abe', 'ine', 'ela', 'ill', 'ade', 'all', 'sub', 'sup', 'lat',
                      'add', 'tem', 'ter', 'abs', 'erg', 'cau', 'ben', ''],
         'replacements' =>
