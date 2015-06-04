@@ -1,6 +1,6 @@
 # ABSTRACT: Driver for a Norwegian tagset.
 # Copyright © 2013, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
-# Based on code that someone sent me from Norway.
+# Based on code contributed by Arne Skjærholt.
 
 package Lingua::Interset::Tagset::NO::Conll;
 use strict;
@@ -438,7 +438,7 @@ or
 =head1 DESCRIPTION
 
 Interset driver for the Norwegian tagset,
-based on code that someone sent me from Norway (sorry, could not find the e-mail with the name of the person).
+based on code contributed by Arne Skjærholt.
 CoNLL tagsets in Interset are traditionally three values separated by tabs.
 The values come from the CoNLL columns CPOS, POS and FEAT.
 
@@ -448,5 +448,10 @@ L<Lingua::Interset>,
 L<Lingua::Interset::Tagset>,
 L<Lingua::Interset::Tagset::Conll>,
 L<Lingua::Interset::FeatureStructure>
+
+=head1 AUTHOR
+
+Arne Skjærholt
+Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 =cut
