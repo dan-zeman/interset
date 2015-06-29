@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 # Testing DZ Interset 2.0.
-# Copyright © 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2014, 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # Licence: GNU GPL
 
 use utf8;
@@ -10,7 +10,7 @@ binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 # We must declare in advance how many tests we are going to perform.
 # There are currently three tests per tagset driver.
-use Test::More tests => 51*3;
+use Test::More tests => 52*3;
 use Lingua::Interset qw(get_driver_object);
 use Lingua::Interset::Tagset;
 
@@ -38,7 +38,7 @@ my @tagsets =
     'hu::conll',
     'it::conll',
     'ja::conll', 'ja::ipadic',
-    'la::conll',
+    'la::conll', 'la::itconll',
     'mul::google', 'mul::upos',
     'nl::cgn', 'nl::conll',
     'no::conll',
