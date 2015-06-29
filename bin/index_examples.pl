@@ -58,6 +58,10 @@ my $target_path = (-d $laptop_path) ? "$laptop_path/$corpusname" : "./$corpusnam
     {
         $document = read_document_csts();
     }
+    elsif($format eq 'conll2006')
+    {
+        $document = read_document_conll_2006();
+    }
     elsif($format eq 'conll2009')
     {
         $document = read_document_conll_2009();
