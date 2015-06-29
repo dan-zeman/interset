@@ -37,6 +37,18 @@ sub _create_atoms
 {
     my $self = shift;
     my %atoms;
+    # The tagset categorizes inflection patterns but it does not directly categorize
+    # parts of speech. Thus we have
+    # 1 nominal inflection ... includes nouns, pronouns, adjectives, determiners and numerals
+    # 2 participial inflection ... something between 1 and 3: participles, gerunds and gerundives
+    # 3 verbal inflection ... includes those verb forms that do not belong to 2
+    # 4 no inflection ... includes adverbs, prepositions, conjunctions, particles and interjections
+    # It would be correct to translate the inflection types to sets of parts of speech,
+    # e.g. "1" would translate to "noun|adj|num". However, if the Interset feature structure
+    # is later used to encode another physical tag, e.g. the universal POS tag, it would have to
+    # randomly select one of these parts of speech. And then we want it to select a noun, not
+    # adjective or even a numeral. To make things simpler, we will select just one part of speech
+    # already on decoding.
     # FLEXIONAL TYPE ####################
     # This value appears in the CPOS column.
     $atoms{pos} = $self->create_atom
@@ -45,13 +57,13 @@ sub _create_atoms
         'decode_map' =>
         {
             # nominal (only degrees and cases)
-            '1'    => ['pos' => 'noun|adj|num'],
+            '1'    => ['pos' => 'noun'], # noun|adj|num
             # participial
-            '2'    => ['pos' => 'verb|adj', 'verbform' => 'part'],
+            '2'    => ['pos' => 'verb', 'verbform' => 'part'], # verb|adj
             # verbal
             '3'    => ['pos' => 'verb'],
             # invariable
-            '4'    => ['pos' => 'adv|adp|conj|part|int'],
+            '4'    => ['pos' => 'part'], # adv|adp|conj|part|int
             # pseudo-lemma (e.g. abbreviation: corp., art., boet.)
             '5'    => ['abbr' => 'abbr'],
             # punctuation
@@ -88,36 +100,36 @@ sub _create_atoms
         'decode_map' =>
         {
             # I declension (example: formam / forma)
-            'A1' => ['pos' => 'noun|adj|num', 'other' => {'flexcat' => 'idecl'}],
+            'A1' => ['pos' => 'noun', 'other' => {'flexcat' => 'idecl'}],
             # II declension (example: filio / filius)
-            'B1' => ['pos' => 'noun|adj|num', 'other' => {'flexcat' => 'iidecl'}],
+            'B1' => ['pos' => 'noun', 'other' => {'flexcat' => 'iidecl'}],
             # III declension (example: imago / imago)
-            'C1' => ['pos' => 'noun|adj|num', 'other' => {'flexcat' => 'iiidecl'}],
+            'C1' => ['pos' => 'noun', 'other' => {'flexcat' => 'iiidecl'}],
             # IV declension (example: processu / processus)
-            'D1' => ['pos' => 'noun|adj|num', 'other' => {'flexcat' => 'ivdecl'}],
+            'D1' => ['pos' => 'noun', 'other' => {'flexcat' => 'ivdecl'}],
             # V declension (example: rerum / res)
-            'E1' => ['pos' => 'noun|adj|num', 'other' => {'flexcat' => 'vdecl'}],
+            'E1' => ['pos' => 'noun', 'other' => {'flexcat' => 'vdecl'}],
             # regularly irregular declension (example: hoc / hic)
-            'F1' => ['pos' => 'noun|adj|num', 'other' => {'flexcat' => 'rirdecl'}],
+            'F1' => ['pos' => 'noun', 'other' => {'flexcat' => 'rirdecl'}],
             # uninflected nominal (example: quatuor)
-            'G1' => ['pos' => 'noun|adj|num', 'other' => {'flexcat' => 'nodecl'}],
+            'G1' => ['pos' => 'noun', 'other' => {'flexcat' => 'nodecl'}],
             # I conjugation (example: formata / formo)
-            'J2' => ['pos' => 'verb|adj', 'verbform' => 'part', 'other' => {'flexcat' => 'iconj'}],
+            'J2' => ['pos' => 'verb', 'verbform' => 'part', 'other' => {'flexcat' => 'iconj'}],
             'J3' => ['pos' => 'verb', 'other' => {'flexcat' => 'iconj'}],
             # II conjugation (example: manent / maneo)
-            'K2' => ['pos' => 'verb|adj', 'verbform' => 'part', 'other' => {'flexcat' => 'iiconj'}],
+            'K2' => ['pos' => 'verb', 'verbform' => 'part', 'other' => {'flexcat' => 'iiconj'}],
             'K3' => ['pos' => 'verb', 'other' => {'flexcat' => 'iiconj'}],
             # III conjugation (example: objicitur / objicio)
-            'L2' => ['pos' => 'verb|adj', 'verbform' => 'part', 'other' => {'flexcat' => 'iiiconj'}],
+            'L2' => ['pos' => 'verb', 'verbform' => 'part', 'other' => {'flexcat' => 'iiiconj'}],
             'L3' => ['pos' => 'verb', 'other' => {'flexcat' => 'iiiconj'}],
             # IV conjugation (example: invenitur / invenio)
-            'M2' => ['pos' => 'verb|adj', 'verbform' => 'part', 'other' => {'flexcat' => 'ivconj'}],
+            'M2' => ['pos' => 'verb', 'verbform' => 'part', 'other' => {'flexcat' => 'ivconj'}],
             'M3' => ['pos' => 'verb', 'other' => {'flexcat' => 'ivconj'}],
             # regularly irregular conjugation (example: est / sum)
-            'N2' => ['pos' => 'verb|adj', 'verbform' => 'part', 'other' => {'flexcat' => 'rirconj'}],
+            'N2' => ['pos' => 'verb', 'verbform' => 'part', 'other' => {'flexcat' => 'rirconj'}],
             'N3' => ['pos' => 'verb', 'other' => {'flexcat' => 'rirconj'}],
             # invariable (example: et)
-            'O4' => ['pos' => 'adv|conj|part|int', 'other' => {'flexcat' => 'invar'}],
+            'O4' => ['pos' => 'part', 'other' => {'flexcat' => 'invar'}],
             # prepositional (always or not) particle (examples: ad, contra, in, cum, per)
             'S4' => ['pos' => 'adp', 'adpostype' => 'prep', 'other' => {'flexcat' => 'preppart'}],
             # pseudo-lemma / abbreviation
