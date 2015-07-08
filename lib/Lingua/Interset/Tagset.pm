@@ -417,9 +417,6 @@ sub test_tag
     # Decode the tag and create the Interset feature structure.
     my $f = $self->decode($tag);
     my $sfs = $f->as_string();
-    # Test that the decoder sets only known features and values.
-    # Test whether decoding the tag yields a valid feature structure (all features and values are valid).
-    $f->is_valid(\@errors);
     if($f->other() ne '')
     {
         ${$n_other}++;

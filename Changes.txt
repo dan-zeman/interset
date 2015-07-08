@@ -3,6 +3,11 @@
 Drivers:
 * LA::Itconll
 
+Fixes:
+* Fixed bug in get_ufeatures(): Foreign=Foreign (was mistakenly Foreign=Yes).
+* Removed the FeatureStructure::is_valid() method. It is not needed since 2.019
+  when we disallowed setting unknown features or values.
+
 
 
 2.041     2015-02-27 16:07:10+01:00 Europe/Prague

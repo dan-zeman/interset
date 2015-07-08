@@ -1215,44 +1215,6 @@ sub value_valid
 
 
 #------------------------------------------------------------------------------
-# Tells whether the contents of the feature structure is valid, i.e. there are
-# only known (valid) features and they have only known (valid) values. Unlike
-# feature_valid() and value_valid(), this is a method, not a static function!
-# This method may become obsolete in future if we implement rigid argument
-# checking in the set_...() methods. At this moment however, it is possible
-# to set unknown features (attributes in the hash which implements this
-# object).
-#------------------------------------------------------------------------------
-sub is_valid
-{
-    my $self = shift;
-    # Optional reference to array where error messages can be added (\n-terminated lines of text).
-    my $global_errors = shift;
-    my @errors;
-    # Does the structure contain only known features?
-    foreach my $f (keys(%{$self}))
-    {
-        if(!feature_valid($f))
-        {
-            push(@errors, "Unknown feature $f.\n");
-        }
-        else
-        {
-            # Do the features have only known values?
-            my $v = $self->{$f};
-            if(!value_valid($f, $v))
-            {
-                push(@errors, "Unknown value $v of feature $f.\n");
-            }
-        }
-    }
-    push(@{$global_errors}, @errors) if(defined($global_errors));
-    return scalar(@errors) == 0;
-}
-
-
-
-#------------------------------------------------------------------------------
 # Named setters for each feature are nice but we also need a generic setter
 # that takes both the feature name and value.
 #------------------------------------------------------------------------------
@@ -2175,7 +2137,8 @@ sub get_ufeatures
         # Join values using comma (unlike in get_joined(), with Universal Features we cannot use the vertical bar).
         my $value = join(',', @values);
         # Interset uses for boolean features the value identical to feature name while universal features use "Yes".
-        $value = 'Yes' if($value eq $uname);
+        # Exception: Foreign used to be boolean, now it has three values but foreign=foreign is still one of them.
+        $value = 'Yes' if($value eq $uname && $uname ne 'Foreign');
         my $pair = "$uname=$value";
         # Some values of some features became obsolete because the distinction was moved to the POS tag level.
         next if($pair =~ m/^(PronType=Prn|ConjType=(Coor|Sub)|NounType=(Com|Prop)|VerbType=Aux|Variant=[0-9])$/);

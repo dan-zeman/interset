@@ -89,7 +89,7 @@ sub list
 {
     my $self = shift;
     my $list = $self->upos_driver()->list();
-    my @list = map {"$_\t_"} (@{$list});
+    my @list = map {$_ eq 'NUM' ? "NUM\tNumType=Card" : "$_\t_"} (@{$list});
     return \@list;
 }
 
