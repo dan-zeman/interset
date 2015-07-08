@@ -1,5 +1,11 @@
 {{$NEXT}}
 
+Fixes:
+* Improved documentation of FeatureStructure::get_ufeatures() and add_ufeatures()
+  (these are methods, not static functions!)
+
+
+
 2.042     2015-07-08 14:43:31+02:00 Europe/Prague
 
 Drivers:

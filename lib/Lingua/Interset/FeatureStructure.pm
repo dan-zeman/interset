@@ -2063,7 +2063,9 @@ sub upos { return get_upos(@_); }
 # identifiers are capitalized, some features are renamed and all pairs are
 # ordered alphabetically. Sets our feature values accordingly.
 #------------------------------------------------------------------------------
-=func add_ufeatures()
+=method add_ufeatures()
+
+  $fs->add_ufeatures ('Case=Nom', 'Gender=Masc,Neut');
 
 Takes a list of feature-value pairs in the format prescribed by the
 Universal Dependencies (L<http://universaldependencies.github.io/docs/>), i.e.
@@ -2111,7 +2113,10 @@ sub add_ufeatures
 # identifiers are capitalized, some features are renamed and all pairs are
 # ordered alphabetically.
 #------------------------------------------------------------------------------
-=func get_ufeatures()
+=method get_ufeatures()
+
+  my @ufpairs = $fs->get_ufeatures();
+  print (join ('|', @ufpairs));
 
 Returns the list of feature-value pairs in the format prescribed by the
 Universal Dependencies (L<http://universaldependencies.github.io/docs/>), i.e.
