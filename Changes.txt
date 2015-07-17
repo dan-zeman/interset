@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+2.043     2015-07-17 16:51:12+02:00 Europe/Prague
+
 Interface:
 * FeatureStructure has new methods to remove the value of a feature:
   generic clear($feature) and specific for each feature, e.g. clear_pos().
