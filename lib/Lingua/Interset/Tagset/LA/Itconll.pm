@@ -4,7 +4,7 @@
 package Lingua::Interset::Tagset::LA::Itconll;
 use strict;
 use warnings;
-our $VERSION = '2.043';
+our $VERSION = '2.044';
 
 use utf8;
 use open ':utf8';
