@@ -1042,6 +1042,12 @@ foreach my $feature (keys(%matrix))
             my @values = @_;
             return $self->set($feature, @values);
         });
+        # A specialized setter that sets the empty value: the clearer.
+        $meta->add_method(qq/clear_$feature/, sub
+        {
+            my $self = shift;
+            return $self->clear($feature);
+        });
         # The getter will always return a scalar and multivalues will be serialized ('fem|masc').
         # The user can call get_list() if they want a list.
         $meta->add_method(qq/$feature/, sub
@@ -1252,8 +1258,12 @@ sub set
     my $self = shift;
     my $feature = shift;
     confess("Unknown feature '$feature'") if(!feature_valid($feature));
-    my @values = @_;
-    confess('Missing value') if(!@values);
+    my @values = grep {defined($_) && $_ ne ''} @_;
+    # Undefined value means that we want to clear the feature.
+    if(scalar(@values)==0)
+    {
+        return $self->clear($feature);
+    }
     # The interpretation of the @values if different if the feature is 'other'.
     if($feature eq 'other')
     {
@@ -1482,6 +1492,32 @@ sub merge_hash_soft
             }
         }
     }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Generic setter that clears the value of a feature, i.e. removes the feature.
+#------------------------------------------------------------------------------
+=method clear()
+
+A generic setter that clears the value of a feature, i.e. removes the feature
+from the feature structure. All the following statements do the same thing:
+
+  $fs->clear ('pos');
+  $fs->clear_pos();
+  $fs->set ('pos', '');
+  $fs->set ('pos', undef);
+  $fs->set_pos ('');
+  $fs->set_pos (undef);
+
+=cut
+sub clear
+{
+    my $self = shift;
+    my $feature = shift;
+    confess() if(!defined($feature));
+    delete($self->{$feature});
 }
 
 

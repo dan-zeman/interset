@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+Interface:
+* FeatureStructure has new methods to remove the value of a feature:
+  generic clear($feature) and specific for each feature, e.g. clear_pos().
+  Until now the only method was to set the empty value ('').
+
 Fixes:
 * Improved documentation of FeatureStructure::get_ufeatures() and add_ufeatures()
   (these are methods, not static functions!)
