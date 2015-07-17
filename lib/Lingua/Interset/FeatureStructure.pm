@@ -1511,13 +1511,20 @@ from the feature structure. All the following statements do the same thing:
   $fs->set_pos ('');
   $fs->set_pos (undef);
 
+We can also clear several features at once:
+
+  $fs->clear ('pos', 'prontype', 'gender');
+
 =cut
 sub clear
 {
     my $self = shift;
-    my $feature = shift;
-    confess() if(!defined($feature));
-    delete($self->{$feature});
+    my @features = grep {defined($_)} @_;
+    confess() if(!@features);
+    foreach my $feature (@features)
+    {
+        delete($self->{$feature});
+    }
 }
 
 
