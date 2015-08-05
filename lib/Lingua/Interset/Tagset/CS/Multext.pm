@@ -37,8 +37,8 @@ sub _create_feature_map
     my $self = shift;
     my %features =
     (
-        'N' => ['pos', 'nountype', 'gender', 'number', 'case', undef, undef, 'animateness'], # definiteness and clitic nod used in Czech
-        'A' => ['pos', 'adjtype', 'degree', 'gender', 'number', 'case', undef, undef, 'animateness', 'adjform'], # definiteness and clitic nod used in Czech
+        'N' => ['pos', 'nountype', 'gender', 'number', 'case', undef, undef, 'animateness'], # definiteness and clitic not used in Czech
+        'A' => ['pos', 'adjtype', 'degree', 'gender', 'number', 'case', undef, undef, 'animateness', 'adjform'], # definiteness and clitic not used in Czech
         'P' => ['pos', 'prontype', 'person', 'gender', 'number', 'case', 'possnumber', 'possgender', 'clitic', 'referent_type', 'syntactic_type', undef, 'animateness', 'clitic_s'],
         'M' => ['pos', 'numtype', 'gender', 'number', 'case', 'numform', undef, undef, 'numclass', 'animateness'],
         # The documentation lists only 11 features (including the initial 'V') for Czech verbs.

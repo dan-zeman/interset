@@ -175,25 +175,41 @@ sub _create_atoms
         'decode_map' =>
         {
             # cardinal number
-            # examples: jeden, dva, tři, čtyři, pět, šest, sedm, osm, devět, deset
+            # examples [cs]: jeden, dva, tři, čtyři, pět, šest, sedm, osm, devět, deset
             'c' => ['pos' => 'num', 'numtype' => 'card'],
             # ordinal number
-            # examples: první, druhý, třetí, čtvrtý, pátý
+            # examples [cs]: první, druhý, třetí, čtvrtý, pátý
             'o' => ['pos' => 'adj', 'numtype' => 'ord'],
+            # pronominal numeral
+            # examples [sl]: eden, en, drugi, drug
+            # "en" ("one") could also be classified as a cardinal numeral but it is never tagged so.
+            # "drugi" ("second" / "other") could also be classified as an ordinal numeral but is never tagged so.
+            # These two have a catagory of their own because they also work as indefinite pronouns ("one man or the other").
+            # Other pronominal numerals (in the sense of Interset, e.g. "how many") are not classified as pronominal in the Slovene Multext tagset!
+            # Note that prontype=ind itself is not enough to distinguish this category because in other languages (e.g. Czech)
+            # prontype is orthogonal to numtype (indefinite cardinal: "několik"; indefinite ordinal: "několikátý" etc.)
+            # The only thing that makes these Slovene numerals different is the multivalue of numtype: card|ord.
+            'p' => ['pos' => 'adj', 'numtype' => 'card|ord', 'prontype' => 'ind'],
             # multiplier number
-            # examples: jednou, dvakrát, třikrát, čtyřikrát, pětkrát
+            # examples [cs]: jednou, dvakrát, třikrát, čtyřikrát, pětkrát
             'm' => ['pos' => 'adv', 'numtype' => 'mult'],
             # special (generic) number (only Slavic languages?)
             # Czech term: číslovka druhová
-            # examples: desaterý, dvojí, jeden, několikerý, několikery, obojí
+            # Slovene term: števnik drugi
+            # examples [cs]: desaterý, dvojí, jeden, několikerý, několikery, obojí
+            # examples [sl]: dvojen, trojen
             's' => ['pos' => 'adj', 'numtype' => 'gen']
         },
         'encode_map' =>
-
-            { 'numtype' => { 'ord'  => 'o',
-                             'mult' => 'm',
-                             'gen'  => 's',
-                             '@'    => 'c' }}
+        {
+            'numtype' => { 'card|ord' => { 'prontype' => { 'ind' => 'p',
+                                                           '@'   => 'c' }},
+                           'card'     => 'c',
+                           'ord'      => 'o',
+                           'mult'     => 'm',
+                           'gen'      => 's',
+                           '@'        => 'c' }
+        }
     );
     # VERBTYPE ####################
     $atoms{verbtype} = $self->create_atom
@@ -361,6 +377,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             's' => 'sing',
+            'd' => 'dual',
             'p' => 'plur'
         },
         'encode_default' => '-'
@@ -530,6 +547,18 @@ sub _create_atoms
                           '@'   => { 'verbform' => { 'part'  => 'p',
                                                      'trans' => 't',
                                                      '@'     => 'n' }}}}
+    );
+    # ASPECT ####################
+    $atoms{aspect} = $self->create_simple_atom
+    (
+        'intfeature' => 'aspect',
+        'simple_decode_map' =>
+        {
+            'e' => 'perf',    # perfective
+            'p' => 'imp',     # imperfective (this is called "progressive" in the Slovene tagset)
+            'b' => 'imp|perf' # biaspectual (we do not use the empty value here because we need it for tags where aspect is '-')
+        },
+        'encode_default' => '-'
     );
     # TENSE ####################
     $atoms{tense} = $self->create_simple_atom

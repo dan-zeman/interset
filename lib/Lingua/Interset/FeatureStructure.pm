@@ -1750,7 +1750,7 @@ sub get_other_subfeature
     my $tagset = shift;
     my $subfeature = shift;
     my $other = $self->other();
-    if($tagset eq $self->tagset() && defined($other) && ref($other) eq 'HASH' && exists($other->{$subfeature}))
+    if(defined($self->tagset()) && $tagset eq $self->tagset() && defined($other) && ref($other) eq 'HASH' && exists($other->{$subfeature}))
     {
         # This method was created because of simple hashes whose values are strings.
         # But there is no guarantee that the value is not a reference and thus we must return a deep copy.
