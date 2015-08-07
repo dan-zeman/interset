@@ -1549,7 +1549,7 @@ sub get
     my $self = shift;
     my $feature = shift;
     confess() if(!defined($feature));
-    return _duplicate_recursive($self->{$feature});
+    return defined($self->{$feature}) ? _duplicate_recursive($self->{$feature}) : '';
 }
 
 
