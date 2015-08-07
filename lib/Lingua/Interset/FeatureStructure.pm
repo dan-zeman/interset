@@ -1657,7 +1657,10 @@ sub get_other_for_tagset
 {
     my $self = shift;
     my $tagset = shift;
-    if($self->tagset() eq $tagset)
+    # We normally set the tagset feature even if there is no other feature.
+    # However, it is not required that it is defined. (And sometimes we clear the tagset, e.g. during certain tests.)
+    # Calling this method without defining $tagset makes much less sense but it is not fatal either.
+    if(defined($self->tagset()) && defined($tagset) && $self->tagset() eq $tagset)
     {
         return _duplicate_recursive($self->other());
     }

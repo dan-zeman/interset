@@ -14,13 +14,13 @@ binmode(STDERR, ':utf8');
 
 sub usage
 {
-    print STDERR ("Usage: driver-test.pl [-d] driver [driver2 [driver3...]]\n");
-    print STDERR ("       driver-test.pl [-d] -a\n");
-    print STDERR ("       driver-test.pl [-d] -A\n");
+    print STDERR ("Usage: driver-test.pl [--debug] driver [driver2 [driver3...]]\n");
+    print STDERR ("       driver-test.pl [--debug] -a\n");
+    print STDERR ("       driver-test.pl [--debug] -A\n");
     print STDERR ("  driver name example: ar::conll\n");
     print STDERR ("  -a: test all known drivers but no pairs of drivers\n");
     print STDERR ("  -A: test all known drivers and all pairs of drivers\n");
-    print STDERR ("  -d: debug mode (list tags being tested)\n");
+    print STDERR ("  --debug: debug mode (list tags being tested)\n");
     print STDERR ("  -o: print known tags together with unknown tags created by stripping the 'other' feature\n");
     print STDERR ("  -O: same as -o but without additional info, i.e. directly copyable to the list() function\n");
 }

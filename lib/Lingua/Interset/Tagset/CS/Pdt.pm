@@ -852,7 +852,7 @@ sub encode
         {
             $tag = 'A2-------------';
         }
-        elsif($fs->tagset() eq 'cs::pdt' && $fs->other() eq 'O' ||
+        elsif($fs->get_other_for_tagset('cs::pdt') eq 'O' ||
               $fs->case() eq '' && $fs->negativeness() eq '')
         {
             $tag = 'AOXX-----------';

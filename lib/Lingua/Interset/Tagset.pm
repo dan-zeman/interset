@@ -420,6 +420,16 @@ sub test_tag
     if($f->other() ne '')
     {
         ${$n_other}++;
+        # Non-empty other should be always accompanied by a non-empty tagset.
+        # (Actually we expect tagset to be never empty. But it is really needed only if the other feature is set.)
+        if($f->tagset() eq '')
+        {
+            my $message = "Error: nonempty other without specifying the source tagset\n";
+            $message .= " src = \"$tag\"\n";
+            $message .= " sfs = $sfs\n";
+            push(@errors, $message);
+            $n_errors++;
+        }
     }
     # Test that encode(decode(tag))=tag (reproducibility).
     my $tag1 = $self->encode($f);
