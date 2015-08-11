@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+Fixes:
+* PL::Ipipan: the 'conj' tag split to 'conj' and 'comp' (see the Polish Treebank).
+
+
+
 2.044     2015-08-07 22:42:01+02:00 Europe/Prague
 
 Drivers:

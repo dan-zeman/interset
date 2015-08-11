@@ -104,8 +104,12 @@ sub _create_atoms
             'pred'    => ['pos' => 'verb', 'other' => {'verbtype' => 'pred'}],
             # przyimek = preposition (na, w, z, do, po)
             'prep'    => ['pos' => 'adp', 'adpostype' => 'prep'],
-            # spójnik = conjunction (i, jak, gdy, a, ale)
-            'conj'    => ['pos' => 'conj'],
+            # complementizer (że, bo, gdy, aby, by)
+            # The tag is 'comp', without features. For us it conflicts with the feature 'comp' (comparative degree).
+            # Therefore we first change 'comp' (part of speech) to 'compl', then decode. Encoding goes directly to 'comp' here.
+            'compl'   => ['pos' => 'conj', 'conjtype' => 'sub'],
+            # spójnik = conjunction (i, a, ale, więc, oraz)
+            'conj'    => ['pos' => 'conj', 'conjtype' => 'coor'],
             # kublik = particle, interjection, indeclinable adjective etc. (wówczas, gdzie, się, też, wkrótce)
             'qub'     => ['pos' => 'part'],
             # ciało obce nominalne (no occurrences found)
@@ -146,7 +150,8 @@ sub _create_atoms
                                                                                      '@'     => 'pred' }}}},
                        'adv'  => 'adv',
                        'adp'  => 'prep',
-                       'conj' => 'conj',
+                       'conj' => { 'conjtype' => { 'sub' => 'comp',
+                                                   '@'   => 'conj' }},
                        'part' => 'qub',
                        'punc' => 'interp',
                        'sym'  => 'interp',
@@ -365,6 +370,9 @@ sub decode
     my $atoms = $self->atoms();
     # The part of speech and all other features form one string with colons as delimiters.
     # example: subst:sg:nom:m1
+    # In order to distinguish complementizer (part of speech) and comparative (degree feature),
+    # we change the former from 'comp' to 'compl'. The respective atom expects it.
+    $tag = 'compl' if($tag =~ m/^comp(:.*)?$/);
     my @features = split(/:/, $tag);
     foreach my $feature (@features)
     {
@@ -642,6 +650,7 @@ bedzie:pl:ter:imperf
 bedzie:sg:pri:imperf
 bedzie:sg:sec:imperf
 bedzie:sg:ter:imperf
+comp
 conj
 depr:pl:nom:m2
 depr:pl:voc:m2
