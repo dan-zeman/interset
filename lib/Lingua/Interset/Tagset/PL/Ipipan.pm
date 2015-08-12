@@ -112,6 +112,8 @@ sub _create_atoms
             'conj'    => ['pos' => 'conj', 'conjtype' => 'coor'],
             # kublik = particle, interjection, indeclinable adjective etc. (wówczas, gdzie, się, też, wkrótce)
             'qub'     => ['pos' => 'part'],
+            # abbreviation (tys, zł)
+            'brev'    => ['abbr' => 'abbr'],
             # ciało obce nominalne (no occurrences found)
             'xxs'     => ['foreign' => 'foreign', 'other' => {'pos' => 'xxs'}],
             # ciało obce luźne = foreign word (International, European, investment, Office, Deutsche)
@@ -157,7 +159,8 @@ sub _create_atoms
                        'sym'  => 'interp',
                        '@'    => { 'foreign' => { 'foreign' => { 'other/pos' => { 'xxs' => 'xxs',
                                                                                   '@'   => 'xxx' }},
-                                                  '@'       => 'ign' }}}
+                                                  '@'       => { 'abbr' => { 'abbr' => 'brev',
+                                                                             '@'    => 'ign' }}}}}
         }
     );
     # RODZAJ / GENDER ####################
@@ -332,6 +335,21 @@ sub _create_atoms
             'wok'  => 'long'
         }
     );
+    # IS THERE PUNCTUATION AFTER ABBREVIATION? ####################
+    $atoms{brev} = $self->create_atom
+    (
+        'surfeature' => 'brev',
+        'decode_map' =>
+        {
+            'npun' => ['other' => {'brev' => 'npun'}],
+            'pun'  => ['other' => {'brev' => 'pun'}]
+        },
+        'encode_map' =>
+        {
+            'other/brev' => { 'npun' => 'npun',
+                              '@'    => 'pun' }
+        }
+    );
     # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
     my @fatoms = map {$atoms{$_}} (@{$self->features_all()});
     $atoms{feature} = $self->create_merged_atom
@@ -351,7 +369,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('pos', 'gender', 'number', 'case', 'person', 'degree', 'aspect', 'negativeness', 'accentability', 'prepcase', 'accommodability', 'agglutination', 'vocalicity');
+    my @features = ('pos', 'gender', 'number', 'case', 'person', 'degree', 'aspect', 'negativeness', 'accentability', 'prepcase', 'accommodability', 'agglutination', 'vocalicity', 'brev');
     return \@features;
 }
 
@@ -413,7 +431,8 @@ sub _create_features_pos
         'prep'    => ['case', 'vocalicity'],
         'siebie'  => ['case'],
         'subst'   => ['number', 'case', 'gender'],
-        'winien'  => ['number', 'gender', 'aspect']
+        'winien'  => ['number', 'gender', 'aspect'],
+        'brev'    => ['brev']
     );
     return \%features;
 }
@@ -650,6 +669,8 @@ bedzie:pl:ter:imperf
 bedzie:sg:pri:imperf
 bedzie:sg:sec:imperf
 bedzie:sg:ter:imperf
+brev:npun
+brev:pun
 comp
 conj
 depr:pl:nom:m2

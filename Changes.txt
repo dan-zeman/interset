@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+Fixes:
+* PL::Ipipan: two new tags for abbreviations (see the Polish Treebank).
+
+
+
 2.045     2015-08-11 23:37:14+02:00 Europe/Prague
 
 Fixes:
