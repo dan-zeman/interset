@@ -112,7 +112,9 @@ sub _create_atoms
             'conj'    => ['pos' => 'conj', 'conjtype' => 'coor'],
             # kublik = particle, interjection, indeclinable adjective etc. (wówczas, gdzie, się, też, wkrótce)
             'qub'     => ['pos' => 'part'],
-            # abbreviation (tys, zł)
+            # abbreviation (r, tys, zł, ul, proc)
+            # Most abbreviations in the Polish treebank are nouns but not all.
+            # For example, "ok" is the abbreviated preposition "około" ("about, approximately").
             'brev'    => ['abbr' => 'abbr'],
             # ciało obce nominalne (no occurrences found)
             'xxs'     => ['foreign' => 'foreign', 'other' => {'pos' => 'xxs'}],
