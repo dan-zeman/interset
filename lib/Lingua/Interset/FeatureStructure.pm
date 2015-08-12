@@ -4,7 +4,7 @@
 package Lingua::Interset::FeatureStructure;
 use strict;
 use warnings;
-our $VERSION = '2.045';
+our $VERSION = '2.046';
 
 use utf8;
 use open ':utf8';
