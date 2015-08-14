@@ -2,6 +2,8 @@
 
 Fixes:
 * PL::Ipipan: two new tags for abbreviations (see the Polish Treebank).
+* FeatureStructure::add_ufeatures() works treats unknown language-specific features
+  more correctly and does not trigger warnings any more.
 
 
 

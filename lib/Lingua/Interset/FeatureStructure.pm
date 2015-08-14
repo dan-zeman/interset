@@ -2138,6 +2138,7 @@ sub add_ufeatures
             my $ufeature = $1;
             my $uvalue = $2;
             my $feature = $map->{$ufeature};
+            next if(!defined($feature));
             my $value = lc($uvalue);
             # Interset uses for boolean features the value identical to feature name while universal features use "Yes".
             $value = $feature if($value eq 'yes');
