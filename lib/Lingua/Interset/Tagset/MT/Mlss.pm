@@ -48,16 +48,16 @@ around BUILDARGS => sub
         'CC'    => ['pos' => 'conj', 'conjtype' => 'coor'],
         # complementizer
         # examples: li, illi, ili, imbilli (that)
-        'CMP'   => ['pos' => 'conj', 'conjtype' => 'sub'],
-        ###!!! ???
-        # examples: la, ukoll, jittrippla
-        'CR'    => [],
+        'CMP'   => ['pos' => 'conj', 'conjtype' => 'sub', 'other' => {'conjtype' => 'cmp'}],
+        # paired coordinating conjunction? only one element of the pair?
+        # examples: la, ukoll (either/neither, (both-)and)
+        'CR'    => ['pos' => 'conj', 'conjtype' => 'coor', 'other' => {'conjtype' => 'cr'}],
         # subordinating conjunction
         # examples: biex, kemm, għax, billi, jekk (to, either, because, since, if)
         'CS'    => ['pos' => 'conj', 'conjtype' => 'sub'],
         # determiner
         # no occurrences in the corpus
-        'DD'    => ['pos' => 'adj', 'prontype' => 'prn'],
+        #'DD'    => ['pos' => 'adj', 'prontype' => 'prn'],
         # definite determiner, clitic
         # examples: l-, il-, it-, is-, t- (the)
         'DDC'   => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'def'],
@@ -65,8 +65,8 @@ around BUILDARGS => sub
         # examples: ħafna, ftit, bosta, tant, wisq (many, few, many, so many, too)
         'DP'    => ['pos' => 'adj', 'prontype' => 'ind', 'numtype' => 'card', 'number' => 'plur'],
         # determiner quantifier
-        # examples: ###!!!???
-        'DQ'    => [],
+        # no occurrence in the corpus
+        #'DQ'    => [],
         # specifier, singular
         # examples: xi, kull, nofs, ebda, jimxi (some, every, middle, no, go)
         'DS'    => ['pos' => 'adj', 'prontype' => 'ind', 'number' => 'sing'],
@@ -74,13 +74,13 @@ around BUILDARGS => sub
         # examples: hemm, hawn, hemmx, ilux, damx (there, here, there, there, here)
         'EX'    => ['pos' => 'adv', 'advtype' => 'ex'],
         # interjection
-        # examples: le (no)
+        # examples: le (no), e, bye
         'II'    => ['pos' => 'int'],
         # modifier, adjective
-        # examples: Malti, oħra, aktar, aħħar, Maltija (Maltese, other)
+        # examples: oħra, ieħor, iżjed, aktar, istess (other, other, more, more, same)
         'MJ'    => ['pos' => 'adj'],
         # modifier, adverb
-        # examples: kif, ukoll, bħala, fejn, permezz (as, well, as, where, through)
+        # examples: skont, kif, meta, bħala, hekk (according, how, where/when, as, so)
         'MV'    => ['pos' => 'adv'],
         # numeral, cardinal
         # both expressed in words and in digits
@@ -89,12 +89,12 @@ around BUILDARGS => sub
         # numeral, cardinal, intransitive (i.e. the number is a label of something, no counted noun follows)
         # examples: 5, 1968, 1984, 1791, 1998
         # all examples found are numbers expressed using digits, although it is probably not guaranteed
-        'NCI'   => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'digit'],
+        'NCI'   => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'digit', 'other' => {'cardtype' => 'intr'}],
         # numeral, cardinal, transitive
-        # examples: ###!!!???
-        'NCT'   => ['pos' => 'num', 'numtype' => 'card'],
+        # no occurrence in the corpus
+        #'NCT'   => ['pos' => 'num', 'numtype' => 'card'],
         # common noun
-        # examples: Università, lingwa, mod, istudenti, tagħlim (University, language, way, students, teaching)
+        # examples: persuna, lingwa, mod, istudenti, tagħlim (person, language, way, students, teaching)
         'NN'    => ['pos' => 'noun', 'nountype' => 'com'],
         # numeral, ordinal
         # examples: ewwel, tieni, tielet, erbgħin, għaxar (first, second, third, fifth, tenth)
@@ -103,7 +103,8 @@ around BUILDARGS => sub
         # examples: Vassalli, Malta, Għawdex, Kummerċ, Ġust (Vassalli, Malta, Gozo, Trade, Fair)
         'NP'    => ['pos' => 'noun', 'nountype' => 'prop'],
         # initial in proper name
-        'NPI'   => ['pos' => 'noun', 'nountype' => 'prop', 'abbr' => 'abbr'],
+        # no occurrence in the corpus
+        #'NPI'   => ['pos' => 'noun', 'nountype' => 'prop', 'abbr' => 'abbr'],
         # verbal negator
         # examples: ma, mhux, m', mhix, mhuwiex (not, not, not, not, not)
         'NV'    => ['pos' => 'part', 'negativeness' => 'neg'],
@@ -113,7 +114,7 @@ around BUILDARGS => sub
         # not documented; perhaps the same as PAC?
         # examples: għad (yet)
         # there are only three occurrences of għad/PA, and there are 17 occurrences of għad/PAC; is PA a tagging error?
-        'PA'    => ['pos' => 'part'],
+        #'PA'    => ['pos' => 'part'],
         # particle, aspect marker, continuous aspect
         # examples: qed, għad, għadx (still)
         'PAC'   => ['pos' => 'part', 'aspect' => 'prog'],
@@ -153,13 +154,14 @@ around BUILDARGS => sub
         'PW'    => ['pos' => 'noun|adj', 'prontype' => 'int'],
         # residual, acronym
         # examples: Dr, ICT, Prof., UE, PARC
-        'RA'    => ['pos' => 'noun', 'abbr' => 'abbr'],
+        'RA'    => ['pos' => 'noun', 'nountype' => 'prop', 'abbr' => 'abbr'],
         # residual, abbreviation
         # examples: ..., Ltd, Ed, GĦST, ICT
         'RB'    => ['abbr' => 'abbr'],
         # residual, date
-        # examples: ###!!!???
-        'RD'    => ['pos' => 'num'],
+        # examples: 13, 631, 22, 158, 33
+        # this tag is not restricted to dates, it appears e.g. in "artikolu 631" (article 631)
+        'RD'    => ['pos' => 'num', 'numtype' => 'card', 'other' => {'cardtype' => 'date'}],
         # residual, formula, mathematical symbol
         'RFR'   => ['pos' => 'sym'],
         # residual, foreign word
@@ -167,16 +169,17 @@ around BUILDARGS => sub
         'RFW'   => ['foreign' => 'foreign'],
         # residual, honorific
         # examples: Sur, San, Dun, European, Fr
-        'RH'    => ['pos' => 'noun', 'other' => {'nountype' => 'title'}],
+        'RH'    => ['pos' => 'noun', 'nountype' => 'com', 'other' => {'nountype' => 'title'}],
         # residual, other
-        # examples: l, A, s, a, d
+        # examples: a, b, S, A, d
         'RO'    => [],
         # residual, other symbol
         # III, II, V, I, XVIII
         # all examples observed in the corpus are Roman numerals
         'RS'    => ['pos' => 'num', 'numtype' => 'card|ord', 'numform' => 'roman'],
         # (unique, unassigned) multiword utterance
-        'UAM'   => [],
+        # no occurrence in the corpus
+        #'UAM'   => [],
         # verb, auxiliary
         # examples: kien, kienu, kienet, jkun, tkun (was, were, would, be, be)
         'VA'    => ['pos' => 'verb', 'verbtype' => 'aux'],
@@ -184,7 +187,7 @@ around BUILDARGS => sub
         # inflected forms of the preposition 'għand', e.g. 'għandu' = at/to him = he has
         # past tense: kellu = kien ("he was") + l- + "to" = he had / he had to (if followed by verb)
         # examples: għandu, kellu, għandhom, għandha, kellhom (has, had, have, has, had)
-        'VG'    => ['pos' => 'verb', 'other' => {'verbtype' => 'pseudohave'}],
+        'VG'    => ['pos' => 'verb', 'other' => {'verbtype' => 'have'}],
         # participle, active, or passive
         # examples: qiegħed, mgħallma, qegħdin, miftuħa, meqjus (being, taught, being, open, considered)
         'VP'    => ['pos' => 'verb', 'verbform' => 'part'],
@@ -195,74 +198,57 @@ around BUILDARGS => sub
     # Construct encode_map in the form expected by Atom.
     my %em =
     (
-        'hyph' => { 'hyph' => 'AFX',
-                              '@'    => { 'prontype' => { 'rel' => { 'poss' => { 'poss' => 'WP$',
-                                                                                 '@'    => { 'pos' => { 'adv' => 'WRB',
-                                                                                                        'adj' => 'WDT',
-                                                                                                        '@'   => 'WP' }}}},
-                                                          'int' => { 'poss' => { 'poss' => 'WP$',
-                                                                                 '@'    => { 'pos' => { 'adv' => 'WRB',
-                                                                                                        'adj' => 'WDT',
-                                                                                                        '@'   => 'WP' }}}},
-                                                          'prs' => { 'poss' => { 'poss' => 'PRP$',
-                                                                                 '@'    => 'PRP' }},
-                                                          '@'   => { 'pos' => { 'noun' => { 'nountype' => { 'prop' => { 'number' => { 'plur' => 'NNPS',
-                                                                                                                                      '@'    => 'NNP' }},
-                                                                                                            '@'    => { 'number' => { 'plur' => 'NNS',
-                                                                                                                                      '@'    => 'NN' }}}},
-                                                                                'adj'  => { 'adjtype' => { 'pdt' => 'PDT',
-                                                                                                           '@'   => { 'prontype' => { ''  => { 'degree' => { 'sup'  => 'JJS',
-                                                                                                                                               'comp' => 'JJR',
-                                                                                                                                               '@'    => 'JJ' }},
-                                                                                                                                      '@' => 'DT' }}}},
-                                                                                'num'  => 'CD',
-                                                                                'verb' => { 'verbtype' => { 'mod' => 'MD',
-                                                                                                            '@'   => { 'verbform' => { 'part' => { 'tense' => { 'pres' => 'VBG',
-                                                                                                                                                                '@'    => { 'aspect' => { 'imp'  => 'VBG',
-                                                                                                                                                                                          'prog' => 'VBG',
-                                                                                                                                                                                          '@'    => 'VBN' }}}},
-                                                                                                                                       '@'    => { 'tense' => { 'past' => 'VBD',
-                                                                                                                                                                'pres' => { 'number' => { 'sing' => { 'person' => { '3' => 'VBZ',
-                                                                                                                                                                                                                    '@' => 'VBP' }},
-                                                                                                                                                                                          '@'    => 'VBP' }},
-                                                                                                                                                                '@'    => 'VB' }}}}}},
-                                                                                'adv'  => { 'advtype' => { 'ex' => 'EX',
-                                                                                                           '@'  => { 'degree' => { 'sup'  => 'RBS',
-                                                                                                                                   'comp' => 'RBR',
-                                                                                                                                   '@'    => 'RB' }}}},
-                                                                                # IN is either preposition or subordinating conjunction
-                                                                                # TO is either preposition or infinitive mark
-                                                                                'adp'  => 'IN',
-                                                                                'conj' => { 'conjtype' => { 'sub' => 'IN',
-                                                                                                            '@'   => 'CC' }},
-                                                                                'part' => { 'poss' => { 'poss' => 'POS',
-                                                                                                        '@'    => { 'verbform' => { 'inf' => 'TO',
-                                                                                                                                    '@'   => { 'parttype' => { 'inf' => 'TO',
-                                                                                                                                                               '@'   => 'RP' }}}}}},
-                                                                                'int'  => 'UH',
-                                                                                'punc' => { 'numtype' => { 'ord' => 'LS',
-                                                                                                           '@'   => { 'punctype' => { 'peri' => '.',
-                                                                                                                                      'qest' => '.',
-                                                                                                                                      'excl' => '.',
-                                                                                                                                      'comm' => ',',
-                                                                                                                                      'brck' => { 'puncside' => { 'fin' => '-RRB-',
-                                                                                                                                                                  '@'   => '-LRB-' }},
-                                                                                                                                      'quot' => { 'puncside' => { 'fin' => "''",
-                                                                                                                                                                  '@'   => "``" }},
-                                                                                                                                      # This tag is new in PennBioIE. In older data hyphens are tagged ":".
-                                                                                                                                      'dash' => 'HYPH',
-                                                                                                                                      '@'    => ':' }}}},
-                                                                                'sym'  => { 'other/symtype' => { 'currency'   => '$',
-                                                                                                                 'numbersign' => "\#",
-                                                                                                                 '@'          => 'SYM' }},
-                                                                                '@'    => { 'foreign' => { 'foreign' => 'FW',
-                                                                                                           '@'       => 'NIL' }}}}}}}
+        'prontype' => { 'art' => { 'pos' => { 'adp' => 'PRPC',
+                                              '@'   => 'DDC' }},
+                        'dem' => 'PD',
+                        'ind' => { 'number' => { 'sing' => 'DS',
+                                                 'plur' => 'DP',
+                                                 '@'    => 'PI' }},
+                        'tot' => 'PI',
+                        'neg' => 'PI',
+                        'int' => 'PW',
+                        'rel' => 'PW',
+                        'prs' => { 'poss' => { 'poss' => 'PT',
+                                               '@'    => { 'reflex' => { 'reflex' => 'PR',
+                                                                         '@'      => 'PP' }}}},
+                        '@'   => { 'pos' => { 'noun' => { 'nountype' => { 'prop' => { 'abbr' => { 'abbr' => 'RA',
+                                                                                                  '@'    => 'NP' }},
+                                                                          '@'    => { 'other/nountype' => { 'title' => 'RH',
+                                                                                                            '@'     => 'NN' }}}},
+                                              'adj'  => { 'numtype' => { 'ord' => 'NO',
+                                                                         '@'   => 'MJ' }},
+                                              'num'  => { 'other/cardtype' => { 'intr' => 'NCI',
+                                                                                'date' => 'RD',
+                                                                                '@'    => { 'numform' => { 'roman' => 'RS',
+                                                                                                           '@'     => { 'numvalue' => { '1' => 'NW',
+                                                                                                                                        '@' => 'NC' }}}}}},
+                                              'verb' => { 'verbtype' => { 'aux' => 'VA',
+                                                                          '@'   => { 'other/verbtype' => { 'have' => 'VG',
+                                                                                                           '@'    => { 'verbform' => { 'part' => 'VP',
+                                                                                                                                       '@'    => 'VV' }}}}}},
+                                              'adv'  => { 'advtype' => { 'ex' => 'EX',
+                                                                         '@'  => 'MV' }},
+                                              'adp'  => { 'adpostype' => { 'preppron' => 'PMP',
+                                                                           '@'        => 'PRP' }},
+                                              'conj' => { 'conjtype' => { 'sub'  => { 'other/conjtype' => { 'cmp' => 'CMP',
+                                                                                                            '@'   => 'CS' }},
+                                                                          '@'    => { 'other/conjtype' => { 'cr'  => 'CR',
+                                                                                                            '@'   => 'CC' }}}},
+                                              'part' => { 'negativeness' => { 'neg' => 'NV',
+                                                                              '@'   => { 'aspect' => { 'pro' => 'PAF',
+                                                                                                       '@'   => 'PAC' }}}},
+                                              'int'  => 'II',
+                                              'sym'  => 'RFR',
+                                              'punc' => 'PUN',
+                                              '@'    => { 'abbr' => { 'abbr' => 'RB',
+                                                                      '@'    => { 'foreign' => { 'foreign' => 'RFW',
+                                                                                                 '@'       => 'RO' }}}}}}}
     );
     # Now add the references to the attribute hash.
     $attr->{surfeature} = 'pos';
     $attr->{decode_map} = \%dm;
     $attr->{encode_map} = \%em;
-    $attr->{tagset}     = 'en::penn';
+    $attr->{tagset}     = 'mt::mlss';
     return $attr;
 };
 
@@ -278,7 +264,7 @@ sub decode
     my $self = shift;
     my $tag = shift;
     my $fs = $self->SUPER::decode($tag);
-    $fs->set_tagset('en::penn');
+    $fs->set_tagset('mt::mlss');
     return $fs;
 }
 
