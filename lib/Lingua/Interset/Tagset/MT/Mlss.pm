@@ -1,6 +1,11 @@
 # ABSTRACT: Driver for the tagset of the Maltese Language Software Services (TnT tagger).
 # Copyright © 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
+# Part-of-Speech tagger for Maltese (including description of tags)
+# http://metanet4u.research.um.edu.mt/POS.jsp
+# MLRS (Maltese Language Resource Server) corpus
+# http://mlrs.research.um.edu.mt/index.php?page=31
+
 package Lingua::Interset::Tagset::MT::Mlss;
 use strict;
 use warnings;
@@ -287,6 +292,8 @@ or
 
 Interset driver for the part-of-speech tagset of the Maltese Language Software Services
 (TnT tagger; see L<http://metanet4u.research.um.edu.mt/POS.jsp>).
+The tagset is used in the MLRS (Maltese Language Resource Server) corpus,
+L<http://mlrs.research.um.edu.mt/index.php?page=31>.
 
 =head1 SEE ALSO
 
