@@ -2323,7 +2323,7 @@ sub as_string_conllx
     {
         my $f = $_;
         my $v = $self->get_joined($f);
-        $v =~ m/\|/,/g;
+        $v =~ s/\|/,/g;
         "$f=$v";
     }
     (@features);
