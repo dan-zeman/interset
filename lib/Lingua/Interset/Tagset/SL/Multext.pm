@@ -5,7 +5,7 @@
 package Lingua::Interset::Tagset::SL::Multext;
 use strict;
 use warnings;
-our $VERSION = '2.047';
+our $VERSION = '2.048';
 
 use utf8;
 use open ':utf8';
