@@ -2260,6 +2260,15 @@ sub matches
 =method as_string()
 
 Generates a textual representation of the feature structure so it can be printed.
+Features are in a predefined (but not alphabetical) order. Complex values of
+the C<other> feature are serialized in depth. If a feature has multiple values,
+they are sorted alphabetically and delimited by the vertical bar character.
+What follows is a sample output for the C<cs::pdt> tags C<NNMS1-----A---->,
+C<Ck-P1----------> and C<VpQW---XR-AA--->:
+
+  [pos="noun", negativeness="pos", gender="masc", animateness="anim", number="sing", case="nom", tagset="cs::pdt"]
+  [pos="adj", numtype="ord", number="plur", case="nom", tagset="cs::pdt", other={"numtype" => "suffix"}]
+  [pos="verb", negativeness="pos", gender="fem|neut", number="plur|sing", verbform="part", tense="past", voice="act", tagset="cs::pdt"]
 
 =cut
 sub as_string
@@ -2281,6 +2290,44 @@ sub as_string
     }
     (grep{$self->{$_} ne ''}(known_features()));
     return "[".join(', ', @assignments)."]";
+}
+
+
+
+#------------------------------------------------------------------------------
+# Generates text from contents of feature structure in the form used in the
+# FEATS column of the CoNLL-X file format. The tagset and other features will
+# be omitted. Multivalues will be separated by a comma because the vertical bar
+# separates features.
+#------------------------------------------------------------------------------
+=method as_string_conllx()
+
+Generates a textual representation of the feature structure in the form used in
+the FEATS column of the CoNLL-X file format. The C<tagset> and C<other>
+features are omitted. Features are in predefined (but not alphabetical) order.
+If a feature has multiple values, they are sorted alphabetically and delimited
+by comma (because the vertical bar is used to separate features).
+What follows is a sample output for the C<cs::pdt> tags C<NNMS1-----A---->,
+C<Ck-P1----------> and C<VpQW---XR-AA--->:
+
+  pos=noun|negativeness=pos|gender=masc|animateness=anim|number=sing|case=nom
+  pos=adj|numtype=ord|number=plur|case=nom
+  pos=verb|negativeness=pos|gender=fem,neut|number=plur,sing|verbform=part|tense=past|voice=act
+
+=cut
+sub as_string_conllx
+{
+    my $self = shift;
+    my @features = grep {$_ ne 'tagset' && $_ ne 'other' && defined($self->{$_}) && $self->{$_} ne ''} known_features();
+    my @assignments = map
+    {
+        my $f = $_;
+        my $v = $self->get_joined($f);
+        $v =~ m/\|/,/g;
+        "$f=$v";
+    }
+    (@features);
+    return join('|', @assignments);
 }
 
 

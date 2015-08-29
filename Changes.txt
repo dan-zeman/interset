@@ -1,5 +1,12 @@
 {{$NEXT}}
 
+Interface:
+* FeatureStructure has a new serialization method as_string_conllx() that
+  returns feature-value pairs in a form suitable for the FEATS column of the
+  CoNLL-X file format.
+
+
+
 2.046     2015-08-25 16:49:06+02:00 Europe/Prague
 
 Drivers:
@@ -7,7 +14,7 @@ Drivers:
 
 Fixes:
 * PL::Ipipan: two new tags for abbreviations (see the Polish Treebank).
-* FeatureStructure::add_ufeatures() works treats unknown language-specific features
+* FeatureStructure::add_ufeatures() treats unknown language-specific features
   more correctly and does not trigger warnings any more.
 
 
