@@ -4,6 +4,8 @@ Interface:
 * FeatureStructure has a new serialization method as_string_conllx() that
   returns feature-value pairs in a form suitable for the FEATS column of the
   CoNLL-X file format.
+* FeatureStructure has a new method get_nonempty_features(). It returns the
+  list of names of features whose values are not empty.
 
 
 

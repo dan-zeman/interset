@@ -1530,7 +1530,28 @@ sub clear
 
 
 #------------------------------------------------------------------------------
-# Analogically, get() is a generic feature value getter.
+# Returns a list of names of (known) features whose values are not empty.
+#------------------------------------------------------------------------------
+=method get_nonempty_features()
+
+Returns a list of names of features whose values are not empty.
+
+  my @features = $fs->get_nonempty_features();
+  my @values   = map { $fs->get_joined ($_) } @features;
+
+The features are returned in a pre-defined (but not alphabetical) order.
+
+=cut
+sub get_nonempty_features
+{
+    my $self = shift;
+    return grep {defined($self->{$_}) && $self->{$_} ne ''} known_features();
+}
+
+
+
+#------------------------------------------------------------------------------
+# get() is a generic feature value getter.
 #------------------------------------------------------------------------------
 =method get()
 
@@ -1619,7 +1640,10 @@ sub get_list
 
   my $hashref = $fs->get_hash();
 
-Creates a hash of all features and their values.
+Creates a hash of all non-empty features and their values.
+The values are identical to what the C<get($feature)> method would return;
+in particular, the value may be a reference to an array.
+
 Returns a reference to the hash.
 
 =cut
@@ -1632,7 +1656,7 @@ sub get_hash
         my $value = $self->get($feature);
         if(defined($value) && $value ne '')
         {
-            $fs{$feature} = $self->get($feature);
+            $fs{$feature} = $value;
         }
     }
     return \%fs;
