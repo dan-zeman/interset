@@ -2314,6 +2314,9 @@ C<Ck-P1----------> and C<VpQW---XR-AA--->:
   pos=adj|numtype=ord|number=plur|case=nom
   pos=verb|negativeness=pos|gender=fem,neut|number=plur,sing|verbform=part|tense=past|voice=act
 
+If there the values of all features (including C<pos>) are empty, the method
+returns the underscore character. Thus the result is never undefined or empty.
+
 =cut
 sub as_string_conllx
 {
@@ -2327,7 +2330,7 @@ sub as_string_conllx
         "$f=$v";
     }
     (@features);
-    return join('|', @assignments);
+    return (scalar(@assignments) > 0) ? join('|', @assignments) : '_';
 }
 
 
