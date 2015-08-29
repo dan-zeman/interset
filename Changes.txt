@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+2.047     2015-08-29 18:19:17+02:00 Europe/Prague
+
 Interface:
 * FeatureStructure has a new serialization method as_string_conllx() that
   returns feature-value pairs in a form suitable for the FEATS column of the
