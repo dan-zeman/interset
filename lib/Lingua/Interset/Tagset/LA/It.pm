@@ -559,1664 +559,1506 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
-# Tags were collected from the corpus: total 419 tags.
+# Tags were collected from the corpus: total 1492 tags.
 #------------------------------------------------------------------------------
 sub list
 {
     my $self = shift;
     my $list = <<end_of_list
-1       A1      grn1|casA|gen1
-1       A1      grn1|casA|gen1|varA
-1       A1      grn1|casA|gen1|vgr1
-1       A1      grn1|casA|gen2
-1       A1      grn1|casA|gen2|varA
-1       A1      grn1|casA|gen2|vgr1
-1       A1      grn1|casA|gen2|vgr2
-1       A1      grn1|casA|gen3
-1       A1      grn1|casA|gen3|varA
-1       A1      grn1|casB|gen1
-1       A1      grn1|casB|gen1|vgr1
-1       A1      grn1|casB|gen2
-1       A1      grn1|casB|gen2|vgr1
-1       A1      grn1|casB|gen2|vgr2
-1       A1      grn1|casB|gen3
-1       A1      grn1|casC|gen1
-1       A1      grn1|casC|gen1|vgr1
-1       A1      grn1|casC|gen2
-1       A1      grn1|casC|gen2|vgr1
-1       A1      grn1|casC|gen3
-1       A1      grn1|casD|gen1
-1       A1      grn1|casD|gen1|varA
-1       A1      grn1|casD|gen2
-1       A1      grn1|casD|gen2|varA
-1       A1      grn1|casD|gen2|vgr1
-1       A1      grn1|casD|gen2|vgr2
-1       A1      grn1|casD|gen3
-1       A1      grn1|casD|gen3|varA
-1       A1      grn1|casE|gen1
-1       A1      grn1|casF|gen1
-1       A1      grn1|casF|gen2
-1       A1      grn1|casF|gen2|varA
-1       A1      grn1|casF|gen2|vgr1
-1       A1      grn1|casF|gen2|vgr2
-1       A1      grn1|casF|gen3
-1       A1      grn1|casG
-1       A1      grn1|casG|varA
-1       A1      grn1|casG|varC
-1       A1      grn1|casJ|gen1
-1       A1      grn1|casJ|gen1|vgr1
-1       A1      grn1|casJ|gen1|vgr2
-1       A1      grn1|casJ|gen2
-1       A1      grn1|casJ|gen2|varA
-1       A1      grn1|casJ|gen2|vgr1
-1       A1      grn1|casJ|gen3
-1       A1      grn1|casJ|gen3|varA
-1       A1      grn1|casJ|gen3|vgr1
-1       A1      grn1|casK|gen1
-1       A1      grn1|casK|gen1|vgr2
-1       A1      grn1|casK|gen2
-1       A1      grn1|casK|gen2|vgr1
-1       A1      grn1|casK|gen3
-1       A1      grn1|casL|gen1
-1       A1      grn1|casL|gen2
-1       A1      grn1|casL|gen2|vgr1
-1       A1      grn1|casL|gen3
-1       A1      grn1|casM|gen1
-1       A1      grn1|casM|gen2
-1       A1      grn1|casM|gen2|varA
-1       A1      grn1|casM|gen2|vgr1
-1       A1      grn1|casM|gen3
-1       A1      grn1|casM|gen3|vgr1
-1       A1      grn1|casO|gen1
-1       A1      grn1|casO|gen1|vgr1
-1       A1      grn1|casO|gen2
-1       A1      grn1|casO|gen2|vgr1
-1       A1      grn1|casO|gen3
-1       A1      grn1|casO|gen3|vgr1
-1       A1      grn1|gen2
-1       A1      grn2|casA|gen1
-1       A1      grn2|casA|gen2
-1       A1      grn2|casA|gen3
-1       A1      grn2|casB|gen1
-1       A1      grn2|casB|gen2
-1       A1      grn2|casB|gen3
-1       A1      grn2|casC|gen1
-1       A1      grn2|casC|gen2
-1       A1      grn2|casC|gen3
-1       A1      grn2|casD|gen1
-1       A1      grn2|casD|gen2
-1       A1      grn2|casD|gen3
-1       A1      grn2|casF|gen1
-1       A1      grn2|casF|gen2
-1       A1      grn2|casF|gen3
-1       A1      grn2|casG
-1       A1      grn2|casJ|gen1
-1       A1      grn2|casJ|gen2
-1       A1      grn2|casJ|gen3
-1       A1      grn2|casK|gen1
-1       A1      grn2|casK|gen2
-1       A1      grn2|casK|gen3
-1       A1      grn2|casL|gen1
-1       A1      grn2|casL|gen2
-1       A1      grn2|casL|gen3
-1       A1      grn2|casM|gen1
-1       A1      grn2|casM|gen2
-1       A1      grn2|casM|gen3
-1       A1      grn2|casO|gen1
-1       A1      grn2|casO|gen2
-1       A1      grn2|casO|gen3
-1       A1      grn3|casA|gen1
-1       A1      grn3|casA|gen2
-1       A1      grn3|casA|gen2|vgr1
-1       A1      grn3|casA|gen3
-1       A1      grn3|casB|gen1
-1       A1      grn3|casB|gen2
-1       A1      grn3|casB|gen3
-1       A1      grn3|casC|gen1
-1       A1      grn3|casC|gen2
-1       A1      grn3|casC|gen3
-1       A1      grn3|casD|gen1
-1       A1      grn3|casD|gen2
-1       A1      grn3|casD|gen3
-1       A1      grn3|casE|gen1
-1       A1      grn3|casF|gen1
-1       A1      grn3|casF|gen2
-1       A1      grn3|casF|gen3
-1       A1      grn3|casG
-1       A1      grn3|casJ|gen1
-1       A1      grn3|casJ|gen2
-1       A1      grn3|casJ|gen3
-1       A1      grn3|casJ|gen3|varA
-1       A1      grn3|casK|gen1
-1       A1      grn3|casK|gen2
-1       A1      grn3|casK|gen3
-1       A1      grn3|casL|gen3
-1       A1      grn3|casM|gen1
-1       A1      grn3|casM|gen2
-1       A1      grn3|casM|gen3
-1       A1      grn3|casO|gen2
-1       A1      grn3|casO|gen3
-1       B1      grn1|casA|gen1
-1       B1      grn1|casA|gen1|vgr1
-1       B1      grn1|casA|gen1|vgr2
-1       B1      grn1|casA|gen2
-1       B1      grn1|casA|gen2|vgr1
-1       B1      grn1|casA|gen2|vgr2
-1       B1      grn1|casA|gen3
-1       B1      grn1|casA|gen3|comH
-1       B1      grn1|casA|gen3|vgr1
-1       B1      grn1|casA|gen3|vgr2
-1       B1      grn1|casB|gen1
-1       B1      grn1|casB|gen1|vgr1
-1       B1      grn1|casB|gen1|vgr2
-1       B1      grn1|casB|gen2
-1       B1      grn1|casB|gen3
-1       B1      grn1|casB|gen3|vgr1
-1       B1      grn1|casB|gen3|vgr2
-1       B1      grn1|casC|gen1
-1       B1      grn1|casC|gen1|vgr1
-1       B1      grn1|casC|gen2
-1       B1      grn1|casC|gen3
-1       B1      grn1|casC|gen3|vgr1
-1       B1      grn1|casC|gen3|vgr2
-1       B1      grn1|casD|gen1
-1       B1      grn1|casD|gen1|vgr1
-1       B1      grn1|casD|gen2
-1       B1      grn1|casD|gen2|vgr2
-1       B1      grn1|casD|gen3
-1       B1      grn1|casD|gen3|vgr1
-1       B1      grn1|casD|gen3|vgr2
-1       B1      grn1|casE|gen1
-1       B1      grn1|casE|gen1|comH
-1       B1      grn1|casE|gen1|vgr1
-1       B1      grn1|casF|gen1
-1       B1      grn1|casF|gen1|vgr1
-1       B1      grn1|casF|gen3
-1       B1      grn1|casF|gen3|vgr1
-1       B1      grn1|casF|gen3|vgr2
-1       B1      grn1|casG
-1       B1      grn1|casG|comH
-1       B1      grn1|casG|comH|vgr1
-1       B1      grn1|casG|vgr1
-1       B1      grn1|casG|vgr2
-1       B1      grn1|casJ|gen1
-1       B1      grn1|casJ|gen1|vgr1
-1       B1      grn1|casJ|gen1|vgr2
-1       B1      grn1|casJ|gen2
-1       B1      grn1|casJ|gen3
-1       B1      grn1|casJ|gen3|vgr1
-1       B1      grn1|casJ|gen3|vgr2
-1       B1      grn1|casK|gen1
-1       B1      grn1|casK|gen1|vgr1
-1       B1      grn1|casK|gen1|vgr2
-1       B1      grn1|casK|gen2
-1       B1      grn1|casK|gen3
-1       B1      grn1|casK|gen3|vgr1
-1       B1      grn1|casK|gen3|vgr2
-1       B1      grn1|casL|gen1
-1       B1      grn1|casL|gen1|vgr1
-1       B1      grn1|casL|gen3
-1       B1      grn1|casL|gen3|vgr1
-1       B1      grn1|casM|gen1
-1       B1      grn1|casM|gen1|vgr1
-1       B1      grn1|casM|gen3
-1       B1      grn1|casM|gen3|vgr1
-1       B1      grn1|casM|gen3|vgr2
-1       B1      grn1|casO|gen1
-1       B1      grn1|casO|gen1|vgr1
-1       B1      grn1|casO|gen2
-1       B1      grn1|casO|gen2|vgr1
-1       B1      grn1|casO|gen3
-1       B1      grn1|casO|gen3|vgr1
-1       B1      grn1|casO|gen3|vgr2
-1       B1      grn2|casA|gen3|vgr1
-1       B1      grn2|casD|gen3|vgr1
-1       B1      grn2|casG|vgr1
-1       B1      grn3|casA|gen1
-1       B1      grn3|casA|gen2
-1       B1      grn3|casA|gen3
-1       B1      grn3|casB|gen1
-1       B1      grn3|casB|gen3
-1       B1      grn3|casC|gen1
-1       B1      grn3|casC|gen3
-1       B1      grn3|casD|gen1
-1       B1      grn3|casD|gen2
-1       B1      grn3|casD|gen3
-1       B1      grn3|casE|gen1
-1       B1      grn3|casF|gen1
-1       B1      grn3|casF|gen3
-1       B1      grn3|casG
-1       B1      grn3|casG|comQ
-1       B1      grn3|casG|vgr1
-1       B1      grn3|casJ|gen1
-1       B1      grn3|casJ|gen3
-1       B1      grn3|casJ|gen3|varA
-1       B1      grn3|casK|gen1
-1       B1      grn3|casK|gen3
-1       B1      grn3|casL|gen3
-1       B1      grn3|casM|gen1
-1       B1      grn3|casM|gen3
-1       B1      grn3|casO|gen3
-1       C1      grn1|casA|gen1
-1       C1      grn1|casA|gen1|vgr1
-1       C1      grn1|casA|gen1|vgr2
-1       C1      grn1|casA|gen2
-1       C1      grn1|casA|gen2|vgr1
-1       C1      grn1|casA|gen2|vgr2
-1       C1      grn1|casA|gen3
-1       C1      grn1|casA|gen3|vgr1
-1       C1      grn1|casB|gen1
-1       C1      grn1|casB|gen1|vgr1
-1       C1      grn1|casB|gen1|vgr3
-1       C1      grn1|casB|gen1|vgr4
-1       C1      grn1|casB|gen2
-1       C1      grn1|casB|gen2|vgr1
-1       C1      grn1|casB|gen2|vgr2
-1       C1      grn1|casB|gen3
-1       C1      grn1|casB|gen3|vgr1
-1       C1      grn1|casB|gen3|vgr2
-1       C1      grn1|casC|gen1
-1       C1      grn1|casC|gen1|vgr1
-1       C1      grn1|casC|gen1|vgr2
-1       C1      grn1|casC|gen2
-1       C1      grn1|casC|gen2|vgr1
-1       C1      grn1|casC|gen3
-1       C1      grn1|casC|gen3|comQ
-1       C1      grn1|casC|gen3|vgr1
-1       C1      grn1|casD|gen1
-1       C1      grn1|casD|gen1|vgr1
-1       C1      grn1|casD|gen1|vgr3
-1       C1      grn1|casD|gen2
-1       C1      grn1|casD|gen2|vgr1
-1       C1      grn1|casD|gen2|vgr2
-1       C1      grn1|casD|gen3
-1       C1      grn1|casD|gen3|comH
-1       C1      grn1|casD|gen3|varA
-1       C1      grn1|casD|gen3|vgr1
-1       C1      grn1|casE|gen1
-1       C1      grn1|casF|gen1
-1       C1      grn1|casF|gen1|comH
-1       C1      grn1|casF|gen1|vgr1
-1       C1      grn1|casF|gen2
-1       C1      grn1|casF|gen2|comH
-1       C1      grn1|casF|gen2|comH|vgr1
-1       C1      grn1|casF|gen2|comH|vgr2
-1       C1      grn1|casF|gen2|vgr1
-1       C1      grn1|casF|gen3
-1       C1      grn1|casF|gen3|comH
-1       C1      grn1|casF|gen3|comH|vgr1
-1       C1      grn1|casF|gen3|vgr1
-1       C1      grn1|casG
-1       C1      grn1|casG|vgr1
-1       C1      grn1|casG|vgr2
-1       C1      grn1|casJ|gen1
-1       C1      grn1|casJ|gen1|vgr1
-1       C1      grn1|casJ|gen2
-1       C1      grn1|casJ|gen2|vgr1
-1       C1      grn1|casJ|gen2|vgr2
-1       C1      grn1|casJ|gen3
-1       C1      grn1|casJ|gen3|vgr1
-1       C1      grn1|casK|gen1
-1       C1      grn1|casK|gen1|vgr1
-1       C1      grn1|casK|gen2
-1       C1      grn1|casK|gen2|vgr1
-1       C1      grn1|casK|gen3
-1       C1      grn1|casK|gen3|vgr1
-1       C1      grn1|casL|gen1
-1       C1      grn1|casL|gen1|vgr1
-1       C1      grn1|casL|gen2
-1       C1      grn1|casL|gen2|vgr1
-1       C1      grn1|casL|gen2|vgr2
-1       C1      grn1|casL|gen3
-1       C1      grn1|casL|gen3|vgr1
-1       C1      grn1|casM|gen1
-1       C1      grn1|casM|gen1|vgr1
-1       C1      grn1|casM|gen2
-1       C1      grn1|casM|gen2|vgr1
-1       C1      grn1|casM|gen2|vgr2
-1       C1      grn1|casM|gen3
-1       C1      grn1|casM|gen3|vgr1
-1       C1      grn1|casO|gen1
-1       C1      grn1|casO|gen1|vgr1
-1       C1      grn1|casO|gen1|vgr2
-1       C1      grn1|casO|gen2
-1       C1      grn1|casO|gen2|vgr1
-1       C1      grn1|casO|gen2|vgr2
-1       C1      grn1|casO|gen3
-1       C1      grn1|casO|gen3|vgr1
-1       C1      grn2|casA|gen1
-1       C1      grn2|casA|gen1|vgr1
-1       C1      grn2|casA|gen1|vgr2
-1       C1      grn2|casA|gen2
-1       C1      grn2|casA|gen2|vgr1
-1       C1      grn2|casA|gen2|vgr2
-1       C1      grn2|casA|gen3
-1       C1      grn2|casA|gen3|vgr1
-1       C1      grn2|casA|gen3|vgr2
-1       C1      grn2|casB|gen1
-1       C1      grn2|casB|gen1|vgr1
-1       C1      grn2|casB|gen2
-1       C1      grn2|casB|gen2|vgr1
-1       C1      grn2|casB|gen2|vgr2
-1       C1      grn2|casB|gen3
-1       C1      grn2|casC|gen1
-1       C1      grn2|casC|gen2
-1       C1      grn2|casC|gen3
-1       C1      grn2|casD|gen1
-1       C1      grn2|casD|gen1|vgr2
-1       C1      grn2|casD|gen2
-1       C1      grn2|casD|gen2|vgr1
-1       C1      grn2|casD|gen2|vgr2
-1       C1      grn2|casD|gen3
-1       C1      grn2|casD|gen3|vgr2
-1       C1      grn2|casF|gen1
-1       C1      grn2|casF|gen2
-1       C1      grn2|casF|gen2|vgr2
-1       C1      grn2|casF|gen3
-1       C1      grn2|casF|gen3|vgr2
-1       C1      grn2|casG
-1       C1      grn2|casG|vgr1
-1       C1      grn2|casJ|gen1
-1       C1      grn2|casJ|gen1|vgr2
-1       C1      grn2|casJ|gen2
-1       C1      grn2|casJ|gen3
-1       C1      grn2|casJ|gen3|vgr1
-1       C1      grn2|casK|gen1
-1       C1      grn2|casK|gen2
-1       C1      grn2|casK|gen3
-1       C1      grn2|casL|gen1
-1       C1      grn2|casL|gen2
-1       C1      grn2|casL|gen3
-1       C1      grn2|casM|gen1
-1       C1      grn2|casM|gen2
-1       C1      grn2|casM|gen3
-1       C1      grn2|casM|gen3|vgr2
-1       C1      grn2|casO|gen1
-1       C1      grn2|casO|gen2
-1       C1      grn2|casO|gen3
-1       C1      grn3|casG|vgr1
-1       D1      grn1|casA|gen1
-1       D1      grn1|casA|gen1|vgr1
-1       D1      grn1|casA|gen2
-1       D1      grn1|casA|gen3
-1       D1      grn1|casB|gen1
-1       D1      grn1|casB|gen1|vgr1
-1       D1      grn1|casB|gen2
-1       D1      grn1|casC|gen1
-1       D1      grn1|casC|gen2
-1       D1      grn1|casC|gen3
-1       D1      grn1|casD|gen1
-1       D1      grn1|casD|gen1|vgr1
-1       D1      grn1|casD|gen2
-1       D1      grn1|casD|gen3
-1       D1      grn1|casF|gen1
-1       D1      grn1|casF|gen1|vgr1
-1       D1      grn1|casF|gen2
-1       D1      grn1|casF|gen3
-1       D1      grn1|casG
-1       D1      grn1|casJ|gen1
-1       D1      grn1|casJ|gen3
-1       D1      grn1|casK|gen1
-1       D1      grn1|casK|gen2
-1       D1      grn1|casL|gen1
-1       D1      grn1|casM|gen1
-1       D1      grn1|casM|gen2
-1       D1      grn1|casO|gen1
-1       D1      grn1|casO|gen3
-1       E1      grn1|casA|gen1
-1       E1      grn1|casA|gen2
-1       E1      grn1|casA|gen2|vgr1
-1       E1      grn1|casB|gen1
-1       E1      grn1|casB|gen2
-1       E1      grn1|casC|gen2
-1       E1      grn1|casD|gen1
-1       E1      grn1|casD|gen2
-1       E1      grn1|casF|gen1
-1       E1      grn1|casF|gen2
-1       E1      grn1|casG
-1       E1      grn1|casJ|gen1
-1       E1      grn1|casJ|gen2
-1       E1      grn1|casK|gen1
-1       E1      grn1|casK|gen2
-1       E1      grn1|casK|gen3
-1       E1      grn1|casL|gen2
-1       E1      grn1|casM|gen1
-1       E1      grn1|casM|gen2
-1       E1      grn1|casO|gen1
-1       E1      grn1|casO|gen2
-1       F1      grn1|casA|gen1
-1       F1      grn1|casA|gen1|comH
-1       F1      grn1|casA|gen1|comM
-1       F1      grn1|casA|gen1|varA
-1       F1      grn1|casA|gen1|vgr1
-1       F1      grn1|casA|gen1|vgr2
-1       F1      grn1|casA|gen2
-1       F1      grn1|casA|gen2|comH
-1       F1      grn1|casA|gen2|comM
-1       F1      grn1|casA|gen2|comT
-1       F1      grn1|casA|gen2|varA
-1       F1      grn1|casA|gen2|vgr1
-1       F1      grn1|casA|gen2|vgr2
-1       F1      grn1|casA|gen3
-1       F1      grn1|casA|gen3|comH|vgr2
-1       F1      grn1|casA|gen3|comM
-1       F1      grn1|casA|gen3|comV
-1       F1      grn1|casA|gen3|varA
-1       F1      grn1|casA|gen3|vgr1
-1       F1      grn1|casA|gen3|vgr2
-1       F1      grn1|casB|gen1
-1       F1      grn1|casB|gen1|comH
-1       F1      grn1|casB|gen1|vgr1
-1       F1      grn1|casB|gen1|vgr2
-1       F1      grn1|casB|gen2
-1       F1      grn1|casB|gen2|comH
-1       F1      grn1|casB|gen2|vgr1
-1       F1      grn1|casB|gen2|vgr2
-1       F1      grn1|casB|gen2|vgr3
-1       F1      grn1|casB|gen3
-1       F1      grn1|casB|gen3|comH
-1       F1      grn1|casB|gen3|vgr1
-1       F1      grn1|casB|gen3|vgr2
-1       F1      grn1|casB|gen3|vgr3
-1       F1      grn1|casC|gen1
-1       F1      grn1|casC|gen1|comH
-1       F1      grn1|casC|gen1|vgr1
-1       F1      grn1|casC|gen2
-1       F1      grn1|casC|gen2|vgr1
-1       F1      grn1|casC|gen3
-1       F1      grn1|casC|gen3|comH
-1       F1      grn1|casD|gen1
-1       F1      grn1|casD|gen1|varA
-1       F1      grn1|casD|gen1|vgr1
-1       F1      grn1|casD|gen1|vgr2
-1       F1      grn1|casD|gen2
-1       F1      grn1|casD|gen2|comH|vgr2
-1       F1      grn1|casD|gen2|comM
-1       F1      grn1|casD|gen2|comQ
-1       F1      grn1|casD|gen2|comQ|vgr1
-1       F1      grn1|casD|gen2|varA
-1       F1      grn1|casD|gen2|vgr1
-1       F1      grn1|casD|gen2|vgr2
-1       F1      grn1|casD|gen3
-1       F1      grn1|casD|gen3|comH|vgr2
-1       F1      grn1|casD|gen3|varA
-1       F1      grn1|casD|gen3|vgr1
-1       F1      grn1|casD|gen3|vgr2
-1       F1      grn1|casE|gen1
-1       F1      grn1|casF|gen1
-1       F1      grn1|casF|gen1|comH
-1       F1      grn1|casF|gen1|comH|vgr2
-1       F1      grn1|casF|gen1|vgr1
-1       F1      grn1|casF|gen2
-1       F1      grn1|casF|gen2|comC
-1       F1      grn1|casF|gen2|comH
-1       F1      grn1|casF|gen2|comH|vgr2
-1       F1      grn1|casF|gen2|comT
-1       F1      grn1|casF|gen2|varA
-1       F1      grn1|casF|gen2|vgr1
-1       F1      grn1|casF|gen3
-1       F1      grn1|casF|gen3|comC
-1       F1      grn1|casF|gen3|comH
-1       F1      grn1|casF|gen3|comH|vgr2
-1       F1      grn1|casF|gen3|vgr1
-1       F1      grn1|casG
-1       F1      grn1|casG|varA
-1       F1      grn1|casG|varC
-1       F1      grn1|casG|vgr1
-1       F1      grn1|casJ|gen1
-1       F1      grn1|casJ|gen1|vgr1
-1       F1      grn1|casJ|gen1|vgr2
-1       F1      grn1|casJ|gen2
-1       F1      grn1|casJ|gen2|varA
-1       F1      grn1|casJ|gen2|vgr1
-1       F1      grn1|casJ|gen2|vgr2
-1       F1      grn1|casJ|gen3
-1       F1      grn1|casJ|gen3|varA
-1       F1      grn1|casJ|gen3|vgr1
-1       F1      grn1|casJ|gen3|vgr2
-1       F1      grn1|casK|gen1
-1       F1      grn1|casK|gen1|vgr1
-1       F1      grn1|casK|gen1|vgr2
-1       F1      grn1|casK|gen2
-1       F1      grn1|casK|gen2|comQ
-1       F1      grn1|casK|gen2|vgr1
-1       F1      grn1|casK|gen2|vgr2
-1       F1      grn1|casK|gen3
-1       F1      grn1|casK|gen3|vgr1
-1       F1      grn1|casK|gen3|vgr2
-1       F1      grn1|casL|gen1
-1       F1      grn1|casL|gen1|comC
-1       F1      grn1|casL|gen1|vgr1
-1       F1      grn1|casL|gen2
-1       F1      grn1|casL|gen2|vgr1
-1       F1      grn1|casL|gen3
-1       F1      grn1|casL|gen3|comH|vgr2
-1       F1      grn1|casL|gen3|vgr1
-1       F1      grn1|casM|gen1
-1       F1      grn1|casM|gen1|comH
-1       F1      grn1|casM|gen1|vgr1
-1       F1      grn1|casM|gen2
-1       F1      grn1|casM|gen2|comH
-1       F1      grn1|casM|gen2|varA
-1       F1      grn1|casM|gen2|vgr1
-1       F1      grn1|casM|gen3
-1       F1      grn1|casM|gen3|comH|vgr2
-1       F1      grn1|casM|gen3|vgr1
-1       F1      grn1|casM|gen3|vgr2
-1       F1      grn1|casO|gen1
-1       F1      grn1|casO|gen1|comC
-1       F1      grn1|casO|gen1|comH
-1       F1      grn1|casO|gen1|comH|vgr2
-1       F1      grn1|casO|gen1|vgr1
-1       F1      grn1|casO|gen1|vgr2
-1       F1      grn1|casO|gen2
-1       F1      grn1|casO|gen2|comC
-1       F1      grn1|casO|gen2|comH|vgr2
-1       F1      grn1|casO|gen2|vgr1
-1       F1      grn1|casO|gen3
-1       F1      grn1|casO|gen3|comH
-1       F1      grn1|casO|gen3|comH|vgr2
-1       F1      grn1|casO|gen3|vgr1
-1       G1      _
-1       G1      casA|gen3
-1       G1      casA|gen3|vgr1
-1       G1      casB|gen3
-1       G1      casC|gen3
-1       G1      casD|gen3
-1       G1      casD|gen3|vgr1
-1       G1      casF|gen3
-2       J2      modD|tem1|grp1|casA|gen1
-2       J2      modD|tem1|grp1|casA|gen1|vgr1
-2       J2      modD|tem1|grp1|casA|gen2
-2       J2      modD|tem1|grp1|casA|gen2|vgr1
-2       J2      modD|tem1|grp1|casA|gen3
-2       J2      modD|tem1|grp1|casB|gen1
-2       J2      modD|tem1|grp1|casB|gen1|vgr2
-2       J2      modD|tem1|grp1|casB|gen2
-2       J2      modD|tem1|grp1|casB|gen3
-2       J2      modD|tem1|grp1|casC|gen1
-2       J2      modD|tem1|grp1|casC|gen2
-2       J2      modD|tem1|grp1|casC|gen3
-2       J2      modD|tem1|grp1|casD|gen1
-2       J2      modD|tem1|grp1|casD|gen2
-2       J2      modD|tem1|grp1|casD|gen3
-2       J2      modD|tem1|grp1|casD|gen3|vgr2
-2       J2      modD|tem1|grp1|casF|gen1
-2       J2      modD|tem1|grp1|casF|gen2
-2       J2      modD|tem1|grp1|casF|gen3
-2       J2      modD|tem1|grp1|casG
-2       J2      modD|tem1|grp1|casJ|gen1
-2       J2      modD|tem1|grp1|casJ|gen1|vgr1
-2       J2      modD|tem1|grp1|casJ|gen2
-2       J2      modD|tem1|grp1|casJ|gen3
-2       J2      modD|tem1|grp1|casK|gen1
-2       J2      modD|tem1|grp1|casK|gen2
-2       J2      modD|tem1|grp1|casK|gen3
-2       J2      modD|tem1|grp1|casL|gen1
-2       J2      modD|tem1|grp1|casL|gen2
-2       J2      modD|tem1|grp1|casL|gen3
-2       J2      modD|tem1|grp1|casM|gen1
-2       J2      modD|tem1|grp1|casM|gen2
-2       J2      modD|tem1|grp1|casM|gen3
-2       J2      modD|tem1|grp1|casM|gen3|vgr1
-2       J2      modD|tem1|grp1|casO|gen1
-2       J2      modD|tem1|grp1|casO|gen2
-2       J2      modD|tem1|grp1|casO|gen3
-2       J2      modD|tem1|grp2|casA|gen1
-2       J2      modD|tem1|grp2|casA|gen2
-2       J2      modD|tem1|grp2|casA|gen3
-2       J2      modD|tem1|grp2|casD|gen1
-2       J2      modD|tem1|grp2|casD|gen2
-2       J2      modD|tem1|grp2|casD|gen3
-2       J2      modD|tem1|grp2|casG
-2       J2      modD|tem1|grp3|casA|gen1
-2       J2      modD|tem1|grp3|casA|gen2
-2       J2      modD|tem1|grp3|casA|gen3
-2       J2      modD|tem1|grp3|casB|gen1
-2       J2      modD|tem1|grp3|casB|gen2
-2       J2      modD|tem1|grp3|casB|gen3
-2       J2      modD|tem1|grp3|casC|gen1
-2       J2      modD|tem1|grp3|casC|gen2
-2       J2      modD|tem1|grp3|casC|gen3
-2       J2      modD|tem1|grp3|casD|gen1
-2       J2      modD|tem1|grp3|casD|gen2
-2       J2      modD|tem1|grp3|casD|gen3
-2       J2      modD|tem3|grp1|casA|gen1
-2       J2      modD|tem3|grp1|casA|gen1|vgr2
-2       J2      modD|tem3|grp1|casA|gen2
-2       J2      modD|tem3|grp1|casA|gen3
-2       J2      modD|tem3|grp1|casB|gen1
-2       J2      modD|tem3|grp1|casB|gen2
-2       J2      modD|tem3|grp1|casB|gen3
-2       J2      modD|tem3|grp1|casC|gen1
-2       J2      modD|tem3|grp1|casC|gen2
-2       J2      modD|tem3|grp1|casC|gen3
-2       J2      modD|tem3|grp1|casD|gen1
-2       J2      modD|tem3|grp1|casD|gen2
-2       J2      modD|tem3|grp1|casD|gen3
-2       J2      modD|tem3|grp1|casO|gen1
-2       J2      modD|tem3|grp1|casO|gen2
-2       J2      modD|tem3|grp1|casO|gen3
-2       J2      modE|grp1|casB
-2       J2      modE|grp1|casB|vgr1
-2       J2      modE|grp1|casB|vgr2
-2       J2      modE|grp1|casD
-2       J2      modE|grp1|casD|vgr1
-2       J2      modE|grp1|casD|vgr2
-2       J2      modE|grp1|casF
-2       J2      modE|grp1|casF|gen3
-2       J2      modE|grp1|casF|vgr1
-2       J2      modE|grp1|casF|vgr2
-2       J2      modM|tem1|grp1|casA|gen1
-2       J2      modM|tem1|grp1|casA|gen2
-2       J2      modM|tem1|grp1|casA|gen3
-2       J2      modM|tem1|grp1|casB|gen1
-2       J2      modM|tem1|grp1|casB|gen2
-2       J2      modM|tem1|grp1|casB|gen3
-2       J2      modM|tem1|grp1|casC|gen1
-2       J2      modM|tem1|grp1|casC|gen2
-2       J2      modM|tem1|grp1|casC|gen3
-2       J2      modM|tem1|grp1|casD|gen1
-2       J2      modM|tem1|grp1|casD|gen2
-2       J2      modM|tem1|grp1|casD|gen3
-2       J2      modM|tem1|grp1|casF|gen1
-2       J2      modM|tem1|grp1|casF|gen2
-2       J2      modM|tem1|grp1|casF|gen3
-2       J2      modM|tem1|grp1|casG
-2       J2      modM|tem1|grp1|casJ|gen1
-2       J2      modM|tem1|grp1|casJ|gen2
-2       J2      modM|tem1|grp1|casJ|gen3
-2       J2      modM|tem1|grp1|casK|gen1
-2       J2      modM|tem1|grp1|casK|gen2
-2       J2      modM|tem1|grp1|casK|gen3
-2       J2      modM|tem1|grp1|casL|gen1
-2       J2      modM|tem1|grp1|casL|gen2
-2       J2      modM|tem1|grp1|casL|gen3
-2       J2      modM|tem1|grp1|casM|gen1
-2       J2      modM|tem1|grp1|casM|gen2
-2       J2      modM|tem1|grp1|casM|gen3
-2       J2      modM|tem1|grp1|casO|gen1
-2       J2      modM|tem1|grp1|casO|gen2
-2       J2      modM|tem1|grp1|casO|gen3
-2       J2      modM|tem4|grp1|casA|gen1
-2       J2      modM|tem4|grp1|casA|gen1|vgr2
-2       J2      modM|tem4|grp1|casA|gen2
-2       J2      modM|tem4|grp1|casA|gen2|varA
-2       J2      modM|tem4|grp1|casA|gen2|vgr1
-2       J2      modM|tem4|grp1|casA|gen3
-2       J2      modM|tem4|grp1|casA|gen3|vgr1
-2       J2      modM|tem4|grp1|casB|gen1
-2       J2      modM|tem4|grp1|casB|gen2
-2       J2      modM|tem4|grp1|casB|gen2|varA
-2       J2      modM|tem4|grp1|casB|gen2|vgr1
-2       J2      modM|tem4|grp1|casB|gen3
-2       J2      modM|tem4|grp1|casB|gen3|vgr1
-2       J2      modM|tem4|grp1|casC|gen1
-2       J2      modM|tem4|grp1|casC|gen2
-2       J2      modM|tem4|grp1|casC|gen2|vgr1
-2       J2      modM|tem4|grp1|casC|gen3
-2       J2      modM|tem4|grp1|casD|gen1
-2       J2      modM|tem4|grp1|casD|gen2
-2       J2      modM|tem4|grp1|casD|gen2|varA
-2       J2      modM|tem4|grp1|casD|gen2|vgr1
-2       J2      modM|tem4|grp1|casD|gen3
-2       J2      modM|tem4|grp1|casD|gen3|vgr1
-2       J2      modM|tem4|grp1|casE|gen1
-2       J2      modM|tem4|grp1|casE|gen2
-2       J2      modM|tem4|grp1|casE|gen3
-2       J2      modM|tem4|grp1|casF|gen1
-2       J2      modM|tem4|grp1|casF|gen2
-2       J2      modM|tem4|grp1|casF|gen2|vgr1
-2       J2      modM|tem4|grp1|casF|gen3
-2       J2      modM|tem4|grp1|casG
-2       J2      modM|tem4|grp1|casJ|gen1
-2       J2      modM|tem4|grp1|casJ|gen1|vgr1
-2       J2      modM|tem4|grp1|casJ|gen2
-2       J2      modM|tem4|grp1|casJ|gen2|vgr1
-2       J2      modM|tem4|grp1|casJ|gen3
-2       J2      modM|tem4|grp1|casJ|gen3|vgr1
-2       J2      modM|tem4|grp1|casK|gen1
-2       J2      modM|tem4|grp1|casK|gen2
-2       J2      modM|tem4|grp1|casK|gen3
-2       J2      modM|tem4|grp1|casL
-2       J2      modM|tem4|grp1|casL|gen1
-2       J2      modM|tem4|grp1|casL|gen2
-2       J2      modM|tem4|grp1|casL|gen3
-2       J2      modM|tem4|grp1|casM|gen1
-2       J2      modM|tem4|grp1|casM|gen2
-2       J2      modM|tem4|grp1|casM|gen3
-2       J2      modM|tem4|grp1|casM|gen3|vgr1
-2       J2      modM|tem4|grp1|casO
-2       J2      modM|tem4|grp1|casO|gen1
-2       J2      modM|tem4|grp1|casO|gen2
-2       J2      modM|tem4|grp1|casO|gen3
-2       J2      modM|tem4|grp2|casA|gen1
-2       J2      modM|tem4|grp2|casA|gen2
-2       J2      modM|tem4|grp2|casA|gen3
-2       J2      modM|tem4|grp2|casD|gen1
-2       J2      modM|tem4|grp2|casD|gen2
-2       J2      modM|tem4|grp2|casD|gen3
-2       J2      modM|tem4|grp2|casG
-2       J2      modM|tem4|grp2|casJ|gen1
-2       J2      modM|tem4|grp2|casJ|gen2
-2       J2      modM|tem4|grp2|casJ|gen3
-2       J2      modM|tem4|grp2|casM|gen1
-2       J2      modM|tem4|grp2|casM|gen2
-2       J2      modM|tem4|grp2|casM|gen3
-2       J2      modM|tem4|grp3|casA|gen1
-2       J2      modM|tem4|grp3|casA|gen2
-2       J2      modM|tem4|grp3|casA|gen3
-2       J2      modM|tem4|grp3|casD|gen1
-2       J2      modM|tem4|grp3|casD|gen2
-2       J2      modM|tem4|grp3|casD|gen3
-2       J2      modM|tem4|grp3|casJ|gen1
-2       J2      modM|tem4|grp3|casJ|gen2
-2       J2      modM|tem4|grp3|casJ|gen3
-2       J2      modM|tem4|grp3|casM|gen1
-2       J2      modM|tem4|grp3|casM|gen2
-2       J2      modM|tem4|grp3|casM|gen3
-2       J2      modN|grp1|casB
-2       J2      modN|grp1|casD
-2       J2      modN|grp1|casF
-2       J2      modO|grp1|casA|gen1
-2       J2      modO|grp1|casA|gen2
-2       J2      modO|grp1|casA|gen2|vgr1
-2       J2      modO|grp1|casA|gen3
-2       J2      modO|grp1|casA|gen3|vgr1
-2       J2      modO|grp1|casB|gen1
-2       J2      modO|grp1|casB|gen2
-2       J2      modO|grp1|casB|gen2|varA
-2       J2      modO|grp1|casB|gen3
-2       J2      modO|grp1|casC|gen1
-2       J2      modO|grp1|casC|gen2
-2       J2      modO|grp1|casC|gen3
-2       J2      modO|grp1|casD|gen1
-2       J2      modO|grp1|casD|gen2
-2       J2      modO|grp1|casD|gen3
-2       J2      modO|grp1|casF|gen1
-2       J2      modO|grp1|casF|gen2
-2       J2      modO|grp1|casF|gen3
-2       J2      modO|grp1|casJ|gen1
-2       J2      modO|grp1|casJ|gen2
-2       J2      modO|grp1|casJ|gen3
-2       J2      modO|grp1|casK|gen1
-2       J2      modO|grp1|casK|gen2
-2       J2      modO|grp1|casK|gen3
-2       J2      modO|grp1|casM|gen1
-2       J2      modO|grp1|casM|gen2
-2       J2      modO|grp1|casM|gen3
-2       J2      modO|grp1|casO|gen1
-2       J2      modO|grp1|casO|gen2
-2       J2      modO|grp1|casO|gen3
-2       K2      modD|tem1|grp1|casA|gen1
-2       K2      modD|tem1|grp1|casA|gen1|vgr1
-2       K2      modD|tem1|grp1|casA|gen2
-2       K2      modD|tem1|grp1|casA|gen2|vgr1
-2       K2      modD|tem1|grp1|casA|gen2|vgr2
-2       K2      modD|tem1|grp1|casA|gen3
-2       K2      modD|tem1|grp1|casA|gen3|vgr1
-2       K2      modD|tem1|grp1|casB|gen1
-2       K2      modD|tem1|grp1|casB|gen1|vgr1
-2       K2      modD|tem1|grp1|casB|gen2
-2       K2      modD|tem1|grp1|casB|gen2|vgr1
-2       K2      modD|tem1|grp1|casB|gen3
-2       K2      modD|tem1|grp1|casC|gen1
-2       K2      modD|tem1|grp1|casC|gen2
-2       K2      modD|tem1|grp1|casC|gen3
-2       K2      modD|tem1|grp1|casD|gen1
-2       K2      modD|tem1|grp1|casD|gen2
-2       K2      modD|tem1|grp1|casD|gen2|vgr2
-2       K2      modD|tem1|grp1|casD|gen3
-2       K2      modD|tem1|grp1|casD|gen3|vgr1
-2       K2      modD|tem1|grp1|casF|gen1
-2       K2      modD|tem1|grp1|casF|gen2
-2       K2      modD|tem1|grp1|casF|gen2|vgr1
-2       K2      modD|tem1|grp1|casF|gen2|vgr2
-2       K2      modD|tem1|grp1|casF|gen3
-2       K2      modD|tem1|grp1|casF|gen3|vgr2
-2       K2      modD|tem1|grp1|casG
-2       K2      modD|tem1|grp1|casJ|gen1
-2       K2      modD|tem1|grp1|casJ|gen2
-2       K2      modD|tem1|grp1|casJ|gen2|vgr1
-2       K2      modD|tem1|grp1|casJ|gen3
-2       K2      modD|tem1|grp1|casK|gen2
-2       K2      modD|tem1|grp1|casK|gen3
-2       K2      modD|tem1|grp1|casL|gen1
-2       K2      modD|tem1|grp1|casL|gen3
-2       K2      modD|tem1|grp1|casM|gen2
-2       K2      modD|tem1|grp1|casM|gen3
-2       K2      modD|tem1|grp1|casO|gen1
-2       K2      modD|tem1|grp1|casO|gen2
-2       K2      modD|tem1|grp1|casO|gen3
-2       K2      modD|tem1|grp2|casA|gen2
-2       K2      modD|tem1|grp2|casA|gen3
-2       K2      modD|tem1|grp2|casD|gen1
-2       K2      modD|tem1|grp2|casG
-2       K2      modD|tem3|grp1|casA|gen1
-2       K2      modD|tem3|grp1|casD|gen1
-2       K2      modE|grp1|casB
-2       K2      modE|grp1|casD
-2       K2      modE|grp1|casF
-2       K2      modE|grp1|casF|gen3
-2       K2      modE|grp1|casF|vgr1
-2       K2      modM|tem1|grp1|casJ|gen1
-2       K2      modM|tem4|grp1|casA|gen1
-2       K2      modM|tem4|grp1|casA|gen1|vgr1
-2       K2      modM|tem4|grp1|casA|gen2
-2       K2      modM|tem4|grp1|casA|gen2|vgr1
-2       K2      modM|tem4|grp1|casA|gen3
-2       K2      modM|tem4|grp1|casA|gen3|vgr1
-2       K2      modM|tem4|grp1|casB|gen1
-2       K2      modM|tem4|grp1|casB|gen2
-2       K2      modM|tem4|grp1|casB|gen3
-2       K2      modM|tem4|grp1|casB|gen3|vgr1
-2       K2      modM|tem4|grp1|casC|gen3|vgr1
-2       K2      modM|tem4|grp1|casD|gen1
-2       K2      modM|tem4|grp1|casD|gen1|vgr1
-2       K2      modM|tem4|grp1|casD|gen2
-2       K2      modM|tem4|grp1|casD|gen2|vgr1
-2       K2      modM|tem4|grp1|casD|gen3
-2       K2      modM|tem4|grp1|casD|gen3|vgr1
-2       K2      modM|tem4|grp1|casF|gen1
-2       K2      modM|tem4|grp1|casF|gen2
-2       K2      modM|tem4|grp1|casF|gen3
-2       K2      modM|tem4|grp1|casF|gen3|vgr1
-2       K2      modM|tem4|grp1|casG
-2       K2      modM|tem4|grp1|casJ|gen1
-2       K2      modM|tem4|grp1|casJ|gen2
-2       K2      modM|tem4|grp1|casJ|gen3
-2       K2      modM|tem4|grp1|casJ|gen3|vgr1
-2       K2      modM|tem4|grp1|casK|gen3
-2       K2      modM|tem4|grp1|casK|gen3|vgr1
-2       K2      modM|tem4|grp1|casM|gen1
-2       K2      modM|tem4|grp1|casM|gen2
-2       K2      modM|tem4|grp1|casM|gen3
-2       K2      modM|tem4|grp1|casM|gen3|vgr1
-2       K2      modM|tem4|grp1|casO|gen1
-2       K2      modM|tem4|grp1|casO|gen2
-2       K2      modM|tem4|grp1|casO|gen3
-2       K2      modM|tem4|grp1|casO|gen3|vgr1
-2       K2      modM|tem4|grp2|casA|gen3
-2       K2      modM|tem4|grp2|casD|gen3
-2       K2      modM|tem4|grp2|casM|gen3
-2       K2      modM|tem4|grp3|casJ|gen3
-2       K2      modM|tem4|grp3|casM|gen3
-2       K2      modO|grp1|casA|gen1
-2       K2      modO|grp1|casA|gen2
-2       K2      modO|grp1|casB|gen2
-2       K2      modO|grp1|casB|gen3
-2       K2      modO|grp1|casC|gen2
-2       K2      modO|grp1|casD|gen2
-2       K2      modO|grp1|casD|gen3
-2       K2      modO|grp1|casJ|gen3
-2       K2      modO|grp1|casM|gen2
-2       K2      modO|grp1|casM|gen3
-2       L2      modD|tem1|grp1|casA|gen1
-2       L2      modD|tem1|grp1|casA|gen1|vgr1
-2       L2      modD|tem1|grp1|casA|gen1|vgr2
-2       L2      modD|tem1|grp1|casA|gen2
-2       L2      modD|tem1|grp1|casA|gen2|vgr1
-2       L2      modD|tem1|grp1|casA|gen3
-2       L2      modD|tem1|grp1|casA|gen3|vgr1
-2       L2      modD|tem1|grp1|casA|gen3|vgr2
-2       L2      modD|tem1|grp1|casB|gen1
-2       L2      modD|tem1|grp1|casB|gen1|vgr1
-2       L2      modD|tem1|grp1|casB|gen2
-2       L2      modD|tem1|grp1|casB|gen2|vgr1
-2       L2      modD|tem1|grp1|casB|gen3
-2       L2      modD|tem1|grp1|casB|gen3|vgr1
-2       L2      modD|tem1|grp1|casC|gen1
-2       L2      modD|tem1|grp1|casC|gen2
-2       L2      modD|tem1|grp1|casC|gen3
-2       L2      modD|tem1|grp1|casC|gen3|vgr1
-2       L2      modD|tem1|grp1|casD|gen1
-2       L2      modD|tem1|grp1|casD|gen2
-2       L2      modD|tem1|grp1|casD|gen2|vgr1
-2       L2      modD|tem1|grp1|casD|gen3
-2       L2      modD|tem1|grp1|casD|gen3|vgr1
-2       L2      modD|tem1|grp1|casF|gen1
-2       L2      modD|tem1|grp1|casF|gen1|vgr1
-2       L2      modD|tem1|grp1|casF|gen2
-2       L2      modD|tem1|grp1|casF|gen2|vgr1
-2       L2      modD|tem1|grp1|casF|gen3
-2       L2      modD|tem1|grp1|casF|gen3|vgr1
-2       L2      modD|tem1|grp1|casG
-2       L2      modD|tem1|grp1|casJ|gen1
-2       L2      modD|tem1|grp1|casJ|gen1|vgr1
-2       L2      modD|tem1|grp1|casJ|gen1|vgr2
-2       L2      modD|tem1|grp1|casJ|gen2
-2       L2      modD|tem1|grp1|casJ|gen2|vgr1
-2       L2      modD|tem1|grp1|casJ|gen3
-2       L2      modD|tem1|grp1|casJ|gen3|vgr1
-2       L2      modD|tem1|grp1|casK|gen1
-2       L2      modD|tem1|grp1|casK|gen1|vgr1
-2       L2      modD|tem1|grp1|casK|gen1|vgr2
-2       L2      modD|tem1|grp1|casK|gen2
-2       L2      modD|tem1|grp1|casK|gen2|vgr1
-2       L2      modD|tem1|grp1|casK|gen3
-2       L2      modD|tem1|grp1|casK|gen3|vgr1
-2       L2      modD|tem1|grp1|casL|gen1
-2       L2      modD|tem1|grp1|casL|gen2
-2       L2      modD|tem1|grp1|casL|gen2|vgr1
-2       L2      modD|tem1|grp1|casL|gen3
-2       L2      modD|tem1|grp1|casM|gen1
-2       L2      modD|tem1|grp1|casM|gen1|vgr1
-2       L2      modD|tem1|grp1|casM|gen2
-2       L2      modD|tem1|grp1|casM|gen2|vgr1
-2       L2      modD|tem1|grp1|casM|gen3
-2       L2      modD|tem1|grp1|casM|gen3|vgr1
-2       L2      modD|tem1|grp1|casO|gen1
-2       L2      modD|tem1|grp1|casO|gen2
-2       L2      modD|tem1|grp1|casO|gen2|vgr1
-2       L2      modD|tem1|grp1|casO|gen3
-2       L2      modD|tem1|grp1|casO|gen3|vgr1
-2       L2      modD|tem1|grp2|casA|gen3
-2       L2      modD|tem1|grp3|casB|gen2
-2       L2      modD|tem1|grp3|casD|gen2
-2       L2      modD|tem3|grp1|casD|gen1
-2       L2      modE|grp1|casB
-2       L2      modE|grp1|casB|vgr2
-2       L2      modE|grp1|casD
-2       L2      modE|grp1|casD|vgr1
-2       L2      modE|grp1|casF
-2       L2      modE|grp1|casF|vgr1
-2       L2      modM|tem1|grp1|casA|gen1
-2       L2      modM|tem1|grp1|casA|gen1|vgr1
-2       L2      modM|tem1|grp1|casA|gen2
-2       L2      modM|tem1|grp1|casA|gen3
-2       L2      modM|tem1|grp1|casA|gen3|vgr1
-2       L2      modM|tem1|grp1|casB|gen2
-2       L2      modM|tem1|grp1|casB|gen3
-2       L2      modM|tem1|grp1|casB|gen3|vgr1
-2       L2      modM|tem1|grp1|casD|gen1
-2       L2      modM|tem1|grp1|casD|gen2
-2       L2      modM|tem1|grp1|casD|gen3
-2       L2      modM|tem1|grp1|casF|gen1
-2       L2      modM|tem1|grp1|casF|gen2
-2       L2      modM|tem1|grp1|casF|gen3
-2       L2      modM|tem1|grp1|casG
-2       L2      modM|tem1|grp1|casG|vgr1
-2       L2      modM|tem1|grp1|casJ|gen1
-2       L2      modM|tem1|grp1|casJ|gen2
-2       L2      modM|tem1|grp1|casK|gen1
-2       L2      modM|tem1|grp1|casK|gen1|vgr1
-2       L2      modM|tem1|grp1|casK|gen2|vgr1
-2       L2      modM|tem1|grp1|casK|gen3|vgr1
-2       L2      modM|tem1|grp1|casL|gen1
-2       L2      modM|tem1|grp1|casM|gen1
-2       L2      modM|tem1|grp1|casM|gen2
-2       L2      modM|tem1|grp1|casM|gen3|vgr1
-2       L2      modM|tem1|grp1|casO|gen1
-2       L2      modM|tem1|grp1|casO|gen2
-2       L2      modM|tem1|grp1|casO|gen3
-2       L2      modM|tem1|grp1|casO|gen3|vgr1
-2       L2      modM|tem4|grp1|casA|gen1
-2       L2      modM|tem4|grp1|casA|gen1|vgr1
-2       L2      modM|tem4|grp1|casA|gen1|vgr2
-2       L2      modM|tem4|grp1|casA|gen2
-2       L2      modM|tem4|grp1|casA|gen2|varA
-2       L2      modM|tem4|grp1|casA|gen2|vgr1
-2       L2      modM|tem4|grp1|casA|gen2|vgr2
-2       L2      modM|tem4|grp1|casA|gen3
-2       L2      modM|tem4|grp1|casA|gen3|vgr1
-2       L2      modM|tem4|grp1|casA|gen3|vgr2
-2       L2      modM|tem4|grp1|casB|gen1
-2       L2      modM|tem4|grp1|casB|gen2
-2       L2      modM|tem4|grp1|casB|gen2|vgr1
-2       L2      modM|tem4|grp1|casB|gen3
-2       L2      modM|tem4|grp1|casB|gen3|vgr1
-2       L2      modM|tem4|grp1|casB|gen3|vgr2
-2       L2      modM|tem4|grp1|casC|gen1
-2       L2      modM|tem4|grp1|casC|gen2
-2       L2      modM|tem4|grp1|casC|gen3
-2       L2      modM|tem4|grp1|casD|gen1
-2       L2      modM|tem4|grp1|casD|gen1|vgr2
-2       L2      modM|tem4|grp1|casD|gen2
-2       L2      modM|tem4|grp1|casD|gen2|varA
-2       L2      modM|tem4|grp1|casD|gen2|vgr1
-2       L2      modM|tem4|grp1|casD|gen2|vgr2
-2       L2      modM|tem4|grp1|casD|gen3
-2       L2      modM|tem4|grp1|casD|gen3|vgr1
-2       L2      modM|tem4|grp1|casE|gen1
-2       L2      modM|tem4|grp1|casF|gen1
-2       L2      modM|tem4|grp1|casF|gen1|vgr1
-2       L2      modM|tem4|grp1|casF|gen2
-2       L2      modM|tem4|grp1|casF|gen2|vgr1
-2       L2      modM|tem4|grp1|casF|gen2|vgr2
-2       L2      modM|tem4|grp1|casF|gen3
-2       L2      modM|tem4|grp1|casF|gen3|vgr1
-2       L2      modM|tem4|grp1|casF|gen3|vgr2
-2       L2      modM|tem4|grp1|casG
-2       L2      modM|tem4|grp1|casJ|gen1
-2       L2      modM|tem4|grp1|casJ|gen1|vgr1
-2       L2      modM|tem4|grp1|casJ|gen2
-2       L2      modM|tem4|grp1|casJ|gen2|vgr1
-2       L2      modM|tem4|grp1|casJ|gen2|vgr2
-2       L2      modM|tem4|grp1|casJ|gen3
-2       L2      modM|tem4|grp1|casJ|gen3|vgr1
-2       L2      modM|tem4|grp1|casJ|gen3|vgr2
-2       L2      modM|tem4|grp1|casK|gen1
-2       L2      modM|tem4|grp1|casK|gen2
-2       L2      modM|tem4|grp1|casK|gen3
-2       L2      modM|tem4|grp1|casL|gen1
-2       L2      modM|tem4|grp1|casL|gen2
-2       L2      modM|tem4|grp1|casL|gen3
-2       L2      modM|tem4|grp1|casM|gen1
-2       L2      modM|tem4|grp1|casM|gen1|vgr1
-2       L2      modM|tem4|grp1|casM|gen2
-2       L2      modM|tem4|grp1|casM|gen3
-2       L2      modM|tem4|grp1|casM|gen3|vgr1
-2       L2      modM|tem4|grp1|casO|gen1
-2       L2      modM|tem4|grp1|casO|gen2
-2       L2      modM|tem4|grp1|casO|gen3
-2       L2      modM|tem4|grp1|casO|gen3|vgr1
-2       L2      modM|tem4|grp2|casA|gen1
-2       L2      modM|tem4|grp2|casA|gen1|vgr1
-2       L2      modM|tem4|grp2|casA|gen2
-2       L2      modM|tem4|grp2|casA|gen2|vgr1
-2       L2      modM|tem4|grp2|casA|gen3|vgr1
-2       L2      modM|tem4|grp2|casD|gen2
-2       L2      modM|tem4|grp2|casJ|gen1
-2       L2      modM|tem4|grp2|casJ|gen2
-2       L2      modM|tem4|grp3|casA|gen2
-2       L2      modM|tem4|grp3|casA|gen3
-2       L2      modM|tem4|grp3|casJ|gen3
-2       L2      modM|tem4|grp3|casM|gen2
-2       L2      modN|grp1|casB
-2       L2      modN|grp1|casD
-2       L2      modN|grp1|casF
-2       L2      modO|grp1|casA|gen1
-2       L2      modO|grp1|casA|gen2
-2       L2      modO|grp1|casA|gen2|vgr1
-2       L2      modO|grp1|casA|gen3
-2       L2      modO|grp1|casA|gen3|vgr1
-2       L2      modO|grp1|casA|gen3|vgr2
-2       L2      modO|grp1|casC|gen2|vgr2
-2       L2      modO|grp1|casD|gen1
-2       L2      modO|grp1|casD|gen2
-2       L2      modO|grp1|casD|gen3
-2       L2      modO|grp1|casF|gen2|vgr1
-2       L2      modO|grp1|casJ|gen2
-2       L2      modO|grp1|casJ|gen3
-2       L2      modO|grp1|casK|gen3
-2       L2      modO|grp1|casM|gen1
-2       L2      modO|grp1|casM|gen2
-2       L2      modO|grp1|casM|gen3
-2       L2      modO|grp1|casO|gen2
-2       L2      modO|grp1|casO|gen3
-2       M2      modD|tem1|grp1|casA|gen1
-2       M2      modD|tem1|grp1|casA|gen1|vgr1
-2       M2      modD|tem1|grp1|casA|gen2
-2       M2      modD|tem1|grp1|casA|gen2|vgr1
-2       M2      modD|tem1|grp1|casA|gen3
-2       M2      modD|tem1|grp1|casA|gen3|vgr1
-2       M2      modD|tem1|grp1|casB|gen1
-2       M2      modD|tem1|grp1|casB|gen2
-2       M2      modD|tem1|grp1|casB|gen3
-2       M2      modD|tem1|grp1|casC|gen1
-2       M2      modD|tem1|grp1|casD|gen1
-2       M2      modD|tem1|grp1|casD|gen2
-2       M2      modD|tem1|grp1|casD|gen2|vgr1
-2       M2      modD|tem1|grp1|casD|gen3
-2       M2      modD|tem1|grp1|casD|gen3|vgr1
-2       M2      modD|tem1|grp1|casF|gen1
-2       M2      modD|tem1|grp1|casF|gen2
-2       M2      modD|tem1|grp1|casF|gen3
-2       M2      modD|tem1|grp1|casG|vgr1
-2       M2      modD|tem1|grp1|casJ|gen1
-2       M2      modD|tem1|grp1|casJ|gen1|vgr1
-2       M2      modD|tem1|grp1|casJ|gen2
-2       M2      modD|tem1|grp1|casJ|gen2|vgr1
-2       M2      modD|tem1|grp1|casJ|gen3
-2       M2      modD|tem1|grp1|casJ|gen3|vgr1
-2       M2      modD|tem1|grp1|casL|gen1
-2       M2      modD|tem1|grp1|casM|gen3|vgr1
-2       M2      modD|tem1|grp1|casO|gen2
-2       M2      modD|tem1|grp1|casO|gen3|vgr1
-2       M2      modD|tem1|grp2|casA|gen1
-2       M2      modD|tem1|grp2|casA|gen2
-2       M2      modD|tem1|grp2|casG|vgr1
-2       M2      modD|tem1|grp3|casA|gen3
-2       M2      modD|tem3|grp1|casB|gen1
-2       M2      modD|tem3|grp1|casD|gen1
-2       M2      modE|grp1|casB
-2       M2      modE|grp1|casD
-2       M2      modE|grp1|casF
-2       M2      modM|tem4|grp1|casA|gen1
-2       M2      modM|tem4|grp1|casA|gen2
-2       M2      modM|tem4|grp1|casA|gen3
-2       M2      modM|tem4|grp1|casB|gen2
-2       M2      modM|tem4|grp1|casB|gen3
-2       M2      modM|tem4|grp1|casC|gen2
-2       M2      modM|tem4|grp1|casC|gen3
-2       M2      modM|tem4|grp1|casD|gen1
-2       M2      modM|tem4|grp1|casD|gen2
-2       M2      modM|tem4|grp1|casD|gen3
-2       M2      modM|tem4|grp1|casD|gen3|vgr1
-2       M2      modM|tem4|grp1|casF|gen2
-2       M2      modM|tem4|grp1|casF|gen3
-2       M2      modM|tem4|grp1|casG
-2       M2      modM|tem4|grp1|casJ|gen1
-2       M2      modM|tem4|grp1|casJ|gen2
-2       M2      modM|tem4|grp1|casJ|gen3
-2       M2      modM|tem4|grp1|casK|gen1
-2       M2      modM|tem4|grp1|casK|gen2
-2       M2      modM|tem4|grp1|casK|gen3
-2       M2      modM|tem4|grp1|casL|gen1
-2       M2      modM|tem4|grp1|casM|gen1
-2       M2      modM|tem4|grp1|casM|gen2
-2       M2      modM|tem4|grp1|casM|gen3
-2       M2      modM|tem4|grp1|casO|gen2
-2       M2      modM|tem4|grp1|casO|gen3
-2       M2      modM|tem4|grp2|casG
-2       M2      modO|grp1|casA|gen3
-2       M2      modO|grp1|casA|gen3|vgr1
-2       M2      modO|grp1|casD|gen2
-2       N2      modD|tem1|grp1|casA|gen1
-2       N2      modD|tem1|grp1|casA|gen1|vgr1
-2       N2      modD|tem1|grp1|casA|gen2
-2       N2      modD|tem1|grp1|casA|gen2|vgr1
-2       N2      modD|tem1|grp1|casA|gen3
-2       N2      modD|tem1|grp1|casB|gen1
-2       N2      modD|tem1|grp1|casB|gen2
-2       N2      modD|tem1|grp1|casB|gen3
-2       N2      modD|tem1|grp1|casC|gen1
-2       N2      modD|tem1|grp1|casD|gen1
-2       N2      modD|tem1|grp1|casD|gen2
-2       N2      modD|tem1|grp1|casD|gen2|vgr1
-2       N2      modD|tem1|grp1|casD|gen3
-2       N2      modD|tem1|grp1|casF|gen1
-2       N2      modD|tem1|grp1|casF|gen2
-2       N2      modD|tem1|grp1|casF|gen3
-2       N2      modD|tem1|grp1|casG
-2       N2      modD|tem1|grp1|casJ|gen1
-2       N2      modD|tem1|grp1|casJ|gen2
-2       N2      modD|tem1|grp1|casJ|gen2|vgr1
-2       N2      modD|tem1|grp1|casJ|gen3
-2       N2      modD|tem1|grp1|casJ|gen3|vgr1
-2       N2      modD|tem1|grp1|casK|gen1
-2       N2      modD|tem1|grp1|casK|gen2
-2       N2      modD|tem1|grp1|casK|gen3
-2       N2      modD|tem1|grp1|casL|gen1
-2       N2      modD|tem1|grp1|casM|gen2
-2       N2      modD|tem1|grp1|casM|gen2|vgr1
-2       N2      modD|tem1|grp1|casM|gen3
-2       N2      modD|tem1|grp1|casM|gen3|vgr1
-2       N2      modD|tem1|grp1|casO|gen3
-2       N2      modD|tem1|grp2|casA|gen2
-2       N2      modD|tem3|grp1|casD|gen1
-2       N2      modD|tem3|grp1|casD|gen2
-2       N2      modD|tem3|grp1|casO|gen3
-2       N2      modE|grp1|casB
-2       N2      modE|grp1|casD
-2       N2      modE|grp1|casF
-2       N2      modM|tem1|grp1|casB|gen1
-2       N2      modM|tem4|grp1|casA|gen1
-2       N2      modM|tem4|grp1|casA|gen2
-2       N2      modM|tem4|grp1|casA|gen2|vgr1
-2       N2      modM|tem4|grp1|casA|gen3
-2       N2      modM|tem4|grp1|casA|gen3|vgr1
-2       N2      modM|tem4|grp1|casB|gen1
-2       N2      modM|tem4|grp1|casB|gen2
-2       N2      modM|tem4|grp1|casB|gen3
-2       N2      modM|tem4|grp1|casB|gen3|vgr1
-2       N2      modM|tem4|grp1|casC|gen2
-2       N2      modM|tem4|grp1|casC|gen3
-2       N2      modM|tem4|grp1|casD|gen1
-2       N2      modM|tem4|grp1|casD|gen1|vgr1
-2       N2      modM|tem4|grp1|casD|gen2
-2       N2      modM|tem4|grp1|casD|gen2|vgr1
-2       N2      modM|tem4|grp1|casD|gen3
-2       N2      modM|tem4|grp1|casD|gen3|vgr1
-2       N2      modM|tem4|grp1|casF|gen1
-2       N2      modM|tem4|grp1|casF|gen2
-2       N2      modM|tem4|grp1|casF|gen2|vgr1
-2       N2      modM|tem4|grp1|casF|gen3
-2       N2      modM|tem4|grp1|casJ|gen1
-2       N2      modM|tem4|grp1|casJ|gen1|vgr1
-2       N2      modM|tem4|grp1|casJ|gen2
-2       N2      modM|tem4|grp1|casJ|gen3
-2       N2      modM|tem4|grp1|casJ|gen3|vgr1
-2       N2      modM|tem4|grp1|casK|gen1|vgr1
-2       N2      modM|tem4|grp1|casK|gen2
-2       N2      modM|tem4|grp1|casK|gen2|vgr1
-2       N2      modM|tem4|grp1|casK|gen3
-2       N2      modM|tem4|grp1|casK|gen3|vgr1
-2       N2      modM|tem4|grp1|casL|gen1|vgr1
-2       N2      modM|tem4|grp1|casL|gen2|vgr1
-2       N2      modM|tem4|grp1|casL|gen3|vgr1
-2       N2      modM|tem4|grp1|casM|gen1|vgr1
-2       N2      modM|tem4|grp1|casM|gen2
-2       N2      modM|tem4|grp1|casM|gen3
-2       N2      modM|tem4|grp1|casM|gen3|vgr1
-2       N2      modM|tem4|grp1|casO|gen1|vgr1
-2       N2      modM|tem4|grp1|casO|gen2
-2       N2      modM|tem4|grp1|casO|gen2|vgr1
-2       N2      modM|tem4|grp1|casO|gen3
-2       N2      modM|tem4|grp1|casO|gen3|vgr1
-2       N2      modN|grp1|casB
-2       N2      modN|grp1|casF
-2       N2      modO|grp1|casA|gen2
-2       N2      modO|grp1|casA|gen3
-2       N2      modO|grp1|casB|gen2
-2       N2      modO|grp1|casB|gen2|varA
-2       N2      modO|grp1|casC|gen2
-2       N2      modO|grp1|casD|gen2
-2       N2      modO|grp1|casD|gen3
-2       N2      modO|grp1|casF|gen2
-2       N2      modO|grp1|casJ|gen2
-2       N2      modO|grp1|casJ|gen3
-2       N2      modO|grp1|casK|gen2
-2       N2      modO|grp1|casK|gen3
-2       N2      modO|grp1|casM|gen1
-2       N2      modO|grp1|casM|gen2
-2       N2      modO|grp1|casO|gen1
-3       J3      modA|tem1|gen4
-3       J3      modA|tem1|gen5
-3       J3      modA|tem1|gen6
-3       J3      modA|tem1|gen6|vgr1
-3       J3      modA|tem1|gen6|vgr2
-3       J3      modA|tem1|gen7
-3       J3      modA|tem1|gen7|vgr1
-3       J3      modA|tem1|gen8
-3       J3      modA|tem1|gen9
-3       J3      modA|tem1|gen9|vgr1
-3       J3      modA|tem2|gen6
-3       J3      modA|tem2|gen6|vgr2
-3       J3      modA|tem2|gen9
-3       J3      modA|tem2|gen9|vgr1
-3       J3      modA|tem3|gen4
-3       J3      modA|tem3|gen4|vgr1
-3       J3      modA|tem3|gen4|vgr2
-3       J3      modA|tem3|gen5
-3       J3      modA|tem3|gen6
-3       J3      modA|tem3|gen6|vgr1
-3       J3      modA|tem3|gen6|vgr2
-3       J3      modA|tem3|gen7
-3       J3      modA|tem3|gen8
-3       J3      modA|tem3|gen9
-3       J3      modA|tem4|gen4
-3       J3      modA|tem4|gen5
-3       J3      modA|tem4|gen6
-3       J3      modA|tem4|gen6|vgr1
-3       J3      modA|tem4|gen6|vgr2
-3       J3      modA|tem4|gen7
-3       J3      modA|tem4|gen8
-3       J3      modA|tem4|gen9
-3       J3      modA|tem4|gen9|varA
-3       J3      modA|tem4|gen9|vgr1
-3       J3      modA|tem5|gen6
-3       J3      modA|tem5|gen6|vgr2
-3       J3      modA|tem5|gen9
-3       J3      modA|tem6|gen4
-3       J3      modA|tem6|gen5
-3       J3      modA|tem6|gen6
-3       J3      modA|tem6|gen7
-3       J3      modA|tem6|gen8
-3       J3      modA|tem6|gen9
-3       J3      modB|tem1|gen4
-3       J3      modB|tem1|gen5
-3       J3      modB|tem1|gen6
-3       J3      modB|tem1|gen6|vgr1
-3       J3      modB|tem1|gen6|vgr2
-3       J3      modB|tem1|gen7
-3       J3      modB|tem1|gen8
-3       J3      modB|tem1|gen9
-3       J3      modB|tem1|gen9|vgr1
-3       J3      modB|tem2|gen4
-3       J3      modB|tem2|gen5
-3       J3      modB|tem2|gen6
-3       J3      modB|tem2|gen6|vgr1
-3       J3      modB|tem2|gen7
-3       J3      modB|tem2|gen8
-3       J3      modB|tem2|gen9
-3       J3      modB|tem4|gen4
-3       J3      modB|tem4|gen5
-3       J3      modB|tem4|gen6
-3       J3      modB|tem4|gen7
-3       J3      modB|tem4|gen8
-3       J3      modB|tem4|gen9
-3       J3      modB|tem5|gen4
-3       J3      modB|tem5|gen5
-3       J3      modB|tem5|gen6
-3       J3      modB|tem5|gen7
-3       J3      modB|tem5|gen8
-3       J3      modB|tem5|gen9
-3       J3      modC|tem1|gen5
-3       J3      modC|tem1|gen8
-3       J3      modC|tem3|gen5
-3       J3      modC|tem3|gen8
-3       J3      modH|tem1
-3       J3      modH|tem1|vgr1
-3       J3      modH|tem1|vgr2
-3       J3      modH|tem3
-3       J3      modH|tem4
-3       J3      modJ|tem1|gen4
-3       J3      modJ|tem1|gen6
-3       J3      modJ|tem1|gen6|vgr1
-3       J3      modJ|tem1|gen6|vgr2
-3       J3      modJ|tem1|gen7
-3       J3      modJ|tem1|gen9
-3       J3      modJ|tem1|gen9|vgr1
-3       J3      modJ|tem2|gen4
-3       J3      modJ|tem2|gen6
-3       J3      modJ|tem2|gen9
-3       J3      modJ|tem3|gen4
-3       J3      modJ|tem3|gen5
-3       J3      modJ|tem3|gen6
-3       J3      modJ|tem3|gen6|vgr1
-3       J3      modJ|tem3|gen7
-3       J3      modJ|tem3|gen8
-3       J3      modJ|tem3|gen9
-3       J3      modK|tem1|gen4
-3       J3      modK|tem1|gen6
-3       J3      modK|tem1|gen6|vgr1
-3       J3      modK|tem1|gen7
-3       J3      modK|tem1|gen9
-3       J3      modK|tem2|gen4
-3       J3      modK|tem2|gen5
-3       J3      modK|tem2|gen6
-3       J3      modK|tem2|gen6|vgr1
-3       J3      modK|tem2|gen6|vgr2
-3       J3      modK|tem2|gen7
-3       J3      modK|tem2|gen8
-3       J3      modK|tem2|gen9
-3       J3      modL|tem1|gen5
-3       J3      modQ|tem1
-3       J3      modQ|tem1|vgr1
-3       K3      modA|tem1|gen4
-3       K3      modA|tem1|gen5
-3       K3      modA|tem1|gen6
-3       K3      modA|tem1|gen6|vgr1
-3       K3      modA|tem1|gen6|vgr2
-3       K3      modA|tem1|gen7
-3       K3      modA|tem1|gen7|vgr1
-3       K3      modA|tem1|gen9
-3       K3      modA|tem1|gen9|vgr1
-3       K3      modA|tem2|gen6
-3       K3      modA|tem2|gen6|vgr1
-3       K3      modA|tem2|gen9
-3       K3      modA|tem3|gen6
-3       K3      modA|tem3|gen7
-3       K3      modA|tem3|gen7|vgr1
-3       K3      modA|tem3|gen9
-3       K3      modA|tem4|gen4
-3       K3      modA|tem4|gen6
-3       K3      modA|tem4|gen6|vgr1
-3       K3      modA|tem4|gen9
-3       K3      modA|tem5|gen6
-3       K3      modA|tem6|gen5
-3       K3      modA|tem6|gen6
-3       K3      modB|tem1|gen4
-3       K3      modB|tem1|gen6
-3       K3      modB|tem1|gen6|vgr1
-3       K3      modB|tem1|gen6|vgr2
-3       K3      modB|tem1|gen7|vgr1
-3       K3      modB|tem1|gen9
-3       K3      modB|tem1|gen9|vgr1
-3       K3      modB|tem2|gen6
-3       K3      modB|tem2|gen7
-3       K3      modB|tem2|gen9
-3       K3      modB|tem4|gen6
-3       K3      modB|tem4|gen7
-3       K3      modB|tem5|gen6
-3       K3      modC|tem1|gen8
-3       K3      modH|tem1
-3       K3      modH|tem1|vgr1
-3       K3      modH|tem4
-3       K3      modJ|tem1|gen6
-3       K3      modJ|tem1|gen6|vgr1
-3       K3      modJ|tem1|gen7
-3       K3      modJ|tem1|gen9
-3       K3      modJ|tem1|gen9|vgr1
-3       K3      modJ|tem2|gen6
-3       K3      modJ|tem2|gen6|vgr1
-3       K3      modJ|tem3|gen6
-3       K3      modJ|tem3|gen6|vgr1
-3       K3      modJ|tem3|gen9
-3       K3      modK|tem1|gen6
-3       K3      modK|tem1|gen6|vgr1
-3       K3      modK|tem1|gen7
-3       K3      modK|tem1|gen9
-3       K3      modK|tem1|gen9|vgr1
-3       K3      modK|tem2|gen6
-3       K3      modK|tem2|gen6|vgr1
-3       K3      modK|tem2|gen7
-3       K3      modK|tem2|gen9
-3       K3      modL|tem1|gen5
-3       K3      modQ|tem1
-3       K3      modQ|tem1|vgr1
-3       L3      modA|tem1|gen4
-3       L3      modA|tem1|gen4|vgr1
-3       L3      modA|tem1|gen5
-3       L3      modA|tem1|gen6
-3       L3      modA|tem1|gen6|vgr1
-3       L3      modA|tem1|gen6|vgr2
-3       L3      modA|tem1|gen7
-3       L3      modA|tem1|gen7|vgr1
-3       L3      modA|tem1|gen9
-3       L3      modA|tem1|gen9|vgr1
-3       L3      modA|tem1|gen9|vgr2
-3       L3      modA|tem2|gen6
-3       L3      modA|tem2|gen9
-3       L3      modA|tem2|gen9|vgr1
-3       L3      modA|tem3|gen4
-3       L3      modA|tem3|gen5
-3       L3      modA|tem3|gen6
-3       L3      modA|tem3|gen7
-3       L3      modA|tem3|gen8
-3       L3      modA|tem3|gen9
-3       L3      modA|tem4|gen4
-3       L3      modA|tem4|gen4|vgr1
-3       L3      modA|tem4|gen5
-3       L3      modA|tem4|gen6
-3       L3      modA|tem4|gen6|vgr1
-3       L3      modA|tem4|gen6|vgr2
-3       L3      modA|tem4|gen7
-3       L3      modA|tem4|gen9
-3       L3      modA|tem4|gen9|varA
-3       L3      modA|tem4|gen9|vgr2
-3       L3      modA|tem5|gen6
-3       L3      modA|tem6|gen6
-3       L3      modB|tem1|gen5
-3       L3      modB|tem1|gen6
-3       L3      modB|tem1|gen6|vgr1
-3       L3      modB|tem1|gen6|vgr2
-3       L3      modB|tem1|gen7
-3       L3      modB|tem1|gen8
-3       L3      modB|tem1|gen9
-3       L3      modB|tem2|gen6
-3       L3      modB|tem2|gen6|vgr1
-3       L3      modB|tem2|gen6|vgr2
-3       L3      modB|tem2|gen7
-3       L3      modB|tem2|gen9
-3       L3      modB|tem4|gen6
-3       L3      modB|tem4|gen6|vgr2
-3       L3      modB|tem5|gen6
-3       L3      modB|tem5|gen6|vgr2
-3       L3      modB|tem5|gen7
-3       L3      modB|tem5|gen9
-3       L3      modC|tem1|gen5
-3       L3      modC|tem1|gen8
-3       L3      modC|tem1|gen8|vgr1
-3       L3      modH|tem1
-3       L3      modH|tem1|vgr1
-3       L3      modH|tem1|vgr2
-3       L3      modH|tem4
-3       L3      modH|tem4|vgr1
-3       L3      modH|tem4|vgr2
-3       L3      modJ|tem1|gen6
-3       L3      modJ|tem1|gen6|vgr1
-3       L3      modJ|tem1|gen6|vgr2
-3       L3      modJ|tem1|gen7
-3       L3      modJ|tem1|gen9
-3       L3      modJ|tem1|gen9|vgr1
-3       L3      modJ|tem1|gen9|vgr2
-3       L3      modJ|tem2|gen6
-3       L3      modJ|tem2|gen6|vgr1
-3       L3      modJ|tem2|gen6|vgr2
-3       L3      modJ|tem2|gen9
-3       L3      modJ|tem3|gen4
-3       L3      modJ|tem3|gen5
-3       L3      modJ|tem3|gen6
-3       L3      modJ|tem3|gen6|vgr1
-3       L3      modJ|tem3|gen7
-3       L3      modJ|tem3|gen9
-3       L3      modK|tem1|gen6
-3       L3      modK|tem1|gen6|vgr1
-3       L3      modK|tem1|gen6|vgr2
-3       L3      modK|tem1|gen7
-3       L3      modK|tem1|gen9
-3       L3      modK|tem1|gen9|vgr1
-3       L3      modK|tem1|gen9|vgr2
-3       L3      modK|tem2|gen6
-3       L3      modK|tem2|gen6|vgr1
-3       L3      modK|tem2|gen6|vgr2
-3       L3      modK|tem2|gen9
-3       L3      modK|tem2|gen9|vgr2
-3       L3      modQ|tem1
-3       L3      modQ|tem1|vgr1
-3       L3      modQ|tem1|vgr2
-3       M3      modA|tem1|gen4
-3       M3      modA|tem1|gen5
-3       M3      modA|tem1|gen6
-3       M3      modA|tem1|gen6|vgr1
-3       M3      modA|tem1|gen7
-3       M3      modA|tem1|gen9
-3       M3      modA|tem1|gen9|vgr1
-3       M3      modA|tem2|gen6
-3       M3      modA|tem2|gen9
-3       M3      modA|tem3|gen4
-3       M3      modA|tem3|gen5
-3       M3      modA|tem3|gen6
-3       M3      modA|tem3|gen7
-3       M3      modA|tem4|gen4|vgr2
-3       M3      modA|tem4|gen5
-3       M3      modA|tem4|gen6
-3       M3      modA|tem4|gen6|vgr1
-3       M3      modA|tem4|gen7
-3       M3      modA|tem4|gen9
-3       M3      modA|tem5|gen9
-3       M3      modB|tem1|gen6
-3       M3      modB|tem1|gen6|vgr1
-3       M3      modB|tem1|gen7
-3       M3      modB|tem1|gen9
-3       M3      modB|tem2|gen6
-3       M3      modB|tem2|gen9
-3       M3      modB|tem4|gen6
-3       M3      modB|tem5|gen6|vgr1
-3       M3      modB|tem5|gen7
-3       M3      modC|tem1|gen5
-3       M3      modC|tem1|gen8
-3       M3      modH|tem1
-3       M3      modH|tem1|vgr1
-3       M3      modH|tem4
-3       M3      modH|tem4|vgr1
-3       M3      modJ|tem1|gen6
-3       M3      modJ|tem1|gen6|vgr1
-3       M3      modJ|tem1|gen7
-3       M3      modJ|tem1|gen9
-3       M3      modJ|tem1|gen9|vgr1
-3       M3      modJ|tem2|gen6
-3       M3      modJ|tem3|gen6
-3       M3      modJ|tem3|gen9
-3       M3      modK|tem1|gen6
-3       M3      modK|tem1|gen6|vgr1
-3       M3      modK|tem1|gen9
-3       M3      modK|tem2|gen6
-3       M3      modK|tem2|gen7
-3       M3      modK|tem2|gen9
-3       M3      modQ|tem1
-3       M3      modQ|tem1|vgr1
-3       N3      grn8|modH|tem1|comZ
-3       N3      modA|tem1|gen4
-3       N3      modA|tem1|gen5
-3       N3      modA|tem1|gen5|vgr1
-3       N3      modA|tem1|gen6
-3       N3      modA|tem1|gen6|comQ
-3       N3      modA|tem1|gen6|vgr1
-3       N3      modA|tem1|gen7
-3       N3      modA|tem1|gen7|vgr1
-3       N3      modA|tem1|gen8
-3       N3      modA|tem1|gen9
-3       N3      modA|tem1|gen9|vgr1
-3       N3      modA|tem2|gen6
-3       N3      modA|tem2|gen6|vgr1
-3       N3      modA|tem2|gen9
-3       N3      modA|tem3|gen4
-3       N3      modA|tem3|gen5
-3       N3      modA|tem3|gen6
-3       N3      modA|tem3|gen7
-3       N3      modA|tem3|gen9
-3       N3      modA|tem4|gen4
-3       N3      modA|tem4|gen5
-3       N3      modA|tem4|gen6
-3       N3      modA|tem4|gen6|vgr1
-3       N3      modA|tem4|gen6|vgr2
-3       N3      modA|tem4|gen7
-3       N3      modA|tem4|gen8
-3       N3      modA|tem4|gen9
-3       N3      modA|tem5|gen6
-3       N3      modA|tem5|gen9
-3       N3      modA|tem6|gen6
-3       N3      modA|tem6|gen8
-3       N3      modA|tem6|gen9
-3       N3      modB|tem1|gen4
-3       N3      modB|tem1|gen5
-3       N3      modB|tem1|gen6
-3       N3      modB|tem1|gen6|vgr1
-3       N3      modB|tem1|gen6|vgr2
-3       N3      modB|tem1|gen7
-3       N3      modB|tem1|gen9
-3       N3      modB|tem2|gen5
-3       N3      modB|tem2|gen6
-3       N3      modB|tem2|gen6|comQ
-3       N3      modB|tem2|gen7
-3       N3      modB|tem2|gen9
-3       N3      modB|tem4|gen6
-3       N3      modB|tem4|gen7
-3       N3      modB|tem4|gen9
-3       N3      modB|tem5|gen6
-3       N3      modB|tem5|gen9
-3       N3      modC|tem1|gen8
-3       N3      modC|tem3|gen5
-3       N3      modC|tem3|gen8
-3       N3      modH|tem1
-3       N3      modH|tem1|vgr1
-3       N3      modH|tem3
-3       N3      modH|tem4
-3       N3      modJ|tem1|gen6
-3       N3      modJ|tem1|gen7
-3       N3      modJ|tem1|gen9
-3       N3      modJ|tem2|gen6
-3       N3      modJ|tem2|gen9
-3       N3      modJ|tem3|gen6
-3       N3      modJ|tem3|gen9
-3       N3      modK|tem1|gen6
-3       N3      modK|tem1|gen7
-3       N3      modK|tem1|gen9
-3       N3      modK|tem2|gen6
-3       N3      modK|tem2|gen9
-3       N3      modQ|tem1
-4       O4      _
-4       O4      comH
-4       O4      comQ
-4       O4      grn8|comZ
-4       O4      varA
-4       O4      vgr1
-4       O4      vgr2
-4       S4      _
-4       S4      comH
-4       S4      vgr1
-4       S4      vgr2
-5       5       _
-5       G5      _
-5       G5      vgr1
-Punc    Punc    _
+-----------
+1-G--------
+1-G-------1
+1-G----1---
+1-G----1--1
+1-G----2---
+1-G----2--1
+1-G----3---
+1-G----3--1
+1-G---A3---
+1-G---A3--1
+1-G---B3---
+1-G---C3---
+1-G---D1--1
+1-G---D3---
+1-G---D3--1
+1-G---F3---
+1-G---G---1
+11A----2---
+11A---A1---
+11A---A1--1
+11A---A2---
+11A---A2--1
+11A---A2--2
+11A---A3---
+11A---B1---
+11A---B1--1
+11A---B2---
+11A---B2--1
+11A---B2--2
+11A---C1--1
+11A---C2---
+11A---C2--1
+11A---D1---
+11A---D2---
+11A---D2--1
+11A---D2--2
+11A---F1---
+11A---F2---
+11A---F2--1
+11A---F2--2
+11A---J1---
+11A---J1--1
+11A---J1--2
+11A---J2---
+11A---J2--1
+11A---J3---
+11A---J3--1
+11A---K1---
+11A---K1--2
+11A---K2---
+11A---K2--1
+11A---K3---
+11A---L2---
+11A---L2--1
+11A---M1---
+11A---M2---
+11A---M2--1
+11A---M3---
+11A---M3--1
+11A---O1---
+11A---O1--1
+11A---O2---
+11A---O2--1
+11A---O3---
+11A---O3--1
+11B---A1---
+11B---A1--1
+11B---A1--2
+11B---A2---
+11B---A2--1
+11B---A2--2
+11B---A3---
+11B---A3--1
+11B---A3--2
+11B---A3H--
+11B---B1---
+11B---B1--1
+11B---B1--2
+11B---B2---
+11B---B3---
+11B---B3--1
+11B---B3--2
+11B---C1---
+11B---C1--1
+11B---C2---
+11B---C3---
+11B---C3--1
+11B---C3--2
+11B---D1---
+11B---D1--1
+11B---D2---
+11B---D2--2
+11B---D3---
+11B---D3--1
+11B---D3--2
+11B---E1---
+11B---E1--1
+11B---E1H--
+11B---F1---
+11B---F1--1
+11B---F3---
+11B---F3--1
+11B---F3--2
+11B---G----
+11B---G---1
+11B---G---2
+11B---G-H--
+11B---G-H-1
+11B---J1---
+11B---J1--1
+11B---J1--2
+11B---J2---
+11B---J3---
+11B---J3--1
+11B---J3--2
+11B---K1---
+11B---K1--1
+11B---K1--2
+11B---K2---
+11B---K3---
+11B---K3--1
+11B---K3--2
+11B---L1---
+11B---L1--1
+11B---L3---
+11B---L3--1
+11B---M1---
+11B---M1--1
+11B---M3---
+11B---M3--1
+11B---M3--2
+11B---O1---
+11B---O1--1
+11B---O2---
+11B---O2--1
+11B---O3---
+11B---O3--1
+11B---O3--2
+11C---A----
+11C---A1---
+11C---A1--1
+11C---A1--2
+11C---A2---
+11C---A2--1
+11C---A2--2
+11C---A3---
+11C---A3--1
+11C---B1---
+11C---B1--1
+11C---B1--3
+11C---B1--4
+11C---B2---
+11C---B2--1
+11C---B2--2
+11C---B3---
+11C---B3--1
+11C---B3--2
+11C---C1---
+11C---C1--1
+11C---C1--2
+11C---C2---
+11C---C2--1
+11C---C3---
+11C---C3--1
+11C---C3Q--
+11C---D----
+11C---D1---
+11C---D1--1
+11C---D1--3
+11C---D2---
+11C---D2--1
+11C---D2--2
+11C---D3---
+11C---D3--1
+11C---D3-A-
+11C---D3H--
+11C---E1---
+11C---F----
+11C---F1---
+11C---F1--1
+11C---F1H--
+11C---F2---
+11C---F2--1
+11C---F2H--
+11C---F2H-1
+11C---F2H-2
+11C---F3---
+11C---F3--1
+11C---F3H--
+11C---F3H-1
+11C---G----
+11C---G---1
+11C---G---2
+11C---J1---
+11C---J1--1
+11C---J2---
+11C---J2--1
+11C---J2--2
+11C---J3---
+11C---J3--1
+11C---K----
+11C---K1---
+11C---K1--1
+11C---K2---
+11C---K2--1
+11C---K3---
+11C---K3--1
+11C---L1---
+11C---L1--1
+11C---L2---
+11C---L2--1
+11C---L2--2
+11C---L3---
+11C---L3--1
+11C---M1---
+11C---M1--1
+11C---M2---
+11C---M2--1
+11C---M2--2
+11C---M3---
+11C---M3--1
+11C---O----
+11C---O1---
+11C---O1--1
+11C---O1--2
+11C---O2---
+11C---O2--1
+11C---O2--2
+11C---O3---
+11C---O3--1
+11D---A1---
+11D---A1--1
+11D---A2---
+11D---A3---
+11D---B1---
+11D---B1--1
+11D---B2---
+11D---C1---
+11D---C2---
+11D---C3---
+11D---D1---
+11D---D1--1
+11D---D2---
+11D---D3---
+11D---F1---
+11D---F1--1
+11D---F2---
+11D---F3---
+11D---G----
+11D---J1---
+11D---J3---
+11D---K1---
+11D---K2---
+11D---L1---
+11D---M1---
+11D---M2---
+11D---O1---
+11D---O3---
+11E---A1---
+11E---A2---
+11E---A2--1
+11E---B1---
+11E---B2---
+11E---C2---
+11E---D1---
+11E---D2---
+11E---F1---
+11E---F2---
+11E---G----
+11E---J1---
+11E---J2---
+11E---K1---
+11E---K2---
+11E---K3---
+11E---L2---
+11E---M1---
+11E---M2---
+11E---O1---
+11E---O2---
+11F---A1---
+11F---A1--1
+11F---A1--2
+11F---A1-A-
+11F---A1H--
+11F---A1M--
+11F---A2---
+11F---A2--1
+11F---A2--2
+11F---A2-A-
+11F---A2H--
+11F---A2M--
+11F---A2T--
+11F---A3---
+11F---A3--1
+11F---A3--2
+11F---A3-A-
+11F---A3H-2
+11F---A3M--
+11F---A3V--
+11F---B---2
+11F---B-H--
+11F---B1---
+11F---B1--1
+11F---B1--2
+11F---B1H--
+11F---B2---
+11F---B2--1
+11F---B2--2
+11F---B2--3
+11F---B2H--
+11F---B3---
+11F---B3--1
+11F---B3--2
+11F---B3--3
+11F---B3H--
+11F---C1---
+11F---C1--1
+11F---C1H--
+11F---C2---
+11F---C2--1
+11F---C3---
+11F---C3H--
+11F---D1---
+11F---D1--1
+11F---D1--2
+11F---D1-A-
+11F---D2---
+11F---D2--1
+11F---D2--2
+11F---D2-A-
+11F---D2H-2
+11F---D2M--
+11F---D2Q--
+11F---D2Q-1
+11F---D3---
+11F---D3--1
+11F---D3--2
+11F---D3-A-
+11F---D3H-2
+11F---E1---
+11F---F-T--
+11F---F1---
+11F---F1--1
+11F---F1H--
+11F---F1H-2
+11F---F2---
+11F---F2--1
+11F---F2-A-
+11F---F2C--
+11F---F2H--
+11F---F2H-2
+11F---F2T--
+11F---F3---
+11F---F3--1
+11F---F3C--
+11F---F3H--
+11F---F3H-2
+11F---G----
+11F---G---1
+11F---G--A-
+11F---G--C-
+11F---H1---
+11F---J1---
+11F---J1--1
+11F---J1--2
+11F---J2---
+11F---J2--1
+11F---J2--2
+11F---J2-A-
+11F---J3---
+11F---J3--1
+11F---J3--2
+11F---J3-A-
+11F---K----
+11F---K1---
+11F---K1--1
+11F---K1--2
+11F---K2---
+11F---K2--1
+11F---K2--2
+11F---K2Q--
+11F---K3---
+11F---K3--1
+11F---K3--2
+11F---L1---
+11F---L1--1
+11F---L1C--
+11F---L2---
+11F---L2--1
+11F---L3---
+11F---L3--1
+11F---L3H-2
+11F---M----
+11F---M1---
+11F---M1--1
+11F---M1H--
+11F---M2---
+11F---M2--1
+11F---M2-A-
+11F---M2H--
+11F---M3---
+11F---M3--1
+11F---M3--2
+11F---M3H-2
+11F---O----
+11F---O1---
+11F---O1--1
+11F---O1--2
+11F---O1C--
+11F---O1H--
+11F---O1H-2
+11F---O2---
+11F---O2--1
+11F---O2C--
+11F---O2H-2
+11F---O3---
+11F---O3--1
+11F---O3H--
+11F---O3H-2
+11F---j2--1
+11F---j3--1
+11F-1-M3---
+12A---A2---
+12B---A3--1
+12B---D3--1
+12B---G---1
+12C---A1---
+12C---A1--1
+12C---A1--2
+12C---A2---
+12C---A2--1
+12C---A2--2
+12C---A3---
+12C---A3--1
+12C---A3--2
+12C---B1---
+12C---B1--1
+12C---B2---
+12C---B2--1
+12C---B2--2
+12C---B3---
+12C---C1---
+12C---C2---
+12C---C3---
+12C---D1---
+12C---D1--2
+12C---D2---
+12C---D2--1
+12C---D2--2
+12C---D3---
+12C---D3--2
+12C---F1---
+12C---F2---
+12C---F2--2
+12C---F3---
+12C---F3--2
+12C---G----
+12C---G---1
+12C---J1---
+12C---J1--2
+12C---J2---
+12C---J3---
+12C---J3--1
+12C---K1---
+12C---K2---
+12C---K3---
+12C---L1---
+12C---L2---
+12C---L3---
+12C---M1---
+12C---M2---
+12C---M3---
+12C---M3--2
+12C---O1---
+12C---O2---
+12C---O3---
+13A---A2---
+13A---A2--1
+13A---B2---
+13A---C2---
+13A---D2---
+13A---F2---
+13A---J2---
+13A---J3---
+13A---K2---
+13A---M2---
+13A---M3---
+13A---O2---
+13B---A1---
+13B---A2---
+13B---A3---
+13B---B1---
+13B---B3---
+13B---C1---
+13B---C3---
+13B---D1---
+13B---D2---
+13B---D3---
+13B---E1---
+13B---F1---
+13B---F3---
+13B---G----
+13B---G---1
+13B---G-Q--
+13B---J1---
+13B---J3---
+13B---J3-A-
+13B---K1---
+13B---K3---
+13B---L3---
+13B---M1---
+13B---M3---
+13B---O3---
+13C---G---1
+2-JD11A1---
+2-JD11A1--1
+2-JD11A2---
+2-JD11A2--1
+2-JD11A3---
+2-JD11B1---
+2-JD11B1--2
+2-JD11B2---
+2-JD11B3---
+2-JD11C1---
+2-JD11C3---
+2-JD11D1---
+2-JD11D2---
+2-JD11D3---
+2-JD11D3--2
+2-JD11F1---
+2-JD11F2---
+2-JD11F3---
+2-JD11G----
+2-JD11J1---
+2-JD11J1--1
+2-JD11J2---
+2-JD11J3---
+2-JD11K1---
+2-JD11L1---
+2-JD11L3---
+2-JD11M1---
+2-JD11M2---
+2-JD11M3---
+2-JD11M3--1
+2-JD11O1---
+2-JD11O2---
+2-JD11O3---
+2-JD31A1---
+2-JD31A1--2
+2-JD31D2---
+2-JE-1B----
+2-JE-1B---1
+2-JE-1B---2
+2-JE-1D----
+2-JE-1D---1
+2-JE-1D---2
+2-JE-1F----
+2-JE-1F---1
+2-JE-1F---2
+2-JM11A1---
+2-JM11A2---
+2-JM11A3---
+2-JM11B1---
+2-JM11B2---
+2-JM11B3---
+2-JM11C2---
+2-JM11F1---
+2-JM11F3---
+2-JM11J1---
+2-JM11J2---
+2-JM11J3---
+2-JM11L1---
+2-JM11M2---
+2-JM11M3---
+2-JM41-G---
+2-JM41A1---
+2-JM41A1--2
+2-JM41A2---
+2-JM41A2--1
+2-JM41A3---
+2-JM41A3--1
+2-JM41B1---
+2-JM41B2---
+2-JM41B2--1
+2-JM41B2-A-
+2-JM41B3---
+2-JM41B3--1
+2-JM41C1---
+2-JM41C2---
+2-JM41C2--1
+2-JM41C3---
+2-JM41D1---
+2-JM41D2---
+2-JM41D2--1
+2-JM41D2-A-
+2-JM41D3---
+2-JM41D3--1
+2-JM41F1---
+2-JM41F2---
+2-JM41F2--1
+2-JM41F3---
+2-JM41G----
+2-JM41J1---
+2-JM41J1--1
+2-JM41J2---
+2-JM41J2--1
+2-JM41J3---
+2-JM41J3--1
+2-JM41K1---
+2-JM41K2---
+2-JM41K3---
+2-JM41L----
+2-JM41L1---
+2-JM41L2---
+2-JM41L3---
+2-JM41M1---
+2-JM41M2---
+2-JM41M3---
+2-JM41M3--1
+2-JM41O----
+2-JM41O1---
+2-JM41O2---
+2-JM41O3---
+2-JM42A1---
+2-JM43D3---
+2-JN-1B----
+2-JN-1D----
+2-JN-1F----
+2-JO-1A1---
+2-JO-1A2---
+2-JO-1A2--1
+2-JO-1A3---
+2-JO-1A3--1
+2-JO-1B2---
+2-JO-1B3---
+2-JO-1D2---
+2-JO-1D3---
+2-JO-1F2---
+2-JO-1J2---
+2-JO-1J3---
+2-JO-1M2---
+2-JO-1O2---
+2-JO-1O3---
+2-KD11A----
+2-KD11A1---
+2-KD11A1--1
+2-KD11A2---
+2-KD11A2--1
+2-KD11A2--2
+2-KD11A3---
+2-KD11A3--1
+2-KD11B1---
+2-KD11B1--1
+2-KD11B2---
+2-KD11B2--1
+2-KD11B3---
+2-KD11C1---
+2-KD11C2---
+2-KD11C3---
+2-KD11D1---
+2-KD11D2---
+2-KD11D2--2
+2-KD11D3---
+2-KD11D3--1
+2-KD11F1---
+2-KD11F2---
+2-KD11F2--1
+2-KD11F2--2
+2-KD11F3---
+2-KD11F3--2
+2-KD11G----
+2-KD11J1---
+2-KD11J2---
+2-KD11J2--1
+2-KD11J3---
+2-KD11K2---
+2-KD11K3---
+2-KD11L1---
+2-KD11L3---
+2-KD11M2---
+2-KD11M3---
+2-KD11O1---
+2-KD11O2---
+2-KD11O3---
+2-KD12A2---
+2-KD12A3---
+2-KD12D1---
+2-KD12G----
+2-KD31A1---
+2-KD31D1---
+2-KE-1B----
+2-KE-1D----
+2-KE-1F----
+2-KE-1F---1
+2-KE-1F3---
+2-KM11J1---
+2-KM41A1---
+2-KM41A1--1
+2-KM41A2---
+2-KM41A2--1
+2-KM41A3---
+2-KM41A3--1
+2-KM41B1---
+2-KM41B2---
+2-KM41B3---
+2-KM41B3--1
+2-KM41C3--1
+2-KM41D1---
+2-KM41D1--1
+2-KM41D2---
+2-KM41D2--1
+2-KM41D3---
+2-KM41D3--1
+2-KM41F1---
+2-KM41F2---
+2-KM41F3---
+2-KM41F3--1
+2-KM41G----
+2-KM41J1---
+2-KM41J2---
+2-KM41J3---
+2-KM41J3--1
+2-KM41K3---
+2-KM41K3--1
+2-KM41M1---
+2-KM41M2---
+2-KM41M3---
+2-KM41M3--1
+2-KM41O1---
+2-KM41O2---
+2-KM41O3---
+2-KM41O3--1
+2-KM42A3---
+2-KM42D3---
+2-KM42M3---
+2-KM43J3---
+2-KM43M3---
+2-KO-1A1---
+2-KO-1A2---
+2-KO-1B2---
+2-KO-1B3---
+2-KO-1C2---
+2-KO-1D2---
+2-KO-1D3---
+2-KO-1J3---
+2-KO-1M2---
+2-KO-1M3---
+2-LD11A1---
+2-LD11A1--1
+2-LD11A1--2
+2-LD11A2---
+2-LD11A2--1
+2-LD11A3---
+2-LD11A3--1
+2-LD11A3--2
+2-LD11B1---
+2-LD11B1--1
+2-LD11B2---
+2-LD11B2--1
+2-LD11B3---
+2-LD11B3--1
+2-LD11C1---
+2-LD11C2---
+2-LD11C3---
+2-LD11C3--1
+2-LD11D1---
+2-LD11D2---
+2-LD11D2--1
+2-LD11D3---
+2-LD11D3--1
+2-LD11F1---
+2-LD11F1--1
+2-LD11F2---
+2-LD11F2--1
+2-LD11F3---
+2-LD11F3--1
+2-LD11G----
+2-LD11J1---
+2-LD11J1--1
+2-LD11J1--2
+2-LD11J2---
+2-LD11J2--1
+2-LD11J3---
+2-LD11J3--1
+2-LD11K1---
+2-LD11K1--1
+2-LD11K1--2
+2-LD11K2---
+2-LD11K2--1
+2-LD11K3---
+2-LD11K3--1
+2-LD11L1---
+2-LD11L2---
+2-LD11L2--1
+2-LD11L3---
+2-LD11M1---
+2-LD11M1--1
+2-LD11M2---
+2-LD11M2--1
+2-LD11M3---
+2-LD11M3--1
+2-LD11O1---
+2-LD11O2---
+2-LD11O2--1
+2-LD11O3---
+2-LD11O3--1
+2-LD12A3---
+2-LD13B2---
+2-LD13D2---
+2-LD31D1---
+2-LE-1B----
+2-LE-1B---2
+2-LE-1D----
+2-LE-1D---1
+2-LE-1F----
+2-LE-1F---1
+2-LM-1F3---
+2-LM11A1---
+2-LM11A1--1
+2-LM11A2---
+2-LM11A3---
+2-LM11A3--1
+2-LM11B2---
+2-LM11B3---
+2-LM11B3--1
+2-LM11D1---
+2-LM11D2---
+2-LM11D3---
+2-LM11F1---
+2-LM11F2---
+2-LM11F3---
+2-LM11G----
+2-LM11G---1
+2-LM11J1---
+2-LM11J2---
+2-LM11K1---
+2-LM11K1--1
+2-LM11K2--1
+2-LM11K3--1
+2-LM11L1---
+2-LM11M1---
+2-LM11M2---
+2-LM11M3--1
+2-LM11O1---
+2-LM11O2---
+2-LM11O3---
+2-LM11O3--1
+2-LM41A1---
+2-LM41A1--1
+2-LM41A1--2
+2-LM41A2---
+2-LM41A2--1
+2-LM41A2--2
+2-LM41A2-A-
+2-LM41A3---
+2-LM41A3--1
+2-LM41A3--2
+2-LM41B1---
+2-LM41B2---
+2-LM41B2--1
+2-LM41B3---
+2-LM41B3--1
+2-LM41B3--2
+2-LM41C1---
+2-LM41C2---
+2-LM41C3---
+2-LM41D1---
+2-LM41D1--2
+2-LM41D2---
+2-LM41D2--1
+2-LM41D2--2
+2-LM41D2-A-
+2-LM41D3---
+2-LM41D3--1
+2-LM41E1---
+2-LM41F1---
+2-LM41F1--1
+2-LM41F2---
+2-LM41F2--1
+2-LM41F2--2
+2-LM41F3---
+2-LM41F3--1
+2-LM41F3--2
+2-LM41G----
+2-LM41J1---
+2-LM41J1--1
+2-LM41J2---
+2-LM41J2--1
+2-LM41J2--2
+2-LM41J3---
+2-LM41J3--1
+2-LM41J3--2
+2-LM41K1---
+2-LM41K2---
+2-LM41K3---
+2-LM41L1---
+2-LM41L2---
+2-LM41L3---
+2-LM41M1---
+2-LM41M1--1
+2-LM41M2---
+2-LM41M3---
+2-LM41M3--1
+2-LM41O1---
+2-LM41O2---
+2-LM41O3---
+2-LM41O3--1
+2-LM42A1---
+2-LM42A1--1
+2-LM42A2---
+2-LM42A2--1
+2-LM42A3--1
+2-LM42D2---
+2-LM42J1---
+2-LM42J2---
+2-LM43A2---
+2-LM43A3---
+2-LM43J3---
+2-LM43M2---
+2-LN-1B----
+2-LN-1D----
+2-LN-1F----
+2-LO-1A1---
+2-LO-1A2---
+2-LO-1A2--1
+2-LO-1A3---
+2-LO-1A3--1
+2-LO-1A3--2
+2-LO-1C2--2
+2-LO-1D1---
+2-LO-1D2---
+2-LO-1D3---
+2-LO-1F2--1
+2-LO-1J2---
+2-LO-1J3---
+2-LO-1K3---
+2-LO-1M1---
+2-LO-1M2---
+2-LO-1M3---
+2-LO-1O2---
+2-LO-1O3---
+2-MD11A1---
+2-MD11A1--1
+2-MD11A2---
+2-MD11A2--1
+2-MD11A3---
+2-MD11A3--1
+2-MD11B1---
+2-MD11B2---
+2-MD11B3---
+2-MD11C1---
+2-MD11D1---
+2-MD11D2---
+2-MD11D2--1
+2-MD11D3---
+2-MD11D3--1
+2-MD11F1---
+2-MD11F2---
+2-MD11F3---
+2-MD11G---1
+2-MD11J1---
+2-MD11J1--1
+2-MD11J2---
+2-MD11J2--1
+2-MD11J3---
+2-MD11J3--1
+2-MD11L1---
+2-MD11M3--1
+2-MD11O2---
+2-MD11O3--1
+2-MD12A1---
+2-MD12A2---
+2-MD12G---1
+2-MD13A3---
+2-MD31B1---
+2-MD31D1---
+2-ME-1B----
+2-ME-1D----
+2-ME-1F----
+2-MM41A1---
+2-MM41A2---
+2-MM41A3---
+2-MM41B2---
+2-MM41B3---
+2-MM41C2---
+2-MM41C3---
+2-MM41D1---
+2-MM41D2---
+2-MM41D3---
+2-MM41D3--1
+2-MM41F2---
+2-MM41F3---
+2-MM41G----
+2-MM41J1---
+2-MM41J2---
+2-MM41J3---
+2-MM41K1---
+2-MM41K2---
+2-MM41K3---
+2-MM41L1---
+2-MM41M1---
+2-MM41M2---
+2-MM41M3---
+2-MM41O2---
+2-MM41O3---
+2-MM42G----
+2-MO-1A3---
+2-MO-1A3--1
+2-MO-1D2---
+2-ND11A1---
+2-ND11A1--1
+2-ND11A2---
+2-ND11A2--1
+2-ND11A3---
+2-ND11B1---
+2-ND11B2---
+2-ND11B3---
+2-ND11C1---
+2-ND11D1---
+2-ND11D2---
+2-ND11D2--1
+2-ND11D3---
+2-ND11F1---
+2-ND11F2---
+2-ND11F3---
+2-ND11G----
+2-ND11J1---
+2-ND11J2---
+2-ND11J2--1
+2-ND11J3---
+2-ND11J3--1
+2-ND11K1---
+2-ND11K2---
+2-ND11K3---
+2-ND11L1---
+2-ND11M2---
+2-ND11M2--1
+2-ND11M3---
+2-ND11M3--1
+2-ND11O3---
+2-ND12A2---
+2-ND31D1---
+2-ND31D2---
+2-ND31O3---
+2-NE-1A3---
+2-NE-1B----
+2-NE-1D----
+2-NE-1F----
+2-NM11B1---
+2-NM41A1---
+2-NM41A2---
+2-NM41A2--1
+2-NM41A3---
+2-NM41A3--1
+2-NM41B1---
+2-NM41B2---
+2-NM41B3---
+2-NM41B3--1
+2-NM41C2---
+2-NM41C3---
+2-NM41D1---
+2-NM41D1--1
+2-NM41D2---
+2-NM41D2--1
+2-NM41D3---
+2-NM41D3--1
+2-NM41F1---
+2-NM41F2---
+2-NM41F2--1
+2-NM41F3---
+2-NM41J1---
+2-NM41J1--1
+2-NM41J2---
+2-NM41J3---
+2-NM41J3--1
+2-NM41K1--1
+2-NM41K2---
+2-NM41K2--1
+2-NM41K3---
+2-NM41K3--1
+2-NM41L1--1
+2-NM41L2--1
+2-NM41L3--1
+2-NM41M1--1
+2-NM41M2---
+2-NM41M3---
+2-NM41M3--1
+2-NM41O1--1
+2-NM41O2---
+2-NM41O2--1
+2-NM41O3---
+2-NM41O3--1
+2-NN-1B----
+2-NN-1F----
+2-NO-1A2---
+2-NO-1A3---
+2-NO-1B2---
+2-NO-1B2-A-
+2-NO-1C2---
+2-NO-1D2---
+2-NO-1D3---
+2-NO-1F2---
+2-NO-1J2---
+2-NO-1J3---
+2-NO-1K2---
+2-NO-1K3---
+2-NO-1M1---
+2-NO-1M2---
+2-NO-1O1---
+3-JA1--4---
+3-JA1--6---
+3-JA1--6--1
+3-JA1--6--2
+3-JA1--7---
+3-JA1--7--1
+3-JA1--9---
+3-JA1--9--1
+3-JA2--6---
+3-JA2--6--2
+3-JA2--9---
+3-JA2--9--1
+3-JA3--4--1
+3-JA3--4--2
+3-JA3--5---
+3-JA3--6---
+3-JA3--6--1
+3-JA3--6--2
+3-JA4--4---
+3-JA4--5---
+3-JA4--6---
+3-JA4--6--1
+3-JA4--6--2
+3-JA4--7---
+3-JA4--9---
+3-JA4--9--1
+3-JA5--6---
+3-JA5--6--2
+3-JA5--9---
+3-JA6--6---
+3-JB1--6---
+3-JB1--6--1
+3-JB1--6--2
+3-JB1--7---
+3-JB1--8---
+3-JB1--9---
+3-JB1--9--1
+3-JB2--4---
+3-JB2--6---
+3-JB2--6--1
+3-JB2--7---
+3-JB2--9---
+3-JB4--6---
+3-JB4--9---
+3-JB5--6---
+3-JC1--5---
+3-JC1--8---
+3-JH1------
+3-JH1-----1
+3-JH1-----2
+3-JH4------
+3-JJ1--4---
+3-JJ1--6---
+3-JJ1--6--1
+3-JJ1--6--2
+3-JJ1--7---
+3-JJ1--9---
+3-JJ1--9--1
+3-JJ2--4---
+3-JJ2--6---
+3-JJ2--9---
+3-JJ3--4---
+3-JJ3--6---
+3-JJ3--6--1
+3-JJ3--9---
+3-JK1--4---
+3-JK1--6---
+3-JK1--6--1
+3-JK1--7---
+3-JK1--9---
+3-JK2--6---
+3-JK2--6--1
+3-JK2--6--2
+3-JK2--9---
+3-JQ1------
+3-JQ1-----1
+3-KA1--4---
+3-KA1--5---
+3-KA1--6---
+3-KA1--6--1
+3-KA1--6--2
+3-KA1--7---
+3-KA1--7--1
+3-KA1--9---
+3-KA1--9--1
+3-KA2--6---
+3-KA2--6--1
+3-KA2--9---
+3-KA3--6---
+3-KA3--7---
+3-KA3--7--1
+3-KA3--9---
+3-KA4--4---
+3-KA4--6---
+3-KA4--6--1
+3-KA4--9---
+3-KA5--6---
+3-KA6--5---
+3-KA6--6---
+3-KB1--4---
+3-KB1--6---
+3-KB1--6--1
+3-KB1--6--2
+3-KB1--7--1
+3-KB1--9---
+3-KB1--9--1
+3-KB2--6---
+3-KB2--7---
+3-KB2--9---
+3-KB4--6---
+3-KB4--7---
+3-KB5--6---
+3-KC1--8---
+3-KH1------
+3-KH1-----1
+3-KH4------
+3-KJ1--6---
+3-KJ1--6--1
+3-KJ1--7---
+3-KJ1--9---
+3-KJ1--9--1
+3-KJ2--6---
+3-KJ2--6--1
+3-KJ3--6---
+3-KJ3--6--1
+3-KJ3--9---
+3-KK1--6---
+3-KK1--6--1
+3-KK1--7---
+3-KK1--9---
+3-KK1--9--1
+3-KK2--6---
+3-KK2--6--1
+3-KK2--7---
+3-KK2--9---
+3-KL1--5---
+3-KQ1------
+3-KQ1-----1
+3-LA1--4---
+3-LA1--4--1
+3-LA1--5---
+3-LA1--6---
+3-LA1--6--1
+3-LA1--6--2
+3-LA1--7---
+3-LA1--7--1
+3-LA1--9---
+3-LA1--9--1
+3-LA1--9--2
+3-LA2--6---
+3-LA2--9---
+3-LA2--9--1
+3-LA3--4---
+3-LA3--5---
+3-LA3--6---
+3-LA3--7---
+3-LA3--8---
+3-LA3--9---
+3-LA4--4---
+3-LA4--4--1
+3-LA4--5---
+3-LA4--6---
+3-LA4--6--1
+3-LA4--6--2
+3-LA4--7---
+3-LA4--9---
+3-LA4--9--2
+3-LA4--9-A-
+3-LA5--6---
+3-LA6--6---
+3-LB1--5---
+3-LB1--6---
+3-LB1--6--1
+3-LB1--6--2
+3-LB1--7---
+3-LB1--8---
+3-LB1--9---
+3-LB2--6---
+3-LB2--6--1
+3-LB2--6--2
+3-LB2--7---
+3-LB2--9---
+3-LB4--6---
+3-LB4--6--2
+3-LB5--6---
+3-LB5--6--2
+3-LB5--7---
+3-LB5--9---
+3-LC1--5---
+3-LC1--8---
+3-LC1--8--1
+3-LH1------
+3-LH1-----1
+3-LH1-----2
+3-LH4------
+3-LH4-----1
+3-LH4-----2
+3-LJ1--6---
+3-LJ1--6--1
+3-LJ1--6--2
+3-LJ1--7---
+3-LJ1--9---
+3-LJ1--9--1
+3-LJ1--9--2
+3-LJ2--6---
+3-LJ2--6--1
+3-LJ2--6--2
+3-LJ2--9---
+3-LJ3--4---
+3-LJ3--5---
+3-LJ3--6---
+3-LJ3--6--1
+3-LJ3--7---
+3-LJ3--9---
+3-LK1--6---
+3-LK1--6--1
+3-LK1--6--2
+3-LK1--7---
+3-LK1--9---
+3-LK1--9--1
+3-LK1--9--2
+3-LK2--6---
+3-LK2--6--1
+3-LK2--6--2
+3-LK2--9---
+3-LK2--9--2
+3-LQ1------
+3-LQ1-----1
+3-LQ1-----2
+3-MA1--4---
+3-MA1--5---
+3-MA1--6---
+3-MA1--6--1
+3-MA1--7---
+3-MA1--9---
+3-MA1--9--1
+3-MA2--6---
+3-MA2--9---
+3-MA3--4---
+3-MA3--5---
+3-MA3--6---
+3-MA3--7---
+3-MA4--4--2
+3-MA4--5---
+3-MA4--6---
+3-MA4--6--1
+3-MA4--7---
+3-MA4--9---
+3-MA5--9---
+3-MB1--6---
+3-MB1--6--1
+3-MB1--7---
+3-MB1--9---
+3-MB2--6---
+3-MB2--9---
+3-MB4--6---
+3-MB5--6--1
+3-MB5--7---
+3-MC1--5---
+3-MC1--8---
+3-MH1------
+3-MH1-----1
+3-MH4------
+3-MH4-----1
+3-MJ1--6---
+3-MJ1--6--1
+3-MJ1--7---
+3-MJ1--9---
+3-MJ1--9--1
+3-MJ2--6---
+3-MJ3--6---
+3-MJ3--9---
+3-MK1--6---
+3-MK1--6--1
+3-MK1--9---
+3-MK2--6---
+3-MK2--7---
+3-MK2--9---
+3-MQ1------
+3-MQ1-----1
+3-NA1--4---
+3-NA1--5---
+3-NA1--5--1
+3-NA1--6---
+3-NA1--6--1
+3-NA1--6Q--
+3-NA1--7---
+3-NA1--7--1
+3-NA1--8---
+3-NA1--9---
+3-NA1--9--1
+3-NA2--6---
+3-NA2--6--1
+3-NA2--9---
+3-NA3--4---
+3-NA3--5---
+3-NA3--6---
+3-NA3--7---
+3-NA3--9---
+3-NA4--4---
+3-NA4--5---
+3-NA4--6---
+3-NA4--6--1
+3-NA4--6--2
+3-NA4--7---
+3-NA4--8---
+3-NA4--9---
+3-NA5--6---
+3-NA5--9---
+3-NA6--6---
+3-NA6--8---
+3-NA6--9---
+3-NB1--4---
+3-NB1--5---
+3-NB1--6---
+3-NB1--6--1
+3-NB1--6--2
+3-NB1--7---
+3-NB1--9---
+3-NB2--5---
+3-NB2--6---
+3-NB2--6Q--
+3-NB2--7---
+3-NB2--9---
+3-NB4--6---
+3-NB4--7---
+3-NB4--9---
+3-NB5--6---
+3-NB5--9---
+3-NC1--8---
+3-NC3--5---
+3-NC3--8---
+3-NH1------
+3-NH1-----1
+3-NH3------
+3-NH4------
+3-NJ1--6---
+3-NJ1--7---
+3-NJ1--9---
+3-NJ2--6---
+3-NJ2--9---
+3-NJ3--6---
+3-NJ3--9---
+3-NK1--6---
+3-NK1--7---
+3-NK1--9---
+3-NK2--6---
+3-NK2--9---
+3-NQ1------
+38NH1---Z--
+4-O--------
+4-O-------1
+4-O-------2
+4-O------A-
+4-O-----H--
+4-O-----Q--
+4-S--------
+4-S-------1
+4-S-------2
+4-S-----H--
+48O-----Z--
+5----------
+5---------1
+5------1---
+5------2---
+5-----..---
+5-----28---
+5----151---
+5----398---
+5-G--------
+5-G-------1
+5-G-------3
+5-G----7---
+5-G---10---
+5-G---14---
+5-G---16---
+5-G---21---
+5-G---22---
+5-G---25---
+5-G---37---
+51A---F2---
+51B---A3---
 end_of_list
     ;
-    # Protect from editors that replace tabs by spaces.
-    $list =~ s/ \s+/\t/sg;
     my @list = split(/\r?\n/, $list);
     return \@list;
 }
