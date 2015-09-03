@@ -14,6 +14,10 @@ extends 'Lingua::Interset::Tagset';
 
 
 
+has 'features' => ( isa => 'ArrayRef', is => 'ro', builder => '_create_features', lazy => 1 );
+
+
+
 #------------------------------------------------------------------------------
 # Returns the tagset id that should be set as the value of the 'tagset' feature
 # during decoding. Every derived class must (re)define this method! The result
@@ -24,6 +28,19 @@ extends 'Lingua::Interset::Tagset';
 sub get_tagset_id
 {
     return 'la::it';
+}
+
+
+
+#------------------------------------------------------------------------------
+# Creates the list of all surface CoNLL features that can appear in the FEATS
+# column. This list will be used in decode().
+#------------------------------------------------------------------------------
+sub _create_features
+{
+    my $self = shift;
+    my @features = ('grn', 'mod', 'tem', 'grp', 'cas', 'gen', 'com', 'var', 'vgr');
+    return \@features;
 }
 
 
@@ -487,40 +504,6 @@ sub _create_atoms
 
 
 #------------------------------------------------------------------------------
-# Creates the list of all surface CoNLL features that can appear in the FEATS
-# column. This list will be used in decode().
-#------------------------------------------------------------------------------
-sub _create_features_all
-{
-    my $self = shift;
-    my @features = ('grn', 'mod', 'tem', 'grp', 'cas', 'gen', 'com', 'var', 'vgr');
-    return \@features;
-}
-
-
-
-#------------------------------------------------------------------------------
-# Creates the list of surface CoNLL features that can appear in the FEATS
-# column with particular parts of speech. This list will be used in encode().
-#------------------------------------------------------------------------------
-sub _create_features_pos
-{
-    my $self = shift;
-    my %features =
-    (
-        '1' => ['grn', 'cas', 'gen', 'com', 'var', 'vgr'],
-        '2' => ['mod', 'tem', 'grp', 'cas', 'gen', 'var', 'vgr'],
-        # grn: only "necesse-esse": grn8
-        '3' => ['grn', 'mod', 'tem', 'gen', 'com', 'var', 'vgr'],
-        '4' => ['grn', 'com', 'var', 'vgr'],
-        '5' => ['vgr']
-    );
-    return \%features;
-}
-
-
-
-#------------------------------------------------------------------------------
 # Decodes a physical tag (string) and returns the corresponding feature
 # structure.
 #------------------------------------------------------------------------------
@@ -531,20 +514,17 @@ sub decode
     my $fs = Lingua::Interset::FeatureStructure->new();
     $fs->set_tagset($self->get_tagset_id());
     my $atoms = $self->atoms();
-    # Three components: coarse-grained pos, fine-grained pos, features
-    # Only features with non-empty values appear in the tag.
-    # example: N\nNC\ngender=common|number=sing|case=unmarked|def=indef
-    my ($pos, $subpos, $features) = split(/\s+/, $tag);
-    # The underscore character is used if there are no features.
-    $features = '' if($features eq '_');
-    my @features = split(/\|/, $features);
+    # The tag is an eleven-position string.
+    my @chars = split(//, $tag);
+    my $subpos = $chars[2].$chars[0];
+    shift(@chars);
+    splice(@chars, 1, 1);
     $atoms->{subpos}->decode_and_merge_hard($subpos, $fs);
-    foreach my $feature (@features)
+    my $features = $self->features();
+    for (my $i = 0; $i <= $#chars; $i++)
     {
-        $atoms->{feature}->decode_and_merge_hard($feature, $fs);
+        $atoms->{$features->[$i]}->decode_and_merge_hard($chars[$i], $fs);
     }
-    # Default feature values. Used to improve collaboration with other drivers.
-    # ... nothing yet ...
     return $fs;
 }
 
@@ -559,12 +539,9 @@ sub encode
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $atoms = $self->atoms();
     my $subpos = $atoms->{subpos}->encode($fs);
-    my $pos = $subpos;
-    $pos =~ s/[^0-9]// unless($pos eq 'Punc');
-    my $fpos = $pos;
-    my $feature_names = $self->get_feature_names($fpos);
-    my $value_only = 1;
-    my $tag = $self->encode_conll($fs, $pos, $subpos, $feature_names, $value_only);
+    my $features = $self->features();
+    my $tag = $subpos.join('', map {$atoms->{$_}->encode($fs)} (@{$features}));
+    my $tag =~ s/^(.)(.)(.)/$2$3$1/;
     return $tag;
 }
 
