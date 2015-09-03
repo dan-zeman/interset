@@ -23,7 +23,9 @@ extends 'Lingua::Interset::Tagset::Conll';
 #------------------------------------------------------------------------------
 sub get_tagset_id
 {
-    return 'la::itconll';
+    # The la::it and la::itconll drivers have mutually compatible values of the
+    # other feature, thus they should use the same value of the tagset feature.
+    return 'la::it';
 }
 
 

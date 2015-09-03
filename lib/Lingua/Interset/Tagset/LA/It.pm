@@ -15,6 +15,7 @@ extends 'Lingua::Interset::Tagset';
 
 
 has 'features' => ( isa => 'ArrayRef', is => 'ro', builder => '_create_features', lazy => 1 );
+has 'atoms'    => ( isa => 'HashRef', is => 'ro', builder => '_create_atoms', lazy => 1 );
 
 
 
@@ -27,6 +28,8 @@ has 'features' => ( isa => 'ArrayRef', is => 'ro', builder => '_create_features'
 #------------------------------------------------------------------------------
 sub get_tagset_id
 {
+    # The la::it and la::itconll drivers have mutually compatible values of the
+    # other feature, thus they should use the same value of the tagset feature.
     return 'la::it';
 }
 
@@ -541,7 +544,14 @@ sub encode
     my $subpos = $atoms->{subpos}->encode($fs);
     my $features = $self->features();
     my $tag = $subpos.join('', map {$atoms->{$_}->encode($fs)} (@{$features}));
-    my $tag =~ s/^(.)(.)(.)/$2$3$1/;
+    if($tag =~ m/^Punc/)
+    {
+        $tag = '-----------';
+    }
+    else
+    {
+        $tag =~ s/^(.)(.)(.)/$2$3$1/;
+    }
     return $tag;
 }
 
