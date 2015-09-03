@@ -120,7 +120,7 @@ sub _create_atoms
             # pseudo-lemma / number
             'G5' => ['pos' => 'num', 'numform' => 'digit'],
             # punctuation
-            'Punc' => ['pos' => 'punc']
+            '--' => ['pos' => 'punc']
         },
         'encode_map' =>
         {
@@ -185,7 +185,7 @@ sub _create_atoms
                                                                                         'gdv'  => 'J2',
                                                                                         '@'    => 'J3' }}}},
                        'adp'  => 'S4',
-                       'punc' => 'Punc',
+                       'punc' => '--',
                        '@'    => { 'other/flexcat' => { 'invar'    => 'O4',
                                                         'preppart' => 'S4',
                                                         '@'        => { 'abbr' => { 'abbr' => '5',

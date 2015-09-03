@@ -2298,6 +2298,7 @@ C<Ck-P1----------> and C<VpQW---XR-AA--->:
 sub as_string
 {
     my $self = shift;
+    my @features = $self->get_nonempty_features();
     my @assignments = map
     {
         my $f = $_;
@@ -2312,7 +2313,7 @@ sub as_string
         }
         "$f=$v";
     }
-    (grep{$self->{$_} ne ''}(known_features()));
+    (@features);
     return "[".join(', ', @assignments)."]";
 }
 
