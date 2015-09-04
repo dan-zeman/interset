@@ -44,7 +44,18 @@ my $conversions;
 my $debug = 0;
 my $list_other;
 my $list_other_plain;
-GetOptions('a' => \$all, 'A' => \$all_conversions, 'debug' => \$debug, 'o' => \$list_other, 'O' => \$list_other_plain);
+GetOptions
+(
+    'a' => \$all,
+    'A' => \$all_conversions,
+    'debug' => \$debug,
+    # -o and -O list unknown tags that appear in the output if the other feature is not used.
+    # These options work only when testing conversion between two tagsets! They
+    # cannot be used for round-trip other-proof tests. Use the script filter_list_of_known_tags.pl
+    # instead.
+    'o' => \$list_other,
+    'O' => \$list_other_plain
+);
 # Get the list of all drivers if needed.
 if($all || $all_conversions)
 {
@@ -122,7 +133,7 @@ sub test
 {
     my $tagset = shift; # e.g. "cs::pdt"
     my $permutations_allowed = 0;
-    my $without_other_unknown_allowed = 1;
+    my $without_other_unknown_allowed = 0;
     my $starttime = time();
     print("Testing $tagset ...");
     my $driver = get_driver_object($tagset);

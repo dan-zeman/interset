@@ -2,7 +2,7 @@
 # Reads the list of known tags, decodes them and encodes again. As a result, the features are in the canonical order.
 # Some features or entire tags can be filtered if desired. This is a one-time action and the exact behavior must be specified by editing this source code.
 # We typically need this script during the development of a new driver.
-# Copyright © 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2014, 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
 use utf8;
@@ -10,10 +10,22 @@ use open ':utf8';
 binmode(STDIN, ':utf8');
 binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
+use Getopt::Long qw(:config no_ignore_case bundling);
 use Lingua::Interset qw(get_driver_object);
 
-my $driver = get_driver_object('tr::conll');
-my $action = 'other';
+# Get options if any.
+my $tagset; # e.g. la::it
+my $action = 'other'; # other|recode|deconll|remove_features
+GetOptions
+(
+    'tagset=s' => \$tagset,
+    'action=s' => \$action
+);
+if(!defined($tagset) && scalar(@ARGV) > 0)
+{
+    $tagset = shift(@ARGV);
+}
+my $driver = get_driver_object($tagset);
 my $list = $driver->list();
 my %map;
 foreach my $tag (@{$list})
