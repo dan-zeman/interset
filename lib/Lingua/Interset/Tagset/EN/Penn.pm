@@ -7,7 +7,7 @@
 package Lingua::Interset::Tagset::EN::Penn;
 use strict;
 use warnings;
-our $VERSION = '2.048';
+our $VERSION = '2.049';
 
 use utf8;
 use open ':utf8';
