@@ -116,7 +116,7 @@ sub _create_atoms
             # prepositional (always or not) particle (examples: ad, contra, in, cum, per)
             'S4' => ['pos' => 'adp', 'adpostype' => 'prep', 'other' => {'flexcat' => 'preppart'}],
             # pseudo-lemma / abbreviation
-            '5'  => ['abbr' => 'abbr'],
+            '-5'  => ['abbr' => 'abbr'],
             # pseudo-lemma / number
             'G5' => ['pos' => 'num', 'numform' => 'digit'],
             # punctuation
@@ -188,7 +188,7 @@ sub _create_atoms
                        'punc' => '--',
                        '@'    => { 'other/flexcat' => { 'invar'    => 'O4',
                                                         'preppart' => 'S4',
-                                                        '@'        => { 'abbr' => { 'abbr' => '5',
+                                                        '@'        => { 'abbr' => { 'abbr' => '-5',
                                                                                     '@'    => 'O4' }}}}}
         }
     );
@@ -552,6 +552,9 @@ sub encode
     {
         $tag =~ s/^(.)(.)(.)/$2$3$1/;
     }
+    # There are two positions for degree of comparison. Only one should be used.
+    $tag =~ s/^(1....)[123]/$1-/;
+    $tag =~ s/^(2)[123]/$1-/;
     return $tag;
 }
 
@@ -560,6 +563,7 @@ sub encode
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags.
 # Tags were collected from the corpus: total 1492 tags.
+# Removed wrong tags, kept 1476 tags.
 #------------------------------------------------------------------------------
 sub list
 {
@@ -985,8 +989,6 @@ sub list
 11F---O3--1
 11F---O3H--
 11F---O3H-2
-11F---j2--1
-11F---j3--1
 11F-1-M3---
 12A---A2---
 12B---A3--1
@@ -1140,7 +1142,6 @@ sub list
 2-JM11L1---
 2-JM11M2---
 2-JM11M3---
-2-JM41-G---
 2-JM41A1---
 2-JM41A1--2
 2-JM41A2---
@@ -2040,23 +2041,10 @@ sub list
 5---------1
 5------1---
 5------2---
-5-----..---
-5-----28---
-5----151---
-5----398---
 5-G--------
 5-G-------1
 5-G-------3
 5-G----7---
-5-G---10---
-5-G---14---
-5-G---16---
-5-G---21---
-5-G---22---
-5-G---25---
-5-G---37---
-51A---F2---
-51B---A3---
 end_of_list
     ;
     my @list = split(/\r?\n/, $list);
