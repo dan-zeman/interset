@@ -87,6 +87,11 @@ around BUILDARGS => sub
         # modifier, adverb
         # examples: skont, kif, meta, bħala, hekk (according, how, where/when, as, so)
         'MV'    => ['pos' => 'adv'],
+        # Maltese cardinal numerals have transitive (used with a noun) and intransitive (used without a noun) forms.
+        # intransitive: 2 tnejn, 3 tlieta, 4 erbgħa, 5 ħamsa, 6 sitta, 7 sebgħa, 8 tmienja, 9 disgħa, 10 għaxra, 11 ħdax, 12 tnax, 13 tlettax, 14 erbatax, 15 ħmistax, 16 sittax, 17 sbatax, 18 tmintax, 19 dsatax
+        # transitive with multi-syllable noun: 2 zewg, 3 tliet, 4 erba', 5 ħames, 6 sitt, 7 seba', 8 tmien, 9 disa', 10 għaxar
+        # transitive with one-syllable noun: 2 zewgt, 3 tlett, 4 erbat, 5 ħamest, 6 sitt, 7 sebat, 8 tmint, 9 disat, 10 għaxart
+        # certain transitive cardinals are followed by a singular noun: 11 ħdax-il, 12 tnax-il, 13 tlettax-il, 14 erbatax-il, 15 ħmistax-il, 16 sittax-il, 17 sbatax-il, 18 tmintax-il, 19 dsatax-il
         # numeral, cardinal
         # both expressed in words and in digits
         # examples: żewġ, 2010, 2009, tliet, 3 (two, 2010, 2009, three, 3)
