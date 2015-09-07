@@ -25,11 +25,17 @@ while(<>)
         s/\r?\n$//;
         # Split line into columns.
         my @columns = split(/\s+/, $_);
-        my @features = split(/\|/, $columns[$i_feat_column]);
+        my $features = $columns[$i_feat_column];
+        # Skip the token if there are no features.
+        next if($features eq '_');
+        my @features = split(/\|/, $features);
         my $form = $columns[1];
+        my $upos = $columns[3];
         foreach my $feature (@features)
         {
             $tagset{$feature}++;
+            # We can also list tags with which the feature occurred.
+            $upos{$feature}{$upos}++;
             # We can also print example words that had the feature.
             $examples{$feature}{$form}++;
         }
@@ -63,7 +69,8 @@ foreach my $tag (@tagset)
     }
     (keys(%{$examples{$tag}}));
     splice(@examples, 10);
+    my $upostags = join(',', sort(keys(%{$upos{$tag}})));
     my ($name, $value) = split(/=/, $tag);
-    print('    <feat name="'.$name.'" value="'.$value.'">'.$tagset{$tag}.'</feat><!-- ', join(', ', @examples), " -->\n");
+    print('    <feat name="'.$name.'" value="'.$value.'" upos="'.$upostags.'">'.$tagset{$tag}.'</feat><!-- ', join(', ', @examples), " -->\n");
 }
 print("Total ", scalar(@tagset), " feature values.\n");
