@@ -15,6 +15,10 @@ my $i_feat_column = $format eq '2009' ? 6 : 5;
 
 while(<>)
 {
+    # Skip comment lines (new in CoNLL-U).
+    next if(m/^\#/);
+    # Skip lines with fused tokens (they do not contain features; this is new in CoNLL-U).
+    next if(m/^(\d+)-(\d+)\t/);
     unless(m/^\s*$/)
     {
         # Get rid of the line break.
@@ -59,6 +63,7 @@ foreach my $tag (@tagset)
     }
     (keys(%{$examples{$tag}}));
     splice(@examples, 10);
-    print($tag, " (", join(', ', @examples), ")\n");
+    my ($name, $value) = split(/=/, $tag);
+    print('    <feat name="'.$name.'" value="'.$value.'">'.$tagset{$tag}.'</feat><!-- ', join(', ', @examples), " -->\n");
 }
 print("Total ", scalar(@tagset), " feature values.\n");
