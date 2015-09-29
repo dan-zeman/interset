@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+2.049     2015-09-29 14:55:59+02:00 Europe/Prague
+
 Features:
 * Value 'comp' of feature 'degree' changed to 'cmp'.
   This was actually a bug. Universal Features (in Universal Dependencies) define
