@@ -592,12 +592,12 @@ my %matrix = @_matrix =
     'degree' =>
     {
         'priority' => 230,
-        'values' => ['pos', 'comp', 'sup', 'abs', 'dim', ''],
+        'values' => ['pos', 'cmp', 'sup', 'abs', 'dim', ''],
         'replacements' =>
         [
             ['pos'],
-            ['comp'],
-            ['sup', 'comp'],
+            ['cmp'],
+            ['sup', 'cmp'],
             ['abs', 'sup'],
             ['dim']
         ],
@@ -1938,7 +1938,7 @@ sub is_cardinal {my $self = shift; return $self->contains('numtype', 'card');}
 sub is_common_gender {my $self = shift; return $self->contains('gender', 'com');}
 =method is_comparative()
 =cut
-sub is_comparative {my $self = shift; return $self->contains('degree', 'comp');}
+sub is_comparative {my $self = shift; return $self->contains('degree', 'cmp');}
 =method is_conditional()
 =cut
 sub is_conditional {my $self = shift; return $self->contains('mood', 'cnd');}

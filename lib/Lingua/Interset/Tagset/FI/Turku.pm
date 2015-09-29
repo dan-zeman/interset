@@ -283,7 +283,7 @@ sub _create_atoms
             # positive (kuuma, hyvä)
             'POS' => 'pos',
             # comparative (kuumempi, parempi)
-            'CMP' => 'comp',
+            'CMP' => 'cmp',
             # superlative (kuumin, paras)
             'SUP' => 'sup'
         }

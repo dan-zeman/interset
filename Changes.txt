@@ -1,5 +1,13 @@
 {{$NEXT}}
 
+Features:
+* Value 'comp' of feature 'degree' changed to 'cmp'.
+  This was actually a bug. Universal Features (in Universal Dependencies) define
+  this value as Cmp, not Comp. The divergence between UD and Interset existed
+  unnoticed for about a year.
+
+
+
 2.048     2015-09-04 15:05:51+02:00 Europe/Prague
 
 Drivers:

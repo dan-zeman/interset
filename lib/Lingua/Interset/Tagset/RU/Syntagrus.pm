@@ -181,7 +181,7 @@ sub _create_atoms
         'intfeature' => 'degree',
         'simple_decode_map' =>
         {
-            'СРАВ' => 'comp',
+            'СРАВ' => 'cmp',
             'ПРЕВ' => 'sup'
         }
     );

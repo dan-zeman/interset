@@ -149,7 +149,7 @@ sub _create_atoms
             # új, magyar, nagy, amerikai, német
             'positive'     => 'pos',
             # nagyobb, újabb, korábbi, kisebb, utóbbi
-            'comparative'  => 'comp',
+            'comparative'  => 'cmp',
             # legnagyobb, legfontosabb, legfőbb, legjobb, legkisebb
             'superlative'  => 'sup',
             # does not occur in the treebank

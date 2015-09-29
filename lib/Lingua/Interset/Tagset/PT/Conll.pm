@@ -307,14 +307,14 @@ sub _create_atoms
         'decode_map' =>
         {
             # Comparative degree.
-            '<KOMP>' => ['degree' => 'comp'],
+            '<KOMP>' => ['degree' => 'cmp'],
             # Superlative degree.
             '<SUP>'  => ['degree' => 'sup']
         },
         'encode_map' =>
         {
-            'degree' => { 'comp' => '<KOMP>',
-                          'sup'  => '<SUP>' }
+            'degree' => { 'cmp' => '<KOMP>',
+                          'sup' => '<SUP>' }
         }
     );
     # PRONOUN TYPE ####################

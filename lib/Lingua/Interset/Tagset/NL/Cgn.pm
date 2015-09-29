@@ -205,7 +205,7 @@ sub _create_atoms
             # positive (goed, lang, erg, snel, zeker)
             'basis' => 'pos',
             # comparative (verder, later, eerder, vroeger, beter)
-            'comp'  => 'comp',
+            'comp'  => 'cmp',
             # superlative (best, grootst, kleinst, moeilijkst, mooist)
             'sup'   => 'sup',
             # diminutive (stoeltje, huisje, nippertje, Kareltje)

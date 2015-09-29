@@ -216,7 +216,7 @@ sub _create_atoms
             'n'    => [], # undetermined number
             # diminutive
             'dim'  => ['other' => {'diminutive' => 'yes'}],
-            'comp' => ['degree' => 'comp'],
+            'comp' => ['degree' => 'cmp'],
             'sup'  => ['degree' => 'sup'],
             '1'    => ['person' => '1'],
             '2'    => ['person' => '2'],

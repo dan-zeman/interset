@@ -225,7 +225,7 @@ sub _create_atoms
         'intfeature' => 'degree',
         'simple_decode_map' =>
         {
-            'Cp' => 'comp',
+            'Cp' => 'cmp',
             'Su' => 'sup'
         }
     );

@@ -172,7 +172,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'POS' => 'pos',
-            'KOM' => 'comp',
+            'KOM' => 'cmp',
             'SUV' => 'sup'
         }
     );

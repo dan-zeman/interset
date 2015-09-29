@@ -206,7 +206,7 @@ sub _create_atoms
             # pozitív (vzácny, drahá, otcov; D: draho, vzácne)
             'x' => 'pos',
             # komparatív (vzácnejší, drahší, drevenejší; D: drahšie, vzácnejšie)
-            'y' => 'comp',
+            'y' => 'cmp',
             # superlatív (najvzácnejší, najdrahší, najdrevenejší; D: najdrahšie, najvzácnejšie)
             'z' => 'sup'
         }

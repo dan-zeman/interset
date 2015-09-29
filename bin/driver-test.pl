@@ -59,7 +59,9 @@ GetOptions
 # Get the list of all drivers if needed.
 if($all || $all_conversions)
 {
-    $drivers = find_drivers();
+    ###!!! Legacy code assumes that driver = tagset id.
+    my @tagsets = map {$_->{tagset}} @{find_drivers()};
+    $drivers = \@tagsets;
     $conversions = $all_conversions;
 }
 else

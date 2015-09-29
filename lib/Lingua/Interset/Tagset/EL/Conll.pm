@@ -226,7 +226,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'Ba' => 'pos',
-            'Cp' => 'comp',
+            'Cp' => 'cmp',
             'Su' => 'sup'
         },
         'encode_default' => 'Xx'

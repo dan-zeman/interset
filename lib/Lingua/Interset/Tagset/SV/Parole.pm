@@ -140,7 +140,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'P' => 'pos',
-            'C' => 'comp',
+            'C' => 'cmp',
             'S' => 'sup',
             '0' => ''
         }

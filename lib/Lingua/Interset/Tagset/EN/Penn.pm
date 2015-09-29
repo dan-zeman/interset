@@ -104,7 +104,7 @@ around BUILDARGS => sub
         'JJ'    => ['pos' => 'adj', 'degree' => 'pos'],
         # adjective, comparative
         # examples: better
-        'JJR'   => ['pos' => 'adj', 'degree' => 'comp'],
+        'JJR'   => ['pos' => 'adj', 'degree' => 'cmp'],
         # adjective, superlative
         # examples: best
         'JJS'   => ['pos' => 'adj', 'degree' => 'sup'],
@@ -144,7 +144,7 @@ around BUILDARGS => sub
         'RB'    => ['pos' => 'adv', 'degree' => 'pos'],
         # adverb, comparative
         # examples: more, less
-        'RBR'   => ['pos' => 'adv', 'degree' => 'comp'],
+        'RBR'   => ['pos' => 'adv', 'degree' => 'cmp'],
         # adverb, superlative
         # examples: most, least
         'RBS'   => ['pos' => 'adv', 'degree' => 'sup'],
@@ -216,9 +216,9 @@ around BUILDARGS => sub
                                                                                                             '@'    => { 'number' => { 'plur' => 'NNS',
                                                                                                                                       '@'    => 'NN' }}}},
                                                                                 'adj'  => { 'adjtype' => { 'pdt' => 'PDT',
-                                                                                                           '@'   => { 'prontype' => { ''  => { 'degree' => { 'sup'  => 'JJS',
-                                                                                                                                               'comp' => 'JJR',
-                                                                                                                                               '@'    => 'JJ' }},
+                                                                                                           '@'   => { 'prontype' => { ''  => { 'degree' => { 'sup' => 'JJS',
+                                                                                                                                                             'cmp' => 'JJR',
+                                                                                                                                                             '@'   => 'JJ' }},
                                                                                                                                       '@' => 'DT' }}}},
                                                                                 'num'  => 'CD',
                                                                                 'verb' => { 'verbtype' => { 'mod' => 'MD',
@@ -232,9 +232,9 @@ around BUILDARGS => sub
                                                                                                                                                                                           '@'    => 'VBP' }},
                                                                                                                                                                 '@'    => 'VB' }}}}}},
                                                                                 'adv'  => { 'advtype' => { 'ex' => 'EX',
-                                                                                                           '@'  => { 'degree' => { 'sup'  => 'RBS',
-                                                                                                                                   'comp' => 'RBR',
-                                                                                                                                   '@'    => 'RB' }}}},
+                                                                                                           '@'  => { 'degree' => { 'sup' => 'RBS',
+                                                                                                                                   'cmp' => 'RBR',
+                                                                                                                                   '@'   => 'RB' }}}},
                                                                                 # IN is either preposition or subordinating conjunction
                                                                                 # TO is either preposition or infinitive mark
                                                                                 'adp'  => 'IN',

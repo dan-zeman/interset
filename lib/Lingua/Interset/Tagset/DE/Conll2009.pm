@@ -83,7 +83,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'Pos'  => 'pos',
-            'Comp' => 'comp',
+            'Comp' => 'cmp',
             'Sup'  => 'sup'
         },
         'encode_default' => '*'

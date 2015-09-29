@@ -199,7 +199,7 @@ sub _create_atoms
         'decode_map' =>
         {
             '1' => ['degree' => 'pos'],
-            '2' => ['degree' => 'comp'],
+            '2' => ['degree' => 'cmp'],
             '3' => ['degree' => 'sup'],
             # not stable composition
             # examples: inquantum, necesse-esse, intantum, proculdubio
@@ -207,11 +207,11 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'degree' => { 'pos'  => '1',
-                          'comp' => '2',
-                          'sup'  => '3',
-                          '@'    => { 'other/degree' => { 'unstable' => '8',
-                                                          '@'        => '-' }}}
+            'degree' => { 'pos' => '1',
+                          'cmp' => '2',
+                          'sup' => '3',
+                          '@'   => { 'other/degree' => { 'unstable' => '8',
+                                                         '@'        => '-' }}}
         }
     );
     # 4. MOOD ####################
@@ -311,7 +311,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             '1' => 'pos',
-            '2' => 'comp',
+            '2' => 'cmp',
             '3' => 'sup'
         },
         'encode_default' => '-'

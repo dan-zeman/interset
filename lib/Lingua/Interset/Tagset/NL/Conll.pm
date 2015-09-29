@@ -118,7 +118,7 @@ sub _create_atoms
             # positive (goed, lang, erg, snel, zeker)
             'stell'  => 'pos',
             # comparative (verder, later, eerder, vroeger, beter)
-            'vergr'  => 'comp',
+            'vergr'  => 'cmp',
             # superlative (best, grootst, kleinst, moeilijkst, mooist)
             'overtr' => 'sup'
         }
@@ -138,15 +138,15 @@ sub _create_atoms
             # comparative form of participles (occurs with "V", not with "Adj")
             # tegemoetkomender = more accommodating; overrompelender
             # vermoeider = more tired; verfijnder = more sophisticated
-            'vervvergr' => ['degree' => 'comp']
+            'vervvergr' => ['degree' => 'cmp']
         },
         'encode_map' =>
         {
-            'pos' => { 'verb' => { 'degree' => { 'comp' => 'vervvergr',
-                                                 '@'    => { 'verbform' => { 'part' => { 'number' => { 'plur' => 'vervmv',
-                                                                                                       '@'    => { 'case' => { 'nom' => 'vervneut',
-                                                                                                                               '@'   => 'onverv' }}}},
-                                                                             '@'    => '' }}}},
+            'pos' => { 'verb' => { 'degree' => { 'cmp' => 'vervvergr',
+                                                 '@'   => { 'verbform' => { 'part' => { 'number' => { 'plur' => 'vervmv',
+                                                                                                      '@'    => { 'case' => { 'nom' => 'vervneut',
+                                                                                                                              '@'   => 'onverv' }}}},
+                                                                            '@'    => '' }}}},
                        '@'    => { 'number' => { 'plur' => 'vervmv',
                                                  '@'    => { 'case' => { 'nom' => 'vervneut',
                                                                          'gen' => 'vervgen',

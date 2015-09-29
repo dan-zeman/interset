@@ -605,7 +605,7 @@ sub _create_atoms
             # indefinite degree of some determiners (horixe, hauxe, huraxe)
             'IND'  => ['other' => {'degree' => 'ind'}],
             # comparative of adjectives, adverbs, nouns and verbs (beranduago = later, urrunago = further, arinago = lighter, ezkorrago = wetter)
-            'KONP' => ['degree' => 'comp'],
+            'KONP' => ['degree' => 'cmp'],
             # superlative of adjectives and adverbs (ondoen = the best, urrutien = the farthest, seguruen = the safest, azkarren = the fastest, gutxien = the least)
             'SUP'  => ['degree' => 'sup'],
             # absolute superlative of adjectives and adverbs (goizegi = too early, maizegi = too often, urrunegi = too far, azkarregi = too fast, berantegi = too late)
@@ -616,10 +616,10 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'degree' => { 'comp' => 'KONP',
-                          'sup'  => 'SUP',
-                          'abs'  => 'GEHI',
-                          '@'    => { 'other/degree' => { 'ind' => 'IND' }}}
+            'degree' => { 'cmp' => 'KONP',
+                          'sup' => 'SUP',
+                          'abs' => 'GEHI',
+                          '@'   => { 'other/degree' => { 'ind' => 'IND' }}}
         }
     );
     # PERSON AND NUMBER ####################

@@ -222,7 +222,7 @@ sub _create_atoms
         'intfeature' => 'degree',
         'simple_decode_map' =>
         {
-            'c' => 'comp',
+            'c' => 'cmp',
             's' => 'sup'
         },
         'encode_default' => '-'

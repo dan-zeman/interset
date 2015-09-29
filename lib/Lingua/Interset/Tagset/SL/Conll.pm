@@ -153,7 +153,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'positive'    => 'pos',
-            'comparative' => 'comp',
+            'comparative' => 'cmp',
             'superlative' => 'sup'
         }
     );

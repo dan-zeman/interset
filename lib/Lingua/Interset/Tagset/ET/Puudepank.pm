@@ -418,7 +418,7 @@ sub _create_atoms
             # pos ... pron-poss/pos,det,refl (ise, enda, oma)
             # comp ... comparative (tugevam = stronger, parem = better, tõenäolisem = more likely, enam = more, suurem = greater)
             'pos'  => 'pos',
-            'comp' => 'comp'
+            'comp' => 'cmp'
         }
     );
     # VERBFORM AND MOOD ####################

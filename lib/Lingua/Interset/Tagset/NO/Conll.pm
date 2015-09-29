@@ -197,7 +197,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'pos'  => 'pos',
-            'komp' => 'comp',
+            'komp' => 'cmp',
             'sup'  => 'sup'
         }
     );

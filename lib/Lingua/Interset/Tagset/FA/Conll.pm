@@ -47,7 +47,7 @@ sub _create_atoms
             # This table uses pos and subpos (the CPOS and POS columns of the CoNLL format) as input.
             # coarse ADJ: adjective
             "ADJ\tAJP"    => ['pos' => 'adj', 'degree' => 'pos'], # dígr, islámí, bzrg, jdíd, mxtlf
-            "ADJ\tAJCM"   => ['pos' => 'adj', 'degree' => 'comp'], # bíštr, bíš, bhtr, bíštrí, kmtr
+            "ADJ\tAJCM"   => ['pos' => 'adj', 'degree' => 'cmp'], # bíštr, bíš, bhtr, bíštrí, kmtr
             "ADJ\tAJSUP"  => ['pos' => 'adj', 'degree' => 'sup'], # bhtrín, mhmtrín, bzrgtrín, bíštrín, qwítrín
             "ADJ\t_"      => ['pos' => 'adj'], # wláyí, xúdsáxte, wárd, xúbí (undocumented)
             # coarse ADR: address term
@@ -60,7 +60,7 @@ sub _create_atoms
             # coarse ADV
             "ADV\tSADV"   => ['pos' => 'adv'], # hm, níz, htí, ne, xílí (genuine adverbs)
             "ADV\tAVP"    => ['pos' => 'adv', 'degree' => 'pos'], # hm, tnhá, dígr, xúb, ps (positive adjectives modifying verbs)
-            "ADV\tAVCM"   => ['pos' => 'adv', 'degree' => 'comp'], # bíštr, bíš, kmtr, bhtr, zúdtr (comparative adjectives modifying verbs)
+            "ADV\tAVCM"   => ['pos' => 'adv', 'degree' => 'cmp'], # bíštr, bíš, kmtr, bhtr, zúdtr (comparative adjectives modifying verbs)
             "ADV\tAVSUP"  => ['pos' => 'adv', 'degree' => 'sup'], # dúbáre
             # coarse CL (undocumented)
             "CL\tMEAS"    => ['pos' => 'noun'], # kílú (only one occurrence of this one word form) + one N MEAS: qášq
@@ -134,18 +134,18 @@ sub _create_atoms
                                                    'tot' => "PREM\tAMBAJ",
                                                    'ind' => "PREM\tAMBAJ",
                                                    'neg' => "PREM\tAMBAJ",
-                                                   '@'   => { 'degree' => { 'sup'  => "ADJ\tAJSUP",
-                                                                            'comp' => "ADJ\tAJCM",
-                                                                            '@'    => "ADJ\tAJP" }}}},
+                                                   '@'   => { 'degree' => { 'sup' => "ADJ\tAJSUP",
+                                                                            'cmp' => "ADJ\tAJCM",
+                                                                            '@'   => "ADJ\tAJP" }}}},
                        'num'  => { 'other/numtype' => { 'post' => "POSNUM\tPOSNUM",
                                                         '@'    => "PRENUM\tPRENUM" }},
                        'verb' => { 'verbtype' => { 'mod' => "V\tMODL",
                                                    '@'   => { 'voice' => { 'pass' => "V\tPASS",
                                                                            '@'    => "V\tACT" }}}},
-                       'adv'  => { 'degree' => { 'pos'  => "ADV\tAVP",
-                                                 'comp' => "ADV\tAVCM",
-                                                 'sup'  => "ADV\tAVSUP",
-                                                 '@'    => "ADV\tSADV" }},
+                       'adv'  => { 'degree' => { 'pos' => "ADV\tAVP",
+                                                 'cmp' => "ADV\tAVCM",
+                                                 'sup' => "ADV\tAVSUP",
+                                                 '@'   => "ADV\tSADV" }},
                        'adp'  => { 'adpostype' => { 'post' => "POSTP\tPOSTP",
                                                     '@'    => "PREP\tPREP" }},
                        'conj' => { 'conjtype' => { 'sub' => "SUBR\tSUBR",

@@ -218,7 +218,7 @@ sub _create_atoms
         'decode_map' =>
         {
             'grn1' => ['degree' => 'pos'],
-            'grn2' => ['degree' => 'comp'],
+            'grn2' => ['degree' => 'cmp'],
             'grn3' => ['degree' => 'sup'],
             # not stable composition
             # examples: inquantum, necesse-esse, intantum, proculdubio
@@ -226,10 +226,10 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'degree' => { 'pos'  => 'grn1',
-                          'comp' => 'grn2',
-                          'sup'  => 'grn3',
-                          '@'    => { 'other/degree' => { 'unstable' => 'grn8' }}}
+            'degree' => { 'pos' => 'grn1',
+                          'cmp' => 'grn2',
+                          'sup' => 'grn3',
+                          '@'   => { 'other/degree' => { 'unstable' => 'grn8' }}}
         }
     );
     # PARTICIPIAL DEGREE OF COMPARISON ####################
@@ -239,7 +239,7 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'grp1' => 'pos',
-            'grp2' => 'comp',
+            'grp2' => 'cmp',
             'grp3' => 'sup'
         }
     );
