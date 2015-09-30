@@ -1297,6 +1297,7 @@ sub set
         if($feature eq 'subpos')
         {
             print STDERR ("Ignoring deprecated Interset feature 'subpos'.\n");
+            return;
         }
         else
         {
