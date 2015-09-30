@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+2.050     2015-09-30 21:09:39+02:00 Europe/Prague
+
 Interface:
 * The set() method of FeatureStructure now accepts feature values that had to
   be renamed in the past: degree=comp and number=plu. When someone tries to set
