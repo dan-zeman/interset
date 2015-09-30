@@ -1221,6 +1221,38 @@ sub value_valid
 
 
 #------------------------------------------------------------------------------
+# This method is called from several places in the set() method where it is
+# necessary to deal with unknown values of features. It may throw exceptions!
+# The method takes two arguments besides $self, $feature and $value. Only
+# single values are expected, no arrayrefs and no serialized lists (the set()
+# method takes care of lists before calling this).
+# The method ensures backward compatibility of feature values that have been
+# renamed. It does not help with deprecated feature names, though. If a value
+# is known for the given feature, it will be returned. If it is currently
+# unknown but it used to exist and was renamed, the new value is returned. If
+# it is not known to have ever existed, an exception will be thrown.
+#------------------------------------------------------------------------------
+sub _validate_value
+{
+    my $self = shift;
+    my $feature = shift;
+    my $value = shift;
+    if(value_valid($feature, $value))
+    {
+        return $value;
+    }
+    else
+    {
+        # If the list of renamed values grows longer (hopefully not!) we may want to put this into a separate hash.
+        return 'plur' if($feature eq 'number' && $value eq 'plu'); # renamed in fall 2014
+        return 'cmp'  if($feature eq 'degree' && $value eq 'comp'); # renamed in Interset 2.049, 2015-09-29
+        confess("Unknown value '$value' of feature '$feature'");
+    }
+ }
+
+
+
+#------------------------------------------------------------------------------
 # Named setters for each feature are nice but we also need a generic setter
 # that takes both the feature name and value.
 #------------------------------------------------------------------------------
@@ -1257,7 +1289,20 @@ sub set
 {
     my $self = shift;
     my $feature = shift;
-    confess("Unknown feature '$feature'") if(!feature_valid($feature));
+    if(!feature_valid($feature))
+    {
+        ###!!! Since there are old files with Interset-based data, we need backward compatibility.
+        ###!!! In the future we may need a separate method but for now there is only one feature
+        ###!!! that had existed and was removed: subpos.
+        if($feature eq 'subpos')
+        {
+            print STDERR ("Ignoring deprecated Interset feature 'subpos'.\n");
+        }
+        else
+        {
+            confess("Unknown feature '$feature'");
+        }
+    }
     my @values = grep {defined($_) && $_ ne ''} @_;
     # Undefined value means that we want to clear the feature.
     if(scalar(@values)==0)
@@ -1280,7 +1325,7 @@ sub set
             {
                 # No unlimited recursion. Referenced arrays are not supposed to contain subarrays.
                 confess('Plain scalar expected') unless(ref($subvalue) eq '');
-                confess("Unknown value '$subvalue' of feature '$feature'") if(!value_valid($feature, $subvalue));
+                $subvalue = $self->_validate_value($feature, $subvalue);
                 push(@values1, $subvalue) unless($values{$subvalue});
                 $values{$subvalue}++;
             }
@@ -1290,15 +1335,15 @@ sub set
             my @subvalues = split(/\|/, $value);
             foreach my $subvalue (@subvalues)
             {
+                $subvalue = $self->_validate_value($feature, $subvalue);
                 push(@values1, $subvalue) unless($values{$subvalue});
-                confess("Unknown value '$subvalue' of feature '$feature'") if(!value_valid($feature, $subvalue));
                 $values{$subvalue}++;
             }
         }
         else
         {
+            $value = $self->_validate_value($feature, $value);
             push(@values1, $value) unless($values{$value});
-            confess("Unknown value '$value' of feature '$feature'") if(!value_valid($feature, $value));
             $values{$value}++;
         }
     }
@@ -1898,167 +1943,6 @@ sub contains
 
 
 
-#------------------------------------------------------------------------------
-# Shortcuts for some frequent tests people want to do against Interset.
-#------------------------------------------------------------------------------
-=method is_noun()
-Also returns 1 if the C<pos> feature has multiple values and one of them is C<noun>, e.g.
-if C<get_joined('pos') eq 'noun|adj'>.
-=cut
-sub is_noun {my $self = shift; return $self->contains('pos', 'noun');}
-=method is_abbreviation()
-=cut
-sub is_abbreviation {my $self = shift; return $self->abbr() eq 'abbr';}
-=method is_active()
-=cut
-sub is_active {my $self = shift; return $self->contains('voice', 'act');}
-=method is_adjective()
-=cut
-sub is_adjective {my $self = shift; return $self->contains('pos', 'adj');}
-=method is_adposition()
-=cut
-sub is_adposition {my $self = shift; return $self->contains('pos', 'adp');}
-=method is_adverb()
-=cut
-sub is_adverb {my $self = shift; return $self->contains('pos', 'adv');}
-=method is_affirmative()
-=cut
-sub is_affirmative {my $self = shift; return $self->contains('negativeness', 'pos');}
-=method is_article()
-=cut
-sub is_article {my $self = shift; return $self->contains('prontype', 'art');}
-=method is_auxiliary()
-=cut
-sub is_auxiliary {my $self = shift; return $self->contains('verbtype', 'aux');}
-=method is_cardinal()
-=cut
-sub is_cardinal {my $self = shift; return $self->contains('numtype', 'card');}
-=method is_common_gender()
-=cut
-sub is_common_gender {my $self = shift; return $self->contains('gender', 'com');}
-=method is_comparative()
-=cut
-sub is_comparative {my $self = shift; return $self->contains('degree', 'cmp');}
-=method is_conditional()
-=cut
-sub is_conditional {my $self = shift; return $self->contains('mood', 'cnd');}
-=method is_conjunction()
-=cut
-sub is_conjunction {my $self = shift; return $self->contains('pos', 'conj');}
-=method is_coordinator()
-=cut
-sub is_coordinator {my $self = shift; return $self->is_conjunction() && $self->conjtype() eq 'coor';}
-=method is_dual()
-=cut
-sub is_dual {my $self = shift; return $self->contains('number', 'dual');}
-=method is_feminine()
-=cut
-sub is_feminine {my $self = shift; return $self->contains('gender', 'fem');}
-=method is_finite_verb()
-=cut
-sub is_finite_verb {my $self = shift; return $self->contains('verbform', 'fin');}
-=method is_foreign()
-=cut
-sub is_foreign {my $self = shift; return $self->foreign() eq 'foreign';}
-=method is_gerund()
-=cut
-sub is_gerund {my $self = shift; return $self->contains('verbform', 'ger');}
-=method is_hyph()
-=cut
-sub is_hyph {my $self = shift; return $self->hyph() eq 'hyph';}
-=method is_infinitive()
-=cut
-sub is_infinitive {my $self = shift; return $self->contains('verbform', 'inf');}
-=method is_interjection()
-=cut
-sub is_interjection {my $self = shift; $self->contains('pos', 'int');}
-=method is_interrogative()
-=cut
-sub is_interrogative {my $self = shift; $self->contains('prontype', 'int');}
-=method is_masculine()
-=cut
-sub is_masculine {my $self = shift; return $self->contains('gender', 'masc');}
-=method is_modal()
-=cut
-sub is_modal {my $self = shift; return $self->contains('verbtype', 'mod');}
-=method is_negative()
-=cut
-sub is_negative {my $self = shift; return $self->contains('negativeness', 'neg') || $self->prontype() eq 'neg';} # prontype: don't use contains() here, we don't want true on 'ind|tot|neg'
-=method is_neuter()
-=cut
-sub is_neuter {my $self = shift; return $self->contains('gender', 'neut');}
-=method is_numeral()
-=cut
-sub is_numeral {my $self = shift; return $self->contains('pos', 'num') || $self->numtype() ne '';}
-=method is_ordinal()
-=cut
-sub is_ordinal {my $self = shift; return $self->contains('numtype', 'ord');}
-=method is_participle()
-=cut
-sub is_participle {my $self = shift; return $self->contains('verbform', 'part');}
-=method is_particle()
-=cut
-sub is_particle {my $self = shift; return $self->contains('pos', 'part');}
-=method is_passive()
-=cut
-sub is_passive {my $self = shift; return $self->contains('voice', 'pass');}
-=method is_past()
-=cut
-sub is_past {my $self = shift; return $self->contains('tense', 'past');}
-=method is_personal_pronoun()
-=cut
-sub is_personal_pronoun {my $self = shift; return $self->contains('prontype', 'prs');}
-=method is_possessive()
-=cut
-sub is_possessive {my $self = shift; return $self->poss() eq 'poss';}
-=method is_plural()
-=cut
-sub is_plural {my $self = shift; return $self->contains('number', 'plur');}
-=method is_pronoun()
-=cut
-sub is_pronoun {my $self = shift; return $self->prontype() ne '';}
-=method is_proper_noun()
-=cut
-sub is_proper_noun {my $self = shift; return $self->contains('nountype', 'prop');}
-=method is_punctuation()
-=cut
-sub is_punctuation {my $self = shift; return $self->contains('pos', 'punc');}
-=method is_reflexive()
-=cut
-sub is_reflexive {my $self = shift; return $self->reflex() eq 'reflex';}
-=method is_relative()
-=cut
-sub is_relative {my $self = shift; $self->contains('prontype', 'rel');}
-=method is_singular()
-=cut
-sub is_singular {my $self = shift; return $self->contains('number', 'sing');}
-=method is_subordinator()
-=cut
-sub is_subordinator {my $self = shift; return $self->is_conjunction() && $self->conjtype() eq 'sub';}
-=method is_superlative()
-=cut
-sub is_superlative {my $self = shift; return $self->contains('degree', 'sup');}
-=method is_supine()
-=cut
-sub is_supine {my $self = shift; return $self->contains('verbform', 'sup');}
-=method is_symbol()
-=cut
-sub is_symbol {my $self = shift; return $self->contains('pos', 'sym');}
-=method is_transgressive()
-=cut
-sub is_transgressive {my $self = shift; return $self->contains('verbform', 'trans');}
-=method is_typo()
-=cut
-sub is_typo {my $self = shift; return $self->typo() eq 'typo';}
-=method is_verb()
-=cut
-sub is_verb {my $self = shift; return $self->contains('pos', 'verb');}
-=method is_wh()
-=cut
-sub is_wh {my $self = shift; return any {m/^(int|rel)$/} ($self->get_list('prontype'));}
-
-
-
 #==============================================================================
 # Methods for the universal part-of-speech tags and the universal features as
 # defined in October 2014 for the Universal Dependencies
@@ -2339,7 +2223,7 @@ C<Ck-P1----------> and C<VpQW---XR-AA--->:
   pos=adj|numtype=ord|number=plur|case=nom
   pos=verb|negativeness=pos|gender=fem,neut|number=plur,sing|verbform=part|tense=past|voice=act
 
-If there the values of all features (including C<pos>) are empty, the method
+If the values of all features (including C<pos>) are empty, the method
 returns the underscore character. Thus the result is never undefined or empty.
 
 =cut
@@ -2391,6 +2275,674 @@ sub structure_to_string
     }
     return $string;
 }
+
+
+
+###############################################################################
+# Shortcuts for some frequent tests people want to do against Interset.
+###############################################################################
+
+#------------------------------------------------------------------------------
+=method is_noun()
+Also returns 1 if the C<pos> feature has multiple values and one of them is C<noun>, e.g.
+if C<get_joined('pos') eq 'noun|adj'>.
+=cut
+sub is_noun {my $self = shift; return $self->contains('pos', 'noun');}
+
+#------------------------------------------------------------------------------
+=method is_abbreviation()
+=cut
+sub is_abbreviation {my $self = shift; return $self->abbr() eq 'abbr';}
+
+#------------------------------------------------------------------------------
+=method is_abessive()
+=cut
+sub is_abessive {my $self = shift; return $self->contains('case', 'abe');}
+
+#------------------------------------------------------------------------------
+=method is_ablative()
+=cut
+sub is_ablative {my $self = shift; return $self->contains('case', 'abl');}
+
+#------------------------------------------------------------------------------
+=method is_absolute_superlative()
+=cut
+sub is_absolute_superlative {my $self = shift; return $self->contains('degree', 'abs');}
+
+#------------------------------------------------------------------------------
+=method is_absolutive()
+=cut
+sub is_absolutive {my $self = shift; return $self->contains('case', 'abs');}
+
+#------------------------------------------------------------------------------
+=method is_accusative()
+=cut
+sub is_accusative {my $self = shift; return $self->contains('case', 'acc');}
+
+#------------------------------------------------------------------------------
+=method is_active()
+=cut
+sub is_active {my $self = shift; return $self->contains('voice', 'act');}
+
+#------------------------------------------------------------------------------
+=method is_additive()
+=cut
+sub is_additive {my $self = shift; return $self->contains('case', 'add');}
+
+#------------------------------------------------------------------------------
+=method is_adessive()
+=cut
+sub is_adessive {my $self = shift; return $self->contains('case', 'ade');}
+
+#------------------------------------------------------------------------------
+=method is_adjective()
+=cut
+sub is_adjective {my $self = shift; return $self->contains('pos', 'adj');}
+
+#------------------------------------------------------------------------------
+=method is_adposition()
+=cut
+sub is_adposition {my $self = shift; return $self->contains('pos', 'adp');}
+
+#------------------------------------------------------------------------------
+=method is_adverb()
+=cut
+sub is_adverb {my $self = shift; return $self->contains('pos', 'adv');}
+
+#------------------------------------------------------------------------------
+=method is_affirmative()
+=cut
+sub is_affirmative {my $self = shift; return $self->contains('negativeness', 'pos');}
+
+#------------------------------------------------------------------------------
+=method is_allative()
+=cut
+sub is_allative {my $self = shift; return $self->contains('case', 'all');}
+
+#------------------------------------------------------------------------------
+=method is_animate()
+=cut
+sub is_animate {my $self = shift; return $self->contains('animateness', 'anim');}
+
+#------------------------------------------------------------------------------
+=method is_aorist()
+=cut
+sub is_aorist {my $self = shift; return $self->contains('tense', 'aor');}
+
+#------------------------------------------------------------------------------
+=method is_archaic()
+=cut
+sub is_archaic {my $self = shift; return $self->contains('style', 'arch');}
+
+#------------------------------------------------------------------------------
+=method is_article()
+=cut
+sub is_article {my $self = shift; return $self->contains('prontype', 'art');}
+
+#------------------------------------------------------------------------------
+=method is_associative()
+=cut
+sub is_associative {my $self = shift; return $self->contains('case', 'com');}
+
+#------------------------------------------------------------------------------
+=method is_auxiliary()
+=cut
+sub is_auxiliary {my $self = shift; return $self->contains('verbtype', 'aux');}
+
+#------------------------------------------------------------------------------
+=method is_benefactive()
+=cut
+sub is_benefactive {my $self = shift; return $self->contains('case', 'ben');}
+
+#------------------------------------------------------------------------------
+=method is_cardinal()
+=cut
+sub is_cardinal {my $self = shift; return $self->contains('numtype', 'card');}
+
+#------------------------------------------------------------------------------
+=method is_colloquial()
+=cut
+sub is_colloquial {my $self = shift; return $self->contains('style', 'coll');}
+
+#------------------------------------------------------------------------------
+=method is_comitative()
+=cut
+sub is_comitative {my $self = shift; return $self->contains('case', 'com');}
+
+#------------------------------------------------------------------------------
+=method is_common_gender()
+=cut
+sub is_common_gender {my $self = shift; return $self->contains('gender', 'com');}
+
+#------------------------------------------------------------------------------
+=method is_comparative()
+=cut
+sub is_comparative {my $self = shift; return $self->contains('degree', 'cmp');}
+
+#------------------------------------------------------------------------------
+=method is_conditional()
+=cut
+sub is_conditional {my $self = shift; return $self->contains('mood', 'cnd');}
+
+#------------------------------------------------------------------------------
+=method is_conjunction()
+=cut
+sub is_conjunction {my $self = shift; return $self->contains('pos', 'conj');}
+
+#------------------------------------------------------------------------------
+=method is_conjunctive()
+=cut
+sub is_conjunctive {my $self = shift; return $self->contains('mood', 'sub');}
+
+#------------------------------------------------------------------------------
+=method is_coordinator()
+=cut
+sub is_coordinator {my $self = shift; return $self->is_conjunction() && $self->conjtype() eq 'coor';}
+
+#------------------------------------------------------------------------------
+=method is_dative()
+=cut
+sub is_dative {my $self = shift; return $self->contains('case', 'dat');}
+
+#------------------------------------------------------------------------------
+=method is_definite()
+=cut
+sub is_definite {my $self = shift; return $self->contains('definiteness', 'def');}
+
+#------------------------------------------------------------------------------
+=method is_delative()
+=cut
+sub is_delative {my $self = shift; return $self->contains('case', 'del');}
+
+#------------------------------------------------------------------------------
+=method is_demonstrative()
+=cut
+sub is_demonstrative {my $self = shift; return $self->contains('prontype', 'dem');}
+
+#------------------------------------------------------------------------------
+=method is_desiderative()
+=cut
+sub is_desiderative {my $self = shift; return $self->contains('mood', 'des');}
+
+#------------------------------------------------------------------------------
+=method is_destinative()
+=cut
+sub is_destinative {my $self = shift; return $self->contains('case', 'ben');}
+
+#------------------------------------------------------------------------------
+=method is_diminutive()
+=cut
+sub is_diminutive {my $self = shift; return $self->contains('degree', 'dim');}
+
+#------------------------------------------------------------------------------
+=method is_distributive()
+=cut
+sub is_distributive {my $self = shift; return $self->contains('case', 'dis');}
+
+#------------------------------------------------------------------------------
+=method is_dual()
+=cut
+sub is_dual {my $self = shift; return $self->contains('number', 'dual');}
+
+#------------------------------------------------------------------------------
+=method is_elative()
+=cut
+sub is_elative {my $self = shift; return $self->contains('case', 'ela');}
+
+#------------------------------------------------------------------------------
+=method is_ergative()
+=cut
+sub is_ergative {my $self = shift; return $self->contains('case', 'erg');}
+
+#------------------------------------------------------------------------------
+=method is_essive()
+=cut
+sub is_essive {my $self = shift; return $self->contains('case', 'ess');}
+
+#------------------------------------------------------------------------------
+=method is_exclamative()
+=cut
+sub is_exclamative {my $self = shift; return $self->contains('prontype', 'exc');}
+
+#------------------------------------------------------------------------------
+=method is_factive()
+=cut
+sub is_factive {my $self = shift; return $self->contains('case', 'tra');}
+
+#------------------------------------------------------------------------------
+=method is_feminine()
+=cut
+sub is_feminine {my $self = shift; return $self->contains('gender', 'fem');}
+
+#------------------------------------------------------------------------------
+=method is_finite_verb()
+=cut
+sub is_finite_verb {my $self = shift; return $self->contains('verbform', 'fin');}
+
+#------------------------------------------------------------------------------
+=method is_first_person()
+=cut
+sub is_first_person {my $self = shift; return $self->contains('person', '1');}
+
+#------------------------------------------------------------------------------
+=method is_foreign()
+=cut
+sub is_foreign {my $self = shift; return $self->foreign() eq 'foreign';}
+
+#------------------------------------------------------------------------------
+=method is_future()
+=cut
+sub is_future {my $self = shift; return $self->contains('tense', 'fut');}
+
+#------------------------------------------------------------------------------
+=method is_genitive()
+=cut
+sub is_genitive {my $self = shift; return $self->contains('case', 'gen');}
+
+#------------------------------------------------------------------------------
+=method is_gerund()
+=cut
+sub is_gerund {my $self = shift; return $self->contains('verbform', 'ger');}
+
+#------------------------------------------------------------------------------
+=method is_gerundive()
+=cut
+sub is_gerundive {my $self = shift; return $self->contains('verbform', 'gdv');}
+
+#------------------------------------------------------------------------------
+=method is_hyph()
+=cut
+sub is_hyph {my $self = shift; return $self->hyph() eq 'hyph';}
+
+#------------------------------------------------------------------------------
+=method is_illative()
+=cut
+sub is_illative {my $self = shift; return $self->contains('case', 'ill');}
+
+#------------------------------------------------------------------------------
+=method is_imperative()
+=cut
+sub is_imperative {my $self = shift; return $self->contains('mood', 'imp');}
+
+#------------------------------------------------------------------------------
+=method is_imperfect()
+=cut
+sub is_imperfect {my $self = shift; return $self->contains('tense', 'imp') && $self->contains('aspect', 'imp');}
+
+#------------------------------------------------------------------------------
+=method is_inanimate()
+=cut
+sub is_inanimate {my $self = shift; return $self->contains('animateness', 'inan');}
+
+#------------------------------------------------------------------------------
+=method is_indefinite()
+=cut
+sub is_indefinite {my $self = shift; return $self->contains('prontype', 'ind') || $self->contains('definiteness', 'ind');}
+
+#------------------------------------------------------------------------------
+=method is_indicative()
+=cut
+sub is_indicative {my $self = shift; return $self->contains('mood', 'ind');}
+
+#------------------------------------------------------------------------------
+=method is_inessive()
+=cut
+sub is_inessive {my $self = shift; return $self->contains('case', 'ine');}
+
+#------------------------------------------------------------------------------
+=method is_infinitive()
+=cut
+sub is_infinitive {my $self = shift; return $self->contains('verbform', 'inf');}
+
+#------------------------------------------------------------------------------
+=method is_informal()
+=cut
+sub is_informal {my $self = shift; return $self->contains('politeness', 'inf');}
+
+#------------------------------------------------------------------------------
+=method is_instructive()
+=cut
+sub is_instructive {my $self = shift; return $self->contains('case', 'ins');}
+
+#------------------------------------------------------------------------------
+=method is_instrumental()
+=cut
+sub is_instrumental {my $self = shift; return $self->contains('case', 'ins');}
+
+#------------------------------------------------------------------------------
+=method is_interjection()
+=cut
+sub is_interjection {my $self = shift; $self->contains('pos', 'int');}
+
+#------------------------------------------------------------------------------
+=method is_interrogative()
+=cut
+sub is_interrogative {my $self = shift; $self->contains('prontype', 'int');}
+
+#------------------------------------------------------------------------------
+=method is_intransitive()
+=cut
+sub is_intransitive {my $self = shift; return $self->contains('subcat', 'intr');}
+
+#------------------------------------------------------------------------------
+=method is_jussive()
+=cut
+sub is_jussive {my $self = shift; return $self->contains('mood', 'jus');}
+
+#------------------------------------------------------------------------------
+=method is_lative()
+=cut
+sub is_lative {my $self = shift; return $self->contains('case', 'lat');}
+
+#------------------------------------------------------------------------------
+=method is_locative()
+=cut
+sub is_locative {my $self = shift; return $self->contains('case', 'loc');}
+
+#------------------------------------------------------------------------------
+=method is_masculine()
+=cut
+sub is_masculine {my $self = shift; return $self->contains('gender', 'masc');}
+
+#------------------------------------------------------------------------------
+=method is_mediopassive()
+=cut
+sub is_mediopassive {my $self = shift; return $self->is_middle_voice() && $self->is_passive();}
+
+#------------------------------------------------------------------------------
+=method is_middle_voice()
+=cut
+sub is_middle_voice {my $self = shift; return $self->contains('voice', 'mid');}
+
+#------------------------------------------------------------------------------
+=method is_modal()
+=cut
+sub is_modal {my $self = shift; return $self->contains('verbtype', 'mod');}
+
+#------------------------------------------------------------------------------
+=method is_motivative()
+=cut
+sub is_motivative {my $self = shift; return $self->contains('case', 'cau');}
+
+#------------------------------------------------------------------------------
+=method is_multiplicative()
+=cut
+sub is_multiplicative {my $self = shift; return $self->contains('numtype', 'mult');}
+
+#------------------------------------------------------------------------------
+=method is_narrative()
+=cut
+sub is_narrative {my $self = shift; return $self->contains('tense', 'nar');}
+
+#------------------------------------------------------------------------------
+=method is_necessitative()
+=cut
+sub is_necessitative {my $self = shift; return $self->contains('mood', 'nec');}
+
+#------------------------------------------------------------------------------
+=method is_negative()
+=cut
+sub is_negative {my $self = shift; return $self->contains('negativeness', 'neg') || $self->prontype() eq 'neg';} # prontype: don't use contains() here, we don't want true on 'ind|tot|neg'
+
+#------------------------------------------------------------------------------
+=method is_nominative()
+=cut
+sub is_nominative {my $self = shift; return $self->contains('case', 'nom');}
+
+#------------------------------------------------------------------------------
+=method is_nonhuman()
+=cut
+sub is_nonhuman {my $self = shift; return $self->contains('animateness', 'nhum');}
+
+#------------------------------------------------------------------------------
+=method is_neuter()
+=cut
+sub is_neuter {my $self = shift; return $self->contains('gender', 'neut');}
+
+#------------------------------------------------------------------------------
+=method is_numeral()
+=cut
+sub is_numeral {my $self = shift; return $self->contains('pos', 'num') || $self->numtype() ne '';}
+
+#------------------------------------------------------------------------------
+=method is_optative()
+=cut
+sub is_optative {my $self = shift; return $self->contains('mood', 'opt');}
+
+#------------------------------------------------------------------------------
+=method is_ordinal()
+=cut
+sub is_ordinal {my $self = shift; return $self->contains('numtype', 'ord');}
+
+#------------------------------------------------------------------------------
+=method is_participle()
+=cut
+sub is_participle {my $self = shift; return $self->contains('verbform', 'part');}
+
+#------------------------------------------------------------------------------
+=method is_particle()
+=cut
+sub is_particle {my $self = shift; return $self->contains('pos', 'part');}
+
+#------------------------------------------------------------------------------
+=method is_partitive()
+=cut
+sub is_partitive {my $self = shift; return $self->contains('case', 'par');}
+
+#------------------------------------------------------------------------------
+=method is_passive()
+=cut
+sub is_passive {my $self = shift; return $self->contains('voice', 'pass');}
+
+#------------------------------------------------------------------------------
+=method is_past()
+=cut
+sub is_past {my $self = shift; return $self->contains('tense', 'past');}
+
+#------------------------------------------------------------------------------
+=method is_perfect()
+=cut
+sub is_perfect {my $self = shift; return $self->contains('aspect', 'perf');}
+
+#------------------------------------------------------------------------------
+=method is_personal()
+=cut
+sub is_personal {my $self = shift; return $self->contains('prontype', 'prs');}
+
+#------------------------------------------------------------------------------
+=method is_personal_pronoun()
+=cut
+sub is_personal_pronoun {my $self = shift; return $self->contains('prontype', 'prs');}
+
+#------------------------------------------------------------------------------
+=method is_pluperfect()
+=cut
+sub is_pluperfect {my $self = shift; return $self->contains('tense', 'pqp');}
+
+#------------------------------------------------------------------------------
+=method is_plural()
+=cut
+sub is_plural {my $self = shift; return $self->contains('number', 'plur');}
+
+#------------------------------------------------------------------------------
+=method is_polite()
+=cut
+sub is_polite {my $self = shift; return $self->contains('politeness', 'pol');}
+
+#------------------------------------------------------------------------------
+=method is_positive()
+=cut
+sub is_positive {my $self = shift; return $self->contains('degree', 'pos');}
+
+#------------------------------------------------------------------------------
+=method is_possessive()
+=cut
+sub is_possessive {my $self = shift; return $self->poss() eq 'poss';}
+
+#------------------------------------------------------------------------------
+=method is_potential()
+=cut
+sub is_potential {my $self = shift; return $self->contains('mood', 'pot');}
+
+#------------------------------------------------------------------------------
+=method is_present()
+=cut
+sub is_present {my $self = shift; return $self->contains('tense', 'pres');}
+
+#------------------------------------------------------------------------------
+=method is_prolative()
+=cut
+sub is_prolative {my $self = shift; return $self->contains('case', 'ess');}
+
+#------------------------------------------------------------------------------
+=method is_pronoun()
+=cut
+sub is_pronoun {my $self = shift; return $self->prontype() ne '';}
+
+#------------------------------------------------------------------------------
+=method is_proper_noun()
+=cut
+sub is_proper_noun {my $self = shift; return $self->contains('nountype', 'prop');}
+
+#------------------------------------------------------------------------------
+=method is_progressive()
+=cut
+sub is_progressive {my $self = shift; return $self->contains('aspect', 'prog');}
+
+#------------------------------------------------------------------------------
+=method is_prospective()
+=cut
+sub is_prospective {my $self = shift; return $self->contains('aspect', 'pro');}
+
+#------------------------------------------------------------------------------
+=method is_punctuation()
+=cut
+sub is_punctuation {my $self = shift; return $self->contains('pos', 'punc');}
+
+#------------------------------------------------------------------------------
+=method is_quotative()
+=cut
+sub is_quotative {my $self = shift; return $self->contains('mood', 'qot');}
+
+#------------------------------------------------------------------------------
+=method is_rare()
+=cut
+sub is_rare {my $self = shift; return $self->contains('style', 'rare');}
+
+#------------------------------------------------------------------------------
+=method is_reciprocal()
+=cut
+sub is_reciprocal {my $self = shift; return $self->contains('prontype', 'rcp') || $self->contains('voice', 'rcp');}
+
+#------------------------------------------------------------------------------
+=method is_reflexive()
+=cut
+sub is_reflexive {my $self = shift; return $self->reflex() eq 'reflex';}
+
+#------------------------------------------------------------------------------
+=method is_relative()
+=cut
+sub is_relative {my $self = shift; $self->contains('prontype', 'rel');}
+
+#------------------------------------------------------------------------------
+=method is_second_person()
+=cut
+sub is_second_person {my $self = shift; return $self->contains('person', '2');}
+
+#------------------------------------------------------------------------------
+=method is_singular()
+=cut
+sub is_singular {my $self = shift; return $self->contains('number', 'sing');}
+
+#------------------------------------------------------------------------------
+=method is_subjunctive()
+=cut
+sub is_subjunctive {my $self = shift; return $self->contains('mood', 'sub');}
+
+#------------------------------------------------------------------------------
+=method is_sublative()
+=cut
+sub is_sublative {my $self = shift; return $self->contains('case', 'sub');}
+
+#------------------------------------------------------------------------------
+=method is_subordinator()
+=cut
+sub is_subordinator {my $self = shift; return $self->is_conjunction() && $self->conjtype() eq 'sub';}
+
+#------------------------------------------------------------------------------
+=method is_superessive()
+=cut
+sub is_superessive {my $self = shift; return $self->contains('case', 'sup');}
+
+#------------------------------------------------------------------------------
+=method is_superlative()
+=cut
+sub is_superlative {my $self = shift; return $self->contains('degree', 'sup');}
+
+#------------------------------------------------------------------------------
+=method is_supine()
+=cut
+sub is_supine {my $self = shift; return $self->contains('verbform', 'sup');}
+
+#------------------------------------------------------------------------------
+=method is_symbol()
+=cut
+sub is_symbol {my $self = shift; return $self->contains('pos', 'sym');}
+
+#------------------------------------------------------------------------------
+=method is_temporal()
+=cut
+sub is_temporal {my $self = shift; return $self->contains('case', 'tem');}
+
+#------------------------------------------------------------------------------
+=method is_terminative()
+=cut
+sub is_terminative {my $self = shift; return $self->contains('case', 'ter');}
+
+#------------------------------------------------------------------------------
+=method is_third_person()
+=cut
+sub is_third_person {my $self = shift; return $self->contains('person', '3');}
+
+#------------------------------------------------------------------------------
+=method is_total()
+=cut
+sub is_total {my $self = shift; return $self->contains('prontype', 'tot');}
+
+#------------------------------------------------------------------------------
+=method is_transgressive()
+=cut
+sub is_transgressive {my $self = shift; return $self->contains('verbform', 'trans');}
+
+#------------------------------------------------------------------------------
+=method is_transitive()
+=cut
+sub is_transitive {my $self = shift; return $self->contains('subcat', 'tran');}
+
+#------------------------------------------------------------------------------
+=method is_translative()
+=cut
+sub is_translative {my $self = shift; return $self->contains('case', 'tra');}
+
+#------------------------------------------------------------------------------
+=method is_typo()
+=cut
+sub is_typo {my $self = shift; return $self->typo() eq 'typo';}
+
+#------------------------------------------------------------------------------
+=method is_verb()
+=cut
+sub is_verb {my $self = shift; return $self->contains('pos', 'verb');}
+
+#------------------------------------------------------------------------------
+=method is_vocative()
+=cut
+sub is_vocative {my $self = shift; return $self->contains('case', 'voc');}
+
+#------------------------------------------------------------------------------
+=method is_wh()
+=cut
+sub is_wh {my $self = shift; return any {m/^(int|rel)$/} ($self->get_list('prontype'));}
 
 
 

@@ -1,5 +1,20 @@
 {{$NEXT}}
 
+Interface:
+* The set() method of FeatureStructure now accepts feature values that had to
+  be renamed in the past: degree=comp and number=plu. When someone tries to set
+  these values, they will be translated to the new values before storing. Thus
+  they will not be returned by any of the get*() methods. No exception will be
+  thrown when setting feature values that were valid in the past. Hence
+  Interset should finally be backward-compatible with data stored in files.
+  Feature values that were never valid will still trigger an exception.
+* Added over 70 new is_*() methods in FeatureStructure. Some feature values
+  have more than one method if there are two competing terms. Others still
+  do not have any method: either because the feature is marginal or because
+  the name is ambiguous.
+
+
+
 2.049     2015-09-29 14:55:59+02:00 Europe/Prague
 
 Features:
