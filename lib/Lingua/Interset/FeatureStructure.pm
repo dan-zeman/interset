@@ -1366,7 +1366,6 @@ sub set
     {
         confess('Missing value');
     }
-    # Validation of the arguments is not automatic in this case. We must take care of it! ###!!!
     $self->{$feature} = $value;
 }
 
