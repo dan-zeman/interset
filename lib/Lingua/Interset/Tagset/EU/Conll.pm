@@ -241,7 +241,7 @@ sub _create_atoms
 
             # relation = erlazio
             # Is this an error? There are only three occurrences of the word "bait" (because, since). But the word does not occur with any other tag.
-            "ERL\tERL" => ['pos' => 'conj', 'subpos' => 'sub'],
+            "ERL\tERL" => ['pos' => 'conj', 'conjtype' => 'sub'],
             # HAOS: 40 occurrences, 36 of which go to the word "ari".
             # It is a special verb, meaning "be engaged in", used to form progressive periphrases.
             # http://books.google.cz/books?id=Kss999lxKm0C&pg=PA287&lpg=PA287&dq=ari+basque&source=bl&ots=J3K8bKW9TT&sig=t11oLSyx76b8AhtZMufo-SVrpL4&hl=cs&sa=X&ei=vDxnVNiaCePiywOsoIKQAw&ved=0CEkQ6AEwCQ#v=onepage&q=ari%20basque&f=false

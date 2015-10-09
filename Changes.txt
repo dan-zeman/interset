@@ -13,6 +13,9 @@ Interface:
   is_article() is true if prontype values contain 'art'; it is assumed that the
       pos is then 'adj' but it is not tested.
 
+Fixes:
+* EU::Conll: still used the deprecated feature 'subpos'.
+
 
 
 2.050     2015-09-30 21:09:39+02:00 Europe/Prague
