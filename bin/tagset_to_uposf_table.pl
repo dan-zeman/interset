@@ -14,24 +14,32 @@ use Lingua::Interset qw(hash_drivers list decode encode get_driver_object);
 
 sub usage
 {
-    print STDERR ("Usage:   tagset_to_uposf_table.pl [--italics 0] <tagset> <corpus> 0/1\n");
-    print STDERR ("Example: tagset_to_uposf_table.pl en::penn conll-2007-en 1 --italics 0 > docs/_tagset-conversion/en-penn-uposf.md\n");
-    print STDERR ("Example: ", 'tagset_to_uposf_table.pl fa::conll persian-dt 0 > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\fa-conll-uposf.md', "\n");
+    print STDERR ("Usage:   tagset_to_uposf_table.pl [--reduce-to-subpos] [--italics 0] <tagset> <corpus>\n");
+    print STDERR ("Example: tagset_to_uposf_table.pl en::penn conll-2007-en --reduce-to-subpos > docs/_tagset-conversion/en-penn-uposf.md\n");
+    print STDERR ('Example: tagset_to_uposf_table.pl fa::conll persian-dt --italics 0 > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\fa-conll-uposf.md', "\n");
+    print STDERR ('Example: tagset_to_uposf_table.pl cs::multext > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\cs-multext-uposf.md', "\n");
+    print STDERR ("         <tagset> ... e.g. en::conll\n");
+    print STDERR ("         <corpus> ... e.g. conll-2007-en; where to take examples from\n");
+    print STDERR ("             Omit this argument if there is no corpus tagged with these tags.\n");
     print STDERR ("         --italics ... should examples be formatted as italics? Default: 1\n");
-    print STDERR ("         <tagset> .... e.g. en::conll\n");
-    print STDERR ("         <corpus> .... e.g. conll-2007-en; where to take examples from\n");
-    print STDERR ("         0/1 ......... whether to reduce indexed tags to subpos\n");
+    print STDERR ("         --reduce-to-subpos ... if the examples come from a corpus in the CoNLL\n");
+    print STDERR ("             format: tags from the tagset correspond to just the subpos part\n");
+    print STDERR ("             of the indexed tags with examples\n");
 }
 
 # All examples in Latin, Cyrillic and Greek scripts should be in italics. Other scripts should not.
 my $italics = 1;
-GetOptions('italics=s' => \$italics);
+my $reduce = 0; # 0/1: whether to reduce indexed tags to subpos
+GetOptions
+(
+    'italics=s' => \$italics,
+    'reduce-to-subpos' => \$reduce
+);
 
 my $tagset = $ARGV[0];
 # Do we want the output to use HTML/Markdown so that it can be included in the documentation of the Universal Dependencies?
 my $udepformat = 1;
 my $corpus = $ARGV[1]; # where to take examples from (Tagzplorer); e.g. conll-2007-en
-my $reduce = $ARGV[2]; # 0/1: whether to reduce indexed tags to subpos
 my $driver = get_driver_object($tagset);
 if($udepformat)
 {
@@ -58,15 +66,14 @@ if($n>0)
         print("Tagset <tt>$tagset</tt>, total $n tags.\n\n");
         print("<table>\n");
     }
-    my $examples = '';
-    $examples = examples($corpus, $reduce, $driver) if($corpus);
+    my $examplehash = {};
+    $examplehash = examples($corpus, $reduce, $driver) if($corpus);
     my $i = 0;
     foreach my $tag (@{$list_of_tags})
     {
         my $fs = $driver->decode($tag);
         my $upos = encode('mul::uposf', $fs);
-        my $fstext = $fs->as_string();
-        my @examples = @{$examples->{$tag}};
+        my @examples = @{$examplehash->{$tag}};
         splice(@examples, 5);
         my $examples = join(', ', @examples);
         # Examples in the Latin, Cyrillic and Greek scripts should be shown in italics.
@@ -93,7 +100,6 @@ if($n>0)
             # Na výstupu chceme dva sloupce oddělené tabulátorem. Některé značky ale samy obsahují tabulátory, které musíme nejdříve něčím nahradit.
             $tag =~ s/\t/ /g;
             print("$tag\t$upos\n");
-            #print("$tag\t$fstext\n");
         }
         $i++;
     }
