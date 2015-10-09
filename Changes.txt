@@ -1,5 +1,20 @@
 {{$NEXT}}
 
+Interface:
+* Shifted semantics of pronoun-related is_*() methods of the FeatureStructure
+  class, added two new methods:
+  is_pronominal() is true if prontype is not empty. It includes pronouns,
+      determiners, quantifiers and pronominal adverbs. This is what the
+      is_pronoun() method did previously.
+  is_pronoun() is true if is_pronominal() && is_noun()
+  is_noun() therefore includes nouns and pronouns (does not check prontype)
+  is_determiner() is true if is_pronominal() && is_adjective()
+  is_adjective() therefore includes adjectives and determiners
+  is_article() is true if prontype values contain 'art'; it is assumed that the
+      pos is then 'adj' but it is not tested.
+
+
+
 2.050     2015-09-30 21:09:39+02:00 Europe/Prague
 
 Interface:

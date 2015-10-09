@@ -2285,7 +2285,8 @@ sub structure_to_string
 #------------------------------------------------------------------------------
 =method is_noun()
 Also returns 1 if the C<pos> feature has multiple values and one of them is C<noun>, e.g.
-if C<get_joined('pos') eq 'noun|adj'>.
+if C<get_joined('pos') eq 'noun|adj'>. Note that pronouns also have C<pos=noun>.
+If you want to exclude pronouns, test C<is_noun() && !is_pronominal()>.
 =cut
 sub is_noun {my $self = shift; return $self->contains('pos', 'noun');}
 
@@ -2468,6 +2469,11 @@ sub is_desiderative {my $self = shift; return $self->contains('mood', 'des');}
 =method is_destinative()
 =cut
 sub is_destinative {my $self = shift; return $self->contains('case', 'ben');}
+
+#------------------------------------------------------------------------------
+=method is_determiner()
+=cut
+sub is_determiner {my $self = shift; return $self->is_pronominal() && $self->is_adjective();}
 
 #------------------------------------------------------------------------------
 =method is_diminutive()
@@ -2795,9 +2801,14 @@ sub is_present {my $self = shift; return $self->contains('tense', 'pres');}
 sub is_prolative {my $self = shift; return $self->contains('case', 'ess');}
 
 #------------------------------------------------------------------------------
+=method is_pronominal()
+=cut
+sub is_pronominal {my $self = shift; return $self->prontype() ne '';}
+
+#------------------------------------------------------------------------------
 =method is_pronoun()
 =cut
-sub is_pronoun {my $self = shift; return $self->prontype() ne '';}
+sub is_pronoun {my $self = shift; return $self->is_pronominal() && $self->is_noun();}
 
 #------------------------------------------------------------------------------
 =method is_proper_noun()
