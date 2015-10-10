@@ -27,6 +27,33 @@ sub usage
     print STDERR ("             of the indexed tags with examples\n");
 }
 
+# tagset_to_uposf_table.pl cs::multext > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\cs-multext-uposf.md
+# tagset_to_uposf_table.pl da::conll conll-2006-da > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\da-conll-uposf.md
+# tagset_to_uposf_table.pl de::conll2009 conll-2009-de > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\de-conll2009-uposf.md
+# tagset_to_uposf_table.pl de::smor > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\de-smor-uposf.md
+# tagset_to_uposf_table.pl de::conll2009 conll-2009-de --reduce-to-subpos > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\de-stts-uposf.md
+# tagset_to_uposf_table.pl de::stts conll-2006-de --reduce-to-subpos > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\de-stts-uposf.md
+# tagset_to_uposf_table.pl el::conll conll-2007-el > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\el-conll-uposf.md
+# tagset_to_uposf_table.pl en::penn conll-2007-en --reduce-to-subpos > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\en-penn-uposf.md
+# tagset_to_uposf_table.pl et::puudepank eesti-keele-puudepank > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\et-puudepank-uposf.md
+# tagset_to_uposf_table.pl eu::conll basque-dt > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\eu-conll-uposf.md
+# tagset_to_uposf_table.pl fa::conll persian-dt --italics 0 > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\fa-conll-uposf.md
+# tagset_to_uposf_table.pl fi::turku turku-dt --reduce-to-subpos > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\fi-turku-uposf.md
+# tagset_to_uposf_table.pl grc::conll agdt-conll > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\grc-conll-uposf.md
+# tagset_to_uposf_table.pl hr::multext > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\hr-multext-uposf.md
+# tagset_to_uposf_table.pl hu::conll conll-2007-hu > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\hu-conll-uposf.md
+# tagset_to_uposf_table.pl la::conll ldt-conll > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\la-conll-uposf.md
+# tagset_to_uposf_table.pl nl::conll conll-2006-nl > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\nl-conll-uposf.md
+# tagset_to_uposf_table.pl nl::cgn > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\nl-cgn-uposf.md
+# tagset_to_uposf_table.pl pl::ipipan > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\pl-ipipan-uposf.md
+# tagset_to_uposf_table.pl pt::cintil > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\pt-cintil-uposf.md
+# tagset_to_uposf_table.pl pt::conll conll-2006-pt > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\pt-conll-uposf.md
+# tagset_to_uposf_table.pl ru::syntagrus syntagrus > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\ru-syntagrus-uposf.md
+# tagset_to_uposf_table.pl sk::snk snk > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\sk-snk-uposf.md
+# tagset_to_uposf_table.pl sl::multext > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\sl-multext-uposf.md
+# tagset_to_uposf_table.pl sv::parole ud-swedish-parole > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\sv-parole-uposf.md
+# tagset_to_uposf_table.pl sv::suc ud-swedish > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\sv-suc-uposf.md
+
 # All examples in Latin, Cyrillic and Greek scripts should be in italics. Other scripts should not.
 my $italics = 1;
 my $reduce = 0; # 0/1: whether to reduce indexed tags to subpos
