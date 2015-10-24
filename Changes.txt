@@ -15,6 +15,7 @@ Interface:
 
 Fixes:
 * EU::Conll: still used the deprecated feature 'subpos'.
+* FeatureStructure->set_upos() should not reset non-empty prontype to 'prn'.
 
 
 

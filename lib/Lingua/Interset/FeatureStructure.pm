@@ -1984,8 +1984,17 @@ sub set_upos
 {
     my $self = shift;
     my $upos = shift;
+    # We will use the mul::upos driver to decode the tag. However, the driver
+    # may destroy the current value of prontype: it may replace it by a generic
+    # value 'prn'. Save the current prontype if the new one is 'prn'.
+    my $old_prontype = $self->prontype();
     my $driver = $self->_upos_driver();
     $driver->decode_and_merge_hard($upos, $self);
+    my $new_prontype = $self->prontype();
+    if($new_prontype eq 'prn' && $old_prontype ne '' && $old_prontype ne 'prn')
+    {
+        $self->set('prontype', $old_prontype);
+    }
 }
 
 
