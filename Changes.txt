@@ -1,5 +1,13 @@
 {{$NEXT}}
 
+Drivers:
+* RO::Multext
+
+Features:
+* New value 'emp' of feature 'prontype': emphatic pronoun. There are
+  similarities with reflexive and demonstrative pronouns/determiners.
+  Example: "himself" as in "He himself did it." Czech "sám", Romanian "însuși".
+
 Interface:
 * Shifted semantics of pronoun-related is_*() methods of the FeatureStructure
   class, added two new methods:

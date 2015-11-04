@@ -164,7 +164,7 @@ my %matrix = @_matrix =
     'prontype' =>
     {
         'priority' => 100,
-        'values' => ['prn', 'prs', 'rcp', 'art', 'int', 'rel', 'exc', 'dem', 'neg', 'ind', 'tot', ''],
+        'values' => ['prn', 'prs', 'rcp', 'art', 'int', 'rel', 'exc', 'dem', 'emp', 'neg', 'ind', 'tot', ''],
         'replacements' =>
         [
             ['prn'],
@@ -175,6 +175,7 @@ my %matrix = @_matrix =
             ['int', 'rel', 'exc'],
             ['rel', 'int'],
             ['exc', 'int'],
+            ['emp', 'dem'],
             ['neg', 'ind'],
             ['tot', 'ind'],
             ['art']
@@ -954,6 +955,19 @@ my %matrix = @_matrix =
             ['prog']
         ],
         'uname' => 'Aspect'
+    },
+    ###!!! Experimental for ro::multext and its conversion to UD!
+    ###!!! Not yet fully accepted and documented!
+    'strength' =>
+    {
+        'priority' => 437,
+        'values' => ['weak', 'strong'],
+        'replacements' =>
+        [
+            ['weak'],
+            ['strong']
+        ],
+        'uname' => 'Strength'
     },
     # Variant. Used in some tagsets to distinguish between forms of the same lemma that would otherwise get the same tag.
     # The meaning of the values is not and cannot be universal, not even within the scope of one tagset.

@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 # Reads CoNLL 2006/2007/2009 data from STDIN, collects all combinations of CPOS + POS + FEAT and prints them sorted to STDOUT.
+# For CoNLL-U prints only the treebank-specific POS column.
 # Copyright © 2011 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # License: GNU GPL
 
@@ -10,6 +11,7 @@ binmode(STDOUT, ":utf8");
 binmode(STDERR, ":utf8");
 
 # Argument "2009" toggles the CoNLL 2009 data format.
+# Argument "U" toggles CoNLL-U.
 my $format = shift;
 
 while(<>)
@@ -20,7 +22,12 @@ while(<>)
         s/\r?\n$//;
         # Split line into columns.
         my @columns = split(/\s+/, $_);
-        if($format != 2009)
+        if($format =~ m/[uU]/)
+        {
+            # Use the treebank-specific tag stored in the POS column.
+            $tagset{$columns[4]}++;
+        }
+        elsif($format != 2009)
         {
             # Join coarse-grained pos, fine-grained pos, and features into one tag.
             my $tag = "$columns[3]\t$columns[4]\t$columns[5]";

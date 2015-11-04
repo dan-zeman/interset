@@ -129,6 +129,9 @@ sub _create_atoms
             # demonstrative pronoun
             # examples: ten, tento, tenhle, onen, takový, týž, tentýž, sám
             'd' => ['pos' => 'noun|adj', 'prontype' => 'dem'],
+            # emphatic pronoun (~ reflexive demonstrative)
+            # examples: sám
+            'h' => ['prontype' => 'emp'],
             # indefinite pronoun
             # examples: někdo, něco, nějaký, některý, něčí, leckdo, málokdo, kdokoli
             'i' => ['pos' => 'noun|adj', 'prontype' => 'ind'],
@@ -161,6 +164,7 @@ sub _create_atoms
             { 'reflex' => { 'reflex' => 'x',
                             '@'      => { 'poss' => { 'poss' => 's',
                                                       '@'    => { 'prontype' => { 'dem' => 'd',
+                                                                                  'emp' => 'h',
                                                                                   'ind' => 'i',
                                                                                   'int' => 'q',
                                                                                   'rel' => 'r',
@@ -177,6 +181,10 @@ sub _create_atoms
             # cardinal number
             # examples [cs]: jeden, dva, tři, čtyři, pět, šest, sedm, osm, devět, deset
             'c' => ['pos' => 'num', 'numtype' => 'card'],
+            # collective number
+            # It expresses quantity and totality at the same time.
+            # examples [ro]: amândoi, ambele (both)
+            'l' => ['pos' => 'num', 'numtype' => 'card', 'prontype' => 'tot'],
             # ordinal number
             # examples [cs]: první, druhý, třetí, čtvrtý, pátý
             'o' => ['pos' => 'adj', 'numtype' => 'ord'],
@@ -203,8 +211,10 @@ sub _create_atoms
         'encode_map' =>
         {
             'numtype' => { 'card|ord' => { 'prontype' => { 'ind' => 'p',
+                                                           'tot' => 'l',
                                                            '@'   => 'c' }},
-                           'card'     => 'c',
+                           'card'     => { 'prontype' => { 'tot' => 'l',
+                                                           '@'   => 'c' }},
                            'ord'      => 'o',
                            'mult'     => 'm',
                            'gen'      => 's',
@@ -238,17 +248,29 @@ sub _create_atoms
                               '@'   => 'm' }}
     );
     # CONJTYPE ####################
-    $atoms{conjtype} = $self->create_simple_atom
+    $atoms{conjtype} = $self->create_atom
     (
-        'intfeature' => 'conjtype',
-        'simple_decode_map' =>
+        'surfeature' => 'conjtype',
+        'decode_map' =>
         {
             # coordinating conjunction
             # examples: a, i, ani, nebo, ale
-            'c' => 'coor',
+            # [ro] examples: sau (or), dar (but), însă (however), că (that), fie (or)
+            'c' => ['conjtype' => 'coor'],
             # subordinating conjunction
             # examples: že, zda, aby, protože
-            's' => 'sub'
+            # [ro] examples: că (that), dacă (if), încât (that), deși (although), de
+            's' => ['conjtype' => 'sub'],
+            # portmanteau (multi-purpose?) conjunction: it can be either coordinating conjunction or an adverb, and the distinction is tricky for an average speaker of Romanian
+            # [ro] examples: și (and), iar (and)
+            'r' => ['conjtype' => 'coor', 'other' => {'conjtype' => 'portmanteau'}]
+        },
+        'encode_map' =>
+        {
+            'conjtype' => { 'coor' => { 'other/conjtype' => { 'portmanteau' => 'r',
+                                                              '@'           => 'c' }},
+                            'sub'  => 's',
+                            '@'    => 'c' }
         }
     );
     # GENDER ####################
@@ -432,6 +454,7 @@ sub _create_atoms
     );
     # SYNTACTIC TYPE OF PRONOUN ####################
     # syntactic type: nominal or adjectival pronouns
+    # in [ro] this is used to distinguish the part of speech of abbreviations
     # nominal: který, co, cokoliv, cosi, což, copak, cože, on, jaký, jenž, kdekdo, kdo, já, něco, někdo, nic, nikdo, se, ty, žádný
     # adjectival: který, čí, čísi, jaký, jakýkoli, jakýkoliv, jakýsi, jeho, jenž, kdekterý, kterýkoli, kterýkoliv, kterýžto, málokterý, můj, nějaký, něčí, některý, ničí, onen, sám, samý, svůj, týž, tenhle, takýs, takovýto, ten, tento, tentýž, tenhleten, tvůj, veškerý, všecko, všechno, všelicos, všelijaký, všeliký, všema, žádný
     $atoms{syntactic_type} = $self->create_atom
@@ -440,12 +463,14 @@ sub _create_atoms
         'decode_map' =>
         {
             'n' => ['pos' => 'noun'],
-            'a' => ['pos' => 'adj']
+            'a' => ['pos' => 'adj'],
+            'r' => ['pos' => 'adv']
         },
         'encode_map' =>
 
             { 'pos' => { 'noun' => 'n',
                          'adj'  => 'a',
+                         'adv'  => 'r',
                          '@'    => '-' }}
     );
     # IS THERE AN ATTACHED CLITIC "-S" ("JSI")? ####################
@@ -488,7 +513,9 @@ sub _create_atoms
             'r' => 'roman',
             'l' => 'word'
         },
-        'encode_default' => 'l'
+        ###!!! The default 'l' worked for Czech, Slovenian and Croatian.
+        ###!!! It does not work for Romanian where we distinguish collective numerals ("both"). These must be expressed as words, thus the numform feature is not explicitly used.
+        'encode_default' => '-'
     );
     # NUMERAL CLASS ####################
     $atoms{numclass} = $self->create_atom
@@ -535,17 +562,21 @@ sub _create_atoms
             'i' => ['verbform' => 'fin', 'mood' => 'ind'],
             'm' => ['verbform' => 'fin', 'mood' => 'imp'],
             'c' => ['verbform' => 'fin', 'mood' => 'cnd'],
+            's' => ['verbform' => 'fin', 'mood' => 'sub'],
             'n' => ['verbform' => 'inf'],
             'p' => ['verbform' => 'part'],
-            't' => ['verbform' => 'trans']
+            't' => ['verbform' => 'trans'],
+            'g' => ['verbform' => 'ger']
         },
         'encode_map' =>
 
             { 'mood' => { 'imp' => 'm',
                           'cnd' => 'c',
+                          'sub' => 's',
                           'ind' => 'i',
                           '@'   => { 'verbform' => { 'part'  => 'p',
                                                      'trans' => 't',
+                                                     'ger'   => 'g',
                                                      '@'     => 'n' }}}}
     );
     # ASPECT ####################
@@ -568,7 +599,9 @@ sub _create_atoms
         {
             'p' => 'pres',
             'f' => 'fut',
-            's' => 'past'
+            's' => 'past',
+            'i' => 'imp',
+            'l' => 'pqp'
         },
         'encode_default' => '-'
     );
@@ -608,13 +641,33 @@ sub _create_atoms
             'g' => [],
             # participial adverb (= adverbial participle = transgressive in Czech!)
             # examples: uključujući, ističući, govoreći, dodajući, budući
-            'r' => ['verbform' => 'trans']
+            'r' => ['verbform' => 'trans'],
+            # interrogative or relative adverb
+            # [ro] examples: când (when), cum (how), cât (how much), unde (where)
+            'w' => ['prontype' => 'int|rel'],
+            # negative adverb
+            # [ro] examples: nici (not)
+            'z' => ['prontype' => 'neg'],
+            # particle adverb [ro]
+            # It can dislocate verbal compound forms: Ea a _tot_ cântat. = She has _ever_ sung.
+            # Or it marks degree: circa (about), foarte (very), prea (too).
+            # [ro] examples: mai (more), și (also), foarte (very)
+            'p' => ['other' => {'advtype' => 'particle'}],
+            # portmanteau adverb [ro]
+            # The word can be either adverb or conjunction, the adverbial reading is more frequent.
+            # [ro] examples: ca (as), iar (again)
+            'c' => ['other' => {'advtype' => 'portmanteau'}]
         },
         'encode_map' =>
 
             { 'verbform' => { 'trans' => 'r',
                               'part'  => 'r',
-                              '@'     => 'g' }}
+                              '@'     => { 'prontype' => { 'int' => 'w',
+                                                           'rel' => 'w',
+                                                           'neg' => 'z',
+                                                           '@'   => { 'other/advtype' => { 'portmanteau' => 'c',
+                                                                                           'particle'    => 'p',
+                                                                                           '@'           => 'g' }}}}}}
     );
     # ADPOSITION TYPE ####################
     # Czech has only prepositions, no postpositions or circumpositions.
@@ -665,7 +718,16 @@ sub _create_atoms
             'q' => ['prontype' => 'int'],
             # modal particle
             # examples: sve, što, i, više, god, bilo
-            'o' => ['parttype' => 'mod']
+            'o' => ['parttype' => 'mod'],
+            # infinitive particle
+            # [ro] examples: a: Cerea bani de la cine putea, spre a trăi pe un picior mai convenabil. = Who could ask for money, to live more conveniently.
+            'n' => ['parttype' => 'inf'],
+            # subjunctive particle
+            # [ro] examples: să: Statul în cauză este în măsură să garanteze că... = State concerned is able to guarantee that...
+            's' => ['mood' => 'sub'],
+            # future particle
+            # [ro] documentation has this, although it does not appear in the corpus
+            'f' => ['tense' => 'fut']
         },
         'encode_map' =>
 
@@ -673,7 +735,10 @@ sub _create_atoms
                                   'neg' => 'z',
                                   '@'   => { 'prontype' => { 'int' => 'q',
                                                              '@'   => { 'parttype' => { 'mod' => 'o',
-                                                                                        '@'   => '-' }}}}}}
+                                                                                        'inf' => 'n',
+                                                                                        '@'   => { 'mood' => { 'sub' => 's',
+                                                                                                               '@'   => { 'tense' => { 'fut' => 'f',
+                                                                                                                                       '@'   => '-' }}}}}}}}}}
     );
     # RESIDUAL TYPE ####################
     $atoms{restype} = $self->create_atom
