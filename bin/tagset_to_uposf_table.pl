@@ -43,6 +43,7 @@ sub usage
 # tagset_to_uposf_table.pl hr::multext > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\hr-multext-uposf.md
 # tagset_to_uposf_table.pl hu::conll conll-2007-hu > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\hu-conll-uposf.md
 # tagset_to_uposf_table.pl la::conll ldt-conll > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\la-conll-uposf.md
+# tagset_to_uposf_table.pl la::itconll la-itt --reduce=itt > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\la-itconll-uposf.md
 # tagset_to_uposf_table.pl nl::conll conll-2006-nl > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\nl-conll-uposf.md
 # tagset_to_uposf_table.pl nl::cgn > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\nl-cgn-uposf.md
 # tagset_to_uposf_table.pl pl::ipipan > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\pl-ipipan-uposf.md
@@ -56,11 +57,12 @@ sub usage
 
 # All examples in Latin, Cyrillic and Greek scripts should be in italics. Other scripts should not.
 my $italics = 1;
-my $reduce = 0; # 0/1: whether to reduce indexed tags to subpos
+my $reduce = 0; # 0/1/itt: whether to reduce indexed tags to subpos
 GetOptions
 (
     'italics=s' => \$italics,
-    'reduce-to-subpos' => \$reduce
+    'reduce-to-subpos' => \$reduce,
+    'reduce=s' => \$reduce
 );
 
 my $tagset = $ARGV[0];
@@ -163,7 +165,17 @@ sub examples
             # In some cases the indexed examples contain CoNLL-like tags
             # (three tab-separated strings) but our tagset contains only
             # the POS tag (the second string) and we must reduce the indexed tag to match it.
-            $tag =~ s/^(\S+)\s+(\S+)\s+.*/$2/ if($reduce);
+            if($reduce && $reduce ne 'itt')
+            {
+                $tag =~ s/^(\S+)\s+(\S+)\s+.*/$2/;
+            }
+            # Elsewhere (the Index Thomisticus Treebank of Latin) the examples are indexed by a combination of the subpos and features,
+            # but the tagset described by the Interset driver contains also the coarse pos.
+            elsif($reduce eq 'itt')
+            {
+                $tag =~ s/^([A-Z]?)(\d)\|(.+)$/$2\t$1$2\t$3/;
+                print STDERR ("$tag\n");
+            }
             # For some tagsets we have reordered features in the tags listed in the drivers.
             # Therefore the listed tags do not match those indexed with the examples.
             # Recoding the tag using Interset should help.
@@ -173,6 +185,7 @@ sub examples
             my @records = split('<dr>', $records);
             # Remove frequencies.
             my @examples = map {s/<df>.*//; $_} (@records);
+            print STDERR (join(', ', @examples), "\n");
             # Remove uppercase duplicates of lowercase word forms.
             my %map;
             foreach my $example (@examples)
