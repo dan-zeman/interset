@@ -30,6 +30,24 @@ sub get_tagset_id
 
 
 #------------------------------------------------------------------------------
+# This block will be called before object construction. It will build the
+# decoding and encoding maps for this particular tagset.
+# Then it will pass all the attributes to the constructor.
+#------------------------------------------------------------------------------
+around BUILDARGS => sub
+{
+    my $orig = shift;
+    my $class = shift;
+    # Call the default BUILDARGS in Moose::Object. It will take care of distinguishing between a hash reference and a plain hash.
+    my $attr = $class->$orig(@_);
+    # Tell the POS atom that this language uses determiners, articles and entities.
+    $attr->{determiners} = 1;
+    return $attr;
+};
+
+
+
+#------------------------------------------------------------------------------
 # Creates atomic drivers for surface features.
 #------------------------------------------------------------------------------
 sub _create_atoms
@@ -37,184 +55,6 @@ sub _create_atoms
     my $self = shift;
     # Most atoms can be inherited but some have to be redefined.
     my $atoms = $self->SUPER::_create_atoms();
-    # PART OF SPEECH ####################
-    # The default Multext POS atom is suitable for Slavic languages. It does not distinguish determiners and articles.
-    # We have to use this modified atom for Romanian.
-    $atoms->{pos} = $self->create_atom
-    (
-        'surfeature' => 'pos',
-        'decode_map' =>
-        {
-            # noun
-            # examples: număr, oraș, loc, punct, protocol
-            'N' => ['pos' => 'noun'],
-            # adjective
-            # examples: național, român, nou, internațional, bun
-            'A' => ['pos' => 'adj'],
-            # pronoun
-            # examples: eu, tu, el, ea, noi, voi, ei, ele
-            'P' => ['pos' => 'noun', 'prontype' => 'prn'],
-            # determiner
-            # examples: meu, lui, acest, acel, mult
-            'D' => ['pos' => 'adj', 'prontype' => 'prn'],
-            # article
-            # indefinite article: un, o
-            # definite article (separated affix): -ul, -a
-            # demonstrative article: cel, cea, cei, cele
-            # possessive article: al, a, ai, ale
-            # Since there are demonstrative articles and we have to distinguish them from demonstrative determiners, we must set 'other/prontype'.
-            'T' => ['pos' => 'adj', 'prontype' => 'art', 'other' => {'prontype' => 'art'}],
-            # numeral
-            # examples: doi, trei, patru, cinci, șase, șapte, opt, nouă, zece
-            'M' => ['pos' => 'num'],
-            # entity; used mostly for numbers expressed in digits; not documented at the Multext-East website
-            # examples: 1916, miliarde_de_lei, 58_%, 3, 99-06, mg
-            # Ed = a few abbreviations of names, usually just 1 occurrence: mg, A., nr., U.E., N.
-            # Eii = interval, only two occurrences: 99-06, 1908-1909
-            # Eni = number (usually) written using digits: 3, 20, 50, 2, 24
-            #       These numbers do not denote quantity. They are used as references: "figura 3", "apartament 3".
-            # Enr = number, only two occurrences: 58_%, 1,4
-            # Eqy = only two occurrences: miliarde_de_lei, 2_000_lei
-            # Etd = time or date: 1916, 1923, 2005, 1928, 1_martie
-            'E' => ['pos' => 'num', 'nountype' => 'prop'],
-            # verb
-            # examples: poate, este, face, e, devine
-            'V' => ['pos' => 'verb'],
-            # adverb
-            # examples: astfel, încă, doar, atât, bine
-            'R' => ['pos' => 'adv'],
-            # adposition
-            # examples: de, pe, la, cu, în
-            'S' => ['pos' => 'adp', 'adpostype' => 'prep'],
-            # conjunction
-            # examples: și, sau, dar, însă, că
-            'C' => ['pos' => 'conj'],
-            # particle
-            # examples: a, să, nu
-            'Q' => ['pos' => 'part'],
-            # interjection
-            # examples: vai, bravo, na
-            'I' => ['pos' => 'int'],
-            # abbreviation
-            # examples: mp, km, etc.
-            'Y' => ['abbr' => 'abbr'],
-            # punctuation
-            # examples: , .
-            'Z' => ['pos' => 'punc'],
-            # residual
-            'X' => []
-        },
-        'encode_map' =>
-
-            { 'abbr' => { 'abbr' => 'Y',
-                          '@'    => { 'numtype' => { ''  => { 'pos' => { 'noun' => { 'prontype' => { ''  => 'N',
-                                                                                                     '@' => 'P' }},
-                                                                         'adj'  => { 'prontype' => { ''    => 'A',
-                                                                                                     'art' => 'T',
-                                                                                                     '@'   => { 'other/prontype' => { 'art' => 'T',
-                                                                                                                                      '@'   => { 'person' => { ''  => 'T',
-                                                                                                                                                               '@' => 'D' }}}}}},
-                                                                         'num'  => { 'nountype' => { 'prop' => 'E',
-                                                                                                     '@'    => 'M' }},
-                                                                         'verb' => 'V',
-                                                                         'adv'  => 'R',
-                                                                         'adp'  => 'S',
-                                                                         'conj' => 'C',
-                                                                         'part' => 'Q',
-                                                                         'int'  => 'I',
-                                                                         'punc' => 'Z',
-                                                                         '@'    => 'X' }},
-                                                     '@' => 'M' }}}}
-    );
-    # PRONTYPE ####################
-    $atoms->{prontype} = $self->create_atom
-    (
-        'surfeature' => 'prontype',
-        'decode_map' =>
-        {
-            # personal pronoun
-            # examples: já, ty, on, ona, ono, my, vy, oni, ony
-            'p' => ['prontype' => 'prs'],
-            # demonstrative pronoun
-            # examples: ten, tento, tenhle, onen, takový, týž, tentýž, sám
-            'd' => ['prontype' => 'dem'],
-            # emphatic pronoun (~ reflexive demonstrative)
-            # examples: sám
-            'h' => ['prontype' => 'emp'],
-            # indefinite pronoun
-            # examples: někdo, něco, nějaký, některý, něčí, leckdo, málokdo, kdokoli
-            'i' => ['prontype' => 'ind'],
-            # possessive pronoun
-            # relative possessive pronouns ("jehož") are classified as relatives
-            # examples: můj, tvůj, jeho, její, náš, váš, jejich
-            's' => ['prontype' => 'prs', 'poss' => 'poss'],
-            # interrogative pronoun
-            # examples: kdo, co, jaký, který, čí
-            'q' => ['prontype' => 'int'],
-            # relative pronoun
-            # examples: kdo, co, jaký, který, čí, jenž
-            'r' => ['prontype' => 'rel'],
-            # interrogative/relative pronoun
-            # examples: kdo, co, jaký, který, čí
-            'w' => ['prontype' => 'int|rel'],
-            # reflexive pronoun (both personal and possessive reflexive pronouns fall here)
-            # examples of personal reflexive pronouns: se, si, sebe, sobě, sebou
-            # examples of possessive reflexive pronouns: svůj
-            'x' => ['prontype' => 'prs', 'reflex' => 'reflex'],
-            # negative pronoun
-            # examples: nikdo, nic, nijaký, ničí, žádný
-            'z' => ['prontype' => 'neg'],
-            # general pronoun
-            # examples: sám, samý, veškerý, všecko, všechno, všelicos, všelijaký, všeliký, všema
-            # some of them also appear classified as indefinite pronouns
-            # most of the above examples are clearly syntactic adjectives (determiners)
-            # many (except of "sám" and "samý" are classified as totality pronouns in other tagsets)
-            'g' => ['prontype' => 'tot'],
-            # definite article [ro]
-            'f' => ['definiteness' => 'def']
-        },
-        'encode_map' =>
-
-            { 'reflex' => { 'reflex' => 'x',
-                            '@'      => { 'poss' => { 'poss' => 's',
-                                                      '@'    => { 'prontype' => { 'dem' => 'd',
-                                                                                  'emp' => 'h',
-                                                                                  'ind' => 'i',
-                                                                                  'int|rel' => 'w',
-                                                                                  'int' => 'q',
-                                                                                  'rel' => 'r',
-                                                                                  'neg' => 'z',
-                                                                                  'tot' => 'g',
-                                                                                  '@'   => { 'definiteness' => { 'def' => 'f',
-                                                                                                                 '@'   => 'p' }}}}}}}}
-    );
-    # Slovene verbform feature is a merger of verbform, mood, tense and voice.
-    # VERB FORM ####################
-    $atoms->{verbformX} = $self->create_atom
-    (
-        'surfeature' => 'verbform',
-        'decode_map' =>
-        {
-            'n' => ['verbform' => 'inf'],                                     # biti, bit
-            'u' => ['verbform' => 'sup'],                                     # bit
-            'p' => ['verbform' => 'part'],                                    # bil, bila, bilo, bili, bile, bila
-            'r' => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'pres'], # sem, si, je, sva, sta, sta, smo, ste, su
-            'f' => ['verbform' => 'fin', 'mood' => 'ind', 'tense' => 'fut'],  # bom, boš, bo, bova, bosta, bosta, bomo, boste, bodo
-            'c' => ['verbform' => 'fin', 'mood' => 'cnd'],                    # bi
-            'm' => ['verbform' => 'fin', 'mood' => 'imp']                     # bodi, bodita, bodimo, bodite
-        },
-        'encode_map' =>
-        {
-            'mood' => { 'imp' => 'm',
-                        'cnd' => 'c',
-                        '@'   => { 'verbform' => { 'part' => 'p',
-                                                   'sup'  => 'u',
-                                                   'inf'  => 'n',
-                                                   '@'    => { 'tense' => { 'pres' => 'r',
-                                                                            'fut'  => 'f',
-                                                                            '@'    => 'n' }}}}}
-        }
-    );
     # CASE ####################
     $atoms->{case} = $self->create_atom
     (
@@ -264,6 +104,8 @@ sub _create_atoms
         }
     );
     # FORMATION ####################
+    # This feature corresponds to adposition_formation, defined in the general Multext driver class.
+    # However, it is different and we need the 'other' feature here. (The "general" variant is quite specific too, but for Czech.)
     # formation of adpositions and conjunctions: simple (s) / compound (c)
     # simple conjunctions: sau (36) dar (11) însă (7) că (6)
     # compound conjunctions: așa_că (1)
@@ -288,7 +130,7 @@ sub _create_atoms
     # simple, between conjuncts: Ion ori Maria (John or Mary)
     # repetitive, before each conjunct: Ion fie Maria fie... (either John or Mary or...)
     # correlative, before a conjoined phrase, it requires specific coordinators between conjuncts: atât mama cât şi tata (both mother and father)
-    ###!!! Note that the corpus contains only examples tagged as simple.
+    # All examples in the UD Romanian corpus are tagged as simple.
     $atoms->{coord_type} = $self->create_atom
     (
         'surfeature' => 'coordtype',
@@ -348,49 +190,24 @@ sub _create_atoms
         },
         'encode_default' => '-'
     );
-    # PERSON ####################
-    ###!!! The common Multext ancestor erases person for demonstratives and some other words.
-    ###!!! This worked for Czech, Slovenian and Croatian, but the Romanian tagset marks the third person even for demonstratives!
-    $atoms->{person} = $self->create_atom
-    (
-        'surfeature' => 'person',
-        'decode_map' =>
-        {
-            '1' => ['person' => '1'],
-            '2' => ['person' => '2'],
-            '3' => ['person' => '3']
-        },
-        'encode_map' =>
-            # Person of participles is undefined even if the attached clitic "-s" suggests the 2nd person.
-            { 'verbform' => { 'part' => '-',
-                              '@'    => { 'person' => { '1' => '1',
-                                                        '2' => '2',
-                                                        '3' => '3',
-                                                        '@' => '-' }}}}
-    );
     # IS PRONOUN CLITIC? ####################
-    # clitic = yes for short forms of pronouns that behave like clitics (there exists a long form with identical meaning).
-    # clitic = bound for short forms with prepositions
-    # PerGenNumCase:  1-sa  2-sa  3msg   3msd   3mdg   3mdd   3mpg  3mpd  3fsg 3fsd  3fsa a
-    # Examples (yes): me,   te,   ga,    mu,    ju,    jima,  jih,  jim,  je,  ji,   jo,  se
-    # Examples (-):   mene, tebe, njega, njemu, njiju, njima, njih, njim, nje, njej, njo, sebe
-    # Examples (bound): zame, name, vame, čezme, skozme, predme, pome, zate, nate, vate,
-    #     zanjo, vanjo, nanjo, nadnjo, skoznjo, čeznjo, prednjo, ponjo, podnjo, obnjo,
-    #     vanj, nanj, zanj, skozenj, nanje, zanje, skoznje, mednje, zase, nase, vase, predse, medse
+    # clitic = yes for short forms of pronouns that behave like clitics (they are attached to verbs)
+    # clitic = -   independent forms of the pronouns; these can be short (weak) or long (strong)
+    # The examples below are weak (-,w); only one pronoun had also the strong form in the corpus (mă vs. mine).
+    # PerGenNumCase:  1-sa  1-sd 2-sd 3msa 3fsa 1-pa 2-pa 3mpa 3fpa 3a  3d
+    # Examples (yes): m-,   -mi, ți-, -l,  -o,  ne-, v-,  -i,  le-  s-, -și
+    # Examples (-,w): mă,   mi,  îți, îl,  o,   ne,  vă,  îi,  le,  se, își
+    # Examples (-,s): mine
     $atoms->{clitic} = $self->create_atom
     (
         'surfeature' => 'clitic',
         'decode_map' =>
         {
-            'y' => ['variant' => 'short'],
-            'n' => ['variant' => 'long'],
-            'b' => ['variant' => 'short', 'adpostype' => 'preppron']
+            'y' => ['variant' => 'short']
         },
         'encode_map' =>
         {
-            'variant' => { 'short' => { 'adpostype' => { 'preppron' => 'b',
-                                                         '@'        => 'y' }},
-                           'long'  => 'n',
+            'variant' => { 'short' => 'y',
                            '@'     => '-' }
         }
     );

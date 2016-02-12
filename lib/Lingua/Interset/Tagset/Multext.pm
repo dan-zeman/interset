@@ -16,6 +16,7 @@ extends 'Lingua::Interset::Tagset';
 
 has 'atoms'       => ( isa => 'HashRef', is => 'ro', builder => '_create_atoms',       lazy => 1 );
 has 'feature_map' => ( isa => 'HashRef', is => 'ro', builder => '_create_feature_map', lazy => 1 );
+has 'determiners' => ( isa => 'Bool',    is => 'ro', default => undef );
 
 
 
@@ -33,37 +34,68 @@ sub _create_atoms
         'decode_map' =>
         {
             # noun
-            # examples: pán, hrad, žena, růže, město, moře
+            # examples [cs]: pán, hrad, žena, růže, město, moře
+            # examples [ro]: număr, oraș, loc, punct, protocol
             'N' => ['pos' => 'noun'],
             # adjective
-            # examples: mladý, jarní
+            # examples [cs]: mladý, jarní
+            # examples [ro]: național, român, nou, internațional, bun
             'A' => ['pos' => 'adj'],
+            # Multext tagsets of Slavic languages do not distinguish pronouns from determiners. Romanian does.
+            # We do not want to bias here towards Slavic languages, hence we distinguish the two (sub-)classes.
             # pronoun
-            # examples: já, ty, on, ona, ono, my, vy, oni, ony
-            'P' => ['prontype' => 'prn'],
+            # examples [cs]: já, ty, on, ona, ono, my, vy, oni, ony
+            # examples [ro]: eu, tu, el, ea, noi, voi, ei, ele
+            'P' => ['pos' => 'noun', 'prontype' => 'prn'],
+            # determiner (but not article)
+            # examples [ro]: meu, lui, acest, acel, mult
+            'D' => ['pos' => 'adj', 'prontype' => 'prn'],
+            # article
+            # examples [ro]: un, o (indefinite); -ul, -a (definite affix); cel, cea, cei, cele (demonstrative); al, a, ai, ale (possessive)
+            ###!!! Since there are demonstrative articles and we have to distinguish them from demonstrative determiners, we must set 'other/prontype'.
+            'T' => ['pos' => 'adj', 'prontype' => 'art', 'other' => {'prontype' => 'art'}],
             # numeral
-            # examples: jeden, dva, tři, čtyři, pět, šest, sedm, osm, devět, deset
+            # examples [cs]: jeden, dva, tři, čtyři, pět, šest, sedm, osm, devět, deset
+            # examples [ro]: doi, trei, patru, cinci, șase, șapte, opt, nouă, zece
             'M' => ['pos' => 'num'],
+            # entity; used in [ro]; not documented at the Multext-East website
+            # used mostly for numbers expressed in digits, not denoting quantity (apartament 3)
+            # examples: 1916, miliarde_de_lei, 58_%, 3, 99-06, mg
+            # Ed = a few abbreviations of names, usually just 1 occurrence: mg, A., nr., U.E., N.
+            # Eii = interval, only two occurrences: 99-06, 1908-1909
+            # Eni = number (usually) written using digits: 3, 20, 50, 2, 24
+            #       These numbers do not denote quantity. They are used as references: "figura 3", "apartament 3".
+            # Enr = number, only two occurrences: 58_%, 1,4
+            # Eqy = only two occurrences: miliarde_de_lei, 2_000_lei
+            # Etd = time or date: 1916, 1923, 2005, 1928, 1_martie
+            'E' => ['pos' => 'num', 'nountype' => 'prop'],
             # verb
-            # examples: nese, bere, maže, peče, umře, tiskne, mine, začne, kryje, kupuje, prosí, trpí, sází, dělá
+            # examples [cs]: nese, bere, maže, peče, umře, tiskne, mine, začne, kryje, kupuje, prosí, trpí, sází, dělá
+            # examples [ro]: poate, este, face, e, devine
             'V' => ['pos' => 'verb'],
             # adverb
-            # examples: kde, kam, kdy, jak, dnes, vesele
+            # examples [cs]: kde, kam, kdy, jak, dnes, vesele
+            # examples [ro]: astfel, încă, doar, atât, bine
             'R' => ['pos' => 'adv'],
             # adposition
-            # examples: v, pod, k
+            # examples [cs]: v, pod, k
+            # examples [ro]: de, pe, la, cu, în
             'S' => ['pos' => 'adp', 'adpostype' => 'prep'],
             # conjunction
-            # examples: a, i, ani, nebo, ale, avšak
+            # examples [cs]: a, i, ani, nebo, ale, avšak
+            # examples [ro]: și, sau, dar, însă, că
             'C' => ['pos' => 'conj'],
             # particle
-            # examples: ať, kéž, nechť
+            # examples [cs]: ať, kéž, nechť
+            # examples [ro]: a, să, nu
             'Q' => ['pos' => 'part'],
             # interjection
-            # examples: haf, bum, bác
+            # examples [cs]: haf, bum, bác
+            # examples [ro]: vai, bravo, na
             'I' => ['pos' => 'int'],
             # abbreviation
-            # examples: atd., apod.
+            # examples [cs]: atd., apod.
+            # examples [ro]: mp, km, etc.
             'Y' => ['abbr' => 'abbr'],
             # punctuation
             # examples: , .
@@ -71,23 +103,47 @@ sub _create_atoms
             # residual
             'X' => []
         },
-        'encode_map' =>
-
-            { 'abbr' => { 'abbr' => 'Y',
-                          '@'    => { 'numtype' => { ''  => { 'pos' => { 'noun' => { 'prontype' => { ''  => 'N',
-                                                                                                     '@' => 'P' }},
-                                                                         'adj'  => { 'prontype' => { ''  => 'A',
-                                                                                                     '@' => 'P' }},
-                                                                         'num'  => 'M',
-                                                                         'verb' => 'V',
-                                                                         'adv'  => 'R',
-                                                                         'adp'  => 'S',
-                                                                         'conj' => 'C',
-                                                                         'part' => 'Q',
-                                                                         'int'  => 'I',
-                                                                         'punc' => 'Z',
-                                                                         '@'    => 'X' }},
-                                                     '@' => 'M' }}}}
+        # Some Multext-East tagsets (e.g. most Slavic languages) lack articles and determiners (the latter exist but are included in pronouns).
+        'encode_map' => $self->determiners() ?
+        {
+            'abbr' => { 'abbr' => 'Y',
+                        '@'    => { 'numtype' => { ''  => { 'pos' => { 'noun' => { 'prontype' => { ''  => 'N',
+                                                                                                   '@' => 'P' }},
+                                                                       'adj'  => { 'prontype' => { ''    => 'A',
+                                                                                                   'art' => 'T',
+                                                                                                   '@'   => { 'other/prontype' => { 'art' => 'T',
+                                                                                                                                    '@'   => { 'person' => { ''  => 'T',
+                                                                                                                                                             '@' => 'D' }}}}}},
+                                                                       'num'  => { 'nountype' => { 'prop' => 'E',
+                                                                                                   '@'    => 'M' }},
+                                                                       'verb' => 'V',
+                                                                       'adv'  => 'R',
+                                                                       'adp'  => 'S',
+                                                                       'conj' => 'C',
+                                                                       'part' => 'Q',
+                                                                       'int'  => 'I',
+                                                                       'punc' => 'Z',
+                                                                       '@'    => 'X' }},
+                                                   '@' => 'M' }}}
+        }
+        :
+        {
+            'abbr' => { 'abbr' => 'Y',
+                        '@'    => { 'numtype' => { ''  => { 'pos' => { 'noun' => { 'prontype' => { ''  => 'N',
+                                                                                                   '@' => 'P' }},
+                                                                       'adj'  => { 'prontype' => { ''  => 'A',
+                                                                                                   '@' => 'P' }},
+                                                                       'num'  => 'M',
+                                                                       'verb' => 'V',
+                                                                       'adv'  => 'R',
+                                                                       'adp'  => 'S',
+                                                                       'conj' => 'C',
+                                                                       'part' => 'Q',
+                                                                       'int'  => 'I',
+                                                                       'punc' => 'Z',
+                                                                       '@'    => 'X' }},
+                                                   '@' => 'M' }}}
+        }
     );
     # NOUNTYPE ####################
     $atoms{nountype} = $self->create_simple_atom
@@ -125,52 +181,60 @@ sub _create_atoms
         {
             # personal pronoun
             # examples: já, ty, on, ona, ono, my, vy, oni, ony
-            'p' => ['pos' => 'noun', 'prontype' => 'prs'],
+            'p' => ['prontype' => 'prs'],
             # demonstrative pronoun
             # examples: ten, tento, tenhle, onen, takový, týž, tentýž, sám
-            'd' => ['pos' => 'noun|adj', 'prontype' => 'dem'],
+            'd' => ['prontype' => 'dem'],
             # emphatic pronoun (~ reflexive demonstrative)
             # examples: sám
             'h' => ['prontype' => 'emp'],
             # indefinite pronoun
             # examples: někdo, něco, nějaký, některý, něčí, leckdo, málokdo, kdokoli
-            'i' => ['pos' => 'noun|adj', 'prontype' => 'ind'],
+            'i' => ['prontype' => 'ind'],
             # possessive pronoun
             # relative possessive pronouns ("jehož") are classified as relatives
             # examples: můj, tvůj, jeho, její, náš, váš, jejich
-            's' => ['pos' => 'adj', 'prontype' => 'prs', 'poss' => 'poss'],
+            's' => ['prontype' => 'prs', 'poss' => 'poss'],
             # interrogative pronoun
             # examples: kdo, co, jaký, který, čí
-            'q' => ['pos' => 'noun|adj', 'prontype' => 'int'],
+            'q' => ['prontype' => 'int'],
             # relative pronoun
             # examples: kdo, co, jaký, který, čí, jenž
-            'r' => ['pos' => 'noun|adj', 'prontype' => 'rel'],
+            'r' => ['prontype' => 'rel'],
+            # interrogative/relative pronoun
+            # examples: kdo, co, jaký, který, čí
+            'w' => ['prontype' => 'int|rel'],
             # reflexive pronoun (both personal and possessive reflexive pronouns fall here)
             # examples of personal reflexive pronouns: se, si, sebe, sobě, sebou
             # examples of possessive reflexive pronouns: svůj
-            'x' => ['pos' => 'noun|adj', 'prontype' => 'prs', 'reflex' => 'reflex'],
+            'x' => ['prontype' => 'prs', 'reflex' => 'reflex'],
             # negative pronoun
             # examples: nikdo, nic, nijaký, ničí, žádný
-            'z' => ['pos' => 'noun|adj', 'prontype' => 'neg'],
+            'z' => ['prontype' => 'neg'],
             # general pronoun
             # examples: sám, samý, veškerý, všecko, všechno, všelicos, všelijaký, všeliký, všema
             # some of them also appear classified as indefinite pronouns
             # most of the above examples are clearly syntactic adjectives (determiners)
             # many (except of "sám" and "samý" are classified as totality pronouns in other tagsets)
-            'g' => ['pos' => 'adj', 'prontype' => 'tot']
+            'g' => ['prontype' => 'tot'],
+            # definite article [ro]
+            'f' => ['definiteness' => 'def']
         },
         'encode_map' =>
-
-            { 'reflex' => { 'reflex' => 'x',
-                            '@'      => { 'poss' => { 'poss' => 's',
-                                                      '@'    => { 'prontype' => { 'dem' => 'd',
-                                                                                  'emp' => 'h',
-                                                                                  'ind' => 'i',
-                                                                                  'int' => 'q',
-                                                                                  'rel' => 'r',
-                                                                                  'neg' => 'z',
-                                                                                  'tot' => 'g',
-                                                                                  '@'   => 'p' }}}}}}
+        {
+            'reflex' => { 'reflex' => 'x',
+                          '@'      => { 'poss' => { 'poss' => 's',
+                                                    '@'    => { 'prontype' => { 'dem' => 'd',
+                                                                                'emp' => 'h',
+                                                                                'ind' => 'i',
+                                                                                'int|rel' => 'w',
+                                                                                'int' => 'q',
+                                                                                'rel' => 'r',
+                                                                                'neg' => 'z',
+                                                                                'tot' => 'g',
+                                                                                '@'   => { 'definiteness' => { 'def' => 'f',
+                                                                                                               '@'   => 'p' }}}}}}}
+        }
     );
     # NUMTYPE ####################
     $atoms{numtype} = $self->create_atom
@@ -381,16 +445,22 @@ sub _create_atoms
             '3' => ['person' => '3']
         },
         'encode_map' =>
-            # Person of participles is undefined even if the attached clitic "-s" suggests the 2nd person.
-            # Person of demonstrative and reflexive pronouns is undefined despite the attached clitic "-s".
-            # Warning: This holds for Czech Multext tags but may not hold for other Multext-East tags!
-            { 'verbform' => { 'part' => '-',
-                              '@'    => { 'reflex' => { 'reflex' => '-',
-                                                        '@'      => { 'prontype' => { 'dem' => '-',
-                                                                                      '@'   => { 'person' => { '1' => '1',
-                                                                                                               '2' => '2',
-                                                                                                               '3' => '3',
-                                                                                                               '@' => '-' }}}}}}}}
+        # Person of participles is undefined even if the attached clitic "-s" suggests the 2nd person.
+        # Person of demonstrative and reflexive pronouns is undefined despite the attached clitic "-s".
+        # We have to be careful here. The "-s" clitic is specific for Czech. We cannot just erase person in any language.
+        # Romanian, for example, sets the 3rd person even for demonstrative pronouns.
+        { 'verbform' => { 'part' => '-',
+                          '@'    => { 'other/clitic_s' => { 'y' => { 'prontype' => { 'prs' => { 'reflex' => { 'reflex' => '-',
+                                                                                                              '@'      => { 'person' => { '1' => '1',
+                                                                                                                                          '2' => '2',
+                                                                                                                                          '3' => '3',
+                                                                                                                                          '@' => '-' }}}},
+                                                                                     '@'   => '-' }},
+                                                            '@' => { 'person' => { '1' => '1',
+                                                                                   '2' => '2',
+                                                                                   '3' => '3',
+                                                                                   '@' => '-' }}}}}
+        }
     );
     # OWNER NUMBER ####################
     $atoms{possnumber} = $self->create_simple_atom
@@ -418,9 +488,10 @@ sub _create_atoms
     );
     # IS PRONOUN CLITIC? ####################
     # clitic = yes for short forms of pronouns that behave like clitics (there exists a long form with identical meaning).
-    # Examples: ho, mě, mi, mu, se, ses, si, sis, tě, ti
-    # Long equivalents: jeho, mne, mně, jemu, sebe, sebe jsi, sobě, sobě jsi, tebe, tobě
-    # Counterexamples: je, ně, tys
+    # PerGenNumCase:       1-sd 1-sa 2-sd 2-sa 3msd 3msa 3d   3a   3d+s     3a+s
+    # Examples [cs] (yes): mi   mě   ti   tě   mu   ho   si   se   sis      ses
+    # Examples [cs] (no):  mně  mne  tobě tebe jemu jeho sobě sebe sobě jsi sebe jsi
+    # Counterexamples (these are "short" but they have no longer equivalent, thus clitic = -): je, ně, tys
     $atoms{clitic} = $self->create_atom
     (
         'surfeature' => 'clitic',
@@ -430,9 +501,10 @@ sub _create_atoms
             'n' => []
         },
         'encode_map' =>
-
-            { 'variant' => { 'short' => 'y',
-                             '@'     => 'n' }}
+        {
+            'variant' => { 'short' => 'y',
+                           '@'     => 'n' }
+        }
     );
     # IS REFLEXIVE PRONOUN POSSESSIVE? ####################
     # referent type distinguishes between reflexive personal and reflexive possessive pronouns
@@ -513,8 +585,9 @@ sub _create_atoms
             'r' => 'roman',
             'l' => 'word'
         },
-        ###!!! The default 'l' worked for Czech, Slovenian and Croatian.
-        ###!!! It does not work for Romanian where we distinguish collective numerals ("both"). These must be expressed as words, thus the numform feature is not explicitly used.
+        # We cannot say that 'l' is default. It would work for Czech, Slovenian and Croatian.
+        # However, it would not work for Romanian where we distinguish collective numerals ("both").
+        # These must be expressed as words, thus the numform feature is not explicitly used for them.
         'encode_default' => '-'
     );
     # NUMERAL CLASS ####################
@@ -630,7 +703,7 @@ sub _create_atoms
     # ADVERB TYPE ####################
     # Croatian distinguishes participial adverbs (or adverbial participles).
     # In Czech, the same category is classified as verbs (verbform = transgressive).
-    ###!!! Note that the current solution does not convert Czech transgressives to Croatian participial adverbs and back!
+    # Note that the current solution does not convert Czech transgressives to Croatian participial adverbs or vice versa.
     $atoms{adverb_type} = $self->create_atom
     (
         'surfeature' => 'adverb_type',

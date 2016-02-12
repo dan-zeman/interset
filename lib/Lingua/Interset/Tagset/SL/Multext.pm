@@ -37,7 +37,7 @@ sub _create_atoms
     my $self = shift;
     # Most atoms can be inherited but some have to be redefined.
     my $atoms = $self->SUPER::_create_atoms();
-    # Slovene verbform feature is a merger of verbform, mood, tense and voice.
+    # Slovenian verbform feature is a merger of verbform, mood, tense and voice.
     # VERB FORM ####################
     $atoms->{verbform} = $self->create_atom
     (

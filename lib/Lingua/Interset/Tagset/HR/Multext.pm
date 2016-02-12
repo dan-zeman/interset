@@ -101,10 +101,11 @@ sub _create_atoms
             'n' => ['variant' => 'long']
         },
         'encode_map' =>
-
-            { 'variant' => { 'short' => 'y',
-                             'long'  => 'n',
-                             '@'     => '-' }}
+        {
+            'variant' => { 'short' => 'y',
+                           'long'  => 'n',
+                           '@'     => '-' }
+        }
     );
     # NUMERAL TYPE ####################
     # Czech default is 'c', Croatian default should be '-'.

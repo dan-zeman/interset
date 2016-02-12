@@ -741,6 +741,8 @@ Pd-nsi--n-a--n
 Pd-nsl--n-a--n
 Pd-nsn--n-a--n
 Pd-nsn--n-a--y
+Pd2nsa--n-a--n
+Pd2nsn--n-a--n
 Pg-fdi--n-a--n
 Pg-fpa--n-a--n
 Pg-fpd--n-a--n
@@ -1282,6 +1284,8 @@ Px-nsg--nsa--n
 Px-nsi--nsa--n
 Px-nsl--nsa--n
 Px-nsn--nsa--n
+Px2--a--ypn--n
+Px2--d--ypn--n
 Pz-fpa--n-a--n
 Pz-fpd--n-a--n
 Pz-fpd--n-n--n
