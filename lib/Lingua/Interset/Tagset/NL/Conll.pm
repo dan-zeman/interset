@@ -5,7 +5,7 @@
 package Lingua::Interset::Tagset::NL::Conll;
 use strict;
 use warnings;
-our $VERSION = '2.051';
+our $VERSION = '2.052';
 
 use utf8;
 use open ':utf8';
