@@ -641,7 +641,7 @@ sub encode
             $tag = 'CdX------------';
         }
     }
-    elsif($fs->is_pronoun())
+    elsif($fs->is_pronominal())
     {
         # possessive pronoun
         if($fs->is_possessive())
