@@ -49,6 +49,7 @@ sub usage
 # tagset_to_uposf_table.pl pl::ipipan > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\pl-ipipan-uposf.md
 # tagset_to_uposf_table.pl pt::cintil > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\pt-cintil-uposf.md
 # tagset_to_uposf_table.pl pt::conll conll-2006-pt > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\pt-conll-uposf.md
+# tagset_to_uposf_table.pl ro::multext ud-romanian > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\ro-multext-uposf.md
 # tagset_to_uposf_table.pl ru::syntagrus syntagrus > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\ru-syntagrus-uposf.md
 # tagset_to_uposf_table.pl sk::snk snk > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\sk-snk-uposf.md
 # tagset_to_uposf_table.pl sl::multext > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\sl-multext-uposf.md
