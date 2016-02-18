@@ -1,5 +1,11 @@
 {{$NEXT}}
 
+Fixes:
+* MUL::Google: now includes the tags AUX and PNOUN that were used in Universal
+  Dependency Treebanks v2.0.
+
+
+
 2.051     2016-02-12 22:00:32+01:00 Europe/Prague
 
 Drivers:

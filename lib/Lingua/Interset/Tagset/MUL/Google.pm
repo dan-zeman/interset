@@ -45,35 +45,41 @@ around BUILDARGS => sub
     my %dm =
     (
         # punctuation
-        '.'    => ['pos' => 'punc'],
+        '.'     => ['pos' => 'punc'],
         # adjective
-        'ADJ'  => ['pos' => 'adj'],
+        'ADJ'   => ['pos' => 'adj'],
         # adposition (preposition or postposition)
-        'ADP'  => ['pos' => 'adp'],
+        'ADP'   => ['pos' => 'adp'],
         # adverb
-        'ADV'  => ['pos' => 'adv'],
+        'ADV'   => ['pos' => 'adv'],
+        # auxiliary verb (appears in later versions of the tagset, e.g. UDTv2)
+        'AUX'   => ['pos' => 'verb', 'verbtype' => 'aux'],
         # conjunction
-        'CONJ' => ['pos' => 'conj'],
+        'CONJ'  => ['pos' => 'conj'],
         # determiner
-        'DET'  => ['pos' => 'adj', 'prontype' => 'prn'],
+        'DET'   => ['pos' => 'adj', 'prontype' => 'prn'],
         # noun (common and proper)
-        'NOUN' => ['pos' => 'noun'],
+        'NOUN'  => ['pos' => 'noun'],
         # cardinal number
-        'NUM'  => ['pos' => 'num', 'numtype' => 'card'],
+        'NUM'   => ['pos' => 'num', 'numtype' => 'card'],
+        # proper noun (appears in later versions of the tagset, e.g. UDTv2)
+        'PNOUN' => ['pos' => 'noun', 'nountype' => 'prop'],
         # pronoun
-        'PRON' => ['pos' => 'noun', 'prontype' => 'prn'],
+        'PRON'  => ['pos' => 'noun', 'prontype' => 'prn'],
         # particle
-        'PRT'  => ['pos' => 'part'],
+        'PRT'   => ['pos' => 'part'],
         # verb (all tenses and modes)
-        'VERB' => ['pos' => 'verb'],
+        'VERB'  => ['pos' => 'verb'],
         # other: foreign words, typos, abbreviations, interjections
-        'X'    => []
+        'X'     => []
     );
     # Construct encode_map in the form expected by Atom.
     my %em =
     (
-        'pos' => { 'verb' => 'VERB',
-                   'noun' => { 'prontype' => { ''  => 'NOUN',
+        'pos' => { 'verb' => { 'verbtype' => { 'aux' => 'AUX',
+                                               '@'   => 'VERB' }},
+                   'noun' => { 'prontype' => { ''  => { 'nountype' => { 'prop' => 'PNOUN',
+                                                                        '@'    => 'NOUN' }},
                                                '@' => 'PRON' }},
                    'adj'  => { 'adjtype' => { 'pdt' => 'DET',
                                               '@'   => { 'prontype' => { ''  => 'ADJ',
