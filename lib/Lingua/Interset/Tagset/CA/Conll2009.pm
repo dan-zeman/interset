@@ -48,6 +48,7 @@ sub _create_atoms
         'decode_map' =>
         {
             'n' => ['pos' => 'noun'],
+            # p postype=numeral ... numeral: dos, tres, quatre, cinc, sis, set, vuit, nou, deu, ...
             'p' => ['pos' => 'noun', 'prontype' => 'prn'],
             'a' => ['pos' => 'adj'],
             # d postype=numeral ... numeral! (cardinal, ordinal and other): tres, quatre, cinc; doble, triple, múltiple
@@ -122,9 +123,9 @@ sub _create_atoms
             # Here we override the pos value that has been decoded previously (p => noun, d => adj).
             # In order to not lose information in round-trip, we have to save the p|d distinction.
             # Thus the decode() method modifies the 'numeral' value to either 'pnumeral' or 'dnumeral' before using this decoding map.
-            'pnumeral'      => ['pos' => 'num', 'numtype' => 'card', 'other' => {'synpos' => 'noun'}],
-            'dnumeral'      => ['pos' => 'num', 'numtype' => 'card', 'other' => {'synpos' => 'adj'}],
-            'numeral'       => ['pos' => 'num', 'numtype' => 'card'],
+            'pnumeral'      => ['pos' => 'num', 'numtype' => 'card', 'prontype' => '', 'other' => {'synpos' => 'noun'}],
+            'dnumeral'      => ['pos' => 'num', 'numtype' => 'card', 'prontype' => '', 'other' => {'synpos' => 'adj'}],
+            'numeral'       => ['pos' => 'num', 'numtype' => 'card', 'prontype' => ''],
             # pos=z (numbers/digits, currencies and percentage)
             'currency'      => ['pos' => 'noun', 'other' => {'postype' => 'currency'}], # although subclass of number (pos=z), these are noun identifiers of currencies (pesetas, dólares, euros)
             'percentage'    => ['numtype' => 'frac', 'other' => {'postype' => 'percentage'}], # Interset does not distinguish percentual from normal counts: 20_por_ciento, 20%
@@ -143,38 +144,39 @@ sub _create_atoms
             'subordinating' => ['conjtype' => 'sub'],
         },
         'encode_map' =>
-
-            { 'pos' => { 'noun' => { 'poss' => { 'poss' => 'possessive',
-                                                 '@'    => { 'prontype' => { 'prs' => 'personal',
-                                                                             'dem' => 'demonstrative',
-                                                                             'int' => 'interrogative',
-                                                                             'ind' => 'indefinite',
-                                                                             'rel' => { 'other/prontype' => { 'exc' => 'exclamative',
-                                                                                                              '@'   => 'relative' }},
-                                                                             '@'   => { 'nountype' => { 'com'  => 'common',
-                                                                                                        'prop' => 'proper',
-                                                                                                        '@'    => { 'other/postype' => { 'currency' => 'currency' }}}}}}}},
-                         'adj'  => { 'poss' => { 'poss' => 'possessive',
-                                                 '@'    => { 'prontype' => { 'prs' => 'personal',
-                                                                             'art' => 'article',
-                                                                             'dem' => 'demonstrative',
-                                                                             'int' => 'interrogative',
-                                                                             'ind' => 'indefinite',
-                                                                             'rel' => { 'other/prontype' => { 'exc' => 'exclamative',
-                                                                                                              '@'   => 'relative' }},
-                                                                             '@'   => { 'numtype' => { 'ord' => 'ordinal',
-                                                                                                       '@'   => 'qualificative' }}}}}},
-                         'num'  => { 'numform' => { 'digit' => { 'other/postype' => { 'percentage' => 'percentage',
-                                                                                      '@'          => '' }},
-                                                    '@'     => 'numeral' }},
-                         'verb' => { 'other/verbtype' => { 'semiaux' => 'semiauxiliary',
-                                                           '@'       => { 'verbtype' => { 'aux' => 'auxiliary',
-                                                                                          '@'   => 'main' }}}},
-                         'adp'  => { 'adpostype' => { 'prep'     => 'preposition',
-                                                      'preppron' => 'preposition' }},
-                         'conj' => { 'conjtype' => { 'coor' => 'coordinating',
-                                                     'sub'  => 'subordinating' }},
-                         '@'    => { 'negativeness' => { 'neg' => 'negative' }}}}
+        {
+            'pos' => { 'noun' => { 'poss' => { 'poss' => 'possessive',
+                                               '@'    => { 'prontype' => { 'prs' => 'personal',
+                                                                           'dem' => 'demonstrative',
+                                                                           'int' => 'interrogative',
+                                                                           'ind' => 'indefinite',
+                                                                           'rel' => { 'other/prontype' => { 'exc' => 'exclamative',
+                                                                                                            '@'   => 'relative' }},
+                                                                           '@'   => { 'nountype' => { 'com'  => 'common',
+                                                                                                      'prop' => 'proper',
+                                                                                                      '@'    => { 'other/postype' => { 'currency' => 'currency' }}}}}}}},
+                       'adj'  => { 'poss' => { 'poss' => 'possessive',
+                                               '@'    => { 'prontype' => { 'prs' => 'personal',
+                                                                           'art' => 'article',
+                                                                           'dem' => 'demonstrative',
+                                                                           'int' => 'interrogative',
+                                                                           'ind' => 'indefinite',
+                                                                           'rel' => { 'other/prontype' => { 'exc' => 'exclamative',
+                                                                                                            '@'   => 'relative' }},
+                                                                           '@'   => { 'numtype' => { 'ord' => 'ordinal',
+                                                                                                     '@'   => 'qualificative' }}}}}},
+                       'num'  => { 'numform' => { 'digit' => { 'other/postype' => { 'percentage' => 'percentage',
+                                                                                    '@'          => '' }},
+                                                  '@'     => 'numeral' }},
+                       'verb' => { 'other/verbtype' => { 'semiaux' => 'semiauxiliary',
+                                                         '@'       => { 'verbtype' => { 'aux' => 'auxiliary',
+                                                                                        '@'   => 'main' }}}},
+                       'adp'  => { 'adpostype' => { 'prep'     => 'preposition',
+                                                    'preppron' => 'preposition' }},
+                       'conj' => { 'conjtype' => { 'coor' => 'coordinating',
+                                                   'sub'  => 'subordinating' }},
+                       '@'    => { 'negativeness' => { 'neg' => 'negative' }}}
+        }
     );
     # POS FUNCTION ####################
     # posfunction = participle occurs with syntactic adjectives (and one noun) that are morphologically verb participles
@@ -442,6 +444,7 @@ sub decode
             if($name eq 'postype' && $features_conll{$name} eq 'numeral')
             {
                 $features_conll{$name} = $pos.'numeral';
+                $fs->set_prontype('');
             }
             $atoms->{$name}->decode_and_merge_hard($features_conll{$name}, $fs);
         }

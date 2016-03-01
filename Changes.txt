@@ -3,6 +3,8 @@
 Fixes:
 * MUL::Google: now includes the tags AUX and PNOUN that were used in Universal
   Dependency Treebanks v2.0.
+* CA::Conll2009 (and derived ES::Conll2009) now convert numeral pronouns and
+  determiners to definite numerals, i.e. the 'prontype' feature is empty.
 
 
 
