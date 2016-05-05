@@ -35,7 +35,6 @@ sub get_tagset_id
 
 #------------------------------------------------------------------------------
 # Creates atomic drivers for the surface features.
-# http://spraakbanken.gu.se/parole/tags.phtml
 #------------------------------------------------------------------------------
 sub _create_atoms
 {
