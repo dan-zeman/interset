@@ -511,6 +511,22 @@ sub _create_atoms
                              '4' => 'vgr4' }
         }
     );
+    # SEMANTIC TYPE OF LEMMA ####################
+    # This feature is stored separately in Index Thomisticus. In the CoNLL files, Marco Passarotti created an extra column for it.
+    # We moved it as a new feature in the FEAT column. However, we currently do not treat it as a normal feature! It does not appear
+    # in our list of known tags and we do not attempt to encode it. We only decode it.
+    $atoms{st} = $self->create_atom
+    (
+        'surfeature' => 'st',
+        'decode_map' =>
+        {
+            'stNP' => ['nountype' => 'prop']
+        },
+        'encode_map' =>
+        {
+            'nountype' => { '@' => '' }
+        }
+    );
     # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
     my @fatoms = map {$atoms{$_}} @{$self->features_all()};
     $atoms{feature} = $self->create_merged_atom
@@ -530,7 +546,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('grn', 'mod', 'tem', 'grp', 'cas', 'gen', 'com', 'var', 'vgr');
+    my @features = ('grn', 'mod', 'tem', 'grp', 'cas', 'gen', 'com', 'var', 'vgr', 'st');
     return \@features;
 }
 
