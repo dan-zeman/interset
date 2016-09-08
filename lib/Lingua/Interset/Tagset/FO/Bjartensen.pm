@@ -177,23 +177,56 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'other/declension' => { 'strong' => 'S',
-                                    'weak'   => 'W',
-                                    '@'      => 'I' }
+            'other/declension' => { 'indeclinable' => 'I',
+                                    'strong'       => 'S',
+                                    'weak'         => 'W',
+                                    '@'            => 'S' }
         }
     );
     # PRONOUN TYPE ####################
+    # 1st and 2nd person pronouns lack the pronoun type and have person instead of gender: P1SN ("eg" = "I") vs. PDMSN ("hesin", "tann")
+    # 3rd person, possessive and interrogative pronouns have no prontype and the second character is gender. We insert '3' before decoding.
+    # PMSN hann, hvør
+    # PMSG hansara, sín, sínar, síni
+    # PMSD honum, sínum, sær, hvørjum
+    # PMSA hann, sín, sína, seg, hvønn
+    # PMPN teir
+    # PMPG teirra, síni
+    # PMPD teimum, sínum, sær
+    # PMPA teir, sínar, seg
+    # PFSN hon, hvør
+    # PFSG hennara, sína
+    # PFSD henni, sær, hvør
+    # PFSA hana, sína, seg, hvørja
+    # PFPN tær, hvørjar
+    # PFPG teirra
+    # PFPD teimum, sínum, sær
+    # PFPA tær, sínar, seg, hvørjar
+    # PNSN tað, hvat
+    # PNSG tess, síni, sítt
+    # PNSD tí, sínum, sær
+    # PNSA tað, sína, sítt, seg, hvat
+    # PNPN tey, øll
+    # PNPG teirra, síni
+    # PNPD teimum, sínum, sær
+    # PNPA tey, sínar, síni, seg
     $atoms{prontype} = $self->create_atom
     (
         'surfeature' => 'prontype',
         'decode_map' =>
         {
             'D' => ['prontype' => 'dem'],
-            'I' => ['prontype' => 'ind']
+            'I' => ['prontype' => 'ind'],
+            '1' => ['prontype' => 'prs', 'person' => '1'],
+            '2' => ['prontype' => 'prs', 'person' => '2'],
+            '3' => ['prontype' => 'prs', 'person' => '3']
         },
         'encode_map' =>
         {
             'prontype' => { 'dem' => 'D',
+                            'prs' => { 'person' => { '1' => '1',
+                                                     '2' => '2',
+                                                     '@' => '3' }},
                             '@'   => 'I' }
         }
     );
@@ -204,7 +237,9 @@ sub _create_atoms
         'decode_map' =>
         {
             'C' => ['numtype' => 'card'],
-            'O' => ['numtype' => 'ord']
+            'O' => ['numtype' => 'ord'],
+            # there is a typo in the corpus with "triðju"
+            '0' => ['numtype' => 'ord']
         },
         'encode_map' =>
         {
@@ -224,18 +259,22 @@ sub _create_atoms
             'S' => ['verbform' => 'fin', 'mood' => 'sub'],
             'P' => ['verbform' => 'part', 'tense' => 'pres'],
             'A' => ['verbform' => 'part', 'tense' => 'past'],
-            # medium (what is it? according to wiktionary, Faroese has supine - could it be it?)
-            'M' => ['verbform' => 'sup']
+            # this seems to be middle voice because the forms are infinitive + the suffix "-st"
+            'E' => ['verbform' => 'fin', 'voice' => 'mid'],
+            'e' => ['verbform' => 'inf', 'voice' => 'mid'] # our modification to distinguish middle/passive infinitive from finite forms
         },
         'encode_map' =>
         {
             'verbform' => { 'fin'  => { 'mood' => { 'imp' => 'M',
                                                     'sub' => 'S',
-                                                    '@'   => 'N' }},
+                                                    '@'   => { 'voice' => { 'mid'  => 'E',
+                                                                            'pass' => 'E',
+                                                                            '@'    => 'N' }}}},
                             'part' => { 'tense' => { 'pres' => 'P',
                                                      '@'    => 'A' }},
-                            'sup'  => 'M',
-                            '@'    => 'I' }
+                            '@'    => { 'voice' => { 'mid'  => 'E',
+                                                     'pass' => 'E',
+                                                     '@'    => 'I' }}}
         }
     );
     # TENSE ####################
@@ -291,10 +330,14 @@ sub _create_feature_map
     my $self = shift;
     my %features =
     (
+        # Nouns with gender (i.e. they don't start SX) always have the first four features.
+        # Then the definiteness is optional and the combinations may be empty or A, L, P, AL, AP.
         'S'  => ['pos', 'gender', 'number', 'case', 'definiteness', 'nametype'],
+        # AI ... indeclinable noun, degree is skipped, rest after declension too
         'A'  => ['pos', 'degree', 'declension', 'gender', 'number', 'case'],
         'P'  => ['pos', 'prontype', 'gender', 'number', 'case'],
         'N'  => ['pos', 'numtype', 'gender', 'number', 'case'],
+        # Imperatives do not have tense so we must insert it.
         'V'  => ['pos', 'verbform', 'tense', 'number', 'person'],
         'VA' => ['pos', 'verbform', 'gender', 'number', 'case'],
         'D'  => ['pos', 'degree', 'case'],
@@ -314,6 +357,15 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
+    $tag = 'AXI' if($tag eq 'AI');
+    $tag =~ s/^D([ADGN])$/DX$1/;
+    $tag =~ s/^P([12])/P${1}X/;
+    $tag =~ s/^P([MFN])/P3$1/;
+    $tag =~ s/^(S[MFN][SP][NGDA])([LP])$/${1}X${2}/;
+    $tag =~ s/^SX([LP])$/SXXXX$1/;
+    $tag =~ s/^VM/VMX/;
+    # VE is middle voice infinitive while VEAP3 is middle voice indicative
+    $tag =~ s/^VE$/Ve/;
     my $fs = Lingua::Interset::FeatureStructure->new();
     $fs->set_tagset('fo::bjartensen');
     my $atoms = $self->atoms();
@@ -375,6 +427,17 @@ sub encode
             $tag .= 'X';
         }
     }
+    $tag = 'AI' if($tag =~ m/^AX/);
+    $tag = 'C' if($tag eq 'CX');
+    $tag =~ s/^DX([ADGN])$/D$1/;
+    $tag = 'NC' if($tag eq 'NCXXX'); ###!!! NC are numbers expressed by digits - should we reflect it somehow?
+    $tag =~ s/^P([12])X/P$1/;
+    $tag =~ s/^P3/P/;
+    $tag =~ s/^(S[MFN][SP][NGDA])X([LP])$/${1}${2}/;
+    $tag =~ s/^SX+([LP])$/SX$1/;
+    $tag =~ s/^VMX([SP])/VM$1/;
+    $tag =~ s/^VPP/VP/;
+    $tag =~ s/^SX+$/SX/ or $tag =~ s/^X+$/X/ or $tag =~ s/X+$//;
     return $tag;
 }
 
@@ -386,8 +449,394 @@ sub encode
 sub list
 {
     my $self = shift;
+    # There is no tag for punctuation; instead, the punctuation symbol is
+    # copied in the tag column. It thus does not make sense to include in the
+    # tagset the symbols we have observed, because other symbols may appear
+    # in new text.
+    # ! " % & ' ( ) , - . / : ; ? « ­ ´ » ' "
     my $list = <<end_of_list
+ACSFPA
+ACSFPD
+ACSFPN
+ACSFSA
+ACSFSD
+ACSFSN
+ACSMPA
+ACSMPD
+ACSMPN
+ACSMSA
+ACSMSD
+ACSMSN
+ACSNPA
+ACSNPD
+ACSNPN
+ACSNSA
+ACSNSD
+ACSNSN
+ACWFPA
+ACWFPD
+ACWFPN
+ACWFSA
+ACWFSD
+ACWFSN
+ACWMPD
+ACWMPN
+ACWMSA
+ACWMSN
+ACWNPA
+ACWNPD
+ACWNPN
+ACWNSA
+ACWNSN
+AI
+APSFPA
+APSFPD
+APSFPG
+APSFPN
+APSFSA
+APSFSD
+APSFSG
+APSFSN
+APSMPA
+APSMPD
+APSMPG
+APSMPN
+APSMSA
+APSMSD
+APSMSG
+APSMSN
+APSNPA
+APSNPD
+APSNPG
+APSNPN
+APSNSA
+APSNSD
+APSNSG
+APSNSN
+APWFPA
+APWFPD
+APWFPG
+APWFPN
+APWFSA
+APWFSD
+APWFSG
+APWFSN
+APWMPA
+APWMPD
+APWMPG
+APWMPN
+APWMSA
+APWMSD
+APWMSG
+APWMSN
+APWNPA
+APWNPD
+APWNPG
+APWNPN
+APWNSA
+APWNSD
+APWNSG
+APWNSN
+ASSFPA
+ASSFPD
+ASSFPN
+ASSFSA
+ASSFSD
+ASSFSN
+ASSMPA
+ASSMPN
+ASSMSA
+ASSMSD
+ASSMSN
+ASSNPA
+ASSNPD
+ASSNPN
+ASSNSA
+ASSNSD
+ASSNSN
+ASWFPA
+ASWFPD
+ASWFPN
+ASWFSA
+ASWFSD
+ASWFSN
+ASWMPA
+ASWMPN
+ASWMSA
+ASWMSD
+ASWMSN
+ASWNPA
+ASWNPD
+ASWNPN
+ASWNSA
+ASWNSD
+ASWNSN
+C
+CI
+CR
+DA
+DCA
+DCD
+DCN
+DD
+DG
+DN
+DSA
+DSN
+EA
+ED
+EG
+EN
+F
+I
+NC
+NCFPA
+NCFPD
+NCFPN
+NCFSA
+NCFSN
+NCMPA
+NCMPD
+NCMPG
+NCMPN
+NCMSA
+NCMSN
+NCNPA
+NCNPD
+NCNPN
+NCNSA
+NCNSD
+NCNSN
+NOFSA
+NOFSD
+NOFSG
+NOFSN
+NOMPD
+NOMSA
+NOMSD
+NOMSG
+NOMSN
+NONPA
+NONPD
+NONSA
+NONSD
+NONSN
+P1PA
+P1PD
+P1PG
+P1PN
+P1SA
+P1SD
+P1SG
+P1SN
+P2PA
+P2PD
+P2PG
+P2PN
+P2SA
+P2SD
+P2SG
+P2SN
+PDFPA
+PDFPD
+PDFPN
+PDFSA
+PDFSD
+PDFSN
+PDMPA
+PDMPD
+PDMPN
+PDMSA
+PDMSD
+PDMSN
+PDNPA
+PDNPD
+PDNPN
+PDNSA
+PDNSD
+PDNSN
+PFPA
+PFPD
+PFPG
+PFPN
+PFSA
+PFSD
+PFSG
+PFSN
+PIFPA
+PIFPD
+PIFPN
+PIFSA
+PIFSD
+PIFSN
+PIMPA
+PIMPD
+PIMPN
+PIMSA
+PIMSD
+PIMSN
+PINPA
+PINPD
+PINPN
+PINSA
+PINSD
+PINSN
+PMPA
+PMPD
+PMPG
+PMPN
+PMSA
+PMSD
+PMSG
+PMSN
+PNPA
+PNPD
+PNPG
+PNPN
+PNSA
+PNSD
+PNSG
+PNSN
+SFPA
+SFPAA
+SFPAL
+SFPD
+SFPDA
+SFPDAL
+SFPDL
+SFPG
+SFPGL
+SFPN
+SFPNA
+SFPNL
+SFSA
+SFSAA
+SFSAAL
+SFSAL
+SFSAP
+SFSD
+SFSDA
+SFSDAL
+SFSDL
+SFSDP
+SFSG
+SFSGA
+SFSGL
+SFSGP
+SFSN
+SFSNA
+SFSNAL
+SFSNL
 SFSNP
+SMPA
+SMPAA
+SMPD
+SMPDA
+SMPDL
+SMPG
+SMPGA
+SMPN
+SMPNA
+SMSA
+SMSAA
+SMSAL
+SMSAP
+SMSD
+SMSDA
+SMSDAL
+SMSDAP
+SMSDL
+SMSDP
+SMSG
+SMSGA
+SMSGL
+SMSGP
+SMSN
+SMSNA
+SMSNAP
+SMSNL
+SMSNP
+SNPA
+SNPAA
+SNPD
+SNPDA
+SNPDL
+SNPG
+SNPGA
+SNPN
+SNPNA
+SNPNL
+SNSA
+SNSAA
+SNSAAL
+SNSAL
+SNSD
+SNSDA
+SNSDAL
+SNSDL
+SNSDP
+SNSG
+SNSGA
+SNSGL
+SNSN
+SNSNA
+SNSNAL
+SNSNAP
+SNSNL
+SNSNP
+SX
+SXL
+SXP
+T
+VA
+VAFPA
+VAFPD
+VAFPN
+VAFSA
+VAFSD
+VAFSN
+VAMPA
+VAMPD
+VAMPN
+VAMSA
+VAMSD
+VAMSN
+VANPA
+VANPD
+VANPN
+VANSA
+VANSD
+VANSN
+VE
+VEAP1
+VEAP2
+VEAP3
+VEAS1
+VEAS2
+VEAS3
+VEPP1
+VEPP2
+VEPP3
+VEPS1
+VEPS2
+VEPS3
+VI
+VMP
+VMS
+VNAP1
+VNAP2
+VNAP3
+VNAS1
+VNAS2
+VNAS3
+VNPP1
+VNPP2
+VNPP3
+VNPS1
+VNPS2
+VNPS3
+VP
+X
 end_of_list
     ;
     # Protect from editors that replace tabs by spaces.
