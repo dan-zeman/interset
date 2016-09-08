@@ -64,15 +64,15 @@ around BUILDARGS => sub
         'R'  => ['pos' => 'adp'],
         # conjunction / baghlighuchi باغلىغۇچى
         'C'  => ['pos' => 'conj'],
-        # tone / yüklime يۈكلىمە (??? example: "de") ###!!!???
+        # particle / yüklime يۈكلىمە (e.g. the question particle "mu", or "too")
         'T'  => ['pos' => 'part'],
-        # exclamation / imliq söz ئىملىق سۆز / ündesh ###!!! are these really interjections, or just something else but exclamated?
+        # exclamation / imliq söz ئىملىق سۆز / ündesh # uff, wow, cool
         'E'  => ['pos' => 'int', 'other' => {'pos' => 'exclamation'}],
-        # onomatopoeia / teqlid söz تەقلىد سۆز ###!!! onomatopoeia could be e.g. barking of a dog (woof = interjection) but also other derived word classes (e.g. cuckoo = name of the bird = noun)
+        # onomatopoeia / imitative word / teqlid söz تەقلىد سۆز # nock nock (on the door) etc.
         'I'  => ['pos' => 'int', 'other' => {'pos' => 'onomatopoeia'}],
         # extra / surplus / residual / qoshumche قوشۇمچە
         'X'  => [],
-        # punctuation
+        # punctuation / tinish belgiliri تىنىش بەلگىلىرى
         'Y'  => ['pos' => 'punc']
     );
     # Construct encode_map in the form expected by Atom.
