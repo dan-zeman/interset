@@ -1,8 +1,11 @@
 # ABSTRACT: Driver for the Faroese tagset provided by Bjartensen.
 # See also https://github.com/UniversalDependencies/docs/issues/336
+# The corpus where this tagset is used can be downloaded from http://stava.fo/ ("Markað tekstasavn").
+# The corpus originates at Føroyamálsdeildin (Department of the Faroese Language and Literature), Fróðskaparsetur Føroya (University of Faroe Islands),
+# although I was not able to find it directly at their website (http://setur.fo/en/language-and-literature/department/).
 # Copyright © 2016 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
-package Lingua::Interset::Tagset::FO::Bjartensen;
+package Lingua::Interset::Tagset::FO::Setur;
 use strict;
 use warnings;
 our $VERSION = '2.053';
@@ -29,7 +32,7 @@ has 'feature_map' => ( isa => 'HashRef', is => 'ro', builder => '_create_feature
 #------------------------------------------------------------------------------
 sub get_tagset_id
 {
-    return 'fo::bjartensen';
+    return 'fo::setur';
 }
 
 
@@ -367,7 +370,7 @@ sub decode
     # VE is middle voice infinitive while VEAP3 is middle voice indicative
     $tag =~ s/^VE$/Ve/;
     my $fs = Lingua::Interset::FeatureStructure->new();
-    $fs->set_tagset('fo::bjartensen');
+    $fs->set_tagset('fo::setur');
     my $atoms = $self->atoms();
     my $features = $self->feature_map();
     my @chars = split(//, $tag);
@@ -851,19 +854,22 @@ end_of_list
 
 =head1 SYNOPSIS
 
-  use Lingua::Interset::Tagset::FO::Bjartensen;
-  my $driver = Lingua::Interset::Tagset::FO::Bjartensen->new();
-  my $fs = $driver->decode('SFSNP');
+  use Lingua::Interset::Tagset::FO::Setur;
+  my $driver = Lingua::Interset::Tagset::FO::Setur->new();
+  my $fs = $driver->decode('SMSN');
 
 or
 
   use Lingua::Interset qw(decode);
-  my $fs = decode('fo::bjartensen', 'SFSNP');
+  my $fs = decode('fo::setur', 'SMSN');
 
 =head1 DESCRIPTION
 
 Interset driver for the Faroese tagset briefly described by Bjartensen in
-https://github.com/UniversalDependencies/docs/issues/336
+L<https://github.com/UniversalDependencies/docs/issues/336>.
+The corpus where this tagset is used can be downloaded from L<http://stava.fo/> (“Markað tekstasavn”).
+The corpus originates at Føroyamálsdeildin (Department of the Faroese Language and Literature), Fróðskaparsetur Føroya (University of Faroe Islands),
+although I was not able to find it directly at their website (L<http://setur.fo/en/language-and-literature/department/>).
 
 =head1 SEE ALSO
 
