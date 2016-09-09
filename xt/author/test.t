@@ -31,7 +31,7 @@ my @tagsets =
     'eu::conll',
     'fa::conll',
     'fi::turku',
-    'fo::bjartensen',
+    'fo::setur',
     'grc::conll',
     'he::conll',
     'hi::conll',
