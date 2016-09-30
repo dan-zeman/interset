@@ -481,15 +481,24 @@ sub _create_atoms
         }
     );
     # PUNCTUATION SIDE ####################
-    $atoms{puncside} = $self->create_simple_atom
+    # Marking of terminating punctuation is inconsistent. It is 't' almost
+    # everywhere but it is 'c' in 'Frc'.
+    $atoms{puncside} = $self->create_atom
     (
-        'intfeature' => 'puncside',
-        'simple_decode_map' =>
+        'surfeature' => 'puncside',
+        'decode_map' =>
         {
-            'a' => 'ini',
-            't' => 'fin'
+            'a' => ['puncside' => 'ini'],
+            't' => ['puncside' => 'fin'],
+            'c' => ['puncside' => 'fin']
         },
-        'encode_default' => '0'
+        'encode_map' =>
+        {
+            'puncside' => { 'ini' => 'a',
+                            'fin' => { 'punctype' => { 'quot' => 'c',
+                                                       '@'    => 't' }},
+                            '@'   => '0' }
+        }
     );
     return \%atoms;
 }
@@ -1014,7 +1023,7 @@ Fia
 Fit
 Fe
 Fra
-Frt
+Frc
 Fx
 Fh
 Fpa
