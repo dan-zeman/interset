@@ -593,14 +593,15 @@ my %matrix = @_matrix =
     'degree' =>
     {
         'priority' => 230,
-        'values' => ['pos', 'cmp', 'sup', 'abs', 'dim', ''],
+        'values' => ['pos', 'cmp', 'sup', 'abs', 'dim', 'aug', ''],
         'replacements' =>
         [
             ['pos'],
             ['cmp'],
             ['sup', 'cmp'],
             ['abs', 'sup'],
-            ['dim']
+            ['dim'],
+            ['aug']
         ],
         'uname' => 'Degree'
     },
@@ -2407,6 +2408,11 @@ sub is_article {my $self = shift; return $self->contains('prontype', 'art');}
 =method is_associative()
 =cut
 sub is_associative {my $self = shift; return $self->contains('case', 'com');}
+
+#------------------------------------------------------------------------------
+=method is_augmentative()
+=cut
+sub is_augmentative {my $self = shift; return $self->contains('degree', 'aug');}
 
 #------------------------------------------------------------------------------
 =method is_auxiliary()

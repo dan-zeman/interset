@@ -2,7 +2,12 @@
 
 Drivers:
 * FO::Setur
+* PT::Freeling
 * UG::Udt
+
+Features:
+* New value 'aug' of feature 'degree': augmentative, opposite of diminutive.
+  Used for nouns in the Freeling tagset for Portuguese.
 
 
 
