@@ -437,33 +437,27 @@ sub _create_atoms
         }
     );
     # PUNCTUATION TYPE ####################
-    $atoms{restype} = $self->create_atom
+    $atoms{punctype} = $self->create_atom
     (
         'surfeature' => 'punctype',
         'decode_map' =>
         {
-            'd'  => ['punctype' => 'colo'], # colon
-            'c'  => ['punctype' => 'comm'], # comma
-            'la' => ['punctype' => 'brck', 'puncside' => 'ini'], # opening curly bracket
-            'lt' => ['punctype' => 'brck', 'puncside' => 'fin'], # closing curly bracket
-            's'  => [], # etc
-            'aa' => ['punctype' => 'excl', 'puncside' => 'ini'], # opening exclamation mark
-            'at' => ['punctype' => 'excl', 'puncside' => 'fin'], # closing exclamation mark
-            'g'  => ['punctype' => 'dash'], # hyphen
-            'z'  => [], # other
-            'pa' => ['punctype' => 'brck', 'puncside' => 'ini'], # opening parenthesis
-            'pt' => ['punctype' => 'brck', 'puncside' => 'fin'], # closing parenthesis
-            't'  => [], # percentage
-            'p'  => ['punctype' => 'peri'], # period
-            'ia' => ['punctype' => 'qest', 'puncside' => 'ini'], # opening question mark
-            'it' => ['punctype' => 'qest', 'puncside' => 'fin'], # closing question mark
-            'e'  => ['punctype' => 'quot'], # quotation
-            'ra' => ['punctype' => 'quot', 'puncside' => 'ini'], # opening quotation
-            'rc' => ['punctype' => 'quot', 'puncside' => 'fin'], # closing quotation
-            'x'  => ['punctype' => 'semi'], # semicolon
-            'h'  => [], # slash
-            'ca' => ['punctype' => 'brck', 'puncside' => 'ini'], # opening square bracket
-            'ct' => ['punctype' => 'brck', 'puncside' => 'fin']  # closing square bracket
+            'a' => ['punctype' => 'excl'], # exclamation mark
+            'c' => ['punctype' => 'comm'], # comma
+            'd' => ['punctype' => 'colo'], # colon
+            'e' => ['punctype' => 'quot'], # quotation
+            'g' => ['punctype' => 'dash'], # hyphen
+            'h' => ['other' => {'punctype' => 'slash'}], # slash
+            'i' => ['punctype' => 'qest'], # question mark
+            'l' => ['punctype' => 'brck', 'other' => {'brcktype' => 'curly'}], # curly bracket
+            'p' => ['punctype' => 'peri'], # period
+            'r' => ['punctype' => 'quot'], # opening or closing quotation
+            's' => ['other' => {'punctype' => 'etc'}], # etc
+            't' => ['other' => {'punctype' => 'percent'}], # percentage
+            'x' => ['punctype' => 'semi'], # semicolon
+            'z' => [], # other
+            'P' => ['punctype' => 'brck'], # parenthesis
+            'C' => ['punctype' => 'brck', 'other' => {'brcktype' => 'square'}]  # square bracket
         },
         'encode_map' =>
         {
@@ -471,8 +465,31 @@ sub _create_atoms
                             'comm' => 'c',
                             'dash' => 'g',
                             'peri' => 'p',
-                            'semi' => 'x' }
+                            'semi' => 'x',
+                            'excl' => 'a',
+                            'qest' => 'i',
+                            'brck' => { 'other/brcktype' => { 'square' => 'c',
+                                                              'curly'  => 'l',
+                                                              '@'      => 'p' }},
+                            'quot' => { 'puncside' => { 'ini' => 'r',
+                                                        'fin' => 'r',
+                                                        '@'   => 'e' }},
+                            '@'    => { 'other/punctype' => { 'etc'     => 's',
+                                                              'percent' => 't',
+                                                              'slash'   => 'h',
+                                                              '@'       => 'z' }}}
         }
+    );
+    # PUNCTUATION SIDE ####################
+    $atoms{puncside} = $self->create_simple_atom
+    (
+        'intfeature' => 'puncside',
+        'simple_decode_map' =>
+        {
+            'a' => 'ini',
+            't' => 'fin'
+        },
+        'encode_default' => '0'
     );
     return \%atoms;
 }
@@ -500,7 +517,7 @@ sub _create_feature_map
         'S' => ['pos', 'adpostype'],
         'C' => ['pos', 'conjtype'],
         'I' => ['pos'],
-        'F' => ['pos', 'punctype']
+        'F' => ['pos', 'punctype', 'puncside']
     );
     return \%features;
 }
@@ -515,6 +532,9 @@ sub decode
 {
     my $self = shift;
     my $tag = shift;
+    # Modify ambiguous punctuation types so they work like atoms.
+    $tag =~ s/^Fp([at])$/FP$1/;
+    $tag =~ s/^Fc([at])$/FC$1/;
     my $fs = Lingua::Interset::FeatureStructure->new();
     $fs->set_tagset($self->get_tagset_id());
     my $atoms = $self->atoms();
@@ -981,6 +1001,28 @@ SP
 CC
 CS
 I
+Fd
+Fc
+Fs
+Faa
+Fat
+Fg
+Fz
+Ft
+Fp
+Fia
+Fit
+Fe
+Fra
+Frt
+Fx
+Fh
+Fpa
+Fpt
+Fca
+Fct
+Fla
+Flt
 end_of_list
     ;
     my @list = split(/\r?\n/, $list);
