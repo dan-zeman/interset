@@ -734,13 +734,13 @@ APVCN3S
 APVCN1P
 APVCN2P
 APVCN3P
-AOVMS00
-AOVMP00
-AOVFS00
-AOVFP00
-AOVCS00
-AOVCP00
-AOVCN00
+AO0MS00
+AO0MP00
+AO0FS00
+AO0FP00
+AO0CS00
+AO0CP00
+AO0CN00
 PP10SN0
 PP10SD0
 PP10SA0
@@ -1059,12 +1059,12 @@ end_of_list
 
   use Lingua::Interset::Tagset::PT::Freeling;
   my $driver = Lingua::Interset::Tagset::PT::Freeling->new();
-  my $fs = $driver->decode('NCMS');
+  my $fs = $driver->decode('NCMS000');
 
 or
 
   use Lingua::Interset qw(decode);
-  my $fs = decode('pt::freeling', 'NCMS');
+  my $fs = decode('pt::freeling', 'NCMS000');
 
 =head1 DESCRIPTION
 
