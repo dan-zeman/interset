@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # CGI skript pro vstup do webového rozhraní DZ Intersetu
-# Copyright (c) 2009 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2009, 2016 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # Licence: GNU GPL
 
 use utf8;
@@ -10,24 +10,25 @@ binmode(STDOUT, ':utf8');
 binmode(STDERR, ':utf8');
 # CGI skript běží pod jiným uživatelem a nezná cestu k mým knihovnám. Říct mu ji.
 use lib '/home/zeman/lib';
+use lib '/home/zeman/interset/lib';
 use dzcgi;
-use tagset::common;
+use Lingua::Interset;
 
 # Přečíst parametry CGI.
 dzcgi::cist_parametry(\%konfig);
 if($konfig{tagset} eq '')
 {
-    $konfig{tagset} = 'en::penn';
+    $konfig{tagset} = 'mul::upos';
 }
 # Vypsat záhlaví HTTP.
 print("Content-type: text/html; charset=utf8\n\n");
 # Vypsat záhlaví HTML.
 print("<html>\n");
 print("<head>\n");
-print("  <meta http-equiv=\"content-type\" content=\"text/html; charset=utf8\"/>\n");
+print("  <meta name=\"robots\" content=\"noindex, nofollow\" />\n");
+print("  <meta http-equiv=\"content-type\" content=\"text/html; charset=utf8\" />\n");
 print("  <title>DZ Interset Web Interface</title>\n");
 print("  <link href=\"http://ufal.mff.cuni.cz/css/ufal.css\" rel=\"stylesheet\" media=\"screen\" />\n");
-print("  <!--[if lte IE 6]><link rel=\"stylesheet\" type=\"text/css\" href=\"http://ufal.mff.cuni.cz/css/ufal-msie.css\" media=\"screen\" /><![endif]-->\n");
 print("  <link href=\"http://ufal.mff.cuni.cz/css/print.css\" rel=\"stylesheet\" media=\"print\" />\n");
 print("</head>\n");
 print("<body id=\"p-home\">\n");
@@ -82,8 +83,7 @@ sub print_menu
 <ul id="menu">
 <li><a class="highlight" href="https://wiki.ufal.ms.mff.cuni.cz/user:zeman:interset">DZ Interset Home</a></li>
 <li><a class="folder" href="http://ufal.mff.cuni.cz/">ÚFAL Home</a></li>
-<li><a class="folder" href="http://ufal.mff.cuni.cz/~zeman/">Dan Zeman</a><!--ul>
-<li><a class="folder" href="/tools.html">Tools</a></li>
+<li><a class="folder" href="http://ufal.mff.cuni.cz/daniel-zeman/">Dan Zeman</a><!--ul>
 </ul-->
 </li>
 </ul><!-- #menu -->
@@ -98,18 +98,11 @@ EOF
 #------------------------------------------------------------------------------
 sub print_footer
 {
-#print("<div align=right><address>Copyright &copy; 2009 <a href=\"http://ufal.mff.cuni.cz/~zeman/\">Daniel Zeman</a></address></div>\n");
 print <<EOF
 <div id="tail">
 <hr />
-<!--div class="resp">
-<small class="content">Content: <a href="mailto:hajic@ufal.mff.cuni.cz" rel="nofollow">Jan Hajič</a>.</small>
-</div-->
-<!--div class="madein">
-<small class="valid">Site is valid <a href="http://validator.w3.org/check?uri=referer" rel="nofollow" target="_blank">XHTML 1.0</a> and valid <a href="http://jigsaw.w3.org/css-validator/" rel="nofollow" target="_blank">CSS</a>.</small>
-</div-->
 <div class="copy">
-<small class="owner">Copyright &copy; 2009&ndash;2013 <a href="http://ufal.mff.cuni.cz/~zeman/">Daniel Zeman</a></small>
+<small class="owner">Copyright &copy; 2009&ndash;2016 <a href="http://ufal.mff.cuni.cz/daniel-zeman/">Daniel Zeman</a></small>
 </div>
 </div><!-- #tail -->
 EOF
@@ -125,8 +118,8 @@ sub print_list_of_tagsets
 {
     my $current = shift;
     print("<h2>List of known tagsets</h2>\n");
-    my $drivers = tagset::common::find_drivers();
-    my @links = map {$_ eq $current ? "<b>$_</b>" : "<a href=\"index.pl?tagset=$_\">$_</a>"} (@{$drivers});
+    my @tagsets = Lingua::Interset::find_tagsets();
+    my @links = map {$_ eq $current ? "<b>$_</b>" : "<a href=\"index.pl?tagset=$_\">$_</a>"} (@tagsets);
     my $list = join(' ', @links);
     print("<p>$list</p>\n");
 }
@@ -144,10 +137,10 @@ sub print_tagset
     my $batchsize = 300;
     $offset = 0 if($offset eq '');
     print("<h2>List of tags in <tt>$tagset</tt></h2>\n");
-    my $list = tagset::common::list($tagset);
+    my $list = Lingua::Interset::list($tagset);
     my @matching_tags = grep
     {
-        my $fs = tagset::common::decode($tagset, $_);
+        my $fs = Lingua::Interset::decode($tagset, $_);
         my $ok=1;
         foreach my $f (keys(%konfig))
         {
@@ -236,7 +229,7 @@ sub print_tagset
     for(my $i = $offset; $i<=$#matching_tags && $i<$cut; $i++)
     {
         my $tag = $matching_tags[$i];
-        my $f = tagset::common::decode($tagset, $tag);
+        my $f = Lingua::Interset::decode($tagset, $tag);
         my $fs = feature_structure_to_text($f);
         $fs =~ s/",/", /g;
         $tag = escapetext($tag);
@@ -250,35 +243,33 @@ sub print_tagset
 
 #------------------------------------------------------------------------------
 # Generates text from contents of feature structure so it can be printed.
-# We do not use similar function in tagset::common because:
+# There is a similar method, Lingua::Interset::FeatureStructure::as_string().
+# We do not use it because:
 # * We want nicer HTML formatting
 # * We want better handling of the 'other' feature
 #------------------------------------------------------------------------------
 sub feature_structure_to_text
 {
-    my $fs = shift; # hash reference
+    my $fs = shift; # Lingua::Interset::FeatureStructure
     my $atrstyle = "color:brown;font-weight:bold";
     my $valstyle = "color:blue;font-weight:bold";
+    my @features = $fs->get_nonempty_features();
     my @assignments = map
     {
         my $f = $_;
-        my $v = $fs->{$f};
+        my $v;
         if($f eq 'other')
         {
-            $v = escapetext(tagset::common::structure_to_string($v));
-        }
-        elsif(ref($v) eq "ARRAY")
-        {
-            $v = join("|", map {"\"<span style='$valstyle'>$_</span>\""} @{$v});
+            $v = escapetext(Lingua::Interset::FeatureStructure::structure_to_string($fs->get('other')));
         }
         else
         {
-            $v = "\"<span style='$valstyle'>$v</span>\"";
+            $v = "\"<span style='$valstyle'>".$fs->get_joined($f)."</span>\"";
         }
         "<span style='$atrstyle'>$f</span>=$v";
     }
     # Skip the tagset feature. It is not interesting and it is always the same.
-    (grep{$fs->{$_} ne '' && $_ ne 'tagset'}(@tagset::common::known_features));
+    (grep {$_ ne 'tagset'} (@features));
     return '['.join(', ', @assignments).']';
 }
 
@@ -301,12 +292,13 @@ sub get_filter_form
     $html .= "  <script>function sendForm() { document.getElementById(\"filter\").submit() }</script>\n";
     $html .= "  <input type=\"hidden\" name=\"tagset\" value=\"$tagset\" />\n";
     $html .= "  <b>Filter:</b>\n";
-    foreach my $feature (@tagset::common::known_features)
+    my @known_features = Lingua::Interset::FeatureStructure::known_features();
+    foreach my $feature (@known_features)
     {
         $html .= "  <!-- \$konfig{$feature} = $konfig->{$feature} -->\n";
         next unless(exists($map->{$feature}) || $konfig->{$feature} ne '');
         next if($feature =~ m/^(tagset|other)$/);
-        my @values = @{$tagset::common::known_values{$feature}};
+        my @values = Lingua::Interset::FeatureStructure::known_values($feature);
         unshift(@values, '<empty>');
         @values = map {escapetext($_)} (grep {exists($map->{$feature}{$_})} (@values));
         # Features that are already part of the current filter cannot be modified again
@@ -351,7 +343,7 @@ sub map_feature_values
     my $tagset = shift;
     my $list = shift; # the list may already be filtered
     # Get feature structure for every tag in the list.
-    my @fss = map {tagset::common::decode($tagset, $_)} (@{$list});
+    my @fss = map {Lingua::Interset::decode($tagset, $_)} (@{$list});
     # First run: Which features are relevant? They must have a non-empty value for at least one tag.
     my %relevant_features;
     foreach my $fs (@fss)
