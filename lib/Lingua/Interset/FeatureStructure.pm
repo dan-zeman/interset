@@ -2294,7 +2294,8 @@ sub structure_to_string
     else
     {
         $string = $source;
-        $string =~ s/([\\"\$\@])/\\$1/g;
+        $string = '' if(!defined($string));
+        $string =~ s/([\\"\$\@])/\\$1/g; # "
         $string = "\"$string\"";
     }
     return $string;
