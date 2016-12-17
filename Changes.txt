@@ -8,6 +8,23 @@ Drivers:
 Features:
 * New value 'aug' of feature 'degree': augmentative, opposite of diminutive.
   Used for nouns in the Freeling tagset for Portuguese.
+* Feature 'animateness' renamed to 'animacy'. Affected drivers:
+  cs::pdt
+* Feature 'definiteness' renamed to 'definite'. Affected drivers:
+* Feature 'negativeness' renamed to 'polarity'. Affected drivers:
+  cs::pdt
+* Feature 'politeness' renamed to 'polite'. Features 'abspoliteness',
+  'ergpoliteness' and 'datpoliteness' renamed similarly. Affected drivers:
+* Renamed and new feature values:
+  * animacy=hum
+  * aspect=prosp instead of aspect=pro
+  * definite=cons instead of definite=red
+
+Interface:
+* Added new methods:
+  * is_construct() is true if definite=cons
+  * is_converb() is true if verbform=conv
+  * is_human() is true if animacy=hum
 
 Fixes:
 * MUL::Upos: the tag CONJ changed to CCONJ in Universal Dependencies v2.

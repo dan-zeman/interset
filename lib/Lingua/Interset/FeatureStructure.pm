@@ -466,8 +466,9 @@ my %matrix = @_matrix =
         ],
         'uname' => 'Echo'
     },
-    # Negativeness (presence of negative morpheme in languages and word classes where applicable).
-    'negativeness' =>
+    # Polarity (do not confuse with negative pro-forms).
+    # Note: this feature was called 'negativeness' until Interset 2.052.
+    'polarity' =>
     {
         'priority' => 240,
         'values' => ['pos', 'neg', ''],
@@ -476,19 +477,19 @@ my %matrix = @_matrix =
             ['pos'],
             ['neg']
         ],
-        'uname' => 'Negative'
+        'uname' => 'Polarity'
     },
     # Definiteness (or state in Arabic).
-    'definiteness' =>
+    'definite' =>
     {
         'priority' => 250,
-        'values' => ['ind', 'def', 'red', 'com', ''],
+        'values' => ['ind', 'def', 'cons', 'com', ''],
         'replacements' =>
         [
             ['ind'],
             ['def'],
-            ['red', 'def'],
-            ['com', 'red', 'def']
+            ['cons', 'def'],
+            ['com', 'cons', 'def']
         ],
         'uname' => 'Definite'
     },
@@ -506,15 +507,16 @@ my %matrix = @_matrix =
         ],
         'uname' => 'Gender'
     },
-    # Animateness (considered part of gender in some tagsets, but still orthogonal).
-    'animateness' =>
+    # Animacy (considered part of gender in some tagsets, but still orthogonal).
+    'animacy' =>
     {
         'priority' => 310,
-        'values' => ['anim', 'nhum', 'inan', ''],
+        'values' => ['anim', 'hum', 'nhum', 'inan', ''],
         'replacements' =>
         [
             ['anim'],
-            ['nhum', 'anim'],
+            ['hum', 'anim'],
+            ['nhum', 'anim', 'inan'],
             ['inan']
         ],
         'uname' => 'Animacy'
@@ -619,7 +621,7 @@ my %matrix = @_matrix =
         'uname' => 'Person'
     },
     # Politeness, formal vs. informal word forms.
-    'politeness' =>
+    'polite' =>
     {
         'priority' => 350,
         'values' => ['inf', 'pol', ''],
@@ -772,7 +774,7 @@ my %matrix = @_matrix =
     },
     # Politeness of the absolutive argument of the verb.
     # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
-    'abspoliteness' =>
+    'abspolite' =>
     {
         'priority' => 406,
         'values' => ['inf', 'pol', ''],
@@ -785,7 +787,7 @@ my %matrix = @_matrix =
     },
     # Politeness of the ergative argument of the verb.
     # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
-    'ergpoliteness' =>
+    'ergpolite' =>
     {
         'priority' => 407,
         'values' => ['inf', 'pol', ''],
@@ -798,7 +800,7 @@ my %matrix = @_matrix =
     },
     # Politeness of the dative argument of the verb.
     # Used with synthetic verbs in Basque. They agree with multiple arguments in person and number.
-    'datpoliteness' =>
+    'datpolite' =>
     {
         'priority' => 408,
         'values' => ['inf', 'pol', ''],
@@ -873,11 +875,11 @@ my %matrix = @_matrix =
     # part (participle, properties of both verbs and adjectives)
     # ger (gerund, properties of both verbs and nouns)
     # gdv (gerundive, properties of both verbs and adjectives)
-    # trans (transgressive, properties of both verbs and adverbs)
+    # conv (converb, properties of both verbs and adverbs)
     'verbform' =>
     {
         'priority' => 60,
-        'values' => ['fin', 'inf', 'sup', 'part', 'trans', 'ger', 'gdv', ''],
+        'values' => ['fin', 'inf', 'sup', 'part', 'conv', 'ger', 'gdv', ''],
         'replacements' =>
         [
             ['inf'],
@@ -886,7 +888,7 @@ my %matrix = @_matrix =
             ['ger'],
             ['gdv', 'part'],
             ['sup'],
-            ['trans']
+            ['conv']
         ],
         'uname' => 'VerbForm'
     },
@@ -947,12 +949,12 @@ my %matrix = @_matrix =
     'aspect' =>
     {
         'priority' => 290,
-        'values' => ['imp', 'perf', 'pro', 'prog', ''],
+        'values' => ['imp', 'perf', 'prosp', 'prog', ''],
         'replacements' =>
         [
             ['imp'],
             ['perf'],
-            ['pro'],
+            ['prosp'],
             ['prog']
         ],
         'uname' => 'Aspect'
@@ -1242,7 +1244,8 @@ sub value_valid
 # single values are expected, no arrayrefs and no serialized lists (the set()
 # method takes care of lists before calling this).
 # The method ensures backward compatibility of feature values that have been
-# renamed. It does not help with deprecated feature names, though. If a value
+# renamed. It does not help with deprecated feature names, though (see the
+# method set(), which deals with deprecated and renamed features). If a value
 # is known for the given feature, it will be returned. If it is currently
 # unknown but it used to exist and was renamed, the new value is returned. If
 # it is not known to have ever existed, an exception will be thrown.
@@ -1259,8 +1262,10 @@ sub _validate_value
     else
     {
         # If the list of renamed values grows longer (hopefully not!) we may want to put this into a separate hash.
-        return 'plur' if($feature eq 'number' && $value eq 'plu'); # renamed in fall 2014
-        return 'cmp'  if($feature eq 'degree' && $value eq 'comp'); # renamed in Interset 2.049, 2015-09-29
+        return 'plur'  if($feature eq 'number' && $value eq 'plu'); # renamed in fall 2014
+        return 'cmp'   if($feature eq 'degree' && $value eq 'comp'); # renamed in Interset 2.049, 2015-09-29
+        return 'prosp' if($feature eq 'aspect' && $value eq 'pro'); # renamed in UD v2, 2016-12-01
+        return 'conv'  if($feature eq 'verbform' && $value eq 'trans'); # renamed in UD v2, 2016-12-01
         confess("Unknown value '$value' of feature '$feature'");
     }
  }
@@ -1307,12 +1312,41 @@ sub set
     if(!feature_valid($feature))
     {
         ###!!! Since there are old files with Interset-based data, we need backward compatibility.
-        ###!!! In the future we may need a separate method but for now there is only one feature
-        ###!!! that had existed and was removed: subpos.
+        ###!!! In the future we may need a separate method.
+        ###!!! Features that had existed and were removed.
         if($feature eq 'subpos')
         {
             print STDERR ("Ignoring deprecated Interset feature 'subpos'.\n");
             return;
+        }
+        ###!!! Features that were renamed.
+        elsif($feature eq 'abspoliteness')
+        {
+            $feature = 'abspolite';
+        }
+        elsif($feature eq 'animateness')
+        {
+            $feature = 'animacy';
+        }
+        elsif($feature eq 'datpoliteness')
+        {
+            $feature = 'datpolite';
+        }
+        elsif($feature eq 'definiteness')
+        {
+            $feature = 'definite';
+        }
+        elsif($feature eq 'ergpoliteness')
+        {
+            $feature = 'ergpolite';
+        }
+        elsif($feature eq 'negativeness')
+        {
+            $feature = 'polarity';
+        }
+        elsif($feature eq 'politeness')
+        {
+            $feature = 'polite';
         }
         else
         {
@@ -2198,9 +2232,9 @@ they are sorted alphabetically and delimited by the vertical bar character.
 What follows is a sample output for the C<cs::pdt> tags C<NNMS1-----A---->,
 C<Ck-P1----------> and C<VpQW---XR-AA--->:
 
-  [pos="noun", negativeness="pos", gender="masc", animateness="anim", number="sing", case="nom", tagset="cs::pdt"]
+  [pos="noun", polarity="pos", gender="masc", animacy="anim", number="sing", case="nom", tagset="cs::pdt"]
   [pos="adj", numtype="ord", number="plur", case="nom", tagset="cs::pdt", other={"numtype" => "suffix"}]
-  [pos="verb", negativeness="pos", gender="fem|neut", number="plur|sing", verbform="part", tense="past", voice="act", tagset="cs::pdt"]
+  [pos="verb", polarity="pos", gender="fem|neut", number="plur|sing", verbform="part", tense="past", voice="act", tagset="cs::pdt"]
 
 =cut
 sub as_string
@@ -2243,9 +2277,9 @@ by comma (because the vertical bar is used to separate features).
 What follows is a sample output for the C<cs::pdt> tags C<NNMS1-----A---->,
 C<Ck-P1----------> and C<VpQW---XR-AA--->:
 
-  pos=noun|negativeness=pos|gender=masc|animateness=anim|number=sing|case=nom
+  pos=noun|polarity=pos|gender=masc|animacy=anim|number=sing|case=nom
   pos=adj|numtype=ord|number=plur|case=nom
-  pos=verb|negativeness=pos|gender=fem,neut|number=plur,sing|verbform=part|tense=past|voice=act
+  pos=verb|polarity=pos|gender=fem,neut|number=plur,sing|verbform=part|tense=past|voice=act
 
 If the values of all features (including C<pos>) are empty, the method
 returns the underscore character. Thus the result is never undefined or empty.
@@ -2388,7 +2422,7 @@ sub is_allative {my $self = shift; return $self->contains('case', 'all');}
 #------------------------------------------------------------------------------
 =method is_animate()
 =cut
-sub is_animate {my $self = shift; return $self->contains('animateness', 'anim');}
+sub is_animate {my $self = shift; return $self->contains('animacy', 'anim');}
 
 #------------------------------------------------------------------------------
 =method is_aorist()
@@ -2466,6 +2500,16 @@ sub is_conjunction {my $self = shift; return $self->contains('pos', 'conj');}
 sub is_conjunctive {my $self = shift; return $self->contains('mood', 'sub');}
 
 #------------------------------------------------------------------------------
+=method is_construct()
+=cut
+sub is_construct {my $self = shift; return $self->contains('definite', 'cons');}
+
+#------------------------------------------------------------------------------
+=method is_converb()
+=cut
+sub is_converb {my $self = shift; return $self->contains('verbform', 'conv');}
+
+#------------------------------------------------------------------------------
 =method is_coordinator()
 =cut
 sub is_coordinator {my $self = shift; return $self->is_conjunction() && $self->conjtype() eq 'coor';}
@@ -2478,7 +2522,7 @@ sub is_dative {my $self = shift; return $self->contains('case', 'dat');}
 #------------------------------------------------------------------------------
 =method is_definite()
 =cut
-sub is_definite {my $self = shift; return $self->contains('definiteness', 'def');}
+sub is_definite {my $self = shift; return $self->contains('definite', 'def');}
 
 #------------------------------------------------------------------------------
 =method is_delative()
@@ -2586,6 +2630,11 @@ sub is_gerund {my $self = shift; return $self->contains('verbform', 'ger');}
 sub is_gerundive {my $self = shift; return $self->contains('verbform', 'gdv');}
 
 #------------------------------------------------------------------------------
+=method is_human()
+=cut
+sub is_human {my $self = shift; return $self->contains('animacy', 'hum');}
+
+#------------------------------------------------------------------------------
 =method is_hyph()
 =cut
 sub is_hyph {my $self = shift; return $self->hyph() eq 'hyph';}
@@ -2608,12 +2657,12 @@ sub is_imperfect {my $self = shift; return $self->contains('tense', 'imp') && $s
 #------------------------------------------------------------------------------
 =method is_inanimate()
 =cut
-sub is_inanimate {my $self = shift; return $self->contains('animateness', 'inan');}
+sub is_inanimate {my $self = shift; return $self->contains('animacy', 'inan');}
 
 #------------------------------------------------------------------------------
 =method is_indefinite()
 =cut
-sub is_indefinite {my $self = shift; return $self->contains('prontype', 'ind') || $self->contains('definiteness', 'ind');}
+sub is_indefinite {my $self = shift; return $self->contains('prontype', 'ind') || $self->contains('definite', 'ind');}
 
 #------------------------------------------------------------------------------
 =method is_indicative()
@@ -2633,7 +2682,7 @@ sub is_infinitive {my $self = shift; return $self->contains('verbform', 'inf');}
 #------------------------------------------------------------------------------
 =method is_informal()
 =cut
-sub is_informal {my $self = shift; return $self->contains('politeness', 'inf');}
+sub is_informal {my $self = shift; return $self->contains('polite', 'inf');}
 
 #------------------------------------------------------------------------------
 =method is_instructive()
@@ -2728,7 +2777,7 @@ sub is_nominative {my $self = shift; return $self->contains('case', 'nom');}
 #------------------------------------------------------------------------------
 =method is_nonhuman()
 =cut
-sub is_nonhuman {my $self = shift; return $self->contains('animateness', 'nhum');}
+sub is_nonhuman {my $self = shift; return $self->contains('animacy', 'nhum');}
 
 #------------------------------------------------------------------------------
 =method is_neuter()
@@ -2803,7 +2852,7 @@ sub is_plural {my $self = shift; return $self->contains('number', 'plur');}
 #------------------------------------------------------------------------------
 =method is_polite()
 =cut
-sub is_polite {my $self = shift; return $self->contains('politeness', 'pol');}
+sub is_polite {my $self = shift; return $self->contains('polite', 'pol');}
 
 #------------------------------------------------------------------------------
 =method is_positive()
@@ -2853,7 +2902,7 @@ sub is_progressive {my $self = shift; return $self->contains('aspect', 'prog');}
 #------------------------------------------------------------------------------
 =method is_prospective()
 =cut
-sub is_prospective {my $self = shift; return $self->contains('aspect', 'pro');}
+sub is_prospective {my $self = shift; return $self->contains('aspect', 'prosp');}
 
 #------------------------------------------------------------------------------
 =method is_punctuation()
@@ -2953,7 +3002,7 @@ sub is_total {my $self = shift; return $self->contains('prontype', 'tot');}
 #------------------------------------------------------------------------------
 =method is_transgressive()
 =cut
-sub is_transgressive {my $self = shift; return $self->contains('verbform', 'trans');}
+sub is_transgressive {my $self = shift; return $self->contains('verbform', 'conv');}
 
 #------------------------------------------------------------------------------
 =method is_transitive()

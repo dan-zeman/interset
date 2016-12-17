@@ -104,10 +104,10 @@ sub _create_atoms
             'PD' => ['pos' => 'adj', 'prontype' => 'dem'],
             # interrogative or relative pronoun, animate
             # examples: kdo kdož kdos
-            'PK' => ['pos' => 'noun', 'prontype' => 'int|rel', 'animateness' => 'anim'],
+            'PK' => ['pos' => 'noun', 'prontype' => 'int|rel', 'animacy' => 'anim'],
             # interrogative or relative pronoun, inanimate
             # examples: co copak cožpak
-            'PQ' => ['pos' => 'noun', 'prontype' => 'int|rel', 'animateness' => 'inan'],
+            'PQ' => ['pos' => 'noun', 'prontype' => 'int|rel', 'animacy' => 'inan'],
             # interrogative or relative compound of preposition and pronoun
             # examples: oč nač zač
             'PY' => ['pos' => 'noun', 'prontype' => 'int|rel', 'adpostype' => 'preppron'],
@@ -134,7 +134,7 @@ sub _create_atoms
             'PL' => ['pos' => 'noun', 'prontype' => 'tot'],
             # negative pronoun
             # examples: nikdo nic nijaký ničí žádný
-            'PW' => ['pos' => 'noun|adj', 'prontype' => 'neg', 'negativeness' => 'neg'],
+            'PW' => ['pos' => 'noun|adj', 'prontype' => 'neg'],
             # cardinal number expressed by digits
             # examples: 1 3,14 2014
             'C=' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'digit'],
@@ -239,10 +239,10 @@ sub _create_atoms
             # verb abbreviation
             # examples: srov.
             'V~' => ['pos' => 'verb', 'abbr' => 'abbr'],
-            # adverb with degree of comparison and negativeness
+            # adverb with degree of comparison and polarity
             # examples: málo chytře
             'Dg' => ['pos' => 'adv'],
-            # adverb without degree of comparison and negativeness
+            # adverb without degree of comparison and polarity
             # examples: kde kam kdy jak tady dnes
             'Db' => ['pos' => 'adv'],
             # adverb abbreviation
@@ -295,13 +295,13 @@ sub _create_atoms
         'surfeature' => 'gender',
         'decode_map' =>
         {
-            'M' => ['gender' => 'masc', 'animateness' => 'anim'],
-            'I' => ['gender' => 'masc', 'animateness' => 'inan'],
+            'M' => ['gender' => 'masc', 'animacy' => 'anim'],
+            'I' => ['gender' => 'masc', 'animacy' => 'inan'],
             'F' => ['gender' => 'fem'],
             'N' => ['gender' => 'neut'],
             'Y' => ['gender' => 'masc'],
-            'T' => ['gender' => 'masc|fem', 'animateness' => 'inan|'],
-            'W' => ['gender' => 'masc|neut', 'animateness' => 'inan|'],
+            'T' => ['gender' => 'masc|fem', 'animacy' => 'inan|'],
+            'W' => ['gender' => 'masc|neut', 'animacy' => 'inan|'],
             'H' => ['gender' => 'fem|neut'],
             'Q' => ['gender' => 'fem|neut'],
             'Z' => ['gender' => 'masc|neut'],
@@ -314,9 +314,9 @@ sub _create_atoms
                                                            'sing'     => 'H',
                                                            'plur'      => 'H',
                                                            '@'        => 'H' }},
-                            'masc|neut' => { 'animateness' => { 'inan' => 'W',
+                            'masc|neut' => { 'animacy' => { 'inan' => 'W',
                                                                 '@'    => 'Z' }},
-                            'masc'      => { 'animateness' => { ''     => 'Y',
+                            'masc'      => { 'animacy' => { ''     => 'Y',
                                                                 'inan' => 'I',
                                                                 '@'    => 'M' }},
                             'fem'  => 'F',
@@ -429,21 +429,21 @@ sub _create_atoms
             '3' => 'sup'
         }
     );
-    # 10. NEGATIVENESS ####################
-    $atoms{negativeness} = $self->create_atom
+    # 10. POLARITY ####################
+    $atoms{polarity} = $self->create_atom
     (
-        'surfeature' => 'negativeness',
+        'surfeature' => 'polarity',
         'decode_map' =>
         {
-            'A' => ['negativeness' => 'pos'],
-            'N' => ['negativeness' => 'neg']
+            'A' => ['polarity' => 'pos'],
+            'N' => ['polarity' => 'neg']
         },
         'encode_map' =>
 
-            # Do not encode negativeness of negative pronouns. Otherwise encode(decode(x)) will not equal to x.
+            # Do not encode polarity of negative pronouns. Otherwise encode(decode(x)) will not equal to x.
             { 'prontype' => { 'neg' => '',
-                              '@'   => { 'negativeness' => { 'pos' => 'A',
-                                                             'neg' => 'N' }}}}
+                              '@'   => { 'polarity' => { 'pos' => 'A',
+                                                         'neg' => 'N' }}}}
     );
     # 11. VOICE ####################
     $atoms{voice} = $self->create_atom
@@ -521,7 +521,7 @@ sub decode
     $atoms->{person}->decode_and_merge_hard($chars[7], $fs);
     $atoms->{tense}->decode_and_merge_hard($chars[8], $fs);
     $atoms->{degree}->decode_and_merge_hard($chars[9], $fs);
-    $atoms->{negativeness}->decode_and_merge_hard($chars[10], $fs);
+    $atoms->{polarity}->decode_and_merge_hard($chars[10], $fs);
     $atoms->{voice}->decode_and_merge_hard($chars[11], $fs);
     $atoms->{variant}->decode_and_merge_hard($chars[14], $fs);
     return $fs;
@@ -626,7 +626,7 @@ sub encode
             $tag = 'Cj-------------';
         }
         elsif($fs->numtype() eq 'sets' ||
-              $fs->gender() eq 'masc' && $fs->animateness() eq '' && $fs->number() eq 'plur' && $fs->case() eq 'acc')
+              $fs->gender() eq 'masc' && $fs->animacy() eq '' && $fs->number() eq 'plur' && $fs->case() eq 'acc')
         {
             # jedny
             $tag = 'ChX------------';
@@ -733,7 +733,7 @@ sub encode
             }
         }
         # negative pronoun
-        elsif($fs->negativeness() eq 'neg' || $fs->prontype() eq 'neg')
+        elsif($fs->polarity() eq 'neg' || $fs->prontype() eq 'neg')
         {
             # nikdo, nic, nijaký, ničí, žádný
             # it has gender and number if it is plural
@@ -853,7 +853,7 @@ sub encode
             $tag = 'A2-------------';
         }
         elsif($fs->get_other_for_tagset('cs::pdt') eq 'O' ||
-              $fs->case() eq '' && $fs->negativeness() eq '')
+              $fs->case() eq '' && $fs->polarity() eq '')
         {
             $tag = 'AOXX-----------';
         }
@@ -1018,7 +1018,7 @@ sub encode
     # The PDT tagset distinguishes unknown values ("X") and irrelevant features ("-").
     # Interset does not do this distinction but we have prepared the defaults for empty values above.
     my @tag = split(//, $tag);
-    my @features = ('pos', 'subpos', 'gender', 'number', 'case', 'possgender', 'possnumber', 'person', 'tense', 'degree', 'negativeness', 'voice', undef, undef, 'variant');
+    my @features = ('pos', 'subpos', 'gender', 'number', 'case', 'possgender', 'possnumber', 'person', 'tense', 'degree', 'polarity', 'voice', undef, undef, 'variant');
     my $atoms = $self->atoms();
     for(my $i = 2; $i<15; $i++)
     {
