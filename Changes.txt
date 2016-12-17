@@ -9,6 +9,10 @@ Features:
 * New value 'aug' of feature 'degree': augmentative, opposite of diminutive.
   Used for nouns in the Freeling tagset for Portuguese.
 
+Fixes:
+* MUL::Upos: the tag CONJ changed to CCONJ in Universal Dependencies v2.
+  The driver now reads both CONJ and CCONJ but writes only CCONJ.
+
 
 
 2.052     2016-06-22 14:37:30+02:00 Europe/Prague

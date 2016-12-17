@@ -51,7 +51,8 @@ around BUILDARGS => sub
         'ADV'   => ['pos' => 'adv'],
         # auxiliary verb
         'AUX'   => ['pos' => 'verb', 'verbtype' => 'aux'],
-        # coordinating conjunction
+        # coordinating conjunction (CONJ in UD v1, CCONJ since UD v2)
+        'CCONJ' => ['pos' => 'conj', 'conjtype' => 'coor'],
         'CONJ'  => ['pos' => 'conj', 'conjtype' => 'coor'],
         # determiner
         'DET'   => ['pos' => 'adj', 'prontype' => 'prn'],
@@ -94,7 +95,7 @@ around BUILDARGS => sub
                    'adv'  => 'ADV',
                    'adp'  => 'ADP',
                    'conj' => { 'conjtype' => { 'sub' => 'SCONJ',
-                                               '@'   => 'CONJ' }},
+                                               '@'   => 'CCONJ' }},
                    'part' => 'PART',
                    'int'  => 'INTJ',
                    'punc' => 'PUNCT',
@@ -123,6 +124,21 @@ sub decode
     my $fs = $self->SUPER::decode($tag);
     $fs->set_tagset('mul::upos');
     return $fs;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Returns reference to list of known tags, useful for testing. The Atom class
+# will generate the list for us but we have to remove CONJ from the list
+# because we do not want to preserve it on the output.
+#------------------------------------------------------------------------------
+sub list
+{
+    my $self = shift;
+    my $list = $self->SUPER::list();
+    my @without_conj = grep {$_ ne 'CONJ'} (@{$list});
+    return \@without_conj;
 }
 
 
