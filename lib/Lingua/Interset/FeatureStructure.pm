@@ -1,5 +1,5 @@
 # ABSTRACT: Definition of morphosyntactic features and their values.
-# Copyright © 2008-2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2008-2016 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::FeatureStructure;
 use strict;
@@ -624,11 +624,13 @@ my %matrix = @_matrix =
     'polite' =>
     {
         'priority' => 350,
-        'values' => ['inf', 'pol', ''],
+        'values' => ['infm', 'form', 'elev', 'humb', ''],
         'replacements' =>
         [
-            ['inf'],
-            ['pol']
+            ['infm'],
+            ['form', 'elev', 'humb'],
+            ['elev', 'form', 'humb'],
+            ['humb', 'form', 'elev']
         ],
         'uname' => 'Polite'
     },
@@ -777,11 +779,13 @@ my %matrix = @_matrix =
     'abspolite' =>
     {
         'priority' => 406,
-        'values' => ['inf', 'pol', ''],
+        'values' => ['infm', 'form', 'elev', 'humb', ''],
         'replacements' =>
         [
-            ['inf'],
-            ['pol']
+            ['infm'],
+            ['form', 'elev', 'humb'],
+            ['elev', 'form', 'humb'],
+            ['humb', 'form', 'elev']
         ],
         'uname' => 'Polite[abs]'
     },
@@ -790,11 +794,13 @@ my %matrix = @_matrix =
     'ergpolite' =>
     {
         'priority' => 407,
-        'values' => ['inf', 'pol', ''],
+        'values' => ['infm', 'form', 'elev', 'humb', ''],
         'replacements' =>
         [
-            ['inf'],
-            ['pol']
+            ['infm'],
+            ['form', 'elev', 'humb'],
+            ['elev', 'form', 'humb'],
+            ['humb', 'form', 'elev']
         ],
         'uname' => 'Polite[erg]'
     },
@@ -803,11 +809,13 @@ my %matrix = @_matrix =
     'datpolite' =>
     {
         'priority' => 408,
-        'values' => ['inf', 'pol', ''],
+        'values' => ['infm', 'form', 'elev', 'humb', ''],
         'replacements' =>
         [
-            ['inf'],
-            ['pol']
+            ['infm'],
+            ['form', 'elev', 'humb'],
+            ['elev', 'form', 'humb'],
+            ['humb', 'form', 'elev']
         ],
         'uname' => 'Polite[dat]'
     },
@@ -1266,6 +1274,14 @@ sub _validate_value
         return 'cmp'   if($feature eq 'degree' && $value eq 'comp'); # renamed in Interset 2.049, 2015-09-29
         return 'prosp' if($feature eq 'aspect' && $value eq 'pro'); # renamed in UD v2, 2016-12-01
         return 'conv'  if($feature eq 'verbform' && $value eq 'trans'); # renamed in UD v2, 2016-12-01
+        return 'infm'  if($feature eq 'polite' && $value eq 'inf'); # renamed in UD v2, 2016-12-01
+        return 'form'  if($feature eq 'polite' && $value eq 'pol'); # renamed in UD v2, 2016-12-01
+        return 'infm'  if($feature eq 'abspolite' && $value eq 'inf'); # renamed in UD v2, 2016-12-01
+        return 'form'  if($feature eq 'abspolite' && $value eq 'pol'); # renamed in UD v2, 2016-12-01
+        return 'infm'  if($feature eq 'datpolite' && $value eq 'inf'); # renamed in UD v2, 2016-12-01
+        return 'form'  if($feature eq 'datpolite' && $value eq 'pol'); # renamed in UD v2, 2016-12-01
+        return 'infm'  if($feature eq 'ergpolite' && $value eq 'inf'); # renamed in UD v2, 2016-12-01
+        return 'form'  if($feature eq 'ergpolite' && $value eq 'pol'); # renamed in UD v2, 2016-12-01
         confess("Unknown value '$value' of feature '$feature'");
     }
  }
@@ -2570,6 +2586,11 @@ sub is_dual {my $self = shift; return $self->contains('number', 'dual');}
 sub is_elative {my $self = shift; return $self->contains('case', 'ela');}
 
 #------------------------------------------------------------------------------
+=method is_elevating()
+=cut
+sub is_elevating {my $self = shift; return $self->contains('polite', 'elev');}
+
+#------------------------------------------------------------------------------
 =method is_ergative()
 =cut
 sub is_ergative {my $self = shift; return $self->contains('case', 'erg');}
@@ -2610,6 +2631,11 @@ sub is_first_person {my $self = shift; return $self->contains('person', '1');}
 sub is_foreign {my $self = shift; return $self->foreign() eq 'foreign';}
 
 #------------------------------------------------------------------------------
+=method is_formal()
+=cut
+sub is_formal {my $self = shift; return $self->contains('polite', 'form');}
+
+#------------------------------------------------------------------------------
 =method is_future()
 =cut
 sub is_future {my $self = shift; return $self->contains('tense', 'fut');}
@@ -2633,6 +2659,11 @@ sub is_gerundive {my $self = shift; return $self->contains('verbform', 'gdv');}
 =method is_human()
 =cut
 sub is_human {my $self = shift; return $self->contains('animacy', 'hum');}
+
+#------------------------------------------------------------------------------
+=method is_humbling()
+=cut
+sub is_humbling {my $self = shift; return $self->contains('polite', 'humb');}
 
 #------------------------------------------------------------------------------
 =method is_hyph()
@@ -2682,7 +2713,7 @@ sub is_infinitive {my $self = shift; return $self->contains('verbform', 'inf');}
 #------------------------------------------------------------------------------
 =method is_informal()
 =cut
-sub is_informal {my $self = shift; return $self->contains('polite', 'inf');}
+sub is_informal {my $self = shift; return $self->contains('polite', 'infm');}
 
 #------------------------------------------------------------------------------
 =method is_instructive()
@@ -2852,7 +2883,7 @@ sub is_plural {my $self = shift; return $self->contains('number', 'plur');}
 #------------------------------------------------------------------------------
 =method is_polite()
 =cut
-sub is_polite {my $self = shift; return $self->contains('polite', 'pol');}
+sub is_polite {my $self = shift; return $self->contains('polite', 'form');}
 
 #------------------------------------------------------------------------------
 =method is_positive()

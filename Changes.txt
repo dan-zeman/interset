@@ -16,15 +16,34 @@ Features:
 * Feature 'politeness' renamed to 'polite'. Features 'abspoliteness',
   'ergpoliteness' and 'datpoliteness' renamed similarly. Affected drivers:
 * Renamed and new feature values:
+  * abspolite=infm instead of abspolite=inf
+  * abspolite=form instead of abspolite=pol
+  * abspolite=elev
+  * abspolite=humb
   * animacy=hum
   * aspect=prosp instead of aspect=pro
+  * datpolite=infm instead of datpolite=inf
+  * datpolite=form instead of datpolite=pol
+  * datpolite=elev
+  * datpolite=humb
   * definite=cons instead of definite=red
+  * ergpolite=infm instead of ergpolite=inf
+  * ergpolite=form instead of ergpolite=pol
+  * ergpolite=elev
+  * ergpolite=humb
+  * polite=infm instead of polite=inf
+  * polite=form instead of polite=pol
+  * polite=elev
+  * polite=humb
 
 Interface:
 * Added new methods:
   * is_construct() is true if definite=cons
   * is_converb() is true if verbform=conv
+  * is_elevating() is true if polite=elev
+  * is_formal() is true if polite=form
   * is_human() is true if animacy=hum
+  * is_humbling() is true if polite=humb
 
 Fixes:
 * MUL::Upos: the tag CONJ changed to CCONJ in Universal Dependencies v2.
