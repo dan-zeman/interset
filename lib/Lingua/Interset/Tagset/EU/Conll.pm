@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the tagset of the Basque Dependency Treebank in the CoNLL format.
-# Copyright © 2011, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2011, 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # Copyright © 2011 Loganathan Ramasamy <ramasamy@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::EU::Conll;
@@ -379,7 +379,7 @@ sub _create_atoms
     # inanimados = bizigabeak
     $atoms{BIZ} = $self->create_simple_atom
     (
-        'intfeature' => 'animateness',
+        'intfeature' => 'animacy',
         'simple_decode_map' =>
         {
             # lagun, jokalari, pertsona, jabe, nagusi
@@ -629,8 +629,8 @@ sub _create_atoms
         'decode_map' =>
         {
             'NI'    => ['person' => 1, 'number' => 'sing'], # (ni, niregana, niri, niretzat, nik, nire, nigan, nitaz, niregatik, nirekin, neu, neuri, neuk, neure = I, nireak = mine)
-            'HI'    => ['person' => 2, 'number' => 'sing', 'politeness' => 'inf'], # (hi, hiri, hik, hire, heure = thou)
-            'ZU'    => ['person' => 2, 'number' => 'sing', 'politeness' => 'pol'], # (zugandik, zu, zuretzat, zuk, zure, zutaz, zurekin, zeu, zeuk, zeure = you)
+            'HI'    => ['person' => 2, 'number' => 'sing', 'polite' => 'infm'], # (hi, hiri, hik, hire, heure = thou)
+            'ZU'    => ['person' => 2, 'number' => 'sing', 'polite' => 'form'], # (zugandik, zu, zuretzat, zuk, zure, zutaz, zurekin, zeu, zeuk, zeure = you)
             'HURA'  => ['person' => 3, 'number' => 'sing'], # (berau = it)
             'GU'    => ['person' => 1, 'number' => 'plur'], # (gu, guri, guretzat, guk, gutako, gure, gurean, gutaz, gurekin, geu, geuri, geuk, geure, geuregan = we, geurea = our)
             'ZUEK'  => ['person' => 2, 'number' => 'plur'], # (zuek, zuei, zuenak, zuetako, zuen, zuetaz = you, zuena)
@@ -640,8 +640,8 @@ sub _create_atoms
         {
             'person' => { '1' => { 'number' => { 'sing' => 'NI',
                                                  'plur' => 'GU' }},
-                          '2' => { 'number' => { 'sing' => { 'politeness' => { 'inf' => 'HI',
-                                                                               '@'   => 'ZU' }},
+                          '2' => { 'number' => { 'sing' => { 'polite' => { 'infm' => 'HI',
+                                                                           '@'    => 'ZU' }},
                                                  'plur' => 'ZUEK' }},
                           '3' => { 'number' => { 'sing' => 'HURA',
                                                  'plur' => 'HAIEK' }}}
@@ -658,8 +658,8 @@ sub _create_atoms
         'decode_map' =>
         {
             'NI'    => ['person' => 1, 'possnumber' => 'sing'], # (nireak = mine)
-            'HI'    => ['person' => 2, 'possnumber' => 'sing', 'politeness' => 'inf'],
-            'ZU'    => ['person' => 2, 'possnumber' => 'sing', 'politeness' => 'pol'],
+            'HI'    => ['person' => 2, 'possnumber' => 'sing', 'polite' => 'infm'],
+            'ZU'    => ['person' => 2, 'possnumber' => 'sing', 'polite' => 'form'],
             'HURA'  => ['person' => 3, 'possnumber' => 'sing'],
             'GU'    => ['person' => 1, 'possnumber' => 'plur'], # (geurea = ours)
             'ZUEK'  => ['person' => 2, 'possnumber' => 'plur'], # (zuena = yours)
@@ -669,8 +669,8 @@ sub _create_atoms
         {
             'person' => { '1' => { 'possnumber' => { 'sing' => 'NI',
                                                      'plur' => 'GU' }},
-                          '2' => { 'possnumber' => { 'sing' => { 'politeness' => { 'inf' => 'HI',
-                                                                                   '@'   => 'ZU' }},
+                          '2' => { 'possnumber' => { 'sing' => { 'polite' => { 'infm' => 'HI',
+                                                                               '@'    => 'ZU' }},
                                                      'plur' => 'ZUEK' }},
                           '3' => { 'possnumber' => { 'sing' => 'HURA',
                                                      'plur' => 'HAIEK' }}}
@@ -678,7 +678,7 @@ sub _create_atoms
     );
     # AGREEMENT PERSON AND NUMBER OF THE ABSOLUTIVE ARGUMENT ####################
     # nor = who/whom, absolutive
-    # Note: Originally I wanted to use the default features 'person', 'number' and 'politeness' for this.
+    # Note: Originally I wanted to use the default features 'person', 'number' and 'polite' for this.
     # It would be parallel to languages that only mark agreement in person and number with the subject of the verb.
     # Unfortunately, some Basque finite verbs have additional morphemes of nominal inflection.
     # Thus their form reflects the person-number agreement with the absolutive argument (NOR), and nominal inflection (KAS, NUM etc.) at the same time.
@@ -690,27 +690,27 @@ sub _create_atoms
     # ADL ADL_IZEELI KAS:ABS|NUM:P|MUG:M|MDN:A1|NOR:HAIEK (direnak) ............. number=plur|absnumber=plur
     # So I decided to reserve the 'number' feature for nominal inflection, and to define 'absnumber' for agreement.
     # After all, the absolutive argument is not always the subject (for transitive verbs it is the object) so the parallelism with other languages was not so strong.
-    # I also define 'absperson' and 'abspoliteness', although there is no direct conflict for these features ('person' and 'politeness' applies now only to personal pronouns).
-    # But it is better to have these features aligned with 'ergperson', 'ergpoliteness', 'datperson' and 'datpoliteness'.
+    # I also define 'absperson' and 'abspolite', although there is no direct conflict for these features ('person' and 'polite' applies now only to personal pronouns).
+    # But it is better to have these features aligned with 'ergperson', 'ergpolite', 'datperson' and 'datpolite'.
     $atoms{NOR} = $self->create_atom
     (
         'surfeature' => 'nor',
         'decode_map' =>
         {
-            'NI'    => ['absperson' => 1, 'absnumber' => 'sing'],                           # verb abs argument 'ni' = 'I'           (naiz,   banaiz,   naizateke) 337
-            'HI'    => ['absperson' => 2, 'absnumber' => 'sing', 'abspoliteness' => 'inf'], # verb abs argument 'hi' = 'thou'        (haiz,   bahaiz,   haizateke) 20
-            'ZU'    => ['absperson' => 2, 'absnumber' => 'sing', 'abspoliteness' => 'pol'], # verb abs argument 'zu' = 'you'         (zara,   bazara,   zarateke) 93
-            'HURA'  => ['absperson' => 3, 'absnumber' => 'sing'],                           # verb abs argument 'hura' = 'he/she/it' (da,     bada,     dateke) 14342
-            'GU'    => ['absperson' => 1, 'absnumber' => 'plur'],                           # verb abs argument 'gu' = 'we'          (gara,   bagara,   garateke) 223
-            'ZUEK'  => ['absperson' => 2, 'absnumber' => 'plur'],                           # verb abs argument 'zuek' = 'you'       (zarete, bazarete, zaratekete) 12
-            'HAIEK' => ['absperson' => 3, 'absnumber' => 'plur'],                           # verb abs argument 'haiek' = 'they'     (dira,   badira,   dirateke) 4248
+            'NI'    => ['absperson' => 1, 'absnumber' => 'sing'],                        # verb abs argument 'ni' = 'I'           (naiz,   banaiz,   naizateke) 337
+            'HI'    => ['absperson' => 2, 'absnumber' => 'sing', 'abspolite' => 'infm'], # verb abs argument 'hi' = 'thou'        (haiz,   bahaiz,   haizateke) 20
+            'ZU'    => ['absperson' => 2, 'absnumber' => 'sing', 'abspolite' => 'form'], # verb abs argument 'zu' = 'you'         (zara,   bazara,   zarateke) 93
+            'HURA'  => ['absperson' => 3, 'absnumber' => 'sing'],                        # verb abs argument 'hura' = 'he/she/it' (da,     bada,     dateke) 14342
+            'GU'    => ['absperson' => 1, 'absnumber' => 'plur'],                        # verb abs argument 'gu' = 'we'          (gara,   bagara,   garateke) 223
+            'ZUEK'  => ['absperson' => 2, 'absnumber' => 'plur'],                        # verb abs argument 'zuek' = 'you'       (zarete, bazarete, zaratekete) 12
+            'HAIEK' => ['absperson' => 3, 'absnumber' => 'plur'],                        # verb abs argument 'haiek' = 'they'     (dira,   badira,   dirateke) 4248
         },
         'encode_map' =>
         {
             'absperson' => { '1' => { 'absnumber' => { 'sing' => 'NI',
                                                        'plur' => 'GU' }},
-                             '2' => { 'absnumber' => { 'sing' => { 'abspoliteness' => { 'inf' => 'HI',
-                                                                                        '@'   => 'ZU' }},
+                             '2' => { 'absnumber' => { 'sing' => { 'abspolite' => { 'infm' => 'HI',
+                                                                                    '@'    => 'ZU' }},
                                                        'plur' => 'ZUEK' }},
                              '3' => { 'absnumber' => { 'sing' => 'HURA',
                                                        'plur' => 'HAIEK' }}}
@@ -723,24 +723,24 @@ sub _create_atoms
         'surfeature' => 'nork',
         'decode_map' =>
         {
-            'NIK'     => ['ergperson' => 1, 'ergnumber' => 'sing'],                           # verb erg argument 'nik' = 'I'          (haut, dut, zaitut, zaituztet, ditut) 662
-            'HIK'     => ['ergperson' => 2, 'ergnumber' => 'sing', 'ergpoliteness' => 'inf'], # verb erg argument 'hik' = 'thou'       (nauk, duk, gaituk, dituk) 6
-            'HIK-NO'  => ['ergperson' => 2, 'ergnumber' => 'sing', 'ergpoliteness' => 'inf', 'erggender' => 'fem'],  #                 (dun, ezan, iezaion, nazan) 10
-            'HIK-TO'  => ['ergperson' => 2, 'ergnumber' => 'sing', 'ergpoliteness' => 'inf', 'erggender' => 'masc'], #                 (duan, duk, ezak, baduala) 8
-            'ZUK'     => ['ergperson' => 2, 'ergnumber' => 'sing', 'ergpoliteness' => 'pol'], # verb erg argument 'zuk' = 'you-sg'     (nauzu, duzu, gaituzu, dituzu) 208
-            'HARK'    => ['ergperson' => 3, 'ergnumber' => 'sing'],                           # verb erg argument 'hark' = 'he/she/it' (nau, hau, du, gaitu, zaitu, zaituzte, ditu) 5981
-            'GUK'     => ['ergperson' => 1, 'ergnumber' => 'plur'],                           # verb erg argument 'guk' = 'we'         (haugu, dugu, zaitugu, zaituztegu, ditugu) 721
-            'ZUEK-K'  => ['ergperson' => 2, 'ergnumber' => 'plur'],                           # verb erg argument 'zuek' = 'you-pl'    (nauzue, duzue, gaituzue, dituzue) 46
-            'HAIEK-K' => ['ergperson' => 3, 'ergnumber' => 'plur'],                           # verb erg argument 'haiek' = 'they'     (naute, haute, dute, gaituzte, zaituzte, zaituztete, dituzte) 2618
+            'NIK'     => ['ergperson' => 1, 'ergnumber' => 'sing'],                        # verb erg argument 'nik' = 'I'          (haut, dut, zaitut, zaituztet, ditut) 662
+            'HIK'     => ['ergperson' => 2, 'ergnumber' => 'sing', 'ergpolite' => 'infm'], # verb erg argument 'hik' = 'thou'       (nauk, duk, gaituk, dituk) 6
+            'HIK-NO'  => ['ergperson' => 2, 'ergnumber' => 'sing', 'ergpolite' => 'infm', 'erggender' => 'fem'],  #                 (dun, ezan, iezaion, nazan) 10
+            'HIK-TO'  => ['ergperson' => 2, 'ergnumber' => 'sing', 'ergpolite' => 'infm', 'erggender' => 'masc'], #                 (duan, duk, ezak, baduala) 8
+            'ZUK'     => ['ergperson' => 2, 'ergnumber' => 'sing', 'ergpolite' => 'form'], # verb erg argument 'zuk' = 'you-sg'     (nauzu, duzu, gaituzu, dituzu) 208
+            'HARK'    => ['ergperson' => 3, 'ergnumber' => 'sing'],                        # verb erg argument 'hark' = 'he/she/it' (nau, hau, du, gaitu, zaitu, zaituzte, ditu) 5981
+            'GUK'     => ['ergperson' => 1, 'ergnumber' => 'plur'],                        # verb erg argument 'guk' = 'we'         (haugu, dugu, zaitugu, zaituztegu, ditugu) 721
+            'ZUEK-K'  => ['ergperson' => 2, 'ergnumber' => 'plur'],                        # verb erg argument 'zuek' = 'you-pl'    (nauzue, duzue, gaituzue, dituzue) 46
+            'HAIEK-K' => ['ergperson' => 3, 'ergnumber' => 'plur'],                        # verb erg argument 'haiek' = 'they'     (naute, haute, dute, gaituzte, zaituzte, zaituztete, dituzte) 2618
         },
         'encode_map' =>
         {
             'ergperson' => { '1' => { 'ergnumber' => { 'sing' => 'NIK',
                                                        'plur' => 'GUK' }},
-                             '2' => { 'ergnumber' => { 'sing' => { 'ergpoliteness' => { 'inf' => { 'erggender' => { 'masc' => 'HIK-TO',
-                                                                                                                    'fem'  => 'HIK-NO',
-                                                                                                                    '@'    => 'HIK' }},
-                                                                                        '@'   => 'ZUK' }},
+                             '2' => { 'ergnumber' => { 'sing' => { 'ergpolite' => { 'infm' => { 'erggender' => { 'masc' => 'HIK-TO',
+                                                                                                                 'fem'  => 'HIK-NO',
+                                                                                                                 '@'    => 'HIK' }},
+                                                                                    '@'    => 'ZUK' }},
                                                        'plur' => 'ZUEK-K' }},
                              '3' => { 'ergnumber' => { 'sing' => 'HARK',
                                                        'plur' => 'HAIEK-K' }}}
@@ -753,22 +753,22 @@ sub _create_atoms
         'surfeature' => 'nori',
         'decode_map' =>
         {
-            'NIRI'    => ['datperson' => 1, 'datnumber' => 'sing'],                           # verb dat argument 'niri' = 'to me'         (hatzait, zait, zatzaizkit, zatzaizkidate, zaizkit) 152
-            'HIRI-NO' => ['datperson' => 2, 'datnumber' => 'sing', 'datpoliteness' => 'inf', 'datgender' => 'fem'],  # verb dat argument 'hiri' = 'to thee' (natzaik, zaik, gatzaizkik, zaizkik) 2
-            'HIRI-TO' => ['datperson' => 2, 'datnumber' => 'sing', 'datpoliteness' => 'inf', 'datgender' => 'masc'], #                                      (zaik, diat, nian) 5
-            'ZURI'    => ['datperson' => 2, 'datnumber' => 'sing', 'datpoliteness' => 'pol'], # verb dat argument 'zuri' = 'to you-sg'     (natzaizu, zaizu, gatzaizkizu, zaizkizu) 39
-            'HARI'    => ['datperson' => 3, 'datnumber' => 'sing'],                           # verb dat argument 'hari' = 'to him/her/it' (natzaio, hatzaio, zaio, gatzaizkio, zatzaizkio, zatzaizkiote, zaizkio) 1085
-            'GURI'    => ['datperson' => 1, 'datnumber' => 'plur'],                           # verb dat argument 'guri' = 'to us'         (hatzaigu, zaigu, zatzaizkigu, zatzaizkigute, zaizkigu) 124
-            'ZUEI'    => ['datperson' => 2, 'datnumber' => 'plur'],                           # verb dat argument 'zuei' = 'to you-pl'     (natzaizue, zaizue, gatzaizkizue, zaizkizue) 12
-            'HAIEI'   => ['datperson' => 3, 'datnumber' => 'plur'],                           # verb dat argument 'haiei' = 'to them'      (natzaie, hatzaie, zaie, gatzaizkie, zatzaizkie, zatzaizkiete, zaizkie) 306
+            'NIRI'    => ['datperson' => 1, 'datnumber' => 'sing'],                        # verb dat argument 'niri' = 'to me'         (hatzait, zait, zatzaizkit, zatzaizkidate, zaizkit) 152
+            'HIRI-NO' => ['datperson' => 2, 'datnumber' => 'sing', 'datpolite' => 'infm', 'datgender' => 'fem'],  # verb dat argument 'hiri' = 'to thee' (natzaik, zaik, gatzaizkik, zaizkik) 2
+            'HIRI-TO' => ['datperson' => 2, 'datnumber' => 'sing', 'datpolite' => 'infm', 'datgender' => 'masc'], #                                      (zaik, diat, nian) 5
+            'ZURI'    => ['datperson' => 2, 'datnumber' => 'sing', 'datpolite' => 'form'], # verb dat argument 'zuri' = 'to you-sg'     (natzaizu, zaizu, gatzaizkizu, zaizkizu) 39
+            'HARI'    => ['datperson' => 3, 'datnumber' => 'sing'],                        # verb dat argument 'hari' = 'to him/her/it' (natzaio, hatzaio, zaio, gatzaizkio, zatzaizkio, zatzaizkiote, zaizkio) 1085
+            'GURI'    => ['datperson' => 1, 'datnumber' => 'plur'],                        # verb dat argument 'guri' = 'to us'         (hatzaigu, zaigu, zatzaizkigu, zatzaizkigute, zaizkigu) 124
+            'ZUEI'    => ['datperson' => 2, 'datnumber' => 'plur'],                        # verb dat argument 'zuei' = 'to you-pl'     (natzaizue, zaizue, gatzaizkizue, zaizkizue) 12
+            'HAIEI'   => ['datperson' => 3, 'datnumber' => 'plur'],                        # verb dat argument 'haiei' = 'to them'      (natzaie, hatzaie, zaie, gatzaizkie, zatzaizkie, zatzaizkiete, zaizkie) 306
         },
         'encode_map' =>
         {
             'datperson' => { '1' => { 'datnumber' => { 'sing' => 'NIRI',
                                                        'plur' => 'GURI' }},
-                             '2' => { 'datnumber' => { 'sing' => { 'datpoliteness' => { 'inf' => { 'datgender' => { 'fem' => 'HIRI-NO',
-                                                                                                                    '@'   => 'HIRI-TO' }},
-                                                                                        '@'   => 'ZURI' }},
+                             '2' => { 'datnumber' => { 'sing' => { 'datpolite' => { 'infm' => { 'datgender' => { 'fem' => 'HIRI-NO',
+                                                                                                                 '@'   => 'HIRI-TO' }},
+                                                                                    '@'    => 'ZURI' }},
                                                        'plur' => 'ZUEI' }},
                              '3' => { 'datnumber' => { 'sing' => 'HARI',
                                                        'plur' => 'HAIEI' }}}
@@ -796,7 +796,7 @@ sub _create_atoms
             # ezburutua / imperfect (izaten, egiten, ematen, ikusten, erabiltzen)
             'EZBU' => ['aspect' => 'imp'],
             # geroa / prospective (izango, egingo, jokatuko, egongo, hartuko)
-            'GERO' => ['aspect' => 'pro'],
+            'GERO' => ['aspect' => 'prosp'],
             # finite forms of synthetic, auxiliary and compound verbs have a special value of "aspect", meaning that aspect is irrelevant for them
             # (dugu, daukagu, dakigu, darabilgu, diogu)
             # We do not set verbform=fin here because we do not want to clash with verbform possibly set during the decoding of part of speech.
@@ -805,9 +805,9 @@ sub _create_atoms
         'encode_map' =>
         {
             # finite verbs always have a non-empty value of person (the NOR feature)
-            'absperson' => { ''  => { 'aspect' => { 'perf' => 'BURU',
-                                                    'imp'  => 'EZBU',
-                                                    'pro'  => 'GERO' }},
+            'absperson' => { ''  => { 'aspect' => { 'perf'  => 'BURU',
+                                                    'imp'   => 'EZBU',
+                                                    'prosp' => 'GERO' }},
                              '@' => 'PNT' }
         }
     );

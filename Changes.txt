@@ -11,6 +11,7 @@ Features:
 * Feature 'animateness' renamed to 'animacy'. Affected drivers:
   xx::multext
   cs::pdt
+  eu::conll
 * Feature 'definiteness' renamed to 'definite'. Affected drivers:
   xx::multext
   ar::padt ar::conll ar::conll2007
@@ -33,6 +34,7 @@ Features:
   ca::conll2009
   cs::pmk
   da::conll
+  eu::conll
 * Renamed and new feature values:
   * abspolite=infm instead of abspolite=inf
   * abspolite=form instead of abspolite=pol
