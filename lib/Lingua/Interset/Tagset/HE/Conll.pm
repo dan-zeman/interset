@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the Hebrew tagset.
-# Copyright © 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # Copyright © 2013 Rudolf Rosa <rosa@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::HE::Conll;
@@ -67,7 +67,7 @@ sub _create_atoms
             'BN_S_PP' => ['pos' => 'adj|verb', 'verbform' => 'part', 'poss' => 'poss'],
             # Construct-state Beinoni Form
             # עבטמ, הברמ, תלזוא, יליחנמ, יכומ
-            'BNT' => ['pos' => 'adj|verb', 'verbform' => 'part', 'definiteness' => 'red'],
+            'BNT' => ['pos' => 'adj|verb', 'verbform' => 'part', 'definite' => 'cons'],
             # Conjunction
             # ש, דוגינב, לככ, יפכ
             'CC' => ['pos' => 'conj'],
@@ -85,7 +85,7 @@ sub _create_atoms
             'CD' => ['pos' => 'num'],
             # Construct Numeral
             # ינש, יתש, יפלא, תואמ, תורשע
-            'CDT' => ['pos' => 'num', 'definiteness' => 'red'],
+            'CDT' => ['pos' => 'num', 'definite' => 'cons'],
             # The ו coordinating word
             # ו (wa) = and ... 3707 occurrences; but why is it not CC-COORD? (35 occs. is CC but not CC-COORD.)
             # We will decode it but we will not list it as a known tag and we will encode CC-COORD back.
@@ -97,15 +97,15 @@ sub _create_atoms
             'COP-TOINFINITIVE' => ['pos' => 'verb', 'verbtype' => 'cop', 'verbform' => 'inf'],
             # H marker (the definite article prefix: 15847 occurrences)
             # ה
-            'DEF' => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'def'],
+            'DEF' => ['pos' => 'adj', 'prontype' => 'art', 'definite' => 'def'],
             #53 DEF@DT הכל (hkl) = "everything", 46 occurrences
-            'DEF@DT' => ['pos' => 'adj', 'definiteness' => 'def', 'prontype' => 'tot'],
+            'DEF@DT' => ['pos' => 'adj', 'definite' => 'def', 'prontype' => 'tot'],
             # Determiner
             # יהשוזיא, רחבמ, לכ
             'DT' => ['pos' => 'adj', 'prontype' => 'prn'],
             # Construct-state Determiner
             # המכ, ותוא, םוש, הברה
-            'DTT' => ['pos' => 'adj', 'prontype' => 'prn', 'definiteness' => 'red'],
+            'DTT' => ['pos' => 'adj', 'prontype' => 'prn', 'definite' => 'cons'],
             # Existential
             # שי, ןיא, םנשי, היה
             'EX' => ['pos' => 'adv', 'advtype' => 'ex'],
@@ -120,7 +120,7 @@ sub _create_atoms
             'JJ' => ['pos' => 'adj'],
             # Construct-state Adjective
             # רבודמ, יעדומ, ילוער, תרסח, יבורמ
-            'JJT' => ['pos' => 'adj', 'definiteness' => 'red'],
+            'JJT' => ['pos' => 'adj', 'definite' => 'cons'],
             # Modal
             # רשפא, לוכי, ךירצ, הלוכי, לולע
             'MD' => ['pos' => 'verb', 'verbtype' => 'mod'],
@@ -138,7 +138,7 @@ sub _create_atoms
             'NN_S_PP' => ['pos' => 'noun', 'poss' => 'poss'],
             # Construct-state nouns
             # ידי, תעדוו
-            'NNT' => ['pos' => 'noun', 'definiteness' => 'red'],
+            'NNT' => ['pos' => 'noun', 'definite' => 'cons'],
             # “Prefix” wordlets
             # בלתי, אי, בין, אנטי, תת
             # 22 different word forms in the corpus.
@@ -230,7 +230,7 @@ sub _create_atoms
         {
             'pos' => { 'noun' => { 'prontype' => { ''    => { 'poss' => { 'poss' => 'NN_S_PP',
                                                               '@' => { 'nountype' => { 'prop' => 'NNP',
-                                                                       '@' => { 'definiteness' => { 'red' => 'NNT',
+                                                                       '@' => { 'definite' => { 'cons' => 'NNT',
                                                                                 '@' => { 'other/nountype' => { 'title' => 'TTL',
                                                                                          '@' => 'NN' }}}}}}}},
                                                    'neg' => 'PRP-IMP',
@@ -240,19 +240,19 @@ sub _create_atoms
                                                    'dem' => 'PRP-DEM',
                                                    'int' => 'QW',
                                                    'rel' => 'REL-SUBCONJ',
-                                                   ''    => { 'definiteness' => { 'red' => 'JJT',
-                                                                                  '@'   => 'JJ' }},
-                                                   '@'   => { 'definiteness' => { 'red' => 'DTT',
-                                                                                  '@'   => 'DT' }}}},
-                       'num'  => { 'definiteness' => { 'red' => 'CDT',
-                                                       '@'   => { 'numform' => { 'digit' => 'NCD',
-                                                                                 '@'     => 'CD' }}}},
+                                                   ''    => { 'definite' => { 'cons' => 'JJT',
+                                                                              '@'    => 'JJ' }},
+                                                   '@'   => { 'definite' => { 'cons' => 'DTT',
+                                                                              '@'    => 'DT' }}}},
+                       'num'  => { 'definite' => { 'cons' => 'CDT',
+                                                   '@'    => { 'numform' => { 'digit' => 'NCD',
+                                                                              '@'     => 'CD' }}}},
                        # There are two ways of tagging participles:
                        # BN (or BN_S_PP or BNT) part of speech ... we decode it as 'adj|verb'.
                        # VB part of speech, BEINONI feature ... we decode it as 'verb'.
                        'adj|verb' => { 'poss' => { 'poss' => 'BN_S_PP',
-                                                   '@'    => { 'definiteness' => { 'red' => 'BNT',
-                                                                                   '@'   => 'BN' }}}},
+                                                   '@'    => { 'definite' => { 'cons' => 'BNT',
+                                                                               '@'    => 'BN' }}}},
                        'verb' => { 'verbtype' => { 'cop' => { 'verbform' => { 'inf' => 'COP-TOINFINITIVE',
                                                                               '@'   => 'COP' }},
                                                    'mod' => 'MD',
@@ -479,10 +479,10 @@ sub _create_atoms
                                                                             'fut'  => 'FUTURE' }}}}}
         }
     );
-    # NEGATIVENESS ####################
-    $atoms{negativeness} = $self->create_simple_atom
+    # POLARITY ####################
+    $atoms{polarity} = $self->create_simple_atom
     (
-        'intfeature' => 'negativeness',
+        'intfeature' => 'polarity',
         'simple_decode_map' =>
         {
             # used with COP
@@ -547,7 +547,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('gender', 'number', 'person', 'verbform', 'negativeness', 'binyan', 'possgender', 'possnumber', 'possperson', 'prontype', 'unknown');
+    my @features = ('gender', 'number', 'person', 'verbform', 'polarity', 'binyan', 'possgender', 'possnumber', 'possperson', 'prontype', 'unknown');
     return \@features;
 }
 
@@ -568,8 +568,8 @@ sub _create_features_pos
         'BNT'      => ['gender', 'number', 'person', 'binyan'],
         'CD'       => ['gender', 'number'],
         'CDT'      => ['gender', 'number'],
-        'COP'      => ['gender', 'number', 'person', 'verbform', 'negativeness'],
-        'COP-TOINFINITIVE' => ['negativeness'],
+        'COP'      => ['gender', 'number', 'person', 'verbform', 'polarity'],
+        'COP-TOINFINITIVE' => ['polarity'],
         'JJ'       => ['gender', 'number'],
         'JJT'      => ['gender', 'number'],
         'MD'       => ['gender', 'number', 'person', 'verbform'],

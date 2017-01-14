@@ -21,6 +21,7 @@ Features:
   de::smor
   el::conll
   fo::setur
+  he::conll
 * Feature 'negativeness' renamed to 'polarity'. Affected drivers:
   xx::multext
   ar::padt ar::conll ar::conll2007
@@ -32,6 +33,7 @@ Features:
   el::conll
   et::puudepank
   fi::turku
+  he::conll
 * Feature 'politeness' renamed to 'polite'. Features 'abspoliteness',
   'ergpoliteness' and 'datpoliteness' renamed similarly. Affected drivers:
   ca::conll2009
