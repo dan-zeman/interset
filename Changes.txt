@@ -30,6 +30,7 @@ Features:
   de::stts de::smor
   el::conll
   et::puudepank
+  fi::turku
 * Feature 'politeness' renamed to 'polite'. Features 'abspoliteness',
   'ergpoliteness' and 'datpoliteness' renamed similarly. Affected drivers:
   ca::conll2009

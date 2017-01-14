@@ -1,6 +1,6 @@
 # ABSTRACT: Driver for the Finnish tagset from the Turku Dependency Treebank.
 # Tag is a sequence of features separated by vertical bars. There are just the feature values, not attribute-value pairs.
-# Copyright © 2011, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2011, 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::FI::Turku;
 use strict;
@@ -445,7 +445,7 @@ sub _create_atoms
                                                     '3' => 'PL3' }}}
         }
     );
-    # NEGATIVENESS ####################
+    # POLARITY ####################
     $atoms{neg} = $self->create_atom
     (
         'surfeature' => 'neg',
@@ -453,19 +453,19 @@ sub _create_atoms
         {
             # negative verb (en, et, ei)
             # Sometimes even verbs have NEG and not NEGV, so we must remember the distinction in the 'other' feature.
-            'NEGV' => ['negativeness' => 'neg', 'other' => {'negativeness' => 'negv'}],
+            'NEGV' => ['polarity' => 'neg', 'other' => {'polarity' => 'negv'}],
             # negative form (en tehnyt = I did not do)
-            'NEG'  => ['negativeness' => 'neg', 'other' => {'negativeness' => 'neg'}]
+            'NEG'  => ['polarity' => 'neg', 'other' => {'polarity' => 'neg'}]
         },
         'encode_map' =>
         {
-            'other/negativeness' => { 'negv' => 'NEGV',
-                                      'neg'  => 'NEG',
-                                      '@'    => { # for some reason, copula verbs do not use NEGV but NEG
-                                                  'negativeness' => { 'neg' => { 'pos' => { 'verb' => { 'verbtype' => { 'cop' => 'NEG',
-                                                                                                                        '@'   => 'NEGV' }},
-                                                                                            'conj' => 'NEGV',
-                                                                                            '@'    => 'NEG' }}}}}
+            'other/polarity' => { 'negv' => 'NEGV',
+                                  'neg'  => 'NEG',
+                                  '@'    => { # for some reason, copula verbs do not use NEGV but NEG
+                                              'polarity' => { 'neg' => { 'pos' => { 'verb' => { 'verbtype' => { 'cop' => 'NEG',
+                                                                                                                '@'   => 'NEGV' }},
+                                                                                    'conj' => 'NEGV',
+                                                                                    '@'    => 'NEG' }}}}}
         }
     );
     # INFINITIVE ####################
