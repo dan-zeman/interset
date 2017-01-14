@@ -13,6 +13,7 @@ Features:
   cs::pdt
   eu::conll
   fa::conll
+  hsb::sorokin
 * Feature 'definiteness' renamed to 'definite'. Affected drivers:
   xx::multext
   ar::padt ar::conll ar::conll2007

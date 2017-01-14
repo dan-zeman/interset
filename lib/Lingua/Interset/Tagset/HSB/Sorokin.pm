@@ -1,6 +1,6 @@
 # ABSTRACT: Driver for the Upper Sorbian tagset of the tagger created by Daniil Sorokin.
 # https://bitbucket.org/magpie/part-of-speech-tagger-for-upper-sorbian/downloads
-# Copyright © 2016 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2016, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::HSB::Sorokin;
 use strict;
@@ -192,16 +192,16 @@ sub _create_atoms
         'surfeature' => 'animacy',
         'decode_map' =>
         {
-            'animate'           => ['animateness' => 'anim'],
-            'animateate'        => ['animateness' => 'anim'],
-            'inanimate,animate' => ['animateness' => ''],
-            'inanimate'         => ['animateness' => 'inan'],
-            'inanimate '        => ['animateness' => 'inan']
+            'animate'           => ['animacy' => 'anim'],
+            'animateate'        => ['animacy' => 'anim'],
+            'inanimate,animate' => ['animacy' => ''],
+            'inanimate'         => ['animacy' => 'inan'],
+            'inanimate '        => ['animacy' => 'inan']
         },
         'encode_map' =>
         {
-            'animateness' => { 'anim' => 'animate',
-                               'inan' => 'inanimate' }
+            'animacy' => { 'anim' => 'animate',
+                           'inan' => 'inanimate' }
         }
     );
     # NUMBER ####################
