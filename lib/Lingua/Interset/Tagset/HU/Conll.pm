@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the Hungarian tagset of the CoNLL 2007 Shared Task (derived from the Szeged Treebank).
-# Copyright © 2011, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2011, 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::HU::Conll;
 use strict;
@@ -70,15 +70,15 @@ sub _create_atoms
             'Rg' => ['pos' => 'adv', 'prontype' => 'tot|neg'], # general adverbs: mindig = always, soha = never, mindenképpen = in any case, mind = every, bármikor = whenever
             'Ri' => ['pos' => 'adv', 'prontype' => 'ind'], # sokáig = long, olykor = sometimes, valahol = somewhere, egyrészt = on the one hand, másrészt = on the other hand
             'Rl' => ['pos' => 'adv', 'prontype' => 'prs'], # personal adverb: rá = it, neki = him/her, vele = with him, benne = in him/it, inside, róla = it
-            'Rm' => ['pos' => 'adv', 'negativeness' => 'neg'], # modifier: nem, ne = not, sem = neither, se = nor
+            'Rm' => ['pos' => 'adv', 'polarity' => 'neg'], # modifier: nem, ne = not, sem = neither, se = nor
             'Rp' => ['pos' => 'part'], # particle, preverb: meg = and, el = away/off, ki = out, be = in, fel = up
             'Rq' => ['pos' => 'adv', 'prontype' => 'int'], # -e [interrogative suffix, tokenized separately], miért = why, hogyan = how, hol = where, vajon = whether, mikor = when
             'Rr' => ['pos' => 'adv', 'prontype' => 'rel'], # amikor = when, ahol = where, míg = while, miközben = while, mint = as
-            'Rv' => ['pos' => 'verb', 'verbform' => 'trans'], # verbal adverb: hivatkozva = referring to, kezdve = from, hozzátéve = adding, mondván = saying
+            'Rv' => ['pos' => 'verb', 'verbform' => 'conv'], # verbal adverb: hivatkozva = referring to, kezdve = from, hozzátéve = adding, mondván = saying
             'Rx' => ['pos' => 'adv'], # other adverb: már = already, még = even, csak = only, is = also, például = for example
             'St' => ['pos' => 'adp', 'adpostype' => 'post'], # adposition/postposition: szerint = according to, után = after, között = between, által = by, alatt = under
-            'Tf' => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'def'], # definite article: a, az
-            'Ti' => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'ind'], # indefinite article: egy
+            'Tf' => ['pos' => 'adj', 'prontype' => 'art', 'definite' => 'def'], # definite article: a, az
+            'Ti' => ['pos' => 'adj', 'prontype' => 'art', 'definite' => 'ind'], # indefinite article: egy
             'Va' => ['pos' => 'verb', 'verbtype' => 'aux'], # fogok, fog, fogja, fogunk, fognak, fogják, volna
             'Vm' => ['pos' => 'verb'], # main verb: van = there is, kell = must, lehet = may, lesz = become, nincs = is not, áll = stop, kerül = get to, tud = know
             'X'  => ['foreign' => 'foreign'], # foreign or unknown: homo, ecce, public_relations, szlovák)-Coetzer
@@ -101,8 +101,8 @@ sub _create_atoms
                                                    'neg' => 'Pg' }},
                        'adj'  => { 'prontype' => { ''    => { 'numtype' => { 'ord' => 'Mo',
                                                                              '@'   => 'Af' }},
-                                                   'art' => { 'definiteness' => { 'def' => 'Tf',
-                                                                                  '@'   => 'Ti' }},
+                                                   'art' => { 'definite' => { 'def' => 'Tf',
+                                                                              '@'   => 'Ti' }},
                                                    'dem' => 'Pd',
                                                    'ind' => 'Pi',
                                                    'prs' => 'Ps' }},
@@ -111,9 +111,9 @@ sub _create_atoms
                                                                               'dist' => 'Md',
                                                                               'frac' => 'Mf',
                                                                               'ord'  => 'Mo' }}}},
-                       'verb' => { 'verbform' => { 'trans' => 'Rv',
-                                                   '@'     => { 'verbtype' => { 'aux' => 'Va',
-                                                                                '@'   => 'Vm' }}}},
+                       'verb' => { 'verbform' => { 'conv' => 'Rv',
+                                                   '@'    => { 'verbtype' => { 'aux' => 'Va',
+                                                                               '@'   => 'Vm' }}}},
                        'adv'  => { 'prontype' => { 'dem' => 'Rd',
                                                    'ind' => 'Ri',
                                                    'tot' => 'Rg',
@@ -121,8 +121,8 @@ sub _create_atoms
                                                    'prs' => 'Rl',
                                                    'int' => 'Rq',
                                                    'rel' => 'Rr',
-                                                   '@'   => { 'negativeness' => { 'neg' => 'Rm',
-                                                                                  '@'   => 'Rx' }}}},
+                                                   '@'   => { 'polarity' => { 'neg' => 'Rm',
+                                                                              '@'   => 'Rx' }}}},
                        'adp'  => 'St',
                        'conj' => { 'conjtype' => { 'coor' => 'Cc',
                                                    '@'    => 'Cs' }},
@@ -232,7 +232,7 @@ sub _create_atoms
     # DEFINITENESS ####################
     $atoms{def} = $self->create_simple_atom
     (
-        'intfeature' => 'definiteness',
+        'intfeature' => 'definite',
         'simple_decode_map' =>
         {
             # mondja, tudja, teszi, állítja, jelenti
