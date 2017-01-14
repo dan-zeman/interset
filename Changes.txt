@@ -40,6 +40,7 @@ Features:
   cs::pmk
   da::conll
   eu::conll
+  hi::conll
 * Renamed and new feature values:
   * abspolite=infm instead of abspolite=inf
   * abspolite=form instead of abspolite=pol
