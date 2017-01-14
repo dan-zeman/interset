@@ -1,6 +1,6 @@
 # ABSTRACT: Driver for the Estonian tagset from the Eesti keele puudepank (Estonian Language Treebank).
 # Tag is the part of speech followed by a slash and the morphosyntactic features, separated by commas.
-# Copyright © 2011, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2011, 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::ET::Puudepank;
 use strict;
@@ -314,12 +314,12 @@ sub _create_atoms
         {
             'other/personal' => { 'no' => 'imps',
                                   '@'  => { 'verbtype' => { 'aux' => 'ps',
-                                                            '@'   => { 'mood' => { 'ind' => { 'person' => { ''  => { 'negativeness' => { 'pos' => 'imps',
-                                                                                                                                         '@'   => 'ps' }},
+                                                            '@'   => { 'mood' => { 'ind' => { 'person' => { ''  => { 'polarity' => { 'pos' => 'imps',
+                                                                                                                                     '@'   => 'ps' }},
                                                                                                             '@' => 'ps' }},
                                                                                    'cnd' => { 'tense' => { 'past' => 'ps',
-                                                                                                           '@'    => { 'person' => { ''  => { 'negativeness' => { 'pos' => 'imps',
-                                                                                                                                                                  '@'   => 'ps' }},
+                                                                                                           '@'    => { 'person' => { ''  => { 'polarity' => { 'pos' => 'imps',
+                                                                                                                                                              '@'   => 'ps' }},
                                                                                                                                      '@' => 'ps' }}}},
                                                                                    '@'   => 'ps' }}}}}
         }
@@ -471,10 +471,10 @@ sub _create_atoms
             'impf'  => 'imp'
         }
     );
-    # NEGATIVENESS ####################
-    $atoms{negativeness} = $self->create_simple_atom
+    # POLARITY ####################
+    $atoms{polarity} = $self->create_simple_atom
     (
-        'intfeature' => 'negativeness',
+        'intfeature' => 'polarity',
         'simple_decode_map' =>
         {
             # af ... affirmative verb (oli, saime, andsin, sain, ütlesin)
@@ -513,7 +513,7 @@ sub _create_atoms
         # .tud, %tud ... words with suffix '-tud'
         # .v, %v ... participial adjectives with suffix '-v', '-va-'
         # -- ... meaning no features
-    my @fatoms = map {$atoms{$_}} (qw(nountype prontype numtype numform verbtype adpostype conjtype punctype number case valcase degree person personal mood tense negativeness));
+    my @fatoms = map {$atoms{$_}} (qw(nountype prontype numtype numform verbtype adpostype conjtype punctype number case valcase degree person personal mood tense polarity));
     $atoms{feature} = $self->create_merged_atom
     (
         'surfeature' => 'feature',
@@ -579,7 +579,7 @@ sub encode
         'vinf'  => ['verbtype', 'mood'],
         'vpart' => ['verbtype', 'mood', 'tense', 'person', 'number', 'personal'],
         'vsup'  => ['verbtype', 'mood', 'person', 'number', 'personal', 'case'],
-        'v'     => ['verbtype', 'mood', 'tense', 'person', 'number', 'personal', 'negativeness'],
+        'v'     => ['verbtype', 'mood', 'tense', 'person', 'number', 'personal', 'polarity'],
         'prp'   => ['adpostype', 'valcase'],
         'pst'   => ['adpostype', 'valcase'],
         'conj-c'=> ['conjtype'],
