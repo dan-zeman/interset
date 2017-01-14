@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the Arabic tagset of the CoNLL 2007 Shared Task.
-# Copyright © 2011, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2011, 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::AR::Conll2007;
 use strict;
@@ -71,7 +71,7 @@ sub _create_atoms
             # interrogative particle
             'FI' => ['pos' => 'part', 'prontype' => 'int'],
             # negative particle
-            'FN' => ['pos' => 'part', 'negativeness' => 'neg'],
+            'FN' => ['pos' => 'part', 'polarity' => 'neg'],
             # interjection
             'I-' => ['pos' => 'int'],
             # abbreviation
@@ -109,8 +109,8 @@ sub _create_atoms
                                                                                                  'adp'  => 'P-',
                                                                                                  'conj' => 'C-',
                                                                                                  'part' => { 'prontype' => { 'int' => 'FI',
-                                                                                                                             '@'   => { 'negativeness' => { 'neg' => 'FN',
-                                                                                                                                                            '@'   => 'F-' }}}},
+                                                                                                                             '@'   => { 'polarity' => { 'neg' => 'FN',
+                                                                                                                                                        '@'   => 'F-' }}}},
                                                                                                  'int'  => 'I-',
                                                                                                  'punc' => 'G-',
                                                                                                  '@'    => '_' }},
@@ -151,15 +151,15 @@ sub _create_atoms
     # DEFINITENESS ####################
     $atoms{Defin} = $self->create_simple_atom
     (
-        'intfeature' => 'definiteness',
+        'intfeature' => 'definite',
         'simple_decode_map' =>
         {
             # definite
             'D' => 'def',
             # indefinite
             'I' => 'ind',
-            # reduced
-            'R' => 'red',
+            # reduced (construct state)
+            'R' => 'cons',
             # complex
             'C' => 'com'
         }

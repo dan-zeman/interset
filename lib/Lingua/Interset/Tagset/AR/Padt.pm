@@ -1,6 +1,6 @@
 # ABSTRACT: Driver for the PADT 2.0 / ElixirFM Arabic positional tagset.
 # See also http://quest.ms.mff.cuni.cz/cgi-bin/elixir/index.fcgi
-# Copyright © 2013, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2013, 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::AR::Padt;
 use strict;
@@ -97,7 +97,7 @@ sub _create_atoms
             # interrogative particle
             'FI' => ['pos' => 'part', 'prontype' => 'int'],
             # negative particle
-            'FN' => ['pos' => 'part', 'negativeness' => 'neg'],
+            'FN' => ['pos' => 'part', 'polarity' => 'neg'],
             # interjection
             'I-' => ['pos' => 'int'],
             # abbreviation
@@ -150,8 +150,8 @@ sub _create_atoms
                                                                                                                 '@' => 'PI' }},
                                                                                         'conj' => 'C-',
                                                                                         'part' => { 'prontype' => { 'int' => 'FI',
-                                                                                                                    '@'   => { 'negativeness' => { 'neg' => 'FN',
-                                                                                                                                                   '@'   => 'F-' }}}},
+                                                                                                                    '@'   => { 'polarity' => { 'neg' => 'FN',
+                                                                                                                                               '@'   => 'F-' }}}},
                                                                                         'int'  => 'I-',
                                                                                         'punc' => 'G-',
                                                                                         '@'    => 'U-' }},
@@ -193,30 +193,31 @@ sub _create_atoms
         'encode_default' => '-'
     );
     # DEFINITENESS ####################
-    $atoms{definiteness} = $self->create_atom
+    $atoms{definite} = $self->create_atom
     (
         'surfeature' => 'state',
         'decode_map' =>
         {
             # definite
-            'D' => ['definiteness' => 'def'],
+            'D' => ['definite' => 'def'],
             # indefinite
-            'I' => ['definiteness' => 'ind'],
-            # reduced
-            'R' => ['definiteness' => 'red'],
+            'I' => ['definite' => 'ind'],
+            # reduced = construct state
+            'R' => ['definite' => 'cons'],
             # complex
-            'C' => ['definiteness' => 'com'],
+            'C' => ['definite' => 'com'],
             # absolute/negative
-            'A' => ['negativeness' => 'neg']
+            'A' => ['polarity' => 'neg']
         },
         'encode_map' =>
-
-            { 'negativeness' => { 'neg' => 'A',
-                                  '@'   => { 'definiteness' => { 'def' => 'D',
-                                                                 'ind' => 'I',
-                                                                 'red' => 'R',
-                                                                 'com' => 'C',
-                                                                 '@'   => '-' }}}}
+        {
+            'polarity' => { 'neg' => 'A',
+                            '@'   => { 'definite' => { 'def'  => 'D',
+                                                       'ind'  => 'I',
+                                                       'cons' => 'R',
+                                                       'com'  => 'C',
+                                                       '@'    => '-' }}}
+        }
     );
     # PERSON ####################
     $atoms{person} = $self->create_simple_atom
@@ -289,7 +290,7 @@ sub decode
     # pos subpos mood voice ??? pers gen num case def
     # example: N------S1I
     my @chars = split(//, $tag);
-    my @features = ('pos', 'subpos', 'mood', 'voice', undef, 'person', 'gender', 'number', 'case', 'definiteness');
+    my @features = ('pos', 'subpos', 'mood', 'voice', undef, 'person', 'gender', 'number', 'case', 'definite');
     for(my $i = 0; $i<=$#chars; $i++)
     {
         next if(!defined($features[$i]));
@@ -313,7 +314,7 @@ sub encode
     my $self = shift;
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $atoms = $self->atoms();
-    my @features = ('pos', 'subpos', 'mood', 'voice', undef, 'person', 'gender', 'number', 'case', 'definiteness');
+    my @features = ('pos', 'subpos', 'mood', 'voice', undef, 'person', 'gender', 'number', 'case', 'definite');
     my $tag = $atoms->{pos}->encode($fs);
     for(my $i = 2; $i<=$#features; $i++)
     {
@@ -702,7 +703,7 @@ Interset driver for the Arabic tagset of the Prague Arabic Dependency Treebank
 (PADT) 2.0. The same tagset is also used by the ElixirFM Arabic morphological
 analyzer. It is a positional tagset. Every tag consists of 10 characters and
 the position of the character in the tag determines its interpretation:
-I<pos, subpos, mood, voice, RESERVED, person, gender, number, case, definiteness.>
+I<pos, subpos, mood, voice, RESERVED, person, gender, number, case, definite.>
 
 =head1 SEE ALSO
 

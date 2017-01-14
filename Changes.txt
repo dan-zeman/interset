@@ -13,8 +13,10 @@ Features:
   cs::pdt
 * Feature 'definiteness' renamed to 'definite'. Affected drivers:
   xx::multext
+  ar::padt ar::conll ar::conll2007
 * Feature 'negativeness' renamed to 'polarity'. Affected drivers:
   xx::multext
+  ar::padt ar::conll ar::conll2007
   cs::pdt cs::ajka cs::pmk cs::pmkkr
 * Feature 'politeness' renamed to 'polite'. Features 'abspoliteness',
   'ergpoliteness' and 'datpoliteness' renamed similarly. Affected drivers:
