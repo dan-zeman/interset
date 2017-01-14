@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the Czech tagset of the Prague Spoken Corpus (Pražský mluvený korpus).
-# Copyright © 2009, 2010, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2009, 2010, 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::CS::Pmk;
 use strict;
@@ -88,8 +88,8 @@ sub _create_atoms
         'surfeature' => 'gender',
         'decode_map' =>
         {
-            'M' => ['gender' => 'masc', 'animateness' => 'anim'],
-            'I' => ['gender' => 'masc', 'animateness' => 'inan'],
+            'M' => ['gender' => 'masc', 'animacy' => 'anim'],
+            'I' => ['gender' => 'masc', 'animacy' => 'inan'],
             'F' => ['gender' => 'fem'],
             'N' => ['gender' => 'neut'],
             # Some pronouns ('já', 'ty') do not distinguish grammatical gender and have this value.
@@ -99,8 +99,8 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            { 'gender' => { 'masc' => { 'animateness' => { 'inan' => 'I',
-                                                           '@'    => 'M' }},
+            { 'gender' => { 'masc' => { 'animacy' => { 'inan' => 'I',
+                                                       '@'    => 'M' }},
                             'fem'  => 'F',
                             'neut' => 'N',
                             '@'    => { 'other/gender' => { 'bezrodé' => 'B',
@@ -121,15 +121,15 @@ sub _create_atoms
             'D' => ['number' => 'dual'],
             'C' => ['number' => 'coll'],
             # "Vykání": using plural to address a single person in a polite manner.
-            'V' => ['number' => 'plur', 'politeness' => 'pol'],
+            'V' => ['number' => 'plur', 'polite' => 'form'],
             'X' => []
         },
         'encode_map' =>
 
             { 'number' => { 'sing' => 'S',
                             'dual' => 'D',
-                            'plur'  => { 'politeness' => { 'pol' => 'V',
-                                                          '@'   => 'P' }},
+                            'plur'  => { 'polite' => { 'form' => 'V',
+                                                       '@'    => 'P' }},
                             'ptan' => 'T',
                             'coll' => 'C',
                             '@'    => 'X' }}
@@ -141,12 +141,12 @@ sub _create_atoms
         'surfeature' => 'participle_gender_number',
         'decode_map' =>
         {
-            '1' => ['gender' => 'masc', 'animateness' => 'anim', 'number' => 'sing'],
-            '2' => ['gender' => 'masc', 'animateness' => 'inan', 'number' => 'sing'],
+            '1' => ['gender' => 'masc', 'animacy' => 'anim', 'number' => 'sing'],
+            '2' => ['gender' => 'masc', 'animacy' => 'inan', 'number' => 'sing'],
             '3' => ['gender' => 'fem', 'number' => 'sing'],
             '4' => ['gender' => 'neut', 'number' => 'sing'],
-            '5' => ['gender' => 'masc', 'animateness' => 'anim', 'number' => 'plur'],
-            '6' => ['gender' => 'masc', 'animateness' => 'inan', 'number' => 'plur'],
+            '5' => ['gender' => 'masc', 'animacy' => 'anim', 'number' => 'plur'],
+            '6' => ['gender' => 'masc', 'animacy' => 'inan', 'number' => 'plur'],
             '7' => ['gender' => 'fem', 'number' => 'plur'],
             '8' => ['gender' => 'neut', 'number' => 'plur'],
             # - -> neurčuje se / not specified => empty value
@@ -160,12 +160,12 @@ sub _create_atoms
 
             { 'other/gender' => { '9' => '9',
                                   '-' => '-',
-                                  '@' => { 'number' => { 'sing' => { 'gender' => { 'masc' => { 'animateness' => { 'inan' => '2',
-                                                                                                                  '@'    => '1' }},
+                                  '@' => { 'number' => { 'sing' => { 'gender' => { 'masc' => { 'animacy' => { 'inan' => '2',
+                                                                                                              '@'    => '1' }},
                                                                                    'fem'  => '3',
                                                                                    '@'    => '4' }},
-                                                         'plur' => { 'gender' => { 'masc' => { 'animateness' => { 'inan' => '6',
-                                                                                                                  '@'    => '5' }},
+                                                         'plur' => { 'gender' => { 'masc' => { 'animacy' => { 'inan' => '6',
+                                                                                                              '@'    => '5' }},
                                                                                    'fem'  => '7',
                                                                                    '@'    => '8' }},
                                                          '@'    => '9' }}}}
@@ -303,7 +303,7 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            { 'verbform' => { 'trans' => '-',
+            { 'verbform' => { 'conv' => '-',
                               '@'     => { 'mood' => { 'cnd' => { 'tense' => { 'past' => { 'voice' => { 'pass' => '8',
                                                                                                         '@'    => '7' }},
                                                                                '@'    => { 'voice' => { 'pass' => '4',
@@ -323,31 +323,31 @@ sub _create_atoms
         'surfeature' => 'nonfinite_verb_form',
         'decode_map' =>
         {
-            '1' => ['verbform' => 'fin', 'mood' => 'imp', 'voice' => 'act'],      # dělej
-            '2' => ['verbform' => 'fin', 'mood' => 'imp', 'voice' => 'pass'],     # buď dělán
-            '3' => ['verbform' => 'part', 'voice' => 'pass'],                     # dělán
-            '4' => ['verbform' => 'trans', 'tense' => 'pres', 'voice' => 'act'],  # dělaje
-            '5' => ['verbform' => 'trans', 'tense' => 'pres', 'voice' => 'pass'], # jsa dělán
-            '6' => ['verbform' => 'trans', 'tense' => 'past', 'voice' => 'act'],  # udělav
-            '7' => ['verbform' => 'trans', 'tense' => 'past', 'voice' => 'pass']  # byv udělán
+            '1' => ['verbform' => 'fin', 'mood' => 'imp', 'voice' => 'act'],     # dělej
+            '2' => ['verbform' => 'fin', 'mood' => 'imp', 'voice' => 'pass'],    # buď dělán
+            '3' => ['verbform' => 'part', 'voice' => 'pass'],                    # dělán
+            '4' => ['verbform' => 'conv', 'tense' => 'pres', 'voice' => 'act'],  # dělaje
+            '5' => ['verbform' => 'conv', 'tense' => 'pres', 'voice' => 'pass'], # jsa dělán
+            '6' => ['verbform' => 'conv', 'tense' => 'past', 'voice' => 'act'],  # udělav
+            '7' => ['verbform' => 'conv', 'tense' => 'past', 'voice' => 'pass']  # byv udělán
         },
         'encode_map' =>
 
             { 'mood' => { 'imp' => { 'voice' => { 'pass' => '2',
                                                   '@'    => '1' }},
-                          '@'   => { 'verbform' => { 'trans' => { 'tense' => { 'past' => { 'voice' => { 'pass' => '7',
-                                                                                                        '@'    => '6' }},
-                                                                               '@'    => { 'voice' => { 'pass' => '5',
-                                                                                                        '@'    => '4' }}}},
+                          '@'   => { 'verbform' => { 'conv' => { 'tense' => { 'past' => { 'voice' => { 'pass' => '7',
+                                                                                                       '@'    => '6' }},
+                                                                              '@'    => { 'voice' => { 'pass' => '5',
+                                                                                                       '@'    => '4' }}}},
                                                      'part'  => { 'voice' => { 'pass' => '3',
                                                                                '@'    => '-' }},
                                                      '@'     => '-' }}}}
     );
-    # NEGATIVENESS ####################
-    $atoms{negativeness} = $self->create_simple_atom
+    # POLARITY ####################
+    $atoms{polarity} = $self->create_simple_atom
     (
         'tagset' => 'cs::pmk',
-        'intfeature' => 'negativeness',
+        'intfeature' => 'polarity',
         'simple_decode_map' =>
         {
             '1' => 'pos',
@@ -1796,7 +1796,7 @@ sub _create_feature_map
         '4' => ['pos', 'numeral_type', 'valency4', 'gender', 'number', 'case', 'counted_case', 'function4'],
         # sloveso = verb
         # 2. vid 3. valence subjektová 4. valence 5. osoba/číslo 6. způsob/čas/slovesný rod 7. imper./neurč. tvary 8! víceslovnost a rezultativnost 9. jmenný rod 10! zápor 11! styl
-        '5' => ['pos', 'aspect', 'valency5', 'valency5', 'person_number', 'mood_tense_voice', 'nonfinite_verb_form', 'multiwordness_and_resultativity', 'participle_gender_number', 'negativeness'],
+        '5' => ['pos', 'aspect', 'valency5', 'valency5', 'person_number', 'mood_tense_voice', 'nonfinite_verb_form', 'multiwordness_and_resultativity', 'participle_gender_number', 'polarity'],
         # adverbium = adverb
         # 2! druh 3. třída 4. valence/funkce 5. stupeň 6! styl
         '6' => ['pos', 'adverb_type', 'adverb_class', 'valency6', 'degree'],

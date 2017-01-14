@@ -1,5 +1,5 @@
 # ABSTRACT: Common code for drivers of tagsets of the Multext-EAST project.
-# Copyright © 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::Multext;
 use strict;
@@ -218,7 +218,7 @@ sub _create_atoms
             # many (except of "sám" and "samý" are classified as totality pronouns in other tagsets)
             'g' => ['prontype' => 'tot'],
             # definite article [ro]
-            'f' => ['definiteness' => 'def']
+            'f' => ['definite' => 'def']
         },
         'encode_map' =>
         {
@@ -232,7 +232,7 @@ sub _create_atoms
                                                                                 'rel' => 'r',
                                                                                 'neg' => 'z',
                                                                                 'tot' => 'g',
-                                                                                '@'   => { 'definiteness' => { 'def' => 'f',
+                                                                                '@'   => { 'definite' => { 'def' => 'f',
                                                                                                                '@'   => 'p' }}}}}}}
         }
     );
@@ -377,10 +377,10 @@ sub _create_atoms
         },
         'encode_default' => '-'
     );
-    # ANIMATENESS ####################
-    $atoms{animateness} = $self->create_simple_atom
+    # ANIMACY ####################
+    $atoms{animacy} = $self->create_simple_atom
     (
-        'intfeature' => 'animateness',
+        'intfeature' => 'animacy',
         'simple_decode_map' =>
         {
             'y' => 'anim',
@@ -425,9 +425,9 @@ sub _create_atoms
     # DEFINITENESS ####################
     # Definiteness is defined only for adjectives in Croatian.
     # It distinguishes long and short forms of Slavic adjectives. In Czech, the "indefinite" form would be "jmenný tvar" (nominal form, as opposed to the long, pronominal form).
-    $atoms{definiteness} = $self->create_simple_atom
+    $atoms{definite} = $self->create_simple_atom
     (
-        'intfeature' => 'definiteness',
+        'intfeature' => 'definite',
         'simple_decode_map' =>
         {
             'y' => 'def', # glavni, bivši, novi, prvi, turski
@@ -638,7 +638,7 @@ sub _create_atoms
             's' => ['verbform' => 'fin', 'mood' => 'sub'],
             'n' => ['verbform' => 'inf'],
             'p' => ['verbform' => 'part'],
-            't' => ['verbform' => 'trans'],
+            't' => ['verbform' => 'conv'],
             'g' => ['verbform' => 'ger']
         },
         'encode_map' =>
@@ -647,10 +647,10 @@ sub _create_atoms
                           'cnd' => 'c',
                           'sub' => 's',
                           'ind' => 'i',
-                          '@'   => { 'verbform' => { 'part'  => 'p',
-                                                     'trans' => 't',
-                                                     'ger'   => 'g',
-                                                     '@'     => 'n' }}}}
+                          '@'   => { 'verbform' => { 'part' => 'p',
+                                                     'conv' => 't',
+                                                     'ger'  => 'g',
+                                                     '@'    => 'n' }}}}
     );
     # ASPECT ####################
     $atoms{aspect} = $self->create_simple_atom
@@ -689,10 +689,10 @@ sub _create_atoms
         },
         'encode_default' => '-'
     );
-    # NEGATIVENESS ####################
-    $atoms{negativeness} = $self->create_simple_atom
+    # POLARITY ####################
+    $atoms{polarity} = $self->create_simple_atom
     (
-        'intfeature' => 'negativeness',
+        'intfeature' => 'polarity',
         'simple_decode_map' =>
         {
             'y' => 'neg',
@@ -702,8 +702,8 @@ sub _create_atoms
     );
     # ADVERB TYPE ####################
     # Croatian distinguishes participial adverbs (or adverbial participles).
-    # In Czech, the same category is classified as verbs (verbform = transgressive).
-    # Note that the current solution does not convert Czech transgressives to Croatian participial adverbs or vice versa.
+    # In Czech, the same category is classified as verbs (verbform = converb/transgressive).
+    # Note that the current solution does not convert Czech converbs to Croatian participial adverbs or vice versa.
     $atoms{adverb_type} = $self->create_atom
     (
         'surfeature' => 'adverb_type',
@@ -712,9 +712,9 @@ sub _create_atoms
             # general adverb
             # examples: također, međutim, još, samo, kada
             'g' => [],
-            # participial adverb (= adverbial participle = transgressive in Czech!)
+            # participial adverb (= adverbial participle = converb in Czech!)
             # examples: uključujući, ističući, govoreći, dodajući, budući
-            'r' => ['verbform' => 'trans'],
+            'r' => ['verbform' => 'conv'],
             # interrogative or relative adverb
             # [ro] examples: când (when), cum (how), cât (how much), unde (where)
             'w' => ['prontype' => 'int|rel'],
@@ -733,14 +733,14 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            { 'verbform' => { 'trans' => 'r',
-                              'part'  => 'r',
-                              '@'     => { 'prontype' => { 'int' => 'w',
-                                                           'rel' => 'w',
-                                                           'neg' => 'z',
-                                                           '@'   => { 'other/advtype' => { 'portmanteau' => 'c',
-                                                                                           'particle'    => 'p',
-                                                                                           '@'           => 'g' }}}}}}
+            { 'verbform' => { 'conv' => 'r',
+                              'part' => 'r',
+                              '@'    => { 'prontype' => { 'int' => 'w',
+                                                          'rel' => 'w',
+                                                          'neg' => 'z',
+                                                          '@'   => { 'other/advtype' => { 'portmanteau' => 'c',
+                                                                                          'particle'    => 'p',
+                                                                                          '@'           => 'g' }}}}}}
     );
     # ADPOSITION TYPE ####################
     # Czech has only prepositions, no postpositions or circumpositions.
@@ -782,10 +782,10 @@ sub _create_atoms
         {
             # affirmative particle
             # examples: da
-            'r' => ['negativeness' => 'pos'],
+            'r' => ['polarity' => 'pos'],
             # negative particle
             # examples: ne
-            'z' => ['negativeness' => 'neg'],
+            'z' => ['polarity' => 'neg'],
             # interrogative particle
             # examples: li, zar
             'q' => ['prontype' => 'int'],
@@ -804,14 +804,14 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            { 'negativeness' => { 'pos' => 'r',
-                                  'neg' => 'z',
-                                  '@'   => { 'prontype' => { 'int' => 'q',
-                                                             '@'   => { 'parttype' => { 'mod' => 'o',
-                                                                                        'inf' => 'n',
-                                                                                        '@'   => { 'mood' => { 'sub' => 's',
-                                                                                                               '@'   => { 'tense' => { 'fut' => 'f',
-                                                                                                                                       '@'   => '-' }}}}}}}}}}
+            { 'polarity' => { 'pos' => 'r',
+                              'neg' => 'z',
+                              '@'   => { 'prontype' => { 'int' => 'q',
+                                                         '@'   => { 'parttype' => { 'mod' => 'o',
+                                                                                    'inf' => 'n',
+                                                                                    '@'   => { 'mood' => { 'sub' => 's',
+                                                                                                           '@'   => { 'tense' => { 'fut' => 'f',
+                                                                                                                                   '@'   => '-' }}}}}}}}}}
     );
     # RESIDUAL TYPE ####################
     $atoms{restype} = $self->create_atom
@@ -962,7 +962,7 @@ sub encode
       my $self = shift;
       my %features =
       (
-          'N' => ['pos', 'nountype', 'gender', 'number', 'case', 'animateness'],
+          'N' => ['pos', 'nountype', 'gender', 'number', 'case', 'animacy'],
           ...
       );
       return \%features;

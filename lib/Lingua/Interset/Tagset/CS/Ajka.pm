@@ -3,7 +3,7 @@
 # For more on Ajka, see http://nlp.fi.muni.cz/projekty/ajka/ajkacz.htm
 # For more on the tagset, see http://nlp.fi.muni.cz/projekty/ajka/tags.pdf
 # For more on versions 1.0 and 2.0, see http://raslan2011.nlp-consulting.net/program/paper05.pdf?attredirects=0
-# Copyright © 2009, 2014 Petr Pořízka, Markus Schäfer, Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2009, 2014, 2017 Petr Pořízka, Markus Schäfer, Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::CS::Ajka;
 use strict;
@@ -323,8 +323,8 @@ sub _create_atoms
         'surfeature' => 'gender',
         'decode_map' =>
         {
-            'gM' => ['gender' => 'masc', 'animateness' => 'anim'],
-            'gI' => ['gender' => 'masc', 'animateness' => 'inan'],
+            'gM' => ['gender' => 'masc', 'animacy' => 'anim'],
+            'gI' => ['gender' => 'masc', 'animacy' => 'inan'],
             'gF' => ['gender' => 'fem'],
             'gN' => ['gender' => 'neut'],
             # Special value for common forms of surnames that denote all members of a family, e.g. "Novákovi" = "the Nováks", "the Novák family".
@@ -333,8 +333,8 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            { 'gender' => { 'masc' => { 'animateness' => { 'inan' => 'gI',
-                                                           '@'    => 'gM' }},
+            { 'gender' => { 'masc' => { 'animacy' => { 'inan' => 'gI',
+                                                       '@'    => 'gM' }},
                             'fem'  => 'gF',
                             'neut' => 'gN',
                             'com'  => 'gR' }}
@@ -355,22 +355,22 @@ sub _create_atoms
             # Examples: Novákových
             'hR' => ['possgender' => 'com'],
             # For pronouns "kdo", "co", and their derivatives, there are two other values of the 'h' feature that have nothing to do with possessivity!
-            # We will only set animateness and not gender although we know that "kdo" is grammatically masculine animate and
+            # We will only set animacy and not gender although we know that "kdo" is grammatically masculine animate and
             # "co" is grammatically neuter. However, it is very difficult to figure out under which circumstances the encoded tag should contain hP or hT,
             # and empty value of gender turns out to be the key clue. Without it, we would either not be able to preserve encode(decode(x))=x, or we would
             # have to use the 'other' feature but then without it (e.g. for structures coming from other tagsets) we would produce unknown tags even in strict encoding.
             # Person; examples: kdo, někdo, kdokoli, nikdo
-            'hP' => ['animateness' => 'anim'],
+            'hP' => ['animacy' => 'anim'],
             # Thing; examples: co, něco, cokoli, nic
-            'hT' => ['animateness' => 'inan']
+            'hT' => ['animacy' => 'inan']
         },
         'encode_map' =>
 
             { 'possgender' => { 'masc' => 'hM',
                                 'fem'  => 'hF',
                                 'com'  => 'hR',
-                                '@'    => { 'pos' => { 'noun' => { 'prontype' => { 'int|rel|ind|neg' => { 'number' => { 'sing' => { 'gender' => { '' => { 'animateness' => { 'anim' => 'hP',
-                                                                                                                                                                             'inan' => 'hT' }}}}}}}}}}}}
+                                '@'    => { 'pos' => { 'noun' => { 'prontype' => { 'int|rel|ind|neg' => { 'number' => { 'sing' => { 'gender' => { '' => { 'animacy' => { 'anim' => 'hP',
+                                                                                                                                                                         'inan' => 'hT' }}}}}}}}}}}}
     );
     # NUMBER ####################
     $atoms{n} = $self->create_atom
@@ -407,10 +407,10 @@ sub _create_atoms
             'c7' => 'ins'
         }
     );
-    # NEGATIVENESS ####################
+    # POLARITY ####################
     $atoms{e} = $self->create_simple_atom
     (
-        'intfeature' => 'negativeness',
+        'intfeature' => 'polarity',
         'simple_decode_map' =>
         {
             'eA' => 'pos',
@@ -470,8 +470,8 @@ sub _create_atoms
             'mC' => ['verbform' => 'fin', 'mood' => 'cnd'],
             'mA' => ['verbform' => 'part', 'voice' => 'act', 'tense' => 'past'],
             'mN' => ['verbform' => 'part', 'voice' => 'pass'],
-            'mS' => ['verbform' => 'trans', 'tense' => 'pres'],
-            'mD' => ['verbform' => 'trans', 'tense' => 'past']
+            'mS' => ['verbform' => 'conv', 'tense' => 'pres'],
+            'mD' => ['verbform' => 'conv', 'tense' => 'past']
         },
         'encode_map' =>
 
@@ -479,11 +479,11 @@ sub _create_atoms
                           'cnd' => 'mC',
                           'ind' => { 'tense' => { 'fut' => 'mB',
                                                   '@'   => 'mI' }},
-                          '@'   => { 'verbform' => { 'part'  => { 'voice' => { 'pass' => 'mN',
-                                                                               '@'    => 'mA' }},
-                                                     'trans' => { 'tense' => { 'past' => 'mD',
-                                                                               '@'    => 'mS' }},
-                                                     'inf'   => 'mF' }}}}
+                          '@'   => { 'verbform' => { 'part' => { 'voice' => { 'pass' => 'mN',
+                                                                              '@'    => 'mA' }},
+                                                     'conv' => { 'tense' => { 'past' => 'mD',
+                                                                              '@'    => 'mS' }},
+                                                     'inf'  => 'mF' }}}}
     );
     # CLITIC ####################
     # This feature is documented but it does not occur in the output of the current version of Majka.

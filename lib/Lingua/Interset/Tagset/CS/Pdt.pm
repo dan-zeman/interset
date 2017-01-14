@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the tagset of the Prague Dependency Treebank.
-# Copyright © 2006-2009, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2006-2009, 2014, 2016 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::CS::Pdt;
 use strict;
@@ -230,12 +230,12 @@ sub _create_atoms
             # verb passive participle
             # examples: dělán dělána děláno děláni dělány udělán udělána
             'Vs' => ['pos' => 'verb', 'verbform' => 'part', 'voice' => 'pass'],
-            # verb present transgressive
+            # verb present transgressive (converb, gerund, přechodník)
             # examples: nesa nesouc nesouce dělaje dělajíc dělajíce
-            'Ve' => ['pos' => 'verb', 'verbform' => 'trans', 'tense' => 'pres', 'aspect' => 'imp', 'voice' => 'act'],
-            # verb past transgressive
+            'Ve' => ['pos' => 'verb', 'verbform' => 'conv', 'tense' => 'pres', 'aspect' => 'imp', 'voice' => 'act'],
+            # verb past transgressive (converb, gerund, přechodník)
             # examples: udělav udělavši udělavše přišed přišedši přišedše
-            'Vm' => ['pos' => 'verb', 'verbform' => 'trans', 'tense' => 'past', 'aspect' => 'perf', 'voice' => 'act'],
+            'Vm' => ['pos' => 'verb', 'verbform' => 'conv', 'tense' => 'past', 'aspect' => 'perf', 'voice' => 'act'],
             # verb abbreviation
             # examples: srov.
             'V~' => ['pos' => 'verb', 'abbr' => 'abbr'],
@@ -412,7 +412,7 @@ sub _create_atoms
 
             # Do not encode tense of verbal adjectives and transgressives. Otherwise encode(decode(x)) will not equal to x.
             { 'pos' => { 'adj' => '',
-                         '@'   => { 'verbform' => { 'trans' => '',
+                         '@'   => { 'verbform' => { 'conv' => '',
                                     '@'     => { 'tense' => { 'past|pres' => 'H',
                                                               'past' => 'R',
                                                               'fut'  => 'F',
@@ -458,7 +458,7 @@ sub _create_atoms
 
             # Do not encode voice of verbal adjectives and transgressives. Otherwise encode(decode(x)) will not equal to x.
             { 'pos' => { 'adj' => '',
-                         '@'   => { 'verbform' => { 'trans' => '',
+                         '@'   => { 'verbform' => { 'conv' => '',
                                                     '@'     => { 'voice' => { 'act'  => 'A',
                                                                               'pass' => 'P' }}}}}}
     );

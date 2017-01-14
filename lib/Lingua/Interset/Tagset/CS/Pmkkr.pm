@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the shortened Czech tagset of the Prague Spoken Corpus (Pražský mluvený korpus).
-# Copyright © 2009, 2010, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2009, 2010, 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::CS::Pmkkr;
 use strict;
@@ -38,7 +38,7 @@ sub _create_feature_map
         '4' => ['pos', 'numeral_type', undef, 'style'],
         # sloveso = verb
         # 2. vid 3. valence subjektová 4. valence 5. osoba/číslo 6. způsob/čas/slovesný rod 7. imper./neurč. tvary 8! víceslovnost a rezultativnost 9. jmenný rod 10! zápor 11! styl
-        '5' => ['pos', 'multiwordness_and_resultativity', 'negativeness', 'style'],
+        '5' => ['pos', 'multiwordness_and_resultativity', 'polarity', 'style'],
         # adverbium = adverb
         # 2! druh 3. třída 4. valence/funkce 5. stupeň 6! styl
         '6' => ['pos', 'adverb_type', undef, 'style'],

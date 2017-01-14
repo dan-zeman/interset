@@ -37,14 +37,14 @@ sub _create_feature_map
     my $self = shift;
     my %features =
     (
-        'N' => ['pos', 'nountype', 'gender', 'number', 'case', undef, undef, 'animateness'], # definiteness and clitic not used in Czech
-        'A' => ['pos', 'adjtype', 'degree', 'gender', 'number', 'case', undef, undef, 'animateness', 'adjform'], # definiteness and clitic not used in Czech
-        'P' => ['pos', 'prontype', 'person', 'gender', 'number', 'case', 'possnumber', 'possgender', 'clitic', 'referent_type', 'syntactic_type', undef, 'animateness', 'clitic_s'],
-        'M' => ['pos', 'numtype', 'gender', 'number', 'case', 'numform', undef, undef, 'numclass', 'animateness'],
+        'N' => ['pos', 'nountype', 'gender', 'number', 'case', undef, undef, 'animacy'], # definiteness and clitic not used in Czech
+        'A' => ['pos', 'adjtype', 'degree', 'gender', 'number', 'case', undef, undef, 'animacy', 'adjform'], # definiteness and clitic not used in Czech
+        'P' => ['pos', 'prontype', 'person', 'gender', 'number', 'case', 'possnumber', 'possgender', 'clitic', 'referent_type', 'syntactic_type', undef, 'animacy', 'clitic_s'],
+        'M' => ['pos', 'numtype', 'gender', 'number', 'case', 'numform', undef, undef, 'numclass', 'animacy'],
         # The documentation lists only 11 features (including the initial 'V') for Czech verbs.
         # However, the data contains verb tags of up to 14 characters.
         # Most likely, the designers forgot to skip the empty values of definiteness, clitic and case.
-        'V' => ['pos', 'verbtype', 'verbform', 'tense', 'person', 'number', 'gender', 'voice', 'negativeness', undef, undef, undef, 'animateness', 'clitic_s'],
+        'V' => ['pos', 'verbtype', 'verbform', 'tense', 'person', 'number', 'gender', 'voice', 'polarity', undef, undef, undef, 'animacy', 'clitic_s'],
         'R' => ['pos', 'adverb_type', 'degree'],
         'S' => ['pos', 'adpostype', 'adposition_formation', 'case'],
         'C' => ['pos', 'conjtype', undef, undef, undef, undef, 'number', 'person'] # undefined formation, coord type, sub type and clitic
