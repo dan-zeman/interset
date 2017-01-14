@@ -20,6 +20,7 @@ Features:
   da::conll
   de::smor
   el::conll
+  fo::setur
 * Feature 'negativeness' renamed to 'polarity'. Affected drivers:
   xx::multext
   ar::padt ar::conll ar::conll2007

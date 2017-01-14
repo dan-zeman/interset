@@ -3,7 +3,7 @@
 # The corpus where this tagset is used can be downloaded from http://stava.fo/ ("Markað tekstasavn").
 # The corpus originates at Føroyamálsdeildin (Department of the Faroese Language and Literature), Fróðskaparsetur Føroya (University of Faroe Islands),
 # although I was not able to find it directly at their website (http://setur.fo/en/language-and-literature/department/).
-# Copyright © 2016 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2016, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::FO::Setur;
 use strict;
@@ -132,7 +132,7 @@ sub _create_atoms
     # DEFINITENESS ####################
     $atoms{definiteness} = $self->create_simple_atom
     (
-        'intfeature' => 'definiteness',
+        'intfeature' => 'definite',
         'simple_decode_map' =>
         {
             # definite (i.e. with suffixed definite article)
