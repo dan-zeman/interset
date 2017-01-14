@@ -15,6 +15,7 @@ Features:
   xx::multext
   ar::padt ar::conll ar::conll2007
   bg::conll
+  da::conll
 * Feature 'negativeness' renamed to 'polarity'. Affected drivers:
   xx::multext
   ar::padt ar::conll ar::conll2007
@@ -26,6 +27,7 @@ Features:
   'ergpoliteness' and 'datpoliteness' renamed similarly. Affected drivers:
   ca::conll2009
   cs::pmk
+  da::conll
 * Renamed and new feature values:
   * abspolite=infm instead of abspolite=inf
   * abspolite=form instead of abspolite=pol

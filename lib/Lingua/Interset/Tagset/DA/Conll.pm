@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the Danish tagset of the CoNLL 2006 Shared Task (derived from the Danish Parole tagset).
-# Copyright © 2006-2009, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2006-2009, 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::DA::Conll;
 use strict;
@@ -171,7 +171,7 @@ sub _create_atoms
     # For some reason there are two features encoding definiteness: "def" and "definiteness". Their value ranges are identical.
     $atoms{definiteness} = $self->create_simple_atom
     (
-        'intfeature' => 'definiteness',
+        'intfeature' => 'definite',
         'simple_decode_map' =>
         {
             'def'       => 'def',
@@ -224,16 +224,16 @@ sub _create_atoms
         'surfeature' => 'register',
         'decode_map' =>
         {
-            'polite'   => ['politeness' => 'pol'],
-            'formal'   => ['style' => 'form'],
-            'obsolete' => ['style' => 'arch']
+            'polite'   => ['polite' => 'form'],
+            'formal'   => ['style'  => 'form'],
+            'obsolete' => ['style'  => 'arch']
         },
         'encode_map' =>
         {
-            'politeness' => { 'pol' => 'polite',
-                              '@'   => { 'style' => { 'form' => 'formal',
-                                                      'arch' => 'obsolete',
-                                                      '@'    => 'unmarked' }}}
+            'polite' => { 'form' => 'polite',
+                          '@'    => { 'style' => { 'form' => 'formal',
+                                                   'arch' => 'obsolete',
+                                                   '@'    => 'unmarked' }}}
         }
     );
     # PERSON ####################
@@ -277,12 +277,12 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'verbform' => { 'ger'   => 'gerund',
-                            'part'  => 'partic',
-                            'trans' => 'partic',
-                            'inf'   => 'infin',
-                            '@'     => { 'mood' => { 'imp' => 'imper',
-                                                     'ind' => 'indic' }}}
+            'verbform' => { 'ger'  => 'gerund',
+                            'part' => 'partic',
+                            'conv' => 'partic',
+                            'inf'  => 'infin',
+                            '@'    => { 'mood' => { 'imp' => 'imper',
+                                                    'ind' => 'indic' }}}
         }
     );
     # TENSE ####################
@@ -328,18 +328,18 @@ sub _create_atoms
             'adject'    => ['verbform' => 'part'],
             # Adverbial participle.
             # Examples: lysende, alarmerende
-            'adverb'    => ['verbform' => 'trans'],
+            'adverb'    => ['verbform' => 'conv'],
             # Participle that cannot be clearly distinguished as adjectival or adverbial.
             # Examples: v&ae;ret, blevet, f&arin;et, gjort, haft; kommende, manglende, f&osla;lgende, administrerende, overlevende
-            'adject/adverb/unmarked' => ['verbform' => 'part|trans']
+            'adject/adverb/unmarked' => ['verbform' => 'part|conv']
         },
         'encode_map' =>
         {
             'pos' => { 'adj'  => { 'variant' => { 'short' => 'adverbial',
                                                   'long'  => 'unmarked' }},
-                       'verb' => { 'verbform' => { 'part|trans' => 'adject/adverb/unmarked',
-                                                   'trans'      => 'adverb',
-                                                   'part'       => 'adject' }}}
+                       'verb' => { 'verbform' => { 'part|conv' => 'adject/adverb/unmarked',
+                                                   'conv'      => 'adverb',
+                                                   'part'      => 'adject' }}}
         }
     );
     return \%atoms;
@@ -386,7 +386,7 @@ sub _create_features_pos
         'V.indic'  => ['mood', 'tense', 'voice'],
         'V.imper'  => ['mood'],
         'V.partic' => ['mood', 'tense', 'number', 'gender', 'definiteness', 'transcat', 'case'],
-        'V.trans'  => ['mood', 'tense', 'transcat'],
+        'V.conv'   => ['mood', 'tense', 'transcat'],
         'V.gerund' => ['mood', 'number', 'gender', 'definiteness', 'case']
     );
     return \%features;
@@ -430,7 +430,7 @@ sub encode
     if($fpos =~ m/^V[AE]$/)
     {
         my $verbform = $fs->verbform();
-        my $surface_mood = $verbform eq 'trans' ? 'trans' : $atoms->{mood}->encode($fs);
+        my $surface_mood = $verbform eq 'conv' ? 'conv' : $atoms->{mood}->encode($fs);
         $fpos = "V.$surface_mood";
     }
     elsif($fpos eq 'AN')
