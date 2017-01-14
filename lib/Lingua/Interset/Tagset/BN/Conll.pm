@@ -119,7 +119,7 @@ sub _create_atoms
             # negation
             # Example:
             # না (nā = not)
-            'NEG'  => ['pos' => 'part', 'prontype' => 'neg', 'negativeness' => 'neg'],
+            'NEG'  => ['pos' => 'part', 'prontype' => 'neg', 'polarity' => 'neg'],
             # postpositions
             # Examples:
             # সহ (saha = with)

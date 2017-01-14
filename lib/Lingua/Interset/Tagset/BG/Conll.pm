@@ -1,6 +1,6 @@
 # ABSTRACT: Driver for the Bulgarian tagset of the CoNLL 2006 Shared Task.
 # (Documentation at http://www.bultreebank.org/TechRep/BTB-TR03.pdf)
-# Copyright © 2007, 2009, 2011, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2007, 2009, 2011, 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # 4.4.2009: numtype and numvalue separated from subpos, new generic numerals
 # 5.4.2009: advtype separated from subpos
 
@@ -92,7 +92,7 @@ sub _create_atoms
             'Pr' => ['pos' => 'noun|adj|adv', 'prontype' => 'rel'],
             'Pc' => ['pos' => 'noun|adj|adv', 'prontype' => 'tot'], # "collective pronoun"
             'Pf' => ['pos' => 'noun|adj|adv', 'prontype' => 'ind'],
-            'Pn' => ['pos' => 'noun|adj|adv', 'prontype' => 'neg', 'negativeness' => 'neg'],
+            'Pn' => ['pos' => 'noun|adj|adv', 'prontype' => 'neg', 'polarity' => 'neg'],
             # numeral
             # subpos: Mc Mo Md My
             # Mc = cardinals
@@ -158,10 +158,10 @@ sub _create_atoms
             # Ta Te Tg Ti Tm Tn Tv Tx
             # Ta = affirmative particle
             # da = yes
-            'Ta' => ['pos' => 'part', 'parttype' => 'res', 'negativeness' => 'pos'],
+            'Ta' => ['pos' => 'part', 'parttype' => 'res', 'polarity' => 'pos'],
             # Tn = negative particle
             # ne = no
-            'Tn' => ['pos' => 'part', 'parttype' => 'res', 'negativeness' => 'neg'],
+            'Tn' => ['pos' => 'part', 'parttype' => 'res', 'polarity' => 'neg'],
             # Ti = interrogative particle
             # li = question particle
             'Ti' => ['pos' => 'part', 'prontype' => 'int'],
@@ -254,11 +254,11 @@ sub _create_atoms
                                                     'part' => { 'parttype' => { 'mod' => { 'other/subpos' => { 'verb' => 'Tv',
                                                                                                                '@'    => 'Tm' }},
                                                                                 'emp' => 'Te',
-                                                                                '@'   => { 'negativeness' => { 'pos' => 'Ta',
-                                                                                                               'neg' => 'Tn',
-                                                                                                               '@'   => { 'prontype' => { 'int' => 'Ti',
-                                                                                                                                          '@'   => { 'degree' => { 'sup' => 'Tg',
-                                                                                                                                                                   '@'   => 'Tx' }}}}}}}},
+                                                                                '@'   => { 'polarity' => { 'pos' => 'Ta',
+                                                                                                           'neg' => 'Tn',
+                                                                                                           '@'   => { 'prontype' => { 'int' => 'Ti',
+                                                                                                                                      '@'   => { 'degree' => { 'sup' => 'Tg',
+                                                                                                                                                               '@'   => 'Tx' }}}}}}}},
                                                     'int'  => 'I',
                                                     'punc' => 'Punct' }}}}
     );
@@ -306,21 +306,21 @@ sub _create_atoms
         'surfeature' => 'def',
         'decode_map' =>
         {
-            'd' => ['definiteness' => 'def'],
+            'd' => ['definite' => 'def'],
             # full definite article of masculines
             # We cannot use variant = long because it would collide with the form feature of pronouns.
-            'f' => ['definiteness' => 'def', 'other' => {'definiteness' => 'f'}],
+            'f' => ['definite' => 'def', 'other' => {'definiteness' => 'f'}],
             # short definite article of masculines
             # We cannot use variant = short because it would collide with the form feature of pronouns.
-            'h' => ['definiteness' => 'def', 'other' => {'definiteness' => 'h'}],
-            'i' => ['definiteness' => 'ind']
+            'h' => ['definite' => 'def', 'other' => {'definiteness' => 'h'}],
+            'i' => ['definite' => 'ind']
         },
         'encode_map' =>
 
-            { 'definiteness' => { 'def' => { 'other/definiteness' => { 'f' => 'f',
-                                                                       'h' => 'h',
-                                                                       '@' => 'd' }},
-                                  'ind' => 'i' }}
+            { 'definite' => { 'def' => { 'other/definiteness' => { 'f' => 'f',
+                                                                   'h' => 'h',
+                                                                   '@' => 'd' }},
+                              'ind' => 'i' }}
     );
     # FORM ####################
     $atoms{form} = $self->create_atom
@@ -522,7 +522,7 @@ sub _create_atoms
             'c' => 'part',
             # g = gerund: prevărtajki, demonstrirajki, stradajki, pišejki, otčitajki, izključaja
             # what bultreebank calls gerund is in fact adverbial participle (called present transgressive in Czech)
-            'g' => 'trans'
+            'g' => 'conv'
         }
     );
     # VOICE ####################

@@ -136,7 +136,7 @@ sub _create_atoms
             # types of adverbs
             ###!!! In theory, non-negative adverbs should have postype=general. In practice, there are only two occurrences of this feature
             ###!!! while all other adverbs have empty postype. Therefore I removed postype=general from the list of known tags.
-            'negative'      => ['negativeness' => 'neg'], # no; main POS is adverb; in other tagsets it could be negative particle
+            'negative'      => ['polarity' => 'neg'], # no; main POS is adverb; in other tagsets it could be negative particle
             # prepositions
             'preposition'   => ['adpostype' => 'prep'], # all prepositions (pos=s) have also postype=preposition; it should not occur with other parts of speech than "s"
             # types of conjunctions
@@ -175,7 +175,7 @@ sub _create_atoms
                                                     'preppron' => 'preposition' }},
                        'conj' => { 'conjtype' => { 'coor' => 'coordinating',
                                                    'sub'  => 'subordinating' }},
-                       '@'    => { 'negativeness' => { 'neg' => 'negative' }}}
+                       '@'    => { 'polarity' => { 'neg' => 'negative' }}}
         }
     );
     # POS FUNCTION ####################
@@ -248,11 +248,11 @@ sub _create_atoms
     # POLITENESS ####################
     $atoms->{polite} = $self->create_simple_atom
     (
-        'intfeature' => 'politeness',
+        'intfeature' => 'polite',
         'simple_decode_map' =>
         {
             # Used only for the two polite 2nd person pronouns, "vost&egra;" (sing) and "vost&egra;s" (plur).
-            'yes' => 'pol'
+            'yes' => 'form'
         }
     );
     # POSSESSOR NUMBER ####################
