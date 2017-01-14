@@ -1,6 +1,7 @@
 # ABSTRACT: Driver for the German tagset of SMOR (Stuttgart Morphology)
 # Modified by Lefteris Avramidis, based on original script from Dan Zeman <zeman@ufal.mff.cuni.cz>
 # Completed by Dan Zeman.
+# 2017: adapted to Universal Dependencies v2.
 
 package Lingua::Interset::Tagset::DE::Smor;
 use strict;
@@ -225,12 +226,12 @@ sub _create_atoms
             # response particle: bitte, doch, ja, nein, nö, schon
             'Ans' => ['parttype' => 'res'],
             # negative particle: nicht, net
-            'Neg' => ['negativeness' => 'neg']
+            'Neg' => ['polarity' => 'neg']
         },
         'encode_map' =>
         {
             'parttype' => { 'res' => 'Ans',
-                            '@'   => { 'negativeness' => { 'neg' => 'Neg' }}}
+                            '@'   => { 'polarity' => { 'neg' => 'Neg' }}}
         }
     );
     # PUNCTUATION TYPE ####################
@@ -301,7 +302,7 @@ sub _create_atoms
     # DEFINITHEIT / DEFINITENESS ####################
     $atoms{definiteness} = $self->create_simple_atom
     (
-        'intfeature' => 'definiteness',
+        'intfeature' => 'definite',
         'simple_decode_map' =>
         {
             'Def'   => 'def',

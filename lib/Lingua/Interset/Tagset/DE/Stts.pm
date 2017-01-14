@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the Stuttgart-Tübingen Tagset of German.
-# Copyright © 2008, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2008, 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::DE::Stts;
 use strict;
@@ -158,7 +158,7 @@ around BUILDARGS => sub
         'PTKZU'   => ['pos' => 'part', 'parttype' => 'inf'],
         # negation particle / Negationspartikel
         # "nicht"
-        'PTKNEG'  => ['pos' => 'part', 'negativeness' => 'neg'],
+        'PTKNEG'  => ['pos' => 'part', 'polarity' => 'neg'],
         # separated verb prefix / abgetrennter Verbzusatz
         # "[er hört] auf", "[er kommt] herbei"
         'PTKVZ'   => ['pos' => 'part', 'parttype' => 'vbp'],
@@ -237,8 +237,8 @@ around BUILDARGS => sub
                    'part' => { 'parttype' => { 'inf' => 'PTKZU',
                                                'vbp' => 'PTKVZ',
                                                'res' => 'PTKANT',
-                                               '@'   => { 'negativeness' => { 'neg' => 'PTKNEG',
-                                                                              '@'   => 'PTKA' }}}},
+                                               '@'   => { 'polarity' => { 'neg' => 'PTKNEG',
+                                                                          '@'   => 'PTKA' }}}},
                    'int'  => 'ITJ',
                    'punc' => { 'punctype' => { 'comm' => '$,',
                                                'peri' => '$.',
