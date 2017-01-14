@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the Greek tagset of the CoNLL 2007 Shared Task.
-# Copyright © 2011, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2011, 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # Copyright © 2011 Loganathan Ramasamy <ramasamy@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::EL::Conll;
@@ -69,9 +69,9 @@ sub _create_atoms
             'PnId'   => ['pos' => 'noun|adj', 'prontype' => 'ind|neg|tot'],
             # At = article
             # definite article: ο, η, το, οι, τα
-            'AtDf'   => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'def'],
+            'AtDf'   => ['pos' => 'adj', 'prontype' => 'art', 'definite' => 'def'],
             # indefinite article: ένας, μια, μία, ένα
-            'AtId'   => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'ind'],
+            'AtId'   => ['pos' => 'adj', 'prontype' => 'art', 'definite' => 'ind'],
             # Nm = numeral
             # cardinal numeral: ένας, δύο, εννέα, δίκτυό, πέντε
             'NmCd'   => ['pos' => 'num', 'numtype' => 'card'],
@@ -112,7 +112,7 @@ sub _create_atoms
             # future particle: θα
             'PtFu'   => ['pos' => 'part', 'tense' => 'fut'],
             # negative particle: δεν, όχι, μην, μη
-            'PtNg'   => ['pos' => 'part', 'negativeness' => 'neg'],
+            'PtNg'   => ['pos' => 'part', 'polarity' => 'neg'],
             # discourse particle: ας (let), άραγε (I wonder)
             'PtOt'   => ['pos' => 'part'],
             # infinitive? particle: να (to), ν
@@ -149,8 +149,8 @@ sub _create_atoms
                                                                                '@'    => 'Aj' }},
                                                      'prs' => { 'poss' => { 'poss' => 'PnPo',
                                                                             '@'    => 'PnPe' }},
-                                                     'art' => { 'definiteness' => { 'def' => 'AtDf',
-                                                                                    '@'   => 'AtId' }},
+                                                     'art' => { 'definite' => { 'def' => 'AtDf',
+                                                                                '@'   => 'AtId' }},
                                                      'dem' => 'PnDm',
                                                      'int|rel' => 'PnRi',
                                                      'int' => 'PnIr',
@@ -172,8 +172,8 @@ sub _create_atoms
                                                      '@'   => 'CjCo' }},
                          'part' => { 'parttype' => { 'inf' => 'PtSj',
                                                      '@'   => { 'tense' => { 'fut' => 'PtFu',
-                                                                             '@'   => { 'negativeness' => { 'neg' => 'PtNg',
-                                                                                                            '@'   => 'PtOt' }}}}}},
+                                                                             '@'   => { 'polarity' => { 'neg' => 'PtNg',
+                                                                                                        '@'   => 'PtOt' }}}}}},
                          'punc' => 'PUNCT',
                          '@'    => { 'abbr' => { 'abbr' => 'RgAbXx',
                                                  '@'    => { 'foreign' => { 'fscript' => 'RgFwOr',
