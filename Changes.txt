@@ -12,6 +12,7 @@ Features:
   xx::multext
   cs::pdt
   eu::conll
+  fa::conll
 * Feature 'definiteness' renamed to 'definite'. Affected drivers:
   xx::multext
   ar::padt ar::conll ar::conll2007

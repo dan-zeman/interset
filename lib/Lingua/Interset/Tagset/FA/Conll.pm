@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the tagset of the Persian Dependency Treebank (in the CoNLL-X format).
-# Copyright © 2012, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2012, 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::FA::Conll;
 use strict;
@@ -69,8 +69,8 @@ sub _create_atoms
             # coarse IDEN
             "IDEN\tIDEN"  => ['pos' => 'noun', 'other' => {'nountype' => 'title'}], # imám, dktr, šhíd, síd, áytalláh (titles used with personal names)
             # coarse N: noun
-            "N\tANM"      => ['pos' => 'noun', 'animateness' => 'anim'], # xdá, ksí, ansán, xadáwand, nfr
-            "N\tIANM"     => ['pos' => 'noun', 'animateness' => 'inan'], # sál, kár, írán, rúz, dst
+            "N\tANM"      => ['pos' => 'noun', 'animacy' => 'anim'], # xdá, ksí, ansán, xadáwand, nfr
+            "N\tIANM"     => ['pos' => 'noun', 'animacy' => 'inan'], # sál, kár, írán, rúz, dst
             # coarse PART: particle
             "PART\tPART"  => ['pos' => 'part'], # áyá, ke, mgr, rá, dígr
             # coarse POSNUM: number following a noun
@@ -126,8 +126,8 @@ sub _create_atoms
                                                    'dem' => "PR\tDEMON",
                                                    'int' => "PR\tINTG",
                                                    '@'   => { 'other/nountype' => { 'title' => "IDEN\tIDEN",
-                                                                                    '@'     => { 'animateness' => { 'anim' => "N\tANM",
-                                                                                                                    '@'    => "N\tIANM" }}}}}},
+                                                                                    '@'     => { 'animacy' => { 'anim' => "N\tANM",
+                                                                                                                '@'    => "N\tIANM" }}}}}},
                        'adj'  => { 'prontype' => { 'dem' => "PREM\tDEMAJ",
                                                    'int' => "PREM\tQUAJ",
                                                    'exc' => "PREM\tEXAJ",
