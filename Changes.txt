@@ -18,6 +18,7 @@ Features:
   pl::ipipan
   ru::syntagrus
   sk::snk
+  ta::tamiltb
 * Feature 'definiteness' renamed to 'definite'. Affected drivers:
   xx::multext
   ar::padt ar::conll ar::conll2007
@@ -52,6 +53,7 @@ Features:
   pl::ipipan
   sk::snk
   sl::conll
+  ta::tamiltb
 * Feature 'politeness' renamed to 'polite'. Features 'abspoliteness',
   'ergpoliteness' and 'datpoliteness' renamed similarly. Affected drivers:
   ca::conll2009
@@ -62,6 +64,7 @@ Features:
   ja::conll
   nl::cgn
   pt::freeling
+  ta::tamiltb
 * Renamed and new feature values:
   * abspolite=infm instead of abspolite=inf
   * abspolite=form instead of abspolite=pol

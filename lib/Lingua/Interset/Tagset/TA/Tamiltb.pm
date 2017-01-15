@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the tagset of the (Prague) Tamil Dependency Treebank (TamilTB)
-# Copyright © 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # Copyright © 2011 Loganathan Ramasamy <ramasamy@ufal.mff.cuni.cz>
 # Documentation at http://ufal.mff.cuni.cz/~ramasamy/tamiltb/0.1/morph_annotation.html
 
@@ -298,20 +298,20 @@ sub _create_atoms
         'surfeature' => 'gender',
         'decode_map' =>
         {
-            'A' => ['gender' => 'com', 'animateness' => 'anim'],
-            'I' => ['gender' => 'com', 'animateness' => 'inan'],
+            'A' => ['gender' => 'com', 'animacy' => 'anim'],
+            'I' => ['gender' => 'com', 'animacy' => 'inan'],
             'F' => ['gender' => 'fem'],
             'M' => ['gender' => 'masc'],
             'N' => ['gender' => 'neut'],
-            'H' => ['gender' => 'com', 'politeness' => 'pol']
+            'H' => ['gender' => 'com', 'polite' => 'form']
         },
         'encode_map' =>
         {
             'gender' => { 'masc' => 'M',
                           'fem'  => 'F',
-                          'com'  => { 'politeness' => { 'pol' => 'H',
-                                                        '@'   => { 'animateness' => { 'inan' => 'I',
-                                                                                      '@'    => 'A' }}}},
+                          'com'  => { 'polite' => { 'form' => 'H',
+                                                    '@'   => { 'animacy' => { 'inan' => 'I',
+                                                                              '@'    => 'A' }}}},
                           'neut' => 'N' }
         }
     );
@@ -326,10 +326,10 @@ sub _create_atoms
             'P' => 'pass'
         }
     );
-    # 9. NEGATIVENESS ####################
-    $atoms{negativeness} = $self->create_simple_atom
+    # 9. POLARITY ####################
+    $atoms{polarity} = $self->create_simple_atom
     (
-        'intfeature' => 'negativeness',
+        'intfeature' => 'polarity',
         'simple_decode_map' =>
         {
             'A' => 'pos',
@@ -359,8 +359,8 @@ sub _create_features_pos
         'P'  => ['morphpos', 'gender', 'number', 'case', 'agglutination'],
         'S'  => ['morphpos', 'gender', 'number', 'case'],
         'T'  => ['conditionality'],
-        'V'  => ['verbform', 'aspect', 'number', 'person', 'negativeness'],
-        'VL' => ['verbform', 'aspect', 'number', 'person', 'gender', 'negativeness']
+        'V'  => ['verbform', 'aspect', 'number', 'person', 'polarity'],
+        'VL' => ['verbform', 'aspect', 'number', 'person', 'gender', 'polarity']
     );
     return \%features;
 }
@@ -386,7 +386,7 @@ sub decode
     $atoms->{number}->decode_and_merge_hard($chars[5], $fs);
     $atoms->{gender}->decode_and_merge_hard($chars[6], $fs);
     $atoms->{voice}->decode_and_merge_hard($chars[7], $fs);
-    $atoms->{negativeness}->decode_and_merge_hard($chars[8], $fs);
+    $atoms->{polarity}->decode_and_merge_hard($chars[8], $fs);
     return $fs;
 }
 
@@ -403,7 +403,7 @@ sub encode
     my $pos = $atoms->{pos}->encode($fs);
     my $tag = $pos.'-------';
     my @tag = split(//, $tag);
-    my @features = ('pos', 'subpos', 'case', 'tense', 'person', 'number', 'gender', 'voice', 'negativeness');
+    my @features = ('pos', 'subpos', 'case', 'tense', 'person', 'number', 'gender', 'voice', 'polarity');
     for(my $i = 2; $i<9; $i++)
     {
         my $atag = $atoms->{$features[$i]}->encode($fs);
