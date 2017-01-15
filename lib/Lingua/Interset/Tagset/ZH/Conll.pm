@@ -1,7 +1,7 @@
 # ABSTRACT: Driver for the Chinese tagset of the CoNLL 2006 & 2007 Shared Tasks (derived from the Academia Sinica Treebank).
 # Documentation in Chu-Ren Huang, Keh-Jiann Chen, Shin Lin (1997): Corpus on Web: Introducing the First Tagged and Balanced Chinese Corpus.
 # See also here: http://ckip.iis.sinica.edu.tw/CKIP/engversion/20corpus.htm
-# Copyright © 2007, 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2007, 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::ZH::Conll;
 use strict;
@@ -129,7 +129,7 @@ sub _create_atoms
             # N Nhc: 之 zhī = it, 前者 = the former, 後者 = the latter, 凡此種種 = all these, 兩者 = both
             'Nhaa' => ['pos' => 'noun', 'prontype' => 'prs'],
             'Nhab' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex'],
-            'Nhac' => ['pos' => 'noun', 'prontype' => 'prs', 'politeness' => 'pol'],
+            'Nhac' => ['pos' => 'noun', 'prontype' => 'prs', 'polite' => 'form'],
             'Nhb'  => ['pos' => 'noun', 'prontype' => 'int'],
             'Nhc'  => ['pos' => 'noun', 'prontype' => 'prn', 'gender' => 'neut'],
             # verbal noun
@@ -294,7 +294,7 @@ sub _create_atoms
             'Dbab' => ['pos' => 'adv', 'other' => {'subpos' => 'bab'}],
             'Dbb'  => ['pos' => 'adv', 'other' => {'subpos' => 'bb'}],
             'Dbc'  => ['pos' => 'adv', 'other' => {'subpos' => 'bc'}],
-            'Dc'   => ['pos' => 'adv', 'negativeness' => 'neg'],
+            'Dc'   => ['pos' => 'adv', 'polarity' => 'neg'],
             'Dd'   => ['pos' => 'adv', 'other' => {'subpos' => 'd'}],
             'Dfa'  => ['pos' => 'adv', 'other' => {'subpos' => 'fa'}],
             'Dfb'  => ['pos' => 'adv', 'other' => {'subpos' => 'fb'}],
@@ -515,8 +515,8 @@ sub _create_atoms
                                                                                                               'ddc'  => 'Nddc',
                                                                                                               '@'    => 'Ndaaa' }},
                                                                                '@'   => { 'prontype' => { 'prs' => { 'reflex' => { 'reflex' => 'Nhab',
-                                                                                                                                   '@'      => { 'politeness' => { 'pol' => 'Nhac',
-                                                                                                                                                                   '@'   => 'Nhaa' }}}},
+                                                                                                                                   '@'      => { 'polite' => { 'form' => 'Nhac',
+                                                                                                                                                               '@'    => 'Nhaa' }}}},
                                                                                                           'int' => 'Nhb',
                                                                                                           'prn' => 'Nhc',
                                                                                                           '@'   => { 'other/subpos' => { 'v2' => 'Nv2',
@@ -579,19 +579,19 @@ sub _create_atoms
                                                        '_2'  => 'V_2',
                                                        '@'   => 'VB11' }},
                        'adv'  => { 'prontype' => { 'int' => 'Dj',
-                                                   '@'   => { 'negativeness' => { 'neg' => 'Dc',
-                                                                                  '@'   => { 'other/subpos' => { 'ab'  => 'Dab',
-                                                                                                                 'baa' => 'Dbaa',
-                                                                                                                 'bab' => 'Dbab',
-                                                                                                                 'bb'  => 'Dbb',
-                                                                                                                 'bc'  => 'Dbc',
-                                                                                                                 'd'   => 'Dd',
-                                                                                                                 'fa'  => 'Dfa',
-                                                                                                                 'fb'  => 'Dfb',
-                                                                                                                 'g'   => 'Dg',
-                                                                                                                 'h'   => 'Dh',
-                                                                                                                 'k'   => 'Dk',
-                                                                                                                 '@'   => 'Daa' }}}}}},
+                                                   '@'   => { 'polarity' => { 'neg' => 'Dc',
+                                                                              '@'   => { 'other/subpos' => { 'ab'  => 'Dab',
+                                                                                                             'baa' => 'Dbaa',
+                                                                                                             'bab' => 'Dbab',
+                                                                                                             'bb'  => 'Dbb',
+                                                                                                             'bc'  => 'Dbc',
+                                                                                                             'd'   => 'Dd',
+                                                                                                             'fa'  => 'Dfa',
+                                                                                                             'fb'  => 'Dfb',
+                                                                                                             'g'   => 'Dg',
+                                                                                                             'h'   => 'Dh',
+                                                                                                             'k'   => 'Dk',
+                                                                                                             '@'   => 'Daa' }}}}}},
                        'adp'  => { 'adpostype' => { 'prep' => { 'other/subpos' => { 'P01' => 'P01',
                                                                                     'P02' => 'P02',
                                                                                     'P03' => 'P03',
@@ -734,7 +734,7 @@ sub _create_atoms
     # 回不來 huíbùlái = return+not+come = not return here
     $atoms{neg} = $self->create_simple_atom
     (
-        'intfeature' => 'negativeness',
+        'intfeature' => 'polarity',
         'simple_decode_map' =>
         {
             '+NEG' => 'neg'

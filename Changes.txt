@@ -55,6 +55,7 @@ Features:
   sl::conll
   ta::tamiltb
   tr::conll
+  zh::conll
 * Feature 'politeness' renamed to 'polite'. Features 'abspoliteness',
   'ergpoliteness' and 'datpoliteness' renamed similarly. Affected drivers:
   ca::conll2009
@@ -67,6 +68,7 @@ Features:
   pt::freeling
   ta::tamiltb
   ur::conll
+  zh::conll
 * Renamed and new feature values:
   * abspolite=infm instead of abspolite=inf
   * abspolite=form instead of abspolite=pol
