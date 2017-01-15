@@ -15,6 +15,7 @@ Features:
   fa::conll
   hsb::sorokin
   nl::cgn
+  pl::ipipan
 * Feature 'definiteness' renamed to 'definite'. Affected drivers:
   xx::multext
   ar::padt ar::conll ar::conll2007
@@ -42,6 +43,7 @@ Features:
   hu::conll
   ja::conll
   mt::mlss
+  pl::ipipan
 * Feature 'politeness' renamed to 'polite'. Features 'abspoliteness',
   'ergpoliteness' and 'datpoliteness' renamed similarly. Affected drivers:
   ca::conll2009

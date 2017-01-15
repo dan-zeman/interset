@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the tagset of the Korpus Języka Polskiego IPI PAN for Polish.
-# Copyright © 2009, 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2009, 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::PL::Ipipan;
 use strict;
@@ -84,13 +84,13 @@ sub _create_atoms
             # rozkaźnik = verb imperative (ładuj, krępuj, powiedz, trzymaj, oślep)
             'impt'    => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'imp'],
             # bezosobnik = verb passive participle, impersonate (odpowiedziano, urządzano, odmówiono, wykryto, napisano)
-            'imps'    => ['pos' => 'verb', 'verbform' => 'part', 'voice' => 'pass', 'number' => 'sing', 'gender' => 'neut', 'case' => 'nom', 'negativeness' => 'pos', 'other' => {'verbform' => 'imps'}],
+            'imps'    => ['pos' => 'verb', 'verbform' => 'part', 'voice' => 'pass', 'number' => 'sing', 'gender' => 'neut', 'case' => 'nom', 'polarity' => 'pos', 'other' => {'verbform' => 'imps'}],
             # bezokolicznik = verb infinitive (pracować, wytrzymać, pozwolić, sprężyć, pokazać)
             'inf'     => ['pos' => 'verb', 'verbform' => 'inf'],
             # im. przys. współczesny = transgressive present (posapując, wiedząc, zapraszając, wyjeżdżając, będąc)
-            'pcon'    => ['pos' => 'verb', 'verbform' => 'trans', 'tense' => 'pres'],
+            'pcon'    => ['pos' => 'verb', 'verbform' => 'conv', 'tense' => 'pres'],
             # im. przys. uprzedni = transgressive past (usłyszawszy, zostawiwszy, zrobiwszy, upewniwszy, włożywszy)
-            'pant'    => ['pos' => 'verb', 'verbform' => 'trans', 'tense' => 'past'],
+            'pant'    => ['pos' => 'verb', 'verbform' => 'conv', 'tense' => 'past'],
             # odsłownik = gerund (uparcie, ustąpieniu, wprowadzeniu, odcięciu, tłumaczenia)
             'ger'     => ['pos' => 'verb', 'verbform' => 'ger'],
             # im. przym. czynny = active present participle (mieszkającej, śpiącego, wzruszające, kuszącej, kusząca)
@@ -149,8 +149,8 @@ sub _create_atoms
                                                                                                                '@'   => { 'other/verbform' => { 'imps' => 'imps',
                                                                                                                                                 '@'    => 'ppas' }}}},
                                                                                      'ger'   => 'ger',
-                                                                                     'trans' => { 'tense' => { 'pres' => 'pcon',
-                                                                                                               '@'    => 'pant' }},
+                                                                                     'conv' => { 'tense' => { 'pres' => 'pcon',
+                                                                                                              '@'    => 'pant' }},
                                                                                      '@'     => 'pred' }}}},
                        'adv'  => 'adv',
                        'adp'  => 'prep',
@@ -171,17 +171,18 @@ sub _create_atoms
         'surfeature' => 'gender',
         'decode_map' =>
         {
-            'm1' => ['gender' => 'masc', 'animateness' => 'anim'],
-            'm2' => ['gender' => 'masc', 'animateness' => 'nhum'],
-            'm3' => ['gender' => 'masc', 'animateness' => 'inan'],
+            'm1' => ['gender' => 'masc', 'animacy' => 'hum'],
+            'm2' => ['gender' => 'masc', 'animacy' => 'nhum'],
+            'm3' => ['gender' => 'masc', 'animacy' => 'inan'],
             'f'  => ['gender' => 'fem'],
             'n'  => ['gender' => 'neut']
         },
         'encode_map' =>
         {
-            'gender' => { 'masc' => { 'animateness' => { 'anim' => 'm1',
-                                                         'nhum' => 'm2',
-                                                         '@'    => 'm3' }},
+            'gender' => { 'masc' => { 'animacy' => { 'anim' => 'm1',
+                                                     'hum'  => 'm1',
+                                                     'nhum' => 'm2',
+                                                     '@'    => 'm3' }},
                           'fem'  => 'f',
                           'neut' => 'n' }
         }
@@ -243,10 +244,10 @@ sub _create_atoms
             'perf'   => 'perf'
         }
     );
-    # ZANEGOWANIE / NEGATIVENESS ####################
-    $atoms{negativeness} = $self->create_simple_atom
+    # ZANEGOWANIE / POLARITY ####################
+    $atoms{polarity} = $self->create_simple_atom
     (
-        'intfeature' => 'negativeness',
+        'intfeature' => 'polarity',
         'simple_decode_map' =>
         {
             'aff' => 'pos',
@@ -371,7 +372,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('pos', 'gender', 'number', 'case', 'person', 'degree', 'aspect', 'negativeness', 'accentability', 'prepcase', 'accommodability', 'agglutination', 'vocalicity', 'brev');
+    my @features = ('pos', 'gender', 'number', 'case', 'person', 'degree', 'aspect', 'polarity', 'accentability', 'prepcase', 'accommodability', 'agglutination', 'vocalicity', 'brev');
     return \@features;
 }
 
@@ -418,15 +419,15 @@ sub _create_features_pos
         'bedzie'  => ['number', 'person', 'aspect'],
         'depr'    => ['number', 'case', 'gender'],
         'fin'     => ['number', 'person', 'aspect'],
-        'ger'     => ['number', 'case', 'gender', 'aspect', 'negativeness'],
+        'ger'     => ['number', 'case', 'gender', 'aspect', 'polarity'],
         'imps'    => ['aspect'],
         'impt'    => ['number', 'person', 'aspect'],
         'inf'     => ['aspect'],
         'num'     => ['number', 'case', 'gender', 'accommodability'],
-        'pact'    => ['number', 'case', 'gender', 'aspect', 'negativeness'],
+        'pact'    => ['number', 'case', 'gender', 'aspect', 'polarity'],
         'pant'    => ['aspect'],
         'pcon'    => ['aspect'],
-        'ppas'    => ['number', 'case', 'gender', 'aspect', 'negativeness'],
+        'ppas'    => ['number', 'case', 'gender', 'aspect', 'polarity'],
         'ppron12' => ['number', 'case', 'gender', 'person', 'accentability'],
         'ppron3'  => ['number', 'case', 'gender', 'person', 'accentability', 'prepcase'],
         'praet'   => ['number', 'gender', 'aspect', 'agglutination'],
