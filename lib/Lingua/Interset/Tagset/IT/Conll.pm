@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the Italian tagset of the CoNLL 2007 Shared Task (derived from the ISST, Italian Syntactic-Semantic Treebank).
-# Copyright © 2011, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2011, 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # Copyright © 2011 Loganathan Ramasamy <ramasamy@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::IT::Conll;
@@ -55,9 +55,9 @@ sub _create_atoms
             # AP = possessive determiner (suo, mio, nostro, proprio, tuo, vostro)
             'AP' => ['pos' => 'adj', 'prontype' => 'prs', 'poss' => 'poss'],
             # RD = definite article (il, lo, i, gli, la, le, l')
-            'RD' => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'def'],
+            'RD' => ['pos' => 'adj', 'prontype' => 'art', 'definite' => 'def'],
             # RI = indefinite article (un, uno, una, un')
-            'RI' => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'ind'],
+            'RI' => ['pos' => 'adj', 'prontype' => 'art', 'definite' => 'ind'],
             # PD = demonstrative pronoun (lo, quello, questo, ciò, stesso)
             'PD' => ['pos' => 'noun', 'prontype' => 'dem'],
             # PI = indefinite pronoun (uno, tutto, altro, nessuno, qualcuno)
@@ -116,8 +116,8 @@ sub _create_atoms
                                                    'neg' => 'PI' }},
                        'adj'  => { 'prontype' => { ''    => { 'numtype' => { 'ord' => 'NO',
                                                                              '@'   => 'A' }},
-                                                   'art' => { 'definiteness' => { 'def' => 'RD',
-                                                                                  '@'   => 'RI' }},
+                                                   'art' => { 'definite' => { 'def' => 'RD',
+                                                                              '@'   => 'RI' }},
                                                    'dem' => 'DD',
                                                    'ind' => 'DI',
                                                    'tot' => 'DI',
