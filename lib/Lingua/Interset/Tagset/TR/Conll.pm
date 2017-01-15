@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the Turkish tagset of the CoNLL 2007 Shared Task (derived from the METU Sabanci Treebank).
-# Copyright © 2011, 2013, 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2011, 2013, 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # Copyright © 2011 Loganathan Ramasamy <ramasamy@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::TR::Conll;
@@ -459,10 +459,10 @@ sub _create_atoms
             'Cond'  => 'cnd'
         }
     );
-    # NEGATIVENESS ####################
-    $atoms{negativeness} = $self->create_simple_atom
+    # POLARITY ####################
+    $atoms{polarity} = $self->create_simple_atom
     (
-        'intfeature' => 'negativeness',
+        'intfeature' => 'polarity',
         'simple_decode_map' =>
         {
             # Pos|Prog1|A3sg examples: diyor (is saying), geliyor (is coming), oluyor (is being), yapıyor (is doing), biliyor (is knowing)
@@ -532,7 +532,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('pos', 'gender', 'agreement', 'possagreement', 'case', 'pccase', 'degree', 'adjvtype', 'tense', 'aspect', 'comod', 'mood', 'negativeness', 'voice', 'copula');
+    my @features = ('pos', 'gender', 'agreement', 'possagreement', 'case', 'pccase', 'degree', 'adjvtype', 'tense', 'aspect', 'comod', 'mood', 'polarity', 'voice', 'copula');
     return \@features;
 }
 
@@ -565,8 +565,8 @@ sub _create_features_pos
         'Pron QuesP'     => ['agreement', 'possagreement', 'case'],
         'Pron ReflexP'   => ['agreement', 'possagreement', 'case'],
         'Ques Ques'      => ['tense', 'copula', 'agreement'],
-        'Verb Verb'      => ['comod', 'voice', 'negativeness', 'mood', 'aspect', 'tense', 'copula', 'agreement'],
-        'Verb Zero'      => ['negativeness', 'mood', 'tense', 'copula', 'agreement']
+        'Verb Verb'      => ['comod', 'voice', 'polarity', 'mood', 'aspect', 'tense', 'copula', 'agreement'],
+        'Verb Zero'      => ['polarity', 'mood', 'tense', 'copula', 'agreement']
     );
     return \%features;
 }

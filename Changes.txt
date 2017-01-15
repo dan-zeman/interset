@@ -54,6 +54,7 @@ Features:
   sk::snk
   sl::conll
   ta::tamiltb
+  tr::conll
 * Feature 'politeness' renamed to 'polite'. Features 'abspoliteness',
   'ergpoliteness' and 'datpoliteness' renamed similarly. Affected drivers:
   ca::conll2009
