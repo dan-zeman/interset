@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the Dutch tagset of the CoNLL 2006 Shared Task (derived from the Alpino tagset).
-# Copyright © 2011, 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2011, 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # Copyright © 2011 Zdeněk Žabokrtský <zabokrtsky@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::NL::Conll;
@@ -223,9 +223,9 @@ sub _create_atoms
         }
     );
     # DEFINITENESS ####################
-    $atoms{definiteness} = $self->create_simple_atom
+    $atoms{definite} = $self->create_simple_atom
     (
-        'intfeature' => 'definiteness',
+        'intfeature' => 'definite',
         'simple_decode_map' =>
         {
             'bep'   => 'def', # (het, der, de, des, den)
@@ -585,7 +585,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('pos', 'adjtype', 'degree', 'adjform', 'advtype', 'function', 'definiteness', 'gender', 'case', 'conjtype', 'sconjtype', 'nountype', 'number',
+    my @features = ('pos', 'adjtype', 'degree', 'adjform', 'advtype', 'function', 'definite', 'gender', 'case', 'conjtype', 'sconjtype', 'nountype', 'number',
                     'numtype', 'misctype', 'adpostype', 'prontype', 'pronoun', 'person', 'punctype', 'verbtype', 'verbform', 'subst');
     return \@features;
 }
@@ -603,11 +603,11 @@ sub _create_features_pos
     (
         'Adj'   => ['adjtype', 'degree', 'adjform'],
         'Adv'   => ['advtype', 'function', 'degree', 'adjform'],
-        'Art'   => ['definiteness', 'gender', 'case'],
+        'Art'   => ['definite', 'gender', 'case'],
         'Conj'  => ['conjtype', 'sconjtype'],
         'Misc'  => ['misctype'],
         'N'     => ['nountype', 'number', 'case'],
-        'Num'   => ['numtype', 'definiteness', 'prontype', 'adjtype', 'degree', 'adjform'],
+        'Num'   => ['numtype', 'definite', 'prontype', 'adjtype', 'degree', 'adjform'],
         'Prep'  => ['adpostype'],
         'Pron'  => ['prontype', 'person', 'number', 'case', 'adjtype', 'pronoun'],
         'Punc'  => ['punctype'],
@@ -646,7 +646,7 @@ sub decode
     if($tag =~ m/^Art.*onbep/)
     {
         $fs->set('prontype', 'art');
-        $fs->set('definiteness', 'ind');
+        $fs->set('definite', 'ind');
     }
     return $fs;
 }

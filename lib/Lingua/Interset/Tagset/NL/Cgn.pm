@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the CGN/Lassy/Alpino Dutch tagset.
-# Copyright © 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # Copyright © 2014 Ondřej Dušek <odusek@ufal.mff.cuni.cz>
 
 # tagset documentation at
@@ -235,9 +235,9 @@ sub _create_atoms
     # DEFINITENESS ####################
     # The tagset does not distinguish indefinite type of pronouns from indefinite definiteness of articles.
     # Both use the value 'onbep'. We have to distinguish them, so we change 'onbep' of articles to 'onb'.
-    $atoms{definiteness} = $self->create_simple_atom
+    $atoms{definite} = $self->create_simple_atom
     (
-        'intfeature' => 'definiteness',
+        'intfeature' => 'definite',
         'simple_decode_map' =>
         {
             'bep' => 'def', # (het, der, de, des, den)
@@ -268,7 +268,7 @@ sub _create_atoms
             # meervoud (mensen, kinderen, jaren, problemen, landen)
             'mv'    => ['number' => 'plur'],
             # finite verbs: polite form of 2nd and 3rd person singular and plural
-            'met-t' => ['politeness' => 'pol'],
+            'met-t' => ['polite' => 'form'],
             # underspecified number (e.g. with some pronouns)
             'getal' => []
         },
@@ -276,7 +276,7 @@ sub _create_atoms
         {
             'number' => { 'sing' => 'ev',
                           'plur' => 'mv',
-                          '@'    => { 'verbform' => { 'fin' => { 'politeness' => { 'pol' => 'met-t' }},
+                          '@'    => { 'verbform' => { 'fin' => { 'polite' => { 'form' => 'met-t' }},
                                                       '@'   => 'getal' }}}
         }
     );
@@ -389,10 +389,10 @@ sub _create_atoms
             # 2nd person vertrouwelijke vorm / informal form
             # singular: jij, je, jijzelf
             # plural: jullie
-            '2v' => ['person' => '2', 'politeness' => 'inf'],
+            '2v' => ['person' => '2', 'polite' => 'infm'],
             # 2nd person beleefdheidsvorm / polite form
             # singular or plural: u, uzelf
-            '2b' => ['person' => '2', 'politeness' => 'pol'],
+            '2b' => ['person' => '2', 'polite' => 'form'],
             # politeness-neutral form used in Vlaanderen
             # singular or plural: gij, ge, gijzelf
             '2'  => ['person' => '2'],
@@ -407,38 +407,38 @@ sub _create_atoms
             # mannelijke referent
             # (wiens)
             # 3rd person singular masculine: hij, ie, hijzelf
-            '3m' => ['person' => '3', 'animateness' => 'anim', 'other' => {'geslacht' => 'm'}],
+            '3m' => ['person' => '3', 'animacy' => 'anim', 'other' => {'geslacht' => 'm'}],
             # vrouwelijke referent
             # (wier)
             # 3rd person singular feminine: zij, ze, zijzelf
-            '3v' => ['person' => '3', 'animateness' => 'anim', 'other' => {'geslacht' => 'v'}],
+            '3v' => ['person' => '3', 'animacy' => 'anim', 'other' => {'geslacht' => 'v'}],
             # 3rd person singular neuter: het, 't
             '3'  => ['person' => '3'],
             # persoonlijke referent
             # 3rd person plural animate: zij, ze, zijzelf
             # (wie, iemand, niemand, iedereen)
-            '3p' => ['person' => '3', 'animateness' => 'anim', 'other' => {'geslacht' => 'p'}],
+            '3p' => ['person' => '3', 'animacy' => 'anim', 'other' => {'geslacht' => 'p'}],
             # onpersoonlijke referent
             # (wat, iets, niets, alles)
-            '3o' => ['person' => '3', 'animateness' => 'inan', 'other' => {'geslacht' => 'o'}],
+            '3o' => ['person' => '3', 'animacy' => 'inan', 'other' => {'geslacht' => 'o'}],
             # underspecified person (e.g. with some pronouns)
             'persoon' => []
         },
         'encode_map' =>
         {
             'person' => { '1' => '1',
-                          '2' => { 'politeness' => { 'inf' => '2v',
-                                                     'pol' => '2b',
-                                                     '@'   => '2' }},
+                          '2' => { 'polite' => { 'infm' => '2v',
+                                                 'form' => '2b',
+                                                 '@'    => '2' }},
                           '3' => { 'other/geslacht' => { 'o' => '3o',
                                                          'p' => '3p',
                                                          'm' => '3m',
                                                          'v' => '3v',
-                                                         '@' => { 'animateness' => { 'anim' => { 'gender' => { 'masc' => '3m',
-                                                                                                               'fem'  => '3v',
-                                                                                                               '@'    => '3p' }},
-                                                                                     'inan' => '3o',
-                                                                                     '@'    => '3' }}}},
+                                                         '@' => { 'animacy' => { 'anim' => { 'gender' => { 'masc' => '3m',
+                                                                                                           'fem'  => '3v',
+                                                                                                           '@'    => '3p' }},
+                                                                                 'inan' => '3o',
+                                                                                 '@'    => '3' }}}},
                           '@' => 'persoon' }
         }
     );
@@ -624,7 +624,7 @@ sub _create_atoms
 sub _create_features_all
 {
     my $self = shift;
-    my @features = ('pos', 'nountype', 'position', 'degree', 'inflection', 'definiteness', 'gender', 'case', 'number', 'possnumber', 'numbern', 'npagr',
+    my @features = ('pos', 'nountype', 'position', 'degree', 'inflection', 'definite', 'gender', 'case', 'number', 'possnumber', 'numbern', 'npagr',
                     'prontype', 'pdtype', 'person', 'pronform', 'numtype', 'verbform', 'tense', 'adpostype', 'conjtype', 'symbol');
     return \@features;
 }
@@ -688,7 +688,7 @@ sub _create_features_pos
         'VNWvb'   => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'npagr', 'degree'],
         'VNWvbn'  => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'numbern', 'degree'],
         'VNWvrij' => ['prontype', 'pdtype', 'case', 'position', 'inflection', 'degree'],
-        'LID'     => ['definiteness', 'case', 'npagr'],
+        'LID'     => ['definite', 'case', 'npagr'],
         'VZ'      => ['adpostype'],
         'VG'      => ['conjtype']
     );

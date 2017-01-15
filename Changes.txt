@@ -14,6 +14,7 @@ Features:
   eu::conll
   fa::conll
   hsb::sorokin
+  nl::cgn
 * Feature 'definiteness' renamed to 'definite'. Affected drivers:
   xx::multext
   ar::padt ar::conll ar::conll2007
@@ -25,6 +26,7 @@ Features:
   he::conll
   hu::conll
   it::conll
+  nl::cgn nl::conll
 * Feature 'negativeness' renamed to 'polarity'. Affected drivers:
   xx::multext
   ar::padt ar::conll ar::conll2007
@@ -48,6 +50,7 @@ Features:
   eu::conll
   hi::conll
   ja::conll
+  nl::cgn
 * Renamed and new feature values:
   * abspolite=infm instead of abspolite=inf
   * abspolite=form instead of abspolite=pol
