@@ -38,6 +38,7 @@ Features:
   fi::turku
   he::conll
   hu::conll
+  ja::conll
 * Feature 'politeness' renamed to 'polite'. Features 'abspoliteness',
   'ergpoliteness' and 'datpoliteness' renamed similarly. Affected drivers:
   ca::conll2009
@@ -45,6 +46,7 @@ Features:
   da::conll
   eu::conll
   hi::conll
+  ja::conll
 * Renamed and new feature values:
   * abspolite=infm instead of abspolite=inf
   * abspolite=form instead of abspolite=pol

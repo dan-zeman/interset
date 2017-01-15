@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the Japanese tagset of the CoNLL 2006 Shared Task (derived from the TüBa J/S Verbmobil treebank).
-# Copyright © 2011, 2012, 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2011, 2012, 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # Copyright © 2011 Loganathan Ramasamy <ramasamy@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::JA::Conll;
@@ -62,8 +62,8 @@ sub _create_atoms
             # [adverb; yoroshiku = well, properly; best regards ("please treat me favourably")]
             'ADJiku'     => ['pos' => 'adv', 'other' => {'adjtype' => 'i', 'advtype' => 'ku'}],
             # i-adjective, -kute ending (nakute, chikakute, yasukute, takakute, yokute)
-            # [transgressive/participle form of adjective; str. 74]
-            'ADJite'     => ['pos' => 'adv', 'verbform' => 'trans', 'other' => {'adjtype' => 'i', 'advtype' => 'kute'}],
+            # [converb/transgressive/participle form of adjective; str. 74]
+            'ADJite'     => ['pos' => 'adv', 'verbform' => 'conv', 'other' => {'adjtype' => 'i', 'advtype' => 'kute'}],
             # n-adjective, concatenating "-na; PV" (daijoubu, kekkou, beNri, hajimete, muri) [daijoubu = safe; all right; kekkou = nice, fine]
             'ADJ_n'      => ['pos' => 'adj', 'other' => {'adjtype' => 'n'}],
             # adjectival suffix "na" (na) [dame na = bad]
@@ -158,7 +158,7 @@ sub _create_atoms
             # particle verb+tens (feature ta: da, deshita, datta; feature u: desu, deshou, darou)
             'PVfin'      => ['pos' => 'verb', 'verbtype' => 'cop', 'verbform' => 'fin', 'mood' => 'ind'],
             # particle verb-tens (de, deshite)
-            'PVte'       => ['pos' => 'verb', 'verbtype' => 'cop', 'verbform' => 'trans'],
+            'PVte'       => ['pos' => 'verb', 'verbtype' => 'cop', 'verbform' => 'conv'],
             # noun prefix (yaku, dai, yoku, maru, Frau)
             'PreN'       => ['pos' => 'noun', 'other' => {'nountype' => 'pref'}],
             # unit (maruku, biN, meetoru, kiro, shitsu) [maruku = mark, meetoru = meter, kiro = kilo]
@@ -178,7 +178,7 @@ sub _create_atoms
             # verb imperative (gomeNnasai, kudasai, ie, nome, shiro, kimero) [gomeNnasai = pardon me; kudasai = please do]
             'Vimp'       => ['pos' => 'verb', 'verbform' => 'fin', 'mood' => 'imp'],
             # verb tense, -te/-de ending [transgressive?] (aite, shite, tsuite, natte, arimashite) [str. 73]
-            'Vte'        => ['pos' => 'verb', 'verbform' => 'trans'],
+            'Vte'        => ['pos' => 'verb', 'verbform' => 'conv'],
             # Verbal adjectives
             # -sou verbal adjective [str. 153]
             # (ikesou, arisou, toresou, owarisou, awanasasou)
@@ -206,7 +206,7 @@ sub _create_atoms
             # finite auxiliary verb imperative (kudasai, kure)
             'VAUXimp'    => ['pos' => 'verb', 'verbtype' => 'aux', 'verbform' => 'fin', 'mood' => 'imp'],
             # auxiliary verb -tense -te/-de ending transgressive (imashite, orimashite, itadaite, oite, shimatte)
-            'VAUXte'     => ['pos' => 'verb', 'verbtype' => 'aux', 'verbform' => 'trans'],
+            'VAUXte'     => ['pos' => 'verb', 'verbtype' => 'aux', 'verbform' => 'conv'],
             # Support verb (light verb) "suru"
             # support verb -tense VN (shitari, shinagara)
             'VS'         => ['pos' => 'verb', 'verbtype' => 'light'],
@@ -223,7 +223,7 @@ sub _create_atoms
             # finite support verb imperative (shiro)
             'VSimp'      => ['pos' => 'verb', 'verbtype' => 'light', 'verbform' => 'fin', 'mood' => 'imp'],
             # support verb -tense, -te ending transgressive (shite, sasete, shimashite, sashite, sarete, itashimashite)
-            'VSte'       => ['pos' => 'verb', 'verbtype' => 'light', 'verbform' => 'trans'],
+            'VSte'       => ['pos' => 'verb', 'verbtype' => 'light', 'verbform' => 'conv'],
             'xxx'        => [], # segmentation problem
         },
         'encode_map' =>
@@ -245,9 +245,9 @@ sub _create_atoms
                                                    'dem' => 'Ndem',
                                                    'int' => 'Nwh' }},
                        'adj'  => { 'prontype' => { ''    => { 'other/adjtype' => { 'i'    => { 'mood' => { 'cnd' => 'ADJicnd',
-                                                                                                           '@'   => { 'verbform' => { 'trans' => 'ADJite',
-                                                                                                                                      'part'  => 'ADJite',
-                                                                                                                                      '@'     => 'ADJifin' }}}},
+                                                                                                           '@'   => { 'verbform' => { 'conv' => 'ADJite',
+                                                                                                                                      'part' => 'ADJite',
+                                                                                                                                      '@'    => 'ADJifin' }}}},
                                                                                    'n'    => 'ADJ_n',
                                                                                    'sf'   => 'ADJsf',
                                                                                    'teki' => 'ADJteki',
@@ -261,30 +261,30 @@ sub _create_atoms
                        'num'  => { 'other/numtype' => { 'unit' => 'CDU',
                                                         '@'    => 'CD' }},
                        'verb' => { 'verbtype' => { 'cop'   => { 'mood' => { 'cnd' => 'PVcnd',
-                                                                            '@'   => { 'verbform' => { 'trans' => 'PVte',
-                                                                                                       'part'  => 'PVte',
-                                                                                                       '@'     => 'PVfin' }}}},
+                                                                            '@'   => { 'verbform' => { 'conv' => 'PVte',
+                                                                                                       'part' => 'PVte',
+                                                                                                       '@'    => 'PVfin' }}}},
                                                    'aux'   => { 'mood' => { 'cnd' => 'VAUXcnd',
                                                                             'imp' => 'VAUXimp',
-                                                                            '@'   => { 'verbform' => { 'trans' => 'VAUXte',
-                                                                                                       'part'  => 'VAUXte',
-                                                                                                       'fin'   => 'VAUXfin',
-                                                                                                       '@'     => { 'other/verbform' => { 'base' => 'VAUXbas',
-                                                                                                                                          '@'    => 'VAUX' }}}}}},
+                                                                            '@'   => { 'verbform' => { 'conv' => 'VAUXte',
+                                                                                                       'part' => 'VAUXte',
+                                                                                                       'fin'  => 'VAUXfin',
+                                                                                                       '@'    => { 'other/verbform' => { 'base' => 'VAUXbas',
+                                                                                                                                         '@'    => 'VAUX' }}}}}},
                                                    'light' => { 'mood' => { 'cnd' => 'VScnd',
                                                                             'imp' => 'VSimp',
-                                                                            '@'   => { 'verbform' => { 'trans' => 'VSte',
-                                                                                                       'part'  => 'VSte',
-                                                                                                       'fin'   => 'VSfin',
-                                                                                                       '@'     => { 'other/verbform' => { 'base' => 'VSbas',
-                                                                                                                                          '@'    => 'VS' }}}}}},
+                                                                            '@'   => { 'verbform' => { 'conv' => 'VSte',
+                                                                                                       'part' => 'VSte',
+                                                                                                       'fin'  => 'VSfin',
+                                                                                                       '@'    => { 'other/verbform' => { 'base' => 'VSbas',
+                                                                                                                                         '@'    => 'VS' }}}}}},
                                                    '@'     => { 'mood' => { 'cnd' => 'Vcnd',
                                                                             'imp' => 'Vimp',
-                                                                            '@'   => { 'verbform' => { 'trans' => 'Vte',
-                                                                                                       'part'  => 'Vte',
-                                                                                                       'fin'   => 'Vfin',
-                                                                                                       '@'     => { 'other/verbform' => { 'base' => 'Vbas',
-                                                                                                                                          '@'    => 'V' }}}}}}}},
+                                                                            '@'   => { 'verbform' => { 'conv' => 'Vte',
+                                                                                                       'part' => 'Vte',
+                                                                                                       'fin'  => 'Vfin',
+                                                                                                       '@'    => { 'other/verbform' => { 'base' => 'Vbas',
+                                                                                                                                         '@'    => 'V' }}}}}}}},
                        'adv'  => { 'prontype' => { ''    => { 'advtype' => { 'deg' => 'ADVdgr',
                                                                              'tim' => { 'other/advtype' => { 'date' => 'CDdate',
                                                                                                              'time' => 'CDtime',
@@ -298,11 +298,11 @@ sub _create_atoms
                                                          'adv'   => 'PADV',
                                                          'quot'  => 'PQ',
                                                          'focus' => 'Pfoc',
-                                                         '@'     => { 'verbform' => { 'trans' => 'PADJ',
-                                                                                      '@'     => { 'case' => { 'acc' => 'Pacc',
-                                                                                                               'gen' => 'Pgen',
-                                                                                                               'nom' => 'Pnom',
-                                                                                                               '@'   => 'P' }}}}}},
+                                                         '@'     => { 'verbform' => { 'conv' => 'PADJ',
+                                                                                      '@'    => { 'case' => { 'acc' => 'Pacc',
+                                                                                                              'gen' => 'Pgen',
+                                                                                                              'nom' => 'Pnom',
+                                                                                                              '@'   => 'P' }}}}}},
                        'conj' => { 'conjtype' => { 'coor' => 'Pcnj',
                                                    '@'    => 'CNJ' }},
                        'part' => { 'other/parttype' => { 'send' => 'PSE',
@@ -331,7 +331,7 @@ sub _create_atoms
             # examples:
             # sumimaseN, arimaseN, kamaimaseN, suimaseN, shiremaseN
             # yomimaseN = will not read
-            'eN' => ['tense' => 'fut', 'negativeness' => 'neg', 'politeness' => 'pol'],
+            'eN' => ['tense' => 'fut', 'polarity' => 'neg', 'polite' => 'form'],
             # ta is the suffix of the past tense (this includes the honorific "shita") [str. 61]
             # It occurs with the tags ADJifin, PVfin, Vfin, VADJi, VAUXfin, VSfin.
             # examples:
@@ -356,10 +356,10 @@ sub _create_atoms
         'encode_map' =>
         {
             'other/kute' => { 'yes' => 'kute',
-                              '@'     => { 'negativeness' => { 'neg' => 'eN',
-                                                               '@'   => { 'tense' => { 'past' => 'ta',
-                                                                                       'pres' => 'u',
-                                                                                       'fut'  => 'u' }}}}}
+                              '@'     => { 'polarity' => { 'neg' => 'eN',
+                                                           '@'   => { 'tense' => { 'past' => 'ta',
+                                                                                   'pres' => 'u',
+                                                                                   'fut'  => 'u' }}}}}
         }
     );
     return \%atoms;
