@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the EAGLES-based tagset for Portuguese in Freeling.
-# Copyright © 2016 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2016, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::PT::Freeling;
 use strict;
@@ -319,12 +319,12 @@ sub _create_atoms
         }
     );
     # POLITENESS ####################
-    $atoms{politeness} = $self->create_simple_atom
+    $atoms{polite} = $self->create_simple_atom
     (
-        'intfeature' => 'politeness',
+        'intfeature' => 'polite',
         'simple_decode_map' =>
         {
-            'P' => 'pol'
+            'P' => 'form'
         },
         'encode_default' => '0'
     );
@@ -518,7 +518,7 @@ sub _create_feature_map
         # Declaring a feature as undef means that there will be always a zero at that position of the tag.
         'N' => ['pos', 'nountype', 'gender', 'number', 'nametype', undef, 'degree'],
         'A' => ['pos', 'adjtype', 'degree', 'gender', 'number', 'person', 'possnumber'],
-        'P' => ['pos', 'prontype', 'person', 'gender', 'number', 'case', 'politeness'],
+        'P' => ['pos', 'prontype', 'person', 'gender', 'number', 'case', 'polite'],
         'D' => ['pos', 'prontype', 'person', 'gender', 'number', 'possnumber'],
         'Z' => ['pos'], # 'numtype' currently ignored
         'W' => ['pos'],

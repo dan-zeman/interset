@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the Portuguese tagset of the CoNLL 2006 Shared Task (derived from the Bosque / Floresta sintá(c)tica treebank).
-# Copyright © 2007-2009, 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2007-2009, 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::PT::Conll;
 use strict;
@@ -390,9 +390,9 @@ sub _create_atoms
         }
     );
     # DEFINITENESS ####################
-    $atoms{definiteness} = $self->create_simple_atom
+    $atoms{definite} = $self->create_simple_atom
     (
-        'intfeature' => 'definiteness',
+        'intfeature' => 'definite',
         'simple_decode_map' =>
         {
             # Definite article: o, os, a, as
@@ -578,7 +578,7 @@ sub _create_features_all
 {
     my $self = shift;
     my @features = ('pos', 'gender', 'number', 'case', 'person', 'tense', 'mood',
-                    'degree', 'alt', 'possessor', 'prontype', 'definiteness', 'numtype', 'anglefeature', 'sam', 'co', 'transcat');
+                    'degree', 'alt', 'possessor', 'prontype', 'definite', 'numtype', 'anglefeature', 'sam', 'co', 'transcat');
     return \@features;
 }
 
@@ -595,13 +595,13 @@ sub _create_features_pos
     (
         'adj'       => ['anglefeature', 'transcat', 'numtype', 'alt', 'degree', 'gender', 'number'],
         'adv'       => ['prontype', 'transcat', 'anglefeature', 'sam', 'co', 'alt', 'degree'],
-        'art'       => ['sam', 'alt', 'definiteness', 'gender', 'number'],
+        'art'       => ['sam', 'alt', 'definite', 'gender', 'number'],
         'conj-c'    => ['co'],
         'conj-s'    => ['transcat'],
         'n'         => ['anglefeature', 'transcat', 'alt', 'gender', 'number'],
         'num'       => ['transcat', 'sam', 'alt', 'numtype', 'gender', 'number'],
         'pp'        => ['sam'],
-        'pron-det'  => ['transcat', 'sam', 'possessor', 'prontype', 'definiteness', 'degree', 'gender', 'number'],
+        'pron-det'  => ['transcat', 'sam', 'possessor', 'prontype', 'definite', 'degree', 'gender', 'number'],
         'pron-indp' => ['sam', 'alt', 'prontype', 'gender', 'number'],
         'pron-pers' => ['anglefeature', 'sam', 'prontype', 'gender', 'person', 'case'],
         'prop'      => ['anglefeature', 'alt', 'gender', 'number'],

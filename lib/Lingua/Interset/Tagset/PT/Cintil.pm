@@ -2,7 +2,7 @@
 # http://cintil.ul.pt/
 # http://cintil.ul.pt/cintilwhatsin.html#guidelines
 # Copyright © 2014 Martin Popel <popel@ufal.mff.cuni.cz>
-# Copyright © 2014 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2014, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::PT::Cintil;
 use strict;
@@ -64,7 +64,7 @@ sub _create_atoms
             # Common noun (computador, cidade, ideia)
             'CN'     => ['pos' => 'noun', 'nountype' => 'com'],
             # Definite article (o, a, os, as)
-            'DA'     => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'def'],
+            'DA'     => ['pos' => 'adj', 'prontype' => 'art', 'definite' => 'def'],
             # Demonstrative pronoun or determiner (este, esses, aquele)
             'DEM'    => ['pos' => 'noun|adj', 'prontype' => 'dem'],
             # Denominator of a fraction (meio, terço, décimo, %)
@@ -86,7 +86,7 @@ sub _create_atoms
             # Gerund of an auxiliary verb in compound tenses (tendo, havendo)
             'GERAUX' => ['pos' => 'verb', 'verbtype' => 'aux', 'verbform' => 'part', 'tense' => 'pres', 'aspect' => 'prog'],
             # Indefinite article (uns, umas)
-            'IA'     => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'ind'],
+            'IA'     => ['pos' => 'adj', 'prontype' => 'art', 'definite' => 'ind'],
             # Indefinite pronoun or determiner (tudo, alguém, ninguém)
             'IND'    => ['pos' => 'noun|adj', 'prontype' => 'ind|neg|tot'],
             # Infinitive (ser, afirmar, viver)
@@ -138,7 +138,7 @@ sub _create_atoms
             # Optional termination ((s), (as))
             'TERMN'  => [],
             # "um" or "uma" (they could be either indefinite articles or cardinal numerals meaning "one")
-            'UM'     => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'ind', 'numtype' => 'card', 'numform' => 'word', 'numvalue' => '1'],
+            'UM'     => ['pos' => 'adj', 'prontype' => 'art', 'definite' => 'ind', 'numtype' => 'card', 'numform' => 'word', 'numvalue' => '1'],
             # Abbreviated measurement unit (Kg, h, seg, Hz, Mbytes)
             'UNIT'   => ['pos' => 'noun', 'abbr' => 'abbr'],
             # Finite form of an auxiliary verb in compound tenses (temos, haveriam)
@@ -163,9 +163,9 @@ sub _create_atoms
             { 'prontype' => { 'prs' => { 'poss' => { 'poss' => 'POSS',
                                                      '@'    => { 'variant' => { 'short' => 'CL',
                                                                                 '@'     => 'PRS' }}}},
-                              'art' => { 'definiteness' => { 'def' => 'DA',
-                                                             '@'   => { 'numtype' => { 'card' => 'UM',
-                                                                                       '@'    => 'IA' }}}},
+                              'art' => { 'definite' => { 'def' => 'DA',
+                                                         '@'   => { 'numtype' => { 'card' => 'UM',
+                                                                                   '@'    => 'IA' }}}},
                               'dem' => 'DEM',
                               'ind' => { 'numtype' => { ''  => 'IND',
                                                         '@' => 'QNT' }},

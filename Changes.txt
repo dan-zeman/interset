@@ -28,6 +28,7 @@ Features:
   hu::conll
   it::conll
   nl::cgn nl::conll
+  pt::conll pt::cintil
 * Feature 'negativeness' renamed to 'polarity'. Affected drivers:
   xx::multext
   ar::padt ar::conll ar::conll2007
@@ -53,6 +54,7 @@ Features:
   hi::conll
   ja::conll
   nl::cgn
+  pt::freeling
 * Renamed and new feature values:
   * abspolite=infm instead of abspolite=inf
   * abspolite=form instead of abspolite=pol
