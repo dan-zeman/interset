@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the Mamba tagset of Swedish (Talbanken).
-# Copyright © 2006, 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2006, 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # 25.1.2015: moved to the new object-oriented Interset
 
 package Lingua::Interset::Tagset::SV::Mamba;
@@ -64,7 +64,7 @@ around BUILDARGS => sub
         'BV' => ['pos' => 'verb', 'other' => {'verb' => 'bliva'}],
         # EN Indefinite article or numeral "en", "ett" (one)
         # Examples: en, ett, 1
-        'EN' => ['pos' => 'adj|num', 'prontype' => 'art', 'definiteness' => 'ind'],
+        'EN' => ['pos' => 'adj|num', 'prontype' => 'art', 'definite' => 'ind'],
         # FV The verb "faa" (get)
         # Examples: får, få, fått, fick, finns
         'FV' => ['pos' => 'verb', 'other' => {'verb' => 'faa'}],
@@ -192,10 +192,10 @@ around BUILDARGS => sub
                                                                                                    '@'    => { 'other/nountype' => { 'adj' => 'AN',
                                                                                                                                      '@'   => 'NN' }}}},
                                                                           '@' => 'PO' }}}},
-                   'adj'  => { 'definiteness' => { 'ind' => 'EN',
-                                                   '@'   => 'AJ' }},
-                   'num'  => { 'definiteness' => { 'ind' => 'EN',
-                                                   '@'   => 'RO' }},
+                   'adj'  => { 'definite' => { 'ind' => 'EN',
+                                               '@'   => 'AJ' }},
+                   'num'  => { 'definite' => { 'ind' => 'EN',
+                                               '@'   => 'RO' }},
                    'verb' => { 'verbform' => { 'part' => { 'tense' => { 'pres' => 'SP',
                                                                         '@'    => 'TP' }},
                                                '@'    => { 'other/verb' => { 'vara'   => 'AV',

@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the Swedish tagset of the Stockholm-Umeå Corpus.
-# Copyright © 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::SV::Suc;
 use strict;
@@ -221,9 +221,9 @@ sub _create_atoms
         }
     );
     # 7. DEFINITENESS ####################
-    $atoms{definiteness} = $self->create_simple_atom
+    $atoms{definite} = $self->create_simple_atom
     (
-        'intfeature' => 'definiteness',
+        'intfeature' => 'definite',
         'simple_decode_map' =>
         {
             'DEF' => 'def',
@@ -302,7 +302,7 @@ sub _create_atoms
         }
     );
     # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
-    my @fatoms = map {$atoms{$_}} (qw(pos degree gender number case subjobj definiteness verbform voice form));
+    my @fatoms = map {$atoms{$_}} (qw(pos degree gender number case subjobj definite verbform voice form));
     $atoms{feature} = $self->create_merged_atom
     (
         'surfeature' => 'feature',
@@ -322,18 +322,18 @@ sub _create_features_pos
     my $self = shift;
     my %features =
     (
-        'NN' => ['gender', 'number', 'definiteness', 'case', 'form'],
+        'NN' => ['gender', 'number', 'definite', 'case', 'form'],
         'PM' => ['case', 'form'],
-        'JJ' => ['degree', 'gender', 'number', 'definiteness', 'case', 'form'],
-        'PC' => ['verbform', 'gender', 'number', 'definiteness', 'case', 'form'],
-        'DT' => ['gender', 'number', 'definiteness', 'form'],
-        'HD' => ['gender', 'number', 'definiteness', 'form'],
-        'PN' => ['gender', 'number', 'definiteness', 'subjobj', 'form'],
-        'PS' => ['gender', 'number', 'definiteness', 'form'],
-        'HP' => ['gender', 'number', 'definiteness', 'form'],
-        'HS' => ['definiteness'],
-        'RG' => ['gender', 'number', 'definiteness', 'case', 'form'],
-        'RO' => ['gender', 'number', 'definiteness', 'case', 'form'],
+        'JJ' => ['degree', 'gender', 'number', 'definite', 'case', 'form'],
+        'PC' => ['verbform', 'gender', 'number', 'definite', 'case', 'form'],
+        'DT' => ['gender', 'number', 'definite', 'form'],
+        'HD' => ['gender', 'number', 'definite', 'form'],
+        'PN' => ['gender', 'number', 'definite', 'subjobj', 'form'],
+        'PS' => ['gender', 'number', 'definite', 'form'],
+        'HP' => ['gender', 'number', 'definite', 'form'],
+        'HS' => ['definite'],
+        'RG' => ['gender', 'number', 'definite', 'case', 'form'],
+        'RO' => ['gender', 'number', 'definite', 'case', 'form'],
         'VB' => ['verbform', 'tense', 'voice', 'form'],
         'AB' => ['degree', 'form'],
         'PP' => ['form'],

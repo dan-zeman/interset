@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the Swedish PAROLE tagset.
-# Copyright © 2006-2009, 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2006-2009, 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::SV::Parole;
 use strict;
@@ -191,9 +191,9 @@ sub _create_atoms
         }
     );
     # 7. DEFINITENESS ####################
-    $atoms{definiteness} = $self->create_simple_atom
+    $atoms{definite} = $self->create_simple_atom
     (
-        'intfeature' => 'definiteness',
+        'intfeature' => 'definite',
         'simple_decode_map' =>
         {
             'D' => 'def',
@@ -293,11 +293,11 @@ sub _create_features_pos
     my $self = shift;
     my %features =
     (
-        'N' => ['gender', 'number', 'case', undef, 'definiteness', 'form'],
-        'A' => ['degree', 'gender', 'number', 'case', 'definiteness', 'form'],
+        'N' => ['gender', 'number', 'case', undef, 'definite', 'form'],
+        'A' => ['degree', 'gender', 'number', 'case', 'definite', 'form'],
         'D' => [undef,    'gender', 'number', undef, 'form'],
         'P' => [undef,    'gender', 'number', 'subjobj', undef, 'form'],
-        'M' => ['gender', 'number', 'case', 'definiteness', 'form'],
+        'M' => ['gender', 'number', 'case', 'definite', 'form'],
         'V' => ['verbform', 'tense', 'voice', 'form'],
         'R' => ['degree', 'form'],
         'S' => ['form'],
