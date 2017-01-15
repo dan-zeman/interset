@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the tags of the Slovak National Corpus (Slovenský národný korpus)
-# Copyright © 2014, 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2014, 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::SK::Snk;
 use strict;
@@ -142,9 +142,9 @@ sub _create_atoms
         'decode_map' =>
         {
             # mužský životný (hrdina, hlavný, Mastný)
-            'm' => ['gender' => 'masc', 'animateness' => 'anim'],
+            'm' => ['gender' => 'masc', 'animacy' => 'anim'],
             # mužský neživotný (strom, rýľ)
-            'i' => ['gender' => 'masc', 'animateness' => 'inan'],
+            'i' => ['gender' => 'masc', 'animacy' => 'inan'],
             # ženský (ulica, pani, vedúca)
             'f' => ['gender' => 'fem'],
             # stredný (mesto, vysvedčenie, dievča, mláďa)
@@ -156,8 +156,8 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'gender' => { 'masc' => { 'animateness' => { 'anim' => 'm',
-                                                         '@'    => 'i' }},
+            'gender' => { 'masc' => { 'animacy' => { 'anim' => 'm',
+                                                     '@'    => 'i' }},
                           'fem'  => 'f',
                           'neut' => 'n',
                           '@'    => 'h' }
@@ -238,7 +238,7 @@ sub _create_atoms
             # imperatív (buď, hrej, volajte, veďte, hovor)
             'M' => ['verbform' => 'fin', 'mood' => 'imp'],
             # prechodník (súc, hrejúc, volajúc, vedúc, hovoriac)
-            'H' => ['verbform' => 'trans'],
+            'H' => ['verbform' => 'conv'],
             # l-ové príčastie (bol, hrialo, volali, viedla, hovorili)
             'L' => ['verbform' => 'part', 'tense' => 'past'],
             # futúrum (budem, budeš, bude, budeme, budete, budú, poletím, povedú)
@@ -246,12 +246,12 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'verbform' => { 'inf'   => 'I',
-                            'fin'   => { 'mood' => { 'imp' => 'M',
-                                                     '@'   => { 'tense' => { 'fut' => 'B',
-                                                                             '@'   => 'K' }}}},
-                            'trans' => 'H',
-                            'part'  => 'L' }
+            'verbform' => { 'inf'  => 'I',
+                            'fin'  => { 'mood' => { 'imp' => 'M',
+                                                    '@'   => { 'tense' => { 'fut' => 'B',
+                                                                            '@'   => 'K' }}}},
+                            'conv' => 'H',
+                            'part' => 'L' }
         }
     );
     # ASPECT / VID ####################
@@ -289,9 +289,9 @@ sub _create_atoms
         }
     );
     # NEGATION / NEGÁCIA ####################
-    $atoms{negativeness} = $self->create_simple_atom
+    $atoms{polarity} = $self->create_simple_atom
     (
-        'intfeature' => 'negativeness',
+        'intfeature' => 'polarity',
         'simple_decode_map' =>
         {
             # afirmácia (prichádzať, priateliť sa, rásť)
@@ -358,7 +358,7 @@ sub _create_atoms
         }
     );
     # MERGED ATOM TO DECODE ANY FEATURE VALUE ####################
-    my @fatoms = map {$atoms{$_}} (qw(morphpos gender number case degree agglutination verbform aspect person negativeness voice adpostype conditionality proper typo));
+    my @fatoms = map {$atoms{$_}} (qw(morphpos gender number case degree agglutination verbform aspect person polarity voice adpostype conditionality proper typo));
     $atoms{feature} = $self->create_merged_atom
     (
         'surfeature' => 'feature',
@@ -387,8 +387,8 @@ sub _create_features_pos
         'P'  => ['morphpos', 'gender', 'number', 'case', 'agglutination'],
         'S'  => ['morphpos', 'gender', 'number', 'case'],
         'T'  => ['conditionality'],
-        'V'  => ['verbform', 'aspect', 'number', 'person', 'negativeness'],
-        'VL' => ['verbform', 'aspect', 'number', 'person', 'gender', 'negativeness']
+        'V'  => ['verbform', 'aspect', 'number', 'person', 'polarity'],
+        'VL' => ['verbform', 'aspect', 'number', 'person', 'gender', 'polarity']
     );
     return \%features;
 }
