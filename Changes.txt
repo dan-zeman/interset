@@ -39,6 +39,7 @@ Features:
   he::conll
   hu::conll
   ja::conll
+  mt::mlss
 * Feature 'politeness' renamed to 'polite'. Features 'abspoliteness',
   'ergpoliteness' and 'datpoliteness' renamed similarly. Affected drivers:
   ca::conll2009

@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the tagset of the Maltese Language Software Services (TnT tagger).
-# Copyright © 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 # Part-of-Speech tagger for Maltese (including description of tags)
 # http://metanet4u.research.um.edu.mt/POS.jsp
@@ -117,7 +117,7 @@ around BUILDARGS => sub
         #'NPI'   => ['pos' => 'noun', 'nountype' => 'prop', 'abbr' => 'abbr'],
         # verbal negator
         # examples: ma, mhux, m', mhix, mhuwiex (not, not, not, not, not)
-        'NV'    => ['pos' => 'part', 'negativeness' => 'neg'],
+        'NV'    => ['pos' => 'part', 'polarity' => 'neg'],
         # numeral or indefinite determiner 'one'?
         # examples: wieħed, waħda, wħud, uħud, ċaħda (one, one, one, some, some)
         'NW'    => ['pos' => 'num', 'numtype' => 'card|gen', 'numvalue' => '1'],
@@ -130,7 +130,7 @@ around BUILDARGS => sub
         'PAC'   => ['pos' => 'part', 'aspect' => 'prog'],
         # particle, aspect marker, prospective aspect
         # examples: se (would)
-        'PAF'   => ['pos' => 'part', 'aspect' => 'pro'],
+        'PAF'   => ['pos' => 'part', 'aspect' => 'prosp'],
         # pronoun, demonstrative
         # examples: dan, din, dawn, dak, dik, dawk (this, this, these, that, that, those)
         'PD'    => ['pos' => 'noun|adj', 'prontype' => 'dem'],
@@ -244,9 +244,9 @@ around BUILDARGS => sub
                                                                                                             '@'   => 'CS' }},
                                                                           '@'    => { 'other/conjtype' => { 'cr'  => 'CR',
                                                                                                             '@'   => 'CC' }}}},
-                                              'part' => { 'negativeness' => { 'neg' => 'NV',
-                                                                              '@'   => { 'aspect' => { 'pro' => 'PAF',
-                                                                                                       '@'   => 'PAC' }}}},
+                                              'part' => { 'polarity' => { 'neg' => 'NV',
+                                                                          '@'   => { 'aspect' => { 'prosp' => 'PAF',
+                                                                                                   '@'     => 'PAC' }}}},
                                               'int'  => 'II',
                                               'sym'  => 'RFR',
                                               'punc' => 'PUN',
