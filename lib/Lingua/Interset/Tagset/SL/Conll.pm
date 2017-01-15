@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the Slovene tagset of the CoNLL 2006 Shared Task (derived from the Slovene Dependency Treebank).
-# Copyright © 2011, 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2011, 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::SL::Conll;
 use strict;
@@ -171,7 +171,7 @@ sub _create_atoms
     # ANIMACY ####################
     $atoms{Animate} = $self->create_simple_atom
     (
-        'intfeature' => 'animateness',
+        'intfeature' => 'animacy',
         'simple_decode_map' =>
         {
             'yes' => 'anim',
@@ -353,10 +353,10 @@ sub _create_atoms
             'third'  => '3'
         }
     );
-    # NEGATIVENESS ####################
+    # POLARITY ####################
     $atoms{Negative} = $self->create_simple_atom
     (
-        'intfeature' => 'negativeness',
+        'intfeature' => 'polarity',
         'simple_decode_map' =>
         {
             'yes' => 'neg',

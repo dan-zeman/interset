@@ -1,6 +1,6 @@
 # ABSTRACT: Driver for the Slovene tagset of the Multext-EAST v4 project.
 # http://nlp.ffzg.hr/data/tagging/msd-hr.html
-# Copyright © 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::SL::Multext;
 use strict;
@@ -138,16 +138,16 @@ sub _create_feature_map
     my $self = shift;
     my %features =
     (
-        'N' => ['pos', 'nountype', 'gender', 'number', 'case', 'animateness'],
-        'V' => ['pos', 'verbtype', 'aspect', 'verbform', 'person', 'number', 'gender', 'negativeness'],
-        'A' => ['pos', 'adjtype', 'degree', 'gender', 'number', 'case', 'definiteness', 'animateness'],
+        'N' => ['pos', 'nountype', 'gender', 'number', 'case', 'animacy'],
+        'V' => ['pos', 'verbtype', 'aspect', 'verbform', 'person', 'number', 'gender', 'polarity'],
+        'A' => ['pos', 'adjtype', 'degree', 'gender', 'number', 'case', 'definite', 'animacy'],
         'P' => ['pos', 'prontype', 'person', 'gender', 'number', 'case', 'possnumber', 'possgender', 'clitic'],
         'R' => ['pos', 'adverb_type', 'degree'],
         'S' => ['pos', 'case'],
         # The documentation also mentions a third feature, "conjunction formation", with the values 's' (simple) and 'c' (compound).
         # It does not occur in the SETimes.HR corpus, there are only 'Cc' (coordinating conjunctions) and 'Cs' (subordinating).
         'C' => ['pos', 'conjtype'],
-        'M' => ['pos', 'numform', 'numtype', 'gender', 'number', 'case', 'animateness'],
+        'M' => ['pos', 'numform', 'numtype', 'gender', 'number', 'case', 'animacy'],
         'Q' => ['pos', 'parttype'],
         'X' => ['pos', 'restype']
     );

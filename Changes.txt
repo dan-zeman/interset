@@ -32,6 +32,7 @@ Features:
   nl::cgn nl::conll
   pt::conll pt::cintil
   ro::rdt
+  sl::conll
 * Feature 'negativeness' renamed to 'polarity'. Affected drivers:
   xx::multext
   ar::padt ar::conll ar::conll2007
@@ -49,6 +50,7 @@ Features:
   mt::mlss
   pl::ipipan
   sk::snk
+  sl::conll
 * Feature 'politeness' renamed to 'polite'. Features 'abspoliteness',
   'ergpoliteness' and 'datpoliteness' renamed similarly. Affected drivers:
   ca::conll2009
