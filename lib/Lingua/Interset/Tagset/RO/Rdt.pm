@@ -76,8 +76,8 @@ around BUILDARGS => sub
         'verb'               => ['pos' => 'verb', 'verbform' => 'fin'],
         # a, au, fost, fi, vor, fie, este, sunt
         'verb aux.'          => ['pos' => 'verb', 'verbtype' => 'aux'],
-        # fi (a fi = infinitive to be), cântând (transgressive, note that in Romainan it is called "gerunziu", but it is not a gerund like "doing" in English)
-        'verb nepred.'       => ['pos' => 'verb', 'verbform' => 'inf|trans'],
+        # fi (a fi = infinitive to be), cântând (converb/transgressive, note that in Romainan it is called "gerunziu", but it is not a gerund like "doing" in English)
+        'verb nepred.'       => ['pos' => 'verb', 'verbform' => 'inf|conv'],
         # Due to inconsistent annotation, the following tags appear only in the test set :-(
         'verb la participiu' => ['pos' => 'verb', 'verbform' => 'part'],
         # iluminat (tagged as 'verb nepred.' in the rest of RDT)
@@ -102,12 +102,12 @@ around BUILDARGS => sub
                                                '@'   => 'pronume' }},
                    'num'  => 'numeral',
                    'verb' => { 'verbtype' => { 'aux' => 'verb aux.',
-                                               '@'   => { 'verbform' => { 'inf'       => 'verb la infinitiv',
-                                                                          'fin'       => 'verb',
-                                                                          'inf|trans' => 'verb nepred.',
-                                                                          'trans'     => 'verb nepred.',
-                                                                          'ger'       => 'verb nepred.',
-                                                                          'part'      => 'verb la participiu' }}}},
+                                               '@'   => { 'verbform' => { 'inf'      => 'verb la infinitiv',
+                                                                          'fin'      => 'verb',
+                                                                          'inf|conv' => 'verb nepred.',
+                                                                          'trans'    => 'verb nepred.',
+                                                                          'ger'      => 'verb nepred.',
+                                                                          'part'     => 'verb la participiu' }}}},
                    'adv'  => 'adverb',
                    'adp'  => 'prepozitie',
                    'conj' => { 'conjtype' => { 'sub' => 'conj. aux.',
