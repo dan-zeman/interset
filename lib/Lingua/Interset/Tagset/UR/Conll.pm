@@ -3,7 +3,7 @@
 # http://ltrc.iiit.ac.in/nlptools2010/documentation.php
 # http://ltrc.iiit.ac.in/MachineTrans/publications/technicalReports/tr031/posguidelines.pdf
 # Copyright © 2014 Loganathan Ramasamy <ramasamy@ufal.mff.cuni.cz>
-# Copyright © 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::UR::Conll;
 use strict;
@@ -306,20 +306,20 @@ sub _create_atoms
         'decode_map' =>
         {
             '1'   => ['person' => '1'],
-            '1h'  => ['person' => '1', 'politeness' => 'pol'],
+            '1h'  => ['person' => '1', 'polite' => 'form'],
             '2'   => ['person' => '2'],
-            '2h'  => ['person' => '2', 'politeness' => 'pol'],
+            '2h'  => ['person' => '2', 'polite' => 'form'],
             '3'   => ['person' => '3'],
-            '3h'  => ['person' => '3', 'politeness' => 'pol']
+            '3h'  => ['person' => '3', 'polite' => 'form']
         },
         'encode_map' =>
         {
-            'person' => { '1' => { 'politeness' => { 'pol' => '1h',
-                                                     '@'   => '1' }},
-                          '2' => { 'politeness' => { 'pol' => '2h',
-                                                     '@'   => '2' }},
-                          '3' => { 'politeness' => { 'pol' => '3h',
-                                                     '@'   => '3' }}}
+            'person' => { '1' => { 'polite' => { 'form' => '1h',
+                                                 '@'    => '1' }},
+                          '2' => { 'polite' => { 'form' => '2h',
+                                                 '@'    => '2' }},
+                          '3' => { 'polite' => { 'form' => '3h',
+                                                 '@'    => '3' }}}
         }
     );
     # CASE ####################
@@ -393,7 +393,7 @@ sub _create_atoms
             'eM' => ['verbform' => 'fin', 'mood' => 'sub'],
             # o ... familiar/informal imperative
             # करो (do), जाओ (go)
-            'ao' => ['verbform' => 'fin', 'mood' => 'imp', 'politeness' => 'inf'],
+            'ao' => ['verbform' => 'fin', 'mood' => 'imp', 'polite' => 'infm'],
             # tā ... imperfect participle
             # करता, करते, करती (doing)
             'wA' => ['verbform' => 'part', 'aspect' => 'imp'],
@@ -403,26 +403,26 @@ sub _create_atoms
             # yā1 ... perfect participle, special form of the verb "to go", instead of जाया etc.
             # गया, गए, गये, गई, गयी, गईं (gone)
             'yA1' => ['verbform' => 'part', 'aspect' => 'perf', 'variant' => '1'],
-            # kara ... transgressive, adverbial participle
+            # kara ... converb, transgressive, adverbial participle
             # लेकर (having taken)
-            'kara' => ['verbform' => 'trans'],
+            'kara' => ['verbform' => 'conv'],
             # nā ... infinitive
             # करना, करने, करनी (to do)
             'nA' => ['verbform' => 'inf'],
         },
         'encode_map' =>
         {
-            'verbform' => { 'inf'   => 'nA',
-                            'part'  => { 'aspect' => { 'imp' => 'wA',
-                                                       '@'   => { 'variant' => { '1' => 'yA1',
-                                                                                 '@' => 'yA' }}}},
-                            'trans' => 'kara',
-                            '@'     => { 'mood' => { 'sub' => 'eM',
-                                                     'imp' => 'ao',
-                                                     '@'   => { 'tense' => { 'fut'  => 'gA',
-                                                                             'pres' => 'hE',
-                                                                             'past' => 'WA',
-                                                                             '@'    =>
+            'verbform' => { 'inf'  => 'nA',
+                            'part' => { 'aspect' => { 'imp' => 'wA',
+                                                      '@'   => { 'variant' => { '1' => 'yA1',
+                                                                                '@' => 'yA' }}}},
+                            'conv' => 'kara',
+                            '@'    => { 'mood' => { 'sub' => 'eM',
+                                                    'imp' => 'ao',
+                                                    '@'   => { 'tense' => { 'fut'  => 'gA',
+                                                                            'pres' => 'hE',
+                                                                            'past' => 'WA',
+                                                                            '@'    =>
             { 'poss' => { 'poss' => { 'other/possedcase' => { 'obl' => 'ke',
                                                               '@'   => 'kA' }},
                           '@'    => { 'case' => { 'dat' => 'ko',

@@ -66,6 +66,7 @@ Features:
   nl::cgn
   pt::freeling
   ta::tamiltb
+  ur::conll
 * Renamed and new feature values:
   * abspolite=infm instead of abspolite=inf
   * abspolite=form instead of abspolite=pol
