@@ -16,6 +16,7 @@ Features:
   hsb::sorokin
   nl::cgn
   pl::ipipan
+  ru::syntagrus
 * Feature 'definiteness' renamed to 'definite'. Affected drivers:
   xx::multext
   ar::padt ar::conll ar::conll2007

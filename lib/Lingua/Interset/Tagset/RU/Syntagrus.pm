@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for Syntagrus (Russian Dependency Treebank) tags.
-# Copyright © 2006, 2011, 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2006, 2011, 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::RU::Syntagrus;
 use strict;
@@ -129,9 +129,9 @@ sub _create_atoms
         }
     );
     # ANIMACY ####################
-    $atoms{animateness} = $self->create_simple_atom
+    $atoms{animacy} = $self->create_simple_atom
     (
-        'intfeature' => 'animateness',
+        'intfeature' => 'animacy',
         'simple_decode_map' =>
         {
             'НЕОД' => 'inan',
@@ -200,7 +200,7 @@ sub _create_atoms
         'surfeature' => 'verbform',
         'decode_map' =>
         {
-            'ДЕЕПР' => ['verbform' => 'trans'],
+            'ДЕЕПР' => ['verbform' => 'conv'],
             'ИЗЪЯВ' => ['verbform' => 'fin', 'mood' => 'ind'],
             'ИНФ'   => ['verbform' => 'inf'],
             'ПОВ'   => ['verbform' => 'fin', 'mood' => 'imp'],
@@ -208,11 +208,11 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'verbform' => { 'inf'   => 'ИНФ',
-                            'fin'   => { 'mood' => { 'imp' => 'ПОВ',
-                                                     '@'   => 'ИЗЪЯВ' }},
-                            'part'  => 'ПРИЧ',
-                            'trans' => 'ДЕЕПР' }
+            'verbform' => { 'inf'  => 'ИНФ',
+                            'fin'  => { 'mood' => { 'imp' => 'ПОВ',
+                                                    '@'   => 'ИЗЪЯВ' }},
+                            'part' => 'ПРИЧ',
+                            'conv' => 'ДЕЕПР' }
         }
     );
     # TENSE ####################
@@ -294,7 +294,7 @@ sub _create_features_all
     my $self = shift;
     my @features = ('pos', 'degree', 'smjag',
                     'aspect', 'voice', 'verbform', 'tense', 'shortadj',
-                    'number', 'gender', 'case', 'animateness', 'person',
+                    'number', 'gender', 'case', 'animacy', 'person',
                     'compart', 'typo', 'obsolete');
     return \@features;
 }
