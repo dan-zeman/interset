@@ -1,6 +1,6 @@
 # ABSTRACT: Driver for the Romanian tagset of the Multext-EAST v4 project.
 # http://nl.ijs.si/ME/V4/msd/html/msd-ro.html
-# Copyright © 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
 package Lingua::Interset::Tagset::RO::Multext;
 use strict;
@@ -150,10 +150,10 @@ sub _create_atoms
     );
     # COORDINATION SUBTYPE ####################
     # Distinguishes positive and negative conjunctions.
-    # We use the feature of negativeness to store it, but unlike Multext negativeness, the values are p|z (instead of n|y).
+    # We use the feature of polarity to store it, but unlike Multext polarity, the values are p|z (instead of n|y).
     $atoms->{sub_type} = $self->create_simple_atom
     (
-        'intfeature' => 'negativeness',
+        'intfeature' => 'polarity',
         'simple_decode_map' =>
         {
             'z' => 'neg',
@@ -225,18 +225,18 @@ sub _create_feature_map
     my $self = shift;
     my %features =
     (
-        'N' => ['pos', 'nountype', 'gender', 'number', 'case', 'definiteness', 'clitic'],
+        'N' => ['pos', 'nountype', 'gender', 'number', 'case', 'definite', 'clitic'],
         'V' => ['pos', 'verbtype', 'verbform', 'tense', 'person', 'number', 'gender', undef, undef, undef, 'clitic'],
-        'A' => ['pos', 'adjtype', 'degree', 'gender', 'number', 'case', 'definiteness', 'clitic'],
+        'A' => ['pos', 'adjtype', 'degree', 'gender', 'number', 'case', 'definite', 'clitic'],
         'P' => ['pos', 'prontype', 'person', 'gender', 'number', 'case', 'possnumber', undef, 'clitic', undef, undef, undef, undef, undef, 'pronform'],
         'D' => ['pos', 'prontype', 'person', 'gender', 'number', 'case', 'possnumber', 'clitic', 'pronform', 'modtype'],
         'T' => ['pos', 'prontype', 'gender', 'number', 'case', 'clitic'],
         'R' => ['pos', 'adverb_type', 'degree', 'clitic'],
         'S' => ['pos', 'adpostype', 'formation', 'case', 'clitic'],
         'C' => ['pos', 'conjtype', 'formation', 'coord_type', 'sub_type', 'clitic'],
-        'M' => ['pos', 'numtype', 'gender', 'number', 'case', 'numform', 'definiteness', 'clitic'],
+        'M' => ['pos', 'numtype', 'gender', 'number', 'case', 'numform', 'definite', 'clitic'],
         'Q' => ['pos', 'parttype', undef, 'clitic'],
-        'Y' => ['pos', 'syntactic_type', 'gender', 'number', 'case', 'definiteness'],
+        'Y' => ['pos', 'syntactic_type', 'gender', 'number', 'case', 'definite'],
         'X' => ['pos', 'restype']
     );
     return \%features;

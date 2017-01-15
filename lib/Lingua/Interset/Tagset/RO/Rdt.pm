@@ -1,5 +1,5 @@
 # ABSTRACT: Driver for the tagset of the Romanian Dependency Treebank (RDT).
-# Copyright © 2015 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Copyright © 2015, 2017 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # Copyright © 2011 Martin Popel <popel@ufal.mff.cuni.cz>
 # Brief tagset documentation in $TMT_ROOT/share/data/resources/treebanks/ro/2008_calacean.pdf
 # Useful resource http://dexonline.ro
@@ -57,13 +57,13 @@ around BUILDARGS => sub
         'adjectiv'           => ['pos' => 'adj'],
         'adverb'             => ['pos' => 'adv'],
         # cel (demonstrative article, used only before adjectives "cel bun")
-        'art. dem.'          => ['pos' => 'adj', 'prontype' => 'dem', 'definiteness' => 'def'],
+        'art. dem.'          => ['pos' => 'adj', 'prontype' => 'dem', 'definite' => 'def'],
         # lui (definite article, used only in possessive constructions with male gender)
-        'art. hot.'          => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'def', 'poss' => 'poss', 'gender' => 'masc'],
+        'art. hot.'          => ['pos' => 'adj', 'prontype' => 'art', 'definite' => 'def', 'poss' => 'poss', 'gender' => 'masc'],
         # al, a, ai, ale (genitival/possessive article)
         'art. poses.'        => ['pos' => 'adj', 'prontype' => 'art', 'poss' => 'poss'],
         # o, un, niște
-        'art. nehot.'        => ['pos' => 'adj', 'prontype' => 'art', 'definiteness' => 'ind'],
+        'art. nehot.'        => ['pos' => 'adj', 'prontype' => 'art', 'definite' => 'ind'],
         'conj. aux.'         => ['pos' => 'conj', 'conjtype' => 'sub'],
         'conj. coord.'       => ['pos' => 'conj', 'conjtype' => 'coor'],
         'numeral'            => ['pos' => 'num'],
@@ -94,10 +94,10 @@ around BUILDARGS => sub
                                                                         '@'      => 'pronume' }}}},
                    'adj'  => { 'prontype' => { ''    => { 'verbform' => { 'part' => 'adj. particip.',
                                                                           '@'    => 'adjectiv' }},
-                                               'dem' => { 'definiteness' => { 'def' => 'art. dem.',
-                                                                              '@'   => 'pron. dem.' }},
-                                               'art' => { 'poss' => { 'poss' => { 'definiteness' => { 'def' => 'art. hot.',
-                                                                                                      '@'   => 'art. poses.' }},
+                                               'dem' => { 'definite' => { 'def' => 'art. dem.',
+                                                                          '@'   => 'pron. dem.' }},
+                                               'art' => { 'poss' => { 'poss' => { 'definite' => { 'def' => 'art. hot.',
+                                                                                                  '@'   => 'art. poses.' }},
                                                                       '@'    => 'art. nehot.' }},
                                                '@'   => 'pronume' }},
                    'num'  => 'numeral',

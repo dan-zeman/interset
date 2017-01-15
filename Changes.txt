@@ -29,6 +29,7 @@ Features:
   it::conll
   nl::cgn nl::conll
   pt::conll pt::cintil
+  ro::rdt
 * Feature 'negativeness' renamed to 'polarity'. Affected drivers:
   xx::multext
   ar::padt ar::conll ar::conll2007
