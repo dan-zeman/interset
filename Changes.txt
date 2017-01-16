@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+3.001     2017-01-16 13:42:21+01:00 Europe/Prague
+
 Features:
 * In line with Universal Dependencies v2, the feature 'foreign' has again just
   one value. The values 'fscript' and 'tscript' had been used only in
