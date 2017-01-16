@@ -151,13 +151,13 @@ sub _create_atoms
             # indefinite or demonstrative cardinal numeral
             # examples: několik mnoho málo kdovíkolik tolik
             'Ca' => ['pos' => 'num', 'numtype' => 'card', 'prontype' => 'ind|dem'],
-            # generic numeral "twofold"
+            # adjectival multiplicative numeral "twofold" (note: these words are included in generic numerals in the Czech grammar)
             # examples: obojí dvojí trojí
             # generic adjectival numeral (number of sets of things)
             # examples: oboje dvoje troje (čtvery patery desatery?)
             # "oboje", "dvoje" and "troje" appear in the corpus as "Cd" and the feature variant=1 distinguishes them from "obojí", "dvojí" and "trojí".
             # Larger numerals of this type ("čtvery", "patery" etc.) do not appear in the corpus.
-            'Cd' => ['pos' => 'adj', 'numtype' => 'gen'],
+            'Cd' => ['pos' => 'adj', 'numtype' => 'mult|sets'],
             # generic numeral "jedny" (plural form of "jeden" = "one"; could mean either "some" (jedni přijdou brzy, druzí pozdě; jedny z nejlepších...),
             # or "one set of" (mám jen jedny boty))
             # examples: jedni, jedny
@@ -165,7 +165,7 @@ sub _create_atoms
             # generic cardinal numeral
             # examples: čtvero patero desatero
             # This tag is documented in the tagset but it does not occur in the PDT.
-            'Cj' => ['pos' => 'num', 'numtype' => 'card|gen'],
+            'Cj' => ['pos' => 'num', 'numtype' => 'card', 'other' => {'numtype' => 'generic'}],
             # ordinal suffix as a separate token
             # only one occurrence in the corpus: tých ("posledně v letech 60 tých" = "posledně v letech šedesátých")
             # Syntactic analysis of the above example is Atr(letech, tých); Atr(tých, 60).
@@ -565,12 +565,20 @@ sub encode
                 # několik, mnoho, málo, tolik
                 $tag = 'Ca--X----------';
             }
+            # certain "generic" numerals (druhové číslovky) are classified as cardinals
+            elsif($fs->get_other_subfeature('cs::pdt', 'numtype') eq 'generic')
+            {
+                # čtvero, patero, desatero
+                $tag = 'Cj-------------';
+            }
             elsif(scalar(grep {m/^[123]$/} ($fs->get_list('numvalue')))>=1)
             {
+                # jeden, jedna, jedno, dva, dvě, tři, čtyři
                 $tag = 'ClX-X----------';
             }
             else
             {
+                # pět, deset, patnáct, devadesát, sto
                 $tag = 'Cn-XX----------';
             }
         }
@@ -618,12 +626,6 @@ sub encode
         elsif($fs->numtype() eq 'frac')
         {
             $tag = 'Cy-------------';
-        }
-        # generic numerals / druhové číslovky
-        elsif($fs->get_joined('numtype') eq 'card|gen')
-        {
-            # čtvero, patero, desatero
-            $tag = 'Cj-------------';
         }
         elsif($fs->numtype() eq 'sets' ||
               $fs->gender() eq 'masc' && $fs->animacy() eq '' && $fs->number() eq 'plur' && $fs->case() eq 'acc')
@@ -2821,10 +2823,18 @@ Cn-P7----------
 Cn-P7---------1
 Cn-S1----------
 Cn-S1---------1
+Cn-S2----------
+Cn-S2---------1
+Cn-S3----------
+Cn-S3---------1
 Cn-S4----------
 Cn-S4---------1
 Cn-S5----------
 Cn-S5---------1
+Cn-S6----------
+Cn-S6---------1
+Cn-S7----------
+Cn-S7---------1
 Cn-SX----------
 Cn-XX----------
 Co-------------

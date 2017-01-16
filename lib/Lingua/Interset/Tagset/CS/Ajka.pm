@@ -179,7 +179,7 @@ sub _create_atoms
             'xO' => ['numtype' => 'ord', 'pos' => 'adj|adv'],
             # Generic numeral.
             # Examples: dvoje, dvojí, oboje, obojí, troje, trojí, několikerý
-            'xR' => ['numtype' => 'gen', 'pos' => 'adj'],
+            'xR' => ['numtype' => 'sets|mult', 'pos' => 'adj'],
             # Demonstrative numeral.
             # Examples: tolik
             # ("tolik" could be described as demonstrative cardinal numeral.
@@ -196,7 +196,8 @@ sub _create_atoms
             { 'prontype' => { 'dem' => 'xD',
                               '@'   => { 'numtype' => { 'card' => 'xC',
                                                         'ord'  => 'xO',
-                                                        'gen'  => 'xR' }}}}
+                                                        'sets' => 'xR',
+                                                        'mult' => 'xR' }}}}
     );
     $atoms{xk6} = $self->create_atom
     (

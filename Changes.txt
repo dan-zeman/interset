@@ -1,5 +1,13 @@
 {{$NEXT}}
 
+Features:
+* In line with Universal Dependencies v2, value 'gen' of feature 'numtype'
+  (generic numeral) has been removed. The known examples should be either
+  'card' or 'mult'.
+
+
+
+
 3.001     2017-01-16 13:42:21+01:00 Europe/Prague
 
 Features:

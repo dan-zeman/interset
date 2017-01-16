@@ -270,7 +270,9 @@ sub _create_atoms
             # Slovene term: števnik drugi
             # examples [cs]: desaterý, dvojí, jeden, několikerý, několikery, obojí
             # examples [sl]: dvojen, trojen
-            's' => ['pos' => 'adj', 'numtype' => 'gen']
+            # Some generic numerals are used for plurale tantum and for sets of objects. They are also called collective numerals.
+            # examples [cs]: jedny, dvoje, troje, čtvery, patery, kolikery, několikery
+            's' => ['pos' => 'adj', 'numtype' => 'sets']
         },
         'encode_map' =>
         {
@@ -281,7 +283,7 @@ sub _create_atoms
                                                            '@'   => 'c' }},
                            'ord'      => 'o',
                            'mult'     => 'm',
-                           'gen'      => 's',
+                           'sets'     => 's',
                            '@'        => 'c' }
         }
     );

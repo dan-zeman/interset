@@ -189,14 +189,13 @@ my %matrix = @_matrix =
     'numtype' =>
     {
         'priority' => 110,
-        'values' => ['card', 'ord', 'mult', 'frac', 'gen', 'sets', 'dist', 'range', ''],
+        'values' => ['card', 'ord', 'mult', 'frac', 'sets', 'dist', 'range', ''],
         'replacements' =>
         [
             ['card', '', 'ord'],
             ['ord', '', 'card'],
             ['mult'],
             ['frac', 'card'],
-            ['gen', 'card'],
             ['sets', 'card'],
             ['dist', 'card'],
             ['range', 'card']
@@ -1282,6 +1281,7 @@ sub _validate_value
         return 'form'    if($feature eq 'ergpolite' && $value eq 'pol'); # renamed in UD v2, 2016-12-01
         return 'foreign' if($feature eq 'foreign' && $value eq 'fscript'); # value removed in UD v2, 2016-12-01
         return 'foreign' if($feature eq 'foreign' && $value eq 'tscript'); # value removed in UD v2, 2016-12-01
+        return 'mult'    if($feature eq 'numtype' && $value eq 'gen'); # value removed in UD v2, 2016-12-01
         confess("Unknown value '$value' of feature '$feature'");
     }
 }

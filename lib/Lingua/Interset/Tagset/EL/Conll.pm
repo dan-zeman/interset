@@ -75,8 +75,10 @@ sub _create_atoms
             # Nm = numeral
             # cardinal numeral: ένας, δύο, εννέα, δίκτυό, πέντε
             'NmCd'   => ['pos' => 'num', 'numtype' => 'card'],
-            # generic numeral: χιλιάδες, δεκάδες, εκατοντάδες
-            'NmCt'   => ['pos' => 'num', 'numtype' => 'gen'],
+            # plural cardinal (generic?) numeral: χιλιάδες, δεκάδες, εκατοντάδες
+            # numerals used like plural nouns: thousands, tens, hundreds
+            # unfortunately, number=plur is not enough to distinguish them
+            'NmCt'   => ['pos' => 'num', 'numtype' => 'card', 'other' => {'numtype' => 'generic'}],
             # multiplicative numeral: διπλό
             'NmMl'   => ['pos' => 'adv', 'numtype' => 'mult'],
             # ordinal numeral: δεύτερος, πρώτος, ντ', τρίτος
@@ -157,10 +159,10 @@ sub _create_atoms
                                                      'rel' => 'PnRe',
                                                      '@'   => 'PnId' }},
                          'num'  => { 'numform' => { 'digit' => 'DIG',
-                                                    '@'     => { 'numtype' => { 'card' => 'NmCd',
+                                                    '@'     => { 'numtype' => { 'card' => { 'other/numtype' => { 'generic' => 'NmCt',
+                                                                                                                 '@'       => 'NmCd' }},
                                                                                 'ord'  => 'NmOd',
-                                                                                'mult' => 'NmMl',
-                                                                                '@'    => 'NmCt' }}}},
+                                                                                'mult' => 'NmMl' }}}},
                          'verb' => { 'verbtype' => { 'mod' => 'VbIs',
                                                      '@'   => 'VbMn' }},
                          'adv'  => { 'numtype' => { 'mult' => 'NmMl',
@@ -267,8 +269,8 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'numtype' => { 'gen' => 'No',
-                           '@'   => 'Aj' }
+            'other/numtype' => { 'generic' => 'No',
+                                 '@'       => 'Aj' }
         }
     );
     # VERB FORM AND MOOD ####################

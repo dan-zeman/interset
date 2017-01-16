@@ -120,7 +120,7 @@ around BUILDARGS => sub
         'NV'    => ['pos' => 'part', 'polarity' => 'neg'],
         # numeral or indefinite determiner 'one'?
         # examples: wieħed, waħda, wħud, uħud, ċaħda (one, one, one, some, some)
-        'NW'    => ['pos' => 'num', 'numtype' => 'card|gen', 'numvalue' => '1'],
+        'NW'    => ['pos' => 'num', 'numtype' => 'card', 'numvalue' => '1'],
         # not documented; perhaps the same as PAC?
         # examples: għad (yet)
         # there are only three occurrences of għad/PA, and there are 17 occurrences of għad/PAC; is PA a tagging error?

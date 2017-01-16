@@ -515,7 +515,7 @@ sub _create_atoms
             # řadová: druhej, prvnímu, poprvé, sedumdesátým
             '2' => ['pos' => 'adj|adv', 'numtype' => 'ord'],
             # druhová: oboje, troje, vosmery, jedny, dvojího
-            '3' => ['pos' => 'adj', 'numtype' => 'gen'],
+            '3' => ['pos' => 'adj', 'numtype' => 'sets'],
             # násobná: dvakrát, mockrát, jednou, mnohokrát, čtyřikrát
             '4' => ['pos' => 'adv', 'numtype' => 'mult'],
             # neurčitá: několik, kolik, pár, tolik, několikrát
@@ -525,7 +525,7 @@ sub _create_atoms
             # víceslovná řadová: sedumdesátym druhym, šedesátej vosmej, osmdesátém devátém
             '7' => ['pos' => 'adj', 'numtype' => 'ord', 'other' => {'numtype' => 'víceslovná'}],
             # víceslovná druhová
-            '8' => ['pos' => 'adj', 'numtype' => 'gen', 'other' => {'numtype' => 'víceslovná'}],
+            '8' => ['pos' => 'adj', 'numtype' => 'sets', 'other' => {'numtype' => 'víceslovná'}],
             # víceslovná násobná
             '9' => ['pos' => 'adv', 'numtype' => 'mult', 'other' => {'numtype' => 'víceslovná'}],
             # víceslovná neurčitá: "tolik, kolik", "tolik (ženskejch), kolik"
@@ -535,12 +535,12 @@ sub _create_atoms
 
             { 'other/numtype' => { 'víceslovná' => { 'prontype' => { 'ind' => '0',
                                                                      '@'   => { 'numtype' => { 'mult' => '9',
-                                                                                               'gen'  => '8',
+                                                                                               'sets' => '8',
                                                                                                'ord'  => '7',
                                                                                                '@'    => '6' }}}},
                                    '@'          => { 'prontype' => { 'ind' => '5',
                                                                      '@'   => { 'numtype' => { 'mult' => '4',
-                                                                                               'gen'  => '3',
+                                                                                               'sets' => '3',
                                                                                                'ord'  => '2',
                                                                                                '@'    => '1' }}}}}}
     );

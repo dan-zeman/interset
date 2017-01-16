@@ -71,7 +71,7 @@ sub _create_atoms
             # example ordinal: prvi, drugi, tretje, devetnajstega
             'Numeral-ordinal'           => ['pos' => 'adj', 'numtype' => 'ord'],
             # example special: dvoje, enkratnem
-            'Numeral-special'           => ['pos' => 'num', 'numtype' => 'gen'],
+            'Numeral-special'           => ['pos' => 'num', 'numtype' => 'sets'],
             # example: , . " - ?
             'PUNC'                      => ['pos' => 'punc'],
             # example: ne, pa, še, že, le
@@ -129,7 +129,7 @@ sub _create_atoms
                                                                                                                                      '@'       => 'Adjective-qualificative' }}}}}}}},
                        'num'  => { 'numtype' => { 'ord'  => 'Numeral-ordinal',
                                                   'mult' => 'Numeral-multiple',
-                                                  'gen'  => 'Numeral-special',
+                                                  'sets' => 'Numeral-special',
                                                   '@'    => 'Numeral-cardinal' }},
                        'verb' => { 'verbtype' => { 'cop' => 'Verb-copula',
                                                    'mod' => 'Verb-modal',
