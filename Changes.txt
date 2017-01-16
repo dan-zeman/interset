@@ -1,5 +1,12 @@
 {{$NEXT}}
 
+Features:
+* In line with Universal Dependencies v2, the feature 'foreign' has again just
+  one value. The values 'fscript' and 'tscript' had been used only in
+  el::conll. They are now preserved in the 'other' feature.
+
+
+
 3.000     2017-01-15 11:04:26+01:00 Europe/Prague
 
 Drivers:
