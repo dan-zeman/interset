@@ -123,9 +123,9 @@ sub _create_atoms
             # abbreviatory noun, acronym: ΟΗΕ, ΝΑΤΟ, ΕΤΑ, ΣΕΒ, ΔΠΔΓ
             'RgAnXx' => ['pos' => 'noun', 'abbr' => 'abbr'],
             # foreign word in foreign script: Sudan, van, OLAF, of, Journal
-            'RgFwOr' => ['foreign' => 'fscript'],
+            'RgFwOr' => ['foreign' => 'foreign', 'other' => {'script' => 'foreign'}],
             # foreign word transcribed to the Greek script: Ιράν, Ιράκ, Δρ, Μπους, Γιουστσένκο
-            'RgFwTr' => ['foreign' => 'tscript'],
+            'RgFwTr' => ['foreign' => 'foreign', 'other' => {'script' => 'translit'}],
             # COMP = multi-word expression: εν_λόγω (this, said), εν_όψει (with a view), απ'_όλα (all), εν__λόγω, _εν_λόγω
             'COMP'   => ['other' => {'pos' => 'comp'}],
             # PUNCT = punctuation: ,, ., ", -, :
@@ -176,9 +176,9 @@ sub _create_atoms
                                                                                                         '@'   => 'PtOt' }}}}}},
                          'punc' => 'PUNCT',
                          '@'    => { 'abbr' => { 'abbr' => 'RgAbXx',
-                                                 '@'    => { 'foreign' => { 'fscript' => 'RgFwOr',
-                                                                            'tscript' => 'RgFwTr',
-                                                                            'foreign' => 'RgFwTr',
+                                                 '@'    => { 'foreign' => { 'foreign' => { 'other/script' => { 'foreign'  => 'RgFwOr',
+                                                                                                               'translit' => 'RgFwTr',
+                                                                                                               '@'        => 'RgFwTr' }},
                                                                             '@'       => { 'other/pos' => { 'comp' => 'COMP',
                                                                                                             '@'    => 'RgFwTr' }}}}}}}}
     );

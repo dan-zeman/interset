@@ -410,12 +410,10 @@ my %matrix = @_matrix =
     'foreign' =>
     {
         'priority' => 400,
-        'values' => ['foreign', 'fscript', 'tscript', ''],
+        'values' => ['foreign', ''],
         'replacements' =>
         [
-            ['foreign'],
-            ['fscript', 'foreign'],
-            ['tscript', 'foreign']
+            ['foreign']
         ],
         'uname' => 'Foreign'
     },
@@ -1270,21 +1268,23 @@ sub _validate_value
     else
     {
         # If the list of renamed values grows longer (hopefully not!) we may want to put this into a separate hash.
-        return 'plur'  if($feature eq 'number' && $value eq 'plu'); # renamed in fall 2014
-        return 'cmp'   if($feature eq 'degree' && $value eq 'comp'); # renamed in Interset 2.049, 2015-09-29
-        return 'prosp' if($feature eq 'aspect' && $value eq 'pro'); # renamed in UD v2, 2016-12-01
-        return 'conv'  if($feature eq 'verbform' && $value eq 'trans'); # renamed in UD v2, 2016-12-01
-        return 'infm'  if($feature eq 'polite' && $value eq 'inf'); # renamed in UD v2, 2016-12-01
-        return 'form'  if($feature eq 'polite' && $value eq 'pol'); # renamed in UD v2, 2016-12-01
-        return 'infm'  if($feature eq 'abspolite' && $value eq 'inf'); # renamed in UD v2, 2016-12-01
-        return 'form'  if($feature eq 'abspolite' && $value eq 'pol'); # renamed in UD v2, 2016-12-01
-        return 'infm'  if($feature eq 'datpolite' && $value eq 'inf'); # renamed in UD v2, 2016-12-01
-        return 'form'  if($feature eq 'datpolite' && $value eq 'pol'); # renamed in UD v2, 2016-12-01
-        return 'infm'  if($feature eq 'ergpolite' && $value eq 'inf'); # renamed in UD v2, 2016-12-01
-        return 'form'  if($feature eq 'ergpolite' && $value eq 'pol'); # renamed in UD v2, 2016-12-01
+        return 'plur'    if($feature eq 'number' && $value eq 'plu'); # renamed in fall 2014
+        return 'cmp'     if($feature eq 'degree' && $value eq 'comp'); # renamed in Interset 2.049, 2015-09-29
+        return 'prosp'   if($feature eq 'aspect' && $value eq 'pro'); # renamed in UD v2, 2016-12-01
+        return 'conv'    if($feature eq 'verbform' && $value eq 'trans'); # renamed in UD v2, 2016-12-01
+        return 'infm'    if($feature eq 'polite' && $value eq 'inf'); # renamed in UD v2, 2016-12-01
+        return 'form'    if($feature eq 'polite' && $value eq 'pol'); # renamed in UD v2, 2016-12-01
+        return 'infm'    if($feature eq 'abspolite' && $value eq 'inf'); # renamed in UD v2, 2016-12-01
+        return 'form'    if($feature eq 'abspolite' && $value eq 'pol'); # renamed in UD v2, 2016-12-01
+        return 'infm'    if($feature eq 'datpolite' && $value eq 'inf'); # renamed in UD v2, 2016-12-01
+        return 'form'    if($feature eq 'datpolite' && $value eq 'pol'); # renamed in UD v2, 2016-12-01
+        return 'infm'    if($feature eq 'ergpolite' && $value eq 'inf'); # renamed in UD v2, 2016-12-01
+        return 'form'    if($feature eq 'ergpolite' && $value eq 'pol'); # renamed in UD v2, 2016-12-01
+        return 'foreign' if($feature eq 'foreign' && $value eq 'fscript'); # value removed in UD v2, 2016-12-01
+        return 'foreign' if($feature eq 'foreign' && $value eq 'tscript'); # value removed in UD v2, 2016-12-01
         confess("Unknown value '$value' of feature '$feature'");
     }
- }
+}
 
 
 
@@ -2172,7 +2172,7 @@ sub get_ufeatures
         my $value = join(',', @values);
         # Interset uses for boolean features the value identical to feature name while universal features use "Yes".
         # Exception: Foreign used to be boolean, now it has three values but foreign=foreign is still one of them.
-        $value = 'Yes' if($value eq $uname && $uname ne 'Foreign');
+        $value = 'Yes' if($value eq $uname);
         my $pair = "$uname=$value";
         # Some values of some features became obsolete because the distinction was moved to the POS tag level.
         next if($pair =~ m/^(PronType=Prn|ConjType=(Coor|Sub)|NounType=(Com|Prop)|VerbType=Aux|Variant=[0-9])$/);
