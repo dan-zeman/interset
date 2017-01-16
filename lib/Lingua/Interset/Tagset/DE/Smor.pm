@@ -6,7 +6,7 @@
 package Lingua::Interset::Tagset::DE::Smor;
 use strict;
 use warnings;
-our $VERSION = '3.002';
+our $VERSION = '3.003';
 
 use utf8;
 use open ':utf8';
