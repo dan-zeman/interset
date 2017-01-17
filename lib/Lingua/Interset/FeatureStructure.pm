@@ -1271,14 +1271,8 @@ sub _validate_value
         return 'cmp'     if($feature eq 'degree' && $value eq 'comp'); # renamed in Interset 2.049, 2015-09-29
         return 'prosp'   if($feature eq 'aspect' && $value eq 'pro'); # renamed in UD v2, 2016-12-01
         return 'conv'    if($feature eq 'verbform' && $value eq 'trans'); # renamed in UD v2, 2016-12-01
-        return 'infm'    if($feature eq 'polite' && $value eq 'inf'); # renamed in UD v2, 2016-12-01
-        return 'form'    if($feature eq 'polite' && $value eq 'pol'); # renamed in UD v2, 2016-12-01
-        return 'infm'    if($feature eq 'abspolite' && $value eq 'inf'); # renamed in UD v2, 2016-12-01
-        return 'form'    if($feature eq 'abspolite' && $value eq 'pol'); # renamed in UD v2, 2016-12-01
-        return 'infm'    if($feature eq 'datpolite' && $value eq 'inf'); # renamed in UD v2, 2016-12-01
-        return 'form'    if($feature eq 'datpolite' && $value eq 'pol'); # renamed in UD v2, 2016-12-01
-        return 'infm'    if($feature eq 'ergpolite' && $value eq 'inf'); # renamed in UD v2, 2016-12-01
-        return 'form'    if($feature eq 'ergpolite' && $value eq 'pol'); # renamed in UD v2, 2016-12-01
+        return 'infm'    if($feature =~ m/^(abs|dat|erg)?polite/ && $value eq 'inf'); # renamed in UD v2, 2016-12-01
+        return 'form'    if($feature =~ m/^(abs|dat|erg)?polite/ && $value eq 'pol'); # renamed in UD v2, 2016-12-01
         return 'foreign' if($feature eq 'foreign' && $value eq 'fscript'); # value removed in UD v2, 2016-12-01
         return 'foreign' if($feature eq 'foreign' && $value eq 'tscript'); # value removed in UD v2, 2016-12-01
         return 'mult'    if($feature eq 'numtype' && $value eq 'gen'); # value removed in UD v2, 2016-12-01
