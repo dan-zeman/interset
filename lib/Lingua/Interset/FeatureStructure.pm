@@ -1243,19 +1243,14 @@ sub value_valid
 
 
 #------------------------------------------------------------------------------
-# This method is called from several places in the set() method where it is
-# necessary to deal with unknown values of features. It may throw exceptions!
-# The method takes two arguments besides $self, $feature and $value. Only
-# single values are expected, no arrayrefs and no serialized lists (the set()
-# method takes care of lists before calling this).
-# The method ensures backward compatibility of feature values that have been
-# renamed. It does not help with deprecated feature names, though (see the
-# method set(), which deals with deprecated and renamed features). If a value
-# is known for the given feature, it will be returned. If it is currently
-# unknown but it used to exist and was renamed, the new value is returned. If
-# it is not known to have ever existed, an exception will be thrown.
+# This method ensures backwards compatibility of features and values that have
+# been renamed. If the feature-value pair is valid, the value is returned. If
+# the feature/value is not valid in the current version of Interset but it is
+# known to have existed in the past, the closest match is returned. If it is
+# unknown and no mapping is available, we return undef. This method does not
+# throw exceptions.
 #------------------------------------------------------------------------------
-sub _validate_value
+sub _get_compatible_value
 {
     my $self = shift;
     my $feature = shift;
@@ -1276,6 +1271,34 @@ sub _validate_value
         return 'foreign' if($feature eq 'foreign' && $value eq 'fscript'); # value removed in UD v2, 2016-12-01
         return 'foreign' if($feature eq 'foreign' && $value eq 'tscript'); # value removed in UD v2, 2016-12-01
         return 'mult'    if($feature eq 'numtype' && $value eq 'gen'); # value removed in UD v2, 2016-12-01
+        # If we are here, the feature-value pair is unknown and we do not know where to map it to.
+        return undef;
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# This method is called from several places in the set() method where it is
+# necessary to deal with unknown values of features. It may throw exceptions!
+# The method takes two arguments besides $self, $feature and $value. Only
+# single values are expected, no arrayrefs and no serialized lists (the set()
+# method takes care of lists before calling this). The method calls the
+# _get_compatible_value() method. It differs in that it throws an exception if
+# the value is invalid and cannot be replaced.
+#------------------------------------------------------------------------------
+sub _validate_value
+{
+    my $self = shift;
+    my $feature = shift;
+    my $value = shift;
+    my $value2 = $self->_get_compatible_value($feature, $value);
+    if(defined($value2))
+    {
+        return $value2;
+    }
+    else
+    {
         confess("Unknown value '$value' of feature '$feature'");
     }
 }
@@ -2022,6 +2045,8 @@ sub _create_map_from_uf
             $map_from_uf{$matrix{$feature}{uname}} = $feature;
         }
     }
+    # Backward compatibility with UD v1:
+    $map_from_uf{Negative} = 'polarity';
     return \%map_from_uf;
 }
 
@@ -2090,7 +2115,7 @@ sub upos { return get_upos(@_); }
   $fs->add_ufeatures ('Case=Nom', 'Gender=Masc,Neut');
 
 Takes a list of feature-value pairs in the format prescribed by the
-Universal Dependencies (L<http://universaldependencies.github.io/docs/>), i.e.
+Universal Dependencies (L<http://universaldependencies.org/>), i.e.
 all features and values are capitalized, some features are renamed and all
 feature-value pairs are ordered alphabetically.
 Sets our feature values accordingly.
@@ -2120,7 +2145,10 @@ sub add_ufeatures
             $value = $feature if($value eq 'yes');
             # Universal Features use comma to join multi-values but we use the vertical bar.
             $value =~ s/,/\|/g;
-            if(defined($feature) && value_valid($feature, $value))
+            # Backward compatibility: if this is an old value that has been renamed, get the new value.
+            # If the value has never been known, we will get back an undefined value.
+            $value = $self->_get_compatible_value($feature, $value);
+            if(defined($feature) && defined($value))
             {
                 $self->set($feature, $value);
             }
