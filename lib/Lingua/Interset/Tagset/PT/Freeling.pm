@@ -4,7 +4,7 @@
 package Lingua::Interset::Tagset::PT::Freeling;
 use strict;
 use warnings;
-our $VERSION = '3.003';
+our $VERSION = '3.004';
 
 use utf8;
 use open ':utf8';
