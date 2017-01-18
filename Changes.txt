@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+3.003     2017-01-18 07:27:27+01:00 Europe/Prague
+
 Fixes:
 * Reading (setting) old feature-value pairs politeness=inf|pol and converting
   them internally to polite=infm|form.
