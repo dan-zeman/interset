@@ -1272,7 +1272,7 @@ sub _get_compatible_value
         return 'foreign' if($feature eq 'foreign' && $value eq 'tscript'); # value removed in UD v2, 2016-12-01
         return 'mult'    if($feature eq 'numtype' && $value eq 'gen'); # value removed in UD v2, 2016-12-01
         # If we are here, the feature-value pair is unknown and we do not know where to map it to.
-        return undef;
+        return;
     }
 }
 
