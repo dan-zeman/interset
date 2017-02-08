@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+3.004     2017-02-08 15:25:24+01:00 Europe/Prague
+
 Features:
 * In line with Universal Dependencies v2, added value 'vnoun' of feature
   'verbform' (verbal noun). The value 'ger' is still available but slightly
