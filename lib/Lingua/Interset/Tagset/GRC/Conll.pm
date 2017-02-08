@@ -145,7 +145,7 @@ sub _create_atoms
             # The tagset defines gerund and gerundive, probably because it is used also for Latin.
             # Neither of them occurs in in the Ancient Greek data.
             'd' => ['verbform' => 'ger'], ###!!! gerund
-            'g' => ['verbform' => 'ger'], ###!!! gerundive
+            'g' => ['verbform' => 'gdv'], ###!!! gerundive
         },
         'encode_map' =>
         {
@@ -156,7 +156,8 @@ sub _create_atoms
                                                     'imp' => 'm',
                                                     '@'   => '-' }},
                             'part' => 'p',
-                            'ger'  => 'g',
+                            'ger'  => 'd',
+                            'gdv'  => 'g',
                             '@'    => '-' }
         }
     );

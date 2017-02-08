@@ -3080,7 +3080,7 @@ sub is_verb {my $self = shift; return $self->contains('pos', 'verb');}
 #------------------------------------------------------------------------------
 =method is_verbal_noun()
 =cut
-sub is_verb {my $self = shift; return $self->contains('verbform', 'vnoun');}
+sub is_verbal_noun {my $self = shift; return $self->contains('verbform', 'vnoun');}
 
 #------------------------------------------------------------------------------
 =method is_vocative()

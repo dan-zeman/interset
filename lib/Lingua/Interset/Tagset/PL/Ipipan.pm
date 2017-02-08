@@ -91,8 +91,8 @@ sub _create_atoms
             'pcon'    => ['pos' => 'verb', 'verbform' => 'conv', 'tense' => 'pres'],
             # im. przys. uprzedni = transgressive past (usłyszawszy, zostawiwszy, zrobiwszy, upewniwszy, włożywszy)
             'pant'    => ['pos' => 'verb', 'verbform' => 'conv', 'tense' => 'past'],
-            # odsłownik = gerund (uparcie, ustąpieniu, wprowadzeniu, odcięciu, tłumaczenia)
-            'ger'     => ['pos' => 'verb', 'verbform' => 'ger'],
+            # odsłownik = verbal noun (uparcie, ustąpieniu, wprowadzeniu, odcięciu, tłumaczenia)
+            'ger'     => ['pos' => 'verb', 'verbform' => 'vnoun'],
             # im. przym. czynny = active present participle (mieszkającej, śpiącego, wzruszające, kuszącej, kusząca)
             'pact'    => ['pos' => 'verb', 'verbform' => 'part', 'tense' => 'pres', 'voice' => 'act'],
             # im. przym. bierny = passive participle (położonej, otoczony, zwodzony, afiliowanym, wybrany)
@@ -148,9 +148,9 @@ sub _create_atoms
                                                                                      'part'  => { 'voice' => { 'act' => 'pact',
                                                                                                                '@'   => { 'other/verbform' => { 'imps' => 'imps',
                                                                                                                                                 '@'    => 'ppas' }}}},
-                                                                                     'ger'   => 'ger',
-                                                                                     'conv' => { 'tense' => { 'pres' => 'pcon',
-                                                                                                              '@'    => 'pant' }},
+                                                                                     'vnoun' => 'ger',
+                                                                                     'conv'  => { 'tense' => { 'pres' => 'pcon',
+                                                                                                               '@'    => 'pant' }},
                                                                                      '@'     => 'pred' }}}},
                        'adv'  => 'adv',
                        'adp'  => 'prep',
