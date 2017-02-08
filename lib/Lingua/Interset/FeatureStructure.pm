@@ -874,23 +874,23 @@ my %matrix = @_matrix =
         ],
         'uname' => 'Subcat'
     },
-    # Verb form.
-    ###!!! Combine this feature with mood? Non-empty mood seems to always imply verbform=fin.
-    ###!!! On the other hand, we may want to make some verb forms self-standing parts of speech:
+    # Verb form. May apply to non-verbs as well:
     # part (participle, properties of both verbs and adjectives)
-    # ger (gerund, properties of both verbs and nouns)
+    # vnoun (verbal noun)
+    # ger (gerund, properties of both verbs and nouns, deprecated)
     # gdv (gerundive, properties of both verbs and adjectives)
     # conv (converb, properties of both verbs and adverbs)
     'verbform' =>
     {
         'priority' => 60,
-        'values' => ['fin', 'inf', 'sup', 'part', 'conv', 'ger', 'gdv', ''],
+        'values' => ['fin', 'inf', 'sup', 'part', 'conv', 'vnoun', 'ger', 'gdv', ''],
         'replacements' =>
         [
             ['inf'],
             ['fin'],
             ['part'],
-            ['ger'],
+            ['vnoun', 'ger'],
+            ['ger', 'vnoun'],
             ['gdv', 'part'],
             ['sup'],
             ['conv']
@@ -3076,6 +3076,11 @@ sub is_typo {my $self = shift; return $self->typo() eq 'typo';}
 =method is_verb()
 =cut
 sub is_verb {my $self = shift; return $self->contains('pos', 'verb');}
+
+#------------------------------------------------------------------------------
+=method is_verbal_noun()
+=cut
+sub is_verb {my $self = shift; return $self->contains('verbform', 'vnoun');}
 
 #------------------------------------------------------------------------------
 =method is_vocative()
