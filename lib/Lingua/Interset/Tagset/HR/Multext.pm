@@ -78,14 +78,14 @@ sub _create_atoms
             'g' => [],
             # possessive adjective
             # examples: Žuvanićev, Ashdownov, vladin
-            's' => ['poss' => 'poss'],
+            's' => ['poss' => 'yes'],
             # participial adjective
             # examples: žrtvovan, zvan, znan, zloupotrebljavan
             'p' => ['verbform' => 'part']
         },
         'encode_map' =>
 
-            { 'poss' => { 'poss' => 's',
+            { 'poss' => { 'yes' => 's',
                            '@'   => { 'verbform' => { 'part' => 'p',
                                                       '@'    => 'g' }}}}
     );

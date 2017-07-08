@@ -82,14 +82,14 @@ sub _create_atoms
             'g' => [],
             # possessive adjective
             # examples: kalcijev, ogljikov, papežev
-            's' => ['poss' => 'poss'],
+            's' => ['poss' => 'yes'],
             # participial adjective
             # examples: prepričan, pripravljen, namenjen
             'p' => ['verbform' => 'part']
         },
         'encode_map' =>
 
-            { 'poss' => { 'poss' => 's',
+            { 'poss' => { 'yes' => 's',
                            '@'   => { 'verbform' => { 'part' => 'p',
                                                       '@'    => 'g' }}}}
     );

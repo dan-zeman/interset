@@ -130,7 +130,7 @@ sub _create_atoms
             "DET\tERKARR" => ['pos' => 'adj', 'prontype' => 'dem'],
             # determiner, demonstrative, emphatic/strong = determinatzaile, erakusleak, indartsu
             # (bera = the same) ###!!! ??? reflexive ???
-            "DET\tERKIND" => ['pos' => 'adj', 'prontype' => 'dem', 'reflex' => 'reflex'],
+            "DET\tERKIND" => ['pos' => 'adj', 'prontype' => 'dem', 'reflex' => 'yes'],
             # determiner, indefinite common
             # (edozein = anything, ezein = none, zernahi = whatever)
             "DET\tNOLARR" => ['pos' => 'adj', 'prontype' => 'ind|neg'],
@@ -188,7 +188,7 @@ sub _create_atoms
             # izen = noun, pronominal
             # This tag is rare because most pronouns already have nominal inflection. Only the independent forms of possessive pronouns fall here.
             # (nirea = mine, geurea = ours, zuena = yours)
-            "IZE\tIOR_IZEELI" => ['pos' => 'noun', 'prontype' => 'prs', 'poss' => 'poss'],
+            "IZE\tIOR_IZEELI" => ['pos' => 'noun', 'prontype' => 'prs', 'poss' => 'yes'],
             # izen = noun, denominal (noun with secondary nominal inflection after the -ko (locative genitive) suffix)
             # For example, "maila" = "degree, level"; "mailak" = "degrees, levels"; "mailako", "mailakoa" = "level", "mailakoak" = "levels".
             # alde = side, aldekoa = supporter, fan
@@ -265,7 +265,7 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'pos' => { 'noun' => { 'prontype' => { 'prs' => { 'poss' => { 'poss' => "IZE\tIOR_IZEELI",
+            'pos' => { 'noun' => { 'prontype' => { 'prs' => { 'poss' => { 'yes' => "IZE\tIOR_IZEELI",
                                                                           '@'    => { 'variant' => { '1' => "IOR\tPERIND",
                                                                                                      '@' => "IOR\tPERARR" }}}},
                                                    'rcp' => "IOR\tELK",
@@ -280,7 +280,7 @@ sub _create_atoms
                                                                                                                                              'det'  => "IZE\tDET_IZEELI",
                                                                                                                                              'noun' => "IZE\tIZE_IZEELI",
                                                                                                                                              '@'    => "IZE\tARR" }}}}}}}},
-                       'adj'  => { 'prontype' => { 'dem' => { 'reflex' => { 'reflex' => "DET\tERKIND",
+                       'adj'  => { 'prontype' => { 'dem' => { 'reflex' => { 'yes' => "DET\tERKIND",
                                                                             '@'      => "DET\tERKARR" }},
                                                    'int' => { 'other/determiner' => { 'no' => "ADJ\tGAL",
                                                                                       '@'  => "DET\tNOLGAL" }},

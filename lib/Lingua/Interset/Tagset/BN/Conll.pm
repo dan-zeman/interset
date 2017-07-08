@@ -151,7 +151,7 @@ sub _create_atoms
             # , . - " ? ; : !
             'SYM'  => ['pos' => 'punc'],
             # foreign or unknown words
-            'UNK'  => ['foreign' => 'foreign'],
+            'UNK'  => ['foreign' => 'yes'],
             # The 'NULL' tag is used for artificial NULL nodes.
             'NULL' => ['other' => {'pos' => 'null'}]
         },

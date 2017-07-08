@@ -75,9 +75,9 @@ sub _create_atoms
             # interjection
             'I-' => ['pos' => 'int'],
             # abbreviation
-            'Y-' => ['abbr' => 'abbr'],
+            'Y-' => ['abbr' => 'yes'],
             # typo
-            'T-' => ['typo' => 'typo'],
+            'T-' => ['typo' => 'yes'],
             # punctuation (not used in UMH subcorpus)
             'G-' => ['pos' => 'punc'],
             # unknown tokens etc. (former X?)
@@ -89,8 +89,8 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            { 'abbr' => { 'abbr' => 'Y-',
-                          '@'    => { 'typo' => { 'typo' => 'T-',
+            { 'abbr' => { 'yes' => 'Y-',
+                          '@'    => { 'typo' => { 'yes' => 'T-',
                                                   '@'    => { 'numtype' => { ''  => { 'pos' => { 'noun' => { 'prontype' => { ''    => { 'nountype' => { 'prop' => 'Z-',
                                                                                                                                                         '@'    => 'N-' }},
                                                                                                                              'dem' => 'SD',

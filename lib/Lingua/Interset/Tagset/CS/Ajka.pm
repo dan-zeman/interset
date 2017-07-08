@@ -82,7 +82,7 @@ sub _create_atoms
             'k0' => ['pos' => 'int'],
             # abbreviation
             # examples: atd., apod.
-            'kA' => ['abbr' => 'abbr'],
+            'kA' => ['abbr' => 'yes'],
             # separate class for "by", "aby", "kdyby" and their inflected forms
             # "by" is a form of the auxiliary verb "být" (to be), used together with participle of a main verb, to create conditional (e.g. "dělal by")
             # "aby" is a subordinating conjunction derived from "by" and meaning "so that". It inflects for person and number of the subject of the subordinate clause.
@@ -91,7 +91,7 @@ sub _create_atoms
         },
         'encode_map' =>
 
-             { 'abbr' => { 'abbr' => 'kA',
+             { 'abbr' => { 'yes' => 'kA',
                            '@'    => { 'numtype' => { '' => { 'prontype' => { ''  => { 'pos' => { 'noun' => 'k1',
                                                                                                   'adj'  => 'k2',
                                                                                                   'num'  => 'k4',
@@ -146,7 +146,7 @@ sub _create_atoms
             # Relative possessive pronouns: jehož, jejíž, jejichž
             # Indefinite possessive pronouns: něčí, číkoli, čísi
             # Negative possessive pronouns: ničí
-            'xO' => ['prontype' => 'prs', 'poss' => 'poss'],
+            'xO' => ['prontype' => 'prs', 'poss' => 'yes'],
             # Demonstrative pronoun.
             # Examples: ten, tento, tenhle, tenž, tenže, onen, takový, takovýhle, takovýto
             'xD' => ['prontype' => 'dem'],
@@ -156,7 +156,7 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            { 'poss' => { 'poss' => 'xO',
+            { 'poss' => { 'yes' => 'xO',
                           '@'    => { 'prontype' => { 'prs' => 'xP',
                                                       'dem' => 'xD',
                                                       'tot' => 'xT' }}}}
@@ -240,7 +240,7 @@ sub _create_atoms
             # Reflexive pronoun.
             # Examples of reflexive personal pronouns: sebe, sobě, si, se, sebou
             # Examples of reflexive possessive pronouns: svůj, svá, své, sví
-            'yF' => ['prontype' => 'prs', 'reflex' => 'reflex'],
+            'yF' => ['prontype' => 'prs', 'reflex' => 'yes'],
             # Interrogative pronoun, numeral or adverb.
             # Pronoun examples: kdo, kdopak, co, copak, což, cožpak, cože, jaký, jakýpak, který, čí
             # Numeral examples: kolik
@@ -264,7 +264,7 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            { 'reflex' => { 'reflex' => 'yF',
+            { 'reflex' => { 'yes' => 'yF',
                             '@'      => { 'prontype' => { 'int' => 'yQ',
                                                           'rel' => 'yR',
                                                           'neg' => 'yN',

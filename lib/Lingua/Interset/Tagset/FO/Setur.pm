@@ -69,16 +69,16 @@ sub _create_atoms
             # interjection
             'I' => ['pos' => 'int'],
             # foreign word
-            'F' => ['foreign' => 'foreign'],
+            'F' => ['foreign' => 'yes'],
             # unanalyzed word
             'X' => [],
             # abbreviation
-            'T' => ['abbr' => 'abbr']
+            'T' => ['abbr' => 'yes']
         },
         'encode_map' =>
         {
-            'abbr' => { 'abbr' => 'T',
-                        '@'    => { 'foreign' => { 'foreign' => 'F',
+            'abbr' => { 'yes' => 'T',
+                        '@'    => { 'foreign' => { 'yes' => 'F',
                                                    '@'       => { 'pos' => { 'noun' => { 'prontype' => { ''  => 'S',
                                                                                                          '@' => 'P' }},
                                                                              'adj'  => 'A',

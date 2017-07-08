@@ -82,7 +82,7 @@ around BUILDARGS => sub
         'IC' => ['pos' => 'punc', 'punctype' => 'quot'],
         # ID Part of idiom (multi-word unit)
         # Examples: att, Backberger, och, av, Hellsten
-        'ID' => ['hyph' => 'hyph'], ###!!! Some other solution should be found.
+        'ID' => ['hyph' => 'yes'], ###!!! Some other solution should be found.
         # IG Other punctuation mark
         # Examples: ..., /, =, ...., 1
         'IG' => ['pos' => 'punc'],
@@ -231,7 +231,7 @@ around BUILDARGS => sub
                                                'dash' => 'IT',
                                                'excl' => 'IU',
                                                '@'    => 'IG' }},
-                   '@'    => { 'hyph' => { 'hyph' => 'ID',
+                   '@'    => { 'hyph' => { 'yes' => 'ID',
                                            '@'    => { 'other/pos' => { 'dummy' => 'QQ',
                                                                         'excl'  => 'UU',
                                                                         'voc'   => 'TT',

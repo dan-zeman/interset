@@ -48,7 +48,7 @@ sub _create_atoms
         {
             'A'    => ['pos' => 'adj'],
             'ADV'  => ['pos' => 'adv'],
-            'COM'  => ['hyph' => 'hyph'],
+            'COM'  => ['hyph' => 'yes'],
             'CONJ' => ['pos' => 'conj'],
             'INTJ' => ['pos' => 'int'],
             'NID'  => [], # unknown word
@@ -70,7 +70,7 @@ sub _create_atoms
                        'conj' => 'CONJ',
                        'part' => 'PART',
                        'int'  => 'INTJ',
-                       '@'    => { 'hyph' => { 'hyph' => 'COM',
+                       '@'    => { 'hyph' => { 'yes' => 'COM',
                                                '@'    => 'NID' }}}
         }
     );
@@ -89,7 +89,7 @@ sub _create_atoms
         'intfeature' => 'hyph',
         'simple_decode_map' =>
         {
-            'СЛ' => 'hyph'
+            'СЛ' => 'yes'
         }
     );
     # PO- (SMJAG) ####################
@@ -253,7 +253,7 @@ sub _create_atoms
         'intfeature' => 'typo',
         'simple_decode_map' =>
         {
-            'НЕСТАНД' => 'typo'
+            'НЕСТАНД' => 'yes'
         }
     );
     # OBSOLETE TAGS ####################

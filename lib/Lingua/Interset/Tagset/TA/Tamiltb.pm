@@ -75,7 +75,7 @@ sub _create_atoms
             # QQ: quantifier, general (mika, mikap, mikac, atikam, atika)
             'QQ' => ['pos' => 'adj', 'prontype' => 'prn', 'numtype' => 'card'],
             # Rh: reflexive pronoun (tannaip, tanakku, tamakk, tanatu)
-            'Rh' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex'],
+            'Rh' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'yes'],
             # Ri: interrogative pronoun (yAr = who, evan = who he, etu = which, enna = what)
             'Ri' => ['pos' => 'noun', 'prontype' => 'int'],
             # Rp: personal pronoun (wAn = I, nIngkal = you, tAn = he/she, itu = it, wAm = we, avarkal = they, anaittum = they)
@@ -172,7 +172,7 @@ sub _create_atoms
                                                                                                              '@' => { 'nountype' => { 'prop' => 'NE',
                                                                                                                                       '@'    => { 'verbform' => { 'part' => 'NP',
                                                                                                                                                                   '@'    => 'NN' }}}}}}}},
-                                                   '@' => { 'reflex' => { 'reflex' => 'Rh',
+                                                   '@' => { 'reflex' => { 'yes' => 'Rh',
                                                                           '@'      => { 'prontype' => { 'int' => 'Ri',
                                                                                                         'prs' => 'Rp',
                                                                                                         '@'   => 'RB' }}}}}},

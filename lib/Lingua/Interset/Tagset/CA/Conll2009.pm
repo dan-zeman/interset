@@ -107,7 +107,7 @@ sub _create_atoms
             'ordinal'       => ['numtype' => 'ord'],
             # types of pronouns
             'personal'      => ['prontype' => 'prs'],
-            'possessive'    => ['prontype' => 'prs', 'poss' => 'poss'],
+            'possessive'    => ['prontype' => 'prs', 'poss' => 'yes'],
             'article'       => ['prontype' => 'art'],
             'demonstrative' => ['prontype' => 'dem'],
             'interrogative' => ['prontype' => 'int'],
@@ -145,7 +145,7 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'pos' => { 'noun' => { 'poss' => { 'poss' => 'possessive',
+            'pos' => { 'noun' => { 'poss' => { 'yes' => 'possessive',
                                                '@'    => { 'prontype' => { 'prs' => 'personal',
                                                                            'dem' => 'demonstrative',
                                                                            'int' => 'interrogative',
@@ -155,7 +155,7 @@ sub _create_atoms
                                                                            '@'   => { 'nountype' => { 'com'  => 'common',
                                                                                                       'prop' => 'proper',
                                                                                                       '@'    => { 'other/postype' => { 'currency' => 'currency' }}}}}}}},
-                       'adj'  => { 'poss' => { 'poss' => 'possessive',
+                       'adj'  => { 'poss' => { 'yes' => 'possessive',
                                                '@'    => { 'prontype' => { 'prs' => 'personal',
                                                                            'art' => 'article',
                                                                            'dem' => 'demonstrative',

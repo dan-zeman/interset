@@ -101,13 +101,13 @@ sub _create_atoms
             # interjection
             'I-' => ['pos' => 'int'],
             # abbreviation
-            'Y-' => ['abbr' => 'abbr'],
+            'Y-' => ['abbr' => 'yes'],
             # typo
-            'T-' => ['typo' => 'typo'],
+            'T-' => ['typo' => 'yes'],
             # punctuation (not used in UMH subcorpus)
             'G-' => ['pos' => 'punc'],
             # non-Arabic script
-            'X-' => ['foreign' => 'foreign'],
+            'X-' => ['foreign' => 'yes'],
             # residual class for unknown words
             'U-' => [],
             # if empty tag occurs treat it as unknown word
@@ -115,9 +115,9 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            { 'abbr' => { 'abbr' => 'Y-',
-                 '@' => { 'typo' => { 'typo' => 'T-',
-                             '@' => { 'foreign' => { 'foreign' => 'X-',
+            { 'abbr' => { 'yes' => 'Y-',
+                 '@' => { 'typo' => { 'yes' => 'T-',
+                             '@' => { 'foreign' => { 'yes' => 'X-',
                                             '@' => { 'numtype' => { ''  => { 'pos' => { 'noun' => { 'prontype' => { ''    => { 'nountype' => { 'prop' => 'Z-',
                                                                                                                                                '@'    => 'N-' }},
                                                                                                                     'prs' => 'SP',

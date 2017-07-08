@@ -48,7 +48,7 @@ around BUILDARGS => sub
         'NE'     => ['pos' => 'noun', 'nountype' => 'prop'],
         # truncated first part of a compound / Kompositions-Erstglied
         # "be- [und entladen]", "Ein- [und Ausgang]", "Damen- [und Herrenbekleidung]"
-        'TRUNC'  => ['hyph' => 'hyph'],
+        'TRUNC'  => ['hyph' => 'yes'],
         # attributive adjective / attributives Adjektiv
         # modifies a noun
         # all inflected adjectives belong here; some uninflected as well
@@ -66,12 +66,12 @@ around BUILDARGS => sub
         # reflexive personal pronoun / reflexives Personalpronomen
         # "mir", "mich", "dir", "dich", ... when used reflexively ("ich freue mich daran")
         # "einander" ("sie mögen sich einander")
-        'PRF'    => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'reflex'],
+        'PRF'    => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'yes'],
         # possessive pronoun / Possessivpronomen
         # PPOSAT: "mein", "dein", "sein", "ihr", "unser", "euer" ... "ihr Kleid", "euer Auto"
         # PPOSS: "[das ist] meins"
-        'PPOSAT' => ['pos' => 'adj', 'prontype' => 'prs', 'poss' => 'poss'],
-        'PPOSS'  => ['pos' => 'noun', 'prontype' => 'prs', 'poss' => 'poss'],
+        'PPOSAT' => ['pos' => 'adj', 'prontype' => 'prs', 'poss' => 'yes'],
+        'PPOSS'  => ['pos' => 'noun', 'prontype' => 'prs', 'poss' => 'yes'],
         # demonstrative pronoun / Demonstrativpronomen
         # PDS: "dies [ist ein Buch]", "jenes [ist schwierig]"
         # PDAT: "dieses [Buch]", "jene [Frage]"
@@ -181,7 +181,7 @@ around BUILDARGS => sub
         '$.'      => ['pos' => 'punc', 'punctype' => 'peri'],
         # foreign-language material / Fremdsprachliches Material
         # "[der spanische Film] Mujer de [Benjamin]"
-        'FM'      => ['foreign' => 'foreign'],
+        'FM'      => ['foreign' => 'yes'],
         # non-word / Nichtwort
         # "[das Modell] DX3E"
         'XY'      => []
@@ -191,8 +191,8 @@ around BUILDARGS => sub
     (
         'pos' => { 'noun' => { 'prontype' => { ''    => { 'nountype' => { 'prop' => 'NE',
                                                                           '@'    => 'NN' }},
-                                               'prs' => { 'reflex' => { 'reflex' => 'PRF',
-                                                                        '@'      => { 'poss' => { 'poss' => 'PPOSS',
+                                               'prs' => { 'reflex' => { 'yes' => 'PRF',
+                                                                        '@'      => { 'poss' => { 'yes' => 'PPOSS',
                                                                                                   '@'    => 'PPER' }}}},
                                                'dem' => 'PDS',
                                                'int' => 'PWS',
@@ -244,8 +244,8 @@ around BUILDARGS => sub
                                                'peri' => '$.',
                                                '@'    => '$(' #)
                                                               }},
-                   '@'    => { 'hyph' => { 'hyph' => 'TRUNC',
-                                           '@'    => { 'foreign' => { 'foreign' => 'FM',
+                   '@'    => { 'hyph' => { 'yes' => 'TRUNC',
+                                           '@'    => { 'foreign' => { 'yes' => 'FM',
                                                                       '@'       => 'XY' }}}}}
     );
     # Now add the references to the attribute hash.

@@ -101,7 +101,7 @@ sub _create_atoms
         'surfeature' => 'prontype',
         'decode_map' =>
         {
-            'refl'   => ['reflex'      => 'reflex'],
+            'refl'   => ['reflex'      => 'yes'],
             'hum'    => ['animateness' => 'anim'], # not strictly animate
             'pers'   => ['prontype'    => 'prs'],
             'høflig' => ['politeness'  => 'pol'],
@@ -110,7 +110,7 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'reflex' => { 'reflex' => 'refl',
+            'reflex' => { 'yes' => 'refl',
                           '@'      => { 'animateness' => { 'anim' => 'hum',
                                                            '@'    => { 'politeness' => { 'pol' => 'høflig',
                                                                                          '@'   => { 'prs' => 'pers',
@@ -124,7 +124,7 @@ sub _create_atoms
         'intfeature' => 'poss',
         'simple_decode_map' =>
         {
-            'poss' => 'poss'
+            'poss' => 'yes'
         }
     );
     # SPECIAL TYPE ####################
@@ -133,13 +133,13 @@ sub _create_atoms
         'surfeature' => 'spectype',
         'decode_map' =>
         {
-            'unorm' => ['typo' => 'typo'],
-            'fork'  => ['abbr' => 'abbr']
+            'unorm' => ['typo' => 'yes'],
+            'fork'  => ['abbr' => 'yes']
         },
         'encode_map' =>
         {
-            'typo' => { 'typo' => 'unorm',
-                        '@'    => { 'abbr' => { 'abbr' => 'fork' }}}
+            'typo' => { 'yes' => 'unorm',
+                        '@'    => { 'abbr' => { 'yes' => 'fork' }}}
         }
     );
     # PUNCTUATION TYPE ####################

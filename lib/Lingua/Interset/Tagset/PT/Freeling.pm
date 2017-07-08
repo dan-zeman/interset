@@ -118,14 +118,14 @@ sub _create_atoms
             # qualificative adjective
             'Q' => [],
             # possessive adjective
-            'P' => ['poss' => 'poss'],
+            'P' => ['poss' => 'yes'],
             # ordinal numeral/adjective
             'O' => ['numtype' => 'ord']
         },
         'encode_map' =>
         {
             'numtype' => { 'ord' => 'O',
-                           '@'   => { 'poss' => { 'poss' => 'P',
+                           '@'   => { 'poss' => { 'yes' => 'P',
                                                   '@'    => 'Q' }}}
         }
     );
@@ -155,7 +155,7 @@ sub _create_atoms
         },
         'encode_map' =>
         {
-            'poss' => { 'poss' => 'P',
+            'poss' => { 'yes' => 'P',
                         '@'    => { 'prontype' => { 'prs' => 'P',
                                                     'art' => 'A',
                                                     'dem' => 'D',

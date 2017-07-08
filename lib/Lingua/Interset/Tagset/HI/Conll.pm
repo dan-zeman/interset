@@ -186,8 +186,8 @@ sub _create_atoms
             # । (danda = .) , - . '
             "SYM\tpunc" => ['pos' => 'punc'],
             # foreign or unknown words
-            "UNK\tunk"  => ['foreign' => 'foreign'],
-            "UNKC\tunk" => ['foreign' => 'foreign', 'other' => {'compound' => 'yes'}],
+            "UNK\tunk"  => ['foreign' => 'yes'],
+            "UNKC\tunk" => ['foreign' => 'yes', 'other' => {'compound' => 'yes'}],
             # The 'NULL' tag is used for artificial NULL nodes.
             "NULL\t_"   => ['other' => {'pos' => 'null'}]
         },
@@ -322,14 +322,14 @@ sub _create_atoms
             # ADDITIONAL CASES OF PRONOUNS
             # kā ... possessive / genitive
             # मेरा (my), आपका (your), इसका (his/her/its), उसका (his/her/its), हमारा (our), इनका (their), उनका (their)
-            'kA' => ['case' => 'acc|gen', 'poss' => 'poss'],
+            'kA' => ['case' => 'acc|gen', 'poss' => 'yes'],
             # ke ... also genitive suffix, but the whole phrase is in the oblique case
             # (so we could say that we have a possessive pronoun in the oblique case)
             # This is often used with compound postpositions, e.g. इसके बारे में (isake bāre meṁ = about it):
             # the final postposition में (meṁ = in) requires that its argument is in the oblique case.
             # Not sure what the direct case of this argument should be, though. इसका बार (isakā bāra = its time)?
             # मेरे (my), आपके (your), इसके (his/her/its), उसके (his/her/its), हमारे (our), इनके (their), उनके (their)
-            'ke' => ['case' => 'acc|gen', 'poss' => 'poss', 'other' => {'possedcase' => 'obl'}],
+            'ke' => ['case' => 'acc|gen', 'poss' => 'yes', 'other' => {'possedcase' => 'obl'}],
             # ko ... dative
             # मुझे (me), आपको (you), इसे (him/her/it), उसे (him/her/it), हमें (us), तुम्हें (you), इन्हें (them), उन्हें (them)
             'ko' => ['case' => 'acc|dat'],
@@ -387,7 +387,7 @@ sub _create_atoms
                                                                             'pres' => 'hE',
                                                                             'past' => 'WA',
                                                                             '@'    =>
-            { 'poss' => { 'poss' => { 'other/possedcase' => { 'obl' => 'ke',
+            { 'poss' => { 'yes' => { 'other/possedcase' => { 'obl' => 'ke',
                                                               '@'   => 'kA' }},
                           '@'    => { 'case' => { 'dat' => 'ko',
                                                   'erg' => 'ne',
