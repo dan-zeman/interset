@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+3.005     2017-07-08 22:05:24+02:00 Europe/Prague
+
 Features:
 * In line with Universal Dependencies, the single-value features' value is no
   longer identical to the feature name; instead, it is 'yes'. For example,
