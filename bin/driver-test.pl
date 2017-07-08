@@ -38,6 +38,7 @@ $| = 1;
 select($old_fh);
 # Get options.
 my $all = 0;
+my $all_from = ''; # if we ran $all, got errors and now we want to restart only from the driver that failed
 my $all_conversions = 0;
 my $drivers;
 my $conversions;
@@ -47,6 +48,7 @@ my $list_other_plain;
 GetOptions
 (
     'a' => \$all,
+    'f=s' => \$all_from,
     'A' => \$all_conversions,
     'debug' => \$debug,
     # -o and -O list unknown tags that appear in the output if the other feature is not used.
@@ -57,10 +59,16 @@ GetOptions
     'O' => \$list_other_plain
 );
 # Get the list of all drivers if needed.
-if($all || $all_conversions)
+if($all || $all_from ne '' || $all_conversions)
 {
     ###!!! Legacy code assumes that driver = tagset id.
     my @tagsets = map {$_->{tagset}} @{find_drivers()};
+    my %map;
+    foreach my $tagset (@tagsets)
+    {
+        $map{$tagset}++;
+    }
+    @tagsets = sort(keys(%map));
     $drivers = \@tagsets;
     $conversions = $all_conversions;
 }
@@ -107,7 +115,20 @@ else
     # Start with testing each driver separately (this is also a prerequisite to testing of pairs).
     foreach my $d (@{$drivers})
     {
+        # If we are restarting after an error, we want to skip the initial drivers that are already ok.
+        if($all_from ne '')
+        {
+            if($d eq $all_from)
+            {
+                $all_from = '';
+            }
+            else
+            {
+                next;
+            }
+        }
         # If there were errors, interrupt testing so we do not overlook the errors.
+        print STDERR "now testing $d\n"; ###!!! debugging -f cs::conll (proc to bezi dvakrat???)
         last if(test($d));
     }
     # Continue with testing conversions from one driver to another, if asked for it.
