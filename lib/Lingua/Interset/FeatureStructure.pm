@@ -480,10 +480,11 @@ my %matrix = @_matrix =
     'definite' =>
     {
         'priority' => 250,
-        'values' => ['ind', 'def', 'cons', 'com', ''],
+        'values' => ['ind', 'spec', 'def', 'cons', 'com', ''],
         'replacements' =>
         [
             ['ind'],
+            ['spec', 'ind'],
             ['def'],
             ['cons', 'def'],
             ['com', 'cons', 'def']
@@ -522,14 +523,20 @@ my %matrix = @_matrix =
     'number' =>
     {
         'priority' => 320,
-        'values' => ['sing', 'dual', 'plur', 'ptan', 'coll', ''],
+        'values' => ['sing', 'dual', 'tri', 'pauc', 'grpa', 'plur', 'grpl', 'inv', 'ptan', 'coll', 'count', ''],
         'replacements' =>
         [
             ['sing'],
             ['dual', 'plur'],
+            ['tri', 'plur'],
+            ['pauc', 'plur'],
+            ['grpa', 'plur'],
             ['plur'],
+            ['grpl', 'plur'],
+            ['inv'],
             ['ptan', 'plur'],
-            ['coll', 'sing']
+            ['coll', 'sing'],
+            ['count', 'plur']
         ],
         'uname' => 'Number'
     },
@@ -539,7 +546,7 @@ my %matrix = @_matrix =
         'priority' => 330,
         'values' => ['nom', 'gen', 'dat', 'acc', 'voc', 'loc', 'ins',
                      'abl', 'del', 'par', 'dis', 'ess', 'tra', 'com', 'abe', 'ine', 'ela', 'ill', 'ade', 'all', 'sub', 'sup', 'lat',
-                     'add', 'tem', 'ter', 'abs', 'erg', 'cau', 'ben', ''],
+                     'add', 'tem', 'ter', 'abs', 'erg', 'cau', 'ben', 'equ', 'cmp', ''],
         'replacements' =>
         [
             ['nom'],
@@ -571,7 +578,9 @@ my %matrix = @_matrix =
             ['abs', 'nom', 'acc'],
             ['erg', 'nom'],
             ['cau'],
-            ['ben', 'dat']
+            ['ben', 'dat'],
+            ['equ', 'cmp'],
+            ['cmp', 'equ']
         ],
         'uname' => 'Case'
     },
@@ -592,13 +601,14 @@ my %matrix = @_matrix =
     'degree' =>
     {
         'priority' => 230,
-        'values' => ['pos', 'cmp', 'sup', 'abs', 'dim', 'aug', ''],
+        'values' => ['pos', 'cmp', 'sup', 'abs', 'equ', 'dim', 'aug', ''],
         'replacements' =>
         [
             ['pos'],
             ['cmp'],
             ['sup', 'cmp'],
             ['abs', 'sup'],
+            ['equ', 'cmp', 'pos'],
             ['dim'],
             ['aug']
         ],
@@ -608,12 +618,14 @@ my %matrix = @_matrix =
     'person' =>
     {
         'priority' => 260,
-        'values' => ['1', '2', '3', ''],
+        'values' => ['0', '1', '2', '3', '4', ''],
         'replacements' =>
         [
             ['3'],
             ['1'],
-            ['2']
+            ['2'],
+            ['0'],
+            ['4', '3']
         ],
         'uname' => 'Person'
     },
@@ -901,7 +913,7 @@ my %matrix = @_matrix =
     'mood' =>
     {
         'priority' => 70,
-        'values' => ['ind', 'imp', 'cnd', 'pot', 'sub', 'jus', 'opt', 'des', 'nec', 'qot', ''],
+        'values' => ['ind', 'imp', 'cnd', 'pot', 'sub', 'jus', 'prp', 'opt', 'des', 'nec', 'qot', 'adm', ''],
         'replacements' =>
         [
             ['ind'],
@@ -910,10 +922,12 @@ my %matrix = @_matrix =
             ['pot', 'cnd'],
             ['sub', 'cnd', 'jus', 'opt'],
             ['jus', 'sub', 'opt'],
+            ['prp', 'jus'],
             ['opt', 'jus'],
             ['des', 'jus'],
             ['nec', 'imp'],
-            ['qot', 'ind']
+            ['qot', 'ind'],
+            ['adm']
         ],
         'uname' => 'Mood'
     },
@@ -921,15 +935,14 @@ my %matrix = @_matrix =
     'tense' =>
     {
         'priority' => 270,
-        'values' => ['pres', 'fut', 'past', 'aor', 'imp', 'nar', 'pqp', ''],
+        'values' => ['pres', 'fut', 'past', 'aor', 'imp', 'pqp', ''],
         'replacements' =>
         [
             ['pres'],
             ['fut'],
-            ['past', 'aor', 'imp', 'nar'],
+            ['past', 'aor', 'imp'],
             ['aor', 'past'],
             ['imp', 'past'],
-            ['nar', 'past'],
             ['pqp', 'past']
         ],
         'uname' => 'Tense'
@@ -938,7 +951,7 @@ my %matrix = @_matrix =
     'voice' =>
     {
         'priority' => 280,
-        'values' => ['act', 'mid', 'pass', 'rcp', 'cau', 'int', ''],
+        'values' => ['act', 'mid', 'pass', 'rcp', 'cau', 'int', 'antip', 'dir', 'inv', ''],
         'replacements' =>
         [
             ['act'],
@@ -946,21 +959,38 @@ my %matrix = @_matrix =
             ['pass'],
             ['rcp'],
             ['cau'],
-            ['int']
+            ['int'],
+            ['antip'],
+            ['dir'],
+            ['inv']
         ],
         'uname' => 'Voice'
+    },
+    # Evidentiality.
+    'evident' =>
+    {
+        'priority' => 285,
+        'values' => ['fh', 'nfh', ''],
+        'replacements' =>
+        [
+            ['fh'],
+            ['nfh']
+        ],
+        'uname' => 'Evident'
     },
     # Aspect (lexical or grammatical; but see also the 'imp' tense).
     'aspect' =>
     {
         'priority' => 290,
-        'values' => ['imp', 'perf', 'prosp', 'prog', ''],
+        'values' => ['imp', 'perf', 'prosp', 'prog', 'hab', 'iter', ''],
         'replacements' =>
         [
             ['imp'],
             ['perf'],
             ['prosp'],
-            ['prog']
+            ['prog'],
+            ['hab'],
+            ['iter']
         ],
         'uname' => 'Aspect'
     },
@@ -1273,6 +1303,7 @@ my %fvbct =
     'abbr'        => { 'abbr' => 'yes' }, # value renamed in Interset 3.005, 2017-07-08
     'hyph'        => { 'hyph' => 'yes' }, # value renamed in Interset 3.005, 2017-07-08
     'typo'        => { 'typo' => 'yes' }, # value renamed in Interset 3.005, 2017-07-08
+    'tense'       => { 'nar' => 'past' }, # value removed in UD v2, should use evident=nfh + past, 2017-07-11
 );
 sub _get_compatible_value
 {
@@ -2451,6 +2482,11 @@ sub is_adessive {my $self = shift; return $self->contains('case', 'ade');}
 sub is_adjective {my $self = shift; return $self->contains('pos', 'adj');}
 
 #------------------------------------------------------------------------------
+=method is_admirative()
+=cut
+sub is_admirative {my $self = shift; return $self->contains('mood', 'adm');}
+
+#------------------------------------------------------------------------------
 =method is_adposition()
 =cut
 sub is_adposition {my $self = shift; return $self->contains('pos', 'adp');}
@@ -2474,6 +2510,11 @@ sub is_allative {my $self = shift; return $self->contains('case', 'all');}
 =method is_animate()
 =cut
 sub is_animate {my $self = shift; return $self->contains('animacy', 'anim');}
+
+#------------------------------------------------------------------------------
+=method is_antipassive()
+=cut
+sub is_antipassive {my $self = shift; return $self->contains('voice', 'antip');}
 
 #------------------------------------------------------------------------------
 =method is_aorist()
@@ -2533,7 +2574,7 @@ sub is_common_gender {my $self = shift; return $self->contains('gender', 'com');
 #------------------------------------------------------------------------------
 =method is_comparative()
 =cut
-sub is_comparative {my $self = shift; return $self->contains('degree', 'cmp');}
+sub is_comparative {my $self = shift; return $self->contains('degree', 'cmp') || $self->contains('case', 'cmp');}
 
 #------------------------------------------------------------------------------
 =method is_conditional()
@@ -2564,6 +2605,11 @@ sub is_converb {my $self = shift; return $self->contains('verbform', 'conv');}
 =method is_coordinator()
 =cut
 sub is_coordinator {my $self = shift; return $self->is_conjunction() && $self->conjtype() eq 'coor';}
+
+#------------------------------------------------------------------------------
+=method is_count_plural()
+=cut
+sub is_count_plural {my $self = shift; return $self->contains('number', 'count');}
 
 #------------------------------------------------------------------------------
 =method is_dative()
@@ -2606,6 +2652,11 @@ sub is_determiner {my $self = shift; return $self->is_pronominal() && $self->is_
 sub is_diminutive {my $self = shift; return $self->contains('degree', 'dim');}
 
 #------------------------------------------------------------------------------
+=method is_direct_voice()
+=cut
+sub is_direct_voice {my $self = shift; return $self->contains('voice', 'dir');}
+
+#------------------------------------------------------------------------------
 =method is_distributive()
 =cut
 sub is_distributive {my $self = shift; return $self->contains('case', 'dis');}
@@ -2624,6 +2675,11 @@ sub is_elative {my $self = shift; return $self->contains('case', 'ela');}
 =method is_elevating()
 =cut
 sub is_elevating {my $self = shift; return $self->contains('polite', 'elev');}
+
+#------------------------------------------------------------------------------
+=method is_equative()
+=cut
+sub is_equative {my $self = shift; return $self->contains('degree', 'equ') || $self->contains('case', 'equ');}
 
 #------------------------------------------------------------------------------
 =method is_ergative()
@@ -2656,6 +2712,11 @@ sub is_feminine {my $self = shift; return $self->contains('gender', 'fem');}
 sub is_finite_verb {my $self = shift; return $self->contains('verbform', 'fin');}
 
 #------------------------------------------------------------------------------
+=method is_first_hand()
+=cut
+sub is_first_hand {my $self = shift; return $self->contains('evident', 'fh');}
+
+#------------------------------------------------------------------------------
 =method is_first_person()
 =cut
 sub is_first_person {my $self = shift; return $self->contains('person', '1');}
@@ -2669,6 +2730,11 @@ sub is_foreign {my $self = shift; return $self->foreign() eq 'yes';}
 =method is_formal()
 =cut
 sub is_formal {my $self = shift; return $self->contains('polite', 'form');}
+
+#------------------------------------------------------------------------------
+=method is_fourth_person()
+=cut
+sub is_fourth_person {my $self = shift; return $self->contains('person', '4');}
 
 #------------------------------------------------------------------------------
 =method is_future()
@@ -2689,6 +2755,21 @@ sub is_gerund {my $self = shift; return $self->contains('verbform', 'ger');}
 =method is_gerundive()
 =cut
 sub is_gerundive {my $self = shift; return $self->contains('verbform', 'gdv');}
+
+#------------------------------------------------------------------------------
+=method is_greater_paucal()
+=cut
+sub is_greater_paucal {my $self = shift; return $self->contains('number', 'grpa');}
+
+#------------------------------------------------------------------------------
+=method is_greater_plural()
+=cut
+sub is_greater_plural {my $self = shift; return $self->contains('number', 'grpl');}
+
+#------------------------------------------------------------------------------
+=method is_habitual()
+=cut
+sub is_habitual {my $self = shift; return $self->contains('aspect', 'hab');}
 
 #------------------------------------------------------------------------------
 =method is_human()
@@ -2718,7 +2799,12 @@ sub is_imperative {my $self = shift; return $self->contains('mood', 'imp');}
 #------------------------------------------------------------------------------
 =method is_imperfect()
 =cut
-sub is_imperfect {my $self = shift; return $self->contains('tense', 'imp') && $self->contains('aspect', 'imp');}
+sub is_imperfect {my $self = shift; return $self->contains('tense', 'imp') || $self->contains('aspect', 'imp');}
+
+#------------------------------------------------------------------------------
+=method is_impersonal()
+=cut
+sub is_impersonal {my $self = shift; return $self->contains('person', '0');}
 
 #------------------------------------------------------------------------------
 =method is_inanimate()
@@ -2776,6 +2862,21 @@ sub is_interrogative {my $self = shift; $self->contains('prontype', 'int');}
 sub is_intransitive {my $self = shift; return $self->contains('subcat', 'intr');}
 
 #------------------------------------------------------------------------------
+=method is_inverse_number()
+=cut
+sub is_inverse_number {my $self = shift; return $self->contains('number', 'inv');}
+
+#------------------------------------------------------------------------------
+=method is_inverse_voice()
+=cut
+sub is_inverse_voice {my $self = shift; return $self->contains('voice', 'inv');}
+
+#------------------------------------------------------------------------------
+=method is_iterative()
+=cut
+sub is_iterative {my $self = shift; return $self->contains('aspect', 'iter');}
+
+#------------------------------------------------------------------------------
 =method is_jussive()
 =cut
 sub is_jussive {my $self = shift; return $self->contains('mood', 'jus');}
@@ -2823,7 +2924,7 @@ sub is_multiplicative {my $self = shift; return $self->contains('numtype', 'mult
 #------------------------------------------------------------------------------
 =method is_narrative()
 =cut
-sub is_narrative {my $self = shift; return $self->contains('tense', 'nar');}
+sub is_narrative {my $self = shift; return $self->contains('tense', 'past') && $self->contains('evident', 'nfh');}
 
 #------------------------------------------------------------------------------
 =method is_necessitative()
@@ -2839,6 +2940,11 @@ sub is_negative {my $self = shift; return $self->contains('negativeness', 'neg')
 =method is_nominative()
 =cut
 sub is_nominative {my $self = shift; return $self->contains('case', 'nom');}
+
+#------------------------------------------------------------------------------
+=method is_non_first_hand()
+=cut
+sub is_non_first_hand {my $self = shift; return $self->contains('evident', 'nfh');}
 
 #------------------------------------------------------------------------------
 =method is_nonhuman()
@@ -2889,6 +2995,11 @@ sub is_passive {my $self = shift; return $self->contains('voice', 'pass');}
 =method is_past()
 =cut
 sub is_past {my $self = shift; return $self->contains('tense', 'past');}
+
+#------------------------------------------------------------------------------
+=method is_paucal()
+=cut
+sub is_paucal {my $self = shift; return $self->contains('number', 'pauc');}
 
 #------------------------------------------------------------------------------
 =method is_perfect()
@@ -2976,6 +3087,11 @@ sub is_prospective {my $self = shift; return $self->contains('aspect', 'prosp');
 sub is_punctuation {my $self = shift; return $self->contains('pos', 'punc');}
 
 #------------------------------------------------------------------------------
+=method is_purposive()
+=cut
+sub is_purposive {my $self = shift; return $self->contains('mood', 'prp');}
+
+#------------------------------------------------------------------------------
 =method is_quotative()
 =cut
 sub is_quotative {my $self = shift; return $self->contains('mood', 'qot');}
@@ -3009,6 +3125,11 @@ sub is_second_person {my $self = shift; return $self->contains('person', '2');}
 =method is_singular()
 =cut
 sub is_singular {my $self = shift; return $self->contains('number', 'sing');}
+
+#------------------------------------------------------------------------------
+=method is_specific()
+=cut
+sub is_specific {my $self = shift; return $self->contains('definite', 'spec');}
 
 #------------------------------------------------------------------------------
 =method is_subjunctive()
@@ -3081,6 +3202,11 @@ sub is_transitive {my $self = shift; return $self->contains('subcat', 'tran');}
 sub is_translative {my $self = shift; return $self->contains('case', 'tra');}
 
 #------------------------------------------------------------------------------
+=method is_trial()
+=cut
+sub is_trial {my $self = shift; return $self->contains('number', 'tri');}
+
+#------------------------------------------------------------------------------
 =method is_typo()
 =cut
 sub is_typo {my $self = shift; return $self->typo() eq 'yes';}
@@ -3104,6 +3230,11 @@ sub is_vocative {my $self = shift; return $self->contains('case', 'voc');}
 =method is_wh()
 =cut
 sub is_wh {my $self = shift; return any {m/^(int|rel)$/} ($self->get_list('prontype'));}
+
+#------------------------------------------------------------------------------
+=method is_zero_person()
+=cut
+sub is_zero_person {my $self = shift; return $self->contains('person', '0');}
 
 
 
