@@ -8,7 +8,7 @@
 package Lingua::Interset::Tagset::CS::Ajka;
 use strict;
 use warnings;
-our $VERSION = '3.006';
+our $VERSION = '3.007';
 
 use utf8;
 use open ':utf8';

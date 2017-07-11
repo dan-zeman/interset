@@ -6,7 +6,7 @@
 package Lingua::Interset::Tagset::ZH::Conll;
 use strict;
 use warnings;
-our $VERSION = '3.006';
+our $VERSION = '3.007';
 
 use utf8;
 use open ':utf8';
