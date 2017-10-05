@@ -27,35 +27,57 @@ sub usage
     print STDERR ("             of the indexed tags with examples\n");
 }
 
+# tagset_to_uposf_table.pl ar::conll --italics 0 conll-2006-ar > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\ar-conll-uposf.md
+# tagset_to_uposf_table.pl ar::conll2007 --italics 0 conll-2007-ar > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\ar-conll2007-uposf.md
+# tagset_to_uposf_table.pl ar::padt > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\ar-padt-uposf.md
+# tagset_to_uposf_table.pl bg::conll conll-2006-bg > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\bg-conll-uposf.md
+# tagset_to_uposf_table.pl bn::conll > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\bn-conll-uposf.md
+# tagset_to_uposf_table.pl ca::conll2009 conll-2009-ca > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\ca-conll2009-uposf.md
+# tagset_to_uposf_table.pl cs::ajka > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\cs-ajka-uposf.md
+# tagset_to_uposf_table.pl cs::conll conll-2006-cs > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\cs-conll-uposf.md
 # tagset_to_uposf_table.pl cs::multext > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\cs-multext-uposf.md
+# tagset_to_uposf_table.pl cs::pdt pdt > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\cs-pdt-uposf.md
 # tagset_to_uposf_table.pl da::conll conll-2006-da > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\da-conll-uposf.md
 # tagset_to_uposf_table.pl de::conll2009 conll-2009-de > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\de-conll2009-uposf.md
 # tagset_to_uposf_table.pl de::smor > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\de-smor-uposf.md
-# tagset_to_uposf_table.pl de::conll2009 conll-2009-de --reduce-to-subpos > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\de-stts-uposf.md
 # tagset_to_uposf_table.pl de::stts conll-2006-de --reduce-to-subpos > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\de-stts-uposf.md
 # tagset_to_uposf_table.pl el::conll conll-2007-el > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\el-conll-uposf.md
 # tagset_to_uposf_table.pl en::penn conll-2007-en --reduce-to-subpos > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\en-penn-uposf.md
+# tagset_to_uposf_table.pl es::conll2009 conll-2009-es > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\es-conll2009-uposf.md
 # tagset_to_uposf_table.pl et::puudepank eesti-keele-puudepank > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\et-puudepank-uposf.md
 # tagset_to_uposf_table.pl eu::conll basque-dt > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\eu-conll-uposf.md
 # tagset_to_uposf_table.pl fa::conll persian-dt --italics 0 > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\fa-conll-uposf.md
 # tagset_to_uposf_table.pl fi::turku turku-dt --reduce-to-subpos > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\fi-turku-uposf.md
 # tagset_to_uposf_table.pl grc::conll agdt-conll > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\grc-conll-uposf.md
+# tagset_to_uposf_table.pl he::conll --italics 0 hebrew-dt > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\he-conll-uposf.md
+# tagset_to_uposf_table.pl hi::conll --italics 0 hindi-tb-0.5 > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\hi-conll-uposf.md
 # tagset_to_uposf_table.pl hr::multext > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\hr-multext-uposf.md
 # tagset_to_uposf_table.pl hu::conll conll-2007-hu > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\hu-conll-uposf.md
+# tagset_to_uposf_table.pl it::conll conll-2007-it > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\it-conll-uposf.md
+# tagset_to_uposf_table.pl ja::conll conll-2006-ja > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\ja-conll-uposf.md
+# tagset_to_uposf_table.pl ja::ipadic > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\ja-ipadic-uposf.md
 # tagset_to_uposf_table.pl la::conll ldt-conll > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\la-conll-uposf.md
 # tagset_to_uposf_table.pl la::itconll la-itt --reduce=itt > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\la-itconll-uposf.md
-# tagset_to_uposf_table.pl nl::conll conll-2006-nl > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\nl-conll-uposf.md
+# tagset_to_uposf_table.pl mt::mlss malti --reduce-to-subpos > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\mt-mlss-uposf.md
 # tagset_to_uposf_table.pl nl::cgn > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\nl-cgn-uposf.md
+# tagset_to_uposf_table.pl nl::conll conll-2006-nl > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\nl-conll-uposf.md
 # tagset_to_uposf_table.pl pl::ipipan > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\pl-ipipan-uposf.md
 # tagset_to_uposf_table.pl pt::cintil > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\pt-cintil-uposf.md
 # tagset_to_uposf_table.pl pt::conll conll-2006-pt > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\pt-conll-uposf.md
 # tagset_to_uposf_table.pl pt::freeling > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\pt-freeling-uposf.md
 # tagset_to_uposf_table.pl ro::multext ud-romanian > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\ro-multext-uposf.md
+# tagset_to_uposf_table.pl ro::rdt > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\ro-rdt-uposf.md
 # tagset_to_uposf_table.pl ru::syntagrus syntagrus > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\ru-syntagrus-uposf.md
 # tagset_to_uposf_table.pl sk::snk snk > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\sk-snk-uposf.md
+# tagset_to_uposf_table.pl sl::conll conll-2006-sl > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\sl-conll-uposf.md
 # tagset_to_uposf_table.pl sl::multext > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\sl-multext-uposf.md
+# tagset_to_uposf_table.pl sv::mamba conll-2006-sv --reduce-to-subpos > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\sv-mamba-uposf.md
 # tagset_to_uposf_table.pl sv::parole ud-swedish-parole > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\sv-parole-uposf.md
 # tagset_to_uposf_table.pl sv::suc ud-swedish > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\sv-suc-uposf.md
+# tagset_to_uposf_table.pl ta::tamiltb --italics 0 tamiltb > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\ta-tamiltb-uposf.md
+# tagset_to_uposf_table.pl te::conll > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\te-conll-uposf.md
+# tagset_to_uposf_table.pl tr::conll conll-2007-tr > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\tr-conll-uposf.md
+# tagset_to_uposf_table.pl zh::conll --italics 0 conll-2006-zh > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\zh-conll-uposf.md
 
 # All examples in Latin, Cyrillic and Greek scripts should be in italics. Other scripts should not.
 my $italics = 1;
@@ -77,6 +99,7 @@ if($udepformat)
     print("---\n");
     print("layout: base\n");
     print("title: 'Tagset $tagset conversion to universal POS tags and features'\n");
+    print("udver: '2'\n");
     print("---\n\n");
     print("<a href=\"index.html\">all tables</a>\n\n");
     print("\#\# Tagset $tagset\n\n");
