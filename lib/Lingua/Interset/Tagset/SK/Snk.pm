@@ -406,17 +406,17 @@ sub decode
     my $fs = Lingua::Interset::FeatureStructure->new();
     $fs->set_tagset('sk::snk');
     my ($pos, $features, $appendix);
-    if($tag =~ m/^(.)([^:]*)(:.*)?$/)
+    if($tag =~ m/^Z/) # Z or ZIP
+    {
+        # Punctuation. Avoid interpreting the "I" as "infinitive". Do not save "IP" as features.
+        $pos = 'Z';
+    }
+    elsif($tag =~ m/^(.)([^:]*)(:.*)?$/)
     {
         $pos = $1;
         $features = $2;
         $appendix = $3;
         $appendix = '' if(!defined($appendix));
-    }
-    elsif($tag eq 'ZIP')
-    {
-        # Punctuation. Avoid interpreting the "I" as "infinitive". Do not save "IP" as features.
-        $pos = 'Z';
     }
     else
     {
