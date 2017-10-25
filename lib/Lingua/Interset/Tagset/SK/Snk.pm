@@ -410,6 +410,8 @@ sub decode
     {
         # Punctuation. Avoid interpreting the "I" as "infinitive". Do not save "IP" as features.
         $pos = 'Z';
+        $features = '';
+        $appendix = '';
     }
     elsif($tag =~ m/^(.)([^:]*)(:.*)?$/)
     {
