@@ -413,6 +413,11 @@ sub decode
         $appendix = $3;
         $appendix = '' if(!defined($appendix));
     }
+    elsif($tag eq 'ZIP')
+    {
+        # Punctuation. Avoid interpreting the "I" as "infinitive". Do not save "IP" as features.
+        $pos = 'Z';
+    }
     else
     {
         # We do not throw exceptions from Interset drivers but if we did, this would be a good occasion.
@@ -446,6 +451,7 @@ sub encode
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $atoms = $self->atoms();
     my $pos = $atoms->{pos}->encode($fs);
+    $pos = 'ZIP' if($pos eq 'Z');
     my $fpos = $pos;
     if($fs->is_verb() && $fs->tense() eq 'past')
     {
@@ -1941,6 +1947,7 @@ VMjsb-
 VMjsb+
 W
 Y
+ZIP
 end_of_list
     ;
     my @list = split(/\r?\n/, $list);
