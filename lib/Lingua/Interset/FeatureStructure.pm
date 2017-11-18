@@ -629,6 +629,18 @@ my %matrix = @_matrix =
         ],
         'uname' => 'Person'
     },
+    # Clusivity distinguishes inclusive and exclusive first person plural pronouns.
+    'clusivity' =>
+    {
+        'priority' => 265,
+        'values' => ['in', 'ex', ''],
+        'replacements' =>
+        [
+            ['in'], # I + you (+ optionally they)
+            ['ex']  # I + they (excluding you)
+        ],
+        'uname' => 'Clusivity'
+    },
     # Politeness, formal vs. informal word forms.
     'polite' =>
     {
@@ -2697,6 +2709,11 @@ sub is_essive {my $self = shift; return $self->contains('case', 'ess');}
 sub is_exclamative {my $self = shift; return $self->contains('prontype', 'exc');}
 
 #------------------------------------------------------------------------------
+=method is_exclusive()
+=cut
+sub is_exclusive {my $self = shift; return $self->contains('clusivity', 'ex');}
+
+#------------------------------------------------------------------------------
 =method is_factive()
 =cut
 sub is_factive {my $self = shift; return $self->contains('case', 'tra');}
@@ -2810,6 +2827,11 @@ sub is_impersonal {my $self = shift; return $self->contains('person', '0');}
 =method is_inanimate()
 =cut
 sub is_inanimate {my $self = shift; return $self->contains('animacy', 'inan');}
+
+#------------------------------------------------------------------------------
+=method is_inclusive()
+=cut
+sub is_inclusive {my $self = shift; return $self->contains('clusivity', 'in');}
 
 #------------------------------------------------------------------------------
 =method is_indefinite()
