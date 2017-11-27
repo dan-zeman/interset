@@ -84,7 +84,7 @@ around BUILDARGS => sub
     (
         'pos' => { 'verb' => { 'verbtype' => { 'aux' => 'AUX',
                                                '@'   => 'VERB' }},
-                   'noun' => { 'prontype' => { ''  => { 'nountype' => { 'prop' => 'PROPN',
+                   'noun' => { 'prontype' => { ''  => { 'nountype' => { 'prop' => 'PROPN', ###!!! a co kdyz je to adj,noun???
                                                                         '@'    => 'NOUN' }},
                                                '@' => 'PRON' }},
                    'adj'  => { 'adjtype' => { 'pdt' => 'DET',

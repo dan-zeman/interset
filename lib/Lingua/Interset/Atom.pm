@@ -375,7 +375,9 @@ sub _get_decision_for_value
     {
         # The sought value could be a list of values.
         # One or more of the hash keys could also be lists of values.
-        my @keys = keys(%{$valuehash});
+        # If there are multiple matching answers and we must select one, we still want the atom to behave deterministically.
+        # Hence we sort the keys (otherwise their order is really random).
+        my @keys = sort(keys(%{$valuehash}));
         my $maxn = 0;
         my $maxkey;
         foreach my $key (@keys)

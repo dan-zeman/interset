@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+Fixes:
+* A value encoded by Atom should be deterministic even if the
+  encoding map allows multiple paths.
+
 3.008     2017-11-18 16:44:01+01:00 Europe/Prague
 
 Features:
