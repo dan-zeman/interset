@@ -16,7 +16,7 @@
 package Lingua::Interset::Tagset::RO::Rdt;
 use strict;
 use warnings;
-our $VERSION = '3.009';
+our $VERSION = '3.010';
 
 use utf8;
 use open ':utf8';
