@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+Drivers:
+* pt::freeling should not encode "PA*" (pronoun-article) and "DR*" (relative
+  determiner)
+
 
 
 3.009     2017-11-27 16:15:22+01:00 Europe/Prague

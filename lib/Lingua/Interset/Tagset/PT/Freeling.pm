@@ -157,11 +157,16 @@ sub _create_atoms
         {
             'poss' => { 'yes' => 'P',
                         '@'    => { 'prontype' => { 'prs' => 'P',
-                                                    'art' => 'A',
+                        # Freeling does not allow article with pronoun ("PA").
+                                                    'art' => { 'pos' => { 'noun' => 'D',
+                                                                          '@'    => 'A' }},
                                                     'dem' => 'D',
                                                     'ind' => 'I',
                                                     'int' => 'T',
-                                                    'rel' => 'R',
+                        # Freeling does not allow relative determiner
+                        # (see https://talp-upc.gitbooks.io/freeling-user-manual/content/tagsets/tagset-pt.html).
+                                                    'rel' => { 'pos' => { 'adj' => 'T',
+                                                                          '@'   => 'R' }},
                                                     'exc' => 'E',
                                                     '@'   => 'N' }}}
         }
@@ -808,7 +813,6 @@ DD0FS0
 DD0MP0
 DD0FP0
 DT0000
-DR0000
 DE0000
 Z
 W
