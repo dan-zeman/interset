@@ -96,7 +96,10 @@ around BUILDARGS => sub
                    'adp'  => 'ADP',
                    'conj' => { 'conjtype' => { 'sub' => 'SCONJ',
                                                '@'   => 'CCONJ' }},
-                   'part' => 'PART',
+                   # Make sure that RP particles from the Penn Treebank and separable verb prefixes from German STTS
+                   # do not end up as PART; UD clearly documents that they should be ADP or ADV.
+                   'part' => { 'parttype' => { 'vbp' => 'ADP',
+                                               '@'   => 'PART' }},
                    'int'  => 'INTJ',
                    'punc' => 'PUNCT',
                    'sym'  => 'SYM',
