@@ -7,7 +7,7 @@
 package Lingua::Interset::Tagset::PT::Cintil;
 use strict;
 use warnings;
-our $VERSION = '3.011';
+our $VERSION = '3.012';
 
 use utf8;
 use open ':utf8';
