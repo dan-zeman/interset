@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+3.011     2018-02-18 14:17:13+01:00 Europe/Prague
+
 Features:
 * Feature 'case': added values 'per' (perlative) and 'cns' (considerative).
 
