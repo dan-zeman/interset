@@ -545,8 +545,8 @@ my %matrix = @_matrix =
     {
         'priority' => 330,
         'values' => ['nom', 'gen', 'dat', 'acc', 'voc', 'loc', 'ins',
-                     'abl', 'del', 'par', 'dis', 'ess', 'tra', 'com', 'abe', 'ine', 'ela', 'ill', 'ade', 'all', 'sub', 'sup', 'lat',
-                     'add', 'tem', 'ter', 'abs', 'erg', 'cau', 'ben', 'equ', 'cmp', ''],
+                     'abl', 'del', 'par', 'dis', 'ess', 'tra', 'com', 'abe', 'ine', 'ela', 'ill', 'ade', 'all', 'sub', 'sup', 'lat', 'per',
+                     'add', 'tem', 'ter', 'abs', 'erg', 'cau', 'ben', 'cns', 'equ', 'cmp', ''],
         'replacements' =>
         [
             ['nom'],
@@ -573,12 +573,14 @@ my %matrix = @_matrix =
             ['all', 'sub', 'lat', 'loc'],
             ['sub', 'all', 'lat', 'loc'],
             ['lat', 'all', 'sub', 'loc'],
+            ['per', 'lat'],
             ['tem', 'loc'],
             ['ter', 'ill'],
             ['abs', 'nom', 'acc'],
             ['erg', 'nom'],
             ['cau'],
             ['ben', 'dat'],
+            ['cns', 'ben'],
             ['equ', 'cmp'],
             ['cmp', 'equ']
         ],
