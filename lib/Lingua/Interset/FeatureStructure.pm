@@ -1181,7 +1181,14 @@ sub known_values
     my $feature = shift;
     if(exists($matrix{$feature}))
     {
-        return @{$matrix{$feature}{values}};
+        if(defined($matrix{$feature}{values}))
+        {
+            return @{$matrix{$feature}{values}};
+        }
+        else # features tagset and other do not have lists of values
+        {
+            return ();
+        }
     }
     else
     {
