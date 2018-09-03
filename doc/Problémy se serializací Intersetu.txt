@@ -1,0 +1,25 @@
+Jestliže po ruční anotaci v Tredu ukládáme treexový dokument, který obsahuje intersetové
+rysy s více hodnotami, tyto hodnoty se serializují špatně a výsledný soubor bude vadný.
+Následovně nepůjde načíst do Treexu. Aktuálně se mi to stalo s několika soubory v německých
+UD:
+
+[12:02:11]lrc2:/net/work/people/zeman/hamledt/normalize/de-ud20(master)> zgrep ARRAY data/treex/02/train/*.treex.gz
+data/treex/02/train/108.treex.gz:                                <gender>ARRAY(0x7e32274)</gender>
+data/treex/02/train/113.treex.gz:                                <gender>ARRAY(0x1ab6ee74)</gender>
+data/treex/02/train/134.treex.gz:                                <gender>ARRAY(0x122a5c9c)</gender>
+data/treex/02/train/134.treex.gz:                            <gender>ARRAY(0x1cd0b274)</gender>
+data/treex/02/train/135.treex.gz:                                <gender>ARRAY(0x204c672c)</gender>
+data/treex/02/train/135.treex.gz:                            <gender>ARRAY(0x17d36b0c)</gender>
+[12:02:34]lrc2:/net/work/people/zeman/hamledt/normalize/de-ud20(master)> zgrep ARRAY data/treex/02/dev/*.treex.gz
+[12:02:50]lrc2:/net/work/people/zeman/hamledt/normalize/de-ud20(master)>
+
+Krátkodobé řešení:
+
+Dotyčné soubory rozgzipovat, otevřít v nějakém textovém editoru a ručně doplnit těch 6
+ztracených rodů.
+
+Dlouhodobé řešení:
+
+V Intersetu zcela opustit používání odkazů na pole. Vícehodnotové rysy i uvnitř Intersetu
+reprezentovat jako řetězec se svislítky. Bude to vyžadovat změny na mnoha místech kódu.
+Předpokládám, že tahle změna si vyžádá alespoň týden práce.
