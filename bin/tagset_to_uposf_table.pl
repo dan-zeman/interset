@@ -58,6 +58,7 @@ sub usage
 # tagset_to_uposf_table.pl ja::ipadic > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\ja-ipadic-uposf.md
 # tagset_to_uposf_table.pl la::conll ldt-conll > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\la-conll-uposf.md
 # tagset_to_uposf_table.pl la::itconll la-itt --reduce=itt > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\la-itconll-uposf.md
+# tagset_to_uposf_table.pl lt::multext lt-alksnis > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\lt-multext-uposf.md
 # tagset_to_uposf_table.pl mt::mlss malti --reduce-to-subpos > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\mt-mlss-uposf.md
 # tagset_to_uposf_table.pl nl::cgn > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\nl-cgn-uposf.md
 # tagset_to_uposf_table.pl nl::conll conll-2006-nl > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\nl-conll-uposf.md

@@ -41,6 +41,7 @@ my @tagsets =
     'it::conll',
     'ja::conll', 'ja::ipadic',
     'la::conll', 'la::it', 'la::itconll',
+    'lt::multext',
     'mt::mlss',
     'mul::google', 'mul::upos',
     'nl::cgn', 'nl::conll',
