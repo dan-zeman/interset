@@ -16,7 +16,8 @@ my $format = shift;
 
 while(<>)
 {
-    unless(m/^\s*$/)
+    # Skip empty lines after sentences and comment lines in CoNLL-U.
+    if(m/^\d/)
     {
         # Get rid of the line break.
         s/\r?\n$//;

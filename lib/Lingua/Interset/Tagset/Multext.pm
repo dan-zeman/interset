@@ -585,7 +585,8 @@ sub _create_atoms
         {
             'd' => 'digit',
             'r' => 'roman',
-            'l' => 'word'
+            'l' => 'word',
+            'm' => 'combi' # combined digits + suffix, e.g. 7-oji, 2009-ųjų
         },
         # We cannot say that 'l' is default. It would work for Czech, Slovenian and Croatian.
         # However, it would not work for Romanian where we distinguish collective numerals ("both").
@@ -826,16 +827,20 @@ sub _create_atoms
             'f' => ['foreign' => 'yes'],
             # typo
             't' => ['typo' => 'yes'],
+            # symbol (occurs in Lithuanian as Xh)
+            'h' => ['pos' => 'sym'],
             # program
             # DZ: I am not sure what this value is supposed to mean. It is mentioned but not explained in the documentation.
             # It does not occur in the SETimes.HR corpus.
             'p' => []
         },
         'encode_map' =>
-
-            { 'foreign' => { 'yes' => 'f',
-                             '@'       => { 'typo' => { 'yes' => 't',
-                                                        '@'    => '-' }}}}
+        {
+            'pos' => { 'sym' => 'h',
+                       '@'   => { 'foreign' => { 'yes' => 'f',
+                                                 '@'       => { 'typo' => { 'yes' => 't',
+                                                                            '@'    => '-' }}}}}
+        }
     );
     return \%atoms;
 }

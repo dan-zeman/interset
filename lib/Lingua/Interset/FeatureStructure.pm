@@ -206,12 +206,13 @@ my %matrix = @_matrix =
     'numform' =>
     {
         'priority' => 120,
-        'values' => ['word', 'digit', 'roman', ''],
+        'values' => ['word', 'digit', 'roman', 'combi', ''],
         'replacements' =>
         [
             ['word'],
             ['digit', 'roman'],
-            ['roman', 'digit']
+            ['roman', 'digit'],
+            ['combi', 'digit']
         ],
         'uname' => 'NumForm'
     },
