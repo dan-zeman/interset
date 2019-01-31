@@ -341,9 +341,9 @@ sub _create_feature_map
     (
         'N' => ['pos', 'nountype', 'gender', 'number', 'case', 'reflex', 'nametype'], # The last feature is often '-', sometimes 'g', 's' or 'f', and it occurs almost exclusively with proper nouns. My guess: 'f' is a personal first name; 's' is a surname; 'g' is a geographical name.
         'A' => ['pos', 'adjtype', 'degree', 'gender', 'number', 'case', 'definite'], # The last feature distinguishes the nominal, indefinite form 'n' from the pronominal, definite form 'y'.
-        'P' => ['pos', 'prontype', 'gender', 'number', 'case', 'adjform'], # They do not distinguish pronoun types. Everything is Pg*. They also do not distinguish person. The last feature is 'n', 'y' or '-'.
-        'M' => ['pos', 'numtype', 'gender', 'number', 'case', 'numform', 'adjform'], # The last feature is 'n', 'y' or '-'.
-        'V' => ['pos', 'verbtype', 'verbform', 'tense', 'person', 'number', 'gender', 'voice', 'polarity', 'adjform', 'case', 'reflex', 'mood', undef], # Verb type is always 'g'. Last feature is 'p' for participles, '-' otherwise. But participles are already identified by 'p' in the third position.
+        'P' => ['pos', 'prontype', 'gender', 'number', 'case', 'definite'], # They do not distinguish pronoun types. Everything is Pg*. They also do not distinguish person. The last feature is 'n', 'y' or '-'.
+        'M' => ['pos', 'numtype', 'gender', 'number', 'case', 'numform', 'definite'], # The last feature is 'n', 'y' or '-'.
+        'V' => ['pos', 'verbtype', 'verbform', 'tense', 'person', 'number', 'gender', 'voice', 'polarity', 'adjform', 'case', 'reflex', 'mood', undef], # Verb type is always 'g'. Last feature is 'p' for participles, '-' otherwise. But participles are already identified by 'p' in the third position. According to the documentation of the ALKSNIS treebank, the feature may mark the positive degree.
         'R' => ['pos', 'adverb_type', 'degree'],
         'S' => ['pos', 'adpostype', 'case'],
         'C' => ['pos', 'conjtype'], # just Cg
