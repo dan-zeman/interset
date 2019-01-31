@@ -3,6 +3,8 @@
 Drivers:
 * LT::Multext: The sixth character of nouns is not adjform. It is probably
   reflexivity.
+* LT::Multext: The seventh character of adjectives is better characterized as
+  definiteness, although adjform is not exactly wrong.
 
 
 

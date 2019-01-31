@@ -89,10 +89,10 @@ sub _create_atoms
         'surfeature' => 'adjform',
         'decode_map' =>
         {
-            # Nominal, short form of adjective.
+            # Nominal, short form of adjective. (NOTE: we are now reclassifying this as the indefinite form, see the feature of definiteness.)
             # examples: lietuviškas
             'n' => ['variant' => 'short'],
-            # Pronominal, long form of adjective.
+            # Pronominal, long form of adjective. (NOTE: we are now reclassifying this as the definite form, see the feature of definiteness.)
             # examples: lietuviškasis
             'y' => ['variant' => 'long']
         },
@@ -340,7 +340,7 @@ sub _create_feature_map
     my %features =
     (
         'N' => ['pos', 'nountype', 'gender', 'number', 'case', 'reflex', 'nametype'], # The last feature is often '-', sometimes 'g', 's' or 'f', and it occurs almost exclusively with proper nouns. My guess: 'f' is a personal first name; 's' is a surname; 'g' is a geographical name.
-        'A' => ['pos', 'adjtype', 'degree', 'gender', 'number', 'case', 'adjform'], # The last feature is 'n' or 'y'. It seems to distinguish the nominal form 'n' from the pronominal form 'y'.
+        'A' => ['pos', 'adjtype', 'degree', 'gender', 'number', 'case', 'definite'], # The last feature distinguishes the nominal, indefinite form 'n' from the pronominal, definite form 'y'.
         'P' => ['pos', 'prontype', 'gender', 'number', 'case', 'adjform'], # They do not distinguish pronoun types. Everything is Pg*. They also do not distinguish person. The last feature is 'n', 'y' or '-'.
         'M' => ['pos', 'numtype', 'gender', 'number', 'case', 'numform', 'adjform'], # The last feature is 'n', 'y' or '-'.
         'V' => ['pos', 'verbtype', 'verbform', 'tense', 'person', 'number', 'gender', 'voice', 'polarity', 'adjform', 'case', 'reflex', 'mood', undef], # Verb type is always 'g'. Last feature is 'p' for participles, '-' otherwise. But participles are already identified by 'p' in the third position.
