@@ -298,7 +298,10 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             'i' => 'ind',
-            's' => 'sub',
+            # 's' means 'subjunctive' in MULTEXT-EAST.
+            # We change it here to 'conditional' in order to make it parallel
+            # to other Baltic tagsets in UD.
+            's' => 'cnd',
             'm' => 'imp'
         },
         'encode_default' => '-'

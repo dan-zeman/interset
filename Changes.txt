@@ -1,5 +1,11 @@
 {{$NEXT}}
 
+Drivers:
+* LT::Multext: Subjunctive mood changed to conditional, in order to make it
+  more parallel to other Lithuanian and Latvian corpora in UD.
+
+
+
 3.014     2019-01-31 14:30:16+01:00 Europe/Prague
 
 Drivers:
