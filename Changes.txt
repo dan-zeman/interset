@@ -1,5 +1,11 @@
 {{$NEXT}}
 
+Drivers:
+* LT::Multext: The sixth character of nouns is not adjform. It is probably
+  reflexivity.
+
+
+
 3.013     2019-01-14 21:42:51+01:00 Europe/Prague
 
 Features:
@@ -7,7 +13,6 @@ Features:
 
 Drivers:
 * LT::Multext
-
 
 
 

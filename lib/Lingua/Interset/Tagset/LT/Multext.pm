@@ -329,14 +329,17 @@ sub _create_atoms
 
 #------------------------------------------------------------------------------
 # Creates a map that tells for each surface part of speech which features are
-# relevant and in what order they appear.
+# relevant and in what order they appear. The MULTEXT-EAST website does not
+# document Lithuanian but the annotation manual supplied with v2.2 of the
+# ALKSNIS treebank (http://hdl.handle.net/20.500.11821/20) has some documenta-
+# tion (in Lithuanian only).
 #------------------------------------------------------------------------------
 sub _create_feature_map
 {
     my $self = shift;
     my %features =
     (
-        'N' => ['pos', 'nountype', 'gender', 'number', 'case', 'adjform', 'nametype'], # I do not understand the meaning of the last two features. The penultimate feature is almost always 'n', sometimes 'y' or 'a' ('a' is probably a typo). It could correspond to the form of adjectives, for nouns that are derived from adjectives. It seems to be a lexical feature of nouns. The last feature is often '-', sometimes 'g', 's' or 'f', and it occurs almost exclusively with proper nouns. My guess: 'f' is a personal first name; 's' is a surname; 'g' is a geographical name.
+        'N' => ['pos', 'nountype', 'gender', 'number', 'case', 'reflex', 'nametype'], # The last feature is often '-', sometimes 'g', 's' or 'f', and it occurs almost exclusively with proper nouns. My guess: 'f' is a personal first name; 's' is a surname; 'g' is a geographical name.
         'A' => ['pos', 'adjtype', 'degree', 'gender', 'number', 'case', 'adjform'], # The last feature is 'n' or 'y'. It seems to distinguish the nominal form 'n' from the pronominal form 'y'.
         'P' => ['pos', 'prontype', 'gender', 'number', 'case', 'adjform'], # They do not distinguish pronoun types. Everything is Pg*. They also do not distinguish person. The last feature is 'n', 'y' or '-'.
         'M' => ['pos', 'numtype', 'gender', 'number', 'case', 'numform', 'adjform'], # The last feature is 'n', 'y' or '-'.
