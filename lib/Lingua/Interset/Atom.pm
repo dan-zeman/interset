@@ -4,7 +4,7 @@
 package Lingua::Interset::Atom;
 use strict;
 use warnings;
-our $VERSION = '3.014';
+our $VERSION = '3.015';
 
 use utf8;
 use open ':utf8';
