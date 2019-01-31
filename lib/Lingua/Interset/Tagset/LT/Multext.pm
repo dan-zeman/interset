@@ -81,20 +81,20 @@ sub _create_atoms
             'poss' => { '@' => 'g' }
         }
     );
-    # ADJECTIVE FORMATION ####################
+    # DEFINITENESS ####################
     # In Lithuanian, this feature is presented as "pronominal suffix yes or no?"
-    # Hence the short form (more frequent) has 'n', the long form 'y'.
-    $atoms->{adjform} = $self->create_atom
+    # Hence the short form (more frequent, indefinite) has 'n', the long form (pronominal, definite) 'y'.
+    $atoms->{definite} = $self->create_atom
     (
-        'surfeature' => 'adjform',
+        'surfeature' => 'definite',
         'decode_map' =>
         {
             # Nominal, short form of adjective. (NOTE: we are now reclassifying this as the indefinite form, see the feature of definiteness.)
             # examples: lietuviškas
-            'n' => ['variant' => 'short'],
+            'n' => ['definite' => 'ind'],
             # Pronominal, long form of adjective. (NOTE: we are now reclassifying this as the definite form, see the feature of definiteness.)
             # examples: lietuviškasis
-            'y' => ['variant' => 'long']
+            'y' => ['definite' => 'def']
         },
         'encode_map' =>
         {
@@ -107,9 +107,9 @@ sub _create_atoms
                                                                                    'gdv'  => '-',
                                                                                    'inf'  => '-',
                                                                                    'fin'  => '-',
-                                                                                   '@'    => { 'variant' => { 'short' => 'n',
-                                                                                                              'long'  => 'y',
-                                                                                                              '@'     => 'n' }}}}}}}
+                                                                                   '@'    => { 'definite' => { 'ind' => 'n',
+                                                                                                               'def' => 'y',
+                                                                                                               '@'   => 'n' }}}}}}}
         }
     );
     # CONJTYPE ####################
@@ -343,7 +343,7 @@ sub _create_feature_map
         'A' => ['pos', 'adjtype', 'degree', 'gender', 'number', 'case', 'definite'], # The last feature distinguishes the nominal, indefinite form 'n' from the pronominal, definite form 'y'.
         'P' => ['pos', 'prontype', 'gender', 'number', 'case', 'definite'], # They do not distinguish pronoun types. Everything is Pg*. They also do not distinguish person. The last feature is 'n', 'y' or '-'.
         'M' => ['pos', 'numtype', 'gender', 'number', 'case', 'numform', 'definite'], # The last feature is 'n', 'y' or '-'.
-        'V' => ['pos', 'verbtype', 'verbform', 'tense', 'person', 'number', 'gender', 'voice', 'polarity', 'adjform', 'case', 'reflex', 'mood', undef], # Verb type is always 'g'. Last feature is 'p' for participles, '-' otherwise. But participles are already identified by 'p' in the third position. According to the documentation of the ALKSNIS treebank, the feature may mark the positive degree.
+        'V' => ['pos', 'verbtype', 'verbform', 'tense', 'person', 'number', 'gender', 'voice', 'polarity', 'definite', 'case', 'reflex', 'mood', 'degree'], # Verb type is always 'g'. Last feature is 'p' for participles, '-' otherwise. But participles are already identified by 'p' in the third position. According to the documentation of the ALKSNIS treebank, the feature may mark the positive degree.
         'R' => ['pos', 'adverb_type', 'degree'],
         'S' => ['pos', 'adpostype', 'case'],
         'C' => ['pos', 'conjtype'], # just Cg
