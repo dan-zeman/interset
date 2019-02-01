@@ -1,8 +1,14 @@
 {{$NEXT}}
 
 Drivers:
+* LT::Jablonskis
 * LT::Multext: Subjunctive mood changed to conditional, in order to make it
   more parallel to other Lithuanian and Latvian corpora in UD.
+* Changed mapping of Lithuanian non-finite verb forms:
+  * dalyvis (participle) = verb, participle
+  * padalyvis (same subject converb) = verb, gerund
+  * pusdalyvis (different subject converb) = verb, converb
+  * būdinys (adverbial participle of manner) = adverb, converb
 
 
 
