@@ -44,13 +44,17 @@ sub _create_atoms
             # noun / daiktavardis
             'dkt'  => ['pos' => 'noun'],
             # adjective / būdvardis
-            'bdv'  => ['pos' => 'adj'],
+            # All adjectives have definite=ind by default. For definite forms it will be overridden later.
+            'bdv'  => ['pos' => 'adj', 'definite' => 'ind'],
             # pronoun / įvardis
-            'įv'   => ['pos' => 'noun', 'prontype' => 'prn'],
+            # All pronouns have definite=ind by default. For definite forms it will be overridden later.
+            'įv'   => ['pos' => 'noun', 'prontype' => 'prn', 'definite' => 'ind'],
             # numeral / skaitvardis
-            'sktv' => ['pos' => 'num'],
+            # All numerals have definite=ind by default. For definite forms it will be overridden later.
+            'sktv' => ['pos' => 'num', 'definite' => 'ind'],
             # verb / veiksmažodis
-            'vksm' => ['pos' => 'verb'],
+            # All verbs have polarity=pos by default. For negative forms it will be overridden later.
+            'vksm' => ['pos' => 'verb', 'polarity' => 'pos'],
             # adverb / prieveiksmis
             'prv'  => ['pos' => 'adv'],
             # adposition / prielinsknis
@@ -266,7 +270,8 @@ sub _create_atoms
             # bendratis
             'bndr' => ['pos' => 'verb', 'verbform' => 'inf'],
             # dalyvis = participle
-            'dlv'  => ['pos' => 'verb', 'verbform' => 'part'],
+            # All participles have definite=ind by default. For definite forms it will be overridden later.
+            'dlv'  => ['pos' => 'verb', 'verbform' => 'part', 'definite' => 'ind'],
             # padalyvis = half participle = same subject converb
             # The tentative conversion by the authors of ALKSNIS maps padalyvis to gerund and pusdalyvis to converb.
             'pad'  => ['pos' => 'verb', 'verbform' => 'ger'],
