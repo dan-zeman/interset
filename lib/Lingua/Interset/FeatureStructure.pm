@@ -1009,8 +1009,13 @@ my %matrix = @_matrix =
         ],
         'uname' => 'Aspect'
     },
-    ###!!! Experimental for ro::multext and its conversion to UD!
-    ###!!! Not yet fully accepted and documented!
+    # Distinguishes between strong and weak forms of adjectives or pronouns.
+    # Used e.g. in Romanian UD. See also the 'variant' feature. Some tagsets
+    # use variant=long instead of strength=strong, and variant=short instead
+    # of strength=weak. However, the 'strength' feature has been tentatively
+    # added to Interset because it is slightly more specific and also because
+    # we want to be able to seamlessly read the features from the UD corpora
+    # that use it.
     'strength' =>
     {
         'priority' => 437,

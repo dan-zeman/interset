@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+Features:
+* Added feature 'strength' because of UD corpora that use it (Romanian,
+  Gothic, Old Church Slavonic).
+
 Drivers:
 * LT::Jablonskis
 * LT::Multext: Subjunctive mood changed to conditional, in order to make it
