@@ -3,8 +3,10 @@
 Features:
 * Added feature 'strength' because of UD corpora that use it (Romanian,
   Gothic, Old Church Slavonic).
+* Feature 'variant': added values 'a', 'b', 'c' (abbreviations in PDT-C).
 
 Drivers:
+* CS::Pdtc
 * LT::Jablonskis
 * LT::Multext: Subjunctive mood changed to conditional, in order to make it
   more parallel to other Lithuanian and Latvian corpora in UD.
