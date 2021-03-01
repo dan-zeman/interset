@@ -118,12 +118,9 @@ sub _create_atoms
             # interrogative or relative pronoun, no gender inflection
             # examples: kdo co kdož copak
             'PQ' => ['pos' => 'noun', 'prontype' => 'int|rel'],
-            # interrogative or relative pronoun, attributive
-            # examples: jaký který čí
-            'P4' => ['pos' => 'adj', 'prontype' => 'int|rel'],
-            # relative pronoun
-            # examples: jenž jež již
-            'PJ' => ['pos' => 'noun', 'prontype' => 'rel', 'prepcase' => 'npr'],
+            # interrogative or relative pronoun, with gender (i.e., not only attributive, unlike in cs::pdt, which did not include "jenž" here!)
+            # examples: jaký který čí jenž
+            'P4' => ['pos' => 'adj|noun', 'prontype' => 'int|rel'],
             # possessive relative pronoun
             # examples: jehož jejíž
             'P1' => ['pos' => 'adj', 'prontype' => 'rel', 'poss' => 'yes'],
@@ -820,21 +817,19 @@ sub encode
             $tag = 'PDXXX----------';
         }
         # interrogative or relative pronoun
-        elsif($fs->prontype() eq 'rel')
-        {
-            # jenž, jež, již, ...
-            $tag = 'PJX-X----------';
-        }
         elsif($fs->is_wh())
         {
-            if($fs->is_noun())
+            # P4 inflects for gender and PQ does not. Unfortunately, this does not
+            # help us to distinguish them because an empty gender is either '-' (PQ-) or 'X' (P4X).
+            # We decode PQ as pos=noun, while P4 has pos=adj|noun, so let's use this.
+            if($fs->is_noun() && !$fs->is_adjective())
             {
                 # kdo, co
                 $tag = 'PQ--X----------';
             }
             else
             {
-                # jaký, který, čí
+                # jaký, který, čí, jenž
                 $tag = 'P4XXX----------';
             }
         }
