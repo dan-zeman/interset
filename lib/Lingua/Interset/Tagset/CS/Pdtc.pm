@@ -528,10 +528,11 @@ sub _create_atoms
         'decode_map' =>
         {
             '0' => ['variant' => '0'], # 0 does not occur in the data. Dash ('-') is the neutral value for standard contemporary style
-            '1' => ['variant' => '1'],                    # standard variant: orli, myslet
-            '2' => ['variant' => '2', 'style' => 'arch'], # standard variant: mysliti
-            '3' => ['variant' => '3', 'style' => 'arch'], # standard variant: mysleti
-            '4' => ['variant' => '4', 'style' => 'arch'], # standard variant: pomažemť
+            '1' => ['variant' => '1'], # standard variant: orli, myslet, jejž
+            # Unlike in cs::pdt, variants 2-4 are not necessarily archaic. For example, the personal pronoun forms used before preposition (něj, něhož etc.) get one of these variants.
+            '2' => ['variant' => '2'], # standard variant: mysliti, nějž
+            '3' => ['variant' => '3'], # standard variant: mysleti, něhož
+            '4' => ['variant' => '4'], # standard variant: pomažemť
             '5' => ['variant' => '5', 'style' => 'coll'], # non-standard variant: přídeme
             '6' => ['variant' => '6', 'style' => 'coll'], # non-standard variant: přijdem
             '7' => ['variant' => '7', 'style' => 'coll'], # non-standard variant: přídem
