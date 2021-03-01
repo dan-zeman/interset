@@ -118,9 +118,6 @@ sub _create_atoms
             # interrogative or relative pronoun, no gender inflection
             # examples: kdo co kdož copak
             'PQ' => ['pos' => 'noun', 'prontype' => 'int|rel'],
-            # interrogative or relative compound of preposition and pronoun
-            # examples: oč nač zač
-            'PY' => ['pos' => 'noun', 'prontype' => 'int|rel', 'adpostype' => 'preppron'],
             # interrogative or relative pronoun, attributive
             # examples: jaký který čí
             'P4' => ['pos' => 'adj', 'prontype' => 'int|rel'],
@@ -139,9 +136,12 @@ sub _create_atoms
             # total pronoun
             # examples: všechen sám
             'PL' => ['pos' => 'noun', 'prontype' => 'tot'],
-            # negative pronoun
-            # examples: nikdo nic nijaký ničí žádný
-            'PW' => ['pos' => 'noun|adj', 'prontype' => 'neg'],
+            # negative pronoun, no gender inflection
+            # examples: nikdo nic
+            'PY' => ['pos' => 'noun', 'prontype' => 'neg'],
+            # negative pronoun, attributive
+            # examples: nijaký ničí žádný
+            'PW' => ['pos' => 'adj', 'prontype' => 'neg'],
             # cardinal number expressed by digits
             # examples: 1 3,14 2014
             'C=' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'digit'],
@@ -751,14 +751,7 @@ sub encode
         # personal pronoun
         elsif($fs->adpostype() eq 'preppron')
         {
-            if($fs->is_wh())
-            {
-                $tag = 'PY-------------'; # oč, nač
-            }
-            else
-            {
-                $tag = 'P0-------------'; # oň, naň
-            }
+            $tag = 'P0-------------'; # oň, naň
         }
         elsif($fs->prontype() eq 'prs')
         {
@@ -809,14 +802,15 @@ sub encode
         elsif($fs->polarity() eq 'neg' || $fs->prontype() eq 'neg')
         {
             # nikdo, nic, nijaký, ničí, žádný
-            # it has gender and number if it is plural
-            if($fs->is_plural())
+            if($fs->is_noun())
             {
-                $tag = 'PWXXX----------';
+                # nikdo, nic
+                $tag = 'PY--X----------';
             }
             else
             {
-                $tag = 'PW--X----------';
+                # nijaký, ničí, žádný
+                $tag = 'PWXXX----------';
             }
         }
         # demonstrative pronoun
