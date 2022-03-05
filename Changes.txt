@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+3.015     2022-03-05 11:53:12+01:00 Europe/Prague
+
 Features:
 * Added feature 'strength' because of UD corpora that use it (Romanian,
   Gothic, Old Church Slavonic).
