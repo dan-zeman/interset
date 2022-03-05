@@ -5,7 +5,7 @@
 package Lingua::Interset::Tagset::AR::Padt;
 use strict;
 use warnings;
-our $VERSION = '3.015';
+our $VERSION = '3.016';
 
 use utf8;
 use open ':utf8';
