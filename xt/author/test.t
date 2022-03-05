@@ -22,7 +22,7 @@ my @tagsets =
     'bg::conll',
     'bn::conll',
     'ca::conll2009',
-    'cs::pdt', 'cs::ajka', 'cs::multext', 'cs::pmkkr',
+    'cs::pdt', 'cs::pdtc', 'cs::ridics', 'cs::ajka', 'cs::multext', 'cs::pmkkr',
     'da::conll',
     'de::stts', 'de::conll2009', 'de::smor',
     'el::conll',
