@@ -200,9 +200,11 @@ sub _create_atoms
         'simple_decode_map' =>
         {
             # įvardžiuotinis = pronominal = definite
-            'įvardž' => 'def',
+            'įvardž' => 'def'#,
             # neįvardžiuotinis = nominal = indefinite
-            'neįvardž' => 'ind'
+            ###!!! The tags in our list below actually do not use the 'neįvardž' value.
+            ###!!! Instead, they omit the definiteness feature.
+            #'neįvardž' => 'ind'
         },
         'encode_default' => ''
     );
@@ -378,8 +380,10 @@ sub _create_atoms
         'intfeature' => 'polarity',
         'simple_decode_map' =>
         {
+            ###!!! The tags in our list below actually do not use the 'teig' value.
+            ###!!! Instead, they omit the polarity feature.
             # teigiamas
-            'teig' => 'pos',
+            #'teig' => 'pos',
             # neigiamas
             'neig' => 'neg'
         },
