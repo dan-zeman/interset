@@ -60,9 +60,9 @@ sub _create_atoms
             # pronoun
             'PRO'    => ['pos' => 'noun', 'prontype' => 'prn'],
             # determiner
-            'DET'    => ['pos' => 'noun', 'prontype' => 'prn'],
+            'DET'    => ['pos' => 'adj', 'prontype' => 'prn'],
             # article
-            'ART'    => ['pos' => 'noun', 'prontype' => 'art'],
+            'ART'    => ['pos' => 'adj', 'prontype' => 'art'],
             # (cardinal?) number
             'NUM'    => ['pos' => 'num', 'numtype' => 'card'],
             # verb
@@ -75,6 +75,12 @@ sub _create_atoms
             'V.CVB'  => ['pos' => 'verb', 'verbform' => 'conv'],
             # auxiliary verb
             'AUX'    => ['pos' => 'verb', 'verbtype' => 'aux'],
+            # auxiliary masdar / verbal noun
+            'AUX.MSDR' => ['pos' => 'verb', 'verbtype' => 'aux', 'verbform' => 'vnoun'],
+            # auxiliary participle / verbal adjective
+            'AUX.PTCP' => ['pos' => 'verb', 'verbtype' => 'aux', 'verbform' => 'part'],
+            # auxiliary converb / verbal adverb
+            'AUX.CVB'  => ['pos' => 'verb', 'verbtype' => 'aux', 'verbform' => 'conv'],
             # adverb
             'ADV'    => ['pos' => 'adv'],
             # preposition
@@ -417,10 +423,23 @@ sub _create_atoms
             # colloquial register (speaker-setting axis)
             'COL'    => ['style' => 'coll'],
             # 20. POSSESSION ##################################################
+            'PSSD'   => ['poss' => 'yes'],
             # alienable possession
             'ALN'    => ['poss' => 'yes'],
             # inalienable possession
             'NALN'   => ['poss' => 'yes'],
+            # cross-reference of the features of the possessor
+            'PSS(MASC)'    => ['possgender' => 'masc'],
+            'PSS(FEM)'     => ['possgender' => 'fem'],
+            'PSS(NEUT)'    => ['possgender' => 'neut'],
+            'PSS(SG;MASC)' => ['possgender' => 'masc', 'possnumber' => 'sing'],
+            'PSS(SG;FEM)'  => ['possgender' => 'fem', 'possnumber' => 'sing'],
+            'PSS(SG;NEUT)' => ['possgender' => 'neut', 'possnumber' => 'sing'],
+            'PSS(SG)'      => ['possnumber' => 'sing'],
+            'PSS(PL)'      => ['possnumber' => 'plur'],
+            'PSS(PL;MASC)' => ['possgender' => 'masc', 'possnumber' => 'plur'],
+            'PSS(PL;FEM)'  => ['possgender' => 'fem', 'possnumber' => 'plur'],
+            'PSS(PL;NEUT)' => ['possgender' => 'neut', 'possnumber' => 'plur'],
             # 21. SWITCH-REFERENCE ############################################
             # SS
             'SS'     => [],
@@ -494,21 +513,34 @@ sub _create_atoms
         },
         'encode_map' => {} # Unlike decoding, encoding can be solved per each feature/dimension.
     );
-    # 2. PART OF SPEECH ####################
+    # 2. PART OF SPEECH #######################################################
     $atoms{pos} = $self->create_atom
     (
         'surfeature' => 'pos',
         'decode_map' => {},
         'encode_map' =>
 
-            { 'pos' => { 'noun' => { 'nountype' => { 'prop' => 'PROPN',
-                                                     '@'    => 'N' }},
-                         'adj'  => 'ADJ',
-                         'verb' => { 'verbtype' => { 'aux'  => 'AUX',
-                                                     '@'    => 'V' }},
-                         'adv'  => 'ADV' }}
+            { 'pos' => { 'noun' => { 'prontype' => { ''     => { 'nountype' => { 'prop' => 'PROPN',
+                                                                                 '@'    => 'N' }},
+                                                     '@'    => 'PRO' }},
+                         'adj'  => { 'prontype' => { ''     => { 'verbform' => { 'part' => 'V.PTCP',
+                                                                                 '@'    => 'ADJ' }},
+                                                     '@'    => 'DET' }},
+                         'num'  => 'NUM',
+                         'verb' => { 'verbtype' => { 'aux'  => { 'verbform' => { 'part' => 'AUX.PTCP',
+                                                                                 'conv' => 'AUX.CVB',
+                                                                                 '@'    => 'AUX' }},
+                                                     '@'    => { 'verbform' => { 'part' => 'V.PTCP',
+                                                                                 'conv' => 'V.CVB',
+                                                                                 '@'    => 'V' }}}},
+                         'adv'  => 'ADV',
+                         'adp'  => 'ADP',
+                         'conj' => { 'conjtype' => { 'sub' => 'COMP',
+                                                     '@'   => 'CONJ' }},
+                         'part' => 'PART',
+                         'int'  => 'INTJ' }}
     );
-    # 3. GENDER ####################
+    # 3. GENDER ###############################################################
     $atoms{gender} = $self->create_atom
     (
         'surfeature' => 'gender',
@@ -519,7 +551,7 @@ sub _create_atoms
                             'fem'  => 'FEM',
                             'neut' => 'NEUT' }}
     );
-    # 4. ANIMACY ####################
+    # 4. ANIMACY ##############################################################
     $atoms{animacy} = $self->create_simple_atom
     (
         'intfeature' => 'animacy',
@@ -531,7 +563,7 @@ sub _create_atoms
             'NHUM' => 'nhum'
         }
     );
-    # 5. NUMBER ####################
+    # 5. NUMBER ###############################################################
     $atoms{number} = $self->create_simple_atom
     (
         'intfeature' => 'number',
@@ -544,7 +576,7 @@ sub _create_atoms
             'PL'   => 'plur'
         }
     );
-    # 6. CASE ####################
+    # 6. CASE #################################################################
     $atoms{case} = $self->create_simple_atom
     (
         'intfeature' => 'case',
@@ -559,7 +591,7 @@ sub _create_atoms
             'INS' => 'ins'
         }
     );
-    # 7. PERSON ####################
+    # 7. PERSON ###############################################################
     $atoms{person} = $self->create_simple_atom
     (
         'intfeature' => 'person',
@@ -571,7 +603,27 @@ sub _create_atoms
             '3' => '3'
         }
     );
-    # 8. MOOD ####################
+    # 8. POLITENESS ###########################################################
+    $atoms{polite} = $self->create_simple_atom
+    (
+        'intfeature' => 'polite',
+        'simple_decode_map' =>
+        {
+            'INFM' => 'infm',
+            'FORM' => 'form'
+        }
+    );
+    # 9. FINITENESS ###########################################################
+    $atoms{finiteness} = $self->create_atom
+    (
+        'surfeature' => 'finiteness',
+        'decode_map' => {},
+        'encode_map' =>
+
+            { 'verbform' => { 'fin' => 'FIN',
+                              'inf' => 'NFIN' }}
+    );
+    # 10. MOOD #################################################################
     $atoms{mood} = $self->create_simple_atom
     (
         'intfeature' => 'mood',
@@ -583,7 +635,7 @@ sub _create_atoms
             'COND' => 'cnd'
         }
     );
-    # 9. ASPECT ####################
+    # 11. ASPECT ###############################################################
     $atoms{aspect} = $self->create_atom
     (
         'surfeature' => 'aspect',
@@ -593,7 +645,7 @@ sub _create_atoms
             { 'aspect' => { 'imp'      => 'IPFV',
                             'perf'     => 'PFV' }}
     );
-    # 10. TENSE ####################
+    # 12. TENSE ###############################################################
     $atoms{tense} = $self->create_atom
     (
         'surfeature' => 'tense',
@@ -604,7 +656,7 @@ sub _create_atoms
                            'fut'  => 'FUT',
                            'pres' => 'PRS' }}
     );
-    # 11. DEGREE ####################
+    # 13. DEGREE ##############################################################
     $atoms{degree} = $self->create_simple_atom
     (
         'intfeature' => 'degree',
@@ -614,7 +666,7 @@ sub _create_atoms
             'SPRL' => 'sup'
         }
     );
-    # 12. POLARITY ####################
+    # 14. POLARITY ############################################################
     $atoms{polarity} = $self->create_atom
     (
         'surfeature' => 'polarity',
@@ -624,7 +676,7 @@ sub _create_atoms
             { 'polarity' => { 'pos' => 'POS',
                               'neg' => 'NEG' }}
     );
-    # 13. VOICE ####################
+    # 15. VOICE ###############################################################
     $atoms{voice} = $self->create_atom
     (
         'surfeature' => 'voice',
@@ -633,6 +685,25 @@ sub _create_atoms
 
             { 'voice' => { 'act'  => 'ACT',
                            'pass' => 'PASS' }}
+    );
+    # 16. POSSESSOR'S GENDER AND NUMBER #######################################
+    $atoms{possessor} = $self->create_atom
+    (
+        'surfeature' => 'possessor',
+        'decode_map' => {},
+        'encode_map' =>
+
+            { 'possnumber' => { 'sing' => { 'possgender' => { 'masc' => 'PSS(SG;MASC)',
+                                                              'fem'  => 'PSS(SG;FEM)',
+                                                              'neut' => 'PSS(SG;NEUT)',
+                                                              '@'    => 'PSS(SG)' }},
+                                'plur' => { 'possgender' => { 'masc' => 'PSS(PL;MASC)',
+                                                              'fem'  => 'PSS(PL;FEM)',
+                                                              'neut' => 'PSS(PL;NEUT)',
+                                                              '@'    => 'PSS(PL)' }},
+                                '@'    => { 'possgender' => { 'masc' => 'PSS(MASC)',
+                                                              'fem'  => 'PSS(FEM)',
+                                                              'neut' => 'PSS(NEUT)' }}}}
     );
     return \%atoms;
 }
@@ -651,8 +722,18 @@ sub decode
     $fs->set_tagset('mul::unimorph');
     # There is a string of feature values, separated by semicolons. The order of
     # the features is not significant, except that the main part of speech always
-    # comes first.
-    my @features = split(/;/, $tag);
+    # comes first. Since UniMorph 4.0, the string can be organized hierarchically.
+    # For example, the possessor's features may be grouped under PSS:
+    # N;SG;PSSD;PSS(3;SG;FEM)
+    my @features;
+    while($tag =~ s/(PSS\([A-Z0-9]+(;[A-Z0-9]+)*\))//)
+    {
+        push(@features, $1);
+        $tag =~ s/^;//;
+        $tag =~ s/;$//;
+        $tag =~ s/;+/;/g;
+    }
+    push(@features, split(/;/, $tag));
     my $atoms = $self->atoms();
     foreach my $feature (@features)
     {
@@ -672,7 +753,7 @@ sub encode
     my $fs = shift; # Lingua::Interset::FeatureStructure
     my $atoms = $self->atoms();
     my @features;
-    foreach my $f (qw(pos mood aspect tense person gender animacy number case polarity degree))
+    foreach my $f (qw(pos voice finiteness mood aspect tense person polite gender animacy number case polarity degree possessor))
     {
         die("Missing atom for '$f'") if(!exists($atoms->{$f}));
         my $umfeature = $atoms->{$f}->encode($fs);
