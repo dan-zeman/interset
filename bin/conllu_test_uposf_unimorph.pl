@@ -94,7 +94,7 @@ if(defined($umpath))
     printf STDERR ("%d UD tokens: forms found in UniMorph\n", $stats{n_forms_found});
     printf STDERR ("%d UD tokens: forms not found in UniMorph\n", $stats{n_forms_not_found});
     printf STDERR ("%d UD tokens: forms and analyses found in UniMorph\n", $stats{n_token_analyses_found});
-    write_unimorph($umpath.'.freq', \%hash, $um);
+    write_unimorph($umpath.'.freq', $um);
 }
 
 
