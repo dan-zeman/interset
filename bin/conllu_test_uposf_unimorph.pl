@@ -206,6 +206,7 @@ sub check_unimorph
                     if($reordered_analysis eq $umfeatures)
                     {
                         $um->{$foundform}{$lemma}{$analysis}[3]++;
+                        print STDERR ("$foundform $lemma $analysis\n"); ###!!! DEBUG
                         $stats->{n_token_analyses_found}++;
                         last;
                     }
