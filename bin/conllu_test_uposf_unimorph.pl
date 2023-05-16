@@ -94,6 +94,7 @@ if(defined($umpath))
     printf STDERR ("%d UD tokens: forms found in UniMorph\n", $stats{n_forms_found});
     printf STDERR ("%d UD tokens: forms not found in UniMorph\n", $stats{n_forms_not_found});
     printf STDERR ("%d UD tokens: forms and analyses found in UniMorph\n", $stats{n_token_analyses_found});
+    printf STDERR ("%d UD tokens: forms and partial analyses found in UniMorph\n", $stats{n_token_partial_analyses_found});
     write_unimorph($umpath.'.freq', $um);
 }
 
@@ -209,10 +210,70 @@ sub check_unimorph
                         $stats->{n_token_analyses_found}++;
                         last;
                     }
+                    # Often the UniMorph database has not the exact match for
+                    # the analysis in UD but it has a subset of the UD features.
+                    my $cmp = compare_um_strings($reordered_analysis, $umfeatures);
+                    if(defined($cmp) && $cmp < 0)
+                    {
+                        $um->{$foundform}{$lemma}{$analysis}[3]++;
+                        $stats->{n_token_partial_analyses_found}++;
+                        last;
+                    }
                 }
             }
         }
     }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Compares two UniMorph feature strings in terms of intersection + subset
+# relations. Returns
+#      -1 if $a and $b have non-empty intersection and $a is a subset of $b
+#       0 if $a and $b are equal
+#      +1 if $a and $b have non-empty intersection and $b is a subset of $a
+#   undef if $a and $b have empty intersection or if none of them is a subset
+#         of the other
+#------------------------------------------------------------------------------
+sub compare_um_strings
+{
+    my $a = shift;
+    my $b = shift;
+    my %a; map {$a{$_}++} (split(/;/, $a));
+    my %b; map {$b{$_}++} (split(/;/, $b));
+    my %common;
+    my %aonly;
+    my %bonly;
+    foreach my $x (keys(%a))
+    {
+        if(exists($b{$x}))
+        {
+            $common{$x}++;
+        }
+        else
+        {
+            $aonly{$x}++;
+        }
+    }
+    foreach my $x (keys(%b))
+    {
+        if(exists($a{$x}))
+        {
+            $common{$x}++;
+        }
+        else
+        {
+            $bonly{$x}++;
+        }
+    }
+    my $ncommon = scalar(keys(%common));
+    my $naonly = scalar(keys(%aonly));
+    my $nbonly = scalar(keys(%bonly));
+    return undef if($ncommon == 0 || $naonly > 0 && $nbonly > 0);
+    return -1 if($nbonly > 0);
+    return 1 if($naonly > 0);
+    return 0;
 }
 
 
