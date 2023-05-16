@@ -288,18 +288,30 @@ sub write_unimorph
 {
     my $path = shift; # e.g. /net/work/people/zeman/unimorph/ces/ces
     my $hash = shift;
-    open(UM, ">$path") or die("Cannot write $path: $!");
+    # Our hash is organized by forms, then lemmas. But we want to print it
+    # sorted first by lemmas, then by forms and feature strings.
+    my $lfhash;
     my @forms = sort(keys(%{$hash}));
     foreach my $form (@forms)
     {
         my @lemmas = sort(keys(%{$hash->{$form}}));
         foreach my $lemma (@lemmas)
         {
-            my @analyses = sort(keys(%{$hash->{$form}{$lemma}}));
+            $lfhash->{$lemma}{$form} = $hash->{$form}{$lemma};
+        }
+    }
+    open(UM, ">$path") or die("Cannot write $path: $!");
+    my @lemmas = sort(keys(%{$lfhash}));
+    foreach my $lemma (@lemmas)
+    {
+        my @forms = sort(keys(%{$lfhash->{$lemma}}));
+        foreach my $form (@forms)
+        {
+            my @analyses = sort(keys(%{$lfhash->{$lemma}{$form}}));
             foreach my $analysis (@analyses)
             {
-                my $frequency = $hash->{$form}{$lemma}{$analysis}[3];
-                my $udanalysis = $hash->{$form}{$lemma}{$analysis}[4];
+                my $frequency = $lfhash->{$lemma}{$form}{$analysis}[3];
+                my $udanalysis = $lfhash->{$lemma}{$form}{$analysis}[4];
                 if($frequency)
                 {
                     print UM ("$lemma\t$form\t$analysis\t$frequency\t$udanalysis\n");
