@@ -236,7 +236,7 @@ sub write_unimorph
             foreach my $analysis (@analyses)
             {
                 my $frequency = $hash->{$form}{$lemma}{$analysis}[3];
-                if($frequency)
+                if(1 || $frequency)
                 {
                     print UM ("$lemma\t$form\t$analysis\t$frequency\n");
                 }
