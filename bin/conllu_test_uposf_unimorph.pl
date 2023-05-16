@@ -206,7 +206,6 @@ sub check_unimorph
                     if($reordered_analysis eq $umfeatures)
                     {
                         $um->{$foundform}{$lemma}{$analysis}[3]++;
-                        print STDERR ("$foundform $lemma $analysis\n"); ###!!! DEBUG
                         $stats->{n_token_analyses_found}++;
                         last;
                     }
@@ -237,9 +236,9 @@ sub write_unimorph
             foreach my $analysis (@analyses)
             {
                 my $frequency = $hash->{$form}{$lemma}{$analysis}[3];
-                if($frequency || 1) ###!!! DEBUG
+                if($frequency)
                 {
-                    print("$lemma\t$form\t$analysis\t$frequency\n");
+                    print UM ("$lemma\t$form\t$analysis\t$frequency\n");
                 }
             }
         }
