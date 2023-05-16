@@ -200,11 +200,11 @@ sub check_unimorph
             {
                 # The order of individual UniMorph features is not significant.
                 # Order them alphabetically before matching.
-                $umfeatures = join(';', sort(split(/;/, $umfeatures)));
+                my $reordered_umfeatures = join(';', sort(split(/;/, $umfeatures)));
                 foreach my $analysis (keys(%{$um->{$foundform}{$lemma}}))
                 {
                     my $reordered_analysis = join(';', sort(split(/;/, $analysis)));
-                    if($reordered_analysis eq $umfeatures)
+                    if($reordered_analysis eq $reordered_umfeatures)
                     {
                         $um->{$foundform}{$lemma}{$analysis}[3]++;
                         $um->{$foundform}{$lemma}{$analysis}[4] = $umfeatures;
@@ -213,7 +213,7 @@ sub check_unimorph
                     }
                     # Often the UniMorph database has not the exact match for
                     # the analysis in UD but it has a subset of the UD features.
-                    my $cmp = compare_um_strings($reordered_analysis, $umfeatures);
+                    my $cmp = compare_um_strings($reordered_analysis, $reordered_umfeatures);
                     if(defined($cmp) && $cmp < 0)
                     {
                         $um->{$foundform}{$lemma}{$analysis}[3]++;
