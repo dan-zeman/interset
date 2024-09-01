@@ -2551,7 +2551,7 @@ sub is_adverb {my $self = shift; return $self->contains('pos', 'adv');}
 #------------------------------------------------------------------------------
 =method is_affirmative()
 =cut
-sub is_affirmative {my $self = shift; return $self->contains('negativeness', 'pos');}
+sub is_affirmative {my $self = shift; return $self->contains('polarity', 'pos');}
 
 #------------------------------------------------------------------------------
 =method is_allative()
@@ -2996,7 +2996,7 @@ sub is_necessitative {my $self = shift; return $self->contains('mood', 'nec');}
 #------------------------------------------------------------------------------
 =method is_negative()
 =cut
-sub is_negative {my $self = shift; return $self->contains('negativeness', 'neg') || $self->prontype() eq 'neg';} # prontype: don't use contains() here, we don't want true on 'ind|tot|neg'
+sub is_negative {my $self = shift; return $self->contains('polarity', 'neg') || $self->prontype() eq 'neg';} # prontype: don't use contains() here, we don't want true on 'ind|tot|neg'
 
 #------------------------------------------------------------------------------
 =method is_nominative()

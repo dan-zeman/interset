@@ -3,6 +3,11 @@
 Drivers:
 * MUL::Unimorph
 
+Fixes:
+* FeatureStructure methods is_affirmative() and is_negative() now
+  reach to the feature 'polarity' instead of the deprecated
+  'negativeness'.
+
 
 
 3.015     2022-03-05 11:53:12+01:00 Europe/Prague
