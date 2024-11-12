@@ -266,9 +266,9 @@ sub _find_drivers
         my $tpath = "$path/tagset";
         if(-d $tpath)
         {
-            opendir(DIR, $tpath) or confess("Cannot read folder $tpath: $!\n");
-            my @subdirs = readdir(DIR);
-            closedir(DIR);
+            opendir(my $dir, $tpath) or confess("Cannot read folder $tpath: $!\n");
+            my @subdirs = readdir($dir);
+            closedir($dir);
             foreach my $sd (@subdirs)
             {
                 my $sdpath = "$tpath/$sd";
@@ -276,9 +276,9 @@ sub _find_drivers
                 {
                     # It is possible that a subfolder of $PERLLIB is not readable.
                     # We cannot complain about it. We will just silently proceed to the next available folder.
-                    opendir(DIR, $sdpath) or next;
-                    my @files = readdir(DIR);
-                    closedir(DIR);
+                    opendir(my $dir, $sdpath) or next;
+                    my @files = readdir($dir);
+                    closedir($dir);
                     foreach my $file (@files)
                     {
                         my $fpath = "$sdpath/$file";
@@ -304,9 +304,9 @@ sub _find_drivers
         my $lipath = "$path/Lingua/Interset/Tagset";
         if(-d $lipath)
         {
-            opendir(DIR, $lipath) or confess("Cannot read folder $lipath: $!\n");
-            my @subdirs = readdir(DIR);
-            closedir(DIR);
+            opendir(my $dir, $lipath) or confess("Cannot read folder $lipath: $!\n");
+            my @subdirs = readdir($dir);
+            closedir($dir);
             foreach my $sd (@subdirs)
             {
                 my $sdpath = "$lipath/$sd";
@@ -314,9 +314,9 @@ sub _find_drivers
                 {
                     # It is possible that a subfolder of $PERLLIB is not readable.
                     # We cannot complain about it. We will just silently proceed to the next available folder.
-                    opendir(DIR, $sdpath) or next;
-                    my @files = readdir(DIR);
-                    closedir(DIR);
+                    opendir(my $dir, $sdpath) or next;
+                    my @files = readdir($dir);
+                    closedir($dir);
                     foreach my $file (@files)
                     {
                         my $fpath = "$sdpath/$file";
