@@ -3,7 +3,7 @@
 package Lingua::Interset::Tagset::JA::Ipadic;
 use strict;
 use warnings;
-our $VERSION = '3.016';
+our $VERSION = '3.017';
 
 use utf8;
 use open ':utf8';
