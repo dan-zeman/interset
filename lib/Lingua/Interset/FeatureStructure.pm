@@ -112,7 +112,7 @@ my %matrix = @_matrix =
     'extpos' =>
     {
         'priority' => 12,
-        'values'   => ['noun', 'adj', 'num', 'verb', 'adv', 'adp', 'conj', 'part', 'int', ''],
+        'values'   => ['noun', 'adj', 'num', 'verb', 'adv', 'adp', 'sconj', 'cconj', 'part', 'intj', ''],
         'replacements' =>
         [
             ['part'        ],
@@ -122,8 +122,9 @@ my %matrix = @_matrix =
             ['num',  'adj' ],
             ['adv'         ],
             ['adp',  'adv' ],
-            ['conj', 'adp' ],
-            ['int'         ]
+            ['sconj', 'adp', 'sconj' ],
+            ['cconj', 'sconj', 'adp' ],
+            ['intj'        ]
         ],
         'uname' => 'ExtPos'
     },
