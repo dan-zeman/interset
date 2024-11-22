@@ -105,6 +105,28 @@ my %matrix = @_matrix =
             ['int'         ]
         ],
     },
+    # External part of speech. This is a special feature in Universal Dependencies
+    # that is added to the head word of a fixed multiword expression and it shows
+    # how the whole expression is used in a sentence; it may or may not match the
+    # part of speech of the head word itself.
+    'extpos' =>
+    {
+        'priority' => 12,
+        'values'   => ['noun', 'adj', 'num', 'verb', 'adv', 'adp', 'conj', 'part', 'int', ''],
+        'replacements' =>
+        [
+            ['part'        ],
+            ['noun', 'verb'],
+            ['verb'        ],
+            ['adj',  'noun'],
+            ['num',  'adj' ],
+            ['adv'         ],
+            ['adp',  'adv' ],
+            ['conj', 'adp' ],
+            ['int'         ]
+        ],
+        'uname' => 'ExtPos'
+    },
     # Special type of noun if applicable and if known.
     'nountype' =>
     {

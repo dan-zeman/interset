@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+Features:
+* Added feature 'extpos' because 'ExtPos' was recently added as a
+  universal feature in UD.
+
 3.016     2024-11-12 16:18:40+01:00 Europe/Prague
 
 Drivers:
