@@ -2300,7 +2300,7 @@ sub get_ufeatures
         my @values = grep {defined($_) && $_ ne ''} $self->get_list($feature);
         next unless(@values);
         # Sort multivalues alphabetically and capitalize them.
-        @values = sort {lc($a) cmp lc($b)} (map {my $x = $_; if($feature eq 'ExtPos') {$x = uc($x)} else {$x =~ s/^(.)/\u$1/} $x} (@values));
+        @values = sort {lc($a) cmp lc($b)} (map {my $x = $_; if($feature eq 'extpos') {$x = uc($x)} else {$x =~ s/^(.)/\u$1/} $x} (@values));
         # Join values using comma (unlike in get_joined(), with Universal Features we cannot use the vertical bar).
         my $value = join(',', @values);
         my $pair = "$uname=$value";
