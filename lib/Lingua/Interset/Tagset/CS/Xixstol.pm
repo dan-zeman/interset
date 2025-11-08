@@ -1,7 +1,7 @@
-# ABSTRACT: Driver for the RIDICS tagset of Old Czech.
-# Copyright © 2006-2009, 2014, 2016, 2021, 2022 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# ABSTRACT: Driver for the tagset used by the Czech National Corpus team for texts from the nineteenth century.
+# Copyright © 2006-2009, 2014, 2016, 2021, 2022, 2025 Dan Zeman <zeman@ufal.mff.cuni.cz>
 
-package Lingua::Interset::Tagset::CS::Ridics;
+package Lingua::Interset::Tagset::CS::Xixstol;
 use strict;
 use warnings;
 our $VERSION = '3.017';
@@ -27,7 +27,7 @@ has 'atoms' => ( isa => 'HashRef', is => 'ro', builder => '_create_atoms', lazy 
 #------------------------------------------------------------------------------
 sub get_tagset_id
 {
-    return 'cs::ridics';
+    return 'cs::xixstol';
 }
 
 
@@ -174,10 +174,7 @@ sub _create_atoms
             'Ck' => ['pos' => 'adj', 'numtype' => 'ord', 'other' => {'numtype' => 'suffix'}],
             # cardinal numeral, low value (agrees with counted noun)
             # examples: jeden dva tři čtyři
-            'Cl' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'word', 'numvalue' => '1|2|3'],
-            # cardinal numeral, high value (in nominative, accusative and vocative behaves like a noun and the counted noun must be in genitive)
-            # examples: pět šest sedm sto
-            'Cn' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'word'],
+            'Cl' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'word'],
             # indefinite multiplicative numeral
             # examples: několikrát mnohokrát tolikrát kolikrát nesčíslněkrát
             'Co' => ['pos' => 'adv', 'numtype' => 'mult', 'prontype' => 'ind|dem'],
@@ -248,12 +245,9 @@ sub _create_atoms
             'Vm' => ['pos' => 'verb', 'verbform' => 'conv', 'tense' => 'past', 'aspect' => 'perf', 'voice' => 'act'],
             # adverb
             'D-' => ['pos' => 'adv'],
-            # adverb with degree of comparison and polarity
-            # examples: málo chytře
-            'Dg' => ['pos' => 'adv'],
-            # adverb without degree of comparison and polarity
-            # examples: kde kam kdy jak tady dnes
-            'Db' => ['pos' => 'adv'],
+            # compound adverb (from a prepositional phrase) written as one word
+            # examples: nasucho
+            'DG' => ['pos' => 'adv', 'variant' => '1'],
             # adverbial postfixal segment of a hyphenated compound
             # examples: line (in "on-line")
             'Sb' => ['pos' => 'adv', 'other' => 'postfix'],
@@ -297,7 +291,7 @@ sub _create_atoms
             # examples: #
             "Z\#" => ['pos' => 'punc', 'punctype' => 'root'],
             # foreign word
-            'F%' => ['foreign' => 'yes'],
+            'F-' => ['foreign' => 'yes'],
             # X: unknown part of speech
             # unrecognized word form
             'X@' => ['other' => '@'],
@@ -348,7 +342,6 @@ sub _create_atoms
         'decode_map' =>
         {
             'S' => ['number' => 'sing'],
-            'D' => ['number' => 'dual'],
             'P' => ['number' => 'plur'],
             'W' => ['number' => 'sing|plur'],
             'X' => []
@@ -358,7 +351,7 @@ sub _create_atoms
             # Do not generate number for conditional auxiliaries. It is encoded as aggregate there.
             { 'mood' => { 'cnd' => '',
                           '@'   => { 'number' => { 'plur|sing' => 'W',
-                                                   'dual' => 'D',
+                                                   'dual' => 'P', # in this tagset, dual has P in the number slot, but then 1 in a separate dual slot
                                                    'plur' => 'P',
                                                    'sing' => 'S' }}}}
     );
@@ -377,35 +370,31 @@ sub _create_atoms
             '7' => 'ins'
         }
     );
-    # 5. POSSGENDER ####################
-    $atoms{possgender} = $self->create_atom
+    # 5. PROPER NAME (OR ITS PART) ####################
+    $atoms{proper} = $self->create_atom
     (
-        'surfeature' => 'possgender',
+        'surfeature' => 'proper',
         'decode_map' =>
         {
-            'M' => ['possgender' => 'masc'],
-            'F' => ['possgender' => 'fem'],
-            'N' => ['possgender' => 'neut'],
-            'Y' => ['possgender' => 'masc'],
-            'Z' => ['possgender' => 'masc|neut'],
+            'j' => ['nountype' => 'prop'],
         },
         'encode_map' =>
 
-            { 'possgender' => { 'masc|neut' => 'Z',
-                                'masc' => { 'prontype' => { ''  => 'M',
-                                                            '@' => 'Y' }},
-                                'fem'  => 'F',
-                                'neut' => 'N' }}
+            { 'nountype' => { 'prop' => 'j' }}
     );
-    # 6. POSSNUMBER ####################
-    $atoms{possnumber} = $self->create_simple_atom
+    # 6. DUAL ####################
+    # Encoded separately (while number is plural) for formally dual forms:
+    # suffix -ma, or paired body parts "kolenou", "ramenou", "očí".
+    $atoms{dual} = $self->create_atom
     (
-        'intfeature' => 'possnumber',
-        'simple_decode_map' =>
+        'surfeature' => 'dual',
+        'decode_map' =>
         {
-            'S' => 'sing',
-            'P' => 'plur'
-        }
+            '1' => ['number' => 'dual'],
+        },
+        'encode_map' =>
+
+            { 'number' => { 'dual' => '1' }}
     );
     # 7. PERSON ####################
     $atoms{person} = $self->create_atom
@@ -496,7 +485,38 @@ sub _create_atoms
                                                     '@'     => { 'voice' => { 'act'  => 'A',
                                                                               'pass' => 'P' }}}}}}
     );
-    # 12. ASPECT ####################
+    # 12. AGGREGATE ####################
+    $atoms{aggregate} = $self->create_atom
+    (
+        'surfeature' => 'aggregate',
+        'decode_map' =>
+        {
+            # Aggregate: part of an orthographic word fused from multiple morphosyntactic words.
+            # Example: -s = jsi.
+            '1' => ['other' => 'aggregate'], # bys, přišels, kdyžs
+        },
+        'encode_map' =>
+
+            # Since this currently occurs mostly with conditional verbs, we do not want to do it for personal pronouns
+            # (which always have person and number). However, in the future we may need to be able to use it with
+            # pronouns 'tys', 'ses', and 'sis'. We also do not want to generate this with present indicative verbs.
+            { 'other' => { 'aggregate' => '1' }}
+    );
+    # 13. CLITIC ####################
+    $atoms{clitic} = $self->create_atom
+    (
+        'surfeature' => 'clitic',
+        'decode_map' =>
+        {
+            'T' => ['other' => 'ť'],  # the word includes encliticized particle -ť, -tě, -ž
+            'B' => ['other' => 'by'], # the word includes conditional morpheme -by
+        },
+        'encode_map' =>
+
+            { 'other' => { 'ť'  => 'T',
+                           'by' => 'B' }}
+    );
+    # 14. ASPECT ####################
     $atoms{aspect} = $self->create_atom
     (
         'surfeature' => 'aspect',
@@ -514,70 +534,6 @@ sub _create_atoms
                                                   'imp'      => 'I',
                                                   'perf'     => 'P' }}}}
     );
-    # 13. AGGREGATE ####################
-    $atoms{aggregate} = $self->create_atom
-    (
-        'surfeature' => 'aggregate',
-        'decode_map' =>
-        {
-            # In PDT-C, unlike in previous versions of PDT, the conditional forms of the auxiliary 'být'
-            # are analyzed as aggregates (contractions) of 'by' ('aby', 'kdyby') and the present form ('jsem', 'jsi', 'jsme', 'jste').
-            # Nevertheless, the aggregate 's' also includes other aggregates with -s = jsi.
-            'c' => ['person' => '1', 'number' => 'sing'], # bych, bysem
-            's' => ['person' => '2', 'number' => 'sing'], # bys, přišels, kdyžs
-            'm' => ['person' => '1', 'number' => 'plur'], # bychom, bysme
-            'e' => ['person' => '2', 'number' => 'plur']  # byste
-        },
-        'encode_map' =>
-
-            # Since this currently occurs mostly with conditional verbs, we do not want to do it for personal pronouns
-            # (which always have person and number). However, in the future we may need to be able to use it with
-            # pronouns 'tys', 'ses', and 'sis'. We also do not want to generate this with present indicative verbs.
-            { 'pos' => { 'verb' => { 'mood' => { 'cnd' => { 'number' => { 'sing' => { 'person' => { '1' => 'c',
-                                                                                                    '2' => 's' }},
-                                                                          'plur' => { 'person' => { '1' => 'm',
-                                                                                                    '2' => 'e' }}}}}}}}
-    );
-    # 14. VARIANT ####################
-    $atoms{variant} = $self->create_atom
-    (
-        'surfeature' => 'variant',
-        'decode_map' =>
-        {
-            '0' => ['variant' => '0'], # 0 does not occur in the data. Dash ('-') is the neutral value for standard contemporary style
-            '1' => ['variant' => '1'], # standard variant: orli, myslet, jejž
-            # Unlike in cs::pdt, variants 2-4 are not necessarily archaic. For example, the personal pronoun forms used before preposition (něj, něhož etc.) get one of these variants.
-            '2' => ['variant' => '2'], # standard variant: mysliti, nějž
-            '3' => ['variant' => '3'], # standard variant: mysleti, něhož
-            '4' => ['variant' => '4'], # standard variant: pomažemť
-            '5' => ['variant' => '5', 'style' => 'coll'], # non-standard variant: přídeme
-            '6' => ['variant' => '6', 'style' => 'coll'], # non-standard variant: přijdem
-            '7' => ['variant' => '7', 'style' => 'coll'], # non-standard variant: přídem
-            '8' => ['variant' => '8', 'style' => 'coll'], # non-standard variant: příjdeme
-            '9' => ['variant' => '9', 'typo' => 'yes'],   # non-standard variant, misspelling: příjdem
-            'b' => ['variant' => 'b', 'abbr' => 'yes'], # abbreviated form: s (= sekunda)
-            'a' => ['variant' => 'a', 'abbr' => 'yes'], # other abbreviated form: sec (= sekunda)
-            'c' => ['variant' => 'c', 'abbr' => 'yes']  # other abbreviated form: sek (= sekunda)
-        },
-        'encode_map' =>
-
-            { 'variant' => { '0' => '0',
-                             '1' => '1',
-                             '2' => '2',
-                             '3' => '3',
-                             '4' => '4',
-                             '5' => '5',
-                             '6' => '6',
-                             '7' => '7',
-                             '8' => '8',
-                             '9' => '9',
-                             'a' => 'a',
-                             'b' => 'b',
-                             'c' => 'c',
-                             # We cannot take abbreviation into account here because it would conflict with the old encoding of abbreviations in SUBPOS.
-                             '@' => { 'style' => { 'arch' => '2',
-                                                   'coll' => '5' }}}}
-    );
     return \%atoms;
 }
 
@@ -592,22 +548,22 @@ sub decode
     my $self = shift;
     my $tag = shift;
     my $fs = Lingua::Interset::FeatureStructure->new();
-    $fs->set_tagset('cs::ridics');
+    $fs->set_tagset('cs::xixstol');
     my $atoms = $self->atoms();
     my @chars = split(//, $tag);
     $atoms->{pos}->decode_and_merge_hard($chars[0].$chars[1], $fs);
     $atoms->{gender}->decode_and_merge_hard($chars[2], $fs);
     $atoms->{number}->decode_and_merge_hard($chars[3], $fs);
     $atoms->{case}->decode_and_merge_hard($chars[4], $fs);
-    $atoms->{possgender}->decode_and_merge_hard($chars[5], $fs);
-    $atoms->{possnumber}->decode_and_merge_hard($chars[6], $fs);
+    $atoms->{proper}->decode_and_merge_hard($chars[5], $fs);
+    $atoms->{dual}->decode_and_merge_hard($chars[6], $fs);
     $atoms->{person}->decode_and_merge_hard($chars[7], $fs);
-    $atoms->{tense}->decode_and_merge_hard($chars[8], $fs);
+    $atoms->{tense}->decode_and_merge_hard($chars[8], $fs); ### tady ma byt pomlcka (pomocne sloveso, ale neurcuje se)
     $atoms->{degree}->decode_and_merge_hard($chars[9], $fs);
     $atoms->{polarity}->decode_and_merge_hard($chars[10], $fs);
     $atoms->{voice}->decode_and_merge_hard($chars[11], $fs);
     $atoms->{aggregate}->decode_and_merge_hard($chars[13], $fs);
-    $atoms->{variant}->decode_and_merge_hard($chars[14], $fs);
+    $atoms->{clitic}->decode_and_merge_hard($chars[14], $fs);
     $atoms->{aspect}->decode_and_merge_hard($chars[15], $fs);
     return $fs;
 }
@@ -626,46 +582,42 @@ sub encode
     # Foreign words must come first because then we do not care about the foreign part of speech, if present.
     if($fs->is_foreign())
     {
-        $tag = 'F%---------------';
+        $tag = 'F---------------';
     }
     # Numerals and pronouns must come first because they can be at the same time also nouns or adjectives.
     elsif($fs->is_numeral())
     {
         if($fs->numform() eq 'digit')
         {
-            $tag = 'C=---------------';
+            $tag = 'C=--------------';
         }
         elsif($fs->numform() eq 'roman')
         { #{
-            $tag = 'C}---------------';
+            $tag = 'C}--------------';
         }
         elsif($fs->numtype() eq 'card')
         {
             if($fs->is_wh())
             {
                 # kolik
-                $tag = 'C?---------------';
+                $tag = 'C?--------------';
             }
             elsif($fs->contains('prontype', 'ind') || $fs->contains('prontype', 'dem'))
             {
                 # několik, mnoho, málo, tolik
-                $tag = 'Ca--X------------';
+                $tag = 'Ca--X-----------';
             }
             # certain "generic" numerals (druhové číslovky) are classified as cardinals
-            elsif($fs->get_other_subfeature('cs::ridics', 'numtype') eq 'generic')
+            elsif($fs->get_other_subfeature('cs::xixstol', 'numtype') eq 'generic')
             {
                 # čtvero, patero, desatero
-                $tag = 'Cj---------------';
-            }
-            elsif(scalar(grep {m/^[123]$/} ($fs->get_list('numvalue')))>=1)
-            {
-                # jeden, jedna, jedno, dva, dvě, tři, čtyři
-                $tag = 'Cl-XX------------';
+                $tag = 'Cj--------------';
             }
             else
             {
+                # jeden, jedna, jedno, dva, dvě, tři, čtyři
                 # pět, deset, patnáct, devadesát, sto
-                $tag = 'CnXXX------------';
+                $tag = 'Cl--X-----------';
             }
         }
         elsif($fs->numtype() eq 'ord')
@@ -673,23 +625,23 @@ sub encode
             if($fs->is_wh())
             {
                 # kolikátý
-                $tag = 'CzXXX------------';
+                $tag = 'CzXXX-----------';
             }
             elsif($fs->contains('prontype', 'ind') || $fs->contains('prontype', 'dem'))
             {
                 # několikátý, mnohý, tolikátý
                 # but also: nejeden
-                $tag = 'CwXXX------------';
+                $tag = 'CwXXX-----------';
             }
-            elsif($fs->get_other_subfeature('cs::ridics', 'numtype') eq 'suffix' ||
+            elsif($fs->get_other_subfeature('cs::xixstol', 'numtype') eq 'suffix' ||
                $fs->gender() eq '' && $fs->number() ne '')
             {
                 # tých
-                $tag = 'Ck-XX------------';
+                $tag = 'Ck-XX-----------';
             }
             else
             {
-                $tag = 'CrXXX------------';
+                $tag = 'CrXXX-----------';
             }
         }
         elsif($fs->numtype() eq 'mult')
@@ -697,26 +649,26 @@ sub encode
             if($fs->is_wh())
             {
                 # kolikrát
-                $tag = 'Cu---------------';
+                $tag = 'Cu--------------';
             }
             elsif($fs->contains('prontype', 'ind') || $fs->contains('prontype', 'dem'))
             {
                 # několikrát, mnohokrát, tolikrát
-                $tag = 'Co---------------';
+                $tag = 'Co--------------';
             }
             else
             {
-                $tag = 'Cv---------------'; ###!!! pozor tohle jsou i řadové číslovky příslovečné (poprvé, podruhé...)
+                $tag = 'Cv--------------'; ###!!! pozor tohle jsou i řadové číslovky příslovečné (poprvé, podruhé...)
             }
         }
         elsif($fs->numtype() eq 'frac')
         {
-            $tag = 'Cy---------------';
+            $tag = 'Cy--------------';
         }
         elsif($fs->numtype() eq 'sets' && $fs->contains('prontype', 'ind'))
         {
             # několikerý
-            $tag = 'Ch---------------';
+            $tag = 'Ch--------------';
             # "nejedny" is indefinite numeral and has its own tag 'Cw'.
             # "oboje", "dvoje", "troje" (and "čtvery", "patery", "desatery"?) are included in "Cd", together with "obojí", "dvojí", "trojí".
         }
@@ -725,7 +677,7 @@ sub encode
             # obojí, dvojí, trojí (both-fold, twofold, three-fold)
             # oboje, dvoje, troje (both sets of, two sets of, three sets of)
             # The latter are distinguished by variant=1.
-            $tag = 'CdX--------------';
+            $tag = 'CdX-------------';
         }
     }
     elsif($fs->is_pronominal())
@@ -739,17 +691,17 @@ sub encode
                 # it has possgender if it is 3rd person
                 if($fs->person() eq '3')
                 {
-                    $tag = 'P1XXXX-----------';
+                    $tag = 'P1XXXX----------';
                 }
                 else
                 {
-                    $tag = 'P1XXX------------';
+                    $tag = 'P1XXX-----------';
                 }
             }
             elsif($fs->is_reflexive())
             {
                 # svůj
-                $tag = 'P8XXX------------';
+                $tag = 'P8XXX-----------';
             }
             else
             {
@@ -757,11 +709,11 @@ sub encode
                 # it has possgender if it is 3rd person
                 if($fs->person() eq '3')
                 {
-                    $tag = 'P9XXXXX----------';
+                    $tag = 'P9XXXXX---------';
                 }
                 else
                 {
-                    $tag = 'PSXXX-X----------';
+                    $tag = 'PSXXX-X---------';
                 }
             }
         }
@@ -780,11 +732,11 @@ sub encode
                     # it has gender if it is 3rd person
                     if($fs->person() eq '3')
                     {
-                        $tag = 'P5XXX------------';
+                        $tag = 'P5XXX-----------';
                     }
                     else
                     {
-                        $tag = 'PH--X------------';
+                        $tag = 'PH--X-----------';
                     }
                 }
                 else
@@ -793,11 +745,11 @@ sub encode
                     # it has gender if it is 3rd person
                     if($fs->person() eq '3')
                     {
-                        $tag = 'PEXXX------------';
+                        $tag = 'PEXXX-----------';
                     }
                     else
                     {
-                        $tag = 'PP-XX------------';
+                        $tag = 'PP-XX-----------';
                     }
                 }
             }
@@ -806,12 +758,12 @@ sub encode
                 if($fs->variant() eq 'short')
                 {
                     # si, sis, se, ses
-                    $tag = 'P7--X------------';
+                    $tag = 'P7--X-----------';
                 }
                 else
                 {
                     # sebe, sobě, sebou
-                    $tag = 'P6--X------------';
+                    $tag = 'P6--X-----------';
                 }
             }
         }
@@ -822,19 +774,19 @@ sub encode
             if($fs->is_noun())
             {
                 # nikdo, nic
-                $tag = 'PY--X------------';
+                $tag = 'PY--X-----------';
             }
             else
             {
                 # nijaký, ničí, žádný
-                $tag = 'PWXXX------------';
+                $tag = 'PWXXX-----------';
             }
         }
         # demonstrative pronoun
         elsif($fs->prontype() eq 'dem')
         {
             # ten, tento, tenhle, onen, takový, týž, tentýž
-            $tag = 'PDXXX------------';
+            $tag = 'PDXXX-----------';
         }
         # interrogative or relative pronoun
         elsif($fs->is_wh())
@@ -845,12 +797,12 @@ sub encode
             if($fs->is_noun() && !$fs->is_adjective())
             {
                 # kdo, co
-                $tag = 'PQ--X------------';
+                $tag = 'PQ--X-----------';
             }
             else
             {
                 # jaký, který, čí, jenž
-                $tag = 'P4XXX------------';
+                $tag = 'P4XXX-----------';
             }
         }
         # totality (collective) pronoun
@@ -859,142 +811,142 @@ sub encode
             # it has gender and number if it is plural or if it does not have case
             if($fs->is_plural() || $fs->case() eq '')
             {
-                $tag = 'PLXXX------------';
+                $tag = 'PLXXX-----------';
             }
             else
             {
-                $tag = 'PL--X------------';
+                $tag = 'PL--X-----------';
             }
         }
         # indefinite pronoun
         elsif($fs->is_noun())
         {
-            $tag = 'PK--X------------';
+            $tag = 'PK--X-----------';
         }
         else
         {
-            $tag = 'PZXXX------------';
+            $tag = 'PZXXX-----------';
         }
     }
     elsif($fs->is_noun())
     {
-        if($fs->tagset() eq 'cs::ridics' && $fs->other() eq 'letter')
+        if($fs->tagset() eq 'cs::xixstol' && $fs->other() eq 'letter')
         {
-            $tag = 'Q3---------------';
+            $tag = 'Q3--------------';
         }
         elsif($fs->is_abbreviation() && $fs->variant() !~ m/^[abc]$/)
         {
             # We have to set the default 'A' here for the case that 'Q3' is stored without other=letter.
-            $tag = 'BNXXX-----A------';
+            $tag = 'BNXXX-----A-----';
         }
-        elsif($fs->tagset() eq 'cs::ridics' && $fs->other() eq 'postfix')
+        elsif($fs->tagset() eq 'cs::xixstol' && $fs->other() eq 'postfix')
         {
-            $tag = 'SNXXX------------';
+            $tag = 'SNXXX-----------';
         }
         else
         {
-            $tag = 'N----------------';
+            $tag = 'N---------------';
         }
     }
     elsif($fs->is_adjective())
     {
         if($fs->is_abbreviation() && $fs->variant() !~ m/^[abc]$/)
         {
-            $tag = 'BAXXX------------';
+            $tag = 'BAXXX-----------';
         }
-        elsif($fs->tagset() eq 'cs::ridics' && $fs->other() eq 'postfix')
+        elsif($fs->tagset() eq 'cs::xixstol' && $fs->other() eq 'postfix')
         {
-            $tag = 'SAXXX------------';
+            $tag = 'SAXXX-----------';
         }
         elsif($fs->variant() eq 'short')
         {
-            $tag = 'ACXX-------------';
+            $tag = 'ACXX------------';
         }
         elsif($fs->is_possessive())
         {
-            $tag = 'AUXXX------------';
+            $tag = 'AUXXX-----------';
         }
         elsif($fs->is_participle() && $fs->is_past())
         {
-            $tag = 'AMXXX------------';
+            $tag = 'AMXXX-----------';
         }
         elsif($fs->is_participle())
         {
-            $tag = 'AGXXX------------';
+            $tag = 'AGXXX-----------';
         }
         elsif($fs->is_hyph())
         {
-            $tag = 'S2---------------';
+            $tag = 'S2--------------';
         }
-        elsif($fs->get_other_for_tagset('cs::ridics') eq 'O' ||
+        elsif($fs->get_other_for_tagset('cs::xixstol') eq 'O' ||
               $fs->case() eq '' && $fs->polarity() eq '')
         {
-            $tag = 'AOXX-------------';
+            $tag = 'AOXX------------';
         }
         else
         {
-            $tag = 'AAXXX------------';
+            $tag = 'AAXXX-----------';
         }
     }
     elsif($fs->is_verb())
     {
         if($fs->is_infinitive())
         {
-            $tag = 'Vf---------------';
+            $tag = 'Vf--------------';
         }
         elsif($fs->is_supine())
         {
-            $tag = 'V$---------------';
+            $tag = 'V$--------------';
         }
         elsif($fs->is_participle())
         {
             if($fs->voice() eq 'pass')
             {
-                $tag = 'VsXX-------------';
+                $tag = 'VsXX------------';
             }
             elsif($fs->verbtype() eq 'verbconj')
             {
-                $tag = 'VqXX---XX--------';
+                $tag = 'VqXX---XX-------';
             }
             else # default is active past/conditional participle
             {
-                $tag = 'VpXX----X--------';
+                $tag = 'VpXX----X-------';
             }
         }
         elsif($fs->is_transgressive())
         {
             if($fs->tense() eq 'past')
             {
-                $tag = 'VmX--------------';
+                $tag = 'VmX-------------';
             }
             else # default is present transgressive
             {
-                $tag = 'VeX--------------';
+                $tag = 'VeX-------------';
             }
         }
         else # default is finite verb
         {
             if($fs->mood() eq 'imp')
             {
-                $tag = 'Vi-X---X---------';
+                $tag = 'Vi-X---X--------';
             }
             elsif($fs->mood() =~ m/^(cnd|sub)$/)
             {
-                $tag = 'Vc---------------';
+                $tag = 'Vc--------------';
             }
             else # indicative
             {
                 if($fs->verbtype() eq 'verbconj')
                 {
-                    $tag = 'Vt-X---XX--------';
+                    $tag = 'Vt-X---XX-------';
                 }
                 elsif($fs->tense() =~ m/^(past|imp)$/) # aorist or imperfect
                 {
-                    $tag = 'V--X---XX--------';
+                    $tag = 'V--X---XX-------';
                 }
                 else
                 {
-                    $tag = 'VB-X---XX--------';
+                    $tag = 'VB-X---XX-------';
                 }
             }
         }
@@ -1003,108 +955,114 @@ sub encode
     {
         if($fs->is_abbreviation() && $fs->variant() !~ m/^[abc]$/)
         {
-            $tag = 'Bb---------------';
+            $tag = 'Bb--------------';
         }
-        elsif($fs->tagset() eq 'cs::ridics' && $fs->other() eq 'postfix')
+        elsif($fs->tagset() eq 'cs::xixstol' && $fs->other() eq 'postfix')
         {
-            $tag = 'Sb---------------';
+            $tag = 'Sb--------------';
+        }
+        elsif($fs->variant() eq '1')
+        {
+            # compound adverb ("nasucho")
+            $tag = 'DG--------------';
         }
         else
         {
-            $tag = 'D----------------';
+            $tag = 'D---------------';
         }
     }
     elsif($fs->is_adposition())
     {
         if($fs->adpostype() eq 'comprep')
         {
-            $tag = 'RF---------------';
+            $tag = 'RF--------------';
         }
         elsif($fs->adpostype() eq 'voc')
         {
-            $tag = 'RV--X------------';
+            $tag = 'RV--X-----------';
         }
         else
         {
-            $tag = 'R---X------------';
+            $tag = 'R---X-----------';
         }
     }
     elsif($fs->is_conjunction())
     {
         if($fs->is_subordinator())
         {
-            # it has number if it has (3rd) person
-            if($fs->person() eq '3')
+            # it has number if it has person
+            # in that case it also contains the conditional -by
+            if($fs->person() =~ m/^[123]$/)
             {
-                $tag = 'J,-X-------------';
+                $tag = 'J,-X----------B-';
             }
             else
             {
-                $tag = 'J,---------------';
+                $tag = 'J,--------------';
             }
         }
         elsif($fs->is_coordinator())
         {
-            $tag = 'J^---------------';
+            $tag = 'J^--------------';
         }
         elsif($fs->conjtype() eq 'oper')
         {
-            $tag = 'J*---------------';
+            $tag = 'J*--------------';
         }
         elsif($fs->is_abbreviation() && $fs->variant() !~ m/^[abc]$/)
         {
-            $tag = 'B^---------------';
+            $tag = 'B^--------------';
         }
         else # by default the diachronic data do not distinguish conjunction subtypes
         {
-            $tag = 'J----------------';
+            $tag = 'J---------------';
         }
     }
     elsif($fs->is_particle())
     {
-        $tag = 'T----------------';
+        $tag = 'T---------------';
     }
     elsif($fs->is_interjection())
     {
-        $tag = 'I----------------';
+        $tag = 'I---------------';
     }
     elsif($fs->is_punctuation())
     {
         if($fs->punctype() eq 'root')
         {
-            $tag = 'Z#---------------';
+            $tag = 'Z#--------------';
         }
         else
         {
-            $tag = 'Z:---------------';
+            $tag = 'Z:--------------';
         }
     }
     else # default is unknown tag
     {
-        my $other = $fs->get_other_for_tagset('cs::ridics');
+        my $other = $fs->get_other_for_tagset('cs::xixstol');
         # Unknown abbreviation can be encoded either as 'XX------------8' or as 'Xx-------------' but not as 'Xx------------8'.
         if($fs->variant() eq '8')
         {
-            $tag = 'XX---------------';
+            $tag = 'XX--------------';
         }
         elsif($other =~ m/^[-X\@]$/)
         {
-            $tag = 'X'.$other.'---------------';
+            $tag = 'X'.$other.'--------------';
         }
         elsif($fs->is_abbreviation())
         {
-            $tag = 'Xx---------------';
+            $tag = 'Xx--------------';
         }
         else
         {
-            $tag = 'X@---------------';
+            $tag = 'X@--------------';
         }
     }
     # Now encode the features.
     # The PDT tagset distinguishes unknown values ("X") and irrelevant features ("-").
     # Interset does not do this distinction but we have prepared the defaults for empty values above.
     my @tag = split(//, $tag);
-    my @features = ('pos', 'subpos', 'gender', 'number', 'case', 'possgender', 'possnumber', 'person', 'tense', 'degree', 'polarity', 'voice', undef, 'aggregate', 'variant', 'aspect');
+    my @features = ('pos', 'subpos', 'gender', 'number', 'case', 'proper', 'dual', 'person', 'tense', 'degree', 'polarity', 'voice', undef, 'aggregate', 'clitic', 'aspect');
     my $atoms = $self->atoms();
     for(my $i = 2; $i<16; $i++)
     {
@@ -1129,351 +1087,1202 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags. The list was collected from the
-# (partial and ambiguous) morphological analysis of the Dresden and Olomouc
-# Bibles.
-# 337
+# 19th etalon texts from the Hičkok project.
+# 1188
 # Z nich jsem kvůli konzistenci vyhodil: 0
 #------------------------------------------------------------------------------
 sub list
 {
     my $self = shift;
     my $list = <<end_of_list
-D----------------
-D--------1-------
-D--------2-------
-I----------------
-J----------------
-N-FD1------------
-N-FD2------------
-N-FD3------------
-N-FD4------------
-N-FD5------------
-N-FD6------------
-N-FD7------------
-N-FP1------------
-N-FP2------------
-N-FP3------------
-N-FP4------------
-N-FP5------------
-N-FP6------------
-N-FP7------------
-N-FS1------------
-N-FS2------------
-N-FS3------------
-N-FS4------------
-N-FS5------------
-N-FS6------------
-N-FS7------------
-N-M--------------
-N-MD1------------
-N-MD2------------
-N-MD3------------
-N-MD4------------
-N-MD5------------
-N-MD6------------
-N-MD7------------
-N-MP1------------
-N-MP2------------
-N-MP3------------
-N-MP4------------
-N-MP5------------
-N-MP6------------
-N-MP7------------
-N-MS1------------
-N-MS2------------
-N-MS3------------
-N-MS4------------
-N-MS5------------
-N-MS6------------
-N-MS7------------
-N-ND1------------
-N-ND2------------
-N-ND3------------
-N-ND4------------
-N-ND5------------
-N-ND6------------
-N-ND7------------
-N-NP1------------
-N-NP2------------
-N-NP3------------
-N-NP4------------
-N-NP5------------
-N-NP6------------
-N-NP7------------
-N-NS1------------
-N-NS2------------
-N-NS3------------
-N-NS4------------
-N-NS5------------
-N-NS6------------
-N-NS7------------
-R---2------------
-R---3------------
-R---4------------
-R---6------------
-R---7------------
-T----------------
-V\$--------A----I-
-V--D---1A-AA---I-
-V--D---1A-AA---P-
-V--D---2A-AA---I-
-V--D---2A-AA---P-
-V--D---2I-AA---I-
-V--D---2I-AA---P-
-V--D---3A-AA---I-
-V--D---3A-AA---P-
-V--D---3I-AA---I-
-V--D---3I-AA---P-
-V--P---1A-AA---I-
-V--P---1A-AA---P-
-V--P---2A-AA---I-
-V--P---2A-AA---P-
-V--P---3A-AA---I-
-V--P---3A-AA---P-
-V--P---3A-NA---I-
-V--P---3A-NA---P-
-V--P---3I-AA---I-
-V--P---3I-AA---P-
-V--P---3I-NA---I-
-V--S---1A-AA---I-
-V--S---1A-AA---P-
-V--S---1I-AA---I-
-V--S---1I-AA---P-
-V--S---2A-AA---I-
-V--S---2A-AA---P-
-V--S---2A-NA---I-
-V--S---2A-NA---P-
-V--S---2I-AA---I-
-V--S---2I-AA---P-
-V--S---2I-NA---I-
-V--S---2I-NA---P-
-V--S---3A-AA---I-
-V--S---3A-AA---P-
-V--S---3A-NA---I-
-V--S---3A-NA---P-
-V--S---3I-AA---I-
-V--S---3I-AA---P-
-V--S---3I-NA---I-
-V--S---3I-NA---P-
-VB-D---2F-AA---I-
-VB-D---2F-AA---P-
-VB-D---2P-AA---I-
-VB-D---2P-AA---P-
-VB-D---2P-NA---I-
-VB-D---2P-NA---P-
-VB-D---3F-AA---I-
-VB-D---3F-AA---P-
-VB-D---3P-AA---I-
-VB-D---3P-AA---P-
-VB-D---3P-NA---I-
-VB-D---3P-NA---P-
-VB-P---1F-AA---I-
-VB-P---1F-AA---P-
-VB-P---1P-AA---I-
-VB-P---1P-AA---P-
-VB-P---1P-NA---I-
-VB-P---1P-NA---P-
-VB-P---2F-AA---I-
-VB-P---2F-AA---P-
-VB-P---2F-NA---I-
-VB-P---2F-NA---P-
-VB-P---2P-AA---I-
-VB-P---2P-AA---P-
-VB-P---2P-NA---I-
-VB-P---2P-NA---P-
-VB-P---3F-AA---I-
-VB-P---3F-AA---P-
-VB-P---3F-NA---I-
-VB-P---3F-NA---P-
-VB-P---3P-AA---I-
-VB-P---3P-AA---P-
-VB-P---3P-NA---I-
-VB-P---3P-NA---P-
-VB-S---1F-AA---I-
-VB-S---1F-AA---P-
-VB-S---1F-NA---I-
-VB-S---1F-NA---P-
-VB-S---1P-AA---I-
-VB-S---1P-AA---P-
-VB-S---1P-NA---I-
-VB-S---1P-NA---P-
-VB-S---2F-AA---I-
-VB-S---2F-AA---P-
-VB-S---2F-NA---I-
-VB-S---2F-NA---P-
-VB-S---2P-AA---I-
-VB-S---2P-AA---P-
-VB-S---2P-NA---I-
-VB-S---2P-NA---P-
-VB-S---3F-AA---I-
-VB-S---3F-AA---P-
-VB-S---3F-NA---I-
-VB-S---3F-NA---P-
-VB-S---3P-AA---I-
-VB-S---3P-AA---P-
-VB-S---3P-NA---I-
-VB-S---3P-NA---P-
-VeFD1-----A----I-
-VeFD1-----A----P-
-VeFD1-----N----I-
-VeFD1-----N----P-
-VeFP1-----A----I-
-VeFP1-----A----P-
-VeFP1-----N----I-
-VeFP1-----N----P-
-VeFS1-----A----I-
-VeFS1-----A----P-
-VeFS1-----N----I-
-VeFS1-----N----P-
-VeMD1-----A----I-
-VeMD1-----A----P-
-VeMD1-----N----I-
-VeMD1-----N----P-
-VeMP1-----A----I-
-VeMP1-----A----P-
-VeMP1-----N----I-
-VeMP1-----N----P-
-VeMS1-----A----I-
-VeMS1-----A----P-
-VeMS1-----N----I-
-VeMS4-----A----I-
-VeMS4-----A----P-
-VeMS4-----N----I-
-VeMS4-----N----P-
-VeND1-----A----I-
-VeND1-----A----P-
-VeND1-----N----I-
-VeND1-----N----P-
-VeNP1-----A----I-
-VeNP1-----A----P-
-VeNP1-----N----I-
-VeNP1-----N----P-
-VeNS1-----A----I-
-VeNS1-----A----P-
-VeNS1-----N----I-
-VeNS1-----N----P-
-Vf--------A----I-
-Vf--------A----P-
-Vf--------N----I-
-Vi-D---1--A----I-
-Vi-D---2--A----I-
-Vi-D---3--A----I-
-Vi-P---1--A----I-
-Vi-P---1--A----P-
-Vi-P---1--N----I-
-Vi-P---2--A----I-
-Vi-P---2--A----P-
-Vi-P---2--N----I-
-Vi-P---2--N----P-
-Vi-P---3--A----I-
-Vi-P---3--A----P-
-Vi-P---3--N----I-
-Vi-P---3--N----P-
-Vi-S---2--A----I-
-Vi-S---2--A----P-
-Vi-S---2--N----I-
-Vi-S---2--N----P-
-Vi-S---3--A----I-
-Vi-S---3--A----P-
-Vi-S---3--N----I-
-Vi-S---3--N----P-
-VmFD------A----I-
-VmFD------A----P-
-VmFP------A----I-
-VmFP------A----P-
-VmFS------A----P-
-VmMD------A----I-
-VmMD------A----P-
-VmMP------A----I-
-VmMP------A----P-
-VmMS------A----I-
-VmMS------A----P-
-VmND------A----I-
-VmND------A----P-
-VmNP------A----I-
-VmNP------A----P-
-VmNS------A----I-
-VmNS------A----P-
-VpFD----R-AA---P-
-VpFP----R-AA---I-
-VpFP----R-AA---P-
-VpFP----R-NA---P-
-VpFS----R-AA---I-
-VpFS----R-AA---P-
-VpFS----R-NA---I-
-VpFS----R-NA---P-
-VpMD----R-AA---I-
-VpMD----R-AA---P-
-VpMD----R-NA---I-
-VpMD----R-NA---P-
-VpMP----R-AA---I-
-VpMP----R-AA---P-
-VpMP----R-NA---I-
-VpMP----R-NA---P-
-VpMS----R-AA---I-
-VpMS----R-AA---P-
-VpMS----R-NA---I-
-VpMS----R-NA---P-
-VpND----R-AA---P-
-VpNP----R-AA---I-
-VpNP----R-AA---P-
-VpNP----R-NA---I-
-VpNP----R-NA---P-
-VpNS----R-AA---I-
-VpNS----R-AA---P-
-VpNS----R-NA---I-
-VpNS----R-NA---P-
-VsFD1-----AP---I-
-VsFD1-----AP---P-
-VsFD4-----AP---I-
-VsFD4-----AP---P-
-VsFP1-----AP---I-
-VsFP1-----AP---P-
-VsFP4-----AP---I-
-VsFP4-----AP---P-
-VsFS1-----AP---I-
-VsFS1-----AP---P-
-VsFS2-----AP---I-
-VsFS2-----AP---P-
-VsFS4-----AP---I-
-VsFS4-----AP---P-
-VsMD1-----AP---I-
-VsMD1-----AP---P-
-VsMD4-----AP---I-
-VsMD4-----AP---P-
-VsMP1-----AP---I-
-VsMP1-----AP---P-
-VsMP1-----NP---I-
-VsMP1-----NP---P-
-VsMP4-----AP---I-
-VsMP4-----AP---P-
-VsMS1-----AP---I-
-VsMS1-----AP---P-
-VsMS1-----NP---P-
-VsMS2-----AP---I-
-VsMS2-----AP---P-
-VsMS3-----AP---I-
-VsMS3-----AP---P-
-VsMS4-----AP---I-
-VsMS4-----AP---P-
-VsMS4-----NP---P-
-VsND1-----AP---I-
-VsND1-----AP---P-
-VsND4-----AP---I-
-VsND4-----AP---P-
-VsNP1-----AP---I-
-VsNP1-----AP---P-
-VsNP4-----AP---I-
-VsNP4-----AP---P-
-VsNS1-----AP---I-
-VsNS1-----AP---P-
-VsNS2-----AP---I-
-VsNS2-----AP---P-
-VsNS3-----AP---I-
-VsNS3-----AP---P-
-VsNS4-----AP---I-
-VsNS4-----AP---P-
-Z:---------------
+AAFP1j---1A-----
+AAFP1----1A-----
+AAFP1----1N-----
+AAFP1----2A-----
+AAFP1----2N-----
+AAFP1----3A-----
+AAFP2j---1A-----
+AAFP2----1A-----
+AAFP2----1N-----
+AAFP2----2A-----
+AAFP2----3A-----
+AAFP3----1A-----
+AAFP3----2A-----
+AAFP3----3A-----
+AAFP4j---1A-----
+AAFP4----1A-----
+AAFP4----1N-----
+AAFP4----2A-----
+AAFP4----3A-----
+AAFP5----1A-----
+AAFP6j---1A-----
+AAFP6----1A-----
+AAFP6----1N-----
+AAFP6----2A-----
+AAFP7j---1A-----
+AAFP7----1A-----
+AAFP7----1N-----
+AAFP7-1--1A-----
+AAFP7----2A-----
+AAFS1j---1A-----
+AAFS1----1A-----
+AAFS1----1A---T-
+AAFS1----1N-----
+AAFS1----2A-----
+AAFS1----2N-----
+AAFS1----3A-----
+AAFS1----3N-----
+AAFS2j---1A-----
+AAFS2----1A-----
+AAFS2----1N-----
+AAFS2----2A-----
+AAFS2----3A-----
+AAFS3j---1A-----
+AAFS3----1A-----
+AAFS3----1N-----
+AAFS3----2A-----
+AAFS3----3A-----
+AAFS4j---1A-----
+AAFS4----1A-----
+AAFS4----1A--1--
+AAFS4----1N-----
+AAFS4----2A-----
+AAFS4----3A-----
+AAFS5----1A-----
+AAFS5----1N-----
+AAFS5----3A-----
+AAFS6j---1A-----
+AAFS6----1A-----
+AAFS6----1N-----
+AAFS6----2A-----
+AAFS6----3A-----
+AAFS7j---1A-----
+AAFS7----1A-----
+AAFS7----1N-----
+AAFS7----2A-----
+AAFS7----3A-----
+AAIP1----1A-----
+AAIP1----1N-----
+AAIP1----2A-----
+AAIP1----3A-----
+AAIP2j---1A-----
+AAIP2----1A-----
+AAIP2----1N-----
+AAIP2----2A-----
+AAIP2----3A-----
+AAIP3----1A-----
+AAIP3----3A-----
+AAIP4----1A-----
+AAIP4----1N-----
+AAIP4----2A-----
+AAIP4----3A-----
+AAIP6j---1A-----
+AAIP6----1A-----
+AAIP6----1N-----
+AAIP6----2A-----
+AAIP6----3A-----
+AAIP7----1A-----
+AAIP7----1N-----
+AAIP7----2A-----
+AAIP7----2N-----
+AAIP7----3A-----
+AAIS1j---1A-----
+AAIS1----1A-----
+AAIS1----1N-----
+AAIS1----2A-----
+AAIS1----3A-----
+AAIS2j---1A-----
+AAIS2----1A-----
+AAIS2----1N-----
+AAIS2----2A-----
+AAIS2----3A-----
+AAIS3j---1A-----
+AAIS3----1A-----
+AAIS3----1N-----
+AAIS3----2A-----
+AAIS3----3A-----
+AAIS4j---1A-----
+AAIS4----1A-----
+AAIS4----1N-----
+AAIS4----2A-----
+AAIS4----3A-----
+AAIS6j---1A-----
+AAIS6----1A-----
+AAIS6----1N-----
+AAIS6----2A-----
+AAIS6----3A-----
+AAIS7j---1A-----
+AAIS7----1A-----
+AAIS7----1N-----
+AAIS7----2A-----
+AAIS7----3A-----
+AAMP1----1A-----
+AAMP1----1N-----
+AAMP1----2A-----
+AAMP1----3A-----
+AAMP2----1A-----
+AAMP2----1N-----
+AAMP2----2A-----
+AAMP2----3A-----
+AAMP3----1A-----
+AAMP3----1N-----
+AAMP3----3A-----
+AAMP4----1A-----
+AAMP4----1N-----
+AAMP4----2A-----
+AAMP4----3A-----
+AAMP5----1A-----
+AAMP6----1A-----
+AAMP6----3A-----
+AAMP7----1A-----
+AAMP7----1N-----
+AAMP7----2A-----
+AAMS1j---1A-----
+AAMS1----1A-----
+AAMS1----1N-----
+AAMS1----2A-----
+AAMS1----2N-----
+AAMS1----3A-----
+AAMS2j---1A-----
+AAMS2----1A-----
+AAMS2----1N-----
+AAMS2----2A-----
+AAMS2----3A-----
+AAMS3----1A-----
+AAMS3----1N-----
+AAMS3----2A-----
+AAMS3----3A-----
+AAMS4----1A-----
+AAMS4----1N-----
+AAMS4----2A-----
+AAMS4----3A-----
+AAMS5----1A-----
+AAMS5----1N-----
+AAMS5----3A-----
+AAMS6----1A-----
+AAMS6----1N-----
+AAMS7----1A-----
+AAMS7----1N-----
+AAMS7----2A-----
+AAMS7----3A-----
+AANP1----1A-----
+AANP1----1N-----
+AANP1----2A-----
+AANP1----3A-----
+AANP2----1A-----
+AANP2----1N-----
+AANP2----2A-----
+AANP2----3A-----
+AANP3----1A-----
+AANP3----1N-----
+AANP3----3A-----
+AANP4----1A-----
+AANP4----1N-----
+AANP4----2A-----
+AANP5----1A-----
+AANP6----1A-----
+AANP6----1N-----
+AANP6----2A-----
+AANP7----1A-----
+AANP7-1--1A-----
+AANP7-1--1N-----
+AANS1j---1A-----
+AANS1----1A-----
+AANS1----1N-----
+AANS1----2A-----
+AANS1----3A-----
+AANS2j---1A-----
+AANS2----1A-----
+AANS2----1N-----
+AANS2----2A-----
+AANS2----3A-----
+AANS3----1A-----
+AANS3----1N-----
+AANS3----2A-----
+AANS3----3A-----
+AANS4j---1A-----
+AANS4----1A-----
+AANS4----1N-----
+AANS4----2A-----
+AANS4----3A-----
+AANS5----1A-----
+AANS6j---1A-----
+AANS6----1A-----
+AANS6----1N-----
+AANS6----2A-----
+AANS6----3A-----
+AANS7j---1A-----
+AANS7----1A-----
+AANS7----1N-----
+AANS7----2A-----
+AANS7----3A-----
+ACFP1----1A-----
+ACFS1----1A-----
+ACFS1----1N-----
+ACFS4----1A-----
+ACIP1----1A-----
+ACIP1----1N-----
+ACIP4----1A-----
+ACIS1----1A-----
+ACIS4----1A-----
+ACMP1----1A-----
+ACMP1----1A---T-
+ACMP1----1N-----
+ACMP4----1A-----
+ACMP6----1A-----
+ACMS1----1A-----
+ACMS1----1N-----
+ACMS4----1A-----
+ACMS5----1A-----
+ACNS1----1A-----
+ACNS1----1N-----
+ACNS4----1A-----
+ACNS4----1N-----
+AUFP1j---1A-----
+AUFP1----1A-----
+AUFP2j---1A-----
+AUFP2----1A-----
+AUFP3----1A-----
+AUFP4j---1A-----
+AUFS1j---1A-----
+AUFS1----1A-----
+AUFS2j---1A-----
+AUFS2----1A-----
+AUFS3----1A-----
+AUFS4j---1A-----
+AUFS4----1A-----
+AUFS5----1A-----
+AUFS6j---1A-----
+AUFS6----1A-----
+AUFS7j---1A-----
+AUFS7----1A-----
+AUIP1j---1A-----
+AUIP2j---1A-----
+AUIP4j---1A-----
+AUIS1j---1A-----
+AUIS1----1A-----
+AUIS2j---1A-----
+AUIS3j---1A-----
+AUIS4j---1A-----
+AUIS4----1A-----
+AUIS6j---1A-----
+AUIS6----1A-----
+AUIS7j---1A-----
+AUIS7----1A-----
+AUMP1j---1A-----
+AUMP1----1A-----
+AUMP2----1A-----
+AUMP7j---1A-----
+AUMS1j---1A-----
+AUMS1----1A-----
+AUMS2j---1A-----
+AUMS2----1A-----
+AUMS3----1A-----
+AUMS4j---1A-----
+AUNP1j---1A-----
+AUNP2j---1A-----
+AUNP4j---1A-----
+AUNP4----1A-----
+AUNS1j---1A-----
+AUNS1----1A-----
+AUNS2j---1A-----
+AUNS2----1A-----
+AUNS3j---1A-----
+AUNS3----1A-----
+AUNS4j---1A-----
+AUNS4----1A-----
+AUNS6j---1A-----
+AUNS7j---1A-----
+AUNS7----1A-----
+C=--------------
+CdFP1-----------
+CdFP2-----------
+CdFS4-----------
+CdFS7-----------
+CdIS2-----------
+CdIS4-----------
+CdMP1-----------
+CdMP3-----------
+CdNP1-----------
+CdNP2-----------
+CdNP4-----------
+CdNP7-----------
+CdNS1-----------
+CdNS2-----------
+CdNS6-----------
+CdNS7-----------
+Cj-S4-----------
+ClFP1-----------
+ClFP2-----------
+ClFP4-----------
+ClFP6-----------
+ClFP7-----------
+ClFS1-----------
+ClFS2-----------
+ClFS3-----------
+ClFS4-----------
+ClFS6-----------
+ClFS7-----------
+ClIP1-----------
+ClIP2-----------
+ClIP3-----------
+ClIP4-----------
+ClIP6-----------
+ClIP7-----------
+ClIS1-----------
+ClIS2-----------
+ClIS4-----------
+ClIS6-----------
+ClIS7-----------
+ClMP1-----------
+ClMP2-----------
+ClMP4-----------
+ClMP7-----------
+ClMS1-----------
+ClMS2-----------
+ClMS3-----------
+ClMS4-----------
+ClMS6-----------
+ClMS7-----------
+ClNP1-----------
+ClNP2-----------
+ClNP3-----------
+ClNP4-----------
+ClNP6-----------
+ClNP7-----------
+ClNP7-1---------
+ClNS1-----------
+ClNS2-----------
+ClNS4-----------
+ClNS6-----------
+ClNS7-----------
+Cl-S1-----------
+Cl-S2-----------
+Cl-S3-----------
+Cl-S4-----------
+Cl-S6-----------
+Cl-S7-----------
+Cl--1-----------
+Cl--1-----A-----
+Cl--2-----------
+Cl--2-----A-----
+Cl--4-----------
+Cl--4-----A-----
+Cl--6-----------
+Cl--6-----A-----
+Cl--7-----------
+Cl--7-----A-----
+CrFP1-----------
+CrFP2-----------
+CrFP3-----------
+CrFP7-----------
+CrFS1-----------
+CrFS2-----------
+CrFS4-----------
+CrFS6-----------
+CrFS7-----------
+CrIP4-----------
+CrIP6-----------
+CrIS1-----------
+CrIS2-----------
+CrIS3-----------
+CrIS4-----------
+CrIS6-----------
+CrIS7-----------
+CrMP1-----------
+CrMP2-----------
+CrMP4-----------
+CrMP7-----------
+CrMS1-----------
+CrMS2-----------
+CrMS3-----------
+CrMS4-----------
+CrMS7-----------
+CrNP1-----------
+CrNS1-----------
+CrNS2-----------
+CrNS3-----------
+CrNS4-----------
+CrNS6-----------
+CrNS7-----------
+Cv--------------
+CyFP1-----------
+CyFS1-----------
+CyFS4-----------
+C?--1-----------
+C?--4-----------
+DG-------1A-----
+DG-------1N-----
+D--------1A-----
+D--------1A---T-
+D--------1N-----
+D--------2A-----
+D--------2N-----
+D--------3A-----
+F---------------
+I---------------
+J,--------------
+J^--------------
+J,-P---1------B-
+J,-P---2------B-
+J,-P---3------B-
+J,-S---1------B-
+J,-S---2------B-
+J,-S---3------B-
+J,------------T-
+J^------------T-
+J,-----------1--
+N-FP1-----A-----
+N-FP1j----A-----
+N-FP2-----A-----
+N-FP2j----A-----
+N-FP3-----A-----
+N-FP3j----A-----
+N-FP4-----A-----
+N-FP4j----A-----
+N-FP5-----A-----
+N-FP5j----A-----
+N-FP6-----A-----
+N-FP6j----A-----
+N-FP6j---1A-----
+N-FP7-----A-----
+N-FP7j----A-----
+N-FP7-1---A-----
+N-FS1-----A-----
+N-FS1j----A-----
+N-FS2-----A-----
+N-FS2j----A-----
+N-FS3-----A-----
+N-FS3j----A-----
+N-FS4-----A-----
+N-FS4j----A-----
+N-FS5-----A-----
+N-FS5j----A-----
+N-FS6-----A-----
+N-FS6j----A-----
+N-FS7-----A-----
+N-FS7j----A-----
+N-IP1-----A-----
+N-IP1j----A-----
+N-IP2-----A-----
+N-IP2j----A-----
+N-IP3-----A-----
+N-IP3j----A-----
+N-IP4-----A-----
+N-IP4j----A-----
+N-IP5-----A-----
+N-IP5j----A-----
+N-IP6-----A-----
+N-IP6j----A-----
+N-IP7-----A-----
+N-IP7j----A-----
+N-IP7-1---A-----
+N-IS1-----A-----
+N-IS1j----A-----
+N-IS2-----A-----
+N-IS2j----A-----
+N-IS3-----A-----
+N-IS3j----A-----
+N-IS4-----A-----
+N-IS4j----A-----
+N-IS5-----A-----
+N-IS5j----A-----
+N-IS6-----A-----
+N-IS6j----A-----
+N-IS7-----A-----
+N-IS7j----A-----
+N-MP1-----A-----
+N-MP1j----A-----
+N-MP2-----A-----
+N-MP2j----A-----
+N-MP3-----A-----
+N-MP3j----A-----
+N-MP4-----A-----
+N-MP4j----A-----
+N-MP5-----A-----
+N-MP5j----A-----
+N-MP6-----A-----
+N-MP6j----A-----
+N-MP7-----A-----
+N-MP7j----A-----
+N-MS1-----A-----
+N-MS1j----A-----
+N-MS2-----A-----
+N-MS2j----A-----
+N-MS3-----A-----
+N-MS3j----A-----
+N-MS4-----A-----
+N-MS4j----A-----
+N-MS5-----A-----
+N-MS5j----A-----
+N-MS6-----A-----
+N-MS6j----A-----
+N-MS7-----A-----
+N-MS7j----A-----
+N-NP1-----A-----
+N-NP2-----A-----
+N-NP3-----A-----
+N-NP4-----A-----
+N-NP5-----A-----
+N-NP6-----A-----
+N-NP7-----A-----
+N-NP7-1---A-----
+N-NS1-----A-----
+N-NS1j----A-----
+N-NS2-----A-----
+N-NS2j----A-----
+N-NS3-----A-----
+N-NS3j----A-----
+N-NS4-----A-----
+N-NS4j----A-----
+N-NS5-----A-----
+N-NS6-----A-----
+N-NS6j----A-----
+N-NS7-----A-----
+N-NS7j----A-----
+PDFP1-----------
+PDFP2-----------
+PDFP2---------T-
+PDFP3-----------
+PDFP4-----------
+PDFP6-----------
+PDFP7-----------
+PDFP7-1---------
+PDFS1-----------
+PDFS1---------T-
+PDFS2-----------
+PDFS3-----------
+PDFS4-----------
+PDFS6-----------
+PDFS7-----------
+PDIP1-----------
+PDIP2-----------
+PDIP3-----------
+PDIP4-----------
+PDIP6-----------
+PDIP6---------T-
+PDIP7-----------
+PDIS1-----------
+PDIS1---------T-
+PDIS2-----------
+PDIS3-----------
+PDIS4-----------
+PDIS6-----------
+PDIS7-----------
+PDMP1-----------
+PDMP2-----------
+PDMP3-----------
+PDMP4-----------
+PDMP6-----------
+PDMP7-----------
+PDMS1-----------
+PDMS1---------T-
+PDMS2-----------
+PDMS2---------T-
+PDMS3-----------
+PDMS4-----------
+PDMS6-----------
+PDMS7-----------
+PDNP1-----------
+PDNP1---------T-
+PDNP2-----------
+PDNP3-----------
+PDNP4-----------
+PDNP6-----------
+PDNP7-----------
+PDNS1-----------
+PDNS1---------T-
+PDNS2-----------
+PDNS2---------T-
+PDNS3-----------
+PDNS4-----------
+PDNS4---------T-
+PDNS4--------1--
+PDNS6-----------
+PDNS7-----------
+PKFS1-----------
+PKFS1---------T-
+PKFS2-----------
+PKFS4-----------
+PKFS6-----------
+PKFS7-----------
+PKIP1-----------
+PKIP2-----------
+PKIP3-----------
+PKIP4-----------
+PKIP7-----------
+PKIS1-----------
+PKIS2-----------
+PKIS4-----------
+PKIS6-----------
+PKIS7-----------
+PKMP1-----------
+PKMS1-----------
+PKM-1-----------
+PKM-3-----------
+PKM-4-----------
+PKNP1-----------
+PKNS1-----------
+PKNS4-----------
+PKNS7-----------
+PK--1-----------
+PK--2-----------
+PK--3-----------
+PK--4-----------
+PK--4--------1--
+PK--7-----------
+PLFP1-----------
+PLFP2-----------
+PLFP3-----------
+PLFP4-----------
+PLFP6-----------
+PLFP7-----------
+PLFP7-1---------
+PLFS1-----------
+PLFS2-----------
+PLFS3-----------
+PLFS4-----------
+PLFS6-----------
+PLFS7-----------
+PLIP1-----------
+PLIP2-----------
+PLIP3-----------
+PLIP4-----------
+PLIP6-----------
+PLIP7-----------
+PLIS1-----------
+PLIS2-----------
+PLIS3-----------
+PLIS4-----------
+PLIS6-----------
+PLIS7-----------
+PLIS7---------T-
+PLMP1-----------
+PLMP2-----------
+PLMP3-----------
+PLMP4-----------
+PLMP6-----------
+PLMP7-----------
+PLMS1-----------
+PLMS2-----------
+PLMS3-----------
+PLMS3-----N-----
+PLMS4-----------
+PLMS7-----------
+PLNP1-----------
+PLNP2-----------
+PLNP3-----------
+PLNP4-----------
+PLNP6-----------
+PLNS1-----------
+PLNS2-----------
+PLNS3-----------
+PLNS4-----------
+PLNS6-----------
+PLNS7-----------
+PPFP1--3--------
+PPFP2--3--------
+PPFP3--3--------
+PPFP4--3--------
+PPFP6--3--------
+PPFP7--3--------
+PPFS1--3--------
+PPFS1--3------T-
+PPFS2--3--------
+PPFS3--3--------
+PPFS4--3--------
+PPFS6--3--------
+PPFS7--3--------
+PPIP2--3--------
+PPIP3--3--------
+PPIP4--3--------
+PPIP6--3--------
+PPIP7--3--------
+PPIS1--3--------
+PPIS2--3--------
+PPIS3--3--------
+PPIS4--3--------
+PPIS4--3-----1--
+PPIS6--3--------
+PPIS7--3--------
+PPMP1--3--------
+PPMP2--3--------
+PPMP3--3--------
+PPMP4--3--------
+PPMP6--3--------
+PPMP7--3--------
+PPMS1--3--------
+PPMS1--3------T-
+PPMS2--3--------
+PPMS3--3--------
+PPMS4--3--------
+PPMS4--3-----1--
+PPMS6--3--------
+PPMS7--3--------
+PPNP2--3--------
+PPNP3--3--------
+PPNP4--3--------
+PPNP6--3--------
+PPNP7--3--------
+PPNS1--3--------
+PPNS2--3--------
+PPNS3--3--------
+PPNS4--3--------
+PPNS6--3--------
+PPNS7--3--------
+PP-P1--1--------
+PP-P1--2--------
+PP-P2--1--------
+PP-P2--2--------
+PP-P3--1--------
+PP-P3--2--------
+PP-P4--1--------
+PP-P4--2--------
+PP-P5--2--------
+PP-P6--1--------
+PP-P6--2--------
+PP-P7--1--------
+PP-P7-11--------
+PP-P7--2--------
+PP-S1--1--------
+PP-S1--1-----1--
+PP-S1--2--------
+PP-S1--2------T-
+PP-S1--2-----1--
+PP-S2--1--------
+PP-S2--2--------
+PP-S3--1--------
+PP-S3--2--------
+PP-S4--1--------
+PP-S4--2--------
+PP-S5--2--------
+PP-S6--1--------
+PP-S6--2--------
+PP-S7--1--------
+PP-S7--2--------
+PSFP1-----------
+PSFP2-----------
+PSFP3-----------
+PSFP4-----------
+PSFP5-----------
+PSFP6-----------
+PSFP7-----------
+PSFP7-1---------
+PSFS1-----------
+PSFS2-----------
+PSFS3-----------
+PSFS4-----------
+PSFS5-----------
+PSFS6-----------
+PSFS7-----------
+PSIP1-----------
+PSIP2-----------
+PSIP3-----------
+PSIP4-----------
+PSIP6-----------
+PSIP7-----------
+PSIS1-----------
+PSIS2-----------
+PSIS3-----------
+PSIS4-----------
+PSIS6-----------
+PSIS7-----------
+PSMP1-----------
+PSMP2-----------
+PSMP3-----------
+PSMP4-----------
+PSMP5-----------
+PSMP7-----------
+PSMS1-----------
+PSMS2-----------
+PSMS3-----------
+PSMS4-----------
+PSMS5-----------
+PSMS6-----------
+PSMS7-----------
+PSNP1-----------
+PSNP2-----------
+PSNP3-----------
+PSNP4-----------
+PSNP5-----------
+PSNP6-----------
+PSNP7-----------
+PSNP7-1---------
+PSNS1-----------
+PSNS2-----------
+PSNS3-----------
+PSNS4-----------
+PSNS5-----------
+PSNS6-----------
+PSNS7-----------
+PWFP1-----------
+PWFP2-----------
+PWFP4-----------
+PWFS1-----------
+PWFS2-----------
+PWFS4-----------
+PWFS7-----------
+PWIP1-----------
+PWIP2-----------
+PWIP4-----------
+PWIS1-----------
+PWIS2-----------
+PWIS3-----------
+PWIS4-----------
+PWIS6-----------
+PWIS7-----------
+PWMP2-----------
+PWMS1-----------
+PWMS2-----------
+PWMS3-----------
+PWMS4-----------
+PWMS6-----------
+PWM-1-----------
+PWM-2-----------
+PWM-3-----------
+PWM-4-----------
+PWNS1-----------
+PWNS2-----------
+PWNS3-----------
+PWNS4-----------
+PWNS6-----------
+PWNS7-----------
+PW--1-----------
+PW--2-----------
+PW--2---------T-
+PW--3-----------
+PW--4-----------
+PW--6-----------
+PW--7-----------
+PZFP1-----------
+PZFP2-----------
+PZFP3-----------
+PZFP4-----------
+PZFP6-----------
+PZFP7-----------
+PZFS1-----------
+PZFS2-----------
+PZFS3-----------
+PZFS4-----------
+PZFS6-----------
+PZFS7-----------
+PZIP1-----------
+PZIP2-----------
+PZIP3-----------
+PZIP4-----------
+PZIP6-----------
+PZIP7-----------
+PZIS1-----------
+PZIS2-----------
+PZIS3-----------
+PZIS4-----------
+PZIS6-----------
+PZIS7-----------
+PZMP1-----------
+PZMP3-----------
+PZMP4-----------
+PZMP6-----------
+PZMP7-----------
+PZMS1-----------
+PZMS2-----------
+PZMS4-----------
+PZMS6-----------
+PZMS7-----------
+PZM-1-----------
+PZM-2-----------
+PZM-3-----------
+PZM-4-----------
+PZM-7-----------
+PZNP1-----------
+PZNP2-----------
+PZNP4-----------
+PZNP6-----------
+PZNS1-----------
+PZNS2-----------
+PZNS3-----------
+PZNS4-----------
+PZNS6-----------
+PZNS7-----------
+PZ--1-----------
+PZ--2-----------
+PZ--3-----------
+PZ--4-----------
+PZ--4--------1--
+PZ--7-----------
+P1FP1-----------
+P1FS1-----------
+P1FS2-----------
+P1FS4-----------
+P1FS6-----------
+P1FS7-----------
+P1IP1-----------
+P1IP2-----------
+P1IP3-----------
+P1IS1-----------
+P1IS6-----------
+P1MP1-----------
+P1MS1-----------
+P1MS7-----------
+P1NP1-----------
+P1NP4-----------
+P1NS1-----------
+P1NS2-----------
+P1NS3-----------
+P1NS6-----------
+P1NS7-----------
+P4FP1-----------
+P4FP2-----------
+P4FP3-----------
+P4FP4-----------
+P4FP6-----------
+P4FP7-----------
+P4FS1-----------
+P4FS1---------T-
+P4FS2-----------
+P4FS3-----------
+P4FS4-----------
+P4FS6-----------
+P4FS7-----------
+P4IP1-----------
+P4IP2-----------
+P4IP3-----------
+P4IP4-----------
+P4IP6-----------
+P4IP7-----------
+P4IS1-----------
+P4IS2-----------
+P4IS3-----------
+P4IS4-----------
+P4IS6-----------
+P4IS7-----------
+P4MP1-----------
+P4MP2-----------
+P4MP2--------1--
+P4MP3-----------
+P4MP4-----------
+P4MP6-----------
+P4MP7-----------
+P4MS1-----------
+P4MS1--------1--
+P4MS2-----------
+P4MS3-----------
+P4MS4-----------
+P4MS5-----------
+P4MS6-----------
+P4MS7-----------
+P4M-1-----------
+P4M-3-----------
+P4M-4-----------
+P4NP1-----------
+P4NP2-----------
+P4NP3-----------
+P4NP4-----------
+P4NP6-----------
+P4NP7-----------
+P4NS1-----------
+P4NS2-----------
+P4NS3-----------
+P4NS4-----------
+P4NS6-----------
+P4NS7-----------
+P4-S1-----------
+P4-S2-----------
+P4-S3-----------
+P4-S4-----------
+P4-S6-----------
+P4-S7-----------
+P4--4--------1--
+P6--2-----------
+P6--3-----------
+P6--4-----------
+P6--6-----------
+P6--7-----------
+P8FP1-----------
+RF--------------
+RR--2-----------
+RR--3-----------
+RR--4-----------
+RR--4--------1--
+RR--6-----------
+RR--7-----------
+RV--2-----------
+RV--3-----------
+RV--4-----------
+RV--4--------1--
+RV--6-----------
+RV--7-----------
+T---------------
+T--P---2------B-
+T--P---3------B-
+T--S---1------B-
+T--S---3------B-
+T-------------T-
+T7--------------
+VB-P---1--AA---I
+VB-P---1--AA---P
+VB-P---1--NA---I
+VB-P---1--NA---P
+VB-P---2--AA---I
+VB-P---2--AA---P
+VB-P---2--NA---I
+VB-P---2--NA---P
+VB-P---3--AA---I
+VB-P---3--AA---P
+VB-P---3--AA--TI
+VB-P---3--NA---I
+VB-P---3--NA---P
+VB-S---1--AA---I
+VB-S---1--AA---P
+VB-S---1--AA--TI
+VB-S---1--NA---I
+VB-S---1--NA---P
+VB-S---2--AA---I
+VB-S---2--AA---P
+VB-S---2--AA-1-I
+VB-S---2--NA---I
+VB-S---2--NA---P
+Vb-S---21-AA-1-I
+VB-S---3--AA---I
+VB-S---3--AA---P
+VB-S---3--AA--TI
+VB-S---3--AA--TP
+VB-S---3--NA---I
+VB-S---3--NA---P
+VB-S---3--NA--TI
+Vc--------AA---I
+Vc-P---1--AA---I
+Vc-P---2--AA---I
+Vc-S---1--AA---I
+Vc-S---2--AA---I
+VeFP------AA---I
+VeFP------AA---P
+VeFS------AA---I
+VeFS------AA---P
+VeFS------NA---I
+VeFS------NA---P
+VeIP------AA---I
+VeIP------NA---I
+VeIS------AA---I
+VeIS------AA---P
+VeMP------AA---I
+VeMP------AA---P
+VeMP------NA---I
+VeMP------NA---P
+VeMS------AA---I
+VeMS------AA---P
+VeMS------NA---I
+VeMS------NA---P
+VeNP------AA---I
+VeNP------NA---I
+VeNS------AA---I
+VeNS------AA---P
+Vf--------AA---I
+Vf--------AA---P
+Vf--------NA---I
+Vf--------NA---P
+Vi-P---1--AA---I
+Vi-P---1--AA---P
+Vi-P---1--AA--TP
+Vi-P---1--NA---I
+Vi-P---2--AA---I
+Vi-P---2--AA---P
+Vi-P---2--AA--TI
+Vi-P---2--NA---I
+Vi-P---2--NA---P
+Vi-P---3--AA---I
+Vi-P---3--AA--TI
+Vi-S---2--AA---I
+Vi-S---2--AA---P
+Vi-S---2--AA--TP
+Vi-S---2--NA---I
+Vi-S---2--NA---P
+Vi-S---3--AA---I
+Vi-S---3--AA---P
+Vi-S---3--AA--TI
+Vi-S---3--AA--TP
+Vi-S---3--NA---I
+Vi-S---3--NA---P
+VmFP------AA---I
+VmFP------AA---P
+VmFS------AA---I
+VmFS------AA---P
+VmIS------AA---P
+VmMP------AA---I
+VmMP------AA---P
+VmMP------NA---I
+VmMS------AA---I
+VmMS------AA---P
+VmMS------NA---P
+VmNS------AA---P
+VpFP------AA---I
+VpFP------AA---Ï
+VpFP------AA---P
+VpFP------AA--TI
+VpFP------NA---I
+VpFP------NA---P
+VpFS------AA---I
+VpFS------AA---P
+VpFS------AA--TI
+VpFS------AA--TP
+VpFS------NA---I
+VpFS------NA---P
+VpIP------AA---I
+VpIP------AA---P
+VpIP------NA---I
+VpIP------NA---P
+VpIS------AA---I
+VpIS------AA---P
+VpIS------AA--TP
+VpIS------NA---I
+VpIS------NA---P
+VpMP------AA---I
+VpMP------AA---P
+VpMP------AA--TI
+VpMP------NA---I
+VpMP------NA---P
+VpMS------AA---I
+VpMS------AA---P
+VpMS------AA--TI
+VpMS------AA--TP
+VpMS------AA-1-I
+VpMS------AA-1-P
+VpMS------NA---I
+VpMS------NA---P
+VpMS------NA--TI
+VpNP------AA---I
+VpNP------AA---P
+VpNP------NA---I
+VpNS------AA---I
+VpNS------AA---P
+VpNS------AA--TI
+VpNS------AA--TP
+VpNS------NA---I
+VpNS------NA---P
+VpNS------NA--TI
+VsFP------AP---I
+VsFP------AP---P
+VsFS------AP---I
+VsFS------AP---P
+VsIP------AP---I
+VsIP------AP---P
+VsIP------NP---P
+VsIS------AP---I
+VsIS------AP---P
+VsMP------AP---I
+VsMP------AP---P
+VsMS------AP---I
+VsMS------AP---P
+VsMS------NP---P
+VsNP------AP---I
+VsNP------AP---P
+VsNS------AP---I
+VsNS------AP---P
+VsNS------NP---I
+Vs-S------AP---I
+Vs-S------AP---P
+X---------------
+Yo--------------
+Z---------------
 end_of_list
     ;
     # Protect from editors that replace tabs by spaces.
@@ -1489,22 +2298,21 @@ end_of_list
 
 =head1 SYNOPSIS
 
-  use Lingua::Interset::Tagset::cs::ridics;
-  my $driver = Lingua::Interset::Tagset::cs::ridics->new();
-  my $fs = $driver->decode('N-MS1------------');
+  use Lingua::Interset::Tagset::cs::xixstol;
+  my $driver = Lingua::Interset::Tagset::cs::xixstol->new();
+  my $fs = $driver->decode('N-MS1-----A-----');
 
 or
 
   use Lingua::Interset qw(decode);
-  my $fs = decode('cs::ridics', 'N-MS1------------');
+  my $fs = decode('cs::xixstol', 'N-MS1-----A-----');
 
 =head1 DESCRIPTION
 
-Interset driver for the Prague-derived part-of-speech tagset used by the
-Research Infrastructure for Diachronic Czech Studies (RIDICS, Výzkumná
-infrastruktura pro diachronní bohemistiku, https://vokabular.ujc.cas.cz/).
+Interset driver for the Prague-derived part-of-speech tagset used in the Hičkok
+project by the Czech National Corpus team for the nineteenth-century texts.
 It is a positional tagset similar to PDT and PDT-C, but it has some extra
-positions and values that are needed in old Czech texts.
+positions and values that are needed in older Czech texts.
 
 =head1 SEE ALSO
 
