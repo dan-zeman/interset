@@ -83,20 +83,8 @@ sub _create_atoms
             # adjectival phrase abbreviation ("aj")
             'BA' => ['pos' => 'adj', 'abbr' => 'yes'],
             # personal pronoun
-            # examples: já ty my vy
+            # examples: já ty my vy on
             'PP' => ['pos' => 'noun', 'prontype' => 'prs'],
-            # personal pronoun, short inflected variant
-            # examples: mě mi ti
-            'PH' => ['pos' => 'noun', 'prontype' => 'prs', 'variant' => 'short'],
-            # personal pronoun, 3rd person
-            # example: on něj
-            'PE' => ['pos' => 'noun', 'prontype' => 'prs'],
-            # personal pronoun, 3rd person, short inflected variant
-            # examples: mu
-            'P5' => ['pos' => 'noun', 'prontype' => 'prs', 'variant' => 'short'],
-            # compound preposition + personal pronoun
-            # examples: naň ("na něj")
-            'P0' => ['pos' => 'noun', 'prontype' => 'prs', 'adpostype' => 'preppron'],
             # reflexive personal pronoun, long form
             # examples: sebe sobě sebou
             'P6' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'yes'],
@@ -116,29 +104,27 @@ sub _create_atoms
             # examples: ten tento tenhle onen takový týž tentýž sám
             ###!!! Syntactically they are often adjectives but not always ("to auto je moje" vs. "to je moje").
             'PD' => ['pos' => 'adj', 'prontype' => 'dem'],
-            # interrogative or relative pronoun, no gender inflection
+            # interrogative pronoun
             # examples: kdo co kdož copak
-            'PQ' => ['pos' => 'noun', 'prontype' => 'int|rel'],
-            # interrogative or relative pronoun, with gender (i.e., not only attributive, unlike in cs::pdt, which did not include "jenž" here!)
+            # zájmeno (nezáporné, nikoli neurčité, nikoli přivlastňovací) tázací (kdo, co, který, jaký, kdopak...)
+            'PK' => ['pos' => 'noun', 'prontype' => 'int|rel'],
+            # relative pronoun
             # examples: jaký který čí jenž
-            'P4' => ['pos' => 'adj|noun', 'prontype' => 'int|rel'],
+            # zájmeno (nezáporné, nikoli neurčité, nikoli přivlastňovací) vztažné (kdo, co, který, jaký, jenž)
+            'P4' => ['pos' => 'adj|noun', 'prontype' => 'rel'],
             # possessive relative pronoun
             # examples: jehož jejíž
             'P1' => ['pos' => 'adj', 'prontype' => 'rel', 'poss' => 'yes'],
-            # indefinite pronoun, no gender inflection
+            # indefinite pronoun
             # examples: někdo něco kdokoli kdosi cosi nevímco
-            'PK' => ['pos' => 'noun', 'prontype' => 'ind'],
-            # indefinite pronoun, attributive
             # examples: nějaký některý něčí čísi sotvakterý
             'PZ' => ['pos' => 'adj', 'prontype' => 'ind'],
+            # zájmeno (nezáporné, nikoli neurčité, nikoli přivlastňovací) vymezovací (taký, takový, onaký, týž, tentýž, sám, každý, všechen, všecek...)
             # total pronoun
             # examples: všechen sám
             'PL' => ['pos' => 'noun', 'prontype' => 'tot'],
-            # negative pronoun, no gender inflection
-            # examples: nikdo nic
-            'PY' => ['pos' => 'noun', 'prontype' => 'neg'],
-            # negative pronoun, attributive
-            # examples: nijaký ničí žádný
+            # negative pronoun
+            # examples: nikdo nic nijaký ničí žádný nižádný pražádný nijeden nikterý nesvůj
             'PW' => ['pos' => 'adj', 'prontype' => 'neg'],
             # cardinal number expressed by digits
             # examples: 1 3,14 2014
@@ -343,8 +329,7 @@ sub _create_atoms
         {
             'S' => ['number' => 'sing'],
             'P' => ['number' => 'plur'],
-            'W' => ['number' => 'sing|plur'],
-            'X' => []
+            'W' => ['number' => 'sing|plur']
         },
         'encode_map' =>
 
@@ -493,6 +478,7 @@ sub _create_atoms
         {
             # Aggregate: part of an orthographic word fused from multiple morphosyntactic words.
             # Example: -s = jsi.
+            # Also in tags of prepositions and relative pronouns in: nač, oč, seč, več, zač
             '1' => ['other' => 'aggregate'], # bys, přišels, kdyžs
         },
         'encode_map' =>
@@ -706,15 +692,7 @@ sub encode
             else
             {
                 # můj, tvůj, jeho, její, náš, váš, jejich
-                # it has possgender if it is 3rd person
-                if($fs->person() eq '3')
-                {
-                    $tag = 'P9XXXXX---------';
-                }
-                else
-                {
-                    $tag = 'PSXXX-X---------';
-                }
+                $tag = 'PSXXX-----------';
             }
         }
         # personal pronoun
@@ -726,31 +704,15 @@ sub encode
         {
             if(!$fs->is_reflexive())
             {
-                if($fs->variant() eq 'short')
+                # já, ty, on, ona, ono, my, vy, oni, ony
+                # it has gender if it is 3rd person
+                if($fs->person() eq '3')
                 {
-                    # mi, mě, ti, tě, mu
-                    # it has gender if it is 3rd person
-                    if($fs->person() eq '3')
-                    {
-                        $tag = 'P5XXX-----------';
-                    }
-                    else
-                    {
-                        $tag = 'PH--X-----------';
-                    }
+                    $tag = 'PPXXX-----------';
                 }
                 else
                 {
-                    # já, ty, on, ona, ono, my, vy, oni, ony
-                    # it has gender if it is 3rd person
-                    if($fs->person() eq '3')
-                    {
-                        $tag = 'PEXXX-----------';
-                    }
-                    else
-                    {
-                        $tag = 'PP-XX-----------';
-                    }
+                    $tag = 'PP-XX-----------';
                 }
             }
             else # reflexive
@@ -768,19 +730,11 @@ sub encode
             }
         }
         # negative pronoun
-        elsif($fs->polarity() eq 'neg' || $fs->prontype() eq 'neg')
+        # we cannot look at polarity=neg because non-negative pronouns can be negated (e.g., nekaždý would be prontype=tot, polarity=neg)
+        elsif($fs->prontype() eq 'neg')
         {
             # nikdo, nic, nijaký, ničí, žádný
-            if($fs->is_noun())
-            {
-                # nikdo, nic
-                $tag = 'PY--X-----------';
-            }
-            else
-            {
-                # nijaký, ničí, žádný
-                $tag = 'PWXXX-----------';
-            }
+            $tag = 'PW--X-----------';
         }
         # demonstrative pronoun
         elsif($fs->prontype() eq 'dem')
@@ -788,22 +742,17 @@ sub encode
             # ten, tento, tenhle, onen, takový, týž, tentýž
             $tag = 'PDXXX-----------';
         }
-        # interrogative or relative pronoun
-        elsif($fs->is_wh())
+        # interrogative pronoun
+        elsif($fs->is_interrogative())
         {
-            # P4 inflects for gender and PQ does not. Unfortunately, this does not
-            # help us to distinguish them because an empty gender is either '-' (PQ-) or 'X' (P4X).
-            # We decode PQ as pos=noun, while P4 has pos=adj|noun, so let's use this.
-            if($fs->is_noun() && !$fs->is_adjective())
-            {
-                # kdo, co
-                $tag = 'PQ--X-----------';
-            }
-            else
-            {
-                # jaký, který, čí, jenž
-                $tag = 'P4XXX-----------';
-            }
+            # kdo, co, jaký, který, kdopak
+            $tag = 'PK--X-----------';
+        }
+        # relative pronoun
+        elsif($fs->is_relative())
+        {
+            # kdo, co, jaký, který, jenž
+            $tag = 'P4--X-----------';
         }
         # totality (collective) pronoun
         elsif($fs->prontype() eq 'tot')
@@ -819,13 +768,9 @@ sub encode
             }
         }
         # indefinite pronoun
-        elsif($fs->is_noun())
-        {
-            $tag = 'PK--X-----------';
-        }
         else
         {
-            $tag = 'PZXXX-----------';
+            $tag = 'PZ--X-----------';
         }
     }
     elsif($fs->is_noun())
@@ -983,7 +928,7 @@ sub encode
         }
         else
         {
-            $tag = 'R---X-----------';
+            $tag = 'RR--X-----------';
         }
     }
     elsif($fs->is_conjunction())
@@ -2089,9 +2034,9 @@ P4-S1-----------
 P4-S2-----------
 P4-S3-----------
 P4-S4-----------
+P4-S4--------1--
 P4-S6-----------
 P4-S7-----------
-P4--4--------1--
 P6--2-----------
 P6--3-----------
 P6--4-----------
