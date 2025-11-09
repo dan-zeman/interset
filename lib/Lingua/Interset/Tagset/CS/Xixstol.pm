@@ -223,6 +223,11 @@ sub _create_atoms
             'Sb' => ['pos' => 'adv', 'other' => 'postfix'],
             # adverbial phrase abbreviation ("atd")
             'Bb' => ['pos' => 'adv', 'abbr' => 'yes'],
+            # part of future compound adverb (from prepositional phrase), unclear part of speech, bears similarities with nouns and nominal forms of adjectives
+            # examples: živa (za živa), pravo (na pravo, v pravo), bíledni (na bíledni), jevo (na jevo)
+            # typically, although not always, they look like neuter singular; the case is unknown (we could get it from the preposition but the tagset does not encode it)
+            # however, setting gender=neut, number=sing here would complicate round-trip conversion, as we would have to avoid encoding them for Yo (as opposed to N-)
+            'Yo' => ['pos' => 'noun', 'other' => 'Yo'],
             # preposition
             # examples: v pod k
             'RR' => ['pos' => 'adp', 'adpostype' => 'prep'],
@@ -258,19 +263,14 @@ sub _create_atoms
             'I-' => ['pos' => 'int'],
             # punctuation
             # examples: . ? ! , ; : -
-            'Z:' => ['pos' => 'punc'],
+            'Z-' => ['pos' => 'punc'],
             # artificial root node of the sentence
             # examples: #
             "Z\#" => ['pos' => 'punc', 'punctype' => 'root'],
             # foreign word
             'F-' => ['foreign' => 'yes'],
             # X: unknown part of speech
-            # unrecognized word form
-            'X@' => ['other' => '@'],
-            # word form recognized but tag is missing in dictionary
-            'XX' => ['other' => 'X'],
-            # - should never appear as subpos but it does, even in the list in b2800a.o2f
-            'X-' => ['other' => '-']
+            'X-' => []
         },
         'encode_map' => {} # Encoding of part of speech must be solved directly in Perl code, it would be too complicated to do it here.
     );
@@ -446,11 +446,10 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            # Do not encode voice of verbal adjectives and transgressives. Otherwise encode(decode(x)) will not equal to x.
+            # Do not encode voice of verbal adjectives. Otherwise encode(decode(x)) will not equal to x.
             { 'pos' => { 'adj' => '',
-                         '@'   => { 'verbform' => { 'conv' => '',
-                                                    '@'     => { 'voice' => { 'act'  => 'A',
-                                                                              'pass' => 'P' }}}}}}
+                         '@'   => { 'voice' => { 'act'  => 'A',
+                                                 'pass' => 'P' }}}}
     );
     # 12. AGGREGATE ####################
     $atoms{aggregate} = $self->create_atom
@@ -526,7 +525,6 @@ sub decode
     $atoms->{proper}->decode_and_merge_hard($chars[5], $fs);
     $atoms->{dual}->decode_and_merge_hard($chars[6], $fs);
     $atoms->{person}->decode_and_merge_hard($chars[7], $fs);
-    $atoms->{tense}->decode_and_merge_hard($chars[8], $fs); ### tady ma byt pomlcka (pomocne sloveso, ale neurcuje se)
     $atoms->{degree}->decode_and_merge_hard($chars[9], $fs);
     $atoms->{polarity}->decode_and_merge_hard($chars[10], $fs);
     $atoms->{voice}->decode_and_merge_hard($chars[11], $fs);
@@ -715,6 +713,13 @@ sub encode
         {
             $tag = 'SNXXX-----------';
         }
+        elsif($fs->tagset() eq 'cs::xixstol' && $fs->other() eq 'Yo' || $fs->case() eq '')
+        {
+            # part of future compound adverb (from prepositional phrase), unclear part of speech, bears similarities with nouns and nominal forms of adjectives
+            # examples: živa (za živa), pravo (na pravo, v pravo), bíledni (na bíledni), jevo (na jevo)
+            # typically, although not always, they look like neuter singular; the case is unknown (we could get it from the preposition but the tagset does not encode it)
+            $tag = 'Yo--------------';
+        }
         else
         {
             $tag = 'N---------------';
@@ -778,11 +783,11 @@ sub encode
             }
             elsif($fs->verbtype() eq 'verbconj')
             {
-                $tag = 'VqXX---XX-------';
+                $tag = 'VqXX---X--------';
             }
             else # default is active past/conditional participle
             {
-                $tag = 'VpXX----X-------';
+                $tag = 'VpXX------------';
             }
         }
         elsif($fs->is_transgressive())
@@ -810,15 +815,15 @@ sub encode
             {
                 if($fs->verbtype() eq 'verbconj')
                 {
-                    $tag = 'Vt-X---XX-------';
+                    $tag = 'Vt-X---X--------';
                 }
                 elsif($fs->tense() =~ m/^(past|imp)$/) # aorist or imperfect
                 {
-                    $tag = 'V--X---XX-------';
+                    $tag = 'V--X---X--------';
                 }
                 else
                 {
-                    $tag = 'VB-X---XX-------';
+                    $tag = 'VB-X---X--------';
                 }
             }
         }
@@ -919,35 +924,18 @@ sub encode
         }
         else
         {
-            $tag = 'Z:--------------';
+            $tag = 'Z---------------';
         }
     }
     else # default is unknown tag
     {
-        my $other = $fs->get_other_for_tagset('cs::xixstol');
-        # Unknown abbreviation can be encoded either as 'XX------------8' or as 'Xx-------------' but not as 'Xx------------8'.
-        if($fs->variant() eq '8')
-        {
-            $tag = 'XX--------------';
-        }
-        elsif($other =~ m/^[-X\@]$/)
-        {
-            $tag = 'X'.$other.'--------------';
-        }
-        elsif($fs->is_abbreviation())
-        {
-            $tag = 'Xx--------------';
-        }
-        else
-        {
-            $tag = 'X@--------------';
-        }
+        $tag = 'X---------------';
     }
     # Now encode the features.
     # The PDT tagset distinguishes unknown values ("X") and irrelevant features ("-").
     # Interset does not do this distinction but we have prepared the defaults for empty values above.
     my @tag = split(//, $tag);
-    my @features = ('pos', 'subpos', 'gender', 'number', 'case', 'proper', 'dual', 'person', 'tense', 'degree', 'polarity', 'voice', undef, 'aggregate', 'clitic', 'aspect');
+    my @features = ('pos', 'subpos', 'gender', 'number', 'case', 'proper', 'dual', 'person', undef, 'degree', 'polarity', 'voice', undef, 'aggregate', 'clitic', 'aspect');
     my $atoms = $self->atoms();
     for(my $i = 2; $i<16; $i++)
     {
@@ -974,7 +962,7 @@ sub encode
 # Returns reference to list of known tags. The list was collected from the
 # 19th etalon texts from the Hičkok project, then a few tags were added and
 # a few removed for the sake of consistency.
-# 1190
+# 1199
 #------------------------------------------------------------------------------
 sub list
 {
@@ -2028,7 +2016,6 @@ VB-S---2--AA---P
 VB-S---2--AA-1-I
 VB-S---2--NA---I
 VB-S---2--NA---P
-Vb-S---21-AA-1-I
 VB-S---3--AA---I
 VB-S---3--AA---P
 VB-S---3--AA--TI
@@ -2102,7 +2089,6 @@ VmMS------AA---P
 VmMS------NA---P
 VmNS------AA---P
 VpFP------AA---I
-VpFP------AA---Ï
 VpFP------AA---P
 VpFP------AA--TI
 VpFP------NA---I
@@ -2148,25 +2134,36 @@ VpNS------NA---P
 VpNS------NA--TI
 VsFP------AP---I
 VsFP------AP---P
+VsFP------NP---I
+VsFP------NP---P
 VsFS------AP---I
 VsFS------AP---P
+VsFS------NP---I
+VsFS------NP---P
 VsIP------AP---I
 VsIP------AP---P
+VsIP------NP---I
 VsIP------NP---P
 VsIS------AP---I
 VsIS------AP---P
+VsIS------NP---I
+VsIS------NP---P
 VsMP------AP---I
 VsMP------AP---P
+VsMP------NP---I
+VsMP------NP---P
 VsMS------AP---I
 VsMS------AP---P
+VsMS------NP---I
 VsMS------NP---P
 VsNP------AP---I
 VsNP------AP---P
+VsNP------NP---I
+VsNP------NP---P
 VsNS------AP---I
 VsNS------AP---P
 VsNS------NP---I
-Vs-S------AP---I
-Vs-S------AP---P
+VsNS------NP---P
 X---------------
 Yo--------------
 Z---------------
