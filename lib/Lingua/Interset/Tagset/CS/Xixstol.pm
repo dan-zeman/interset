@@ -250,6 +250,8 @@ sub _create_atoms
             # examples: ať kéž nechť
             'TT' => ['pos' => 'part'],
             'T-' => ['pos' => 'part'],
+            # reflexive particle (i.e., originally reflexive pronoun, but grammaticalized or lexicalized to a different function)
+            'T7' => ['pos' => 'part', 'reflex' => 'yes'],
             # interjection
             # examples: haf bum bác
             'II' => ['pos' => 'int'],
@@ -890,16 +892,20 @@ sub encode
     }
     elsif($fs->is_particle())
     {
-            # it has number if it has person
-            # in that case it also contains the conditional -by
-            if($fs->person() =~ m/^[123]$/)
-            {
-                $tag = 'T--X----------B-';
-            }
-            else
-            {
-                $tag = 'T---------------';
-            }
+        # it has number if it has person
+        # in that case it also contains the conditional -by
+        if($fs->person() =~ m/^[123]$/)
+        {
+            $tag = 'T--X----------B-';
+        }
+        elsif($fs->is_reflexive())
+        {
+            $tag = 'T7--------------';
+        }
+        else
+        {
+            $tag = 'T---------------';
+        }
     }
     elsif($fs->is_interjection())
     {
