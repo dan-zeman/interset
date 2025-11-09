@@ -85,21 +85,15 @@ sub _create_atoms
             # personal pronoun
             # examples: já ty my vy on
             'PP' => ['pos' => 'noun', 'prontype' => 'prs'],
-            # reflexive personal pronoun, long form
+            # reflexive personal pronoun
             # examples: sebe sobě sebou
-            'P6' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'yes'],
-            # reflexive personal pronoun, short form
             # examples: se si ses sis
-            'P7' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'yes', 'variant' => 'short'],
-            # possessive pronoun, 1st or 2nd person
+            'P6' => ['pos' => 'noun', 'prontype' => 'prs', 'reflex' => 'yes'],
+            # possessive pronoun (including reflexive)
             # examples: můj tvůj náš váš
-            'PS' => ['pos' => 'adj', 'prontype' => 'prs', 'poss' => 'yes'],
-            # possessive pronoun, 3rd person
             # examples: jeho, její, jejich
-            'P9' => ['pos' => 'adj', 'prontype' => 'prs', 'poss' => 'yes'],
-            # reflexive possessive pronoun
             # examples: svůj
-            'P8' => ['pos' => 'adj', 'prontype' => 'prs', 'poss' => 'yes', 'reflex' => 'yes'],
+            'PS' => ['pos' => 'adj', 'prontype' => 'prs', 'poss' => 'yes'],
             # demonstrative pronoun
             # examples: ten tento tenhle onen takový týž tentýž sám
             ###!!! Syntactically they are often adjectives but not always ("to auto je moje" vs. "to je moje").
@@ -107,13 +101,18 @@ sub _create_atoms
             # interrogative pronoun
             # examples: kdo co kdož copak
             # zájmeno (nezáporné, nikoli neurčité, nikoli přivlastňovací) tázací (kdo, co, který, jaký, kdopak...)
-            'PK' => ['pos' => 'noun', 'prontype' => 'int|rel'],
+            'PK' => ['pos' => 'adj|noun', 'prontype' => 'int'],
+            # possessive interrogative pronoun
+            # examples: čí čípak
+            # zájmeno (nezáporné, nikoli neurčité) přivlastňovací tázací
+            'P8' => ['pos' => 'adj', 'prontype' => 'int', 'poss' => 'yes'],
             # relative pronoun
             # examples: jaký který čí jenž
             # zájmeno (nezáporné, nikoli neurčité, nikoli přivlastňovací) vztažné (kdo, co, který, jaký, jenž)
             'P4' => ['pos' => 'adj|noun', 'prontype' => 'rel'],
             # possessive relative pronoun
-            # examples: jehož jejíž
+            # examples: jehož jejíž čí
+            # zájmeno (nezáporné, nikoli neurčité) přivlastňovací vztažné
             'P1' => ['pos' => 'adj', 'prontype' => 'rel', 'poss' => 'yes'],
             # indefinite pronoun
             # examples: někdo něco kdokoli kdosi cosi nevímco
@@ -129,67 +128,52 @@ sub _create_atoms
             # cardinal number expressed by digits
             # examples: 1 3,14 2014
             'C=' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'digit'],
-            # cardinal number expressed by Roman numerals
-            # examples: MCMLXXI
-            # { ... syntax highlighting
-            'C}' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'roman'],
             # interrogative or relative cardinal numeral
             # example: kolik
             'C?' => ['pos' => 'num', 'numtype' => 'card', 'prontype' => 'int|rel'],
-            # indefinite or demonstrative cardinal numeral
-            # examples: několik mnoho málo kdovíkolik tolik
-            'Ca' => ['pos' => 'num', 'numtype' => 'card', 'prontype' => 'ind|dem'],
             # adjectival multiplicative numeral "twofold" (note: these words are included in generic numerals in the Czech grammar)
             # examples: obojí dvojí trojí
             # generic adjectival numeral (number of sets of things)
             # examples: jedny oboje dvoje troje (čtvery patery desatery?)
             # "oboje", "dvoje" and "troje" appear in the corpus as "Cd" and the feature variant=1 distinguishes them from "obojí", "dvojí" and "trojí".
             # Larger numerals of this type ("čtvery", "patery" etc.) do not appear in the corpus.
-            'Cd' => ['pos' => 'adj', 'numtype' => 'mult|sets'],
             # generic adjectival numeral (number of sets of things), indefinite
             # examples: několikerý
-            'Ch' => ['pos' => 'adj', 'numtype' => 'sets', 'prontype' => 'ind'],
+            'Cd' => ['pos' => 'adj', 'numtype' => 'mult|sets'],
             # generic cardinal numeral
             # examples: čtvero patero desatero
-            # This tag is documented in the tagset but it does not occur in the PDT.
+            # číslovka druhová >= 4, substantivní postavení "čtvero" vč. neurčitých
             'Cj' => ['pos' => 'num', 'numtype' => 'card', 'other' => {'numtype' => 'generic'}],
-            # ordinal suffix as a separate token
-            # only one occurrence in the corpus: tých ("posledně v letech 60 tých" = "posledně v letech šedesátých")
-            # Syntactic analysis of the above example is Atr(letech, tých); Atr(tých, 60).
-            # Hence we can say that the suffix works as an adjective.
-            'Ck' => ['pos' => 'adj', 'numtype' => 'ord', 'other' => {'numtype' => 'suffix'}],
+            # číslovka druhová >= 4, adjektivní  postavení, krátký tvar "čtvery", vč. neurčitých
+            'Ck' => ['pos' => 'num', 'numtype' => 'sets', 'other' => {'numtype' => 'generic'}],
             # cardinal numeral, low value (agrees with counted noun)
             # examples: jeden dva tři čtyři
+            # indefinite or demonstrative cardinal numeral
+            # examples: několik mnoho málo kdovíkolik tolik
             'Cl' => ['pos' => 'num', 'numtype' => 'card', 'numform' => 'word'],
-            # indefinite multiplicative numeral
-            # examples: několikrát mnohokrát tolikrát kolikrát nesčíslněkrát
-            'Co' => ['pos' => 'adv', 'numtype' => 'mult', 'prontype' => 'ind|dem'],
             # ordinal numeral (adjectival)
             # examples: první druhý třetí stý tisící
             # (Note: "poprvé" is another type of ordinal numeral, it behaves syntactically as adverb.
             # It is tagged 'Cv', together with multiplicative numerals ("jedenkrát"), which are also syntactic adverbs.)
+            # indefinite or demonstrative adjectival ordinal numeral
+            # examples: několikátý, mnohý, tolikátý
+            # interrogative or relative ordinal numeral
+            # examples: kolikátý
             'Cr' => ['pos' => 'adj', 'numtype' => 'ord'],
-            # interrogative or relative multiplicative numeral
-            # examples: kolikrát
-            'Cu' => ['pos' => 'adv', 'numtype' => 'mult', 'prontype' => 'int|rel'],
             # multiplicative numeral or adverbial ordinal numeral
             # examples: jedenkrát dvakrát třikrát stokrát tisíckrát
             # examples: poprvé podruhé potřetí posté potisící
+            # indefinite multiplicative numeral
+            # examples: několikrát mnohokrát tolikrát kolikrát nesčíslněkrát
+            # interrogative or relative multiplicative numeral
+            # examples: kolikrát
             'Cv' => ['pos' => 'adv', 'numtype' => 'mult'],
-            # Two different types of agreeing adjectival indefinite numerals are tagged 'Cw':
-            # indefinite numeral "nejeden" = lit. "not one" = "more than one"
-            # examples: nejeden
-            # indefinite or demonstrative adjectival ordinal numeral
-            # examples: několikátý, mnohý, tolikátý
-            'Cw' => ['pos' => 'adj', 'numtype' => 'ord', 'prontype' => 'ind|dem'],
             # cardinal numeral, fraction denominator
             # examples: polovina třetina čtvrtina setina tisícina
             # These words behave morphologically and syntactically as feminine nouns of the paradigm "žena".
             # (Note that the fraction words "půl" and "čtvrt" are not tagged "Cy".)
+            # číslovka dílová vč. neurčitých
             'Cy' => ['pos' => 'num', 'numtype' => 'frac'],
-            # interrogative or relative ordinal numeral
-            # examples: kolikátý
-            'Cz' => ['pos' => 'adj', 'numtype' => 'ord', 'prontype' => 'int|rel'],
             # adjectival postfixal segment of a hyphenated compound
             # examples: ti (in "755-ti")
             'Sl' => ['pos' => 'adj', 'other' => 'postfix', 'numtype' => 'card', 'numform' => 'word'],
@@ -333,12 +317,10 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            # Do not generate number for conditional auxiliaries. It is encoded as aggregate there.
-            { 'mood' => { 'cnd' => '',
-                          '@'   => { 'number' => { 'plur|sing' => 'W',
-                                                   'dual' => 'P', # in this tagset, dual has P in the number slot, but then 1 in a separate dual slot
-                                                   'plur' => 'P',
-                                                   'sing' => 'S' }}}}
+            { 'number' => { 'plur|sing' => 'W',
+                            'dual' => 'P', # in this tagset, dual has P in the number slot, but then 1 in a separate dual slot
+                            'plur' => 'P',
+                            'sing' => 'S' }}
     );
     # 4. CASE ####################
     $atoms{case} = $self->create_simple_atom
@@ -393,11 +375,9 @@ sub _create_atoms
         },
         'encode_map' =>
 
-            # Do not generate person for conditional auxiliaries. It is encoded as aggregate there.
-            { 'mood' => { 'cnd' => '',
-                          '@'   => { 'person' => { '1' => '1',
-                                                   '2' => '2',
-                                                   '3' => '3' }}}}
+            { 'person' => { '1' => '1',
+                            '2' => '2',
+                            '3' => '3' }}
     );
     # 8. TENSE ####################
     $atoms{tense} = $self->create_atom
@@ -495,7 +475,7 @@ sub _create_atoms
         'decode_map' =>
         {
             'T' => ['other' => 'ť'],  # the word includes encliticized particle -ť, -tě, -ž
-            'B' => ['other' => 'by'], # the word includes conditional morpheme -by
+            'B' => ['other' => 'by', 'mood' => 'cnd'], # the word includes conditional morpheme -by
         },
         'encode_map' =>
 
@@ -573,13 +553,9 @@ sub encode
     # Numerals and pronouns must come first because they can be at the same time also nouns or adjectives.
     elsif($fs->is_numeral())
     {
-        if($fs->numform() eq 'digit')
+        if($fs->numform() =~ m/^(digit|roman)$/)
         {
             $tag = 'C=--------------';
-        }
-        elsif($fs->numform() eq 'roman')
-        { #{
-            $tag = 'C}--------------';
         }
         elsif($fs->numtype() eq 'card')
         {
@@ -587,11 +563,6 @@ sub encode
             {
                 # kolik
                 $tag = 'C?--------------';
-            }
-            elsif($fs->contains('prontype', 'ind') || $fs->contains('prontype', 'dem'))
-            {
-                # několik, mnoho, málo, tolik
-                $tag = 'Ca--X-----------';
             }
             # certain "generic" numerals (druhové číslovky) are classified as cardinals
             elsif($fs->get_other_subfeature('cs::xixstol', 'numtype') eq 'generic')
@@ -603,66 +574,39 @@ sub encode
             {
                 # jeden, jedna, jedno, dva, dvě, tři, čtyři
                 # pět, deset, patnáct, devadesát, sto
+                # několik, mnoho, málo, tolik
                 $tag = 'Cl--X-----------';
             }
         }
         elsif($fs->numtype() eq 'ord')
         {
-            if($fs->is_wh())
-            {
-                # kolikátý
-                $tag = 'CzXXX-----------';
-            }
-            elsif($fs->contains('prontype', 'ind') || $fs->contains('prontype', 'dem'))
-            {
-                # několikátý, mnohý, tolikátý
-                # but also: nejeden
-                $tag = 'CwXXX-----------';
-            }
-            elsif($fs->get_other_subfeature('cs::xixstol', 'numtype') eq 'suffix' ||
-               $fs->gender() eq '' && $fs->number() ne '')
-            {
-                # tých
-                $tag = 'Ck-XX-----------';
-            }
-            else
-            {
-                $tag = 'CrXXX-----------';
-            }
+            # první, druhý, třetí
+            # kolikátý
+            # několikátý, mnohý, tolikátý
+            # but also: nejeden
+            $tag = 'CrXXX-----------';
         }
         elsif($fs->numtype() eq 'mult')
         {
-            if($fs->is_wh())
-            {
-                # kolikrát
-                $tag = 'Cu--------------';
-            }
-            elsif($fs->contains('prontype', 'ind') || $fs->contains('prontype', 'dem'))
-            {
-                # několikrát, mnohokrát, tolikrát
-                $tag = 'Co--------------';
-            }
-            else
-            {
-                $tag = 'Cv--------------'; ###!!! pozor tohle jsou i řadové číslovky příslovečné (poprvé, podruhé...)
-            }
+            # jednou, dvakrát, třikrát
+            # kolikrát
+            # několikrát, mnohokrát, tolikrát
+            $tag = 'Cv--------------'; ###!!! pozor tohle jsou i řadové číslovky příslovečné (poprvé, podruhé...)
         }
         elsif($fs->numtype() eq 'frac')
         {
             $tag = 'Cy--------------';
         }
-        elsif($fs->numtype() eq 'sets' && $fs->contains('prontype', 'ind'))
+        elsif($fs->numtype() eq 'sets')
         {
-            # několikerý
-            $tag = 'Ch--------------';
-            # "nejedny" is indefinite numeral and has its own tag 'Cw'.
-            # "oboje", "dvoje", "troje" (and "čtvery", "patery", "desatery"?) are included in "Cd", together with "obojí", "dvojí", "trojí".
+            # oboje, dvoje, troje (both sets of, two sets of, three sets of)
+            # čtvery, patery, šestery
+            $tag = 'Ck--------------';
         }
         else
         {
+            # několikerý
             # obojí, dvojí, trojí (both-fold, twofold, three-fold)
-            # oboje, dvoje, troje (both sets of, two sets of, three sets of)
-            # The latter are distinguished by variant=1.
             $tag = 'CdX-------------';
         }
     }
@@ -671,23 +615,15 @@ sub encode
         # possessive pronoun
         if($fs->is_possessive())
         {
-            if($fs->is_wh())
+            # čí, čípak
+            if($fs->is_interrogative())
             {
-                # jehož, jejíž, jejichž
-                # it has possgender if it is 3rd person
-                if($fs->person() eq '3')
-                {
-                    $tag = 'P1XXXX----------';
-                }
-                else
-                {
-                    $tag = 'P1XXX-----------';
-                }
-            }
-            elsif($fs->is_reflexive())
-            {
-                # svůj
                 $tag = 'P8XXX-----------';
+            }
+            elsif($fs->is_relative())
+            {
+                # jehož, jejíž, jejichž, čí
+                $tag = 'P1XXX-----------';
             }
             else
             {
@@ -696,10 +632,6 @@ sub encode
             }
         }
         # personal pronoun
-        elsif($fs->adpostype() eq 'preppron')
-        {
-            $tag = 'P0---------------'; # oň, naň
-        }
         elsif($fs->prontype() eq 'prs')
         {
             if(!$fs->is_reflexive())
@@ -717,16 +649,9 @@ sub encode
             }
             else # reflexive
             {
-                if($fs->variant() eq 'short')
-                {
-                    # si, sis, se, ses
-                    $tag = 'P7--X-----------';
-                }
-                else
-                {
-                    # sebe, sobě, sebou
-                    $tag = 'P6--X-----------';
-                }
+                # si, sis, se, ses
+                # sebe, sobě, sebou
+                $tag = 'P6--X-----------';
             }
         }
         # negative pronoun
@@ -965,7 +890,16 @@ sub encode
     }
     elsif($fs->is_particle())
     {
-        $tag = 'T---------------';
+            # it has number if it has person
+            # in that case it also contains the conditional -by
+            if($fs->person() =~ m/^[123]$/)
+            {
+                $tag = 'T--X----------B-';
+            }
+            else
+            {
+                $tag = 'T---------------';
+            }
     }
     elsif($fs->is_interjection())
     {
@@ -1032,9 +966,9 @@ sub encode
 
 #------------------------------------------------------------------------------
 # Returns reference to list of known tags. The list was collected from the
-# 19th etalon texts from the Hičkok project.
-# 1188
-# Z nich jsem kvůli konzistenci vyhodil: 0
+# 19th etalon texts from the Hičkok project, then a few tags were added and
+# a few removed for the sake of consistency.
+# 1190
 #------------------------------------------------------------------------------
 sub list
 {
@@ -2057,9 +1991,11 @@ RV--4--------1--
 RV--6-----------
 RV--7-----------
 T---------------
+T--P---1------B-
 T--P---2------B-
 T--P---3------B-
 T--S---1------B-
+T--S---2------B-
 T--S---3------B-
 T-------------T-
 T7--------------
