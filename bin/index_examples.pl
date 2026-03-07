@@ -4,7 +4,7 @@
 # License: GNU GPL
 
 use utf8;
-my $laptop_path = 'C:/Users/Dan/Documents/Web/cgi/tags';
+my $laptop_path = 'C:/Users/zeman/OneDrive/Dokumenty/Web/cgi/tags';
 my $format = 'conllu'; # default
 sub usage
 {

@@ -37,6 +37,7 @@ sub usage
 # tagset_to_uposf_table.pl cs::conll conll-2006-cs > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\cs-conll-uposf.md
 # tagset_to_uposf_table.pl cs::multext > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\cs-multext-uposf.md
 # tagset_to_uposf_table.pl cs::pdt pdt > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\cs-pdt-uposf.md
+# tagset_to_uposf_table.pl cs::pdtc pdtc > C:\Users\zeman\Documents\lingvistika-projekty\ud-repos\docs\_tagset-conversion\cs-pdtc-uposf.md
 # tagset_to_uposf_table.pl da::conll conll-2006-da > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\da-conll-uposf.md
 # tagset_to_uposf_table.pl de::conll2009 conll-2009-de > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\de-conll2009-uposf.md
 # tagset_to_uposf_table.pl de::smor > Documents\Lingvistika\Projekty\universal-dependencies\docs\_tagset-conversion\de-smor-uposf.md
@@ -177,7 +178,7 @@ sub examples
     my $corpus = shift;
     my $reduce = shift;
     my $driver = shift;
-    my $tagzplorer_path = "C:\\Users\\Dan\\Documents\\Web\\cgi\\tags";
+    my $tagzplorer_path = "C:\\Users\\zeman\\OneDrive\\Dokumenty\\Web\\cgi\\tags";
     my $corpus_path = "$tagzplorer_path\\$corpus"; # /tindex.txt
     my $indexpath = "$corpus_path/tindex.txt";
     my %tagzamples;
